@@ -30,7 +30,6 @@
 
 .scrollbar::-webkit-scrollbar-thumb {
     background: #ccc;
-    border-radius: 10px;
 }
 
 .py-8px {
@@ -1893,4 +1892,45 @@ span.count {
     padding: 20px;
     width: 400px;
     top: 10px !important;
+}
+
+.runway-actions .card-body{
+    padding: 1.25rem;
+}
+
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df!important;
+}
+.text-primary{
+    color: #4e73df;
+}
+.border-left-suc {
+    border-left: 0.25rem solid #1dc9b7!important;
+}
+.text-suc{
+    color: #1dc9b7;
+}
+.border-left-pen {
+    border-left: 0.25rem solid #ffb822!important;
+}
+.text-pen{
+    color: #ffb822;
+}
+.border-left-rej {
+    border-left: 0.25rem solid #dc3545!important;
+}
+.text-rej{
+    color: #dc3545;
+}
+.text-gray-300 {
+    color: #dddfeb!important;
+}
+.r-shadow{
+    box-shadow: 0 2px 16px #cccccc80;
+}
+.scrollbar {
+    height: calc(100vh - 360px);
+}
+.scrollbar1 {
+    height: calc(100vh - 460px);
 }

@@ -464,3 +464,10 @@ a.dropdown-item{
 .scrollbar1::-webkit-scrollbar-thumb:hover {
   background: #ccc;
 }
+
+.time-table td:nth-child(4) {
+  /* white-space: nowrap; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 0;
+}

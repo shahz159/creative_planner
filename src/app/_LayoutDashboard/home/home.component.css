@@ -1168,6 +1168,11 @@ label.page-num {
   height: 30px;
   width: 30px;
 }
+.Delay{
+/* background-color: #EE4137 !important; */
+color:#000;
+}
+
 /* .portfolio-search{
   width: 30px;
   box-sizing: border-box;

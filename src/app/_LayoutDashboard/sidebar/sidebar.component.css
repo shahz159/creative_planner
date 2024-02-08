@@ -8,3 +8,26 @@
 .side-btn {
     position: relative;
 }
+a.kt-menu__link svg {
+    fill: #b8bac3;
+    display: flex;
+    flex: 0 0 42px !important;
+    align-items: center;
+    justify-content: center;
+    outline: 0;
+}
+.kt-aside-menu .kt-menu__nav>.kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover .kt-menu__link svg:hover{
+    fill: #5867dd !important;
+}
+.kt-aside--minimize .kt-aside-menu .kt-menu__nav>.kt-menu__item:hover>.kt-menu__link svg {
+    color: #5867dd !important;
+}
+.kt-aside--minimize .kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link.active svg {
+    fill: #ffffff !important;
+}
+a.kt-menu__link.kt-menu__toggle.active svg {
+    fill: #fff;
+}
+li.kt-menu__item:hover a svg path {
+    fill: #5867dd  !important;
+}

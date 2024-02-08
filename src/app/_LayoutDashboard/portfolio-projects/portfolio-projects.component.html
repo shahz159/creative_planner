@@ -79,7 +79,7 @@
                             role="button">
                             {{CountInprocess}} InProcess </a> -->
                         <a href="javascript:void(0)" (click)="labelInprocess()" [hidden]="HideStatusDropdown"
-                            class="badge badge-warning kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
+                            class="badge Inprocess_color kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
                             InProcess</a>
 
                     </ng-container>
@@ -90,11 +90,11 @@
                             {{CountDelay}} Delay
                         </a> -->
                         <a href="javascript:void(0)" (click)="labelDelay()" [hidden]="HideStatusDropdown"
-                            class="badge badge-danger kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
+                            class="badge Delay kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
                     </ng-container>
                     <ng-container *ngIf="CountCompleted > 0">
                         <a href="javascript:void(0)" (click)="labelCompleted()" [hidden]="HideStatusDropdown"
-                            class="badge badge-success kt-badge--inline mr-2 btn-sm py-10px"> {{CountCompleted}}
+                            class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px"> {{CountCompleted}}
                             Completed</a>
                     </ng-container>
 
@@ -112,8 +112,8 @@
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
                         <a href="javascript:void(0)" (click)="labelProjectHold()" [hidden]="HideStatusDropdown"
-                            class="badge kt-badge--inline mr-2 btn-sm text-white py-10px"
-                            style="background-color: #646c9a;">
+                            class="badge Hold_color kt-badge--inline mr-2 btn-sm text-white py-10px"
+                            >
                             {{CountProjectHold}} Project Hold</a>
                     </ng-container>
                     <ng-container *ngIf="CountRejecteds > 0">
@@ -296,17 +296,17 @@
                                                     <div class="mx-2 p-1">
                                                         <div *ngIf="item1.Status=='Delay'">
                                                             <span
-                                                                class="text-danger font-weight-400">{{item1.Status}}
+                                                                class="Delay_color font-weight-400">{{item1.Status}}
                                                             </span>
                                                             <span *ngIf="item1.Delaydays>0"
-                                                                class="text-danger delayDays">
+                                                                class="Delay_color delayDays">
                                                                 <strong>{{item1.Delaydays}}
                                                                     days</strong>
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completed'">
                                                             <span
-                                                                class="text-success font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}}    <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info" ></b>
+                                                                class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}}    <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info" ></b>
 
                                                                 <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
                                                               </span>
@@ -317,7 +317,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='InProcess'">
                                                             <span
-                                                                class="text-warning font-weight-400">{{item1.Status}}</span>
+                                                                class="InProcess_color font-weight-400">{{item1.Status}}</span>
                                                             <br>
                                                             <!-- <span *ngIf="item1.Delaydays<0"
                                                                 class="text-info delayDays">
@@ -326,69 +326,69 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Project Complete Rejected'">
                                                             <span
-                                                                class="text-danger font-weight-400">{{item1.Status}}</span>
+                                                                class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Project Hold'">
                                                             <span
-                                                                class="text-danger font-weight-400">Hold</span>
+                                                                class="Hold font-weight-400">Hold</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Project Holded'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #646c9a;">Hold</span>
+                                                            <span class="Hold_color font-weight-400"
+                                                              >Hold</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Under Approval'">
                                                             <span
-                                                                class="text-info font-weight-400">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
+                                                                class="Under_Approval_color font-weight-400">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
                                                             <br>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Todo'">
                                                             <span
-                                                                class="text-warning font-weight-400">{{item1.Status}}
+                                                                class="New_Todo_color font-weight-400">{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completion Under Approval'">
                                                             <!-- <h2>Mubeen</h2> -->
                                                             <span
-                                                                class="font-weight-400 text-info">{{item1.Status}}
+                                                                class="font-weight-400 Completion_Under_Approval_color">{{item1.Status}}
                                                             </span>
 
                                                         </div>
                                                         <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                             <span
-                                                                class="font-weight-400 text-cancel">{{item1.Status}}
+                                                                class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status}}
                                                             </span>
 
                                                         </div>
                                                         <div *ngIf="item1.Status=='Cancelled'">
                                                             <span
-                                                                class="font-weight-400 text-cancel">{{item1.Status}}
+                                                                class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
                                                             </span>
 
                                                         </div>
                                                         <div *ngIf="item1.Status=='Forward Under Approval'">
                                                             <span
-                                                                class="font-weight-400 text-warning">{{item1.Status}}
+                                                                class="font-weight-400 Forward_Under_Approval_color">{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Project'">
                                                             <span class="font-weight-400"
-                                                                style="color:#98c7bf">{{item1.Status}}</span>
+                                                                style="color:#5889B8">{{item1.Status}}</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Project Rejected'">
                                                             <span
-                                                                class="text-danger font-weight-400">{{item1.Status}}
+                                                                class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div
                                                             *ngIf="item1.Status=='Deadline Extend Under Approval'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #E0B1D7;">{{item1.Status}}
+                                                            <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
+                                                               >{{item1.Status}}
 
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Enactive Under Approval'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #BD838C;">{{item1.Status}}
+                                                            <span class="font-weight-400 Enactive_Under_Approval_color"
+                                                           >{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div
@@ -398,13 +398,13 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Achieved'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #BB8FCE;">{{item1.Status}}
+                                                            <span class="font-weight-400 ToDo_Achieved_color"
+                                                               >{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Completed'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #BB8FCE;">{{item1.Status}}
+                                                            <span class="font-weight-400 ToDo_Completed_color">
+                                                                {{item1.Status}}
                                                             </span>
                                                         </div>
                                                     </div>

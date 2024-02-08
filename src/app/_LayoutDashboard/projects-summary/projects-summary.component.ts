@@ -403,7 +403,6 @@ $(document).ready(function(){
     // this.applyFilters();
     // alert(this.isChecked);
   }
-
     GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
@@ -521,7 +520,7 @@ $(document).ready(function(){
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-
+          
         }
         else {
           this.StatusCountFilter = this.selectedItem_Status[0];
@@ -613,7 +612,7 @@ $(document).ready(function(){
   isStatusChecked(item) {
     let arr = [];
     this.edited = true;
-    this.canceledit = true;
+    this.canceledit = true;   
     this.StatusCountFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Status: element.Name });
@@ -875,6 +874,11 @@ $(document).ready(function(){
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
   }
+
+  submit_Data(){
+    this.txtSearch='';
+  }
+  Cancelled: any[] = [{ name: 'Cancelled' }];
 
   resetAll() {
     this.searchResult=false;

@@ -4045,6 +4045,14 @@ export class DashboardComponent implements OnInit {
     // }
   }
 
+  meetingDetails() {
+    let name: string = 'Meeting-Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
   check() {
     console.log(this.myWin.closed)
     var myrhis = this
