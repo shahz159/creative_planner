@@ -397,7 +397,7 @@ export class CreateProjectComponent implements OnInit {
         DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
         Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
         Remarks:this._remarks,
-      
+
 
   };
   console.log("PRJ INFORMATION :",projectInfo);
@@ -405,7 +405,7 @@ export class CreateProjectComponent implements OnInit {
   this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
   this.ProjectDto.isTemplate=this.saveAsTemplate;
   this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
-  
+
   //1. creating project
   this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
 
@@ -428,7 +428,7 @@ export class CreateProjectComponent implements OnInit {
           this.BsService.ProjectCreatedEvent.emit();
         }
         else if(res&&res.message==='Success1'){
-       
+
           this.PrjCode=res.Project_Code;
             this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
             //2. file attachment uploading  if present
@@ -544,6 +544,7 @@ export class CreateProjectComponent implements OnInit {
 
   closeInfos(){
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
@@ -555,11 +556,11 @@ export class CreateProjectComponent implements OnInit {
 
 
     // document.getElementById("New_project_Add").classList.remove("open_sidebar");
-   
-   
+
+
     // document.getElementById("sumdet").classList.remove("position-fixed");
- 
- 
+
+
   }
 
   Scratech_btn(){
@@ -589,7 +590,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   Move_to_add_team(){
-    $('.right-side-dv').removeClass('d-none'); 
+    $('.right-side-dv').removeClass('d-none');
     $('.add_tema_tab').show();
     $('.Project_details_tab').hide();
     $('.sbs--basic .active').addClass('finished');
@@ -777,14 +778,14 @@ onProjectOwnerChanged(){
 
     if(this.PrjActionsInfo.length===0)
       this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
-    
+
 
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
-   
+
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
 
@@ -795,6 +796,7 @@ onProjectOwnerChanged(){
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -805,6 +807,7 @@ onProjectOwnerChanged(){
 
   Project_details_edit() {
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
@@ -1153,7 +1156,7 @@ sendApproval(){
 
   if(this.PrjActionsInfo.length){
   // atleast one action must be created.
- 
+
       this.ProjectDto.Emp_No=this.Current_user_ID;
       this.ProjectDto.isTemplate=this.saveAsTemplate;
       this.ProjectDto.Project_Code=this.PrjCode;
@@ -1169,7 +1172,7 @@ sendApproval(){
          }
      });
 
-   
+
 }
 else{
   Swal.fire(
@@ -1333,7 +1336,7 @@ cancelPrjCreation(){
 
 
 
-// portfolio code start 
+// portfolio code start
 
 _portfoliosList:any=[];
 ngDropdwonPort:any=[];
@@ -1353,10 +1356,10 @@ onPortfolioSelected(e){
     else{
        const portfolio=this._portfoliosList.find((item)=>item.Portfolio_ID==e.option.value)
         if(portfolio)this.ngDropdwonPort.push(portfolio);
-    }  
+    }
    this.openAutocompleteDrpDwn('PortfolioDrpDwn');
    console.log('PORTFOLIOS:',this.ngDropdwonPort)
-} 
+}
 
 removePorfolioSelected(p){
    const index=this.ngDropdwonPort.indexOf(p);

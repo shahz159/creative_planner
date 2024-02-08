@@ -380,25 +380,25 @@ ul {
 /* Testing */
 
 
-/* #loading{ 
-  position: absolute; 
-  left: 50%; 
-  top: 50%; 
-  z-index: 1; 
-  width: 150px; 
-  height: 150px; 
-  margin: -75px 0 0 -75px; 
-  border: 16px solid #f3f3f3; 
-  border-radius: 50%; 
-  border-top: 16px solid #3498db; 
-  width: 120px; 
-  height: 120px; 
-  animation: spin 2s linear infinite; 
-  } 
-    
-  @keyframes spin { 
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
+/* #loading{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   } */
 
 .list-icon-color {
@@ -487,7 +487,7 @@ ul {
 }
 
 
-/* 
+/*
   table, th, td {
     padding: 5px;
   }
@@ -1717,7 +1717,7 @@ ul {
   font-size: 16px;
   background-color: white;
   background-image: url('/assets/images/searchicon.png');
-  background-position: right center; 
+  background-position: right center;
   background-repeat: no-repeat;
   padding: 12px 0px 12px 0px;
   -webkit-transition: width 0.4s ease-in-out;
@@ -1887,13 +1887,55 @@ span.count {
 .count-list.count-header {
     display: flex;
     align-items: center;
-}   
+}
 .topy-filtr .dropdown-menu {
     padding: 20px;
     width: 400px;
     top: 10px !important;
 }
 
+
+
+
+
+.assigned-task{
+  background-color: #A847F0;
+  color: #000;
+}
+.total-project{
+  background-color: #35A79C;
+  color:#000;
+}
+
+.accepted{
+    background-color: #0272D0;
+    color:white;
+  }
+
+.pending{
+    background-color: #1B272D;
+    color:white;
+  }
+
+.rejected{
+  background-color: #DFDFDF;
+  color:black;
+}
+
+.task{
+  background-color: #D4A4FF;
+  color:black;
+
+}
+
+.assigned-task{
+  background-color: #A847Fd;
+  color:black;
+}
+.task{
+  background-color: #D4A4FF;
+  color:black;
+}
 .runway-actions .card-body{
     padding: 1.25rem;
 }

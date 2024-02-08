@@ -1,22 +1,22 @@
-/* #loading{ 
-  position: absolute; 
-  left: 50%; 
-  top: 50%; 
-  z-index: 1; 
-  width: 150px; 
-  height: 150px; 
-  margin: -75px 0 0 -75px; 
-  border: 16px solid #f3f3f3; 
-  border-radius: 50%; 
-  border-top: 16px solid #3498db; 
-  width: 120px; 
-  height: 120px; 
-  animation: spin 2s linear infinite; 
-  } 
-    
-  @keyframes spin { 
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
+/* #loading{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   } */
 
   .list-icon-color{
@@ -91,7 +91,7 @@
   .modal .modal-content {
     border-radius: 2px;
 }
-/* 
+/*
   table, th, td {
     padding: 5px;
   }
@@ -133,7 +133,7 @@
 }
 #backBtn:hover{
  background-color:#0073e6 ;
- color: white; 
+ color: white;
 }
 #Mdl_closebtn:hover{
   background-color: #dc3545;
@@ -167,7 +167,7 @@
 }
 .card.brdr .card-body>div {
   flex: 0.5;
-  text-align: left; 
+  text-align: left;
 }
 .card.brdr {
   border-left: 4px solid #2786fb;
@@ -284,7 +284,7 @@
 }
 .dataTables_wrapper .dataTable .plist-details tr.ForwardUnderApproval {
   /* border-left: 5px solid #E0B1D7; */
-  box-shadow: -5px 0px 1px #E0B1D7 
+  box-shadow: -5px 0px 1px #E0B1D7
 }
 .dataTables_wrapper .dataTable .plist-details tr.completeUnderApproval {
   /* border-left: 5px solid #98c7bf;  */
@@ -796,7 +796,7 @@
   position: absolute;
   top: 3px;
   background-color: #fff;
- 
+
 }
 .show_entries select{
   /* width: 100px; */
@@ -1126,7 +1126,7 @@ span.count {
   font-size: 16px;
   background-color: white;
   background-image: url('/assets/images/searchicon.png');
-  background-position: right center; 
+  background-position: right center;
   background-repeat: no-repeat;
   padding: 12px 0px 12px 0px;
   -webkit-transition: width 0.4s ease-in-out;
@@ -1168,12 +1168,12 @@ span.count2 {
 /*---------header for portfolio list view --------------*/
 .kt-pot-ttls {
   border: 0px !important;
-    border-radius: 0pc !important; 
+    border-radius: 0pc !important;
     box-shadow: unset !important;
     border-bottom: 2px solid #eef2f8 !important;
     margin-bottom: 9px !important;
     padding-bottom: 5px !important;
-  
+
 }
 .kt-pot-ttls span {
   text-transform: capitalize;
@@ -1186,11 +1186,44 @@ span.count2 {
   background-color: #e0f1ff;
 
 }
+
+.new-project {
+  background-color: #B2D732;
+  color:black;
+
+}
+.black-text{
+  color:black !important;;
+}
+
+.todo-completed{
+  background-color: #62B134;
+  color:black
+}
+
+.todo-achieved{
+  background-color: #335B1B;
+  color:black;
+}
+
+.New-project{
+  background-color: #5789B8;
+  color:black;
+}
+
+.rejected{
+  background-color: #DFDFDF;
+  color:black;
+}
+.total-project{
+  background-color: #35A79C;
+  color:black;
+}
 .Delay_color{
-  color: #EE4137 !important;  
+  color: #EE4137 !important;
 }
 .Completed_color{
-  color: #62B134 !important;  
+  color: #62B134 !important;
 }
 .InProcess_color{
   color:#1B272D !important;
@@ -1209,7 +1242,7 @@ span.count2 {
   color: #6E9BC4 !important;
 }
 .Completion_Under_Approval_color{
-  color: #B2D732 !important;  
+  color: #B2D732 !important;
 }
 
 .Cancellation_Under_Approval_color{
@@ -1237,7 +1270,7 @@ span.count2 {
   color: #000 !important;
 }
 .ToDo_Completed_color{
-  color:#000 !important;  
+  color:#000 !important;
 }
 
 .Delay{
