@@ -17,7 +17,7 @@ import * as moment from 'moment';
 import { event } from 'jquery';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
-import { DetailsComponent } from '../details/details/details.component';
+import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 //import { empty } from '@angular-devkit/schematics';

@@ -14,7 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
-import { DetailsComponent } from '../details/details/details.component';
+import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 
 

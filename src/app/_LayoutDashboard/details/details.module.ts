@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 
 import { DetailsRoutingModule } from './details-routing.module';
-import { DetailsComponent} from './details/details.component';
+import { DetailsComponent} from './details.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
