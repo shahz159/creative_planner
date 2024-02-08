@@ -130,10 +130,6 @@ export class CreateProjectComponent implements OnInit {
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
-  isStartDateEditable:boolean=false;
-
-
-
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -338,21 +334,6 @@ export class CreateProjectComponent implements OnInit {
     this.maxDate=d;
 
   }
-
-  // currentDate: Date = new Date();
-  // Start__Date: Date = new Date(); // Initialize with a default value or set it based on your logic
-
-  // isEditable(): boolean {
-  //   return this.currentDate <=this.Start__Date;
-  // }
-  // isStartDateDisabled(): boolean {
-  //   // Convert Start_Date to Date object for comparison
-  //   const startDate = new Date(this.Start_Date);
-
-  //   // Compare current date with start date
-  //   return this.todayDate <= startDate;
-  // }
-
 
 
 
@@ -803,6 +784,7 @@ onProjectOwnerChanged(){
 
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
 
@@ -888,7 +870,7 @@ showActionDetails(index: number | undefined) {
 selectedOwner: any;
 //ProjectType: string
 ProjectDescription: string
-Start_Date: any;
+Start_Date: string;
 OGowner: any;
 OGresponsible: any;
 OGownerid: any;
@@ -938,10 +920,6 @@ initializeSelectedValue() {
     this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
     this.Allocated = this.projectInfo.AllocatedHours
     this.End_Date = this.projectInfo.EndDate;
-
-
-    this.isStartDateEditable=this.todayDate<=new Date(this.projectInfo.StartDate);
-
 
 }
 
@@ -1401,10 +1379,6 @@ closeAutocompleteDrpDwn(Acomp:string){
 
 
 // portfolio code end
-
-
-
-
 
 
 
