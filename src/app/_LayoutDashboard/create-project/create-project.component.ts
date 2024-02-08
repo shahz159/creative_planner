@@ -784,6 +784,7 @@ onProjectOwnerChanged(){
    
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
 
