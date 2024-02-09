@@ -666,7 +666,7 @@
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
 }
 
-/* 
+/*
 .calendar {
     table-layout: fixed;
     width: 100%;
@@ -716,7 +716,7 @@
 .day:focus {
     outline: none;
 }
- 
+
 .day-number {
     position: relative;
     z-index: 1;
@@ -1062,27 +1062,27 @@ background-color: #f1f3f4;
 }
 ::ng-deep .fc-yellow .fc-daygrid-event-dot, ::ng-deep .fc-yellow .fc-list-event-dot{
     border-color: #e5e914 !important;
-    
+
 }
 ::ng-deep .fc-red .fc-daygrid-event-dot, ::ng-deep .fc-red .fc-list-event-dot{
-    border-color: #f10505 !important;   
+    border-color: #f10505 !important;
     text-decoration: line-through;
 }
 ::ng-deep .fc-red {
-    border-color: #f10505 !important;   
+    border-color: #f10505 !important;
     text-decoration: line-through !important;
 }
 
 ::ng-deep .fc-green .fc-daygrid-event-dot, ::ng-deep .fc-green .fc-list-event-dot{
-    border-color: #1dc9b7 !important;   
+    border-color: #1dc9b7 !important;
     text-decoration: line-through;
 }
 ::ng-deep .fc-green {
-    border-color: #1dc9b7 !important;   
+    border-color: #1dc9b7 !important;
     text-decoration: line-through !important;
 }
 ::ng-deep .fc-grey .fc-daygrid-event-dot, ::ng-deep .fc-grey .fc-list-event-dot{
-    border-color: #adb3af !important;   
+    border-color: #adb3af !important;
 }
 ::ng-deep .fc .fc-daygrid-day-frame{
     height: 100px !important;
@@ -1209,7 +1209,7 @@ height: auto !important;
 .title-right{
     padding-top:6px;
 }
-.main-title{       
+.main-title{
     width: 100%;
     position: relative;
     display: -webkit-box;
@@ -1221,7 +1221,7 @@ height: auto !important;
     box-sizing: border-box;
     outline: none;
     -webkit-transition: background-color 100ms linear;
-    transition: background-color 100ms linear; 
+    transition: background-color 100ms linear;
     min-height: 32px;
     margin-bottom: 12px;
 }
@@ -1338,7 +1338,7 @@ height: auto !important;
     font-weight: 700;
 
 }
-.main-s{    
+.main-s{
     font-size: 14px;
     font-weight: 400;
     letter-spacing: .2px;
@@ -1361,8 +1361,8 @@ height: auto !important;
 .btn-noti::before {
     content: attr(data-content);
     position: absolute;
-    top: -0.5em; 
-    right: -0.5em; 
+    top: -0.5em;
+    right: -0.5em;
     width: 1.5em;
     height: 1.5em;
     display: flex;
@@ -1371,7 +1371,7 @@ height: auto !important;
     border-radius: 50%;
     background-color: #000;
     color: white;
-      
+
 }
 .list-group-item .day-dot {
     margin: 0 4px;
@@ -1460,7 +1460,7 @@ height: auto !important;
     margin-bottom: 1rem!important;
 }
 .go-up .chev-dn svg{
-    transform: rotate(180deg);    
+    transform: rotate(180deg);
     -webkit-transition: transform .1s linear;
     transition: transform .1s linear;
 }
@@ -1835,7 +1835,7 @@ height: auto !important;
 .dropzone-item:not(:first-child){
     border-top: 0;
 }
-.btm-btn{    
+.btm-btn{
     position: fixed;
     bottom: 32px;
     right: 72px;
@@ -1855,7 +1855,7 @@ height: auto !important;
     height: calc(100vh - 156px);
     overflow-y: auto;
 }
-.time-tabs.nav-pills .nav-item .nav-link.active, 
+.time-tabs.nav-pills .nav-item .nav-link.active,
 .time-tabs.nav-pills .nav-item .nav-link:active, .time-tabs.nav-pills .nav-item .nav-link.active:hover {
     background-color: transparent;
     color: #7b68ee;
@@ -2102,7 +2102,7 @@ a.ordr-a {
     margin: 0px;
     height: auto;
     width: 100%;
-    background: transparent;    
+    background: transparent;
     font-size: 16px;
 }
 .back-btn{
@@ -2131,7 +2131,7 @@ a.ordr-a {
     padding: 0;
     line-height: 0;
 }
-.btn-pos{    
+.btn-pos{
     float: left;
     position: absolute;
     top: 4px;
@@ -2212,7 +2212,7 @@ position: relative;
 }
 .time-event .fc-daygrid-dot-event:hover{
     background: rgb(249 249 249);
-  
+
 }
 ::ng-deep .fc-daygrid-dot-event:hover {
     background: rgb(53 54 58 / 10%);
@@ -2357,7 +2357,7 @@ svg.toolicns.kt-p-ic-top {
     position: absolute;
     top: 26px;
     left: 250px;
-    
+
 }
 .draft-btn {
     width: max-content;
@@ -2443,42 +2443,42 @@ span.kt-dashboard-delay-cnt {
 .popup-ht-70vh::-webkit-scrollbar {
     width: 5px;
   }
-  
+
   /* Track */
   .popup-ht-70vh::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
   }
-   
+
   /* Handle */
   .popup-ht-70vh::-webkit-scrollbar-thumb {
-    background: #a5a5a5; 
+    background: #a5a5a5;
   }
-  
+
   /* Handle on hover */
   .popup-ht-70vh::-webkit-scrollbar-thumb:hover {
-    background: #282236; 
+    background: #282236;
   }
-  
+
   .popup-ht-50vh {
     height: 45vh !important;
 }
 .popup-ht-50vh::-webkit-scrollbar {
     width: 5px;
   }
-  
+
   /* Track */
   .popup-ht-50vh::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
   }
-   
+
   /* Handle */
   .popup-ht-50vh::-webkit-scrollbar-thumb {
-    background: #a5a5a5; 
+    background: #a5a5a5;
   }
-  
+
   /* Handle on hover */
   .popup-ht-50vh::-webkit-scrollbar-thumb:hover {
-    background: #282236; 
+    background: #282236;
   }
   .btn-dull {
     background-color: #6C757D;
@@ -2589,4 +2589,18 @@ span.kt-dashboard-delay-cnt {
 }
 .time-event:hover .delete-btn{
     display: block;
+}
+.New-project{
+  background-color: #5789B8;
+  color:black;
+}
+
+.todo-completed{
+  background-color: #62B134;
+  color:black
+}
+
+.new-project {
+  background-color: #B2D732;
+  color:black;
 }

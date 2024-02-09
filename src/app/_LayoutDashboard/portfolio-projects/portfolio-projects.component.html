@@ -69,9 +69,13 @@
                         role="button">
                         {{TotalProjects}} Projects </a> -->
                     <!-- <div [hidden]="HideStatusDropdown"> -->
-                    <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-                        class="badge bdg-new kt-badge--inline mr-2 py-10px btn-sm"> <span class="count">{{TotalProjects}}</span> Total
-                        Projects</a>
+                      <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
+   class="badge total-project kt-badge--inline mr-2 py-10px btn-sm">
+    <span class="count">{{TotalProjects}}</span> Total Projects
+</a>
+
+
+
                     <!-- End -->
                     <ng-container *ngIf="CountInprocess>0">
                         <!-- <a (click)="labelInprocess()" [hidden]="HideStatusDropdown"
@@ -79,8 +83,8 @@
                             role="button">
                             {{CountInprocess}} InProcess </a> -->
                         <a href="javascript:void(0)" (click)="labelInprocess()" [hidden]="HideStatusDropdown"
-                            class="badge Inprocess_color kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
-                            InProcess</a>
+                            class="badge badge-warning kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
+                            In-Process</a>
 
                     </ng-container>
                     <ng-container *ngIf="CountDelay>0">
@@ -100,14 +104,14 @@
 
                     <ng-container *ngIf="CountNewProject > 0">
                         <a href="javascript:void(0)" (click)="labelNewProject()" [hidden]="HideStatusDropdown"
-                            class="badge kt-badge--inline mr-2 btn-sm text-white py-10px"
-                            style="background-color: #98c7bf;">
+                            class="badge New-project kt-badge--inline mr-2 btn-sm  py-10px
+                            ">
                             {{CountNewProject}} New Project</a>
                     </ng-container>
 
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
-                            class="badge badge-info kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} New Project Under
+                            class="badge new-project kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} New Project Under
                             Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
@@ -118,20 +122,19 @@
                     </ng-container>
                     <ng-container *ngIf="CountRejecteds > 0">
                         <a href="javascript:void(0)" (click)="labelRejecteds()" [hidden]="HideStatusDropdown"
-                            class="badge kt-badge--inline mr-2 btn-sm text-white py-10px"
-                            style="background-color: #e6c947;">
+                            class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px">
                             {{CountRejecteds}} Rejected's</a>
                     </ng-container>
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
                         <a href="javascript:void(0)" (click)="labelToDoAchieved()" [hidden]="HideStatusDropdown"
-                            class="badge kt-badge--inline mr-2 btn-sm py-10px text-white"
-                            style="background-color: #BB8FCE;"> {{Count_ToDoAchieved}} ToDo
+                            class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px "
+                            > {{Count_ToDoAchieved}} ToDo
                             Achieved</a>
                     </ng-container>
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
                         <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
-                            class="badge kt-badge--inline mr-2 btn-sm py-10px text-white"
-                            style="background-color: #BB8FCE;"> {{Count_ToDoCompleted}} ToDo
+                            class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px
+                            "> {{Count_ToDoCompleted}} ToDo
                             Completed</a>
                     </ng-container>
 
@@ -317,7 +320,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='InProcess'">
                                                             <span
-                                                                class="InProcess_color font-weight-400">{{item1.Status}}</span>
+                                                                class="text-warning font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
                                                             <br>
                                                             <!-- <span *ngIf="item1.Delaydays<0"
                                                                 class="text-info delayDays">
@@ -338,7 +341,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Under Approval'">
                                                             <span
-                                                                class="Under_Approval_color font-weight-400">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
+                                                                class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
                                                             <br>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Todo'">
@@ -371,8 +374,8 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Project'">
-                                                            <span class="font-weight-400"
-                                                                style="color:#98c7bf">{{item1.Status}}</span>
+                                                            <span class="New-project font-weight-400"
+                                                                >{{item1.Status}}</span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='New Project Rejected'">
                                                             <span
@@ -398,13 +401,13 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Achieved'">
-                                                            <span class="font-weight-400 ToDo_Achieved_color"
-                                                               >{{item1.Status}}
+                                                            <span class="todo-achieved font-weight-400
+                                                            ">{{item1.Status}}
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Completed'">
-                                                            <span class="font-weight-400 ToDo_Completed_color">
-                                                                {{item1.Status}}
+                                                            <span class="todo-completed font-weight-400"
+                                                                >{{item1.Status}}
                                                             </span>
                                                         </div>
                                                     </div>

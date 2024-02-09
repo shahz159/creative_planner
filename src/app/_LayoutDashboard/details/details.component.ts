@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectMoreDetailsService } from '../../../_Services/project-more-details.service';
+import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import Swal from 'sweetalert2';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -10,7 +10,7 @@ import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
-import { ProjectsSummaryComponent } from '../../projects-summary/projects-summary.component';
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,6 +29,7 @@ import { MatCalendar} from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Subscription } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
@@ -197,11 +198,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-
     this.route.paramMap.subscribe(params => {
-      var pcode = params.get('projectcode');
-      this.URL_ProjectCode = pcode;
-      this._MasterCode = pcode;
+      var pcode = params.get('ProjectCode');
+      if(pcode){
+        this.URL_ProjectCode = pcode;
+        this._MasterCode = pcode;
+      }
+       else {
+        this.router.navigate(["../backend/ProjectsSummary"]);
+      }
     });
 
 
@@ -211,7 +216,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);
-  
+
     // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
@@ -222,7 +227,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.GetPeopleDatils();
     this.timearrays();
     this.getRejectType();
-   
+
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -275,7 +280,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   prjBARCHART:any;
   prjPIECHART:any;
-  
+
   drawStatistics() {
 
 // 1. bar chart.
@@ -290,8 +295,8 @@ var options = {
 plotOptions: {
   bar: {
     colors: {
-      ranges: [ 
-      
+      ranges: [
+
        {
          from:0,
          to:((25*+this.projectInfo.AllocatedHours)/100),
@@ -305,7 +310,7 @@ plotOptions: {
        },   // 26%-100%  (blue)
 
        {
-         from:((25*+this.projectInfo.AllocatedHours)/100)+1,
+         from:(+this.projectInfo.AllocatedHours)+1,
          to:Infinity,
          color:'#7da1ff'
        },   // more than 100% (purple)
@@ -316,7 +321,7 @@ plotOptions: {
          to:-1,
          color:'#00000099'
        }    // <0  (black)
-     
+
     ]
     },
     columnWidth: '55%',
@@ -357,7 +362,7 @@ if(remaininghr<0){
 }
 
 var options1 = {
-  series: [usedhr,remaininghr], 
+  series: [usedhr,remaininghr],
   chart: {
     width: 480,
     type: 'donut',
@@ -401,15 +406,15 @@ var options1 = {
   theme: {
     palette: 'palette2'
   },
-  colors: ['#8faeff', '#f0f0f0'], 
+  colors: ['#8faeff', '#f0f0f0'],
   title: {
     text: "Overall Utilization",
     style: {
-      fontSize: '10px', 
-      color: '#333',     
-      fontFamily: 'Lucida Sans Unicode',  
-      fontWeight: 'bold'  
-     
+      fontSize: '10px',
+      color: '#333',
+      fontFamily: 'Lucida Sans Unicode',
+      fontWeight: 'bold'
+
     }
   },
   responsive: [{
@@ -444,8 +449,8 @@ this.prjPIECHART.render();
     // plotOptions: {
     //   bar: {
     //     colors: {
-    //       ranges: [ 
-          
+    //       ranges: [
+
     //        {
     //          from:0,
     //          to:((25*this.projectInfo.AllocatedHours)/100),
@@ -470,7 +475,7 @@ this.prjPIECHART.render();
     //          to:-1,
     //          color:'#00000099'
     //        }    // <0  (black)
-         
+
     //     ]
     //     },
     //     columnWidth: '55%',
@@ -500,7 +505,7 @@ this.prjPIECHART.render();
     //   labels: {
     //     rotate: -90
     //   }
-      
+
     // }
     // };
 
@@ -743,13 +748,13 @@ this.prjPIECHART.render();
         }
       });
 
-      console.log("requestlist", this.approverequestlist, this.noapproverequestlist);
+      console.log("requestlist", this.approverequestlist, 'noaprrequest-list',this.noapproverequestlist);
     });
   }
 
   requestaccessList:any=[];
 
-  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+ getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -820,7 +825,6 @@ this.prjPIECHART.render();
     setTimeout(() => this.drawStatistics(), 5000);
     });
   }
-
   uniqueName:any
   uniqueNamesArray:any
   firstthreeRecords:any
@@ -831,7 +835,7 @@ this.prjPIECHART.render();
   uniqueSet :any
   uniqueOwner:any
   uniqueNamesArray1:any
-
+  PeopleOnProject:any;
 
   nonRacisList:any=[];
   GetPeopleDatils(){
@@ -841,6 +845,12 @@ this.prjPIECHART.render();
 
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+
+          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
+            const result=this.Project_List.filter(item=>item.Emp_No===emp);
+            return {Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
+          });
+
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
           // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
@@ -896,7 +906,7 @@ this.prjPIECHART.render();
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data !== null && data !== undefined) {
-          this.Activity_List = JSON.parse(data[0]['ActivityList'])
+          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
 
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
@@ -921,7 +931,17 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
-          console.log(this.ActionActivity_List, "testing action activity")
+          console.log(this.ActionActivity_List,"testing action activity");
+          this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
+            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
+                  return {
+                   ...item,
+                   ModifiedDate:d===0?'Today':
+                   d===1?'Yesterday':
+                   [2,3].includes(d)?d+' days ago':
+                   this.datepipe.transform(item.ModifiedDate,'dd MMM')
+                 };
+           })
         }
       })
   }
@@ -1018,8 +1038,8 @@ this.prjPIECHART.render();
         plotOptions: {
           bar: {
             colors: {
-              ranges: [ 
-              
+              ranges: [
+
               {
                 from:0,
                 to:((25*this.maxDuration)/100),
@@ -1044,7 +1064,7 @@ this.prjPIECHART.render();
                 to:-1,
                 color:'#00000099'
               }    // <0  (black)
-            
+
             ]
             },
             columnWidth: '55%',
@@ -1192,6 +1212,7 @@ this.prjPIECHART.render();
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValue()
+    // this.isStartDateEditable=new Date().getTime()<=new Date(this.projectInfo.StartDate).getTime();
   }
 
   Action_details_edit() {
@@ -1312,8 +1333,15 @@ this.prjPIECHART.render();
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
 
-    // document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
-    // document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
+    document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
+
+
+    // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
+
+
+    // USER REQUESTS TAB.
     // back to 1st 'People on the project' tab.
 
 
@@ -2278,7 +2306,7 @@ debugger
       });
   }
 
-  
+
 
   selectedOwner: any;
   ProjectType: string
@@ -2372,6 +2400,7 @@ debugger
     this.End_Date = this.projectInfo.EndDate;
   }
 
+  // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -2486,6 +2515,7 @@ debugger
       });
     }
     else if (val == 1) {
+      debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.json = jsonvalue;
@@ -2493,9 +2523,11 @@ debugger
       this.approvalObj.isApproval = val;
 
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+        debugger
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
+          this.Close_Approval();
         }
         else if (data['message'] == '2') {
           this.notifyService.showError("Not updated", "Failed");
@@ -2510,7 +2542,7 @@ debugger
 
 
   }
- 
+
 
   ActionCode: any
   ActionDescription: any
@@ -2912,7 +2944,7 @@ check_allocation() {
         this.notifyService.showSuccess(this._Message, "Success");
 
 // Timeline submitted
-// if action submission is also required 
+// if action submission is also required
 if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
   this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
   this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
@@ -3147,6 +3179,20 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
 
+  OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    //sessionStorage.setItem('portfolioCDT', P_CDT);
+    //this.router.navigate(['/portfolioprojects/', P_id]);
+    // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+    // window.open(Url);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 
   // this is main project submission code start here
@@ -3239,6 +3285,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
   updateMainProject() {
+
     if (this.projectInfo.Project_Type == 'To do List') {
       this.selectedFile = null;
     }
@@ -3318,12 +3365,12 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
   flSrtOrd: string;
   AttachmentList: any;
   _TotalDocs: any;
-  _attachmentOf:'PROJECT'|'ACTIONS'='PROJECT';
-  SortBy:number;
-  projectatt: any;
-  Actionatt: any;
+  // _attachmentOf:'PROJECT'|'ACTIONS'='PROJECT';
+  // SortBy:number;
+  // projectatt: any;
+  // Actionatt: any;
 
-  AttachmentListTemp:any=[];
+  // AttachmentListTemp:any=[];
   getAttachments(sorttype: number) {
     switch (sorttype) {
       case 1: this.flSrtOrd = "Date"; break;
@@ -3332,16 +3379,16 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
       case 4: this.flSrtOrd = "me"; break;
       default: this.flSrtOrd = "none";
     }
-    this.SortBy=sorttype;
-    this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, this.SortBy.toString())
+
+    this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
-
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-
+            console.log(this.AttachmentList,'AttachmentList')
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
-          this.getProjectAttachments();
+          console.log(this.AttachmentList,'AttachmentList')
+          // this.getProjectAttachments();
 
         }
       });
@@ -3353,28 +3400,28 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
   }
 
-  getProjectAttachments(){
+//   getProjectAttachments(){
 
-   this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code==this.URL_ProjectCode)
-     }
-});
-    console.log("=>",this.AttachmentListTemp);
-  }
+//    this.AttachmentListTemp=this.AttachmentList.map((item)=>{
+//       return {
+//        ...item,
+//        JsonData:item.JsonData.filter((item1)=>item1.Project_Code==this.URL_ProjectCode)
+//      }
+// });
+//     console.log("=>",this.AttachmentListTemp);
+//   }
 
 
 
-  getActionAttachments(){
-    this.AttachmentListTemp=this.AttachmentList.map((item)=>{
-      return {
-       ...item,
-       JsonData:item.JsonData.filter((item1)=>item1.Project_Code!=this.URL_ProjectCode)
-     }
-     });
-     console.log("a=>",this.AttachmentListTemp);
-  }
+//   getActionAttachments(){
+//     this.AttachmentListTemp=this.AttachmentList.map((item)=>{
+//       return {
+//        ...item,
+//        JsonData:item.JsonData.filter((item1)=>item1.Project_Code!=this.URL_ProjectCode)
+//      }
+//      });
+//      console.log("a=>",this.AttachmentListTemp);
+//   }
 
 
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {
@@ -3698,7 +3745,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
-          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']); 
           this.meeting_arry = this.meetingList;
           if (this.meeting_arry.length > 0)
             this.meetinglength = this.meeting_arry.length;
@@ -4284,7 +4331,7 @@ Task_type(value:number){
           },
           nowIndicator: true,
           allDaySlot: false
-          // eventClick: function(info) {
+          // eventClick: function(info) { 
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
           //   alert('View: ' + info.view.type);
@@ -4403,6 +4450,12 @@ Task_type(value:number){
       ((data) => {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+
+        const racisPeople=this.Project_List.map(item=>item.Emp_No);
+        this._EmployeeListForDropdown.sort((el:any)=>{
+        return racisPeople.includes(el.Emp_No)?-1:+1
+         });    // to change the order : first racis people and then rest
+
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         console.log(this.Portfoliolist_1, "Project List Array");
 
@@ -5490,19 +5543,18 @@ isParticipantDrpDwnOpen:boolean=false;
 isDMSMemoDrpDwnOpen:boolean=false;
 isPortfolioDrpDwnOpen:boolean=false;
 isProjectDrpDwnOpen:boolean=false;
-openAutocompleteDrpDwn(Acomp:string){
+ openAutocompleteDrpDwn(Acomp:string){
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
 }
 
-closeAutocompleteDrpDwn(Acomp:string){
+ closeAutocompleteDrpDwn(Acomp:string){
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
 }
 
 
 onPrjSelected(e:any){
-
   const prjChoosed=this.ProjectListArray.find((p:any)=>p.Project_Code===e.option.value);
   if(prjChoosed){
        const index=this.MasterCode.indexOf(prjChoosed.Project_Code);
@@ -5510,31 +5562,27 @@ onPrjSelected(e:any){
           // if not present then add it
           this.MasterCode.push(prjChoosed.Project_Code);
        }
-       else{ //  if item choosed is already selected then remove it.
+       else if(this.MasterCode[index]!=this.projectInfo.Project_Code){ //  if item choosed is already selected then remove it. but it should not be the default project.
         this.MasterCode.splice(index,1);
        }
   }
   this.openAutocompleteDrpDwn('ProjectDrpDwn');
 }
-removeSelectedPrj(item){
-  const index=this.MasterCode.indexOf(item);
-  if(index!==-1){
-    this.MasterCode.splice(index,1);
+ removeSelectedPrj(item){
+  if(this.projectInfo.Project_Code!=item){   // cannot remove the default selected project.
+    const index=this.MasterCode.indexOf(item);
+    if(index!==-1)
+      this.MasterCode.splice(index,1);
   }
 }
 
-getPrjName(projectCode:string){
+ getPrjName(projectCode:string){
   if(this.ProjectListArray){
    const P=this.ProjectListArray.find(pr=>pr.Project_Code===projectCode);
    return P?P.BlockNameProject:'';
   }
    return [];
 }
-
-
-
-
-
 
 
 
@@ -6476,7 +6524,7 @@ displaymessagemain(){
 // action cancel start
 actionCancel(index:number){
 }
-  
+
 formatTimes(time: string): string {
   const [hours, minutes] = time.split(':');
   const date = new Date();
@@ -6522,89 +6570,172 @@ closeFullGraph(){
 
 
 
-// actions Graph start
-
-drawActionsGraph(){
 
 
+// People Approve request  start
+approveUserRequest(requestNo:number){
+  const {Submitted_By,Remarks,Request_type,Request_date}=this.approverequestlist[requestNo];
 
-  var options = {
-    series: [{
-    name: 'Marine Sprite',
-    data: [44, 55, 41, 37, 22, 43, 21]
-  }, {
-    name: 'Striking Calf',
-    data: [53, 32, 33, 52, 13, 43, 32]
-  }, {
-    name: 'Tank Picture',
-    data: [12, 17, 11, 9, 15, 11, 20]
-  }, {
-    name: 'Bucket Slope',
-    data: [9, 7, 5, 8, 6, 9, 4]
-  }, {
-    name: 'Reborn Kid',
-    data: [25, 12, 19, 32, 25, 24, 10]
-  }],
-    chart: {
-    type: 'bar',
-    height: 350,
-    stacked: true,
-    stackType: '100%'
-  },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-    },
-  },
-  stroke: {
-    width: 1,
-    colors: ['#fff']
-  },
-  title: {
-    text: '100% Stacked Bar'
-  },
-  xaxis: {
-    categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
-  },
-  tooltip: {
-    y: {
-      formatter: function (val) {
-        return val + "K"
-      }
-    }
-  },
-  fill: {
-    opacity: 1
-  
-  },
-  legend: {
-    position: 'top',
-    horizontalAlign: 'left',
-    offsetX: 40
+
+
+  const userReqObj={
+    Project_Code:this.projectInfo.Project_Code,
+    Project_Code1:this.projectInfo.Project_Code,
+    Category:this.projectInfo.Category,
+    Duration: this.projectInfo.Duration,
+    DurationTime: "0",
+    Project_Owner:this.projectInfo.Owner,
+    Team_Res: this.projectInfo.Responsible,
+    Delaydays:this.projectInfo.Delaydays,
+    DeadLine:this.projectInfo.EndDate,
+    Project_Description:this.projectInfo.Project_Description,
+    Responsible:this.projectInfo.Responsible,
+    Exec_BlockName:this.projectInfo.Project_Type,
+    Project_Block:this.projectInfo.Project_Block,
+    RejectType: " ",
+    Project_Name:this.projectInfo.Project_Name,
+
+
+
+
+    Req_Coments:Remarks,
+    Remarks:Remarks,
+    SubmittedTo: this.projectInfo.Owner,
+    SubmittedBy:Submitted_By,
+    Emp_No: '',
+    Req_Type: Request_type,
+    Type: Request_type,
+    Rec_Date:Request_date,
+
   }
-  };
-
-  var chart = new ApexCharts(document.querySelector("#Actions-chart"), options);
-  chart.render();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  this.approvalservice.NewUpdateAcceptApprovalsService([userReqObj]).subscribe(res=>{
+         console.log("+>",res);
+  });
 }
 
 
-// actions Graph end
+// People Approve request end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  Full Graph code start
+
+graphOption:string='PROJECT';
+graphOptionChanged:boolean=false;
+getActivitiesOfDates(emp,...dates){
+// input date format must be: 'yyyy-MM-dd'
+ const result=dates.map((date)=>({date:this.datepipe.transform(date,'dd-MM-yyyy'),total:0}));
+ this.Activity_List.forEach((actv)=>{
+          const index=dates.indexOf(actv.ModifiedDate);
+          if(index!==-1){
+            if(emp==='PROJECT')
+            result[index].total+=1;
+            else if(emp===actv.Modifiedby)
+            result[index].total+=1;
+          }
+    });
+  return result;
+}
+
+showFullGraph(){
+  let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
+  alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
+
+  const actvies=this.getActivitiesOfDates(this.graphOption,...alldates);       //[{date:'2023-08-11',total:4},{date:'2024-02-02',total:8} ...]
+  console.log("all graph line points :",actvies);
+
+
+
+  const dataSource = {
+    chart: {
+      caption: "Activities Over Time",
+      compactdatamode: "1",
+      dataseparator: "|",
+      pyaxisname: "Activities",
+      snumberprefix: "",
+      setadaptiveymin: "0",
+      formatnumberscale: "0",
+      sformatnumberscale: "1",
+      linethickness: "4",
+      showsecondarylimits: "0",
+      bgcolor: "#ffffff",  // white background color
+      basefontcolor: "#333", // Base font color
+      canvasbgalpha: "0", // Make the canvas background fully transparent
+      showplotborder: "1", // Show plot border
+      plotbordercolor: "#ddd", // Plot border color
+      showalternatehgridcolor: "0", // Disable alternate horizontal grid color
+      showplotshadow: "0", // Disable plot shadow
+      showvalues: "0", // Hide data values on the plot
+      theme: "fusion", // Use Fusion theme for modern styling
+      scrollheight: "4",
+      scrollColor: "#f9f9f9",
+
+    },
+    categories: [
+      {
+        category: alldates.join('|')     // '2022-01-20'|'2021-05-01'|'2024-08-11'....
+      }
+    ],
+    dataset: [
+      {
+        seriesname: this.graphOption,
+        data: actvies.map(n => n.total).join('|'),  // 2|5|8|2|3|4|5|5|5|8 ....
+        color: "#6388e3" // Set line color
+      }
+
+    ]
+  };
+
+  FusionCharts.ready(function() {
+    var myChart = new FusionCharts({
+      type: "zoomlinedy",
+      renderAt: "full-graph",
+      width: "100%",
+      height: "100%",
+      dataFormat: "json",
+      dataSource
+    }).render();
+  });
+
+}
+
+onGraphOptionChanged(option:string){
+    this.graphOption=option;
+    this.showFullGraph();
+    this.graphOptionChanged=true;
+}
+
+
+
+
+//  Full Graph code end
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

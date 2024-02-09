@@ -17,7 +17,7 @@ import * as moment from 'moment';
 import { event } from 'jquery';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
-import { DetailsComponent } from '../details/details/details.component';
+import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 //import { empty } from '@angular-devkit/schematics';
@@ -35,7 +35,7 @@ export class ActionToProjectComponent implements OnInit {
   _Description: string = null;
   _StartDate: Date = null;
   _EndDate: Date = null;
-  _remarks: string;
+  _remarks: string='';
   _allocated: number;
   _inputAttachments: any = [];
   _inputAttachments2: any;
@@ -552,8 +552,11 @@ export class ActionToProjectComponent implements OnInit {
           this.closeInfo();
         }
         else if(this._Urlid == 5){
-      //    this.createproject.getProjectCreationDetails();
-          this.createproject.getActionsDetails();
+
+
+           this.createproject.getActionsDetails();
+           this.createproject.newProjectDetails(this._MasterCode);
+
           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection 
           this.closeInfo();
         }
@@ -633,6 +636,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
+    debugger
     // alert(this._Urlid);
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);

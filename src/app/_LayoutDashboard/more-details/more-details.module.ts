@@ -20,7 +20,7 @@ import { TruncatePipe } from '../project-info/truncate.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
-import { DetailsComponent } from '../details/details/details.component';
+import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 
 

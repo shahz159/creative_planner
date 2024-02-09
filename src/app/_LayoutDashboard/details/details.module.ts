@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 
 import { DetailsRoutingModule } from './details-routing.module';
-import { DetailsComponent} from './details/details.component';
+import { DetailsComponent} from './details.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';
@@ -26,6 +26,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CreateProjectComponent } from '../create-project/create-project.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 
 
 
@@ -54,6 +56,8 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
     ReactiveFormsModule,
     AsyncPipe,
     MatCheckboxModule,
+    ScrollingModule
+   
     ],
   providers: [ 
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent, CreateProjectComponent

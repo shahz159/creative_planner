@@ -14,7 +14,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
-import { DetailsComponent } from '../details/details/details.component';
+import { DetailsComponent } from '../details/details.component';
 import { ProjectUnplannedTaskComponent } from '../project-unplanned-task/project-unplanned-task.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import { MoreDetailsComponent } from '../more-details/more-details.component';

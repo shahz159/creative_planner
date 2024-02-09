@@ -984,6 +984,26 @@ label.checkbox.kt-fnt-vd {
 }
 
 
+    .card-Scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .card-Scroll::-webkit-scrollbar-thumb {
+      background-color: #8cabfa;
+      border-radius: 50px;
+    }
+
+    .card-Scroll::-webkit-scrollbar-track {
+      /* background-color: #e9ebee; */
+      background-color: #ffffff;
+      border-radius: 50px;
+    }
+    .kt-info-box{
+        padding: 10px 10px;
+        border-bottom: 1px solid #ededed;
+        padding-right: 0px;
+        border: 1px solid #ededed;
+    }
 .card-Scroll::-webkit-scrollbar {
   width: 5px;
 }
@@ -1827,7 +1847,7 @@ textarea {
 }
 
 .Ic_ed input {
-  height: 36px;
+  /* height: 36px; */
   margin-top: 5px;
 }
 
@@ -2071,6 +2091,23 @@ a.nav-link.active span {
   height: calc(100vh - 260px);
 }
 
+
+
+.prj-status {
+  color:#000;
+  font-weight: 600;
+  padding: 0.1em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  line-height: 20px;
+  border-radius: 2px;
+  font-size: 13px;
+  min-height: 24px;
+}
+.not-started-project {
+  background-color: #888888 !important;
+  color:#fff !important;
+}
 .np-step-2 {
   padding: 20px;
   padding-bottom: 15px;
@@ -2225,11 +2262,11 @@ tr.odd.project-list_AC.active{
 }
 
 .Delay_color{
-  color: #EE4137 !important;  
+  color: #EE4137 !important;
 }
 
 .ToDo_Completed_color{
-  color:#000 !important;  
+  color:#000 !important;
 }
 .Forward_Under_Approval_color{
   color: #B2D732 !important;
@@ -2252,7 +2289,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Completion_Under_Approval_color{
-  color: #B2D732 !important;  
+  color: #B2D732 !important;
 }
 
 .Hold_color{
@@ -2260,7 +2297,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Completed_color{
-  color: #62B134 !important;  
+  color: #62B134 !important;
 }
 
 .Under_Approval_color{
@@ -2294,4 +2331,10 @@ tr.odd.project-list_AC.active{
 }
 .kt-p-box.border-l-0 {
   border-left: 0px !important;
+}
+.step-third .symbol-group {
+  margin-left: 0px;
+}
+.kt-info-box-tit {
+  color: #6388e3 !important;
 }
