@@ -9,97 +9,165 @@
             </div>
         </div>
         <div class="col-lg-12">
-            <div class="row runway-actions mt-3">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-primary r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Total Categories</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{catcount}}</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-th-list fa-2x text-gray-300"></i>
-                                </div>
+            <div class="ticks-grad mb-3 mt-3">
+                
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-th-list"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Total Categories</h5>
+                                <h4 class="mb-0">{{catcount}}</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-primary r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Total Tasks</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{procount}}</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-tasks fa-2x text-gray-300"></i>
-                                </div>
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-tasks"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Total Tasks</h5>
+                                <h4 class="mb-0">{{procount}}</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-suc r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-suc text-uppercase mb-1">
-                                        Accepted</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <span *ngIf="acceptCount">{{acceptCount}}</span>
-                                        <span *ngIf="!acceptCount">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-check fa-2x text-gray-300"></i>
-                                </div>
+
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Accepted</h5>
+                                <h4 class="mb-0"  *ngIf="acceptCount">{{acceptCount}}</h4>
+                                <h4 class="mb-0"  *ngIf="!acceptCount">0</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-pen r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-pen text-uppercase mb-1">
-                                        Pending</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <span *ngIf="pendingCount">{{pendingCount}}</span>
-                                        <span *ngIf="!pendingCount">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
-                                </div>
+
+
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-hourglass-start"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Pending</h5>
+                                <h4 class="mb-0"  *ngIf="pendingCount">{{pendingCount}}</h4>
+                                <h4 class="mb-0" *ngIf="!pendingCount">0</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-rej r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-rej text-uppercase mb-1">
-                                        Rejected</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <span *ngIf="rejectCount">{{rejectCount}}</span>
-                                        <span *ngIf="!rejectCount">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-times fa-2x text-gray-300"></i>
-                                </div>
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Rejected</h5>
+                                <h4 class="mb-0" *ngIf="rejectCount">{{rejectCount}}</h4>
+                                <h4 class="mb-0" *ngIf="!rejectCount">15</h4>
                             </div>
                         </div>
                     </div>
-                </div>
+
             </div>
+            <!-- <div class="runway-actions mt-3">
+                <div class="card border-left-primary r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Categories</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{catcount}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-th-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-primary r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Tasks</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{procount}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-suc r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-suc text-uppercase mb-1">
+                                    Accepted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span *ngIf="acceptCount">{{acceptCount}}</span>
+                                    <span *ngIf="!acceptCount">0</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-check fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-pen r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-pen text-uppercase mb-1">
+                                    Pending</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span *ngIf="pendingCount">{{pendingCount}}</span>
+                                    <span *ngIf="!pendingCount">0</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-rej r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-rej text-uppercase mb-1">
+                                    Rejected</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span *ngIf="rejectCount">{{rejectCount}}</span>
+                                    <span *ngIf="!rejectCount">0</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-times fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
             <div class="kt-portlet kt-portlet--bordered-semi mt-1 mb-2 d-none">
                 <div class="kt-portlet__head">
 
@@ -216,7 +284,7 @@
     <div class="row">
         <!-- Block 1 -->
         <div class="col-lg-3">
-            <div class="card r-shadow px-2 pt-2">
+            <div class="card r-shadow px-2 pt-2 h-100">
                 <div class=" p-2 sidebar scrollbar">
                     <ul class="side-bar-box">
                         <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
@@ -305,7 +373,7 @@
         </div>
         <!-- Block 2  -->
         <div class="col-lg-9">
-            <div class="card r-shadow p-2" [hidden]="ShowTaskList_Div">
+            <div class="card r-shadow p-2 h-100" [hidden]="ShowTaskList_Div">
 
             <!-- Messages If Not Found -->
             <h4 style="color:lightgray">{{IfNoTaskFound}}</h4>
@@ -314,7 +382,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h3>{{_CategoryName}}</h3>
-                        <div class="count-list p-3 bg-white rounded-xl my-2">
+                        <div class="count-list p-1 bg-white rounded-xl my-2">
                             <div class="kt-portlet__head-toolbar">
                               <label class="badge total-project kt-badge--inline mr-2 py-8px btn-sm">  <span class="count">{{ActionedSubtask_Json.length + ActionedAssigned_Josn.length + _CompletedList.length + _TodoList.length}}</span> Total Projects</label>
                               <label class="badge task  mr-2 py-8px btn-sm">  <span class="count">{{_TodoList.length}}</span> Task</label>

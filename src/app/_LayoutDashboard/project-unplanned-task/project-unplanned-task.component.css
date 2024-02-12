@@ -1971,8 +1971,92 @@ span.count {
     box-shadow: 0 2px 16px #cccccc80;
 }
 .scrollbar {
-    height: calc(100vh - 360px);
+    height: calc(100vh - 230px);
 }
 .scrollbar1 {
-    height: calc(100vh - 460px);
+    height: calc(100vh - 312px);
 }
+.runway-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+span.count {
+    background: #9886eb;
+    padding: 0 4px;
+    color: #fff;
+    cursor: auto;
+    border-radius: 3px;
+  }
+  
+  .ticks-grad {
+    background-image: linear-gradient(to left, #f9a8d4, #d8b4fe, #818cf8);
+    background-image: linear-gradient(to left, #94a0fb, #6dacf9, #2786fb);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    min-height: 90px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  @media screen and (min-width: 1500px){
+    .ticks-grad {
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      }
+  }
+  .example_icon {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 55px;
+    height: 55px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-right: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  
+  span.example_icon svg {
+    width: 25px;
+    height: 25px;
+  }
+  
+  span.example_icon i {
+    font-size: 22px;
+  }
+  span.count1 {
+    background: #fff;
+    border: 1px solid #9886eb;
+    padding: 0;
+    color: #9886eb;
+    cursor: auto;
+    border-radius: 500px;
+    width: 20px;
+    height: 20px;
+  }
+  span.count2 {
+    margin-left: 2px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #deecf8;
+    color: #2786fb !important;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }

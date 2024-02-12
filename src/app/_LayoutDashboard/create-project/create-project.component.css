@@ -2338,3 +2338,90 @@ tr.odd.project-list_AC.active{
 .kt-info-box-tit {
   color: #6388e3 !important;
 }
+::ng-deep .date-border ::ng-deep .form-control {
+  border-radius: 4px 0px 0px 4px;
+}
+::ng-deep .date-border ::ng-deep .input-group-text{
+  border-radius: 0px 4px 4px 0px;
+  margin-left: -1px;
+}
+::ng-deep .date-border ::ng-deep .mat-icon-button {
+  width: 40px;
+  height: 36px;
+  line-height: 36px;
+}
+/* #mysideInfobar12 ::ng-deep .form-control {
+  border-radius: 4px 0px 0px 4px;
+}
+#mysideInfobar12 ::ng-deep .input-group-text{
+  border-radius: 0px 4px 4px 0px;
+  margin-left: -1px;
+}
+#mysideInfobar12 ::ng-deep .mat-icon-button {
+  width: 40px;
+  height: 36px;
+  line-height: 36px;
+} */
+.Kt-info-box-main.active {
+  position: relative;
+  border: 2px solid #527ce2;
+  border-radius: 4px;
+  padding-left: 10px;
+}
+.Kt-info-box-main.active:after, .Kt-info-box-main.active:before {
+  border: solid transparent;
+  content: " ";
+  display: block;
+  height: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 0;
+  left: 100%;
+}
+.Kt-info-box-main.active:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: #ffffff;
+  top: 50%;
+  margin-top: -10px;
+  border-width: 10px;
+}
+.Kt-info-box-main.active:before {
+  border-color: rgb(255 255 255 / 0%);
+  border-left-color: #527ce2;
+  top: 50%;
+  margin-top: -13px;
+  border-width: 13px;
+}
+.Active .kt-p-box {
+  border: 0px solid #3e97ff;
+}
+.kt-projcect-act-list.Active {
+  position: relative;
+  border: 2px solid #527ce2;
+  border-radius: 4px;
+  padding-left: 10px;
+ }
+ .kt-projcect-act-list.Active:after, .kt-projcect-act-list.Active:before {
+  border: solid transparent;
+  content: " ";
+  display: block;
+  height: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 0;
+  left: 100%;
+}
+.kt-projcect-act-list.Active:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: #ffffff;
+  top: 50%;
+  margin-top: -10px;
+  border-width: 10px;
+}
+.kt-projcect-act-list.Active:before {
+  border-color: rgb(255 255 255 / 0%);
+  border-left-color: #527ce2;
+  top: 50%;
+  margin-top: -13px;
+  border-width: 13px;
+}

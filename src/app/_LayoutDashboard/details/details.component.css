@@ -764,7 +764,7 @@ span.kt-dt-l {
 
 .Kt-Pd-Status {
   background-color: #EE4137;
-  color:#000;
+  color:#ffffff;
   font-weight: 600;
   padding: 0.1em;
   padding-left: 0.6em;
@@ -872,7 +872,7 @@ span.kt-dt-l {
 
 .Delay{
   background-color: #EE4137 !important;
-  color:#000 !important;
+  color:#fff !important;
   }
 
 .bg-delay {
@@ -881,7 +881,7 @@ span.kt-dt-l {
 
 .bg-done {
   background-color: #62B134;
-  color:#000;
+  color:#fff;
 }
 
 .bg-rejected {
@@ -918,7 +918,7 @@ button.Kt-Approval-btns {
   border-radius: 50px;
   background-color: #fff;
   color: #4f4f4f;
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   min-width: 110px;
   margin: 0px 0px;
   font-size: 13px;
@@ -1051,6 +1051,7 @@ span.Status-Delay {
 .kt-projcect-act-list {
   margin: 0px 10px;
   margin-bottom: 10px;
+  padding-left: 10px;
 }
 
 .kt-projcect-act-list:last-child {
@@ -1892,7 +1893,7 @@ a.kt-inbox__icon:hover svg path {
   background-color: transparent;
   color: #2786fb;
   font-size: 14px;
-  border: 2px solid #2786fb;
+  border: 1px solid #2786fb;
   opacity: 1;
   font-size: 13px;
   letter-spacing: 0;
@@ -1903,7 +1904,7 @@ a.kt-inbox__icon:hover svg path {
 
 .Bt-Close{
   background-color: transparent !important;
-  border: 2px solid #e7e7e7;
+  border: 1px solid #e7e7e7;
   padding: 4px 1px;
 }
 .Bt-Close:hover {
@@ -4156,7 +4157,6 @@ span.Kt-m-count {
 }
 .kt-project-action-list-view {
   padding: 10px 0px;
-  padding-right: 10px;
 }
 .text-turquoise{
   color:#17b4b7!important;
@@ -4205,6 +4205,9 @@ span.Kt-m-count {
 ::ng-deep .modal-backdrop.show {
   z-index: 1;
 }
+.graphmodal .modal-header{
+  border-bottom: 0px;
+}
 .graphmodal .header-act{
   display: flex;
   justify-content: center;
@@ -4212,20 +4215,21 @@ span.Kt-m-count {
   gap: 7px;
 }
 .graphmodal .kt-flter{
-  box-shadow: 0 0 1px #a39b9b;
+  box-shadow: 0px 1px 5px #dfdddd;
   border-radius: 3px;
   padding: 4.5px;
   background-color: #f9f7f7;
+  cursor: pointer;
 }
 .graphmodal .kt-flter:hover{
   background-color: #ebebeb;
 }
 .graphmodal .kt-graph-close{
-  box-shadow: 0 0 1px #a39b9b;
+  box-shadow: 0px 1px 5px #dfdddd;
   border-radius: 3px;
   padding: 4px;
   background-color: #f9f7f7;
-
+  cursor: pointer;
 }
 
 .graphmodal .kt-graph-close:hover{
@@ -4257,7 +4261,7 @@ span.Kt-m-count {
   overflow-y: hidden;
 }
 
-/*recent activity graph css start*/
+/*recent activity graph css end*/
 p.kt-dt-l {
   margin-bottom: 0px;
   padding-top: 2px;
@@ -4426,4 +4430,38 @@ p.kt-dt-l {
   top: 50%;
   margin-top: -13px;
   border-width: 13px;
+}
+.diff-div {
+  margin: 0px 0px;
+  padding: 14px!important;
+  background: #f2f5ff;
+  border-radius: 4px;
+}
+.diff-div .kt-info-lable-v {
+  color: #000000;
+}
+.diff-div .kt-info-data-v {
+  background-color: #e4e7f9;
+}
+.diff-div .attachment-view {
+  background-color: #e4e7f9;
+  border-radius: 35px;
+  color: #4f4f75;
+}
+.diff-div .kt-approval-msg {
+  background-color: #ffffff;
+}
+.Btn_Accpet{
+  background-color: #bcddc1!important;
+  color: #37613d!important;
+  border: 1px solid #bcddc1!important;
+}
+.Btn_Reject{
+  background-color: #ffd2d2!important;
+  color: #cc0b0b!important;
+  border: 1px solid #ffd2d2!important;
+}
+.Btn_Reject:hover, .Btn_Reject.active {
+  background-color: #ff3b3b !important;
+  color: #fff !important;
 }
