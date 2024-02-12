@@ -1,22 +1,22 @@
-/* #loading{ 
-  position: absolute; 
-  left: 50%; 
-  top: 50%; 
-  z-index: 1; 
-  width: 150px; 
-  height: 150px; 
-  margin: -75px 0 0 -75px; 
-  border: 16px solid #f3f3f3; 
-  border-radius: 50%; 
-  border-top: 16px solid #3498db; 
-  width: 120px; 
-  height: 120px; 
-  animation: spin 2s linear infinite; 
-  } 
-    
-  @keyframes spin { 
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
+/* #loading{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   } */
 
   .list-icon-color{
@@ -91,7 +91,7 @@
   .modal .modal-content {
     border-radius: 2px;
 }
-/* 
+/*
   table, th, td {
     padding: 5px;
   }
@@ -133,7 +133,7 @@
 }
 #backBtn:hover{
  background-color:#5867dd ;
- color: white; 
+ color: white;
 }
 #Mdl_closebtn:hover{
   background-color: #dc3545;
@@ -249,31 +249,31 @@
     /* border-radius: 4px; */
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.warning {
-    border-left: 5px solid #ffb822; 
+    border-left: 5px solid #ffb822;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.info {
-    border-left: 5px solid #2786fb; 
+    border-left: 5px solid #2786fb;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.danger {
-    border-left: 5px solid #F58A8B; 
+    border-left: 5px solid #F58A8B;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.UnderApprovals {
-  border-left: 5px solid #BD838C; 
+  border-left: 5px solid #BD838C;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.ForwardUnderApproval {
-  border-left: 5px solid #E0B1D7; 
+  border-left: 5px solid #E0B1D7;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.completeUnderApproval {
-  border-left: 5px solid #98c7bf; 
+  border-left: 5px solid #98c7bf;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.projectHold {
-  border-left: 5px solid #C0B5DC; 
+  border-left: 5px solid #C0B5DC;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.HoldunderApp {
-  border-left: 5px solid #a85098; 
+  border-left: 5px solid #a85098;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.DeadlineExtended{
-  border-left: 5px solid #E0B1D7; 
+  border-left: 5px solid #E0B1D7;
 }
 .delayDays{
   font-size: 11px;
@@ -608,7 +608,7 @@ virtual-scroller {
   /* width: 350px; */
   height: 200px;
 }
- 
+
 .vsdiv {
   display: block;
   width: 100%;
@@ -786,7 +786,7 @@ virtual-scroller {
   position: absolute;
   top: 3px;
   background-color: #fff;
- 
+
 }
 .show_entries select{
   /* width: 100px; */
@@ -1345,12 +1345,12 @@ span.count2 {
   font-weight: 600;
 }
 .scrollbar1 {
-  max-height: calc(100vh - 178px); 
+  max-height: calc(100vh - 178px);
   overflow: hidden;
   overflow-y: auto;
 }
 .scrollbar1 {
-  max-height: calc(100vh - 138px); 
+  max-height: calc(100vh - 138px);
   overflow-y: auto;
 }
 .scrollbar1::-webkit-scrollbar {
@@ -1597,8 +1597,8 @@ span.count2 {
 }
 
 .nav-pills .nav-item .nav-link:active, .nav-pills .nav-item .nav-link.active, .nav-pills .nav-item .nav-link.active:hover {
-  background-color:unset; 
-  color: unset; 
+  background-color:unset;
+  color: unset;
 }
 
 
@@ -2143,7 +2143,7 @@ label.checkbox.kt-fnt-vd {
       width: 60vw;
   }
     }
-    
+
 .l-radio {
   padding: 6px;
   border-radius: 50px;
@@ -2239,7 +2239,7 @@ label.checkbox.kt-fnt-vd {
   margin: 0px 10px;
   margin-left: 1rem;
   font-weight: 600;
-  padding: 6px 13px; 
+  padding: 6px 13px;
      max-width: 140px;
   min-width: 130px;
 }
@@ -2508,18 +2508,18 @@ tr.odd.project-list_AC.active{
 }
 
 .Delay_color{
-  color: #EE4137 !important;  
+  color: #EE4137 !important;
 }
 
 .ToDo_Completed_color{
-  color:#000 !important;  
+  color:#62B134 !important;
 }
 .Forward_Under_Approval_color{
   color: #B2D732 !important;
 }
 
 .ToDo_Achieved_color{
-  color: #000 !important;
+  color:#335B1B !important;
 }
 .Not_Started{
   color: #888888 !important;
@@ -2535,7 +2535,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Completion_Under_Approval_color{
-  color: #B2D732 !important;  
+  color: #B2D732 !important;
 }
 
 .Hold_color{
@@ -2543,7 +2543,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Completed_color{
-  color: #62B134 !important;  
+  color: #62B134 !important;
 }
 
 .Under_Approval_color{

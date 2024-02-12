@@ -441,7 +441,7 @@
                                                         </div>
                                                         <!-- Other Status #ed6b75 -->
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="text-warning font-weight-400">In-Process</span>
+                                                            <span class="in-process font-weight-400">In-Process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="text-primary font-weight-400">ToDo
@@ -455,6 +455,12 @@
                                                             <span class="New_Project_Rejected_color font-weight-400">New
                                                                 Project
                                                                 Rejected</span>
+                                                        </div>
+
+                                                        <div *ngIf="item.Status=='Not Started'">
+                                                          <span class="not-started">
+                                                               Not Started
+                                                          </span>
                                                         </div>
 
                                                         <div *ngIf="item.Status=='Project Hold'">

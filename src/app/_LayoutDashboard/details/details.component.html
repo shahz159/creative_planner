@@ -663,13 +663,15 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
                                                         <div *ngIf="projectInfo" class="Kt-Pd-Status" style="width:fit-content" [ngClass]="{
-                                                                    'UnderApproval':projectInfo.Status==='Under Approval' || projectInfo.Status==='Not Started',
+                                                                    'new-project-under':projectInfo.Status==='Under Approval' || projectInfo.Status==='Not Started',
                                                                     'Delay':projectInfo.Status==='Delay',
                                                                     'Inprocess':projectInfo.Status==='InProcess',
                                                                     'Done':projectInfo.Status==='Completed',
                                                                     'NewProjectRejected':projectInfo.Status==='New Project Rejected',
                                                                     'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
                                                                     'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                                                    'todo-achieved':projectInfo.Status==='ToDo Achieved',
+                                                                    'todo-completed':projectInfo.Status==='ToDo Completed',
                                                                     'Delay':projectInfo.Status==='Cancellation Under Approval',
                                                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                                                                     'Cancelled':projectInfo.Status==='Cancelled',
@@ -2089,8 +2091,8 @@
                                                 </div>
 
 
-                                                <div class="kt-project-type" *ngSwitchCase="'Under Approval'">
-                                                    <div class="Kt-Pd-Status UnderApproval"> New Project Under Approval </div>
+                                                <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
+                                                    <div class="Kt-Pd-Status new-project-under"> New Project Under Approval </div>
                                                 </div>
 
                                                 <div class="kt-project-type"
@@ -2131,12 +2133,34 @@
                                                 </div>
 
 
-                                                <div class="kt-project-type" *ngSwitchDefault>
-                                                    <div class="Kt-Pd-Status UnderApproval"> {{projectInfo&&projectInfo.Status=='Under Approval'?'New Project Under Approval':projectInfo&&projectInfo.Status}}
-                                                    </div>
-                                                </div>
 
+                                                <div class="kt-project-type "
+                                                *ngSwitchCase="'ToDo Achieved'">
+                                                <div class="Kt-Pd-Status todo-achieved"> ToDo Achieved
+                                                </div>
                                             </div>
+
+                                            <div class="kt-project-type "
+                                            *ngSwitchCase="'ToDo Completed'">
+                                            <div class="Kt-Pd-Status todo-completed"> ToDo Completed
+                                            </div>
+                                        </div>
+
+
+                                        <div class="kt-project-type "
+                                        *ngSwitchCase="'Not Started'">
+                                        <div class="Kt-Pd-Status not-started"> Not Started
+                                        </div>
+                                    </div>
+
+
+                                                <!-- <div class="kt-project-type">
+                                                  <div class="Kt-Pd-Status" >
+                                                    {{ projectInfo&&projectInfo.Status ==='Under Approval'?'New Project Under Approval':projectInfo.Status}}
+                                                  </div>
+                                                </div> -->
+
+                                                </div>
 
                                         </div>
                                         <div class="kt-project-desc w-80">
@@ -3278,7 +3302,7 @@
                                                     </div>
 
                                                     <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status   UnderApproval">New Action Under Approval</div>
+                                                        <div class="Kt-Pd-Status  new-project-under">New Action Under Approval</div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Completion Under Approval'"
@@ -3304,7 +3328,7 @@
                                                     </div>
 
                                                     <div *ngSwitchDefault class="kt-project-type">
-                                                        <div class="Kt-Pd-Status bg-inprogress ">
+                                                        <div class="Kt-Pd-Status new-project-under ">
                                                             {{projectActionInfo[currentActionView].Status =='Under Approval'?'New Project Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
                                                 </div>
@@ -3332,7 +3356,7 @@
                                                     </div>
 
                                                     <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status   UnderApproval">New Action Under Approval</div>
+                                                        <div class="Kt-Pd-Status  new-project-under">New Action Under Approval</div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Completion Under Approval'"
@@ -3362,7 +3386,7 @@
 
 
                                                     <div *ngSwitchDefault class="kt-project-type">
-                                                        <div class="Kt-Pd-Status bg-inprogress ">
+                                                        <div class="Kt-Pd-Status new-project-under ">
                                                             {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
 
@@ -3393,7 +3417,7 @@
                                                         <div class="kt-project-type">
                                                             <div *ngIf="projectActionInfo[currentActionView]"
                                                                 class="Kt-Pd-Status" [ngClass]="{
-                                                                    'UnderApproval': projectActionInfo[currentActionView].Status==='Under Approval' || projectActionInfo[currentActionView].Status==='Not Started',
+                                                                    'new-project-under': projectActionInfo[currentActionView].Status==='Under Approval' || projectActionInfo[currentActionView].Status==='Not Started',
                                                                     'Delay':projectActionInfo[currentActionView].Status==='Delay',
                                                                     'Inprocess':projectActionInfo[currentActionView].Status==='InProcess',
                                                                     'Done':projectActionInfo[currentActionView].Status==='Completed',
@@ -4334,7 +4358,7 @@
                 <mat-chip-list #selectedportfolioslist>
                     <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
                         (removed)="Portfolio_Deselect(prt)">
-                        {{prt.Portfolio_Name}}
+                        {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
                         <button matChipRemove>
                             <mat-icon>cancel</mat-icon>
                         </button>
@@ -4354,7 +4378,7 @@
                     <mat-option *ngFor=" let prt of _portfoliosList" [value]="prt.Portfolio_ID"
                         (click)="Portfolio_Select(ngDropdwonPort)">
                         <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
-                        {{prt.Portfolio_Name}}
+                        {{prt.Portfolio_Name}}  - {{prt.TM_DisplayName}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -5860,25 +5884,55 @@
                                         </span>
 
                                     </div>
-                                    <!-- <div class="project-users">
+
+
+
+
+
+                                    <ng-container *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
+                                      <div class="project-users" *ngFor="let Data of PeopleOnProject | filter :SearchItem ;let i=index">
                                         <div class="user-list">
-                                                <div class="user-info">
-                                                    <div class="user-icon">
-                                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
-                                                    </div>
-                                                    <div class="w-100">
-                                                        <div class="user-details">
-                                                            <h6>Mohammed Mateen</h6>
-                                                            <p>Dot Net Developer/Devbox Software Pvt Ltd</p>
-                                                        </div>
-                                                        <div class="user-type">
-                                                            <span>Owner</span>
-                                                            <span>Support</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        </div> -->
-                                        <!-- <div class="user-list">
+                                          <div class="user-info">
+                                            <div class="user-icon">
+                                              <span class="user-initial bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
+                                            </div>
+                                            <div class="w-100">
+                                              <div class="user-details">
+                                                <h6>
+                                                  {{Data.Emp_Name}}
+                                                </h6>
+
+                                              </div>
+                                              <div class="user-type">
+
+                                                <span *ngFor="let role of Data.Role.split(', ')">
+                                                  <span >{{ role }}</span>
+                                                </span>
+
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     <!-- <div class="project-users">
+
+                                         <div class="user-list">
                                             <div class="user-info">
                                                 <div class="user-icon">
                                                     <span class="user-initial bg-primary text-inverse-warning fw-bold">M</span>
@@ -5897,7 +5951,7 @@
                                             </div>
                                     </div>
                                     </div> -->
-                                    <ng-container
+                                    <!-- <ng-container
                                         *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
                                         <div class="user-list-card"
                                             *ngFor="let Data of PeopleOnProject | filter :SearchItem ;let i=index">
@@ -5905,7 +5959,7 @@
                                                 <div class="user-icon-round">
                                                     <span
                                                         class="user-Ltr bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
-                                                    <!-- <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg"> -->
+
                                                 </div>
                                             </div>
 
@@ -5918,9 +5972,9 @@
                                                 </p>
                                             </div>
 
-                                            <!--    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg> -->
+
                                         </div>
-                                    </ng-container>
+                                    </ng-container> -->
                                 </ng-container>
 
                                 <ng-template #searchPeople>

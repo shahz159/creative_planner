@@ -764,7 +764,7 @@ span.kt-dt-l {
 
 .Kt-Pd-Status {
   background-color: #EE4137;
-  color:#000;
+  color:white;
   font-weight: 600;
   padding: 0.1em;
   padding-left: 0.6em;
@@ -872,7 +872,7 @@ span.kt-dt-l {
 
 .Delay{
   background-color: #EE4137 !important;
-  color:#000 !important;
+  color:white !important
   }
 
 .bg-delay {
@@ -1444,11 +1444,6 @@ label.my-chosse-flv {
 /*color codes*/
 
 
-.UnderApproval {
-  background-color: #888888 !important;
-  color:#fff;
-}
-
 .Inprocess {
   background-color: #1B272D !important;
   color:#fff;
@@ -1682,7 +1677,7 @@ span.B-Bot {
 }
 .P_Done{
   background-color: #62B134  !important;
- 
+
 }
 .P_Very_Slow{
   background-color: #E1a63d !important;
@@ -3977,7 +3972,7 @@ span.Rq_date_V {
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
 }
-.notification .notif-img{     
+.notification .notif-img{
      align-self: flex-start;
      min-width: 20px;
      max-width: 20px;
@@ -3991,7 +3986,7 @@ span.Rq_date_V {
   font-size: 14px;
   color: black;
 }
-.notification .notif-date{ 
+.notification .notif-date{
  align-self: flex-start;
  font-family: Lucida Sans Unicode;
  font-weight: bold;
@@ -4017,7 +4012,7 @@ span.Rq_date_V {
 
 .notification .ctrl-btns:hover{
     background-color: #ffabab;
-   
+
 }
 
 .notification:hover .ctrl-btns{
@@ -4123,7 +4118,7 @@ span.Kt-m-count {
 }
 .info-card-body .kt-info-project-box, .info-card-body .kt-info-action-box{
   background: #fff;
-  
+
   padding: 10px 10px!important;
   box-shadow: 0 2px 16px #cccccc80;
   border-radius: 4px;
@@ -4194,7 +4189,7 @@ span.Kt-m-count {
 
 /*recent activity graph css start*/
 .View_graph_act {
-  position: absolute; 
+  position: absolute;
   top: -38px;
   right: 100px;
   background-color: #ecefff;
@@ -4276,7 +4271,7 @@ p.kt-dt-l {
   text-decoration: none;
   min-width: 0px;
   text-align: left;
-  padding: 8px 16px; 
+  padding: 8px 16px;
 }
 .project-users .user-list:first-child{
   border-top: none;
@@ -4354,7 +4349,7 @@ p.kt-dt-l {
   margin-left: 0.5rem;
 }
 .kt-project-acion-content{
-  direction: ltr; 
+  direction: ltr;
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -4426,4 +4421,24 @@ p.kt-dt-l {
   top: 50%;
   margin-top: -13px;
   border-width: 13px;
+}
+
+.new-project-under{
+  background-color: #888888 !important;
+  color: white;
+}
+.todo-completed{
+  background-color: #62B134 !important;
+  color:white !important;
+}
+
+.todo-achieved{
+  background-color: #335B1B !important;
+ color: white !important;
+}
+
+
+.not-started{
+  background-color: #888888 !important;
+  color:white !important;
 }
