@@ -264,7 +264,7 @@
                                     </div>
                                     <!-- <div class="d-flex flex-wrap align-items-center py-lg-0 py-2"> -->
                                     <span mat-icon-button [matMenuTriggerFor]="menuCat" [hidden]="hideMenuOfCategory"
-                                        aria-label="Example icon-button with a menu" matTooltip="More">
+                                        aria-label="Example icon-button with a menu" matTooltip="More" *ngIf="item.Category_ID!='2411'">
                                         <mat-icon color="primary">more_vert</mat-icon>
                                     </span>
                                     <mat-menu #menuCat="matMenu" xPosition="after">
