@@ -1188,22 +1188,26 @@ span.count2 {
 }
 
 .new-project {
-  background-color: #B2D732;
-  color:black;
 
+  color:#888888 !important
 }
+.new-project-head{
+background-color:#B2D732 ;
+color:#000;
+}
+
 .black-text{
   color:black !important;;
 }
 
 .todo-completed{
-  background-color: #62B134;
-  color:black
+  color: #62B134 !important;
+
 }
 
 .todo-achieved{
-  background-color: #335B1B;
-  color:black;
+  color: #335B1B !important;
+
 }
 
 .New-project{
@@ -1221,6 +1225,7 @@ span.count2 {
 }
 .Delay_color{
   color: #EE4137 !important;
+
 }
 .Completed_color{
   color: #62B134 !important;
@@ -1232,7 +1237,8 @@ span.count2 {
   color: #FAF065 !important;
 }
 .Hold_color{
-  color:#E2D9BC  !important;
+  background-color: #DFDFDF  !important;
+  color:black
 }
 
 .Under_Approval_color{
@@ -1240,9 +1246,6 @@ span.count2 {
 }
 .New_Todo_color{
   color: #6E9BC4 !important;
-}
-.Completion_Under_Approval_color{
-  color: #B2D732 !important;
 }
 
 .Cancellation_Under_Approval_color{
@@ -1259,6 +1262,7 @@ span.count2 {
 
 .New_Project_Rejected_color{
   color: #DFDFDF !important;
+
 }
 .Deadline_Extend_Under_Approval_color{
   color: #F88282 !important;
@@ -1273,18 +1277,18 @@ span.count2 {
   color:#000 !important;
 }
 
-.Delay{
+.Delay-head{
   background-color: #EE4137 !important;
-  color:#000;
+  color: white;
   }
 
   .complteed_color{
     background-color: #62B134 !important;
     color:#000;
   }
-  .Inprocess_color{
-    background-color: #1B272D !important;
-    color: #fff;
+  .in-process{
+  color: #1B272D !important;
+
   }
 
   .Hold_color{
@@ -1293,4 +1297,13 @@ span.count2 {
   }
   .Hold{
     color:#E2D9BC !important;
+  }
+  .in-processs{
+    background-color: #1B272D;
+    color:white;
+
+  }
+  .completion-under-approval{
+  color: #B2D732;
+
   }

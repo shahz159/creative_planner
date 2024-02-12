@@ -9,97 +9,165 @@
             </div>
         </div>
         <div class="col-lg-12">
-            <div class="row runway-actions mt-3">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-primary r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Total Categories</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{catcount}}</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-th-list fa-2x text-gray-300"></i>
-                                </div>
+            <div class="ticks-grad mb-3 mt-3">
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-th-list"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Total Categories</h5>
+                                <h4 class="mb-0">{{catcount}}</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-primary r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Total Tasks</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{procount}}</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-tasks fa-2x text-gray-300"></i>
-                                </div>
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-tasks"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Total Tasks</h5>
+                                <h4 class="mb-0">{{procount}}</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-suc r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-suc text-uppercase mb-1">
-                                        Accepted</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <span *ngIf="acceptCount">{{acceptCount}}</span>
-                                        <span *ngIf="!acceptCount">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-check fa-2x text-gray-300"></i>
-                                </div>
+
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Accepted</h5>
+                                <h4 class="mb-0"  *ngIf="acceptCount">{{acceptCount}}</h4>
+                                <h4 class="mb-0"  *ngIf="!acceptCount">0</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-pen r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-pen text-uppercase mb-1">
-                                        Pending</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <span *ngIf="pendingCount">{{pendingCount}}</span>
-                                        <span *ngIf="!pendingCount">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
-                                </div>
+
+
+
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-hourglass-start"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Pending</h5>
+                                <h4 class="mb-0"  *ngIf="pendingCount">{{pendingCount}}</h4>
+                                <h4 class="mb-0" *ngIf="!pendingCount">0</h4>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card border-left-rej r-shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-rej text-uppercase mb-1">
-                                        Rejected</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        <span *ngIf="rejectCount">{{rejectCount}}</span>
-                                        <span *ngIf="!rejectCount">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-times fa-2x text-gray-300"></i>
-                                </div>
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="example_icon" style="opacity: 1; transform: none;">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </div>
+                            <div class="">
+                                <h5 class="mb-0">Rejected</h5>
+                                <h4 class="mb-0" *ngIf="rejectCount">{{rejectCount}}</h4>
+                                <h4 class="mb-0" *ngIf="!rejectCount">15</h4>
                             </div>
                         </div>
                     </div>
-                </div>
+
             </div>
+            <!-- <div class="runway-actions mt-3">
+                <div class="card border-left-primary r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Categories</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{catcount}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-th-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-primary r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Tasks</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{procount}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-suc r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-suc text-uppercase mb-1">
+                                    Accepted</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span *ngIf="acceptCount">{{acceptCount}}</span>
+                                    <span *ngIf="!acceptCount">0</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-check fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-pen r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-pen text-uppercase mb-1">
+                                    Pending</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span *ngIf="pendingCount">{{pendingCount}}</span>
+                                    <span *ngIf="!pendingCount">0</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-left-rej r-shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-rej text-uppercase mb-1">
+                                    Rejected</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <span *ngIf="rejectCount">{{rejectCount}}</span>
+                                    <span *ngIf="!rejectCount">0</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-times fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
             <div class="kt-portlet kt-portlet--bordered-semi mt-1 mb-2 d-none">
                 <div class="kt-portlet__head">
 
@@ -118,13 +186,13 @@
                             <span class="count">1</span> Action To Projects </label>
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
                             <span class="count">1</span> Assigned Task </label> -->
-                          <label class="badge accepted bdg-suc kt-badge--inline mr-2 btn-sm py-8px">
+                          <label class="badge accepted  kt-badge--inline mr-2 btn-sm py-8px">
                             <span class="count" *ngIf="acceptCount">{{acceptCount}}</span>
                             <span class="count" *ngIf="!acceptCount">0</span>Accepted </label>
-                          <label class="badge pending bdg-war kt-badge--inline mr-2 btn-sm py-8px">
+                          <label class="badge pending  kt-badge--inline mr-2 btn-sm py-8px">
                             <span class="count" *ngIf="pendingCount">{{pendingCount}}</span>
                             <span class="count" *ngIf="!pendingCount">0</span> Pending </label>
-                          <label class="badge rejected bdg-dan kt-badge--inline mr-2 btn-sm py-8px">
+                          <label class="badge rejected  kt-badge--inline mr-2 btn-sm py-8px">
                             <span class="count" *ngIf="rejectCount">{{rejectCount}}</span>
                             <span class="count" *ngIf="!rejectCount">0</span> Rejected </label>
                         </div>
@@ -216,7 +284,7 @@
     <div class="row">
         <!-- Block 1 -->
         <div class="col-lg-3">
-            <div class="card r-shadow px-2 pt-2">
+            <div class="card r-shadow px-2 pt-2 h-100">
                 <div class=" p-2 sidebar scrollbar">
                     <ul class="side-bar-box">
                         <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
@@ -305,7 +373,7 @@
         </div>
         <!-- Block 2  -->
         <div class="col-lg-9">
-            <div class="card r-shadow p-2" [hidden]="ShowTaskList_Div">
+            <div class="card r-shadow p-2 h-100" [hidden]="ShowTaskList_Div">
 
             <!-- Messages If Not Found -->
             <h4 style="color:lightgray">{{IfNoTaskFound}}</h4>
@@ -314,16 +382,16 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h3>{{_CategoryName}}</h3>
-                        <div class="count-list p-3 bg-white rounded-xl my-2">
+                        <div class="count-list p-1 bg-white rounded-xl my-2">
                             <div class="kt-portlet__head-toolbar">
                               <label class="badge total-project kt-badge--inline mr-2 py-8px btn-sm">  <span class="count">{{ActionedSubtask_Json.length + ActionedAssigned_Josn.length + _CompletedList.length + _TodoList.length}}</span> Total Projects</label>
                               <label class="badge task  mr-2 py-8px btn-sm">  <span class="count">{{_TodoList.length}}</span> Task</label>
-                              <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">  <span class="count">{{_CompletedList.length}}</span> Completed</label>
+                              <label class="badge done kt-badge--inline mr-2 py-8px btn-sm">  <span class="count">{{_CompletedList.length}}</span> Completed</label>
                               <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">  <span class="count">{{ActionedSubtask_Json.length}}</span> Action To Projects</label>
                               <label class="badge assigned-task assigned-task mr-2 py-8px btn-sm">  <span class="count assigned-task  ">{{ActionedAssigned_Josn.length}}</span> Assigned Task</label>
-                              <label class="badge accepted bdg-suc kt-badge--inline mr-2 btn-sm py-8px"> <span class="count">{{CountsAccepted}}</span> Accepted</label>
-                              <label class="badge pending bdg-war kt-badge--inline mr-2 btn-sm py-8px"> <span class="count">{{CountsPending}}</span> Pending</label>
-                              <label class="badge rejected bdg-dan kt-badge--inline mr-2 btn-sm py-8px"> <span class="count">{{CountsRejected}}</span> Rejected</label>
+                              <label class="badge accepted  kt-badge--inline mr-2 btn-sm py-8px"> <span class="count">{{CountsAccepted}}</span> Accepted</label>
+                              <label class="badge pending  kt-badge--inline mr-2 btn-sm py-8px"> <span class="count">{{CountsPending}}</span> Pending</label>
+                              <label class="badge rejected  kt-badge--inline mr-2 btn-sm py-8px"> <span class="count">{{CountsRejected}}</span> Rejected</label>
                             </div>
                           </div>
                         <div class="count-list p-3 grid gap-1 grid-template-columns-7 bg-gray-400 rounded-xl my-2 d-none">
@@ -565,19 +633,29 @@
                                                         <div class="">
                                                             <label  data-toggle="tooltip" title="Project Type!"
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
-                                                            <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label>
+                                                            <i class="fa fa-clone mr-2"></i>{{item.Project_type }} </label>
 
                                                             <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                                    [ngClass]="{'kt-badge--unified-success':item.Status=='Completed',
-                                                                                'kt-badge--unified-warning1':item.Status=='InProcess',
-                                                                                'kt-badge--unified-danger':item.Status=='Project Hold',
-                                                                                'kt-badge--unified-info':item.Status=='Completion Under Approval'}">
-                                                                <div> {{item.Status}}</div>
+                                                                    [ngClass]="{
+                                                                      'kt-badge completed ': item.Status === 'Completed',
+                                                                      'kt-badge in-process': item.Status === 'InProcess',
+                                                                      'kt-badge rejecteds': item.Status === 'Rejected',
+                                                                      'kt-badge project-complete-rejected': item.Status === 'Project Complete Rejected',
+                                                                      'kt-badge new-project-reject': item.Status === 'New Project Rejected',
+
+                                                                      ' kt-badge completion-under-approval': item.Status === 'Completion Under Approval',
+                                                                      'kt-badge deadline-extend-under-approval': item.Status === 'Deadline Extend Under Approval',
+                                                                      'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
+                                                                      'kt-badge cancelled': item.Status === 'Cancelled',
+                                                                      'kt-badge new-project-under':item.Status==='Under Approval'
+                                                                    }"> {{item.Status==='Under Approval'?'New Project Under Approval' : item.Status==='InProcess'?
+                                                                      'In-Process':item.Status}}
+                                                                <!-- <div></div> -->
                                                              </span>
                                                              <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
-                                                                <div> {{item.Status}} {{item.Delaydays}} days</div>
+                                                                <div> {{item.Status }} {{item.Delaydays}} days</div>
                                                              </span>
                                                              <!-- <span  data-toggle="tooltip" title="Action Status!"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline 'kt-badge--unified-danger'">
@@ -650,12 +728,12 @@
                                                                     <i class="fa fa-chart-bar info-icon-cir"></i>
                                                                 </a>
                                                             </div>&nbsp;
-                                                            <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
+                                                            <div class="text-dark-75  font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
                                                                 <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
                                                             </div>
                                                         </div>
                                                         <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
-                                                        <div class="my-2">
+                                                        <div class="my-2  d-flex">
                                                             <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
                                                                 <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> {{item.Creation_Date}}</div>
@@ -682,10 +760,10 @@
                                                             </span>
                                                             <span  data-toggle="tooltip" title="Assigned Status!"
                                                             class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                            [ngClass]="{'kt-badge--unified-danger':item.Status=='Rejected',
-                                                                'kt-badge--unified-success':item.Status=='Accepted',
-                                                                 'kt-badge--unified-warning':item.Status=='Pending'}">
-                                                            <div> {{item.Status}}</div>
+                                                            [ngClass]="{'kt-badge rejecteds':item.Status=='Rejected',
+                                                                'kt-badge accepteds':item.Status=='Accepted',
+                                                                 'kt-badge pendings':item.Status=='Pending'}">
+                                                            <div> {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</div>
                                                              </span>
                                                             <!-- <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline" *ngIf="item.Status =='Pending'">
                                                             Assigned Task/Project
@@ -694,20 +772,28 @@
                                                             <b> {{item.AssignedTo}}</b>
                                                         </span> -->
                                                         </div>
-                                                        <div class="my-1" >
+                                                        <div class="my-1  d-flex" >
                                                             <label data-toggle="tooltip" title="Project Type!" *ngIf="item.Project_type"
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
                                                                 class="fa fa-clone mr-2"></i>
-                                                            {{item.Project_type}}</label>
+                                                            {{item.Project_type==='Under Approval'?'New Project Under Approval':item.Project_type}}</label>
                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
-                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                    class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline"
                                                                     [ngClass]="{
-                                                                        'kt-badge--unified-success':item.Project_status=='Completed',
-                                                                        'kt-badge--unified-warning':item.Project_status=='InProcess',
-                                                                        'kt-badge--unified-danger':item.Project_status=='Rejected' || item.Project_status=='Project Complete Rejected' || item.Project_status=='New Project Rejected' ,
-                                                                        'kt-badge--unified-info':item.Project_status=='Under Approval' || item.Project_status=='Completion Under Approval' || item.Project_status=='Deadline Extend Under Approval',
-                                                                        'kt-badge--unified-cancel':item.Project_status=='Cancellation Under Approval' || item.Project_status=='Cancelled'}">
-                                                                    <div> {{item.Project_status}}</div>
+                                                                      'kt-badge completed ': item.Project_status === 'Completed',
+                                                                      'kt-badge in-process': item.Project_status === 'InProcess',
+                                                                      'kt-badge rejecteds': item.Project_status === 'Rejected',
+                                                                      'kt-badge project-complete-rejected': item.Project_status === 'Project Complete Rejected',
+                                                                      'kt-badge new-project-reject': item.Project_status === 'New Project Rejected',
+
+                                                                      ' kt-badge completion-under-approval': item.Project_status === 'Completion Under Approval',
+                                                                      'kt-badge deadline-extend-under-approval': item.Project_status === 'Deadline Extend Under Approval',
+                                                                      'kt-badge deadline-extend-under-approval': item.Project_status === 'Cancellation Under Approval',
+                                                                      'kt-badge cancelled': item.Project_status === 'Cancelled',
+                                                                      'kt-badge new-project-under':item.Project_status==='Under Approval'
+                                                                    }">
+                                                                    <div> {{item.Project_status==='Under Approval'?'New Project Under Approval' : item.Project_status==='InProcess'?
+                                                                      'In-Process':item.Project_status}}</div>
                                                              </span>
                                                              <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
