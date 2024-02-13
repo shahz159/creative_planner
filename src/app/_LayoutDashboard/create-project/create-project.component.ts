@@ -749,12 +749,13 @@ onProjectOwnerChanged(){
     // this.duration=this.bind_Project[0].Duration;
     this.Prjstartdate = this.bind_Project[0].Start_Date
     this.Prjenddate = this.bind_Project[0].End_Date
-    console.log(this.Prjstartdate,this.Prjenddate,'+++++++++++>')
+    console.log(this.bind_Project,'+++++++++++>')
     this.PrjName=this.bind_Project[0].Task_Name;
     this.CreateName=this.bind_Project[0].Created_Name;
     this.PrjDes=this.bind_Project[0].Task_Description
     this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
+    this.duration=this.bind_Project[0].Duration+1
   }
 
   conditionalList:any
@@ -1382,7 +1383,10 @@ closeAutocompleteDrpDwn(Acomp:string){
 
 
 // portfolio code end
-
+show_massage:boolean=false
+newpfl_massage(){
+  this.show_massage=true
+}
 
 
 

@@ -2849,7 +2849,8 @@
                                                             <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                 {{item.ModifiedDate}}
                                                                 <p
-                                                                    class="kt-dt-l text-gray-400">{{formatTime(item.ModifiedTime)}}</p>
+                                                                    class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
+                                                                </p>
                                                             </div>
                                                             <!--end::Label-->
 
@@ -2868,13 +2869,15 @@
 
                                                                       <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
 
-                                                                <ng-container *ngIf="item.oldValue !==''"> from "{{item.oldValue}}"</ng-container>
+                                                                <ng-container *ngIf="item.oldValue !==''">
+                                                                     from "{{item.oldValue}}"
+                                                               </ng-container>
                                                                 <span *ngIf="item.oldValue !==''; else newActivity">
-                                                                    to "{{item.NewValue | slice:0:limit}}{{ isExpanded ?
-                                                                    (item.NewValue | slice:limit): '' }}"
+                                                                    to "{{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): '' }}"
                                                                     <ng-container *ngIf="item.NewValue.length>60">
                                                                         <a href="javascript:void(0)"
-                                                                            (click)="View_Activity()">more...</a>
+                                                                            (click)="View_Activity()">more...
+                                                                        </a>
                                                                     </ng-container>
                                                                 </span>
                                                                 <ng-template #newActivity>
@@ -3953,7 +3956,7 @@
                                                                 <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                     {{item.ModifiedDate}}
                                                                     <p
-                                                                        class="kt-dt-l text-gray-400">{{formatTime(item.ModifiedTime)}}</p>
+                                                                        class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
                                                                 </div>
                                                                 <!--end::Label-->
 
@@ -3972,10 +3975,11 @@
 
                                                                           <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
 
-                                                                    <ng-container *ngIf="item.oldValue !==''"> from "{{item.oldValue}}"</ng-container>
+                                                                    <ng-container *ngIf="item.oldValue !==''">
+                                                                         from "{{item.oldValue}}"
+                                                                    </ng-container>
                                                                     <span *ngIf="item.oldValue !==''; else newActivity">
-                                                                        to "{{item.NewValue | slice:0:limit}}{{ isExpanded ?
-                                                                        (item.NewValue | slice:limit): '' }}"
+                                                                        to "{{item.NewValue | slice:0:limit}}{{ isExpanded ?(item.NewValue | slice:limit): '' }}"
                                                                         <ng-container *ngIf="item.NewValue.length>60">
                                                                             <a href="javascript:void(0)"
                                                                                 (click)="View_Activity()">more...</a>
@@ -5100,7 +5104,7 @@
                                                     </path>
                                                 </svg>
                                             </span>
-                                            <span>{{formatTime(data.ModifiedTime)}}</span>
+                                            <span>{{formatTimes(data.ModifiedTime)}}</span>
                                         </div>
                                     </div>
                                 </div>
