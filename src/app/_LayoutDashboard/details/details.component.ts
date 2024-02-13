@@ -919,6 +919,8 @@ this.prjPIECHART.render();
                   this.datepipe.transform(item.ModifiedDate,'dd MMM')
                 };
           })
+
+          console.log(this.firstFiveRecords,'this.firstfiverecords')
         }
       })
   }
@@ -6536,8 +6538,19 @@ formatTimes(time: string): string {
 }
 
 
+convertDateFormat(dateString: string): string {
+  if (!dateString) return ''; // Handle empty or null values
+  const dateParts = dateString.split(' ');
+  const month = dateParts[0];
+  const day = dateParts[1];
+  const year = dateParts[2];
+  return `${day}-${this.getMonthNumber(month)}-${year}`;
+}
 
-
+getMonthNumber(month: string): string {
+  const monthAbbreviations = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return (monthAbbreviations.indexOf(month) + 1).toString().padStart(2, '0');
+}
 
 
 

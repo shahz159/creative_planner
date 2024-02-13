@@ -171,7 +171,7 @@
                                                             *ngFor="let item of StatusCountFilter|filter:txtSearch">
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
-                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                 [(ngModel)]="item.checked" [checked]="item">
                                                                 {{item.Name==='Under Approval'?'New Project Under Approval':( item.Name==='InProcess'?'In-Process':item.Name)}}
 
                                                                 <span></span>
@@ -676,12 +676,24 @@
                                                         aria-label="Users: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> RACIS
                                                     </th>
+                                                    <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name!='Delay'" >
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Status
                                                     </th>
+                                                </ng-container>
+
+                                                    <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name=='Delay'" >
+                                                        <th [appSort]="_ProjectDataList" data-order="desc"  (click)="newDelaySorting() "
+                                                        data-name="Status" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Status
+                                                        </th>
+                                                    </ng-container>
+                                                   
                                                     <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Status: activate to sort column ascending">
                                                         Link
