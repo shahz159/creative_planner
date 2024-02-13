@@ -136,6 +136,7 @@ export class PortfolioProjectsComponent implements OnInit {
     });
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
+    this.labelAll();
   }
 
   _PortfolioDetailsById: any;
@@ -170,7 +171,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
-        this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+        this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']); 
         this.lastProject=this._ProjectsListBy_Pid.length;
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
@@ -939,7 +940,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelCompleted() {
-    this._PortProjStatus = "Completed";
+    this._PortProjStatus = 'Completed';
+    console.log('_PortProjStatus:',this._PortProjStatus);
+    console.log('_ProjectsListBy_Pid:',this._ProjectsListBy_Pid);
   }
 
   labelNewProject() {

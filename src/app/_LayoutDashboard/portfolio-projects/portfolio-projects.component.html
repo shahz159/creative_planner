@@ -204,10 +204,13 @@
 
                                                 </div>
                                             </div>
-                                            <ng-container
-                                            *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
+                                        
 
-                                            <div class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                        
+                                            <ng-container
+                                            *ngFor="let item1 of _ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
+
+                                            <div *ngIf="item1.Status==_PortProjStatus||_PortProjStatus==''"   class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -424,8 +427,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </ng-container>`
 
+                                           </ng-container>`
+                                     
                                             <div class="d-flex justify-content-between mt-1" *ngIf="_MessageIfNotOwner==''">
                                                 <div>
                                                     <!-- [hidden]="Share_preferences" -->
