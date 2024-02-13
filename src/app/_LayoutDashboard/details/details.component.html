@@ -663,18 +663,20 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
                                                         <div *ngIf="projectInfo" class="Kt-Pd-Status" style="width:fit-content" [ngClass]="{
-                                                                    'UnderApproval':projectInfo.Status==='Under Approval' || projectInfo.Status==='Not Started',
+                                                                    'new-project-under':projectInfo.Status==='Under Approval' || projectInfo.Status==='Not Started',
                                                                     'Delay':projectInfo.Status==='Delay',
                                                                     'Inprocess':projectInfo.Status==='InProcess',
                                                                     'Done':projectInfo.Status==='Completed',
                                                                     'NewProjectRejected':projectInfo.Status==='New Project Rejected',
                                                                     'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
                                                                     'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                                                    'todo-achieved':projectInfo.Status==='ToDo Achieved',
+                                                                    'todo-completed':projectInfo.Status==='ToDo Completed',
                                                                     'Delay':projectInfo.Status==='Cancellation Under Approval',
                                                                     'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                                                                     'Cancelled':projectInfo.Status==='Cancelled',
-                                                                    'Hold':projectInfo.Status==='Project Hold',
-                                                                    'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval'
+                                                                    'Hold':projectInfo.Status==='Project Hold',                
+                                                                    'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval'                                                                   
                                                                     }">
                                                             {{
                                                             (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
@@ -844,7 +846,7 @@
                                                                     <b>({{TOTAL_ACTIONS_IN_PROCESS}})</b>
                                                                 </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_IN_DELAY"><span
-                                                                        class="B-Bot P_Delay"></span> Delay
+                                                                        class="B-Bot P_Delay"></span> Delay  
                                                                     <b>({{TOTAL_ACTIONS_IN_DELAY}})</b>
                                                                 </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_REJECTED" class="w-50P"><span
@@ -1428,14 +1430,14 @@
                                                         class="kt-projcect-act-list"
                                                         (click)="showActionDetails(action.IndexId-1)"
                                                         [ngClass]="{'Active':currentActionView===action.IndexId-1}"
-
+    
                                                         >
                                                         <div class="row curser-pointer">
                                                             <div class="col-lg-8 pl-0 pr-1">
                                                                 <div class="kt-p-box border-r-0">
                                                                     <div class="kt-action-p-tittle">
                                                                         <h4>{{action&&action.Project_Name}}</h4>
-                                                                    </div>
+                                                                    </div> 
                                                                     <div
                                                                         class="d-flex align-items-center justify-content-between">
                                                                         <div class="kt-info-lable-v">
@@ -1453,12 +1455,12 @@
                                                                     <div class="kt-p-status">
                                                                         <div class="kt-p-action-No">
                                                                             Action {{action&&action.IndexId}}
-
-
+    
+    
                                                                         </div>
                                                                         <div class="kt-p-action-Status">
-
-
+    
+    
                                                                             <span [ngSwitch]="action.Status">
                                                                                 <span *ngSwitchCase="'Completed'"
                                                                                     class="Status-done">Completed</span>
@@ -1474,7 +1476,7 @@
                                                                                     class="Status-In-progress">{{action&&action.Status==='Under Approval'?"New Action Under Approval":action&&action.Status}}</span>
                                                                             </span>
                                                                             <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
-
+    
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1608,6 +1610,124 @@
                                     </div>
                                 </ng-template>
                             </ng-container>
+
+                            <div class="kt-info-box pb-0 mt-2 standard-task d-none" style="min-height:500px;">
+                                <div class="d-flex justify-content-between">
+                                    <div class="kt-info-box-tittle">
+                                        <div class="kt-title-icon">
+                                            <svg width="20px" height="20px" viewBox="0 0 512 512" id="svg2793"
+                                                style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+                                                version="1.1" xml:space="preserve"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:cc="http://creativecommons.org/ns#"
+                                                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                                                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                                xmlns:serif="http://www.serif.com/"
+                                                xmlns:svg="http://www.w3.org/2000/svg" fill="#ffffff"
+                                                stroke="#ffffff">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                </g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <defs id="defs2797"></defs>
+                                                    <g id="_09-Round-Chart" style="display:inline"
+                                                        transform="translate(-3072,-1024)">
+                                                        <g id="g2606" transform="translate(3282.77,1327.86)">
+                                                            <path
+                                                                d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348"
+                                                                id="path2604" style="fill-rule:nonzero"></path>
+                                                        </g>
+                                                        <g id="g2610" transform="translate(3373.23,1327.86)">
+                                                            <path
+                                                                d="M 0,175.522 V 84.088 C 19.996,77.221 38.268,65.83 53.362,50.735 68.456,35.641 79.846,17.374 86.709,-2.619 h 91.44 C 160.109,87.248 89.863,157.49 0,175.522 M 195.771,-32.619 H 75.521 c -6.884,0 -12.883,4.686 -14.553,11.364 C 51.151,18.02 20.647,48.524 -18.64,58.35 -25.316,60.02 -30,66.019 -30,72.901 v 120.24 c 0,4.301 1.846,8.395 5.069,11.242 2.757,2.436 6.294,3.758 9.93,3.758 0.616,0 1.234,-0.038 1.853,-0.115 56.444,-7.022 109.793,-33.15 150.218,-73.576 40.426,-40.424 66.559,-93.772 73.585,-150.215 0.532,-4.269 -0.795,-8.56 -3.642,-11.783 -2.847,-3.225 -6.942,-5.071 -11.242,-5.071"
+                                                                id="path2608" style="fill-rule:nonzero"></path>
+                                                        </g>
+                                                        <g id="g2614" transform="translate(3282.77,1140.29)">
+                                                            <path
+                                                                d="m 0,7.771 c -20.002,6.866 -38.273,18.258 -53.369,33.354 -15.094,15.093 -26.482,33.361 -33.341,53.353 h -91.44 C -160.118,4.617 -89.871,-65.629 0,-83.67 Z m 24.93,-120.305 c -3.224,-2.847 -7.508,-4.173 -11.784,-3.642 -56.444,7.026 -109.793,33.159 -150.219,73.584 -40.429,40.427 -66.561,93.775 -73.582,150.218 -0.531,4.269 0.796,8.559 3.643,11.783 2.848,3.223 6.942,5.069 11.242,5.069 h 120.25 c 6.885,0 12.885,-4.686 14.553,-11.365 C -51.159,73.837 -20.656,43.336 18.639,33.51 25.316,31.841 30,25.841 30,18.959 v -120.251 c 0,-4.3 -1.847,-8.395 -5.07,-11.242"
+                                                                id="path2612" style="fill-rule:nonzero"></path>
+                                                        </g>
+                                                        <g id="g2618" transform="translate(3373.23,1231.74)">
+                                                            <path
+                                                                d="m 0,-175.115 c 89.872,18.04 160.118,88.285 178.151,178.148 H 86.71 C 79.847,-16.963 68.457,-35.232 53.362,-50.328 38.268,-65.423 19.997,-76.812 0,-83.676 Z m -18.637,117.182 c 39.286,9.816 69.788,40.318 79.605,79.603 1.669,6.678 7.669,11.363 14.553,11.363 h 120.25 c 4.3,0 8.394,-1.845 11.242,-5.069 2.847,-3.224 4.174,-7.514 3.643,-11.782 -7.021,-56.443 -33.152,-109.793 -73.578,-150.219 -40.425,-40.425 -93.776,-66.557 -150.225,-73.584 -4.258,-0.527 -8.559,0.795 -11.783,3.643 -3.223,2.846 -5.07,6.941 -5.07,11.242 v 120.25 c 0,6.884 4.686,12.884 11.363,14.553"
+                                                                id="path2616" style="fill-rule:nonzero"></path>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        Projects Created
+                                    </div>
+                                    <div class="kt-project-type curser-pointer d-none">
+                                        <div class="Kt-Pd-Status Add_Action_btn">
+                                            <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="13" height="18" fill="currentColor" class="bi bi-plus"
+                                                    viewBox="4 3 8 12">
+                                                    <path
+                                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                </svg></span> Button
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                    <div class="kt-project-action-list-view flipped">
+                                        <div class="kt-project-acion-content">
+
+                                                <div  class="kt-projcect-act-list Active" >
+                                                    <div class="row curser-pointer">
+                                                        <div class="col-lg-8 pl-0 pr-1">
+                                                            <div class="kt-p-box border-r-0">
+                                                                <div class="kt-action-p-tittle">
+                                                                    <h4>test oppo122</h4>
+                                                                </div>
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
+                                                                    <div class="kt-info-lable-v">
+                                                                        By Md Waseem Akram
+                                                                    </div>
+                                                                    <div class="kt-info-lable-v">
+                                                                        10-02-2024
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 pl-2">
+                                                            <div class="kt-p-box border-l-0 text-center">
+                                                                <div class="kt-p-status">
+                                                                    <div class="kt-p-action-No">
+                                                                        Daily
+
+
+                                                                    </div>
+                                                                    <div class="kt-p-action-Status">
+
+
+                                                                        <span>
+
+                                                                            <span   class="Status-In-progress">New Action Under Approval</span>
+                                                                        </span>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="no-prjact-found ">
+                                        <img class="no-prjact-found-img"
+                                            src="./assets/images/noActionPresent.png" />
+                                        <h3 class="blank-txt fs-5 no-prjact-found-label">No Standard Projects Created.</h3>
+                                    </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1629,7 +1749,7 @@
                                                 title="Link DMS">
                                               </ng-container>
                                             </a>
-                                        <!-- <div class="br-line"></div> -->
+                                        <div class="br-line"></div>
 
                                         <a class="kt-inbox__icon" (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  title="Add Portfolio">
 
@@ -1683,19 +1803,13 @@
                                         <!--  Files Working Area Start-->
 
                                         <!-- <div class="br-line"></div> -->
-                                        <a class="kt-inbox__icon Attachment_view" [ngClass]="{'active':currentSidebarOpened==='LIST_OF_ATTACHMENTS'}"    (click)="Attachment_view()" title="Attachments">
 
-
-                                            <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
-                                        </a>
 
                                         <a class="kt-inbox__icon kt_Comments"  [ngClass]="{'active':currentSidebarOpened==='COMMENTS'}"          (click)="View_Comments()" title="Comments">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16" height="16" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M767.424 130.032 256.576 130.032c-70.4 0-128 57.6-128 128l0 335.632c0 70.4 57.6 128 128 128l118.352 0 0 172.288 213.328-172.288 179.152 0c70.4 0 128-57.6 128-128L895.408 258.032C895.424 187.632 837.824 130.032 767.424 130.032zM815.424 593.664c0 26.016-21.984 48-48 48L588.272 641.664 560 641.664l-22 17.76-83.056 67.088 0-4.848 0-80-80 0-118.352 0c-26.016 0-48-21.984-48-48L208.592 258.032c0-26.016 21.984-48 48-48l510.848 0c26.016 0 48 21.984 48 48L815.44 593.664z"/><path d="M347.888 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/><path d="M512 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/><path d="M676.096 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/></svg>
                                         </a>
 
-                                        <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity()" title="Activity Log">
-                                            <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" fill="currentColor"></path></svg>
-                                        </a>
+
 
                                         <!-- <a class="kt-inbox__icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 15 15"
@@ -1728,6 +1842,14 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
 
                                         </a>
+
+                                        <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity()" title="Activity Log">
+                                            <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" fill="currentColor"></path></svg>
+                                        </a>
+
+                                        <a class="kt-inbox__icon Attachment_view" [ngClass]="{'active':currentSidebarOpened==='LIST_OF_ATTACHMENTS'}"    (click)="Attachment_view()" title="Attachments">
+                                            <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -1735,7 +1857,7 @@
                             </div>
                         </div>
                         <div class="card-body p-0 pt-3 h-100">
-
+                            
 
                             <ng-container *ngIf="currentActionView===undefined;else ActionContent">
                                 <!--Default Content-->
@@ -1858,18 +1980,18 @@
                                                         d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
                                                 </svg>
                                             </div>
-
+                                            
 
                                             <div class="notifications-list" >
 
-
+                
                                             <ng-container *ngIf="myUnderApprvActions.length>0||myDelayPrjActions.length>0">
                                                 <div class="notification underapproval-notification curser-pointer" *ngIf="myUnderApprvActions.length>0" (click)="onFilterConfigChanged({filterBy:'Under Approval',sortBy:Current_user_ID});  showActionDetails(this.myUnderApprvActions[0].IndexId-1);">
                                                     <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" style="
                                                 fill: #00a2eb;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z"></path> <path d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z"></path> <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path> <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path> <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path> <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path> <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path> </g> </g></svg>
                                                     <span class="notif-msg fs-5"  style="color:#00a2eb">You have {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
                                                         actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
-
+                                                    
                                                 </div>
 
                                                 <div class="notification delay-notification  cursor-pointer " *ngIf="myDelayPrjActions.length>0"   (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:Current_user_ID});   showActionDetails(this.myDelayPrjActions[0].IndexId-1); ">
@@ -1878,20 +2000,20 @@
                                                         {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum delay
                                                         of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+'
                                                         days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
-
-
+                                                 
+                                                    
                                                 </div>
 
-
-
+                                                
+                                            
 
                                             </ng-container>
 
                                             <ng-container>
                                                 <div class="notification overutilization-notification"   *ngIf="+ProjectPercentage>100">
                                                     <svg width="24px" height="24px" viewBox="0 0 512 512"  fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>warning</title> <g id="Page-1" stroke="none" stroke-width="1"  fill-rule="evenodd"> <g id="add"  transform="translate(32.000000, 42.666667)"> <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
-                                                    <span class="notif-msg" style="color:#c57a05">
-                                                        The project exceeds planned capacity, with Total utilization at {{ProjectPercentage}}% and Overutilization specifically at {{(+ProjectPercentage-100)}}%.
+                                                    <span class="notif-msg" style="color:#c57a05"> 
+                                                        The project exceeds planned capacity, with Total utilization at {{ProjectPercentage}}% and Overutilization specifically at {{(+ProjectPercentage-100)}}%.   
                                                     <!-- This project is overutilized by {{ProjectPercentage}}%, surpassing allocated hours.  -->
                                                     </span>
                                                 </div>
@@ -1900,7 +2022,7 @@
                                                     || isHierarchy==true)  && delayActionsOfEmps.length>0">
                                                 <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0"  (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:'All'});   showActionDetails(this.delayActionsOfEmps[0].delayActions[0].IndexId-1); ">
                                                     <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff2727"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
-                                                    <span class="notif-msg"  style="color:#ff2727  ">
+                                                    <span class="notif-msg"  style="color:#ff2727  "> 
                                                         Project has {{TOTAL_ACTIONS_IN_DELAY}} Actions delay, max
                                                         {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
                                                         <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
@@ -1909,22 +2031,22 @@
                                                             days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                                                                 *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                                                     </span>
-
+                                                  
                                                 </div>
                                             </div>
                                             </ng-container>
-
-
-
-
-
+                               
+                                                
+                                    
+                                            
+                                            
                                             </div>
+                                            
+                                            
 
 
 
-
-
-            </div>
+            </div>  
 
 
 
@@ -1946,7 +2068,7 @@
                                                     Current_user_ID == projectInfo.OwnerEmpNo ||
                                                     Current_user_ID == projectInfo.ResponsibleEmpNo ||
                                                     isHierarchy==true
-                                                    )">
+                                                    )">  
                                                     <div class="PA_Edit_btn" (click)="Project_details_edit()">
                                                         <svg xmlns="http://www.w3.org/2000/svg" id="Outline"
                                                             viewBox="0 0 24 24" width="15" height="15">
@@ -2089,8 +2211,8 @@
                                                 </div>
 
 
-                                                <div class="kt-project-type" *ngSwitchCase="'Under Approval'">
-                                                    <div class="Kt-Pd-Status UnderApproval"> New Project Under Approval </div>
+                                                <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
+                                                    <div class="Kt-Pd-Status new-project-under"> New Project Under Approval </div>
                                                 </div>
 
                                                 <div class="kt-project-type"
@@ -2131,12 +2253,34 @@
                                                 </div>
 
 
-                                                <div class="kt-project-type" *ngSwitchDefault>
-                                                    <div class="Kt-Pd-Status UnderApproval"> {{projectInfo&&projectInfo.Status=='Under Approval'?'New Project Under Approval':projectInfo&&projectInfo.Status}}
-                                                    </div>
-                                                </div>
 
+                                                <div class="kt-project-type "
+                                                *ngSwitchCase="'ToDo Achieved'">
+                                                <div class="Kt-Pd-Status todo-achieved"> ToDo Achieved
+                                                </div>
                                             </div>
+
+                                            <div class="kt-project-type "
+                                            *ngSwitchCase="'ToDo Completed'">
+                                            <div class="Kt-Pd-Status todo-completed"> ToDo Completed
+                                            </div>
+                                        </div>
+
+
+                                        <div class="kt-project-type "
+                                        *ngSwitchCase="'Not Started'">
+                                        <div class="Kt-Pd-Status not-started"> Not Started
+                                        </div>
+                                    </div>
+
+
+                                                <!-- <div class="kt-project-type">
+                                                  <div class="Kt-Pd-Status" >
+                                                    {{ projectInfo&&projectInfo.Status ==='Under Approval'?'New Project Under Approval':projectInfo.Status}}
+                                                  </div>
+                                                </div> -->
+
+                                                </div>
 
                                         </div>
                                         <div class="kt-project-desc w-80">
@@ -2152,10 +2296,10 @@
 
                                         <!-- Request type start  -->
                                         <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-                                            <div class="kt-info-box mt-2 border-0" [hidden]="!isApprovalSection">
+                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!isApprovalSection">
                                                 <div class="d-flex justify-content-between align-items-center">
 
-                                                    <div class="kt-info-box-tittle mt-3">
+                                                    <div class="kt-info-box-tittle">
                                                         <div class="kt-title-icon">
                                                             <span class="svg-icon">
                                                                 <svg width="22px" height="25px" fill="#fff"
@@ -2201,9 +2345,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
-                                                    <div class="kt-pdv">
+                                                    <div class="kt-pdv mt-2">
                                                         <div *ngIf="isRejectOptionsVisible">
-                                                            Reject Type*
+                                                            <label>Reject Type<span class="text-danger">*</span></label>
                                                             <ng-select required #action="ngModel" name="rej_type"
                                                                 placeholder="Select Reject Type" id="rej_type"
                                                                 [(ngModel)]="rejectType" (change)="rejectApproval()">
@@ -2255,19 +2399,19 @@
                                                             </div>
                                                         </div>
                                                         <ng-container *ngIf="rejectType">
-                                                            Enter Comments
+                                                            <label>Enter Comments<span class="text-danger">*</span></label>
                                                             <textarea class="form-control kt-approval-msg"
                                                                 id="exampleTextarea" rows="3"
                                                                 [(ngModel)]="comments"></textarea>
                                                         </ng-container>
                                                         <ng-container *ngIf="selectedType == '2'">
-                                                            Enter Comments*
+                                                            <label>Enter Comments<span class="text-danger">*</span></label>
                                                             <textarea class="form-control kt-approval-msg"
                                                                 id="exampleTextarea" rows="3"
                                                                 [(ngModel)]="comments"></textarea>
                                                         </ng-container>
                                                         <ng-container *ngIf="selectedType == '1'">
-                                                            Enter Comments
+                                                            <label>Enter Comments<span class="text-danger">*</span></label>
                                                             <textarea class="form-control kt-approval-msg"
                                                                 id="exampleTextarea" rows="3"
                                                                 [(ngModel)]="comments"></textarea>
@@ -2509,7 +2653,7 @@
                                                                     d="M13.877 37.529a1 1 0 0 1-.564-.175l-2.623-1.8a1 1 0 0 1 1.13-1.651l2.623 1.8a1 1 0 0 1-.566 1.826Z">
                                                                 </path>
                                                             </g>
-                                                        </svg></span> Owner
+                                                        </svg></span> Owner  
                                                 </div>
                                                 <div class="kt-info-data-v">
                                                     {{projectInfo&&projectInfo.Owner}}
@@ -2572,8 +2716,8 @@
                                                     </span> Cost
                                                 </div>
                                                 <div class="kt-info-data-v" *ngIf="projectInfo&&projectInfo.Project_Cost; else SAR">
-                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}
-                                                </div>
+                                                    {{projectInfo&&(projectInfo.Project_Cost|currency:'SAR ')}}                                                    
+                                                </div>                                               
                                                 <ng-template  #SAR>
                                                     <div class="kt-info-data-v">
                                                     SAR 00.00
@@ -2833,7 +2977,7 @@
                                         <div class="row">
 
 
-
+                                            
                                             <div class="col-lg-6 "  id="recent-activities-section"    >
                                                 <div class="kt-over-pd-in bd-right-x">
                                                     <div class="kt-ct-project">
@@ -2866,7 +3010,7 @@
                                                                     <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
                                                                     <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
                                                                     <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
-
+                                                                    
                                                                       <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
 
                                                                 <ng-container *ngIf="item.oldValue !==''">
@@ -2893,7 +3037,7 @@
                                                                 </ng-template>
                                                             </div>
                                                             <!--end::Text-->
-                                                        </div>
+                                                        </div> 
                                                         <div class="View_graph_act">
                                                          <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;" >View Graph</a>
                                                         </div>
@@ -2902,10 +3046,10 @@
                                                                     (click)="View_Activity()">View more...</a>
                                                         </div>
 
-                                                        <!--end::Item-->
-                                                    </div>
+                                                        <!--end::Item--> 
+                                                    </div> 
 
-                                                </div>
+                                                </div> 
                                             </div>
                                             <div class="col-lg-6"  id="bar-and-pie">
                                                 <div class="kt-ct-sub-ttl">
@@ -3021,11 +3165,11 @@
                                                         <div  class="kt-prg-progress">
                                                             <ul  type="none">
                                                                 <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot allocated-hrs"></span> Assigned
+                                                                    <span  class="B-Bot allocated-hrs"></span> Assigned 
                                                                 </li>
-
+                                                             
                                                                 <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot extra-hrs-allocated"></span> Extra
+                                                                    <span  class="B-Bot extra-hrs-allocated"></span> Extra 
                                                                 </li>
 
                                                                 <li class="ng-star-inserted">
@@ -3096,18 +3240,18 @@
 
                                     <div class="notifications-list pt-3"    *ngIf="projectActionInfo[currentActionView].Status==='Delay' && projectActionInfo[currentActionView].Team_Res===Current_user_ID">
 
-
+        
                                         <div class="notification delay-notification">
                                             <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff0000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
-                                            <span class="notif-msg" style="color:red" >
+                                            <span class="notif-msg" style="color:red" >  
                                                 You are {{projectActionInfo&&projectActionInfo[currentActionView].Delaydays}} days
                                                 delay in the project will affect the project flow. take extra effect to
                                                 catch up on the deadline.</span>
                                             <!-- <span class="notif-date">10 days ago</span> -->
                                         </div>
-
-
-
+                                    
+                                    
+                                    
                                        </div>
 
 
@@ -3281,7 +3425,7 @@
                                                     </div>
 
                                                     <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status   UnderApproval">New Action Under Approval</div>
+                                                        <div class="Kt-Pd-Status  new-project-under">New Action Under Approval</div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Completion Under Approval'"
@@ -3307,7 +3451,7 @@
                                                     </div>
 
                                                     <div *ngSwitchDefault class="kt-project-type">
-                                                        <div class="Kt-Pd-Status bg-inprogress ">
+                                                        <div class="Kt-Pd-Status new-project-under ">
                                                             {{projectActionInfo[currentActionView].Status =='Under Approval'?'New Project Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
                                                 </div>
@@ -3335,7 +3479,7 @@
                                                     </div>
 
                                                     <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                        <div class="Kt-Pd-Status   UnderApproval">New Action Under Approval</div>
+                                                        <div class="Kt-Pd-Status  new-project-under">New Action Under Approval</div>
                                                     </div>
 
                                                     <div *ngSwitchCase="'Completion Under Approval'"
@@ -3365,7 +3509,7 @@
 
 
                                                     <div *ngSwitchDefault class="kt-project-type">
-                                                        <div class="Kt-Pd-Status bg-inprogress ">
+                                                        <div class="Kt-Pd-Status new-project-under ">
                                                             {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
 
@@ -3396,7 +3540,7 @@
                                                         <div class="kt-project-type">
                                                             <div *ngIf="projectActionInfo[currentActionView]"
                                                                 class="Kt-Pd-Status" [ngClass]="{
-                                                                    'UnderApproval': projectActionInfo[currentActionView].Status==='Under Approval' || projectActionInfo[currentActionView].Status==='Not Started',
+                                                                    'new-project-under': projectActionInfo[currentActionView].Status==='Under Approval' || projectActionInfo[currentActionView].Status==='Not Started',
                                                                     'Delay':projectActionInfo[currentActionView].Status==='Delay',
                                                                     'Inprocess':projectActionInfo[currentActionView].Status==='InProcess',
                                                                     'Done':projectActionInfo[currentActionView].Status==='Completed',
@@ -3959,20 +4103,20 @@
                                                                         class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
                                                                 </div>
                                                                 <!--end::Label-->
-
+    
                                                                 <!--begin::Badge-->
                                                                 <div class="timeline-badge">
                                                                     <i class="fa fa-genderless text-primary fs-1"></i>
                                                                 </div>
                                                                 <!--end::Badge-->
-
+    
                                                                 <!--begin::Text-->
                                                                 <div class="fw-mormal timeline-content text-muted ps-3">
                                                                     <p class="kt-timeline-tl mb-0">
                                                                         <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
                                                                         <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
                                                                         <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
-
+                                                                        
                                                                           <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
 
                                                                     <ng-container *ngIf="item.oldValue !==''">
@@ -4005,7 +4149,7 @@
                                                                         (click)="View_Activity()">View more...</a>
                                                                 <!-- </ng-container> -->
                                                             </div>
-
+    
                                                             <!--end::Item-->
                                                         </div>
 
@@ -4021,17 +4165,17 @@
                                                         <div  class="kt-prg-progress">
                                                             <ul  type="none">
                                                                 <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot allocated-hrs"></span> Assigned
+                                                                    <span  class="B-Bot allocated-hrs"></span> Assigned 
                                                                 </li>
-
+                                                             
                                                                 <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot extra-hrs-allocated"></span> Extra
+                                                                    <span  class="B-Bot extra-hrs-allocated"></span> Extra 
                                                                 </li>
 
                                                                 <li class="ng-star-inserted">
                                                                     <span  class="B-Bot less-hrs-allocated"></span> Less
                                                                 </li>
-
+                                                                
                                                                 <li class="ng-star-inserted">
                                                                     <span  class="B-Bot remaining-hrs-allocated"></span> Remaining
                                                                 </li>
@@ -4338,7 +4482,7 @@
                 <mat-chip-list #selectedportfolioslist>
                     <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
                         (removed)="Portfolio_Deselect(prt)">
-                        {{prt.Portfolio_Name}}
+                        {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
                         <button matChipRemove>
                             <mat-icon>cancel</mat-icon>
                         </button>
@@ -4358,7 +4502,7 @@
                     <mat-option *ngFor=" let prt of _portfoliosList" [value]="prt.Portfolio_ID"
                         (click)="Portfolio_Select(ngDropdwonPort)">
                         <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
-                        {{prt.Portfolio_Name}}
+                        {{prt.Portfolio_Name}}  - {{prt.TM_DisplayName}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -4592,8 +4736,8 @@
                     </div>
                 </div>
 
-
-
+              
+                
 
 
 
@@ -4621,7 +4765,7 @@
                                     <ng-template #fileprovided>
                                         {{_inputAttachments}}
                                     </ng-template>
-
+        
                                 </label>
                             </div>
                         </div>
@@ -5512,7 +5656,7 @@
                                 <span class="kt-text-wrap "><i class="material-icons fs-2">expand_more</i>{{item.Value}}</span>
                                 <span class="Kt-replay-count">{{item.JsonData.length}}</span>
                             </div>
-
+                            
                             <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
                                 <div class="kt-notification__item no-after position-relative ng-star-inserted"
                                     *ngFor="let file of item.JsonData | filter :filterText;let i=index">
@@ -5621,7 +5765,7 @@
                                                     <span class="Running" *ngIf="file.Project_Code==URL_ProjectCode">Project</span>
                                                     <span class="Running" *ngIf="file.Project_Code!=URL_ProjectCode">Action</span>
                                                 </div>
-
+                                                
                                                 <div class="d-flex align-items-center">
                                                     <div data-toggle="tooltip" data-placement="top" title=""
                                                         class="user-icon-round" style="width: 25px; height: 25px;">
@@ -5757,7 +5901,7 @@
 
 
 
-                                   <li class="nav-item"   *ngIf=" userRequestCount > 0 && approvalEmpId == Current_user_ID " >
+                                  <!-- <li class="nav-item"   *ngIf="approvalEmpId==Current_user_ID">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_approver">
                                         <span class="svg-icv-hd">
                                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -5781,9 +5925,9 @@
                                             </svg> </span>
                                         <span class="nav-text">User Requests</span>
                                     </a>
-                                  </li>
+                                  </li> -->
 
-                                    <li class="nav-item"  *ngIf="userRequestCount > 0 && approvalEmpId != Current_user_ID "  >
+                                  <!-- <li class="nav-item"  *ngIf="approvalEmpId!=Current_user_ID">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_notapprover">
                                         <span class="svg-icv-hd">
                                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -5807,7 +5951,7 @@
                                             </svg> </span>
                                         <span class="nav-text">User Requests</span>
                                     </a>
-                                  </li>
+                                  </li> -->
 
 
 
@@ -5864,25 +6008,55 @@
                                         </span>
 
                                     </div>
-                                    <!-- <div class="project-users">
+
+
+
+
+
+                                    <ng-container *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
+                                      <div class="project-users" *ngFor="let Data of PeopleOnProject | filter :SearchItem ;let i=index">
                                         <div class="user-list">
-                                                <div class="user-info">
-                                                    <div class="user-icon">
-                                                        <img src="https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg">
-                                                    </div>
-                                                    <div class="w-100">
-                                                        <div class="user-details">
-                                                            <h6>Mohammed Mateen</h6>
-                                                            <p>Dot Net Developer/Devbox Software Pvt Ltd</p>
-                                                        </div>
-                                                        <div class="user-type">
-                                                            <span>Owner</span>
-                                                            <span>Support</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        </div> -->
-                                        <!-- <div class="user-list">
+                                          <div class="user-info">
+                                            <div class="user-icon">
+                                              <span class="user-initial bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
+                                            </div>
+                                            <div class="w-100">
+                                              <div class="user-details">
+                                                <h6>
+                                                  {{Data.Emp_Name}}
+                                                </h6>
+
+                                              </div>
+                                              <div class="user-type">
+
+                                                <span *ngFor="let role of Data.Role.split(', ')">
+                                                  <span >{{ role }}</span>
+                                                </span>
+
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     <!-- <div class="project-users">
+
+                                         <div class="user-list">
                                             <div class="user-info">
                                                 <div class="user-icon">
                                                     <span class="user-initial bg-primary text-inverse-warning fw-bold">M</span>
@@ -5901,7 +6075,7 @@
                                             </div>
                                     </div>
                                     </div> -->
-                                    <ng-container
+                                    <!-- <ng-container
                                         *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
                                         <div class="user-list-card"
                                             *ngFor="let Data of PeopleOnProject | filter :SearchItem ;let i=index">
@@ -5909,7 +6083,7 @@
                                                 <div class="user-icon-round">
                                                     <span
                                                         class="user-Ltr bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
-                                                    <!-- <img src="https://modernize-nextjs.adminmart.com/images/profile/user-2.jpg"> -->
+
                                                 </div>
                                             </div>
 
@@ -5922,9 +6096,9 @@
                                                 </p>
                                             </div>
 
-                                            <!--    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-trash"><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg> -->
+
                                         </div>
-                                    </ng-container>
+                                    </ng-container> -->
                                 </ng-container>
 
                                 <ng-template #searchPeople>
@@ -6139,7 +6313,7 @@
 
 
                               <div class="tab-pane fade" id="kt_tab_pane_user-request_approver" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_approver">
-                                <div class="mx-3  user-request-box  "  *ngFor="let item of approverequestlist;let i=index">
+                                <div class="mx-3  user-request-box  "  *ngFor="let item of approverequestlist">
                                   <div  class="mb-2"><span
                                       class="text-dark fs-6 test1">{{item.Submitted_By}}</span><span
                                       class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">{{item.Designation_Name}}</span></div>
@@ -6160,21 +6334,21 @@
                                                 </path>
                                               </svg></span>{{item.Request_date}}</div>
                                         </div>
-                                        <div  class="mb-2"><span
-                                          class="kt-badge  kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn" (click)="approveUserRequest(i)">Approve</button></span><span
+                                        <!-- <div  class="mb-2"><span
+                                          class="kt-badge  kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Approve</button></span><span
                                           class="kt-badge kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Reject</button>
                                           </span></div>
-                                      </div>
-                                      <!-- <div>
+                                      </div> -->
+                                      <div>
                                         <button
                                             [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
                                             (click)="approvalClick('ACCEPT')">Accept</button>
-                                    </div> -->
+                                    </div>
                                     <!-- <div class="col" id="editaccept">
                                 <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
                                     (click)="approvalClick('EDIT')">Edit & Accept</button>
                             </div> -->
-                                    <!-- <div *ngIf="requestType=='Project Complete'">
+                                    <div *ngIf="requestType=='Project Complete'">
                                         <button
                                             [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
                                             (click)="approvalClick('CONDITIONAL')">Conditional
@@ -6184,7 +6358,7 @@
                                         <button
                                             [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
                                             (click)="approvalClick('REJECT')">Reject</button>
-                                    </div> -->
+                                    </div>
 
 
 
@@ -6898,21 +7072,19 @@
                 </div>
             </div>
             <!-- <div class="spacer--body" *ngIf="editcancel==true"> -->
-            <div class="spacer--body">
+            <div class="kt-portlet__body spacer--body">
                 <div class="">
                     <ul class="kt-nav pb-0">
 
                         <div class="height-scroll h-scr">
-                            <div class="px-4 py-3">
-                                <div class="form-group mb-1 d-flex">
-                                    <b>Project: {{projectInfo&&projectInfo.Project_Name}}</b>
-                                </div>
-                                <div class="form-group mb-1">
-                                    <label>Remarks<span class="text-danger">*</span></label>
-                                    <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20"
-                                        placeholder="Define your exact reason to cancel the project."
-                                        style="height:150px;"></textarea>
-                                </div>
+                            <div class="form-group mb-1 d-flex">
+                                <b>Project: {{projectInfo&&projectInfo.Project_Name}}</b>
+                            </div>
+                            <div class="form-group mb-1">
+                                <label>Remarks<span class="text-danger">*</span></label>
+                                <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20"
+                                    placeholder="Define your exact reason to cancel the project."
+                                    style="height:150px;"></textarea>
                             </div>
                         </div>
                         <li class="kt-nav__separator"></li>
@@ -7350,7 +7522,7 @@
                                                                             d="M95.01,466.5h950.312c52.473,0,95.01,42.538,95.01,95.01v950.312c0,52.473-42.538,95.01-95.01,95.01 H95.01c-52.473,0-95.01-42.538-95.01-95.01V561.51C0,509.038,42.538,466.5,95.01,466.5z" />
                                                                         <path fill="#FFF"
                                                                             d="M820.211,828.193H630.241v517.297H509.211V828.193H320.123V727.844h500.088V828.193z" />
-                                                                    </svg></span> <span>Join In Teams</span>
+                                                                    </svg></span> <span>Join In Teams</span> 
                                                             </div> -->
                                                         </div>
                                                     </div>
@@ -8173,8 +8345,8 @@
                             <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [multiple]="true" (change)="MasterCode=$event.includes(URL_ProjectCode)?$event:[URL_ProjectCode].concat($event)">
                                 <ng-option [value]="p.Project_Code" *ngFor="let p of ProjectListArray">{{p.BlockNameProject}}</ng-option>
                             </ng-select>
-
-                            <!--  mat meetings dropdwn here start
+                          
+                            <!--  mat meetings dropdwn here start 
                                  <mat-form-field class="drp-dwn-field w-100">
                                     <mat-label>Select Project </mat-label>
                                     <mat-chip-list #selectedProjectDrpDwn>
@@ -8209,7 +8381,7 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>   -->
-
+                           
                             </div>
 
                             <div class="content-main show pt-0" id="core_viw">
@@ -8274,13 +8446,13 @@
                                 </div>
 
                                 <div class="form-group" id="core_Dms" style="display:none">
-
+                    
                                 <label class="cus-lbl">Add DMS</label>
                                 <ng-select [multiple]="true" [(ngModel)]="SelectDms">
                                     <ng-option *ngFor="let m of Memos_List" [value]="m.MailId"> {{m.Subject}} - {{m.DisplayName}}</ng-option>
                                 </ng-select>
 
-<!--
+<!--                                     
                                     <mat-form-field class="drp-dwn-field w-100" >
                                         <mat-label>Add DMS</mat-label>
                                         <mat-chip-list #selectedDmsMemoDrpDwn>
@@ -8312,7 +8484,7 @@
                                                 {{m.Subject}} - {{m.DisplayName}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                    </mat-form-field>
+                                    </mat-form-field> 
                                  -->
                                 </div>
 
@@ -9230,12 +9402,12 @@
                                         </svg></span> Responsible</div>
                                 <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
                                     <!-- <input type="text" class="form-control" value="{{projectInfo.Responsible}}" placeholder="Responsible Name..."/> -->
-
+    
                                     <ng-container *ngIf="projectInfo.isRespActive=='1'">
                                         <ng-container
                                             *ngIf="(projectInfo.OwnerEmpNo === Current_user_ID || projectInfo.ResponsibleEmpNo === Current_user_ID || isHierarchy==true ) && (projectInfo.Status !=='Completion Under Approval'
                                             && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
-
+    
                                             <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                                 <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                     [disabled]="item.Emp_No==selectedOwner">
@@ -9249,8 +9421,8 @@
                                                     [(ngModel)]="selectedOwnResp" readonly />
                                             </ng-template>
                                     </ng-container>
-
-
+    
+    
                                     <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                         <ng-container>
                                             <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
@@ -9266,12 +9438,12 @@
                                             </ng-template>
                                         </ng-container>
                                     </ng-container>
-
-
+    
+    
                                 </div>
                             </div>
                         </div>
-
+    
                         <div class="col-lg-4 text-left">
                             <div class="form-group Ic_ed">
                                 <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -9293,7 +9465,7 @@
                                 </div>
                             </div>
                         </div>
-
+    
                         <div class="col-lg-4 text-left">
                             <div class="form-group Ic_ed">
                                 <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -9389,7 +9561,7 @@
                                 </div>
                             </div>
                         </div>
-
+    
                         <div class="col-lg-4 text-left">
                             <div class="form-group mb-2 Ic_ed">
                                 <div class="kt-info-lable-v"> Duration</div>
@@ -9429,7 +9601,7 @@
                                 </div>
                             </div>
                         </div>
-
+    
                         <ng-container
                             *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
                             <div class="col-lg-8 text-left">
@@ -9456,7 +9628,7 @@
                                                 <ng-option *ngFor="let item of Month_array">{{item}}</ng-option>
                                             </ng-select>
                                             <span class="Wd_text_kt">Max Duration limit is 4 hrs only.</span>
-
+    
                                         </div>
                                     </div>
                                     <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="4"> Allocated hours
@@ -9502,7 +9674,7 @@
                                     </div>
                                 </div>
                             </div>
-
+    
                         </ng-container>
                     </div>
                     <div class="row">
@@ -9516,11 +9688,11 @@
                         </div>
                     </div>
                 </div>
-
-
+                
+                
             </div>
         </div>
-
+        
         <div class="kt-footer-edit">
             <div class="kt-portlet__foot">
                 <div class="row pt-2 pb-2">
@@ -9538,9 +9710,9 @@
                             </ng-container>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
-
+           
         </div>
     </div>
         <!-------- Project Details edit view end --------->
@@ -9709,12 +9881,12 @@
                                                 </ng-option>
                                             </ng-select>
                                         </ng-container>
-
+    
                                         <ng-template #ActionEdit>
                                             <input type="text" class="form-control readonly" [(ngModel)]="ActionOwner"
                                                 readonly />
                                         </ng-template>
-
+    
                                     </div>
                                 </div>
                             </div>
@@ -9734,7 +9906,7 @@
                                                 {{item.RACIS}}
                                             </ng-option>
                                         </ng-select> -->
-
+    
                                         <ng-container
                                             *ngIf="(projectActionInfo[currentActionView].Status !=='Under Approval' && projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval'
                                          && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActEdit">
@@ -9748,11 +9920,11 @@
                                             <input type="text" class="form-control readonly" [(ngModel)]="ActionResponsible"
                                                 readonly />
                                         </ng-template>
-
+    
                                     </div>
                                 </div>
                             </div>
-
+    
                             <div class="col-lg-4 text-left">
                                 <div class="form-group Ic_ed">
                                     <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -9773,7 +9945,7 @@
                                     </div>
                                 </div>
                             </div>
-
+    
                             <div class="col-lg-4 text-left">
                                 <div class="form-group Ic_ed">
                                     <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -9920,7 +10092,7 @@
                                 </div>
                             </div>
                         </div>
-
+                       
                     </div>
                 </div>
             </div>
@@ -9939,7 +10111,7 @@
                 </div>
             </div>
         </div>
-
+            
 
             <!-------- Action edit view End --------->
 
@@ -10148,7 +10320,7 @@
 
 <!--Recent activity Graph Modal Start -->
 <div class="modal fade graphmodal" id="graphmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="graphmodalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="graphmodalLabel">Recent Activities</h5>
@@ -10169,9 +10341,9 @@
                 </a>
                 <div id="dropd" aria-labelledby="Filter_btn"
                     class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter">
-
+                
                     <ul class="drop-ul p-1 filtr-config-option ">
-
+                    
                         <button (click)="onGraphOptionChanged('PROJECT')"    [ngClass]="{'active2':graphOption==='PROJECT'}"   class="btn btn-filtr">
                             <div class="d-flex align-items-center">
                                 <svg width="18px" height="18px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project</title> <g id="Page-1" stroke-width="0.00512" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#7c7979" transform="translate(64.000000, 34.346667)"> <path d="M192,7.10542736e-15 L384,110.851252 L384,332.553755 L192,443.405007 L1.42108547e-14,332.553755 L1.42108547e-14,110.851252 L192,7.10542736e-15 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M341.333,157.655 L213.333,231.555 L213.333,381.82 L341.333333,307.920144 L341.333,157.655 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g></svg>
@@ -10189,9 +10361,9 @@
                                 </span>
                             </div>
                         </button>
-
+                
                         <li *ngFor="let item of filteremployee">
-
+                
                             <button  (click)="onGraphOptionChanged(item.Responsible)"   [ngClass]="{'active2':graphOption===item.Responsible}"           class="btn btn-filtr">
                                 <div class="d-flex align-items-center">
                                     <svg
@@ -10218,21 +10390,21 @@
                                     </span>
                                 </div>
                             </button>
-
+                
                         </li>
-
+                    
                     </ul>
-
+                
                 </div>
                 </div>
                 </div>
                 <div class="kt-graph-close"  data-dismiss="modal" aria-label="Close"  (click)="onGraphOptionChanged('PROJECT'); graphOptionChanged=false; " >
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11083)"> <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#b0b0b0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11083"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11083)"> <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#b0b0b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11083"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
                 </div>
           </div>
 
         </div>
-        <div class="modal-body">
+        <div class="modal-body">                    
             <div class="full-graph" id="full-graph"> </div>
         </div>
       </div>
@@ -10240,3 +10412,4 @@
   </div>
 <!--Recent activity Graph Modal End -->
 
+             

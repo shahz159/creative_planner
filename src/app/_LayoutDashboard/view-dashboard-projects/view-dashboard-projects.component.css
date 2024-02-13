@@ -1134,10 +1134,9 @@ tr.odd.project-list_AC.active{
 
 
 .new-project {
-  background-color: #B2D732;
-  color: black;
-  border-radius: 3px;
-  padding: 2px 10px;
+
+  color:#888888 !important;
+
 }
 .New-project{
   background-color: #5789B8;
@@ -1145,6 +1144,9 @@ tr.odd.project-list_AC.active{
 }
 .Delay_color{
   color: #EE4137 !important;
+  color: black;
+  padding:2px 8px;
+  border-radius: 2px;
 }
 .InProcess_color{
   color:#1B272D !important;
@@ -1182,3 +1184,10 @@ tr.odd.project-list_AC.active{
 .Deadline_Extend_Under_Approval_color{
   color: #F88282 !important;
 }
+.in-process{
+  color:  #1B272D ;
+}
+.not-started{
+  color: #888888 !important;
+}
+

@@ -1168,10 +1168,7 @@ label.page-num {
   height: 30px;
   width: 30px;
 }
-.Delay{
-/* background-color: #EE4137 !important; */
-color:#000;
-}
+
 
 /* .portfolio-search{
   width: 30px;
@@ -1203,6 +1200,41 @@ color:#000;
 
 
 .new-project {
+
+  background-color:#888888;;
+  color:white;
+}
+
+.in-process{
+  background-color: #1B272D;
+  color:white;
+}
+.completion-under-approval{
   background-color: #B2D732;
   color:black;
+}
+.Delay{
+  background-color: #EE4137 !important;
+  color:white;
+  }
+
+.project-hold{
+  background-color: #DFDFDF;
+  color:black
+}
+.new-pro-rejected{
+  background-color: #DFDFDF !important;
+  color:black important;
+}
+
+
+.todo-achieved{
+  background-color: #335B1B !important;
+ color: black !important;
+}
+
+
+.todo-completed{
+  background-color: #62B134 !important;
+  color:black !important;
 }

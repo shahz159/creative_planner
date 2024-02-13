@@ -166,7 +166,7 @@
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval', 'Hold': item.Status=='Project Hold'}"
                                                 >
                                                  <ng-container *ngIf="item.Status !== 'Project Hold'">
-                                                  <span class=" font-weight-400">
+                                                  <span class=" font-weight-400 ">
                                                    {{ item.Status === 'InProcess' ? 'In-Process' : (item.Status === 'Under Approval' ? 'New Project Under Approval' : item.Status) }}
                                                  </span>
                                                   </ng-container>
@@ -1355,7 +1355,7 @@
                         <div class="kt-prg-progress">
                             <ul>
                               <li *ngIf="Under_Approval > 0" >
-                                <span class="B-Bot P_Not_Started "></span> <span class=""> New Project Under Approval</span>
+                                <span class="B-Bot P_Not_Started  new-project "></span> <span class=""> New Project Under Approval</span>
                                 <b>({{Under_Approval}})</b>
                             </li>
                                 <li *ngIf="inprogress>0"><span class="B-Bot P_In_Progress"></span>In-Processs
