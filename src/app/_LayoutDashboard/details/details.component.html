@@ -1576,7 +1576,7 @@
                                                         </g>
                                                     </svg>
                                                 </div>
-                                                Projects Created
+                                                Task Approvals
                                             </div>
                                             <div>
                                                 <button _ngcontent-ftp-c392="" (click)="approval_btn()" class="btn btn-outline-success btn-sm mr-4 fs-8">Accept All</button>
@@ -1594,47 +1594,46 @@
                                         </div>
         
         
-                                            <div class="kt-project-action-list-view flipped">
-                                                <div class="kt-project-acion-content">
-        
-                                                        <div  class="kt-projcect-act-list Active" >
-                                                            <div class="row curser-pointer">
-                                                                <div class="col-lg-8 pl-0 pr-1">
-                                                                    <div class="kt-p-box border-r-0">
-                                                                        <div class="kt-action-p-tittle">
-                                                                            <h4>test oppo122</h4>
+                                        <div class="kt-project-action-list-view flipped">
+                                            <!--if there is atleast one project action available in the project. || if projectInformation.projectActions.length>0               -->
+                                            <div class="kt-project-acion-content">
+                                                <ng-container>
+                                                    <div class="kt-projcect-act-list">
+                                                        <div class="row curser-pointer">
+                                                            <div class="col-lg-8 pl-0 pr-1">
+                                                                <div class="kt-p-box border-r-0">
+                                                                    <div class="kt-action-p-tittle">
+                                                                        <h4>Test remarks</h4>
+                                                                    </div> 
+                                                                    <div
+                                                                        class="d-flex align-items-center justify-content-between">
+                                                                        <div class="kt-info-lable-v">
+                                                                            By Waseem AKram
                                                                         </div>
-                                                                        <div
-                                                                            class="d-flex align-items-center justify-content-between">
-                                                                            <div class="kt-info-lable-v">
-                                                                                By Md Waseem Akram
-                                                                            </div>
-                                                                            <div class="kt-info-lable-v">
-                                                                                10-02-2024
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-4 pl-2">
-                                                                    <div class="kt-p-box border-l-0 text-center">
-                                                                        <div class="kt-p-status">
-                                                                            <div class="kt-p-action-No">
-                                                                                Daily    
-                                                                            </div>
-                                                                            <div class="kt-p-action-Status">       
-                                                                                <span>
-                                                                                    <span   class="Status-In-progress">New Action Under Approval</span>
-                                                                                </span>       
-                                                                            </div>
+                                                                        <!-- <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/> -->
+                                                                        <div class="kt-info-lable-v">
+                                                                            12-02-2024
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>      
-                                                </div>
+                                                            <div class="col-lg-4 pl-2">
+                                                                <div class="kt-p-box border-l-0 text-center">
+                                                                    <div class="kt-p-status">
+                                                                        <div class="kt-p-action-No">
+                                                                            Task Complete 1
+                                                                        </div>
+                                                                        <div class="kt-p-action-Status">
+                                                                            <span class="Status-In-progress">Under Approval</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
                                             </div>
-        
-        
+                                        </div>
                                             <div class="no-prjact-found ">
                                                 <img class="no-prjact-found-img"
                                                     src="./assets/images/noActionPresent.png" />
@@ -2536,40 +2535,6 @@
                                                         <div class="kt-info-data-v p-2" data-toggle="tooltip"
                                                             title="{{requestComments}}">{{requestComments}}</div>
                                                     </div>
-
-
-
-
-
-
-
-                                                    <div class="col-lg-12 mb-2"
-                                                        *ngIf="requestType=='Task Complete' && completedoc">
-                                                        <div class="kt-info-lable-v">Task Attachment</div>
-
-                                                        <div class="curser-pointer">
-                                                            <div class="attachment-view">
-                                                                <span>
-                                                                    <svg _ngcontent-ldk-c393=""
-                                                                        xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                        height="16" fill="currentColor"
-                                                                        viewBox="0 0 16 16" class="bi bi-paperclip">
-                                                                        <path _ngcontent-ldk-c393=""
-                                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-                                                                <span
-                                                                    (click)="openPDF_task_att(sidno,emp,iscloud,repdate,completedoc,contenttype,submitby)"
-                                                                    data-toggle="tooltip"
-                                                                    title="{{completedoc}}">{{completedoc}}</span>
-                                                            </div>
-                                                        </div>
-                                                        <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
-                                                    </div>
-
-
-
                                                     <div class="col-lg-4">
                                                         <div class="kt-info-lable-v text-center">Request Type</div>
                                                         <div class="kt-info-data-v text-center">{{requestType}}</div>
@@ -2607,6 +2572,30 @@
                                                                     (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
                                                                     data-toggle="tooltip" title="{{completedoc}}">
                                                                     {{completedoc}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
+                                                    </div>
+                                                    <div class="col-lg-12 mt-3"
+                                                        *ngIf="requestType=='Task Complete' && completedoc">
+                                                        <div class="kt-info-lable-v">Task Attachment</div>
+
+                                                        <div class="curser-pointer">
+                                                            <div class="attachment-view">
+                                                                <span>
+                                                                    <svg _ngcontent-ldk-c393=""
+                                                                        xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                        height="16" fill="currentColor"
+                                                                        viewBox="0 0 16 16" class="bi bi-paperclip">
+                                                                        <path _ngcontent-ldk-c393=""
+                                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span
+                                                                    (click)="openPDF_task_att(sidno,emp,iscloud,repdate,completedoc,contenttype,submitby)"
+                                                                    data-toggle="tooltip"
+                                                                    title="{{completedoc}}">{{completedoc}}</span>
                                                             </div>
                                                         </div>
                                                         <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
