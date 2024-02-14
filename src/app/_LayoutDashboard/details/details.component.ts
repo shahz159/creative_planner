@@ -328,7 +328,7 @@ var options = {
     bar: {
       distributed: true,
       horizontal: false,
-      columnWidth: '55%',
+      columnWidth: '62%',
     }
   },
   dataLabels: {
@@ -660,6 +660,7 @@ this.prjPIECHART.render();
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
+        this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
@@ -728,7 +729,7 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-        debugger
+       
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
 

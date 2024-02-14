@@ -203,7 +203,7 @@ export class CreateProjectComponent implements OnInit {
           this.Prjtype==='008'?'Routine Tasks':
           this.Prjtype==='011'?'To do List':'';
 
-
+          this.PrjClient=this.Client_json[0].EmpClient;
           this.setRACIS();
 
       }

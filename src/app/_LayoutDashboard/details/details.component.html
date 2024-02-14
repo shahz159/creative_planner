@@ -3127,7 +3127,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <span class="text-muted fs-7 fw-bold pl-2" *ngIf="projectInfo&&tlTotalHours">
-                                                                    {{((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
+                                                                    {{((tlTotalHours/projectInfo.AllocatedHours)*100)>100?'100%':((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
                                                                 </span>
                                                             </div>
 
