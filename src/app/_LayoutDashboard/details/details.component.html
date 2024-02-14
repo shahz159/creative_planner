@@ -1060,8 +1060,8 @@
                                                                                     </svg>
 
 
-                                                                               
-                                                                                    <svg *ngSwitchCase="'Project Hold'" width="10px" height="10px" viewBox="0 0 24 24" 
+
+                                                                                    <svg *ngSwitchCase="'Project Hold'" width="10px" height="10px" viewBox="0 0 24 24"
                                                                                         xmlns="http://www.w3.org/2000/svg">
                                                                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -1452,7 +1452,7 @@
                                                                                 <span *ngSwitchCase="'InProcess'" class="Status-In-progress">In-Process</span>
                                                                                 <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                                 <span *ngSwitchCase="'Under Approval'">New Action Under Approval</span>
-                                                                                <span *ngSwitchCase="'Project Hold'" class="hold-act-text">Hold until {{action.Holddate}}</span>    
+                                                                                <span *ngSwitchCase="'Project Hold'" class="hold-act-text">Hold until {{action.Holddate}}</span>
                                                                                 <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                             </span>
                                                                             <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
@@ -1590,13 +1590,13 @@
                                                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                                                         </svg></span> Button
                                                 </div>
-                                            </div>      
+                                            </div>
                                         </div>
-        
-        
+
+
                                             <div class="kt-project-action-list-view flipped">
                                                 <div class="kt-project-acion-content">
-        
+
                                                         <div  class="kt-projcect-act-list Active" >
                                                             <div class="row curser-pointer">
                                                                 <div class="col-lg-8 pl-0 pr-1">
@@ -1619,33 +1619,33 @@
                                                                     <div class="kt-p-box border-l-0 text-center">
                                                                         <div class="kt-p-status">
                                                                             <div class="kt-p-action-No">
-                                                                                Daily    
+                                                                                Daily
                                                                             </div>
-                                                                            <div class="kt-p-action-Status">       
+                                                                            <div class="kt-p-action-Status">
                                                                                 <span>
                                                                                     <span   class="Status-In-progress">New Action Under Approval</span>
-                                                                                </span>       
+                                                                                </span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>      
+                                                        </div>
                                                 </div>
                                             </div>
-        
-        
+
+
                                             <div class="no-prjact-found ">
                                                 <img class="no-prjact-found-img"
                                                     src="./assets/images/noActionPresent.png" />
                                                 <h3 class="blank-txt fs-5 no-prjact-found-label">No Tasks for approvals.</h3>
                                             </div>
-        
+
                                     </div>
                                 </ng-template>
                             </ng-container>
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -1925,15 +1925,9 @@
                                             <ng-container>
                                                 <div class="notification overutilization-notification"   *ngIf="+ProjectPercentage>100">
                                                     <svg width="24px" height="24px" viewBox="0 0 512 512"  fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>warning</title> <g id="Page-1" stroke="none" stroke-width="1"  fill-rule="evenodd"> <g id="add"  transform="translate(32.000000, 42.666667)"> <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
-<<<<<<< HEAD
                                                     <span class="notif-msg" style="color:#c57a05">
                                                         The project exceeds planned capacity, with Total utilization at {{ProjectPercentage}}% and Overutilization specifically at {{(+ProjectPercentage-100)}}%.
-                                                    <!-- This project is overutilized by {{ProjectPercentage}}%, surpassing allocated hours.  -->
-=======
-                                                    <span class="notif-msg" style="color:#c57a05"> 
-                                                        The project exceeds planned capacity, with Total utilization at {{ProjectPercentage}}% and Overutilization specifically at {{(+ProjectPercentage-100)}}%.   
-                                         
->>>>>>> 9a5965b41291ea339e2c56738478c1252301824b
+
                                                     </span>
                                                 </div>
 
@@ -1950,10 +1944,6 @@
                                                             days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                                                                 *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
                                                     </span>
-<<<<<<< HEAD
-
-=======
->>>>>>> 9a5965b41291ea339e2c56738478c1252301824b
                                                 </div>
                                             </div>
                                             </ng-container>
@@ -1966,31 +1956,22 @@
 
 
 
-<<<<<<< HEAD
-
-
-            </div>
-
-
-
-=======
             </div>   -->
->>>>>>> 9a5965b41291ea339e2c56738478c1252301824b
 <!--my end   new  notification desgin-->
 
 
 
 
 <!--new With condition notification start-->
-<ng-container *ngIf="projectInfo">    
-        <ng-container *ngIf=" 
+<ng-container *ngIf="projectInfo">
+        <ng-container *ngIf="
             +ProjectPercentage>100||
             (([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0)||
             myUnderApprvActions.length>0||
             myDelayPrjActions.length>0
             ">
 
-        <div class="kt-Note-msg  d-flex"> 
+        <div class="kt-Note-msg  d-flex">
         <div class="kt-note-icon" style="align-self:flex-start">
         <svg xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -2119,7 +2100,7 @@
         </div>
         </div>
 
-         </div>   
+         </div>
         </div>
 
         </ng-container>
@@ -3135,7 +3116,7 @@
                                                         <h6>Utilization</h6>
                                                         <div class="d-flex flex-column ml-3 w-100"
                                                         *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
- 
+
                                                             <div class="d-flex align-items-center">
                                                                 <div class="progress h-6px w-100 bg-light-warning">
                                                                     <div class="progress-bar bg-warning"
@@ -3149,14 +3130,14 @@
                                                                     {{((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
                                                                 </span>
                                                             </div>
-                                            
+
                                                         </div>
 
 
 
                                                         <!-- <div class="d-flex flex-column ml-3 w-100"
                                                         *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
-                                                      
+
                                                         <div *ngIf="ProjectStatus=='Not Started'">
                                                             <div class="d-flex align-items-center">
 
@@ -3247,9 +3228,9 @@
                                                        </div> -->
 
                                                     </div>
-                                                   
 
-                                                      
+
+
 
 
                                                      <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
@@ -3258,7 +3239,7 @@
                                                      <button class="statistics-ctrl-btns"  (click)="closeFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
-                                                   
+
                                                 </div>
                                                 <!-- <div id="chart-container" class="Chart">
                                                 </div> -->
@@ -3268,30 +3249,6 @@
                                                 <div class="CHARTS" style="  display:grid; grid-template-columns:1fr;">
                                                 <div>
                                                     <div id="Bar-chart"></div>
-<<<<<<< HEAD
-                                                    <div  class="col-lg-12">
-                                                        <div  class="kt-prg-progress">
-                                                            <ul  type="none">
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot allocated-hrs"></span> Assigned
-                                                                </li>
-
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot extra-hrs-allocated"></span> Extra
-                                                                </li>
-
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot less-hrs-allocated"></span> Less
-                                                                </li>
-
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot remaining-hrs-allocated"></span> Remaining
-                                                                </li>
-                                                           </ul>
-                                                      </div>
-                                                    </div>
-=======
->>>>>>> 9a5965b41291ea339e2c56738478c1252301824b
                                                 </div>
                                                 <div id="Pie-chart" class="d-none"></div>
                                                 </div>
@@ -4265,31 +4222,7 @@
                                                     </div>
                                                     <div id="chart-container1" class="Chart">
                                                     </div>
-<<<<<<< HEAD
-                                                    <div  class="col-lg-12">
-                                                        <div  class="kt-prg-progress">
-                                                            <ul  type="none">
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot allocated-hrs"></span> Assigned
-                                                                </li>
 
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot extra-hrs-allocated"></span> Extra
-                                                                </li>
-
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot less-hrs-allocated"></span> Less
-                                                                </li>
-
-                                                                <li class="ng-star-inserted">
-                                                                    <span  class="B-Bot remaining-hrs-allocated"></span> Remaining
-                                                                </li>
-                                                           </ul>
-                                                      </div>
-                                                    </div>
-=======
-                                                  
->>>>>>> 9a5965b41291ea339e2c56738478c1252301824b
                                                 </div>
                                             </div>
                                         </div>
@@ -4488,13 +4421,13 @@
                     </div>
 
 
-                    
-               
+
+
 
                     <mat-autocomplete #memoDrpDown="matAutocomplete"   #DMSDROPDOWN
                     (optionSelected)="onMemoClicked($event); dmsSelectTF.value=''; "
                     (closed)="isDMSDrpDwnOpen=false;" (opened)="isDMSDrpDwnOpen=true">
-            
+
 
                    <ng-container *ngIf="memosOptions">
                     <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value).slice(0,3000)" [value]="memo.MailId">
@@ -4504,7 +4437,7 @@
                     </ng-container>
 
                 </mat-autocomplete>
-            
+
                 </mat-form-field>
 
 
@@ -4848,7 +4781,7 @@
                             Start
                             time!!</span>
                     </div>
-                </div> 
+                </div>
 
 
 
@@ -6121,8 +6054,8 @@
                                             </svg>
                                         </span>
 
-                                    </div> 
-                                   
+                                    </div>
+
                                 <ng-container *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
                                     <div class="project-users" *ngFor="let Data of PeopleOnProject | filter :SearchItem ;let i=index">
                                       <div class="user-list">
@@ -6147,7 +6080,7 @@
                                       </div>
                                     </div>
                                   </ng-container>
-                                
+
                                 </ng-container>
 
                                 <ng-template #searchPeople>
@@ -6991,7 +6924,7 @@
                                                 This action is on hold until {{hold_upto}}
                                             </div>
                                          </ng-template>
-                                     
+
                                     </div>
                                     <div class="tab-content" id="release-tabbview">
                                         <div class="tab-pane fade show active " id="p_now" role="tabpanel"
@@ -10466,12 +10399,8 @@
           </div>
 
         </div>
-<<<<<<< HEAD
         <div class="modal-body">
-=======
-        <div class="modal-body">    
-                         
->>>>>>> 9a5965b41291ea339e2c56738478c1252301824b
+
             <div class="full-graph" id="full-graph"> </div>
         </div>
       </div>
