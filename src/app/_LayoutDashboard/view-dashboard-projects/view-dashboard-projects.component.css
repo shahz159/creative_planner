@@ -1182,3 +1182,20 @@ tr.odd.project-list_AC.active{
 .Deadline_Extend_Under_Approval_color{
   color: #F88282 !important;
 }
+a.info-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #5051F9;
+}
+a.info-btn:hover {
+  background: #deecf8;
+  color: #0072ff;
+}
+a.info-btn svg {
+  width: 24px;
+  height: 24px;
+}

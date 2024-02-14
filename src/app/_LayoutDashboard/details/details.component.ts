@@ -6666,7 +6666,7 @@ showFullGraph(){
       caption: "Activities Over Time",
       compactdatamode: "1",
       dataseparator: "|",
-      pyaxisname: "Activities",
+      yaxisname: "Activities",
       snumberprefix: "",
       setadaptiveymin: "0",
       formatnumberscale: "0",
@@ -6703,7 +6703,7 @@ showFullGraph(){
 
   FusionCharts.ready(function() {
     var myChart = new FusionCharts({
-      type: "zoomlinedy",
+      type: "zoomline",
       renderAt: "full-graph",
       width: "100%",
       height: "100%",
