@@ -1299,6 +1299,23 @@ color:#000;
   .Hold{
     color:#E2D9BC !important;
   }
+  a.info-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease-in;
+    color: #5051F9;
+  }
+  a.info-btn:hover {
+    background: #deecf8;
+    color: #0072ff;
+  }
+  a.info-btn svg {
+    width: 24px;
+    height: 24px;
+  }
   .in-processs{
     background-color: #1B272D;
     color:white;

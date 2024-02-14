@@ -652,7 +652,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-    debugger
+   
     // alert(this._Urlid);
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);

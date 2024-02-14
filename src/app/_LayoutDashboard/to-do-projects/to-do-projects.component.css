@@ -462,6 +462,12 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.svg-white{
+    color: #fff;
+}
+button.btn.btn-label-primary:hover .svg-white{
+    color: #5867dd;
+}
 
 .Completion-Under-Approval{
   color:#B2D732 !important;
