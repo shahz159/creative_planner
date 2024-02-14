@@ -728,9 +728,18 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+        debugger
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+
+          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
+          const uniqueNamesArray = [...this.uniqueName];
+
+          this.newArray = uniqueNamesArray.slice(3);
+          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);  
+          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
+          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
+          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
@@ -741,20 +750,6 @@ this.prjPIECHART.render();
             return obj;
           });
 
-
-          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
-          const uniqueNamesArray = [...this.uniqueName];
-          // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
-          // this.uniqueNamesArray1 = [...this.uniqueOwner];
-
-          // console.log("===========>",this.uniqueNamesArray1[0].Emp_No);
-
-
-           this.newArray = uniqueNamesArray.slice(3);
-          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
-          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
-          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
         }
       });
 
