@@ -12,5 +12,10 @@ input[type=number] {
 
 .disabled-option {
   color: gray;
-  cursor: not-allowed; 
+  cursor: not-allowed;
+}
+.custom-checkbox {
+  width: 15px;
+  height: 15px;
+
 }

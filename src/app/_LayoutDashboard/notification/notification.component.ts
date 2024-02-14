@@ -219,7 +219,7 @@ export class NotificationComponent implements OnInit {
         }
     }
 
-    
+
   }
 
   loadMore() {
@@ -275,7 +275,7 @@ export class NotificationComponent implements OnInit {
     var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
- 
+
   // newDetails1(prjcode,actcode) {
   //   let name: string = 'Details';
   //   let qparams='?actionCode='+actcode;
@@ -292,8 +292,8 @@ export class NotificationComponent implements OnInit {
   //   var myurl = `${url}/${prjcode}`;
   //   var myWindow = window.open(myurl);
   //   myWindow.focus();
-  
-  
+
+
   // }
 
 
@@ -326,7 +326,7 @@ export class NotificationComponent implements OnInit {
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
   }
- 
+
 
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
@@ -364,7 +364,7 @@ export class NotificationComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
       && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
       this.edited = false;
     }
@@ -395,7 +395,7 @@ export class NotificationComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
       && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
       this.edited = false;
     }
@@ -426,7 +426,7 @@ export class NotificationComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
       && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
       this.edited = false;
     }
@@ -458,7 +458,7 @@ export class NotificationComponent implements OnInit {
         this.resetFilters();
       }
     });
-    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0 
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
         && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
       this.edited = false;
     }
@@ -498,7 +498,7 @@ export class NotificationComponent implements OnInit {
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {
-        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);       
+        this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         //Emp
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
@@ -528,7 +528,7 @@ export class NotificationComponent implements OnInit {
           this.StatusCountFilter = this.selectedItem_Status[0];
         }
         this._totalProjectsCount = JSON.parse(data[0]['notificationcount']);
-        
+
         let _vl = this._totalProjectsCount / 20;
         let _vl1 = _vl % 1;
         if (_vl1 > 0.000) {
@@ -585,7 +585,7 @@ export class NotificationComponent implements OnInit {
   }
 
   txtSearch: string;
-  
+
   resetAll() {
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;
@@ -646,16 +646,16 @@ export class NotificationComponent implements OnInit {
     console.log(this.selectedItems,"all");
   }
 
-  
+
 
   select(ev,item){
-    
+
     if(ev.target.checked==false){
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
 
       checkbox.checked = false;
     }
-    
+
     else if(ev.target.checked==true){
       // Assuming you have checkboxes with a common class name 'checkbox'
       const checkboxes = document.querySelectorAll('.form-check-input');
@@ -685,7 +685,7 @@ export class NotificationComponent implements OnInit {
   }
 
   const checkbox = ev.target as HTMLInputElement;
-  
+
   if (checkbox.checked) {
     this.selectedItems.push(item);
   } else {
@@ -702,7 +702,7 @@ isSelected(item: any): boolean {
 }
 
 acceptSelectedValues() {
-    
+
     console.log(this.selectedItems,"accept");
 
     // this.selectedItems.forEach(element => {
@@ -713,7 +713,7 @@ acceptSelectedValues() {
     //   this.approvalObj.RejectType=element.Reject_Type;
     //   this.approvalObj.OtherType=0;
     //   this.approvalObj.sendFrom="WR";
-     
+
     //   switch(element.Req_Type){
     //                        case "New Project":
     //                             this.approvalObj.Type = "Approved Project";
@@ -788,13 +788,14 @@ acceptSelectedValues() {
     //                             break;
     //   }
 
-        
+
     // });
-    
+
   if( this.selectedItems.length > 0){
+    debugger
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
-      
+
       this.applyFilters();
     });
     const checkbox = document.getElementById('snocheck') as HTMLInputElement;
@@ -805,7 +806,7 @@ acceptSelectedValues() {
   else{
     this.notifyService.showInfo("Please select atleast one project to approve",'');
   }
-    
+
   }
 
   reject_list: any;
@@ -826,7 +827,7 @@ acceptSelectedValues() {
         this.rejDesc = element.Reject_Description;
       }
     });
-    
+
     if(this.selectedItems.length==1){
       this.approvalObj.Project_Code=(this.selectedItems[0]['Project_Code1'])
       if ((this.selectedItems[0]['Req_Type']) == 'New Project')
@@ -915,7 +916,7 @@ acceptSelectedValues() {
     if( this.selectedItems.length > 0){
       this.approvalservice.NewUpdateRejectApprovalsService(this.selectedItems).subscribe(data =>{
         console.log(data,"reject-data");
-        
+
         this.applyFilters();
       });
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
@@ -929,7 +930,7 @@ acceptSelectedValues() {
     this.resetReject();
     this.closeInfo();
   }
-  
+
   responselist:any=[];
 
   clearResponses(){
@@ -940,7 +941,7 @@ acceptSelectedValues() {
       });
       this.responselist=this.responselist.join(',');
       this.approvalObj.responselist=this.responselist;
-  
+
       this.approvalservice.NewMultiResponseService(this.approvalObj).subscribe(data =>{
         console.log(data,"response-data");
         if(data['message']=='1')
@@ -952,12 +953,12 @@ acceptSelectedValues() {
     else{
       this.notifyService.showInfo("Please select atleast one response to clear",'');
     }
-    
+
   }
 
 
   info_active_btn(item){
-  
+
     item.isActive = !item.isActive;
 
       // If you want to allow only one item to be active at a time, uncomment the following lines:

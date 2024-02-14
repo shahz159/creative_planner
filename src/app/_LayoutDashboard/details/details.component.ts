@@ -206,7 +206,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
        else {
         this.router.navigate(["../backend/ProjectsSummary"]);
-      }  
+      }
     });
 
 
@@ -216,7 +216,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);
-  
+
     // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
@@ -227,7 +227,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.GetPeopleDatils();
     this.timearrays();
     this.getRejectType();
-   
+
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -284,7 +284,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   prjBARCHART:any;
   prjPIECHART:any;
-  
+
   drawStatistics() {
 //standard graph cal start
 let x=0;
@@ -375,7 +375,7 @@ if(remaininghr<0){
 }
 
 var options1 = {
-  series: [usedhr,remaininghr], 
+  series: [usedhr,remaininghr],
   chart: {
     width: 480,
     type: 'donut',
@@ -626,7 +626,7 @@ this.prjPIECHART.render();
         }
       });
 
-      console.log("requestlist", this.approverequestlist, this.noapproverequestlist);
+      console.log("requestlist", this.approverequestlist, 'noaprrequest-list',this.noapproverequestlist);
     });
   }
 
@@ -730,8 +730,8 @@ this.prjPIECHART.render();
       (data) => {
 
         if (data != null && data != undefined) {
-          this.Project_List = JSON.parse(data[0]['RacisList']);   
-          
+          this.Project_List = JSON.parse(data[0]['RacisList']);
+
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
@@ -807,9 +807,10 @@ this.prjPIECHART.render();
                   ModifiedDate:d===0?'Today':
                   d===1?'Yesterday':
                   [2,3].includes(d)?d+' days ago':
-                  this.datepipe.transform(item.ModifiedDate,'dd MMM')
+                  this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                 };
           })
+       
         }
       })
   }
@@ -822,7 +823,6 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
-          console.log(this.ActionActivity_List,"testing action activity");
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                   return {
@@ -830,7 +830,7 @@ this.prjPIECHART.render();
                    ModifiedDate:d===0?'Today':
                    d===1?'Yesterday':
                    [2,3].includes(d)?d+' days ago':
-                   this.datepipe.transform(item.ModifiedDate,'dd MMM')
+                   this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                  };
            })
         }
@@ -1145,8 +1145,15 @@ this.prjPIECHART.render();
     document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
 
-    // document.getElementById('kt_tab_pane_user-request').classList.remove("show","active");
-    // document.querySelector("a[href='#kt_tab_pane_user-request']").classList.remove("active");     // USER REQUESTS TAB.
+    document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
+
+
+    // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
+
+
+    // USER REQUESTS TAB.
     // back to 1st 'People on the project' tab.
 
 
@@ -2155,7 +2162,7 @@ this.prjPIECHART.render();
       });
   }
 
-  
+
 
   selectedOwner: any;
   ProjectType: string
@@ -2391,7 +2398,7 @@ this.prjPIECHART.render();
 
 
   }
- 
+
 
   ActionCode: any
   ActionDescription: any
@@ -2401,7 +2408,7 @@ this.prjPIECHART.render();
   ActionClient: any
   ActionstartDate: any
   ActionendDate: any
-  ActionDuration: any 
+  ActionDuration: any
   ActionAllocatedHours: any
   editAllocatedhours: any=0;
   ActionOwnerid: any
@@ -2793,7 +2800,7 @@ check_allocation() {
         this.notifyService.showSuccess(this._Message, "Success");
 
 // Timeline submitted
-// if action submission is also required 
+// if action submission is also required
 if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
   this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
   this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
@@ -3228,7 +3235,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
       case 4: this.flSrtOrd = "me"; break;
       default: this.flSrtOrd = "none";
     }
-  
+
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
@@ -3594,7 +3601,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
-          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']); 
+          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
           this.meeting_arry = this.meetingList;
           if (this.meeting_arry.length > 0)
             this.meetinglength = this.meeting_arry.length;
@@ -4180,7 +4187,7 @@ Task_type(value:number){
           },
           nowIndicator: true,
           allDaySlot: false
-          // eventClick: function(info) { 
+          // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
           //   alert('View: ' + info.view.type);
@@ -4299,12 +4306,12 @@ Task_type(value:number){
       ((data) => {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-      
+
         const racisPeople=this.Project_List.map(item=>item.Emp_No);
         this._EmployeeListForDropdown.sort((el:any)=>{
         return racisPeople.includes(el.Emp_No)?-1:+1
-         });    // to change the order : first racis people and then rest 
-     
+         });    // to change the order : first racis people and then rest
+
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         console.log(this.Portfoliolist_1, "Project List Array");
 
@@ -5422,7 +5429,7 @@ onPrjSelected(e:any){
     const index=this.MasterCode.indexOf(item);
     if(index!==-1)
       this.MasterCode.splice(index,1);
-  }   
+  }
 }
 
  getPrjName(projectCode:string){
@@ -6403,8 +6410,19 @@ formatTimes(time: string): string {
 }
 
 
+convertDateFormat(dateString: string): string {
+  if (!dateString) return ''; // Handle empty or null values
+  const dateParts = dateString.split(' ');
+  const month = dateParts[0];
+  const day = dateParts[1];
+  const year = dateParts[2];
+  return `${day}-${this.getMonthNumber(month)}-${year}`;
+}
 
-
+getMonthNumber(month: string): string {
+  const monthAbbreviations = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return (monthAbbreviations.indexOf(month) + 1).toString().padStart(2, '0');
+}
 
 
 
@@ -6439,6 +6457,63 @@ closeFullGraph(){
 
 
 
+// People Approve request  start
+approveUserRequest(requestNo:number){
+  const {Submitted_By,Remarks,Request_type,Request_date}=this.approverequestlist[requestNo];
+
+
+
+  const userReqObj={
+    Project_Code:this.projectInfo.Project_Code,
+    Project_Code1:this.projectInfo.Project_Code,
+    Category:this.projectInfo.Category,
+    Duration: this.projectInfo.Duration,
+    DurationTime: "0",
+    Project_Owner:this.projectInfo.Owner,
+    Team_Res: this.projectInfo.Responsible,
+    Delaydays:this.projectInfo.Delaydays,
+    DeadLine:this.projectInfo.EndDate,
+    Project_Description:this.projectInfo.Project_Description,
+    Responsible:this.projectInfo.Responsible,
+    Exec_BlockName:this.projectInfo.Project_Type,
+    Project_Block:this.projectInfo.Project_Block,
+    RejectType: " ",
+    Project_Name:this.projectInfo.Project_Name,
+
+
+
+
+    Req_Coments:Remarks,
+    Remarks:Remarks,
+    SubmittedTo: this.projectInfo.Owner,
+    SubmittedBy:Submitted_By,
+    Emp_No: '',
+    Req_Type: Request_type,
+    Type: Request_type,
+    Rec_Date:Request_date,
+
+  }
+  this.approvalservice.NewUpdateAcceptApprovalsService([userReqObj]).subscribe(res=>{
+         console.log("+>",res);
+  });
+}
+
+
+// People Approve request end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6456,20 +6531,20 @@ getActivitiesOfDates(emp,...dates){
             if(emp==='PROJECT')
             result[index].total+=1;
             else if(emp===actv.Modifiedby)
-            result[index].total+=1;    
+            result[index].total+=1;
           }
     });
-  return result;  
+  return result;
 }
 
 showFullGraph(){
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
- 
+
   const actvies=this.getActivitiesOfDates(this.graphOption,...alldates);       //[{date:'2023-08-11',total:4},{date:'2024-02-02',total:8} ...]
   console.log("all graph line points :",actvies);
 
- 
+
 
   const dataSource = {
     chart: {
@@ -6507,11 +6582,11 @@ showFullGraph(){
       {
         seriesname: this.graphOption,
         data: actvies.map(n => n.total).join('|'),  // 2|5|8|2|3|4|5|5|5|8 ....
-        color: "#6388e3" // Set line color 
+        color: "#6388e3" // Set line color
       }
     ]
   };
-  
+
   FusionCharts.ready(function() {
     var myChart = new FusionCharts({
       type: "zoomline",
@@ -6523,7 +6598,7 @@ showFullGraph(){
     }).render();
     
   });
-  
+
 }
 
 onGraphOptionChanged(option:string){
