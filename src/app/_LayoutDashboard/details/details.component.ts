@@ -6736,7 +6736,9 @@ onGraphOptionChanged(option:string){
 
 //  Full Graph code end
 
-
+approval_btn(){
+  alert('approval accepted')
+}
 
 
 
