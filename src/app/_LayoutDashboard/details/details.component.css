@@ -1455,12 +1455,12 @@ label.my-chosse-flv {
 
 .NewProjectRejected {
   background-color: #DFDFDF !important;
-  color:#000;
+  color:#000 !important;
 }
 
 .Done {
   background-color: #62B134 !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 .EnactiveUnderApproval {
@@ -1475,21 +1475,22 @@ label.my-chosse-flv {
 
 .DeadlineExtend {
   background-color: #F88282 !important;
-  color: #fff;
+  color: #000 !important;
 }
 
 .Hold {
-  background-color: #E2D9BC;
-  color: #000;
+  background-color: #E2D9BC !important;
+  color: #000 !important;
 }
 
 .Cancelled{
-  background-color:#DFDFDF !important;
+  background-color:#EE4137 !important;
+  color: #fff !important;
   }
 
   .ForwardUnderApproval{
     background-color: #B2D732 !important;
-    color:#000;
+    color:#000 !important;
   }
 
 
@@ -1663,7 +1664,7 @@ span.B-Bot {
   background-color: #1B272D !important;
 }
 .P_Not-Started{
-  background-color: #888888 !important;
+  background-color: #B2D732 !important;
 }
 .P_Active{
   background-color: #0089FB !important;
@@ -1757,7 +1758,10 @@ a.kt-inbox__icon:hover svg path {
 }
 
 
-
+.New_Project_Under_Approval{
+  background-color: #B2D732 !important;
+  color: #000 !important;
+}
 
 
 
@@ -4430,9 +4434,15 @@ p.kt-dt-l {
 }
 
 .new-project-under{
-  background-color: #888888 !important;
-  color: white;
+  background-color: #B2D732 !important;
+  color: #000;
 }
+
+.Not_Started{
+  background-color: #888888 !important;
+  color: #fff;
+}
+
 .todo-completed{
   background-color: #62B134 !important;
   color:white !important;
@@ -4446,7 +4456,7 @@ p.kt-dt-l {
 
 .not-started{
   background-color: #888888 !important;
-  color:white !important;
+  color: #fff !important;
 }
 .diff-div {
   margin: 0px 0px;

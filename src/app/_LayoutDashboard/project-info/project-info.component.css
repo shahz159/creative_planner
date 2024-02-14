@@ -521,7 +521,7 @@ align-items: center;
 display: flex;
 align-items: center;
 font-size: 15px;
-color: #6388e3;
+color: #000;
 font-weight: 400;
 margin-bottom: 10px;    letter-spacing: 0.5px;
 }
@@ -529,8 +529,8 @@ margin-bottom: 10px;    letter-spacing: 0.5px;
 text-align: center;
 }
 .Kt-Pd-Status {
-  background-color:#888888  !important;
-  color: white  !important;
+  background-color:#B2D732  !important;
+  /* color: #000  !important; */
   margin: 0px 0px;
   font-size: 13px;
   letter-spacing: 0;
@@ -635,16 +635,22 @@ background-color: #EE4137 !important;
 color:white !important;
 }
 .Cancelled{
-  background-color:#DFDFDF !important;
+  background-color:#EE4137 !important;
+  color: #FFF;
   }
 
   .P_Not_Started{
-    background-color: #888888 !important;
+    background-color: #b2d732 !important;
   }
 
 
 .UnderApproval{
+  background-color: #B2D732 !important;
+  color: #fff !important;
+}
+.Not_Started{
   background-color: #888888 !important;
+  color: #fff !important;
 }
 
 .P_New_Project_Rejected{
@@ -835,7 +841,7 @@ span.B-Bot {
   margin-right: 2px;
   border-radius: 2px;
   /* background-color: #e5e5e5; */
-  background-color:  #888888;
+  background-color:  #B2D732;
 
 }
 .kt-prg-progress ul {
@@ -872,7 +878,7 @@ li.w-50P {
   background-color: #EE4137 !important;
 }
 .P_Hold{
-  background-color: #E2d9bc !important;
+  background-color: #E2D9BC !important;
 }
 .P_Done{
   background-color: #62b134 !important;

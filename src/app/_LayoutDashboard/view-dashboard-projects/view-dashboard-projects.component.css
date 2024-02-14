@@ -1112,22 +1112,22 @@ tr.odd.project-list_AC.active{
 }
 
 .accepted{
-  background-color: #0272d01f;
-  color: #0272D0;
+  background-color: #0272D0;
+  color: #fff;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .pending{
-  background-color: #1b272dba;
-  color: #ffffffed;
+  background-color: #1B272D;
+  color: #fff;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .rejected{
   background-color: #DFDFDF;
-  color: #000000d9;
+  color: #000;
   border-radius: 3px;
   padding: 2px 10px;
 }
@@ -1135,7 +1135,7 @@ tr.odd.project-list_AC.active{
 
 .new-project {
 
-  color:#888888 !important;
+  color:#B2D732 !important;
 
 }
 .New-project{

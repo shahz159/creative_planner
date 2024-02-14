@@ -859,7 +859,7 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
                                                             <span class="Delay_color font-weight-400"></span>
-                                                            <span *ngIf="item.Delaydays>0"
+                                                            <span *ngIf="item.Delaydays>=0"
                                                                 class="Delay_color delayDays">
                                                                 <strong>{{item.Delaydays}} days Delay </strong>
                                                             </span>

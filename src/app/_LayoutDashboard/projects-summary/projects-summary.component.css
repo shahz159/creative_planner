@@ -2531,7 +2531,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Cancellation_Under_Approval_color{
-  color: #000 !important;
+  color: #EE4137 !important;
 }
 
 .Completion_Under_Approval_color{
@@ -2547,7 +2547,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Under_Approval_color{
-  color: #888888 !important;
+  color: #B2D732 !important;
 }
 
 .New_Project_Rejected_color{
@@ -2559,7 +2559,7 @@ tr.odd.project-list_AC.active{
 }
 
 .Cancelled_color{
-  color: #DFDFDF !important;
+  color: #EE4137 !important;
 }
 .Enactive_Under_Approval_color{
   color: #C9C1E6 !important;

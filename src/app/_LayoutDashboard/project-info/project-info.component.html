@@ -100,7 +100,8 @@
                                         {{item.Status =='InProcess'?'In-Process':(item.Status=='Under Approval'?'New Project Under Approval   ddddd':item.Status)}} {{item.Delaydays}} days
                                     </div>
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
-                                                        'UnderApproval': item.Status=='Under Approval' || item.Status=='Not Started',
+                                                        'UnderApproval': item.Status=='Under Approval',
+                                                        'Not_Started': item.Status=='Not Started',
                                                         'Inprocess': item.Status=='InProcess',
                                                         'NewProjectRejected': item.Status=='New Project Rejected',
                                                         'Done': item.Status=='Completed',

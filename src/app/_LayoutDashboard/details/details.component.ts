@@ -916,11 +916,10 @@ this.prjPIECHART.render();
                   ModifiedDate:d===0?'Today':
                   d===1?'Yesterday':
                   [2,3].includes(d)?d+' days ago':
-                  this.datepipe.transform(item.ModifiedDate,'dd MMM')
+                  this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                 };
           })
-
-          console.log(this.firstFiveRecords,'this.firstfiverecords')
+       
         }
       })
   }
@@ -933,7 +932,6 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
-          console.log(this.ActionActivity_List,"testing action activity");
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                   return {
@@ -941,7 +939,7 @@ this.prjPIECHART.render();
                    ModifiedDate:d===0?'Today':
                    d===1?'Yesterday':
                    [2,3].includes(d)?d+' days ago':
-                   this.datepipe.transform(item.ModifiedDate,'dd MMM')
+                   this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                  };
            })
         }

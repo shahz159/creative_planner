@@ -2010,8 +2010,8 @@ span.count {
 
 
 .new-project-under{
-  background-color:#888888 ;
-  color: white;
+  background-color:#B2D732 ;
+  color: #000;
   padding: 2px 8px;
   border-radius: 2px;
 }
@@ -2026,7 +2026,7 @@ span.count {
   background-color: #62B134 !important;
   padding: 2px 8px;
   border-radius: 2px;
-   color:#000;
+   color:#fff;
 }
 .new-project-reject{
   background-color:#dfdfdf !important;
@@ -2080,7 +2080,7 @@ span.count {
     gap: 10px;
     margin-bottom: 1rem;
   }
-  @media screen and (min-width: 1500px){
+  @media screen and (min-width: 1600px){
     .ticks-grad {
         grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
       }

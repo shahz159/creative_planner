@@ -1200,9 +1200,8 @@ label.page-num {
 
 
 .new-project {
-
-  background-color:#888888;;
-  color:white;
+  background-color:#B2D732;;
+  color: #000;
 }
 
 .in-process{
@@ -1219,22 +1218,22 @@ label.page-num {
   }
 
 .project-hold{
-  background-color: #DFDFDF;
-  color:black
+  background-color: #E2D9BC;
+  color:#000
 }
 .new-pro-rejected{
   background-color: #DFDFDF !important;
-  color:black important;
+  color:#000 !important;
 }
 
 
 .todo-achieved{
   background-color: #335B1B !important;
- color: black !important;
+ color: #FFF !important;
 }
 
 
 .todo-completed{
   background-color: #62B134 !important;
-  color:black !important;
+  color:#FFF !important;
 }
