@@ -100,7 +100,8 @@
                                         {{item.Status =='InProcess'?'In-Process':(item.Status=='Under Approval'?'New Project Under Approval   ddddd':item.Status)}} {{item.Delaydays}} days
                                     </div>
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
-                                                        'UnderApproval': item.Status=='Under Approval' || item.Status=='Not Started',
+                                                        'UnderApproval': item.Status=='Under Approval',
+                                                        'Not_Started': item.Status=='Not Started',
                                                         'Inprocess': item.Status=='InProcess',
                                                         'NewProjectRejected': item.Status=='New Project Rejected',
                                                         'Done': item.Status=='Completed',
@@ -202,7 +203,7 @@
     <!----------Project status view ---->
 
     <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-        <div class="kt-info-box mt-2">
+        <div class="kt-info-box diff-div">
             <div class="kt-info-box-tittle d-flex align-items-baseline justify-content-between w-100">
 
                 <!-- <div class="kt-info-box-tittle mt-3">
@@ -449,7 +450,7 @@
             <div class="row mt-3 px-3" id="kt_open_scroll">
                 <div class="col-lg-12 mb-2">
                     <div class="kt-info-lable-v">Remarks</div>
-                    <div class="kt_remarks_data" data-toggle="tooltip" title="{{requestComments}}">{{requestComments}}
+                    <div class="kt_remarks_data kt-info-data-v" data-toggle="tooltip" title="{{requestComments}}">{{requestComments}}
                     </div>
                 </div>
                 <!-- <div class="col-lg-4">

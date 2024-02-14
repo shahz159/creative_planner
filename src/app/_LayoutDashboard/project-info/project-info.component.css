@@ -521,7 +521,7 @@ align-items: center;
 display: flex;
 align-items: center;
 font-size: 15px;
-color: #6388e3;
+color: #000;
 font-weight: 400;
 margin-bottom: 10px;    letter-spacing: 0.5px;
 }
@@ -529,8 +529,8 @@ margin-bottom: 10px;    letter-spacing: 0.5px;
 text-align: center;
 }
 .Kt-Pd-Status {
-  background-color:#888888  !important;
-  color: white  !important;
+  background-color:#B2D732  !important;
+  /* color: #000  !important; */
   margin: 0px 0px;
   font-size: 13px;
   letter-spacing: 0;
@@ -635,16 +635,22 @@ background-color: #EE4137 !important;
 color:white !important;
 }
 .Cancelled{
-  background-color:#DFDFDF !important;
+  background-color:#EE4137 !important;
+  color: #FFF;
   }
 
   .P_Not_Started{
-    background-color: #888888 !important;
+    background-color: #b2d732 !important;
   }
 
 
 .UnderApproval{
+  background-color: #B2D732 !important;
+  color: #fff !important;
+}
+.Not_Started{
   background-color: #888888 !important;
+  color: #fff !important;
 }
 
 .P_New_Project_Rejected{
@@ -835,7 +841,7 @@ span.B-Bot {
   margin-right: 2px;
   border-radius: 2px;
   /* background-color: #e5e5e5; */
-  background-color:  #888888;
+  background-color:  #B2D732;
 
 }
 .kt-prg-progress ul {
@@ -872,7 +878,7 @@ li.w-50P {
   background-color: #EE4137 !important;
 }
 .P_Hold{
-  background-color: #E2d9bc !important;
+  background-color: #E2D9BC !important;
 }
 .P_Done{
   background-color: #62b134 !important;
@@ -1048,14 +1054,14 @@ span.Rq_date_V {
   padding-left: 3px;
 }
 .kt_remarks_data {
-  background-color: #f0f0f0;
-  padding: 8px 5px;
-  border-radius: 5px;
-  margin-top: 7px;
-  display: block;
-  white-space: nowrap;
+  border-radius: 35px;
+  padding: 5px 4px;
+  font-weight: 500;
+  color: #4f4f4f;
+  margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   /* cursor: pointer; */
 }
 
@@ -1213,4 +1219,47 @@ span.Rq_date_V {
 .not-started{
   background-color: #888888 !important;
   color:white !important;
+}
+.diff-div {
+  margin: 0px 0px;
+  padding: 14px!important;
+  background: #f2f5ff;
+  border-radius: 4px;
+}
+.diff-div .kt-info-lable-v {
+  color: #000000;
+}
+.diff-div .kt-info-data-v {
+  background-color: #e4e7f9;
+}
+.diff-div .attachment-view {
+  background-color: #e4e7f9;
+  border-radius: 35px;
+  color: #4f4f75;
+}
+.diff-div .kt-approval-msg {
+  background-color: #ffffff;
+}
+.Btn_Accpet{
+  background-color: #bcddc1!important;
+  color: #37613d!important;
+  border: 1px solid #bcddc1!important;
+}
+.Btn_Conditional_Accept {
+  background-color: #e3e3e3!important;
+  color: #777171!important;
+  border: 1px solid #e3e3e3!important;
+}
+.Btn_Conditional_Accept:hover {
+  background-color: #777171!important;
+  color: #fff!important;
+}
+.Btn_Reject{
+  background-color: #ffd2d2!important;
+  color: #cc0b0b!important;
+  border: 1px solid #ffd2d2!important;
+}
+.Btn_Reject:hover, .Btn_Reject.active {
+  background-color: #ff3b3b !important;
+  color: #fff !important;
 }

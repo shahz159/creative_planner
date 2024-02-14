@@ -95,9 +95,9 @@ export class CreateProjectComponent implements OnInit {
 
   PrjCode:string|undefined;
   PrjName:string='';
-  Prjtype:string;
+  Prjtype:string|undefined;
   PrjOfType:string;
-  PrjClient:string;
+  PrjClient:string|undefined;
   PrjDes:string;
   PrjCategory:string|undefined;
   PrjVersion:string;
@@ -181,7 +181,7 @@ export class CreateProjectComponent implements OnInit {
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
-         this.allUser_json=JSON.parse(res[0].allUser_json);
+         this.allUser_json=JSON.parse(res[0].allUser_json); 
          this.owner_json=JSON.parse(res[0].owner_json);
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
@@ -370,82 +370,88 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
+    if(this.PrjOwner&&this.PrjResp&&this.PrjAuth&&this.PrjCrdtr&&this.PrjInformer&&this.PrjSupport.length>0){
+     // when all mandatory fields of step2 provided.
+      const d=new Date();
+      d.setFullYear(d.getFullYear()+2);
+      const enddateofRS=d;
+   
+     const projectInfo={
+           ProjectType:this.Prjtype,
+           Client:this.PrjClient,
+           ProjectName:this.PrjName,
+           Description:this.PrjDes,
+           Category:this.PrjCategory,
+           StartDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(new Date(),'dd-MM-YYYY'):this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
+           EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-YYYY'):this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
+           Owner:this.PrjOwner,
+           Responsible:this.PrjResp,
+           Authority:this.PrjAuth,
+           Coordinator:this.PrjCrdtr,
+           Informer:this.PrjInformer,
+           Auditor:this.PrjAuditor,
+           Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
+           SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
+           // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
+           Duration:'0',
+           DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
+           Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
+           Remarks:this._remarks,
+         
+   
+     };
+     console.log("PRJ INFORMATION :",projectInfo);
+     this.ProjectDto.Status=JSON.stringify(projectInfo);
+     this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
+     this.ProjectDto.isTemplate=this.saveAsTemplate;
+     this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
+     
+     //1. creating project
+     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+   
+           console.log("res after project creation:",res);
+   
+           if(res&&res.message==='Success'){
+               this.PrjCode=res.Project_Code;
+               this.getAddActionDetails();
+   
+               this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
+               //2. file attachment uploading  if present
+               if(this.fileAttachment)
+               this.uploadFileAttachment()
+   
+               // 3. Move to next step
+               if(this.Prjtype==='001'||this.Prjtype==='002')
+               {    // when core, secondary
+                 this.Move_to_Add_action_tab();
+               }
+             this.BsService.ProjectCreatedEvent.emit();
+           }
+           else if(res&&res.message==='Success1'){
+          
+             this.PrjCode=res.Project_Code;
+               this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
+               //2. file attachment uploading  if present
+               if(this.fileAttachment)
+               this.uploadFileAttachment()
+   
+                 this.router.navigate(['./backend/ProjectsSummary']);
+                 // this.closeInfo()
+            this.BsService.ProjectCreatedEvent.emit();
+           }
+           else
+           {
+             this.notification.showError("Unable to create Project","Project Creation Failed");
+           }
+   
+   
+     });
 
-
-   const d=new Date();
-   d.setFullYear(d.getFullYear()+2);
-   const enddateofRS=d;
-
-  const projectInfo={
-        ProjectType:this.Prjtype,
-        Client:this.PrjClient,
-        ProjectName:this.PrjName,
-        Description:this.PrjDes,
-        Category:this.PrjCategory,
-        StartDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(new Date(),'dd-MM-YYYY'):this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
-        EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-YYYY'):this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
-        Owner:this.PrjOwner,
-        Responsible:this.PrjResp,
-        Authority:this.PrjAuth,
-        Coordinator:this.PrjCrdtr,
-        Informer:this.PrjInformer,
-        Auditor:this.PrjAuditor,
-        Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
-        SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
-        // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
-        Duration:'0',
-        DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
-        Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
-        Remarks:this._remarks,
-
-
-  };
-  console.log("PRJ INFORMATION :",projectInfo);
-  this.ProjectDto.Status=JSON.stringify(projectInfo);
-  this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
-  this.ProjectDto.isTemplate=this.saveAsTemplate;
-  this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
-
-  //1. creating project
-  this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-
-        console.log("res after project creation:",res);
-
-        if(res&&res.message==='Success'){
-            this.PrjCode=res.Project_Code;
-            this.getAddActionDetails();
-
-            this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
-            //2. file attachment uploading  if present
-            if(this.fileAttachment)
-            this.uploadFileAttachment()
-
-            // 3. Move to next step
-            if(this.Prjtype==='001'||this.Prjtype==='002')
-            {    // when core, secondary
-              this.Move_to_Add_action_tab();
-            }
-          this.BsService.ProjectCreatedEvent.emit();
-        }
-        else if(res&&res.message==='Success1'){
-
-          this.PrjCode=res.Project_Code;
-            this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
-            //2. file attachment uploading  if present
-            if(this.fileAttachment)
-            this.uploadFileAttachment()
-
-              this.router.navigate(['./backend/ProjectsSummary']);
-              // this.closeInfo()
-         this.BsService.ProjectCreatedEvent.emit();
-        }
-        else
-        {
-          this.notification.showError("Unable to create Project","Project Creation Failed");
-        }
-
-
-  });
+    }
+    else{
+      // please provide all mandatory fields to create project.
+      this.notification.showError('please fill in all mandatory fields.','Required Information');
+    }
  }
 
 
@@ -680,20 +686,26 @@ isPrjSprtDrpDwnOpen:boolean=false;
 
 // responsible field start
 onResponsibleChanged(){
-  if(this.PrjResp.trim()===this.PrjOwner.trim())
-  {
-    const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
-    const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
-    this.PrjOwner=newowr.EmpNo;
+  if(this.PrjResp){
+    if(this.PrjResp.trim()===this.PrjOwner.trim())
+    {
+      const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
+      const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
+      this.PrjOwner=newowr.EmpNo;
+    }
+    this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
+  
+  // selected responsible cannot be selected in the support.
+    const obj=this.PrjSupport.find(item=>item.Emp_No==this.PrjResp);
+    if(obj)this.PrjSupport.splice(this.PrjSupport.indexOf(obj),1);
+  //
   }
-  this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
-
 }
 
 onProjectOwnerChanged(){
-  if(this.PrjOwner.trim()===this.PrjResp.trim())
-  {
-    this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+  if(this.PrjOwner){
+      if(this.PrjOwner.trim()===this.PrjResp.trim())
+      this.PrjResp=this.Responsible_json[0].ResponsibleNo;
   }
 }
 
@@ -1387,6 +1399,27 @@ show_massage:boolean=false
 newpfl_massage(){
   this.show_massage=true
 }
+
+// clearAllFields(){
+
+// this.Prjtype=undefined;
+// this.PrjClient=undefined;
+// this.PrjName='';
+// this.PrjDes='';
+// this.PrjCategory='';
+// this.Prjstartdate='';
+// this.Prjenddate='';
+// this.ngDropdwonPort=[];
+// this.fileAttachment=null;  
+
+// }
+
+
+
+
+
+
+
 
 
 

@@ -246,16 +246,28 @@
                         <!-- Right Side Buttons -->
                         <div class="text-right col-lg-12" >
                             <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="newDetails()"
-                                title="More Infomation">
-                                <i class="fa fa-chart-bar"></i>
+                            data-toggle="kt-tooltip" title="More Infomation">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 22" fill="currentColor">
+                                    <path d="M12.2812 0.814453H2.86279C2.33236 0.814453 1.82365 1.02517 1.44858 1.40024C1.07351 1.77531 0.862793 2.28402 0.862793 2.81445V18.8145C0.862793 19.3449 1.07351 19.8536 1.44858 20.2287C1.82365 20.6037 2.33236 20.8145 2.86279 20.8145H14.8628C15.3932 20.8145 15.9019 20.6037 16.277 20.2287C16.6521 19.8536 16.8628 19.3449 16.8628 18.8145V5.48705L12.2812 0.814453Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" ></path>
+                                    <rect x="3.06885" y="4.28076" width="6.5376" height="2.14" fill="currentColor" class="svg-white"></rect>
+                                    <rect x="3.06885" y="7.14209" width="6.57373" height="2.14" fill="currentColor" class="svg-white"></rect>
+                                    <rect x="11.6045" y="4.28076" width="1.50586" height="2.14" fill="currentColor" class="svg-white"></rect>
+                                    <rect x="11.6045" y="7.14209" width="1.50586" height="2.14" fill="currentColor" class="svg-white"></rect>
+                                    <path d="M11.5101 16.0201C11.2836 16.5558 10.9292 17.028 10.4781 17.3951C10.0269 17.7623 9.49264 18.0134 8.92202 18.1264C8.3514 18.2394 7.76178 18.211 7.20471 18.0435C6.64764 17.876 6.14008 17.5745 5.72641 17.1656C5.31274 16.7566 5.00556 16.2525 4.83171 15.6974C4.65786 15.1423 4.62264 14.553 4.72913 13.9811C4.83562 13.4093 5.08058 12.8722 5.4426 12.4169C5.80461 11.9615 6.27265 11.6018 6.8058 11.3691" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="svg-white"></path>
+                                    <path d="M11.5103 14.1641C11.5103 13.8164 11.4418 13.4721 11.3087 13.1509C11.1757 12.8297 10.9807 12.5379 10.7348 12.292C10.489 12.0462 10.1971 11.8512 9.87593 11.7181C9.55473 11.5851 9.21046 11.5166 8.86279 11.5166V14.1641H11.5103Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="svg-white"></path>
+                                </svg>
                             </button>
-                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" data-toggle="kt-tooltip"
                                 (click)="ProjectInfoDetails()" title="Project Infomation">
-                                <i class="fa fa-info-circle mr-0"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 22" fill="currentColor" >
+                                    <path d="M12.7177 1.25732H3.29932C2.76888 1.25732 2.26018 1.46804 1.8851 1.84311C1.51003 2.21818 1.29932 2.72689 1.29932 3.25732V19.2573C1.29932 19.7878 1.51003 20.2965 1.8851 20.6715C2.26018 21.0466 2.76888 21.2573 3.29932 21.2573H15.2993C15.8297 21.2573 16.3385 21.0466 16.7135 20.6715C17.0886 20.2965 17.2993 19.7878 17.2993 19.2573V5.92992L12.7177 1.25732Z" stroke="" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M9.28955 7.4209H9.29955" stroke="currentColor" class="svg-white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M9.29932 16.4229L9.29932 11.2573" stroke="currentColor" class="svg-white"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
                             </button>
                             <!-- *ngIf="Project_Status != 'Completed'" -->
                             <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" *ngIf="(CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho)"  [hidden]="addbutton_hidden"
-                                (click)="sweetAlert()" title="Create New Action" >
+                                (click)="sweetAlert()" data-toggle="kt-tooltip" title="Create New Action" >
                                 <i class="fas fa-plus mr-0"></i>
                             </button>
 

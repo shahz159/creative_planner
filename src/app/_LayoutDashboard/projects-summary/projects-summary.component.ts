@@ -1098,7 +1098,7 @@ $(document).ready(function(){
     }
   }
 
- delaySrtOrder:'ASC'|'DESC'='DESC';
+ delaySrtOrder:'ASC'|'DESC'='ASC';
   newDelaySorting(){
     if(this._ProjectDataList[0].Status=='Delay'){
       this.delaySrtOrder=this.delaySrtOrder==='ASC'?'DESC':'ASC';
@@ -1107,6 +1107,7 @@ $(document).ready(function(){
       });
      // console.log(this._ProjectDataList,'_ProjectDataList')
     }
+    console.log(this._ProjectDataList,'_ProjectDataList')
   }
 
   moreDetails(pcode) {
