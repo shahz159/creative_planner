@@ -100,7 +100,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   projectActionInfo: any;         // contain all prj actions which are in  Delay,In Process,Complete....
   projectMemos: any;
   _totalMemos: number = 0;
-  _linkedMemos: number = 0;
+  _linkedMemos: number = 0; 
   Memos_List: any;
   memosOptions: any;
   approvalObj: ApprovalDTO;
@@ -250,9 +250,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  
+
+
+
   ngAfterViewInit(): void {
     this.getResponsibleActions();
-    this.GetActivityDetails();
+    this.GetActivityDetails();  
   }
 
   getusername() {
@@ -282,80 +286,89 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   prjPIECHART:any;
   
   drawStatistics() {
+//standard graph cal start
+let x=0;
+let AL=0;
+if(['003','008'].includes(this.projectInfo.Project_Block)){
+  
+  let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
+  let d2=new Date();                           // TODAY DATE.
+  x=0;
+  switch(this.projectInfo.SubmissionId){
+        case 1:{ x=moment(d1).diff(d2,'days');    };break;
+        case 2:{ x=moment(d1).diff(d2,'weeks');    };break;
+        case 3:{ x=moment(d1).diff(d2,'months');    };break;
+        case 4:{ x=moment(d1).diff(d2,'quarters');   };break;
+        case 5:{      };break;
+        case 6:{ x=moment(d1).diff(d2,'years');     };break;
+  }
+  
+
+  let timestr=this.projectInfo.StandardAllocatedHours;
+  let t=timestr.split(':');
+  let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
+  AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
+
+}
+//standard graph cal end
+
+if(this.tlTotalHours){
 
 // 1. bar chart.
 var options = {
   series: [{
-  data: [+this.projectInfo.AllocatedHours,this.tlTotalHours,(+this.projectInfo.AllocatedHours)-this.tlTotalHours]
-}],
+    data: ['001', '002'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
+      : [AL, this.tlTotalHours, Math.round(AL - this.tlTotalHours)]
+  }],
   chart: {
-  type: 'bar',
-  height: 350
-},
-plotOptions: {
-  bar: {
-    colors: {
-      ranges: [ 
-      
-       {
-         from:0,
-         to:((25*+this.projectInfo.AllocatedHours)/100),
-         color:'#ff7d7d'
-       },   //  0% - 25%   (red)
-
-       {
-         from:((25*+this.projectInfo.AllocatedHours)/100)+1,
-         to:+this.projectInfo.AllocatedHours,
-         color:'#7dbeff'
-       },   // 26%-100%  (blue)
-
-       {
-         from:(+this.projectInfo.AllocatedHours)+1,
-         to:Infinity,
-         color:'#7da1ff'
-       },   // more than 100% (purple)
-
-
-       {
-         from:-Infinity,
-         to:-1,
-         color:'#00000099'
-       }    // <0  (black)
-     
-    ]
-    },
-    columnWidth: '55%',
-  }
-},
-dataLabels: {
-  enabled: true,
-  formatter:function(v){
-      return v+' hrs';
-  }
-},
-yaxis: {
-  title: {
-    text:''
+    type: 'bar',
+    height: 350
   },
-  labels: {}
-},
-xaxis: {
-  categories: ['Allocated','Used','Remaining'],
-  labels: {
-    rotate: -90
-  }
-}
+  plotOptions: {
+    bar: {
+      distributed: true,
+      horizontal: false,    
+      columnWidth: '55%',
+    }
+  },
+  dataLabels: {
+    enabled: true,
+    style:{
+       colors:['#3a81c9','#3e6be0','#303031'],
+       fontFamily:'Lucida Sans Unicode'
+    },
+    formatter: function (v) {
+      return v + ' hrs';
+    }
+  },
+  yaxis: {
+    title: {
+      text: ''
+    },
+    labels: {}
+  },
+  xaxis: {
+    categories: ['Allocated', 'Used', 'Remaining'],
+    labels: {
+      rotate: -90
+    }
+  },
+  colors:['003', '008'].includes(this.projectInfo.Project_Block)? 
+         ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
+         ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
+        
 };
-if(this.prjBARCHART)
+
+if (this.prjBARCHART)
   this.prjBARCHART.destroy();
+
 this.prjBARCHART = new ApexCharts(document.querySelector("#Bar-chart"), options);
 this.prjBARCHART.render();
 
-
 // 2. pie chart.
-
 let usedhr=this.tlTotalHours;
-let remaininghr=Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours;
+let remaininghr=['003','008'].includes(this.projectInfo.Project_Block)?(AL-this.tlTotalHours):(Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours);
+
 if(remaininghr<0){
   remaininghr=0;
   usedhr=this.projectInfo.AllocatedHours;
@@ -393,10 +406,11 @@ var options1 = {
   },
   labels: ["Used Hours", "Remaining Hours"],
   dataLabels: {
-    dropShadow: {
-      blur: 3,
-      opacity: 0.8
-    }
+   style:{
+     colors:['#2b4790','#616262'],
+     fontWeight:'normal',
+   },
+  
   },
   states: {
     hover: {
@@ -406,12 +420,12 @@ var options1 = {
   theme: {
     palette: 'palette2'
   },
-  colors: ['#8faeff', '#f0f0f0'], 
+  colors: ['#8faeff', '#dbe1e4'], 
   title: {
-    text: "Overall Utilization",
+    text: "Hours used",
     style: {
       fontSize: '10px', 
-      color: '#333',     
+      color: '#6b6b6b',     
       fontFamily: 'Lucida Sans Unicode',  
       fontWeight: 'bold'  
      
@@ -435,146 +449,10 @@ this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1
 this.prjPIECHART.render();
 
 
-    // var options = {
-    //   series: [{
-    //   data: [
-    //     new Number(this.projectInfo.AllocatedHours).toFixed(1),
-    //     new Number(this.tlTotalHours).toFixed(1),
-    //     new Number(this.projectInfo.AllocatedHours-this.tlTotalHours).toFixed(1)]
-    // }],
-    //   chart: {
-    //   type: 'bar',
-    //   height: 350
-    // },
-    // plotOptions: {
-    //   bar: {
-    //     colors: {
-    //       ranges: [ 
-          
-    //        {
-    //          from:0,
-    //          to:((25*this.projectInfo.AllocatedHours)/100),
-    //          color:'#ff7d7d'
-    //        },   //  0% - 25%   (red)
+}else{
+    setTimeout(()=>this.drawStatistics(),2000);   // if tlTotalHours is undefined then run drawStatistics when tlTotalHours is defined.
+}
 
-    //        {
-    //          from:((25*this.projectInfo.AllocatedHours)/100)+1,
-    //          to:this.projectInfo.AllocatedHours,
-    //          color:'#7dbeff'
-    //        },   // 26%-100%  (blue)
-
-    //        {
-    //          from:this.projectInfo.AllocatedHours+1,
-    //          to:Infinity,
-    //          color:'#7da1ff'
-    //        },   // more than 100% (purple)
-
-
-    //        {
-    //          from:-Infinity,
-    //          to:-1,
-    //          color:'#00000099'
-    //        }    // <0  (black)
-         
-    //     ]
-    //     },
-    //     columnWidth: '55%',
-    //   }
-    // },
-    // dataLabels: {
-    //   enabled: true,
-    //   formatter:function(v){
-    //       return v+' hrs';
-    //   },
-    //   style: {
-    //     colors: ['#000000'], // Set the font color to black
-    //   },
-    //   css:{
-    //     fontFamily:'sans-serif',
-    //     fontWeight:'bold'
-    //   }
-    // },
-    // yaxis: {
-    //   title: {
-    //     text:'hours'
-    //   },
-    //   labels: {}
-    // },
-    // xaxis: {
-    //   categories: ['Allocated','Used','Remaining'],
-    //   labels: {
-    //     rotate: -90
-    //   }
-      
-    // }
-    // };
-
-    // var chart = new ApexCharts(document.querySelector("#chart-container"), options);
-    // chart.render();
-
-
-    // this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
-    //   .subscribe(data1 => {
-    //     this.maxDuration = (data1[0]['ProjectMaxDuration']);
-    //     this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
-    //     this.RemainingHours = (data1[0]['RemainingHours']);
-
-    //     this.maxDuration = (this.maxDuration / this.maxDuration) * 100;
-    //     this.RemainingHours = (this.RemainingHours / this.maxDuration) * 100;
-    //     this.UsedInDAR = (this.UsedInDAR / this.maxDuration) * 100;
-
-    //     // new FusionCharts({
-
-    //     //   type: "radialbar",
-    //     //   width: "100%",
-    //     //   height: "100%",
-    //     //   renderAt: "chart-container",
-    //     //   dataSource: {
-    //     //     chart: {
-    //     //       theme: "fusion",
-    //     //       // caption: "7Hr 32M",
-    //     //       // subCaption: "January 2021",
-    //     //       showLegend: 1,
-    //     //       innerRadius: 30,
-    //     //       outerRadius: 105,
-    //     //       showLabels: 1,
-    //     //       labelText: "$label"
-    //     //     },
-    //     //     data: [
-    //     //       {
-    //     //         label: "Remaining hours",
-    //     //         value: this.RemainingHours,
-    //     //         color: "#5867dd" //Custom Color
-    //     //       },
-
-    //     //       {
-    //     //         label: "Used hours",
-    //     //         value: this.UsedInDAR,
-    //     //         color: "#b2beff" //Custom Color
-    //     //       },
-    //     //       {
-    //     //         label: "Total hours",
-    //     //         value: this.maxDuration,
-    //     //         color: "#985eff" //Custom Color
-    //     //       }
-    //     //     ]
-    //     //   }
-    //     // }).render();
-    //     // // chart js end ----------------
-
-
-    //     // var lang = {
-    //     //   "javascript": "70%",
-    //     // };
-    //     // var multiply = 4;
-    //     // $.each(lang, function (language, pourcent) {
-    //     //   var delay = 700;
-    //     //   setTimeout(function () {
-    //     //     $('#' + language + '-pourcent').html(pourcent);
-    //     //   }, delay * multiply);
-    //     //   multiply++;
-    //     // });
-    //   });
   }
 
 
@@ -755,6 +633,7 @@ this.prjPIECHART.render();
   requestaccessList:any=[];
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+    
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -780,24 +659,31 @@ this.prjPIECHART.render();
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
-      if(this.projectActionInfo!=null || this.projectActionInfo.length>0){
+      if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
       }
       this.calculateProjectActions();    // calculate project actions details.
+
       this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
       this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
-      this.filteremployee.forEach((emp)=>{
-       let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
-        if(delayActionsOfEmp.length>0){
-          delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
-          this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
-        }
-      });
+      
+     if(this.filteremployee)
+     {   
+       this.delayActionsOfEmps=[];   // must be empty before calculation.
+          this.filteremployee.forEach((emp)=>{
+            let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
+            if(delayActionsOfEmp.length>0){
+              delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
+              this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
+            }
+          });
+     }
+      
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
         const actionCode=qparams.get('actionCode');
@@ -848,9 +734,14 @@ this.prjPIECHART.render();
           
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
-            return {Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
+            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
+            const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
+            if(p)
+             obj.contribution=p.RespDuration;
+            return obj;
           });
           
+    
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
           // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
@@ -1013,8 +904,6 @@ this.prjPIECHART.render();
   BarChartOfAction:any;
   drawStatistics1(actionCode:string) {
 
-
-
     this.service.DARGraphCalculations_Json(actionCode)
       .subscribe(data1 => {
         console.log("drawstatistics data1:",data1)
@@ -1022,136 +911,59 @@ this.prjPIECHART.render();
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         // this.RemainingHours = (data1[0]['RemainingHours']);
 
-        //  bar chart.
-        var options = {
-          series: [{
-          data: [
-            this.maxDuration,
-            this.UsedInDAR,
-            this.maxDuration-this.UsedInDAR
-            ]
-        }],
-          chart: {
-          type: 'bar',
-          height: 350
-        },
-        plotOptions: {
-          bar: {
-            colors: {
-              ranges: [ 
-              
-              {
-                from:0,
-                to:((25*this.maxDuration)/100),
-                color:'#ff7d7d'
-              },   //  0% - 25%   (red)
+            // new code
 
-              {
-                from:((25*this.maxDuration)/100)+1,
-                to:this.maxDuration,
-                color:'#7dbeff'
-              },   // 26%-100%  (blue)
+            var options = {
+              series: [{
+                data: [
+                  this.maxDuration,
+                  this.UsedInDAR,
+                  this.maxDuration-this.UsedInDAR
+                  ]
+              }],
+              chart: {
+                type: 'bar',
+                height: 350
+              },
+              plotOptions: {
+                bar: {
+                  distributed: true,
+                  horizontal: false,    
+                  columnWidth: '55%',
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                style:{
+                  colors:['#3a81c9','#3e6be0','#303031'],
+                  fontFamily:'Lucida Sans Unicode'
+                },
+                formatter: function (v) {
+                  return v + ' hrs';
+                }
+              },
+              yaxis: {
+                title: {
+                  text: ''
+                },
+                labels: {}
+              },
+              xaxis: {
+                categories: ['Allocated', 'Used', 'Remaining'],
+                labels: {
+                  rotate: -90
+                }
+              },
+              colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+                  
+            };
 
-              {
-                from:this.maxDuration+1,
-                to:Infinity,
-                color:'#7da1ff'
-              },   // more than 100% (purple)
-
-
-              {
-                from:-Infinity,
-                to:-1,
-                color:'#00000099'
-              }    // <0  (black)
-            
-            ]
-            },
-            columnWidth: '55%',
-          }
-        },
-        dataLabels: {
-          enabled: true,
-          formatter:function(v){
-              return v+' hrs';
-          }
-        },
-        yaxis: {
-          title: {
-            text:''
-          },
-          labels: {}
-        },
-        xaxis: {
-          categories: ['Allocated','Used','Remaining'],
-          labels: {
-            rotate: -90
-          }
-        }
-        };
-
-
-        if(this.BarChartOfAction)
-          this.BarChartOfAction.destroy();
-
-        this.BarChartOfAction = new ApexCharts(document.querySelector("#chart-container1"), options);
-        this.BarChartOfAction.render();
-
-        // new FusionCharts({
-
-        //   type: "radialbar",
-        //   width: "100%",
-        //   height: "100%",
-        //   renderAt: "chart-container1",
-        //   dataSource: {
-        //     chart: {
-        //       theme: "fusion",
-        //       // caption: "7Hr 32M",
-        //       // subCaption: "January 2021",
-        //       showLegend: 1,
-        //       innerRadius: 30,
-        //       outerRadius: 105,
-        //       showLabels: 1,
-        //       labelText: "$label"
-        //     },
-        //     data: [
-        //       {
-        //         label: "Remaining hours",
-        //         value: this.RemainingHours,
-        //         color: "#5867dd" //Custom Color
-        //       },
-
-        //       {
-        //         label: "Used hours",
-        //         value: this.UsedInDAR,
-        //         color: "#b2beff" //Custom Color
-        //       },
-        //       {
-        //         label: "Total hours",
-        //         value: this.maxDuration,
-        //         color: "#985eff" //Custom Color
-        //       }
-        //     ]
-        //   }
-        // }).render();
-        // // chart js end ----------------
-
-        // var lang = {
-        //   "javascript": "70%",
-        // };
-        // var multiply = 4;
-        // $.each(lang, function (language, pourcent) {
-        //   var delay = 700;
-        //   setTimeout(function () {
-        //     $('#' + language + '-pourcent').html(pourcent);
-        //   }, delay * multiply);
-        //   multiply++;
-        // });
-
-      });
-
-
-
+            if (this.prjBARCHART)
+              this.prjBARCHART.destroy();
+            this.prjBARCHART = new ApexCharts(document.querySelector("#chart-container1"), options);
+            this.prjBARCHART.render();
+            // new code
+            });
 
   }
 
@@ -1438,8 +1250,9 @@ this.prjPIECHART.render();
                 });
 
                 // now only unselected memos will be visible.
-
+       
                 console.log("this memosOptions:", this.memosOptions)
+              
               }
               console.log("get memo subject:", this.projectMemos);
 
@@ -1455,19 +1268,12 @@ this.prjPIECHART.render();
 
 
 
-
-
-
-
-
-
    onMemoSelected(e:{MailId:number,Subject:string}){
     // when single selection
       this.selectedMemos=new Array({MailId:e.MailId,Subject:e.Subject});
     //
        console.log("selectedMemos:",this.selectedMemos);
    }
-
 
 
    onMemoDeselected(e:{MailId:number,Subject:string}){
@@ -1480,11 +1286,7 @@ this.prjPIECHART.render();
 
 
 
-
-
-
-
-
+  @ViewChild('DMSDROPDOWN') dmsDD:MatAutocompleteTrigger;
 
 
 
@@ -2048,7 +1850,7 @@ this.prjPIECHART.render();
 
 
   actionCompleted() {
-debugger
+
     if (this._remarks === "") { // when the user not provided the remark then .
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
@@ -2077,14 +1879,37 @@ debugger
             fd.append('file', this.selectedFile);
             fd.append("Project_Name", this._Subtaskname);
             this.service._UpdateSubtaskByProjectCode(fd)
-              .subscribe(data => {
-                this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-                this.getAttachments(1);
-                this.calculateProjectActions();
+              .subscribe((event: HttpEvent<any>) => {
+
+                switch (event.type) {
+                  case HttpEventType.Sent:console.log('Request has been made!');break;
+                  case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    if (this.progress == 100) console.log('progress completed');
+                    break;
+                  case HttpEventType.Response:{
+                    var myJSON = JSON.stringify(event);
+                    this._Message = (JSON.parse(myJSON).body).Message;
+                    if(this._Message==='Success')
+                    {
+                      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+                      // after the action is successfully completed
+                      this.closeInfo();
+                      this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+                      this.getAttachments(1);
+                      this.calculateProjectActions();
+                    }
+                    else
+                    this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
+                  };break;
+                 
+                } 
               });
-            this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+
             // ACTION SUBMITTED.
+
+
 
             // 2.  PROJECT SUBMISSION.
             const fd1 = new FormData();
@@ -2172,25 +1997,47 @@ debugger
       fd.append('file', this.selectedFile);
       fd.append("Project_Name", this._Subtaskname);
       this.service._UpdateSubtaskByProjectCode(fd)
-        .subscribe(data => {
+        .subscribe((event: HttpEvent<any>) => {
 
-          let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
-          const prjActionindex = this.projectActionInfo.indexOf(prjAction)
-          if (prjActionindex !== -1) {
-            const prjActionComp = { ...prjAction, Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: this.projectActionInfo.length };
-            this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
-          }  // updated project action.
+          switch (event.type) {
+            case HttpEventType.Sent:console.log('Request has been made!');break;
+            case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
+            case HttpEventType.UploadProgress:
+              this.progress = Math.round(event.loaded / event.total * 100);
+              if (this.progress == 100) console.log('progress completed');
+              break;
+            case HttpEventType.Response:{
+              var myJSON = JSON.stringify(event);
+              this._Message = (JSON.parse(myJSON).body).Message;
+              if(this._Message==='Success')
+              {
+                this.notifyService.showSuccess("Successfully Updated", 'Action completed.');
+                // after the action is successfully completed
+                let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
+                const prjActionindex = this.projectActionInfo.indexOf(prjAction)
+                if (prjActionindex !== -1) {
+                  const prjActionComp = { ...prjAction, Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
+                  this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
+                  this.clearFilterConfigs(); 
+                }  // updated project action.
 
-          this._remarks = "";
-          this._inputAttachments = "";
-          this.selectedFile = null;
-          // this.getProjectDetails(this.URL_ProjectCode);
-          this.calculateProjectActions();     // recalculate the project actions.
-          this.closeActCompSideBar();
-          this.getAttachments(1);        // close action completion sidebar.
-
+                this._remarks = "";
+                this._inputAttachments = "";
+                this.selectedFile = null;
+                // this.getProjectDetails(this.URL_ProjectCode);
+                this.calculateProjectActions();     // recalculate the project actions.
+                this.closeActCompSideBar();   // close action completion sidebar.
+                this.getAttachments(1);
+                
+              }
+              else
+              this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
+              
+            };break;
+           
+          } 
         });
-      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+
     }
 
   }
@@ -2263,6 +2110,8 @@ debugger
 
   ProjectPercentage: any;
   ProjectStatus: string;
+  Subtask_Res_List:any;
+  totalSubtaskHours:number=0;
 
   getResponsibleActions() {
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
@@ -2272,6 +2121,13 @@ debugger
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+        this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
+        this.totalSubtaskHours = (data[0]['SubtaskHours']);
+        console.log('Subtask_Res_List:',this.Subtask_Res_List);
+        console.log('totalSubtaskHours:',this.totalSubtaskHours);
+
+
+
         console.log('darArr:', this.Category_List);
 
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.Responsible_EmpNo == this.Current_user_ID)) {
@@ -3278,7 +3134,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
   updateMainProject() {
-    
+    debugger
     if (this.projectInfo.Project_Type == 'To do List') {
       this.selectedFile = null;
     }
@@ -3294,6 +3150,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
       fd.append("Project_Name", this.projectInfo.Project_Name);
       this.service._fileuploadService(fd).
         subscribe((event: HttpEvent<any>) => {
+          debugger
           switch (event.type) {
             case HttpEventType.Sent:
               console.log('Request has been made!');
@@ -3328,7 +3185,6 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
           // this._projectSummary.GetProjectsByUserName('RACIS Projects');
         });
     }
-
     else if (this.isAction == true) {
       const fd = new FormData();
       fd.append("Project_Code", this.URL_ProjectCode);
@@ -5625,7 +5481,7 @@ removeSelectedParticipant(item){
 }
 
 
-
+// DMS SIDEBAR SECTION CODE DROPDOWN START
 
 onDMSMemoSelected(e){
   const memoChoosed=this.Memos_List.find((c)=>c.MailId===e.option.value);
@@ -5658,6 +5514,9 @@ removeSelectedDMSMemo(item){
 
 
 
+// DMS SIDEBAR SECTION CODE DROPDOWN END
+
+
   // meeting section code end here
 
 
@@ -5672,12 +5531,14 @@ removeSelectedDMSMemo(item){
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
   onProject_Hold(id, Pcode) {
+    debugger
     this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
     if (this.Holddate != null) {
       this.objProjectDto.Project_holddate = this.Holddate;
       this.objProjectDto.Project_Code = Pcode;
       this.objProjectDto.Remarks = this.hold_remarks;
       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
+        debugger
         this._Message = data['message'];
         if (this._Message == 'Project Hold Updated') {
 
@@ -5706,6 +5567,7 @@ removeSelectedDMSMemo(item){
 
 // Project / Action release.
   holdreleaseProject() {
+    debugger
     if(this.currentActionView===undefined){
           // project release
           if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
@@ -5745,7 +5607,7 @@ removeSelectedDMSMemo(item){
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
           this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-
+debugger
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
@@ -6140,6 +6002,16 @@ closePanel(){
   // new dms section code:
 
   isDMSDrpDwnOpen: boolean = false;    // initially dms dropdown is in closed state.
+
+  
+
+
+
+
+
+
+
+
   onMemoClicked(e: any) {
     const memoChoosed = this.memosOptions.find((c) => c.MailId === e.option.value)
     if (memoChoosed) {
@@ -6232,6 +6104,7 @@ clearFilterConfigs(){
 }
 
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+if(['001','002'].includes(this.projectInfo.Project_Block)){  
 
   let arr=this.projectActionInfo;
   if(!(filterby==='All'&&sortby==='All'))
@@ -6256,6 +6129,10 @@ getFilteredPrjActions(filterby:string='All',sortby:string='All'){
     }
   }
   return arr;
+
+}
+  
+return [];
 }
 
 isActionAvailable(e){
@@ -6514,10 +6391,7 @@ displaymessagemain(){
   this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
 }
 
-// action cancel start
-actionCancel(index:number){
-}
-  
+
 formatTimes(time: string): string {
   const [hours, minutes] = time.split(':');
   const date = new Date();
@@ -6534,7 +6408,7 @@ formatTimes(time: string): string {
 
 
 
-// action cancel end
+
 
 
 // open Graph screen start
@@ -6602,7 +6476,7 @@ showFullGraph(){
       caption: "Activities Over Time",
       compactdatamode: "1",
       dataseparator: "|",
-      pyaxisname: "Activities",
+      yaxisname: "Activities",
       snumberprefix: "",
       setadaptiveymin: "0",
       formatnumberscale: "0",
@@ -6618,8 +6492,10 @@ showFullGraph(){
       showplotshadow: "0", // Disable plot shadow
       showvalues: "0", // Hide data values on the plot
       theme: "fusion", // Use Fusion theme for modern styling
+      multiCanvas: "false",
       scrollheight: "4",
       scrollColor: "#f9f9f9",
+      
       
     },
     categories: [
@@ -6633,19 +6509,19 @@ showFullGraph(){
         data: actvies.map(n => n.total).join('|'),  // 2|5|8|2|3|4|5|5|5|8 ....
         color: "#6388e3" // Set line color 
       }
-    
     ]
   };
   
   FusionCharts.ready(function() {
     var myChart = new FusionCharts({
-      type: "zoomlinedy",
+      type: "zoomline",
       renderAt: "full-graph",
       width: "100%",
       height: "100%",
       dataFormat: "json",
       dataSource
     }).render();
+    
   });
   
 }
@@ -6660,6 +6536,123 @@ onGraphOptionChanged(option:string){
 
 
 //  Full Graph code end
+
+
+
+// trackbyfuncton(index, item){
+//   if(!item) return null;
+//   return item.MailId;
+// }
+
+
+
+
+
+// action cancelled start
+
+
+cancelAction(index) {
+
+  Swal.fire({
+    title: 'Action Cancel',
+    html: 'Are you sure to cancel the Action "<strong>' + this.projectActionInfo[index].Project_Name + '</strong>"?<br>Note: The cancelled Action will be deactivated.',
+    // icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((response: any) => {
+    if (response.value) {
+
+
+
+    if([this.projectActionInfo[index].Project_Owner,this.projectInfo.OwnerEmpNo,this.isHierarchy].includes(this.Current_user_ID)){
+        // if user is project owner, action owner or is in heirarchy.
+        this.approvalObj.Project_Code = this.projectActionInfo[index].Project_Code;
+        this.approvalObj.Request_type = 'Project Cancel';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+          this.closePrjCancelSb();
+          this._Message = (data['message']);
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Action cancelled by " + this._fullname, "Success");
+            this.getProjectDetails(this.URL_ProjectCode);
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project cancel failed", "Failed");
+          }
+        });
+
+    }
+    else{
+      this.closePrjCancelSb();
+      this.notifyService.showError("Access denied", "Failed")
+    }
+
+
+
+
+      // if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo) {
+        
+
+      //   this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+      //     this.closePrjCancelSb();
+      //     this._Message = (data['message']);
+      //     if (this._Message == '1') {
+      //       this.notifyService.showSuccess("Project cancel request sent to the project owner", "Success");
+      //       this.getProjectDetails(this.URL_ProjectCode);
+      //       this.getapproval_actiondetails();
+      //     }
+      //     else if (this._Message == '2' || this._Message == '0') {
+      //       this.notifyService.showError("Project cancel failed", "Failed");
+      //     }
+      //   });
+      //   // this.Clear_Feilds();
+      //   console.log(this.approvalObj, "cancel")
+      // }
+      // else if (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.isHierarchy == true) {
+      
+
+     
+      // }
+      // else {
+        
+      // }
+
+
+    } else if (response.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Action not canceled',
+        'error'
+      )
+      this.closePrjCancelSb();
+    }
+  });
+
+
+}
+
+// action cancelled end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

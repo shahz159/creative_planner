@@ -4235,7 +4235,7 @@ span.Kt-m-count {
    transform:scale(0.95);
 }
 
-.less-hrs-allocated{
+.remaining-hrs{
      background-color: #ff7d7d !important;
 }
 
@@ -4243,11 +4243,11 @@ span.Kt-m-count {
     background-color: #7dbeff !important;
 }
 
-.extra-hrs-allocated{
+.used-hrs{
     background-color: #7da1ff !important;
 }
 
-.remaining-hrs-allocated{
+.extra-hrs-used{
    background-color: #00000099 !important;
 }
 
@@ -4426,4 +4426,21 @@ p.kt-dt-l {
   top: 50%;
   margin-top: -13px;
   border-width: 13px;
+}
+
+
+
+
+.prctg-in-project{
+  height: 20px;
+  padding: 0px 4px;
+  border-radius: 4px;
+  background-color: #e1e1e1;
+  color: #5e5e5e;
+  font-size: 12px; 
+}
+
+
+.hold-act-text{
+   color :#a39258 !important;
 }

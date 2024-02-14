@@ -1757,7 +1757,7 @@
                           </div>
                           <div class="tb-ftv mt-1">
                             <div class="kt-ctv-btn mt-0">
-                              <button type="button" (click)="back_to_options()"
+                              <button type="button" (click)="back_to_options();"
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back To options</button>
                               <button type="button" (click)="Move_to_add_team()"
                               [disabled]="!(Prjtype&&PrjClient&&PrjCategory&&(PrjName&&PrjName.trim().split(' ').length>=3)&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&
@@ -1783,6 +1783,7 @@
                                     (change)="onProjectOwnerChanged();    setRACIS(); ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
+                                  <span style="color:red" *ngIf="!PrjOwner">please select owner.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1795,7 +1796,7 @@
                                     <ng-option
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
-
+                                  <span style="color:red" *ngIf="!PrjResp">please select responsible.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1807,7 +1808,7 @@
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
                                       [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
-
+                                  <span style="color:red" *ngIf="!PrjAuth">please select authority.</span>
                                 </div>
                               </div>
 
@@ -1819,7 +1820,7 @@
                                     <ng-option *ngFor="let p of allUser_json"
                                       [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                                   </ng-select>
-
+                                  <span style="color:red" *ngIf="!PrjCrdtr">please select coordinator.</span>
                                 </div>
                               </div>
 
@@ -1831,7 +1832,7 @@
                                     <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name
                                       }}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjInformer">* Please select Inform</span>
+                                  <span style="color:red" *ngIf="!PrjInformer">please select informer.</span>
                                 </div>
                               </div>
 
@@ -1878,16 +1879,27 @@
 
                                     <mat-autocomplete aria-label="PrjSprtDrpDwn" #ProjSprtDrpDwn="matAutocomplete"
                                       (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value='';  setRACIS();  "
-                                      (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
-                                      <mat-option *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value"
-                                        [value]="p.Emp_No">
-                                        <mat-checkbox color="primary"
-                                          [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
-                                        {{p.Emp_Name}}
-                                      </mat-option>
+                                      (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; "> 
+                                       
+                                      <ng-container *ngIf="PrjResp;else PrjRespIsUndefined">
+                                        <ng-container *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value">
+                                            <mat-option *ngIf="p.Emp_No!=PrjResp.trim()" [value]="p.Emp_No">
+                                            <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+                                            {{p.Emp_Name}}
+                                            </mat-option> 
+                                       </ng-container>
+                                      </ng-container>
+                                      <ng-template #PrjRespIsUndefined>
+                                        <mat-option  *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value"  [value]="p.Emp_No">
+                                          <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+                                          {{p.Emp_Name}}
+                                          </mat-option> 
+                                      </ng-template>
+
+
                                     </mat-autocomplete>
                                   </mat-form-field>
-                                  <span style="color:red" *ngIf="PrjSupport.length===0">* Please select Support</span>
+                                  <span style="color:red" *ngIf="PrjSupport.length===0">please select support.</span>
                                 </div>
                               </div>
 
