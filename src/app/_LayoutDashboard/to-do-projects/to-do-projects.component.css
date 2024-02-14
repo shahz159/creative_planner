@@ -496,3 +496,6 @@ button.btn.btn-label-primary:hover .svg-white{
 .not-started{
   color: #888888!important;
 }
+.text-danger{
+    color: #EE4137  !important;
+}
