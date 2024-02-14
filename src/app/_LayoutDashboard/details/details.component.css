@@ -4492,3 +4492,9 @@ p.kt-dt-l {
   background-color: #ff3b3b !important;
   color: #fff !important;
 }
+::ng-deep .raphael-group-178-dataset-axis {
+  display: none !important;
+}
+::ng-deep .raphael-group-564-dataset-Label-group {
+  display: none !important;
+}
