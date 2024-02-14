@@ -1057,8 +1057,13 @@ this.prjPIECHART.render();
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
-    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
+
+    // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
+    
+    $("#kt_tab_pane_2_4").removeClass("show active");
+    $("a[href='#kt_tab_pane_2_4']").removeClass("active");
+    
 
      //  add support close end here.
 
@@ -6570,14 +6575,14 @@ showFullGraph(){
       multiCanvas: "false",
       scrollheight: "4",
       scrollColor: "#f9f9f9",
-      
-      
+
     },
     categories: [
       {
         category: alldates.join('|')     // '2022-01-20'|'2021-05-01'|'2024-08-11'....
       }
     ],
+  
     dataset: [
       {
         seriesname: this.graphOption,
