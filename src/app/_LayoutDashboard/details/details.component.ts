@@ -983,6 +983,9 @@ this.prjPIECHART.render();
     }
   }
 
+  prostate(pstate){
+    this.proState=pstate;
+  }
 
   Usercomment: string = '';
   isRequestDialogOpen: boolean = false;
@@ -2047,17 +2050,20 @@ this.prjPIECHART.render();
   }
 
   closeActCompSideBar() {
+
+    this.selectedFile = null;
     this._inputAttachments = '';
     this._remarks = '';
     $('#project-action-Checkbox').prop('checked', false);
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#_file1').val('');
+    $('#upload').html('Select a file');
   }  // for temp we are using this.
 
-
+  proState:boolean=false
   actionCompleted() {
-debugger
     if (this._remarks === "") { // when the user not provided the remark then .
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }

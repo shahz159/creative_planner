@@ -516,6 +516,7 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("AssignId", this.task_id.toString());
       fd.append("Owner", this.owner);
       fd.append("isattachment",this.completionattachment.toString());
+
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
       }
