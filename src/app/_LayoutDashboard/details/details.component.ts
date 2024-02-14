@@ -1528,6 +1528,11 @@ this.prjPIECHART.render();
     // console.log(this.requestDetails, 'transfer');
   }
 
+
+  getstandardapprovalStats(){
+    
+  }
+
   approvalClick(actionType) {
     this.comments = ""
     switch (actionType) {
