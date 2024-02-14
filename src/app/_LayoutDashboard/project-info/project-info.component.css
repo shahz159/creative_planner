@@ -521,7 +521,7 @@ align-items: center;
 display: flex;
 align-items: center;
 font-size: 15px;
-color: #6388e3;
+color: #000;
 font-weight: 400;
 margin-bottom: 10px;    letter-spacing: 0.5px;
 }
@@ -529,8 +529,8 @@ margin-bottom: 10px;    letter-spacing: 0.5px;
 text-align: center;
 }
 .Kt-Pd-Status {
-  background-color: #000;
-  color: #fff;
+  background-color:#B2D732  !important;
+  /* color: #000  !important; */
   margin: 0px 0px;
   font-size: 13px;
   letter-spacing: 0;
@@ -597,11 +597,12 @@ background-color: #eaf2fd !important;
 
 
 .Done{
-  background-color: #62B134 ;
-  color:#000;
+  background-color: #62B134 !important;
+  color:white !important;
 }
 .ToDoCompleted{
-  background-color:#000 !important;
+  background-color: #62B134 !important;
+  color:white !important;
 }
 .Inprocess{
   background-color: #1B272D !important;
@@ -617,7 +618,8 @@ background-color: #eaf2fd !important;
   }
 
 .ToDo{
-  background-color: #1B272D !important;
+  background-color: #335B1B !important;
+  color:white !important
 }
 
 .P_Delay{
@@ -630,19 +632,25 @@ background-color: #eaf2fd !important;
 
 .Delay{
 background-color: #EE4137 !important;
-color:#000;
+color:white !important;
 }
 .Cancelled{
-  background-color:#DFDFDF !important;
+  background-color:#EE4137 !important;
+  color: #FFF;
   }
 
   .P_Not_Started{
-    background-color: #888888 !important;
+    background-color: #b2d732 !important;
   }
 
 
 .UnderApproval{
+  background-color: #B2D732 !important;
+  color: #fff !important;
+}
+.Not_Started{
   background-color: #888888 !important;
+  color: #fff !important;
 }
 
 .P_New_Project_Rejected{
@@ -652,7 +660,7 @@ color:#000;
 
 .NewProjectRejected{
   background-color: #DFDFDF !important;
-  color:#000;
+  color:#000 !important;
 }
 
 .EnactiveUnderApproval{
@@ -676,7 +684,7 @@ color:#000;
 
 .CompletionUnderApproval{
   background-color: #B2D732 !important;
-  color:#000;
+  color:#000 !important;
 }
 .DeadlineExtend{
   background-color: #F88282 !important;
@@ -687,8 +695,8 @@ color:#000;
 }
 
 .Hold{
-  background-color: #E2D9BC;
-  color:#000;
+  background-color: #E2D9BC !important;
+  color:#000 !important;
 }
 
 .kt-project-sts-data {
@@ -833,7 +841,7 @@ span.B-Bot {
   margin-right: 2px;
   border-radius: 2px;
   /* background-color: #e5e5e5; */
-  background-color:  #888888;
+  background-color:  #B2D732;
 
 }
 .kt-prg-progress ul {
@@ -870,7 +878,7 @@ li.w-50P {
   background-color: #EE4137 !important;
 }
 .P_Hold{
-  background-color: #E2d9bc !important;
+  background-color: #E2D9BC !important;
 }
 .P_Done{
   background-color: #62b134 !important;
@@ -1204,9 +1212,13 @@ span.Rq_date_V {
   background-color: #3e97ff !important;
 }
 
-.new-project-under-approval{
-background-color:#B2D732 ;
-color:#000 !important;
+.new-project{
+
+  color:#B2D732
+}
+.not-started{
+  background-color: #888888 !important;
+  color:white !important;
 }
 .diff-div {
   margin: 0px 0px;

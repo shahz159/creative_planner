@@ -83,7 +83,7 @@
                             role="button">
                             {{CountInprocess}} InProcess </a> -->
                         <a href="javascript:void(0)" (click)="labelInprocess()" [hidden]="HideStatusDropdown"
-                            class="badge badge-warning kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
+                            class="badge in-processs kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
                             In-Process</a>
 
                     </ng-container>
@@ -94,7 +94,7 @@
                             {{CountDelay}} Delay
                         </a> -->
                         <a href="javascript:void(0)" (click)="labelDelay()" [hidden]="HideStatusDropdown"
-                            class="badge Delay kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
+                            class="badge Delay-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
                     </ng-container>
                     <ng-container *ngIf="CountCompleted > 0">
                         <a href="javascript:void(0)" (click)="labelCompleted()" [hidden]="HideStatusDropdown"
@@ -111,7 +111,7 @@
 
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
-                            class="badge new-project kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} New Project Under
+                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} New Project Under
                             Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
@@ -204,10 +204,13 @@
 
                                                 </div>
                                             </div>
-                                            <ng-container
-                                            *ngFor="let item1 of _ProjectsListBy_Pid | filter:_PortProjStatus|filter:_SearchProjects;let i=index">
+                                        
 
-                                            <div class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                        
+                                            <ng-container
+                                            *ngFor="let item1 of _ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
+
+                                            <div *ngIf="item1.Status==_PortProjStatus||_PortProjStatus==''"   class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -262,8 +265,10 @@
                                                     </div>
                                                     <div class="mx-2 p-1" style="flex: 1;">
                                                         <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}}
-                                                            <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
-                                                        </p>
+                                                        </p>     
+                                                    </div>
+                                                    <div>                                    
+                                                        <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>                              
                                                     </div>
                                                     <div class="mx-2 p-1">
                                                         <span class="kt-widget__other">{{item1.Exec_BlockName}}</span>
@@ -311,11 +316,12 @@
                                                         <div *ngIf="item1.Status=='Delay'">
                                                             <span
                                                                 class="Delay_color font-weight-400">{{item1.Status}}
-                                                            </span>
+
                                                             <span *ngIf="item1.Delaydays>0"
-                                                                class="Delay_color delayDays">
+                                                                class=" delayDays">
                                                                 <strong>{{item1.Delaydays}}
                                                                     days</strong>
+                                                                  </span>
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completed'">
@@ -331,7 +337,7 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='InProcess'">
                                                             <span
-                                                                class="text-warning font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
+                                                                class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
                                                             <br>
                                                             <!-- <span *ngIf="item1.Delaydays<0"
                                                                 class="text-info delayDays">
@@ -363,7 +369,7 @@
                                                         <div *ngIf="item1.Status=='Completion Under Approval'">
                                                             <!-- <h2>Mubeen</h2> -->
                                                             <span
-                                                                class="font-weight-400 Completion_Under_Approval_color">{{item1.Status}}
+                                                                class="font-weight-400 completion-under-approval">{{item1.Status}}
                                                             </span>
 
                                                         </div>
@@ -412,7 +418,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Achieved'">
-                                                            <span class="todo-achieved font-weight-400
+                                                            <span class="todoachieved font-weight-400
                                                             ">{{item1.Status}}
                                                             </span>
                                                         </div>
@@ -434,8 +440,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </ng-container>`
 
+                                           </ng-container>`
+                                     
                                             <div class="d-flex justify-content-between mt-1" *ngIf="_MessageIfNotOwner==''">
                                                 <div>
                                                     <!-- [hidden]="Share_preferences" -->

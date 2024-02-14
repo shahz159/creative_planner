@@ -33,7 +33,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meeting-details.component';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 
 
@@ -88,6 +88,7 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
     MatAutocompleteModule,
     MatInputModule,
     MatFormFieldModule,
+    ScrollingModule
   ],
   providers:
     [AuthGuard

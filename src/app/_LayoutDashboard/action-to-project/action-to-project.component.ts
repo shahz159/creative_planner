@@ -20,6 +20,7 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
 import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import tippy from 'node_modules/tippy.js';
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
@@ -150,7 +151,7 @@ export class ActionToProjectComponent implements OnInit {
       });
 
 
-    
+
 
       this.BsService.bs_templAction.subscribe(ta=>{
            this.Sub_ProjectName=ta.name;
@@ -159,12 +160,20 @@ export class ActionToProjectComponent implements OnInit {
                    this.selectedEmpNo=ta.assignedTo;
                    this.disableAssignedField=true;
             }
-     
-          
+
+
          })
 
-     
-     
+         tippy('#actattach', {
+          content: "If you select this checkbox, you need to attach a file when completing the action.",
+          arrow: true,
+          animation: 'scale-extreme',
+          theme: 'dark',
+          animateFill: true,
+          inertia: true,
+          placement:'left'
+        });
+
   }
 
   GetAllEmployeesForAssignDropdown() {
@@ -325,6 +334,12 @@ export class ActionToProjectComponent implements OnInit {
       // console.log("Project List for Dropdown...",this._ProjectDataList);
     });
   }
+
+  completionattachment:boolean=true
+
+  // test(){
+  //   alert(this.completionattachment)
+  // }
 
   onFileChange(e) {
     this._inputAttachments = [...this._inputAttachments, {
@@ -500,6 +515,7 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("EmployeeName", localStorage.getItem('UserfullName'));
       fd.append("AssignId", this.task_id.toString());
       fd.append("Owner", this.owner);
+      fd.append("isattachment",this.completionattachment.toString());
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
       }
@@ -557,7 +573,7 @@ export class ActionToProjectComponent implements OnInit {
            this.createproject.getActionsDetails();
            this.createproject.newProjectDetails(this._MasterCode);
 
-          this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection 
+          this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
           this.closeInfo();
         }
         else {
@@ -636,7 +652,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-    debugger
+   
     // alert(this._Urlid);
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);

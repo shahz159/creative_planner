@@ -15,7 +15,7 @@ import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/
 import 'moment/locale/ja';
 import 'moment/locale/fr';
 import Swal from 'sweetalert2';
-
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -502,16 +502,32 @@ submitDar() {
           fd.append("Remarks", this._remarks);                                                                  // REMARKS 
           fd.append('file', this.selectedFile);                                                                // FILE ATTACHMENT.
           this.service._UpdateSubtaskByProjectCode(fd)
-            .subscribe(data => {});
-          this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+            .subscribe((event: HttpEvent<any>) => {
+
+              switch (event.type) {
+                case HttpEventType.Sent:console.log('Request has been made!');break;
+                case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
+                case HttpEventType.UploadProgress:{
+                  const progress=Math.round(event.loaded / event.total * 100);
+                  console.log("progress value:->",progress)
+                  if (progress == 100) console.log('progress completed');
+                };break;
+                case HttpEventType.Response:{
+                  var myJSON = JSON.stringify(event);
+                  this._Message = (JSON.parse(myJSON).body).Message;
+                  if(this._Message==='Success')
+                  {
+                    this.notifyService.showSuccess("Successfully Updated", 'Action completed.');
+                    //  the action is successfully completed
+                  }
+                  else
+                  this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
+                };break;
+               
+              } 
+            });
         }
         // after timeline submission success then complete the action also if needed.  end
-      
-      
-      
-      
-      
-      
       
         this.clear();   // clear all fields. project_code, master_code, .... 
     });

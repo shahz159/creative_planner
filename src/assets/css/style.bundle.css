@@ -44132,12 +44132,11 @@ td>.kt-radio.kt-radio--single {
 }
 
 .kt-badge.kt-badge--unified-primary {
-    color: #5867dd;
+    color: #5867DD;
     background: rgba(88, 103, 221, 0.1);
 }
-
 .kt-badge.kt-badge--unified-success {
-    color: #1dc9b7;
+    color: #1DC9B7;
     background: rgba(29, 201, 183, 0.1);
 }
 

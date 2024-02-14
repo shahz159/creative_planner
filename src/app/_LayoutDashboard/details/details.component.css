@@ -764,6 +764,7 @@ span.kt-dt-l {
 
 .Kt-Pd-Status {
   background-color: #EE4137;
+  /* color:white; */
   color:#ffffff;
   font-weight: 600;
   padding: 0.1em;
@@ -872,7 +873,8 @@ span.kt-dt-l {
 
 .Delay{
   background-color: #EE4137 !important;
-  color:#fff !important;
+  color:white !important
+  /* color:#fff !important; */
   }
 
 .bg-delay {
@@ -1445,11 +1447,6 @@ label.my-chosse-flv {
 /*color codes*/
 
 
-.UnderApproval {
-  background-color: #888888 !important;
-  color:#fff;
-}
-
 .Inprocess {
   background-color: #1B272D !important;
   color:#fff;
@@ -1458,12 +1455,12 @@ label.my-chosse-flv {
 
 .NewProjectRejected {
   background-color: #DFDFDF !important;
-  color:#000;
+  color:#000 !important;
 }
 
 .Done {
   background-color: #62B134 !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 .EnactiveUnderApproval {
@@ -1478,21 +1475,22 @@ label.my-chosse-flv {
 
 .DeadlineExtend {
   background-color: #F88282 !important;
-  color: #fff;
+  color: #000 !important;
 }
 
 .Hold {
-  background-color: #E2D9BC;
-  color: #000;
+  background-color: #E2D9BC !important;
+  color: #000 !important;
 }
 
 .Cancelled{
-  background-color:#DFDFDF !important;
+  background-color:#EE4137 !important;
+  color: #fff !important;
   }
 
   .ForwardUnderApproval{
     background-color: #B2D732 !important;
-    color:#000;
+    color:#000 !important;
   }
 
 
@@ -1666,7 +1664,7 @@ span.B-Bot {
   background-color: #1B272D !important;
 }
 .P_Not-Started{
-  background-color: #888888 !important;
+  background-color: #B2D732 !important;
 }
 .P_Active{
   background-color: #0089FB !important;
@@ -1683,7 +1681,7 @@ span.B-Bot {
 }
 .P_Done{
   background-color: #62B134  !important;
- 
+
 }
 .P_Very_Slow{
   background-color: #E1a63d !important;
@@ -1760,7 +1758,10 @@ a.kt-inbox__icon:hover svg path {
 }
 
 
-
+.New_Project_Under_Approval{
+  background-color: #B2D732 !important;
+  color: #000 !important;
+}
 
 
 
@@ -3978,7 +3979,7 @@ span.Rq_date_V {
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
 }
-.notification .notif-img{     
+.notification .notif-img{
      align-self: flex-start;
      min-width: 20px;
      max-width: 20px;
@@ -3992,7 +3993,7 @@ span.Rq_date_V {
   font-size: 14px;
   color: black;
 }
-.notification .notif-date{ 
+.notification .notif-date{
  align-self: flex-start;
  font-family: Lucida Sans Unicode;
  font-weight: bold;
@@ -4018,7 +4019,7 @@ span.Rq_date_V {
 
 .notification .ctrl-btns:hover{
     background-color: #ffabab;
-   
+
 }
 
 .notification:hover .ctrl-btns{
@@ -4124,7 +4125,7 @@ span.Kt-m-count {
 }
 .info-card-body .kt-info-project-box, .info-card-body .kt-info-action-box{
   background: #fff;
-  
+
   padding: 10px 10px!important;
   box-shadow: 0 2px 16px #cccccc80;
   border-radius: 4px;
@@ -4194,7 +4195,7 @@ span.Kt-m-count {
 
 /*recent activity graph css start*/
 .View_graph_act {
-  position: absolute; 
+  position: absolute;
   top: -38px;
   right: 100px;
   background-color: #ecefff;
@@ -4239,7 +4240,7 @@ span.Kt-m-count {
    transform:scale(0.95);
 }
 
-.less-hrs-allocated{
+.remaining-hrs{
      background-color: #ff7d7d !important;
 }
 
@@ -4247,11 +4248,11 @@ span.Kt-m-count {
     background-color: #7dbeff !important;
 }
 
-.extra-hrs-allocated{
+.used-hrs{
     background-color: #7da1ff !important;
 }
 
-.remaining-hrs-allocated{
+.extra-hrs-used{
    background-color: #00000099 !important;
 }
 
@@ -4280,7 +4281,7 @@ p.kt-dt-l {
   text-decoration: none;
   min-width: 0px;
   text-align: left;
-  padding: 8px 16px; 
+  padding: 8px 16px;
 }
 .project-users .user-list:first-child{
   border-top: none;
@@ -4358,7 +4359,7 @@ p.kt-dt-l {
   margin-left: 0.5rem;
 }
 .kt-project-acion-content{
-  direction: ltr; 
+  direction: ltr;
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -4431,6 +4432,48 @@ p.kt-dt-l {
   margin-top: -13px;
   border-width: 13px;
 }
+
+
+
+
+.prctg-in-project{
+  height: 20px;
+  padding: 0px 4px;
+  border-radius: 4px;
+  background-color: #e1e1e1;
+  color: #5e5e5e;
+  font-size: 12px; 
+}
+
+
+.hold-act-text{
+   color :#a39258 !important;
+}
+.new-project-under{
+  background-color: #B2D732 !important;
+  color: #000;
+}
+
+.Not_Started{
+  background-color: #888888 !important;
+  color: #fff;
+}
+
+.todo-completed{
+  background-color: #62B134 !important;
+  color:white !important;
+}
+
+.todo-achieved{
+  background-color: #335B1B !important;
+ color: white !important;
+}
+
+
+.not-started{
+  background-color: #888888 !important;
+  color: #fff !important;
+}
 .diff-div {
   margin: 0px 0px;
   padding: 14px!important;
@@ -4480,4 +4523,10 @@ p.kt-dt-l {
   padding: 0px 8px;
   border-radius: 3px;
   font-weight: 500;
+}
+::ng-deep .raphael-group-178-dataset-axis {
+  display: none !important;
+}
+::ng-deep .raphael-group-564-dataset-Label-group {
+  display: none !important;
 }

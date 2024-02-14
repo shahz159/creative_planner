@@ -1535,7 +1535,7 @@
                                 <div class="col-lg-12 mb-3">
                                   <div class="d-flex align-items-end" style="column-gap:10px">
 
-
+                                     <ng-container *ngIf="_portfoliosList;else portList"></ng-container>
                                     <mat-form-field class="drp-dwn-field w-100">
                                       <mat-label>Select Portfolios </mat-label>
                                       <mat-chip-list #selectedPortfolioDrpDwn>
@@ -1547,7 +1547,7 @@
                                           </button>
                                         </mat-chip>
                                       </mat-chip-list>
-                                      <div class="d-flex">
+                                      <div class="d-flex" (click)="newpfl_massage()">
                                         <input class="flex-1" [matChipInputFor]="selectedPortfolioDrpDwn"
                                           [matAutocomplete]="PortfolioDrpDwn" #portfolioTF />
                                         <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
@@ -1568,13 +1568,12 @@
                                         </mat-option>
                                       </mat-autocomplete>
                                     </mat-form-field>
-
-
-
-
-
-
-                                  </div>
+                                  </div>                                  
+                                  <ng-container *ngIf="(_portfoliosList =='' && show_massage==true)">
+                                    <p style="color:#646c9a">
+                                      *You do not have portfolios; please create portfolios
+                                    </p>
+                                  </ng-container>                      
                                 </div>
 
 
@@ -1612,7 +1611,7 @@
                               <ng-container *ngIf="Prjtype == '003' || Prjtype=='008'">
                                 <div class="col-lg-8 text-left">
                                   <div class="form-group row  Ic_ed" [ngSwitch]="prjsubmission">
-                                    <div class="input-icon Sub_In_ed col-lg-6" *ngSwitchDefault> 
+                                    <div class="input-icon Sub_In_ed col-lg-6" *ngSwitchDefault>
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
@@ -1633,7 +1632,7 @@
                                         <span style="color:#646c9a"> Max Duration limit is 2hrs only.</span>
                                       </div>
                                     </div>
-                                    <div class="input-icon Sub_In_ed col-lg-6" *ngSwitchCase="3"> 
+                                    <div class="input-icon Sub_In_ed col-lg-6" *ngSwitchCase="3">
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
@@ -1762,7 +1761,7 @@
                           </div>
                           <div class="tb-ftv mt-1">
                             <div class="kt-ctv-btn mt-0">
-                              <button type="button" (click)="back_to_options()"
+                              <button type="button" (click)="back_to_options();"
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back To options</button>
                               <button type="button" (click)="Move_to_add_team()"
                               [disabled]="!(Prjtype&&PrjClient&&PrjCategory&&(PrjName&&PrjName.trim().split(' ').length>=3)&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&
@@ -1788,6 +1787,7 @@
                                     (change)="onProjectOwnerChanged();    setRACIS(); ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
+                                  <span style="color:red" *ngIf="!PrjOwner">please select owner.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1800,7 +1800,7 @@
                                     <ng-option
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
-
+                                  <span style="color:red" *ngIf="!PrjResp">please select responsible.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1812,7 +1812,7 @@
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
                                       [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
-
+                                  <span style="color:red" *ngIf="!PrjAuth">please select authority.</span>
                                 </div>
                               </div>
 
@@ -1824,7 +1824,7 @@
                                     <ng-option *ngFor="let p of allUser_json"
                                       [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                                   </ng-select>
-
+                                  <span style="color:red" *ngIf="!PrjCrdtr">please select coordinator.</span>
                                 </div>
                               </div>
 
@@ -1836,7 +1836,7 @@
                                     <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name
                                       }}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjInformer">* Please select Inform</span>
+                                  <span style="color:red" *ngIf="!PrjInformer">please select informer.</span>
                                 </div>
                               </div>
 
@@ -1883,16 +1883,27 @@
 
                                     <mat-autocomplete aria-label="PrjSprtDrpDwn" #ProjSprtDrpDwn="matAutocomplete"
                                       (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value='';  setRACIS();  "
-                                      (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
-                                      <mat-option *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value"
-                                        [value]="p.Emp_No">
-                                        <mat-checkbox color="primary"
-                                          [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
-                                        {{p.Emp_Name}}
-                                      </mat-option>
+                                      (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; "> 
+                                       
+                                      <ng-container *ngIf="PrjResp;else PrjRespIsUndefined">
+                                        <ng-container *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value">
+                                            <mat-option *ngIf="p.Emp_No!=PrjResp.trim()" [value]="p.Emp_No">
+                                            <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+                                            {{p.Emp_Name}}
+                                            </mat-option> 
+                                       </ng-container>
+                                      </ng-container>
+                                      <ng-template #PrjRespIsUndefined>
+                                        <mat-option  *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value"  [value]="p.Emp_No">
+                                          <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+                                          {{p.Emp_Name}}
+                                          </mat-option> 
+                                      </ng-template>
+
+
                                     </mat-autocomplete>
                                   </mat-form-field>
-                                  <span style="color:red" *ngIf="PrjSupport.length===0">* Please select Support</span>
+                                  <span style="color:red" *ngIf="PrjSupport.length===0">please select support.</span>
                                 </div>
                               </div>
 
@@ -3037,7 +3048,7 @@
                 </div>
                 <div class="kt-act-info">
                   <div class="kt-act-ttl-v">
-                    <h6>{{task_Name}}</h6>
+                    <h6>{{PrjName}}</h6>
                     <div class="d-flex">
                       <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg xmlns="http://www.w3.org/2000/svg"
                             width="15px" height="15px" viewBox="0 0 1024 1024" version="1.1" class="icon">
@@ -3047,8 +3058,8 @@
                             <path
                               d="M341.3 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7S384 61.8 384 85.3v149.3c0 23.6-19.1 42.7-42.7 42.7zM682.7 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v149.3c-0.1 23.6-19.2 42.7-42.7 42.7zM810.7 490.7H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7zM810.7 704H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7S834.2 704 810.7 704z"
                               fill="#5F6379"></path>
-                          </svg></span><span class="kt-act-ic-info">{{date_str}} -
-                          {{date_End}}</span></div>
+                          </svg></span><span class="kt-act-ic-info">{{Prjstartdate |date :'dd-MM-yyyy'}} -
+                          {{Prjenddate |date :'dd-MM-yyyy'}}</span></div>
                       <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg width="15px" height="15px"
                             viewBox="0 0 1024.00 1024.00" version="1.1" xmlns="http://www.w3.org/2000/svg"
                             fill="#3688ff" stroke="#3688ff" stroke-width="0.01024" class="icon">
