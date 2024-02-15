@@ -150,7 +150,6 @@ export class CreateProjectComponent implements OnInit {
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
-    this.isFileUploaded=false;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
     this.getPortfolios();
@@ -203,7 +202,7 @@ export class CreateProjectComponent implements OnInit {
           this.Prjtype==='008'?'Routine Tasks':
           this.Prjtype==='011'?'To do List':'';
 
-
+          this.PrjClient=this.Client_json[0].EmpClient;
           this.setRACIS();
 
       }
@@ -370,7 +369,12 @@ export class CreateProjectComponent implements OnInit {
 
 
  createProject(){
-    if(this.PrjOwner&&this.PrjResp&&this.PrjAuth&&this.PrjCrdtr&&this.PrjInformer&&this.PrjSupport.length>0){
+  this.Client_json.forEach(element => {
+    if(element.ClientName==this.PrjClient){
+      this.PrjClient=element.ClientId;
+    }
+  });
+  if(this.PrjOwner&&this.PrjResp&&this.PrjAuth&&this.PrjCrdtr&&this.PrjInformer&&this.PrjSupport.length>0){
      // when all mandatory fields of step2 provided.
       const d=new Date();
       d.setFullYear(d.getFullYear()+2);
@@ -415,7 +419,7 @@ export class CreateProjectComponent implements OnInit {
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
    
-               this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created");
+               this.notification.showSuccess(this.PrjName+" Successfully saved.","Project Saved");
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
@@ -550,7 +554,9 @@ export class CreateProjectComponent implements OnInit {
 
   closeInfos(){
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
-    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
@@ -558,6 +564,7 @@ export class CreateProjectComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/createproject/"]);
 
 
@@ -795,10 +802,10 @@ onProjectOwnerChanged(){
 
     this.BsService.SetNewPojectCode(this.PrjCode);
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
-
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
 
@@ -806,10 +813,11 @@ onProjectOwnerChanged(){
 
 
   closeActionSideBar(){
-    document.getElementById("project-creation-page").classList.remove("position-fixed");
+    // document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -819,11 +827,11 @@ onProjectOwnerChanged(){
 
 
   Project_details_edit() {
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
+    // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
   //  this.getResponsibleActions();
    this.initializeSelectedValue()
@@ -833,7 +841,7 @@ onProjectOwnerChanged(){
 
 
 // file reupload start here
-isFileUploaded:boolean=false;
+isFileUploaded:boolean|undefined=undefined;
 openFileReupload(){
    $('#file-reupload-section').removeClass('d-none');
 }

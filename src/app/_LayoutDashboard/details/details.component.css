@@ -4444,7 +4444,7 @@ p.kt-dt-l {
   border-radius: 4px;
   background-color: #e1e1e1;
   color: #5e5e5e;
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 
@@ -4531,4 +4531,9 @@ p.kt-dt-l {
 }
 ::ng-deep .raphael-group-564-dataset-Label-group {
   display: none !important;
+}
+
+.not-star{
+  color: #141111;
+  background-color: #5a4f4f38;
 }

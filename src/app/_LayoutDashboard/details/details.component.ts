@@ -40,6 +40,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 // import 'moment/locale/fr';
 
 import tippy from 'tippy.js';
+import { CreateprojectService } from 'src/app/_Services/createproject.service';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -100,7 +101,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   projectActionInfo: any;         // contain all prj actions which are in  Delay,In Process,Complete....
   projectMemos: any;
   _totalMemos: number = 0;
-  _linkedMemos: number = 0; 
+  _linkedMemos: number = 0;
   Memos_List: any;
   memosOptions: any;
   approvalObj: ApprovalDTO;
@@ -164,6 +165,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   EndDate1: any = new Date();
   currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
   bothActTlSubm:boolean=false;
+  ProjDto:ProjectDetailsDTO|undefined;
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -184,6 +186,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
+    private createProjectService:CreateprojectService
 
   ) {
 
@@ -250,13 +253,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  
+
 
 
 
   ngAfterViewInit(): void {
     this.getResponsibleActions();
-    this.GetActivityDetails();  
+    this.GetActivityDetails();
   }
 
   getusername() {
@@ -290,7 +293,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 let x=0;
 let AL=0;
 if(['003','008'].includes(this.projectInfo.Project_Block)){
-  
+
   let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
   let d2=new Date();                           // TODAY DATE.
   x=0;
@@ -302,7 +305,7 @@ if(['003','008'].includes(this.projectInfo.Project_Block)){
         case 5:{      };break;
         case 6:{ x=moment(d1).diff(d2,'years');     };break;
   }
-  
+
 
   let timestr=this.projectInfo.StandardAllocatedHours;
   let t=timestr.split(':');
@@ -327,8 +330,8 @@ var options = {
   plotOptions: {
     bar: {
       distributed: true,
-      horizontal: false,    
-      columnWidth: '55%',
+      horizontal: false,
+      columnWidth: '62%',
     }
   },
   dataLabels: {
@@ -353,10 +356,10 @@ var options = {
       rotate: -90
     }
   },
-  colors:['003', '008'].includes(this.projectInfo.Project_Block)? 
+  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
          ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
          ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
-        
+
 };
 
 if (this.prjBARCHART)
@@ -410,7 +413,7 @@ var options1 = {
      colors:['#2b4790','#616262'],
      fontWeight:'normal',
    },
-  
+
   },
   states: {
     hover: {
@@ -420,15 +423,15 @@ var options1 = {
   theme: {
     palette: 'palette2'
   },
-  colors: ['#8faeff', '#dbe1e4'], 
+  colors: ['#8faeff', '#dbe1e4'],
   title: {
     text: "Hours used",
     style: {
-      fontSize: '10px', 
-      color: '#6b6b6b',     
-      fontFamily: 'Lucida Sans Unicode',  
-      fontWeight: 'bold'  
-     
+      fontSize: '10px',
+      color: '#6b6b6b',
+      fontFamily: 'Lucida Sans Unicode',
+      fontWeight: 'bold'
+
     }
   },
   responsive: [{
@@ -633,7 +636,7 @@ this.prjPIECHART.render();
   requestaccessList:any=[];
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-    
+
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -660,6 +663,8 @@ this.prjPIECHART.render();
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
+        this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
+        console.log('Now After Sorting:',this.projectActionInfo);
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
@@ -671,9 +676,9 @@ this.prjPIECHART.render();
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
-      
+
      if(this.filteremployee)
-     {   
+     {
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
@@ -683,7 +688,7 @@ this.prjPIECHART.render();
             }
           });
      }
-      
+
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
         const actionCode=qparams.get('actionCode');
@@ -728,9 +733,18 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+       
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+
+          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
+          const uniqueNamesArray = [...this.uniqueName];
+
+          this.newArray = uniqueNamesArray.slice(3);
+          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);  
+          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
+          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
+          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
@@ -740,21 +754,7 @@ this.prjPIECHART.render();
              obj.contribution=p.RespDuration;
             return obj;
           });
-          
-    
-          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
-          const uniqueNamesArray = [...this.uniqueName];
-          // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
-          // this.uniqueNamesArray1 = [...this.uniqueOwner];
 
-          // console.log("===========>",this.uniqueNamesArray1[0].Emp_No);
-
-
-           this.newArray = uniqueNamesArray.slice(3);
-          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
-          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
-          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
         }
       });
 
@@ -810,7 +810,7 @@ this.prjPIECHART.render();
                   this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                 };
           })
-       
+
         }
       })
   }
@@ -868,10 +868,12 @@ this.prjPIECHART.render();
     if(index!=undefined){
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-
     }
   }
 
+  prostate(pstate){
+    this.proState=pstate;
+  }
 
   Usercomment: string = '';
   isRequestDialogOpen: boolean = false;
@@ -928,7 +930,7 @@ this.prjPIECHART.render();
               plotOptions: {
                 bar: {
                   distributed: true,
-                  horizontal: false,    
+                  horizontal: false,
                   columnWidth: '55%',
                 }
               },
@@ -955,7 +957,7 @@ this.prjPIECHART.render();
                 }
               },
               colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
-                  
+
             };
 
             if (this.prjBARCHART)
@@ -1060,10 +1062,10 @@ this.prjPIECHART.render();
 
     // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
-    
+
     $("#kt_tab_pane_2_4").removeClass("show active");
     $("a[href='#kt_tab_pane_2_4']").removeClass("active");
-    
+
 
      //  add support close end here.
 
@@ -1262,9 +1264,9 @@ this.prjPIECHART.render();
                 });
 
                 // now only unselected memos will be visible.
-       
+
                 console.log("this memosOptions:", this.memosOptions)
-              
+
               }
               console.log("get memo subject:", this.projectMemos);
 
@@ -1509,6 +1511,7 @@ this.prjPIECHART.render();
 
         }
         if (this.requestType == 'Task Complete') {
+          this.getstandardapprovalStats();  
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
           console.log(this.complete_List,"fahan")
@@ -1527,6 +1530,15 @@ this.prjPIECHART.render();
     });
 
     // console.log(this.requestDetails, 'transfer');
+  }
+
+standardjson:any;
+  getstandardapprovalStats(){
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+      this.requestDetails = data as [];
+      console.log(this.requestDetails,"task approvals");
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']);
+    });
   }
 
   approvalClick(actionType) {
@@ -1852,17 +1864,20 @@ this.prjPIECHART.render();
   }
 
   closeActCompSideBar() {
+
+    this.selectedFile = null;
     this._inputAttachments = '';
     this._remarks = '';
     $('#project-action-Checkbox').prop('checked', false);
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#_file1').val('');
+    $('#upload').html('Select a file');
   }  // for temp we are using this.
 
-
+  proState:boolean=false
   actionCompleted() {
-
     if (this._remarks === "") { // when the user not provided the remark then .
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
     }
@@ -1915,8 +1930,8 @@ this.prjPIECHART.render();
                     else
                     this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
                   };break;
-                 
-                } 
+
+                }
               });
 
             // ACTION SUBMITTED.
@@ -2030,7 +2045,7 @@ this.prjPIECHART.render();
                 if (prjActionindex !== -1) {
                   const prjActionComp = { ...prjAction, Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
                   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
-                  this.clearFilterConfigs(); 
+                  this.clearFilterConfigs();
                 }  // updated project action.
 
                 this._remarks = "";
@@ -2040,14 +2055,14 @@ this.prjPIECHART.render();
                 this.calculateProjectActions();     // recalculate the project actions.
                 this.closeActCompSideBar();   // close action completion sidebar.
                 this.getAttachments(1);
-                
+
               }
               else
               this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
-              
+
             };break;
-           
-          } 
+
+          }
         });
 
     }
@@ -3244,7 +3259,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-            console.log(this.AttachmentList,'AttachmentList')
+            console.log('my AttachmentList:',this.AttachmentList);
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
@@ -6015,7 +6030,7 @@ closePanel(){
 
   isDMSDrpDwnOpen: boolean = false;    // initially dms dropdown is in closed state.
 
-  
+
 
 
 
@@ -6116,7 +6131,7 @@ clearFilterConfigs(){
 }
 
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
-if(['001','002'].includes(this.projectInfo.Project_Block)){  
+if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo;
   if(!(filterby==='All'&&sortby==='All'))
@@ -6143,7 +6158,7 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
   return arr;
 
 }
-  
+
 return [];
 }
 
@@ -6582,7 +6597,7 @@ showFullGraph(){
         category: alldates.join('|')     // '2022-01-20'|'2021-05-01'|'2024-08-11'....
       }
     ],
-  
+
     dataset: [
       {
         seriesname: this.graphOption,
@@ -6601,7 +6616,7 @@ showFullGraph(){
       dataFormat: "json",
       dataSource
     }).render();
-    
+
   });
 
 }
@@ -6676,7 +6691,7 @@ cancelAction(index) {
 
 
       // if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo) {
-        
+
 
       //   this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
       //     this.closePrjCancelSb();
@@ -6694,12 +6709,12 @@ cancelAction(index) {
       //   console.log(this.approvalObj, "cancel")
       // }
       // else if (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.isHierarchy == true) {
-      
 
-     
+
+
       // }
       // else {
-        
+
       // }
 
 
@@ -6722,19 +6737,57 @@ cancelAction(index) {
 
 
 
+// submit 'not started' project to project owner for approval start. 
+
+submitPrjApprv2Owner(){
+
+if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+  if(this.projectActionInfo&&this.projectActionInfo.length>0){
+    this.ProjDto=new ProjectDetailsDTO(); 
+
+    Swal.fire({
+      title: 'Submit Project',
+      html: `Are you sure to Submit this Project : <strong><q>${this.projectInfo.Project_Name}</q></strong> to <u>${this.projectInfo.Owner}</u> for Approval?`,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+        if(response.isConfirmed){ 
+// submit project 
+          this.ProjDto.Emp_No=this.Current_user_ID;
+          this.ProjDto.isTemplate=false;
+          this.ProjDto.Project_Code=this.projectInfo.Project_Code;
+          this.ProjDto.Remarks=null;
+
+          this.createProjectService.NewUpdateNewProjectApproval(this.ProjDto).subscribe((res:any)=>{
+              if(res&&res.message==='Success'){
+                this.notifyService.showSuccess("Project is send to Project Owner :"+this.projectInfo.Owner+' for Approval',"Success");
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+              else
+              this.notifyService.showError('something went wrong!','Failed');
 
 
+          });
+// submit project
+        } })
 
+  }
+  else{
+    Swal.fire(
+      'Action Required',
+      'Please provide atleast one action to submit the project.',
+      'error'
+    );
+  }
+}
+else{
+console.log('you are not allowed to submit this project.')
+}
 
+}
 
-
-
-
-
-
-
-
-
+// submit 'not started' project to project owner for approval end.
 
 
 
