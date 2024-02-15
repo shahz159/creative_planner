@@ -1511,7 +1511,7 @@ this.prjPIECHART.render();
 
         }
         if (this.requestType == 'Task Complete') {
-          // this.getstandardapprovalStats();  
+          this.getstandardapprovalStats();  
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
           console.log(this.complete_List,"fahan")
