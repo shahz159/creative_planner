@@ -150,7 +150,6 @@ export class CreateProjectComponent implements OnInit {
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
-    this.isFileUploaded=false;
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
     this.getPortfolios();
@@ -842,7 +841,7 @@ onProjectOwnerChanged(){
 
 
 // file reupload start here
-isFileUploaded:boolean=false;
+isFileUploaded:boolean|undefined=undefined;
 openFileReupload(){
    $('#file-reupload-section').removeClass('d-none');
 }
