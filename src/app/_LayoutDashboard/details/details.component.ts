@@ -40,6 +40,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 // import 'moment/locale/fr';
 
 import tippy from 'tippy.js';
+import { CreateprojectService } from 'src/app/_Services/createproject.service';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -164,6 +165,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   EndDate1: any = new Date();
   currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
   bothActTlSubm:boolean=false;
+  ProjDto:ProjectDetailsDTO|undefined;
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -184,6 +186,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
+    private createProjectService:CreateprojectService
 
   ) {
 
@@ -661,6 +664,7 @@ this.prjPIECHART.render();
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
+        console.log('Now After Sorting:',this.projectActionInfo);
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
@@ -864,7 +868,6 @@ this.prjPIECHART.render();
     if(index!=undefined){
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-
     }
   }
 
@@ -6734,19 +6737,57 @@ cancelAction(index) {
 
 
 
+// submit 'not started' project to project owner for approval start. 
+
+submitPrjApprv2Owner(){
+
+if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+  if(this.projectActionInfo&&this.projectActionInfo.length>0){
+    this.ProjDto=new ProjectDetailsDTO(); 
+
+    Swal.fire({
+      title: 'Submit Project',
+      html: `Are you sure to Submit this Project : <strong><q>${this.projectInfo.Project_Name}</q></strong> to <u>${this.projectInfo.Owner}</u> for Approval?`,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+        if(response.isConfirmed){ 
+// submit project 
+          this.ProjDto.Emp_No=this.Current_user_ID;
+          this.ProjDto.isTemplate=false;
+          this.ProjDto.Project_Code=this.projectInfo.Project_Code;
+          this.ProjDto.Remarks=null;
+
+          this.createProjectService.NewUpdateNewProjectApproval(this.ProjDto).subscribe((res:any)=>{
+              if(res&&res.message==='Success'){
+                this.notifyService.showSuccess("Project is send to Project Owner :"+this.projectInfo.Owner+' for Approval',"Success");
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+              else
+              this.notifyService.showError('something went wrong!','Failed');
 
 
+          });
+// submit project
+        } })
 
+  }
+  else{
+    Swal.fire(
+      'Action Required',
+      'Please provide atleast one action to submit the project.',
+      'error'
+    );
+  }
+}
+else{
+console.log('you are not allowed to submit this project.')
+}
 
+}
 
-
-
-
-
-
-
-
-
+// submit 'not started' project to project owner for approval end.
 
 
 
