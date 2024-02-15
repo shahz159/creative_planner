@@ -1508,6 +1508,7 @@ this.prjPIECHART.render();
 
         }
         if (this.requestType == 'Task Complete') {
+          // this.getstandardapprovalStats();  
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
           console.log(this.complete_List,"fahan")
@@ -1528,9 +1529,13 @@ this.prjPIECHART.render();
     // console.log(this.requestDetails, 'transfer');
   }
 
-
+standardjson:any;
   getstandardapprovalStats(){
-    
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+      this.requestDetails = data as [];
+      console.log(this.requestDetails,"task approvals");
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']);
+    });
   }
 
   approvalClick(actionType) {
