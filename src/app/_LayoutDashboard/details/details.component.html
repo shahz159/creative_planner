@@ -789,7 +789,7 @@
                                                             *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
 
 
-                                                            <div class="progress-bar UnderApproval" role="progressbar"
+                                                            <div class="progress-bar P_Not-Started" role="progressbar"
                                                                 [ngStyle]="{width: (TOTAL_ACTIONS_UNDER_APPROVAL/TOTAL_ACTIONS)*100+'%'}"
                                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                             </div>
@@ -839,7 +839,7 @@
                                                         <div class="kt-prg-progress">
                                                             <ul type="none">
                                                                 <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
-                                                                        class="B-Bot P_Not-Started"></span> New Project Under Approval
+                                                                        class="B-Bot P_Not-Started"></span> New Action Under Approval
                                                                     <b>({{
                                                                         TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_IN_PROCESS"><span
@@ -1415,7 +1415,6 @@
                                                         class="kt-projcect-act-list"
                                                         (click)="showActionDetails(action.IndexId-1);prostate(action.proState);"
                                                         [ngClass]="{'Active':currentActionView===action.IndexId-1}"
-
                                                         >
                                                         <div class="row curser-pointer">
                                                             <div class="col-lg-8 pl-0 pr-1">
@@ -1576,11 +1575,11 @@
                                                         </g>
                                                     </svg>
                                                 </div>
-                                                Projects Created
+                                                Task Complete approvals
                                             </div>
-                                            <div>
-                                                <button _ngcontent-ftp-c392="" (click)="approval_btn()" class="btn btn-outline-success btn-sm mr-4 fs-8">Accept All</button>
-                                            </div>
+                                            <!-- <div>
+                                                <button (click)="approval_btn()" class="btn btn-outline-success btn-sm mr-4 fs-8">Accept All</button>
+                                            </div> -->
                                             <div class="kt-project-type curser-pointer d-none">
                                                 <div class="Kt-Pd-Status Add_Action_btn">
                                                     <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg"
@@ -1594,23 +1593,23 @@
                                         </div>
 
 
-                                            <div class="kt-project-action-list-view flipped">
-                                                <div class="kt-project-acion-content">
-
-                                                        <div  class="kt-projcect-act-list Active" >
+                                            <!-- <div class="kt-project-action-list-view flipped">
+                                                    <div class="kt-project-acion-content">
+                                                <ng-container  *ngFor="let item of standardjson; let i=index">
+                                                        <div  class="kt-projcect-act-list" >
                                                             <div class="row curser-pointer">
                                                                 <div class="col-lg-8 pl-0 pr-1">
                                                                     <div class="kt-p-box border-r-0">
                                                                         <div class="kt-action-p-tittle">
-                                                                            <h4>test oppo122</h4>
+                                                                            <h4>{{item.Remarks}}</h4>
                                                                         </div>
                                                                         <div
                                                                             class="d-flex align-items-center justify-content-between">
                                                                             <div class="kt-info-lable-v">
-                                                                                By Md Waseem Akram
+                                                                                By {{item.SubmittedBy}}
                                                                             </div>
                                                                             <div class="kt-info-lable-v">
-                                                                                10-02-2024
+                                                                                {{item.Rec_Date | date:'dd-MM-yyyy'}}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1619,11 +1618,11 @@
                                                                     <div class="kt-p-box border-l-0 text-center">
                                                                         <div class="kt-p-status">
                                                                             <div class="kt-p-action-No">
-                                                                                Daily
+                                                                                Task Complete {{i+1}}
                                                                             </div>
                                                                             <div class="kt-p-action-Status">
                                                                                 <span>
-                                                                                    <span   class="Status-In-progress">New Action Under Approval</span>
+                                                                                    <span   class="Status-In-progress">Under Approval</span>
                                                                                 </span>
                                                                             </div>
                                                                         </div>
@@ -1631,8 +1630,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                </ng-container>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
 
                                             <div class="no-prjact-found ">
@@ -2185,6 +2185,8 @@
                                                     Timeline</button>
                                             </div>
                                             <ng-container *ngIf="projectInfo">
+                                                 <ng-container *ngIf="projectInfo.Status!=='Not Started';else sendApr2Owner">
+
                                                 <div class="project_more_Action_options" *ngIf="(
                                             Current_user_ID == projectInfo.OwnerEmpNo ||
                                             Current_user_ID == projectInfo.ResponsibleEmpNo ||
@@ -2208,6 +2210,7 @@
                                                             </svg>
                                                         </div>
                                                         <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
+                                                          
                                                             <button class="Ct-btn Bt-cancel ml-2"
                                                                 *ngIf=" projectInfo.Status!='Completed'"
                                                                 (click)="openPrjCancelSb()">Project Cancel</button>
@@ -2243,6 +2246,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                </ng-container>
+                                                <ng-template #sendApr2Owner>
+                                                    <button (click)="submitPrjApprv2Owner()" *ngIf="Current_user_ID==projectInfo.ResponsibleEmpNo"  class="Ct-btn ml-2">Submit Project</button>
+                                                </ng-template>
                                             </ng-container>
                                         </div>
 
@@ -2548,7 +2556,34 @@
                                                             title="{{requestComments}}">{{requestComments}}</div>
                                                     </div>
 
+                                                    <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
+                                                        <div class="kt-info-lable-v">Attachment</div>
 
+                                                        <div class="">
+                                                            <div class="attachment-view">
+                                                                <span>
+                                                                    <svg _ngcontent-ldk-c393=""
+                                                                        xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                        height="16" fill="currentColor"
+                                                                        viewBox="0 0 16 16" class="bi bi-paperclip">
+                                                                        <path _ngcontent-ldk-c393=""
+                                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </span>
+
+                                                                <!--//// old attachement /// <span (click)="openPDF(iscloud,url)" data-toggle="tooltip"
+                                                                title="{{completedoc}}">
+                                                                {{completedoc}}</span> -->
+
+                                                                <span
+                                                                    (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
+                                                                    data-toggle="tooltip" title="{{completedoc}}">
+                                                                    {{completedoc}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
+                                                    </div>
 
 
 
@@ -2594,34 +2629,7 @@
                                                         <div class="kt-info-data-v text-center">
                                                             {{requestDate|date:'dd-MM-yyyy'}}</div>
                                                     </div>
-                                                    <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
-                                                        <div class="kt-info-lable-v">Attachment</div>
-
-                                                        <div class="">
-                                                            <div class="attachment-view">
-                                                                <span>
-                                                                    <svg _ngcontent-ldk-c393=""
-                                                                        xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                        height="16" fill="currentColor"
-                                                                        viewBox="0 0 16 16" class="bi bi-paperclip">
-                                                                        <path _ngcontent-ldk-c393=""
-                                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </span>
-
-                                                                <!--//// old attachement /// <span (click)="openPDF(iscloud,url)" data-toggle="tooltip"
-                                                                title="{{completedoc}}">
-                                                                {{completedoc}}</span> -->
-
-                                                                <span
-                                                                    (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
-                                                                    data-toggle="tooltip" title="{{completedoc}}">
-                                                                    {{completedoc}}</span>
-                                                            </div>
-                                                        </div>
-                                                        <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
-                                                    </div>
+                                                    
                                                 </div>
                                                 <div class="row mt-3 px-3 fwd-v" *ngIf="requestType=='Project Forward'">
                                                     <div class="col-lg-4">
@@ -3140,7 +3148,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <span class="text-muted fs-7 fw-bold pl-2" *ngIf="projectInfo&&tlTotalHours">
-                                                                    {{((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
+                                                                    {{((tlTotalHours/projectInfo.AllocatedHours)*100)>100?'100%':((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
                                                                 </span>
                                                             </div>
 

@@ -40,6 +40,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 // import 'moment/locale/fr';
 
 import tippy from 'tippy.js';
+import { CreateprojectService } from 'src/app/_Services/createproject.service';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -164,6 +165,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   EndDate1: any = new Date();
   currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
   bothActTlSubm:boolean=false;
+  ProjDto:ProjectDetailsDTO|undefined;
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -184,6 +186,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
+    private createProjectService:CreateprojectService
 
   ) {
 
@@ -328,7 +331,7 @@ var options = {
     bar: {
       distributed: true,
       horizontal: false,
-      columnWidth: '55%',
+      columnWidth: '62%',
     }
   },
   dataLabels: {
@@ -660,6 +663,8 @@ this.prjPIECHART.render();
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
+        this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
+        console.log('Now After Sorting:',this.projectActionInfo);
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
@@ -728,9 +733,18 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+       
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+
+          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
+          const uniqueNamesArray = [...this.uniqueName];
+
+          this.newArray = uniqueNamesArray.slice(3);
+          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);  
+          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
+          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
+          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
@@ -741,20 +755,6 @@ this.prjPIECHART.render();
             return obj;
           });
 
-
-          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
-          const uniqueNamesArray = [...this.uniqueName];
-          // this.uniqueOwner = new Set(this.Project_List.filter(record => record.id==1));
-          // this.uniqueNamesArray1 = [...this.uniqueOwner];
-
-          // console.log("===========>",this.uniqueNamesArray1[0].Emp_No);
-
-
-           this.newArray = uniqueNamesArray.slice(3);
-          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
-          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
-          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
         }
       });
 
@@ -868,7 +868,6 @@ this.prjPIECHART.render();
     if(index!=undefined){
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
-
     }
   }
 
@@ -1512,6 +1511,7 @@ this.prjPIECHART.render();
 
         }
         if (this.requestType == 'Task Complete') {
+          // this.getstandardapprovalStats();  
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
           console.log(this.complete_List,"fahan")
@@ -1530,6 +1530,15 @@ this.prjPIECHART.render();
     });
 
     // console.log(this.requestDetails, 'transfer');
+  }
+
+standardjson:any;
+  getstandardapprovalStats(){
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+      this.requestDetails = data as [];
+      console.log(this.requestDetails,"task approvals");
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']);
+    });
   }
 
   approvalClick(actionType) {
@@ -6728,19 +6737,57 @@ cancelAction(index) {
 
 
 
+// submit 'not started' project to project owner for approval start. 
+
+submitPrjApprv2Owner(){
+
+if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+  if(this.projectActionInfo&&this.projectActionInfo.length>0){
+    this.ProjDto=new ProjectDetailsDTO(); 
+
+    Swal.fire({
+      title: 'Submit Project',
+      html: `Are you sure to Submit this Project : <strong><q>${this.projectInfo.Project_Name}</q></strong> to <u>${this.projectInfo.Owner}</u> for Approval?`,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+        if(response.isConfirmed){ 
+// submit project 
+          this.ProjDto.Emp_No=this.Current_user_ID;
+          this.ProjDto.isTemplate=false;
+          this.ProjDto.Project_Code=this.projectInfo.Project_Code;
+          this.ProjDto.Remarks=null;
+
+          this.createProjectService.NewUpdateNewProjectApproval(this.ProjDto).subscribe((res:any)=>{
+              if(res&&res.message==='Success'){
+                this.notifyService.showSuccess("Project is send to Project Owner :"+this.projectInfo.Owner+' for Approval',"Success");
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+              else
+              this.notifyService.showError('something went wrong!','Failed');
 
 
+          });
+// submit project
+        } })
 
+  }
+  else{
+    Swal.fire(
+      'Action Required',
+      'Please provide atleast one action to submit the project.',
+      'error'
+    );
+  }
+}
+else{
+console.log('you are not allowed to submit this project.')
+}
 
+}
 
-
-
-
-
-
-
-
-
+// submit 'not started' project to project owner for approval end.
 
 
 
