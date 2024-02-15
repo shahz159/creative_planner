@@ -789,7 +789,7 @@
                                                             *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
 
 
-                                                            <div class="progress-bar UnderApproval" role="progressbar"
+                                                            <div class="progress-bar P_Not-Started" role="progressbar"
                                                                 [ngStyle]="{width: (TOTAL_ACTIONS_UNDER_APPROVAL/TOTAL_ACTIONS)*100+'%'}"
                                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                             </div>
@@ -839,7 +839,7 @@
                                                         <div class="kt-prg-progress">
                                                             <ul type="none">
                                                                 <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
-                                                                        class="B-Bot P_Not-Started"></span> New Project Under Approval
+                                                                        class="B-Bot P_Not-Started"></span> New Action Under Approval
                                                                     <b>({{
                                                                         TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
                                                                 <li *ngIf="TOTAL_ACTIONS_IN_PROCESS"><span
@@ -1415,7 +1415,6 @@
                                                         class="kt-projcect-act-list"
                                                         (click)="showActionDetails(action.IndexId-1);prostate(action.proState);"
                                                         [ngClass]="{'Active':currentActionView===action.IndexId-1}"
-
                                                         >
                                                         <div class="row curser-pointer">
                                                             <div class="col-lg-8 pl-0 pr-1">
@@ -2172,6 +2171,8 @@
                                                     Timeline</button>
                                             </div>
                                             <ng-container *ngIf="projectInfo">
+                                                 <ng-container *ngIf="projectInfo.Status!=='Not Started';else sendApr2Owner">
+
                                                 <div class="project_more_Action_options" *ngIf="(
                                             Current_user_ID == projectInfo.OwnerEmpNo ||
                                             Current_user_ID == projectInfo.ResponsibleEmpNo ||
@@ -2195,6 +2196,7 @@
                                                             </svg>
                                                         </div>
                                                         <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
+                                                          
                                                             <button class="Ct-btn Bt-cancel ml-2"
                                                                 *ngIf=" projectInfo.Status!='Completed'"
                                                                 (click)="openPrjCancelSb()">Project Cancel</button>
@@ -2230,6 +2232,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                </ng-container>
+                                                <ng-template #sendApr2Owner>
+                                                    <button (click)="submitPrjApprv2Owner()" *ngIf="Current_user_ID==projectInfo.ResponsibleEmpNo"  class="Ct-btn ml-2">Submit Project</button>
+                                                </ng-template>
                                             </ng-container>
                                         </div>
 
