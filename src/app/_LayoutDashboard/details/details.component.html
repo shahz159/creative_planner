@@ -1453,6 +1453,7 @@
                                                                                 <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                                 <span *ngSwitchCase="'Under Approval'">New Action Under Approval</span>
                                                                                 <span *ngSwitchCase="'Project Hold'" class="hold-act-text">Hold until {{action.Holddate}}</span>
+                                                                                <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Draft</span>
                                                                                 <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                             </span>
                                                                             <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
@@ -3543,6 +3544,9 @@
                                                     <div *ngSwitchCase="'Project Hold'" class="kt-project-type">
                                                         <div class="Kt-Pd-Status  Hold">Hold until {{projectActionInfo[currentActionView].Holddate}}</div>
                                                     </div>
+                                                    <div *ngSwitchCase="'Not Started'" class="kt-project-type">
+                                                        <div class="Kt-Pd-Status Not_Started">Draft</div>
+                                                    </div>
 
                                                     <div *ngSwitchDefault class="kt-project-type">
                                                         <div class="Kt-Pd-Status new-project-under ">
@@ -3598,12 +3602,14 @@
                                                         <div class="Kt-Pd-Status  Hold">Hold until {{projectActionInfo[currentActionView].Holddate}}</div>
                                                     </div>
 
-
+                                                    <div *ngSwitchCase="'Not Started'" class="kt-project-type">
+                                                        <div class="Kt-Pd-Status Not_Started ">Draft</div>
+                                                    </div>
 
 
 
                                                     <div *ngSwitchDefault class="kt-project-type">
-                                                        <div class="Kt-Pd-Status new-project-under ">
+                                                        <div class="Kt-Pd-Status Not_Started ">
                                                             {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Under Approval':projectActionInfo[currentActionView].Status }} </div>
                                                     </div>
 
