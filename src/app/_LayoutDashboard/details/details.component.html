@@ -683,7 +683,8 @@
                                                             (projectInfo.Status==='Project Hold')?'Hold until '+hold_upto:
                                                             (projectInfo.Status==='Delay')?'Delay '+projectInfo.Delaydays+'
                                                             days':(projectInfo.Status === 'Under Approval' ? 'New Project Under Approval' : projectInfo.Status==='InProcess'?
-                                                             'In-Process' : projectInfo.Status)
+                                                             'In-Process' : projectInfo.Status==='Not Started'?
+                                                             'Draft' : projectInfo.Status)
                                                             }}
                                                         </div>
                                                         <div class="Requested_user_info"
@@ -2336,7 +2337,7 @@
 
                                         <div class="kt-project-type "
                                         *ngSwitchCase="'Not Started'">
-                                        <div class="Kt-Pd-Status not-started"> Not Started
+                                        <div class="Kt-Pd-Status not-started"> Draft
                                         </div>
                                     </div>
 
@@ -3622,7 +3623,8 @@
                                                                     'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
                                                                     }">
                                                                 {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Under Approval':
-                                                                  projectActionInfo[currentActionView].Status=='InProcess'? 'In-Process': projectActionInfo[currentActionView].Status}}
+                                                                  projectActionInfo[currentActionView].Status=='InProcess'? 'In-Process': 
+                                                                  projectActionInfo[currentActionView].Status=='Not Started'? 'Draft': projectActionInfo[currentActionView].Status}}
                                                             </div>
                                                             <div class="Requested_user_info">
                                                                 <span class="svg-Rq-icon"><svg
@@ -4280,7 +4282,8 @@
                             }"
                             >{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
                             days ':(projectInfo.Status === 'Under Approval' ? 'New Project Under Approval' : projectInfo.Status==='InProcess'?
-                                                             'In-Process' : projectInfo.Status)}} </span>
+                                                             'In-Process' : projectInfo.Status==='Not Started'?
+                                                             'Draft': projectInfo.Status)}} </span>
                         <span
                             class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
                             title="Owner">{{projectInfo.Owner}}</span>

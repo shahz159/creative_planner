@@ -222,7 +222,7 @@
                                         'To_do_achied' :item.Status=='ToDo Achieved',
                                         'text-CompleteRejected':item.Status=='Project Complete Rejected',
                                         'text-Todo':item.Status=='ToDo Completed'}">
-                                        {{item.Status=='Under Approval' ? 'New Project Under Approval':(item.Status=='InProcess'?'In-Process':item.Status)}}</p>
+                                        {{item.Status=='Under Approval' ? 'New Project Under Approval': item.Status=='InProcess'?'In-Process' : item.Status=='Not Started'?'Draft' : item.Status }}</p>
                                         <p class="text-danger" *ngIf="item.Status=='Delay'">
                                         {{item.Status}} {{item.Delaydays}} days</p>
                                         <p class="hold" *ngIf="item.Status=='Project Hold'">
@@ -359,7 +359,7 @@
 
                                         'text-CompleteRejected':Project_Status=='Project Complete Rejected',
                                         'text-Todo':Project_Status=='ToDo Completed'}">
-                                    {{Project_Status =='Under Approval'?'New Project Under Approval':(Project_Status=='InProcess'?'In-Process':Project_Status)}}
+                                    {{Project_Status =='Under Approval'?'New Project Under Approval': Project_Status=='InProcess'?'In-Process' : Project_Status=='Not Started'?'Draft' :Project_Status}}
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Delay'">
