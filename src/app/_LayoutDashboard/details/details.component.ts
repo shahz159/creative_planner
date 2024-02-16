@@ -1510,20 +1510,19 @@ this.prjPIECHART.render();
           }
 
         }
-        if (this.requestType == 'Task Complete') {
-          this.getstandardapprovalStats();  
-          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+        if (this.requestType == 'Task Complete') { 
+          console.log("requestDetails :",this.requestDetails);
+          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
-          console.log(this.complete_List,"fahan")
          this.sidno = (this.complete_List[0]['StandardId']);
          this.emp = (this.complete_List[0]['Emp_No']);
          this.repdate = (this.complete_List[0]['Reportdate']);
          this.submitby = (this.complete_List[0]['SubmittedBy']);
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
+         this.getstandardapprovalStats();  
+
         }
-
-
 
       }
       this.getRequestAcessdetails();
@@ -1533,11 +1532,18 @@ this.prjPIECHART.render();
   }
 
 standardjson:any;
+currentStdAprView:number=0;
   getstandardapprovalStats(){
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+      console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']);
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); console.log('standardjson values:',this.standardjson);
+      if(this.standardjson.length>0){
+          this.isApprovalSection=true;
+          this.isTextAreaVisible=false;
+          this.currentStdAprView=0;
+      }
     });
   }
 
@@ -1634,9 +1640,104 @@ standardjson:any;
   }
 
 
+
+
+  showStdTaskAprvReq(index){
+    if(!Number.isNaN(index)){
+      this.currentStdAprView=index;
+
+        this.requestComments=this.standardjson[index].Remarks;  // remarks
+        this.completedoc=this.standardjson[index].ProofDoc;    // task attachment
+        this.requestType=this.standardjson[index].Req_Type;    // Request type
+        this.Submitted_By=this.standardjson[index].SubmittedBy; // Request by
+        this.requestDate=this.standardjson[index].Rec_Date;     // Request date
+        this.sidno=this.standardjson[index].SNo;     
+        this.emp=this.standardjson[index].Emp_No;
+        this.repdate=this.standardjson[index].Rec_Date;
+        this.submitby=this.standardjson[index].SubmittedBy;
+        this.iscloud=this.standardjson[index].IsCloud;
+        this.contenttype=this.standardjson[index].contenttype;
+
+        const aprObj={
+          SNo:this.standardjson[index].SNo,
+          Type:this.standardjson[index].Req_Type,
+          ReportType:this.standardjson[index].ReportType,
+          RejectType:this.standardjson[index].RejectType,
+          sendFrom:this.standardjson[index].sendFrom,
+          Project_Code:this.standardjson[index].Project_Code,
+          Remarks: this.standardjson[index].Remarks,
+          Rec_Date: this.standardjson[index].Rec_Date 
+      };
+      this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
+    }
+    
+  }
+
+
+  acceptAllStdApprReq(){
+
+  const allAprv=this.standardjson.map((item:any)=>{
+         return {
+          SNo: item.SNo,   
+          Req_Type: item.Req_Type,   
+          Type:item.Type,    
+          Project_Name: item.Project_Name, 
+          ReportType: item.ReportType,   
+          Category:item.Category,   
+          Duration: 0,
+          DurationTime: "00 Hr : 15 Mins",
+          Project_Owner: "Aquib Shahbaz",
+          Team_Res: "Md Waseem Akram",
+          Team_Autho: "Md Waseem Akram",
+          Team_Coor: "Aquib Shahbaz",
+          Team_Informer: "Aquib Shahbaz",
+          Team_Support: "Mohammed Mateen",
+          Owner: "AS",
+          Resp: "MA",
+          Autho: "MA",
+          Informer: "AS",
+          Support: "MM",
+          Coord: "AS",
+          RejectType: " ",
+          Project_Block: "003",
+          Exec_BlockName: "Standard Tasks",
+          SubmissionType: "Daily",
+          sendFrom: "WS",
+          Send_From: "WS",
+          Project_Code1: "400191556",
+          Project_Code: "429854",
+          Req_Coments: "G",
+          Remarks: "G",
+          ForwardTo: "",
+          Status: "InProcess",
+          Delaydays: -730,
+          DPG: "2024-02-15T00:00:00",
+          DeadLine: "2026-02-15T00:00:00",
+          Project_Description: "Testing std project actions 2000000 Testing std project actions 2000000Testing std project actions 2000000",
+          Responsible: "Md Waseem Akram",
+          SubmittedTo: "Aquib Shahbaz",
+          SubmittedBy: "Md Waseem Akram",
+          Emp_No: "400162",
+          Rec_Date: "02/16/2024 16:43:21",
+          MainProjectName: ""
+         };
+   })
+ 
+    this.approvalservice.NewUpdateAcceptApprovalsService(allAprv).subscribe(data =>{
+      console.log(data,"accept-data");
+
+      // this.applyFilters();
+    });
+  }
+
+
+
+ 
+
   isApprovalSection: boolean = true;
 
   Close_Approval() {
+    this.comments=null;
     this.isApprovalSection = false;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
@@ -1838,9 +1939,8 @@ standardjson:any;
     this._inputAttachments = e.target.files[0].name;
   }
   onFileChange(e) {
-    this._inputAttachments = e.target.files[0].name;
-    this.selectedFile = <File>e.target.files[0];
-
+      this._inputAttachments = e.target.files[0].name;
+      this.selectedFile = <File>e.target.files[0];  
   }
 
 
@@ -4050,7 +4150,6 @@ config: AngularEditorConfig = {
 
 
 Task_type(value:number){
-
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
@@ -4324,9 +4423,8 @@ Task_type(value:number){
   GetProjectAndsubtashDrpforCalender() {
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
-        this.ProjectListArray = JSON.parse(data['Projectlist']);
+        this.ProjectListArray = JSON.parse(data['Projectlist']);      
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-
         const racisPeople=this.Project_List.map(item=>item.Emp_No);
         this._EmployeeListForDropdown.sort((el:any)=>{
         return racisPeople.includes(el.Emp_No)?-1:+1
@@ -5454,7 +5552,7 @@ onPrjSelected(e:any){
 
  getPrjName(projectCode:string){
   if(this.ProjectListArray){
-   const P=this.ProjectListArray.find(pr=>pr.Project_Code===projectCode);
+   const P=this.ProjectListArray.find(pr=>pr.Project_Code.trim()==projectCode.trim());
    return P?P.BlockNameProject:'';
   }
    return [];

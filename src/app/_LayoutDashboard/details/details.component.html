@@ -1595,10 +1595,9 @@
                                         </div>
 
 
-                                            <div class="kt-project-action-list-view flipped">
+                                            <div class="kt-project-action-list-view flipped" *ngIf="standardjson&&standardjson.length>0;else noTasksAvailable">
                                                     <div class="kt-project-acion-content">
-                                                <ng-container  *ngFor="let item of standardjson; let i=index">
-                                                        <div  class="kt-projcect-act-list" >
+                                                        <div  *ngFor="let item of standardjson; let i=index"  class="kt-projcect-act-list"  (click)="showStdTaskAprvReq(i)"   [ngClass]="{'Active':currentStdAprView===i}">
                                                             <div class="row curser-pointer">
                                                                 <div class="col-lg-8 pl-0 pr-1">
                                                                     <div class="kt-p-box border-r-0">
@@ -1632,17 +1631,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                </ng-container>
-                                                </div>
+                                                  </div>
                                             </div>
-
-
+                                          <ng-template #noTasksAvailable>
                                             <div class="no-prjact-found ">
                                                 <img class="no-prjact-found-img"
                                                     src="./assets/images/noActionPresent.png" />
                                                 <h3 class="blank-txt fs-5 no-prjact-found-label">No Tasks for approvals.</h3>
                                             </div>
-
+                                         </ng-template>
                                     </div>
                                 </ng-template>
                             </ng-container>
@@ -2505,7 +2502,7 @@
                                                                 [(ngModel)]="comments"></textarea>
                                                         </ng-container>
                                                         <ng-container *ngIf="selectedType == '1'">
-                                                            <label>Enter Comments<span class="text-danger">*</span></label>
+                                                            <label>Enter Comments</label>
                                                             <textarea class="form-control kt-approval-msg"
                                                                 id="exampleTextarea" rows="3"
                                                                 [(ngModel)]="comments"></textarea>
@@ -4472,7 +4469,7 @@
 
 
                    <ng-container *ngIf="memosOptions">
-                    <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value).slice(0,3000)" [value]="memo.MailId">
+                    <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value).slice(0,1000)" [value]="memo.MailId">
                         <mat-checkbox color="primary" [checked]="(selectedMemos.indexOf(memo)!==-1)"></mat-checkbox>
                         {{memo.Subject}}
                     </mat-option>
@@ -6661,7 +6658,8 @@
                                     (change)="onFileChange($event)" [value]="selectedFile">
                                 <label class="custom-file-label" id="upload" for="_pdf">
                                     <ng-container
-                                        *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}</ng-container>
+                                        *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}
+                                    </ng-container>
                                     <ng-template #selFileFrMprj> Select a file</ng-template>
                                 </label>
                             </div>
@@ -6736,12 +6734,12 @@
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="_file1"
-                                                accept="application/pdf" (change)="onFileChange($event)">
-                                            <label class="custom-file-label" id="upload" for="_file1">
-                                                <ng-container>
-                                                    Select a file
-                                                </ng-container>
-                                            </label>
+                                                accept="application/pdf" (change)="onFileChange($event)" />
+                                            <label class="custom-file-label"  for="_file1">
+                                                <ng-container *ngIf="_inputAttachments;else selectfile">{{_inputAttachments}}</ng-container>
+                                                  <ng-template #selectfile>Select a file</ng-template>
+                                            </label> 
+                                           
                                         </div>
                                     </div>
                                     <span class="text-info"> *Accept only pdf files </span>
@@ -8378,13 +8376,13 @@
                             </div>
 
                             <div class="form-group" id="core_viw121" style="display:none">
-                            <label class="cus-lbl">Select Project</label>
-                            <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [multiple]="true" (change)="MasterCode=$event.includes(URL_ProjectCode)?$event:[URL_ProjectCode].concat($event)">
+                            <!-- <label class="cus-lbl">Select Project</label> -->
+                            <!-- <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [multiple]="true" (change)="MasterCode=$event.includes(URL_ProjectCode)?$event:[URL_ProjectCode].concat($event)">
                                 <ng-option [value]="p.Project_Code" *ngFor="let p of ProjectListArray">{{p.BlockNameProject}}</ng-option>
-                            </ng-select>
+                            </ng-select> -->
 
-                            <!--  mat meetings dropdwn here start
-                                 <mat-form-field class="drp-dwn-field w-100">
+                      
+                                 <mat-form-field class="drp-dwn-field w-100" *ngIf="ProjectListArray">
                                     <mat-label>Select Project </mat-label>
                                     <mat-chip-list #selectedProjectDrpDwn>
                                         <ng-container *ngIf="ScheduleType==='Event'">
@@ -8410,14 +8408,14 @@
                                     <mat-autocomplete aria-label="ProjectDrpDwn" #ProjectDrpDwn="matAutocomplete"
                                         (optionSelected)="onPrjSelected($event); projectTF.value=''; "
                                         (opened)="isProjectDrpDwnOpen=true" (closed)="isProjectDrpDwnOpen=false; ">
-                                        <mat-option *ngFor="let pr of ProjectListArray|filter:projectTF.value"
+                                        <mat-option *ngFor="let pr of (ProjectListArray|filter:projectTF.value).slice(0,1000)"
                                             [value]="pr.Project_Code">
                                             <mat-checkbox color="primary"
                                                 [checked]="MasterCode.indexOf(pr.Project_Code)!==-1"></mat-checkbox>
                                             {{pr.BlockNameProject}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>   -->
+                                </mat-form-field>   
 
                             </div>
 
@@ -8484,13 +8482,13 @@
 
                                 <div class="form-group" id="core_Dms" style="display:none">
 
-                                <label class="cus-lbl">Add DMS</label>
+                                <!-- <label class="cus-lbl">Add DMS</label>
                                 <ng-select [multiple]="true" [(ngModel)]="SelectDms">
                                     <ng-option *ngFor="let m of Memos_List" [value]="m.MailId"> {{m.Subject}}</ng-option>
-                                </ng-select>
+                                </ng-select> -->
 
-<!--
-                                    <mat-form-field class="drp-dwn-field w-100" >
+
+                                    <mat-form-field class="drp-dwn-field w-100" *ngIf="Memos_List">
                                         <mat-label>Add DMS</mat-label>
                                         <mat-chip-list #selectedDmsMemoDrpDwn>
                                             <mat-chip *ngFor="let d of SelectDms" class="Data_chip_kt"
@@ -8514,7 +8512,7 @@
                                         <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
                                             (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
                                             (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
-                                            <mat-option *ngFor="let m of Memos_List|filter:dmsMemoTF.value"
+                                            <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
                                                 [value]="m.MailId">
                                                 <mat-checkbox color="primary"
                                                     [checked]="SelectDms.indexOf(m)!==-1"></mat-checkbox>
@@ -8522,7 +8520,7 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-                                 -->
+                                 
                                 </div>
 
                                 <div class="form-group" id="Guest_Name" style="display:none">
