@@ -481,4 +481,90 @@ meeting_details(){
   close_meetingattendees_sideBar() {
     document.getElementById("Meeting_Attendees").classList.remove("kt-quick-active--on");
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  startTime: Date;
+  meetingInProgress: boolean = false;
+  meetingPaused: boolean = false;
+  meetingStopped: boolean = false;
+  elapsedTime: number = 0;
+  timer: any;
+  duration: number = 60 * 60 * 1000; // 60 minutes * 60 seconds * 1000 milliseconds
+
+  startMeeting() {
+    this.startTime = new Date();
+    this.meetingInProgress = true;
+    this.timer = setInterval(() => {
+      this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+      if (this.elapsedTime >= this.duration) {
+        this.stopMeeting();
+      }
+    }, 1000);
+  }
+
+  pauseMeeting() {
+    clearInterval(this.timer);
+    this.meetingPaused = true;
+  }
+
+  resumeMeeting() {
+    this.startTime = new Date(new Date().getTime() - this.elapsedTime);
+    this.meetingPaused = false;
+    this.timer = setInterval(() => {
+      this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+      if (this.elapsedTime >= this.duration) {
+        this.stopMeeting();
+      }
+    }, 1000);
+  }
+
+  stopMeeting() {
+    clearInterval(this.timer);
+    this.meetingInProgress = false;
+    this.meetingStopped = true;
+  }
+
+  leaveMeeting() {
+    clearInterval(this.timer);
+    this.meetingInProgress = false;
+    this.meetingStopped = true;
+  }
+
+  formatTime(ms: number): string {
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  private pad(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
 }

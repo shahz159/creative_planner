@@ -59,5 +59,6 @@ export class ProjectDetailsDTO {
     isTemplate:boolean;
     assignid:number;
     portfolioids:string;
+    MeetingCount:any;
 
 }
