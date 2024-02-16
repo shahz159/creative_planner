@@ -1520,7 +1520,7 @@ this.prjPIECHART.render();
 
         }
         if (this.requestType == 'Task Complete') {
-          // this.getstandardapprovalStats();
+          this.getstandardapprovalStats();
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
           console.log(this.complete_List,"fahan")
@@ -3268,7 +3268,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-            console.log(this.AttachmentList,'AttachmentList')
+            console.log('my AttachmentList:',this.AttachmentList);
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));

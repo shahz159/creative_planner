@@ -31,9 +31,69 @@
                                                     fill="currentcolor" id="video" />
                                             </svg>
                                         </span>
-                                        <span class="kt-meeting-status-title">Started</span>
+                                        <!-- <span class="kt-meeting-status-title">Started</span>
                                         <span class="text-white">|</span>
-                                        <span class="kt-meeting-status-time">12:45</span>
+                                        <span class="kt-meeting-status-time">12:45</span> -->
+
+
+                                      <span class="kt-meeting-status-title">
+                                        <div *ngIf="!meetingInProgress && !meetingStopped">
+                                            <button (click)="startMeeting()">Start Meeting</button>
+                                          </div>
+                                          
+                                          
+                                           
+                                      </span>
+                                        <span class="text-white">|</span>
+                                        <span class="kt-meeting-status-time">
+                                            <div *ngIf="meetingInProgress">
+                                                <p>Meeting Started at: {{ startTime | date: 'medium' }}</p>
+                                                <p>Elapsed Time: {{ formatTime(elapsedTime) }}</p>
+                                                <button (click)="pauseMeeting()" [disabled]="meetingPaused">Pause</button>
+                                                <button (click)="resumeMeeting()" [disabled]="!meetingPaused">Resume</button>
+                                             
+                                                <button (click)="leaveMeeting()">Leave Meeting</button>
+                                              </div>
+                                              
+                                              <div *ngIf="meetingStopped">
+                                                <p>Meeting Ended</p>
+                                                <button (click)="leaveMeeting()">Leave Meeting</button>
+                                              </div>
+                                        </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                     </div>
                                     <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                         <span class="kt-meeting-status-icon">
@@ -1088,7 +1148,6 @@
                                     </button>
                                 </span>
                             </div>
-
 
 
 
