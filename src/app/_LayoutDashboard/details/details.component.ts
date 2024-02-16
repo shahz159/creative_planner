@@ -215,7 +215,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
     this.getProjectDetails(this.URL_ProjectCode);
@@ -230,6 +229,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.GetPeopleDatils();
     this.timearrays();
     this.getRejectType();
+    this.getusermeetings();
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
@@ -265,6 +265,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   getusername() {
     this.service._GetUserName(this.Current_user_ID).subscribe(data => {
       this._fullname = data['Emp_First_Name'];
+    });
+  }
+
+  MeetingCount:any
+  getusermeetings(){
+    this.objProjectDto.Project_Code=this.URL_ProjectCode;
+    this.service.GetUserMeetingcount(this.objProjectDto).subscribe(data => {
+    this.MeetingCount=JSON.parse(data['MeetingCount'])
+      console.log(this.MeetingCount, "meetings count");
     });
   }
 
@@ -733,7 +742,7 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-       
+
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
 
@@ -741,7 +750,7 @@ this.prjPIECHART.render();
           const uniqueNamesArray = [...this.uniqueName];
 
           this.newArray = uniqueNamesArray.slice(3);
-          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);  
+          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
           this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
           this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
@@ -1511,7 +1520,7 @@ this.prjPIECHART.render();
 
         }
         if (this.requestType == 'Task Complete') {
-          // this.getstandardapprovalStats();  
+          // this.getstandardapprovalStats();
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
           console.log(this.complete_List,"fahan")
@@ -3584,8 +3593,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
   lstMthCnt: number = 0;  // Last Month Meetings Count
   lst7dCnt: number = 0;   // Last 7 Days Meetings Count
   oldMtgCnt: number = 0;  // Older Meetings Count
-
-
+  Addguest:any
+  MeetingParticipants:any
 
   GetmeetingDetails() {
 
@@ -3622,6 +3631,11 @@ $('#acts-attachments-tab-btn').removeClass('active');
       .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+
+
+          this.Addguest= this.meetingList[0].Addguest
+          this.MeetingParticipants= JSON.parse(this.Addguest);
+          console.log('meeting we have:', this.MeetingParticipants);
           this.meeting_arry = this.meetingList;
           if (this.meeting_arry.length > 0)
             this.meetinglength = this.meeting_arry.length;
@@ -3635,7 +3649,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
         }
 
 
-        console.log('meeting we have:', this.meeting_arry);
+
         // AFTER GETTING ALL MEETINGS DETAILS
 
         this.upcomingMeetings = this.getUpcomingMeeting();
@@ -3678,7 +3692,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.oldMtgCnt = this.olderMeetings.length;
 
         this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
-        this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);              // format them.
+        this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
+        console.log(this.olderMeetings,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")    // format them.
 
       });
 
@@ -6737,13 +6752,13 @@ cancelAction(index) {
 
 
 
-// submit 'not started' project to project owner for approval start. 
+// submit 'not started' project to project owner for approval start.
 
 submitPrjApprv2Owner(){
 
 if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
   if(this.projectActionInfo&&this.projectActionInfo.length>0){
-    this.ProjDto=new ProjectDetailsDTO(); 
+    this.ProjDto=new ProjectDetailsDTO();
 
     Swal.fire({
       title: 'Submit Project',
@@ -6752,8 +6767,8 @@ if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((response: any) => {
-        if(response.isConfirmed){ 
-// submit project 
+        if(response.isConfirmed){
+// submit project
           this.ProjDto.Emp_No=this.Current_user_ID;
           this.ProjDto.isTemplate=false;
           this.ProjDto.Project_Code=this.projectInfo.Project_Code;
