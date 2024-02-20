@@ -6,9 +6,18 @@
             <div class="kt-portlet kt-portlet--bordered-semi mt-3 mb-2">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!=''">
+                        <h3 class="kt-portlet__head-title" *ngIf="Mode!='AssignedTask' && Mode!='DelayProjects' && Mode!=''">
                              {{_Statustitle}}
                         </h3>
+                        <div class="dropdown"  *ngIf="Mode=='DelayProjects' || Mode=='DelayActions'">
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Delay {{delayType}}
+                            </h3>
+                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
+                                <a [ngClass]="delayType=='Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="getDelayProjects(delayType1)">Delay Projects</a>
+                                <a [ngClass]="delayType=='Actions' ? 'dropdown-item active' : 'dropdown-item'" (click)="getDelayProjects(delayType2)">Delay Actions</a>
+                            </div>
+                        </div>
                         <div class="dropdown"  *ngIf="Mode=='AssignedTask'">
                             <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                Projects {{Type}}

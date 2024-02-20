@@ -676,13 +676,14 @@
                                                         aria-label="Users: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> RACIS
                                                     </th>
-                                                    <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name!='Delay'" >
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
-                                                        data-name="Status" tabindex="0" aria-controls="project-4"
-                                                        rowspan="1" colspan="1" class="curser-pointer"
-                                                        aria-label="Status: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> Status
-                                                    </th>
+                                                    data-name="Status" tabindex="0" aria-controls="project-4"
+                                                    rowspan="1" colspan="1" class="curser-pointer"
+                                                    aria-label="Status: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Status
+                                                </th>
+                                                    <!-- <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name!='Delay'" >
+                                                   
                                                 </ng-container>
 
                                                     <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name=='Delay'" >
@@ -692,7 +693,7 @@
                                                         aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Status
                                                         </th>
-                                                    </ng-container>
+                                                    </ng-container> -->
                                                    
                                                     <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Status: activate to sort column ascending">

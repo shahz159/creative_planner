@@ -87,7 +87,12 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.Z2A = false;
     this._subtaskDiv = true;
     this.Mode = this.activatedRoute.snapshot.params.Mode;
-    this.GetCompletedProjects();
+    if(this.Mode=='Delay'){
+      this.getDelayProjects(this.delayType1);
+    }
+    else{
+      this.GetCompletedProjects();
+    }
     this.getAssignedProjects(this.type1);
     this.router.navigate(["../ViewProjects/" + this.Mode]);
     // this.notFoundData=true;
@@ -143,6 +148,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
   notFoundData: boolean;
   notSelectedAnything_msg: string;
   notSelectedAnything_msg2: string;
+  delayType: string;
+  delayType1: string='Projects';
+  delayType2: string='Actions';
+
 
   GetCompletedProjects() {
     // debugger
@@ -155,14 +164,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._ObjCompletedProj.PageNumber = Pgno;
     this._ObjCompletedProj.PageSize = 30;
 
-    if (this.Mode != "AssignedTask" && this.Mode != "") {
+    if (this.Mode != "AssignedTask" && this.Mode != "Delay" && this.Mode != "") {
       this.projectsDataTable = false;
       this.AssignedTask = true;
-
-      if (this.Mode == "Delay") {
-        this._Statustitle = "Delay Projects";
-        this._totalProjectsCount = parseInt(sessionStorage.getItem('DelayCount'));
-      }
+     
       if (this.Mode == "UnderApproval") {
         this._Statustitle = "Under Approval Projects";
         this._totalProjectsCount = parseInt(sessionStorage.getItem('CompletedCount'));
@@ -203,6 +208,56 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
         });
     }
+  }
+
+
+  getDelayProjects(type) {
+    this.projectsDataTable = false;
+    this.AssignedTask = true;
+
+    this.delayType=type;
+    if(type='Projects'){
+      this.Mode='DelayProjects';
+    }
+    else{
+      this.Mode='DelayActions'
+    }
+    let EmpNo = this.Current_user_ID;
+    let Pgno: number = this.CurrentPageNo;
+    //Passing to OBJ DTO...
+    this._ObjCompletedProj.Mode = this.Mode;
+    this._ObjCompletedProj.Emp_No = EmpNo;
+    this._ObjCompletedProj.PageNumber = Pgno;
+    this._ObjCompletedProj.PageSize = 30;
+
+
+
+      if (this.Mode == "DelayProjects") {
+        this._totalProjectsCount = parseInt(sessionStorage.getItem('DelayCount'));
+      }
+      else
+      {
+        this._totalProjectsCount = parseInt(sessionStorage.getItem('DelayActionCount'));
+      }
+      //Reset The List for New Data
+      this._ProjectDataList = [];
+      this.service._GetCompletedProjects(this._ObjCompletedProj)
+        .subscribe((data) => {
+          if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
+            this.notSelectedAnything_msg = "Sorry, No records found in Delay" + type;
+            this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
+            this.CurrentPageNo = 0;
+            this._CurrentpageRecords = 0;
+          }
+          else {
+            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+            this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+            this._CurrentpageRecords = this._ProjectDataList.length;
+            this._totalProjectsCount = data[0]['delaycount'];
+          }
+        });
   }
 
   type1: string = "Assigned by me";

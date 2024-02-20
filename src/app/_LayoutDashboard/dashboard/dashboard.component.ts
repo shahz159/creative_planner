@@ -236,6 +236,7 @@ export class DashboardComponent implements OnInit {
   _objStatusDTO: StatusDTO;
   Project_Mode: string = "My";
   DelayCount: any = sessionStorage.getItem('DelayCount');
+  DelayActionCount: any = sessionStorage.getItem('DelayActionCount');
   CompletedCount: any = sessionStorage.getItem('CompletedCount');
   TotalExpiryInMonth: any = sessionStorage.getItem('TotalExpiryInMonth');
   TotalExpiryPortfolio: number = 0;
@@ -3840,6 +3841,9 @@ export class DashboardComponent implements OnInit {
 
         this.DelayCount = data[0]['DelayCount'];
         sessionStorage.setItem('DelayCount', this.DelayCount);
+
+        this.DelayActionCount = data[0]['DelayActionCount'];
+        sessionStorage.setItem('DelayActionCount', this.DelayActionCount);
 
         this.CompletedCount = data[0]['CompletedCount'];
         sessionStorage.setItem('CompletedCount', this.CompletedCount);
