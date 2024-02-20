@@ -69,10 +69,10 @@
                         role="button">
                         {{TotalProjects}} Projects </a> -->
                     <!-- <div [hidden]="HideStatusDropdown"> -->
-                      <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-   class="badge total-project kt-badge--inline mr-2 py-10px btn-sm">
-    <span class="count">{{TotalProjects}}</span> Total Projects
-</a>
+                    <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
+                        class="badge total-project kt-badge--inline mr-2 py-10px btn-sm">
+                        <span class="count">{{TotalProjects}}</span> Total Projects
+                    </a>
 
 
 
@@ -111,7 +111,7 @@
 
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
-                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} New Project Under
+                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} Under
                             Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
@@ -210,7 +210,7 @@
                                             <ng-container
                                             *ngFor="let item1 of _ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
 
-                                            <div *ngIf="item1.Status==_PortProjStatus||_PortProjStatus==''"   class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                            <div *ngIf="item1.Status.includes(_PortProjStatus)||_PortProjStatus==''"   class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',

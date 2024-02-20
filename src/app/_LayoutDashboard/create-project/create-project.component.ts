@@ -480,10 +480,35 @@ export class CreateProjectComponent implements OnInit {
  }
 
 
- onFileChanged(e:any){
-   this.fileAttachment=e.target.files[0];
-   e.target.value=null;
- }
+//  onFileChanged(e:any){
+//    this.fileAttachment=e.target.files[0];
+//    e.target.value=null;
+//  }
+
+
+  file: File | null = null;
+onFileChanged(event: any) {
+  debugger
+  const files: File[] = event.target.files;
+
+  if (files && files.length > 0) {
+    this.file = files[0];
+    this.fileAttachment = this.file;
+  } else {
+    this.file = null;
+    this.fileAttachment = null;
+  }
+  event.target.value=''
+}
+
+// removeFile() {
+//   this.file = null;
+//   this.fileAttachment = null;
+// }
+
+
+
+
 
   Action_view(){
     document.getElementsByClassName("Adv-option")[0].classList.add("d-none");

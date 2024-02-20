@@ -346,7 +346,7 @@
 }
 
 .formbold-file-input label {
-  position: relative;
+  /* position: relative; */
   border: 1px dashed #e0e0e0;
   border-radius: 6px;
   min-height: 100px;

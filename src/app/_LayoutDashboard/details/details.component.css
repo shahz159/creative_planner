@@ -3956,7 +3956,9 @@ span.Rq_date_V {
   background-color: #d8efff;
  /* background-image: linear-gradient(to bottom, #20baff, #0197db); */
 }
-
+.UnderApproval{
+  background-color: #B2D732 !important;
+}
 .delay-notification{
   background-color: #fd7e7a38;
   color: red;
@@ -4535,3 +4537,7 @@ p.kt-dt-l {
   color: #141111;
   background-color: #5a4f4f38;
 }
+
+.meeting{
+background-color: #e2e8f0c9;
+    color: #475569}

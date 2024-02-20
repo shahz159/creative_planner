@@ -402,7 +402,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetBarChart", this.ObjBarChartDTO);
     //this.clearSession();
   }
-  // Project Info 
+  // Project Info
   ObjSubTaskDTO: SubTaskDTO;
 
   GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
@@ -422,7 +422,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewSubTaskDetails", this.ObjSubTaskDTO);
   }
 
-  
+
   NewProjectService(prjCode){
      this.ObjSubTaskDTO.Project_Code=prjCode;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectPeople", this.ObjSubTaskDTO);
@@ -450,7 +450,7 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectInfoDetails", this.ObjSubTaskDTO);
   }
-  
+
   // New Subtask Page
   SubTaskDetailsService_ToDo_Page(prjCode, compCode, empno) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
@@ -883,6 +883,13 @@ export class ProjectTypeService {
     this.ObjDto.Project_holddate = obj.Project_holddate;
     this.ObjDto.Remarks = obj.Remarks;
     return this.http.post(this.rootUrl + "Category/NewProjectHold", this.ObjDto);
+  }
+
+  GetUserMeetingcount(obj: ProjectDetailsDTO) {
+    let EmpNo = localStorage.getItem('EmpNo');
+    this.ObjDto.Emp_No = EmpNo;
+    this.ObjDto.Project_Code = obj.Project_Code;
+    return this.http.post(this.rootUrl + "Projects/NewGetUserMeetingCount", this.ObjDto);
   }
 
 
