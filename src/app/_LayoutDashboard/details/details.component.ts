@@ -330,7 +330,7 @@ if(this.tlTotalHours){
 var options = {
   series: [{
     data: ['001', '002'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
-      : [AL, this.tlTotalHours, Math.round(AL - this.tlTotalHours)]
+      : [AL, this.tlTotalHours, (AL - this.tlTotalHours).toFixed(2)]
   }],
   chart: {
     type: 'bar',
@@ -1049,6 +1049,8 @@ this.prjPIECHART.render();
 
   closeInfo() {
     this._remarks = ''
+    this.selectedFile=null;
+    this._inputAttachments='';
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1468,11 +1470,11 @@ this.prjPIECHART.render();
 
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
-        this.requestType = (this.requestDetails[0]['Request_type']);
+        this.requestType = (this.requestDetails[0]['Request_type']);     
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
@@ -1534,6 +1536,16 @@ this.prjPIECHART.render();
         }
 
       }
+      else{
+        // if there is no requests
+        this.isApprovalSection=false;
+        // if there is no requests
+
+        // if there are no std task aprv request
+         this.standardjson=[];
+         this.currentStdAprView=undefined;
+        // if there is no std task aprv request 
+      }
       this.getRequestAcessdetails();
     });
 
@@ -1551,8 +1563,9 @@ currentStdAprView:number=0;
       if(this.standardjson.length>0){
           this.isApprovalSection=true;
           this.isTextAreaVisible=false;
-          this.currentStdAprView=0;
+          this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
       }
+   
     });
   }
 
@@ -1652,90 +1665,45 @@ currentStdAprView:number=0;
 
 
   showStdTaskAprvReq(index){
-    if(!Number.isNaN(index)){
-      this.currentStdAprView=index;
-
-        this.requestComments=this.standardjson[index].Remarks;  // remarks
-        this.completedoc=this.standardjson[index].ProofDoc;    // task attachment
-        this.requestType=this.standardjson[index].Req_Type;    // Request type
-        this.Submitted_By=this.standardjson[index].SubmittedBy; // Request by
-        this.requestDate=this.standardjson[index].Rec_Date;     // Request date
-        this.sidno=this.standardjson[index].SNo;     
-        this.emp=this.standardjson[index].Emp_No;
-        this.repdate=this.standardjson[index].Rec_Date;
-        this.submitby=this.standardjson[index].SubmittedBy;
-        this.iscloud=this.standardjson[index].IsCloud;
-        this.contenttype=this.standardjson[index].contenttype;
-
-        const aprObj={
-          SNo:this.standardjson[index].SNo,
-          Type:this.standardjson[index].Req_Type,
-          ReportType:this.standardjson[index].ReportType,
-          RejectType:this.standardjson[index].RejectType,
-          sendFrom:this.standardjson[index].sendFrom,
-          Project_Code:this.standardjson[index].Project_Code,
-          Remarks: this.standardjson[index].Remarks,
-          Rec_Date: this.standardjson[index].Rec_Date 
-      };
-      this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
+    if(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true){
+      if(!Number.isNaN(index)){
+        this.currentStdAprView=index;
+  
+          this.requestComments=this.standardjson[index].Remarks;  // remarks
+          this.completedoc=this.standardjson[index].ProofDoc;    // task attachment
+          this.requestType=this.standardjson[index].Req_Type;    // Request type
+          this.Submitted_By=this.standardjson[index].SubmittedBy; // Request by
+          this.requestDate=this.standardjson[index].Rec_Date;     // Request date
+          this.sidno=this.standardjson[index].SNo;     
+          this.emp=this.standardjson[index].Emp_No;
+          this.repdate=this.standardjson[index].Rec_Date;
+          this.submitby=this.standardjson[index].SubmittedBy;
+          this.iscloud=this.standardjson[index].IsCloud;
+          this.contenttype=this.standardjson[index].contenttype;
+  
+          const aprObj={
+            SNo:this.standardjson[index].SNo,
+            Type:this.standardjson[index].Req_Type,
+            ReportType:this.standardjson[index].ReportType,
+            RejectType:this.standardjson[index].RejectType,
+            sendFrom:this.standardjson[index].sendFrom,
+            Project_Code:this.standardjson[index].Project_Code,
+            Remarks: this.standardjson[index].Remarks,
+            Rec_Date: this.standardjson[index].Rec_Date 
+        };
+        this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
+      }
     }
-    
+    else
+     this.currentStdAprView=undefined;
   }
 
 
   acceptAllStdApprReq(){
-
-  const allAprv=this.standardjson.map((item:any)=>{
-         return {
-          SNo: item.SNo,   
-          Req_Type: item.Req_Type,   
-          Type:item.Type,    
-          Project_Name: item.Project_Name, 
-          ReportType: item.ReportType,   
-          Category:item.Category,   
-          Duration: 0,
-          DurationTime: "00 Hr : 15 Mins",
-          Project_Owner: "Aquib Shahbaz",
-          Team_Res: "Md Waseem Akram",
-          Team_Autho: "Md Waseem Akram",
-          Team_Coor: "Aquib Shahbaz",
-          Team_Informer: "Aquib Shahbaz",
-          Team_Support: "Mohammed Mateen",
-          Owner: "AS",
-          Resp: "MA",
-          Autho: "MA",
-          Informer: "AS",
-          Support: "MM",
-          Coord: "AS",
-          RejectType: " ",
-          Project_Block: "003",
-          Exec_BlockName: "Standard Tasks",
-          SubmissionType: "Daily",
-          sendFrom: "WS",
-          Send_From: "WS",
-          Project_Code1: "400191556",
-          Project_Code: "429854",
-          Req_Coments: "G",
-          Remarks: "G",
-          ForwardTo: "",
-          Status: "InProcess",
-          Delaydays: -730,
-          DPG: "2024-02-15T00:00:00",
-          DeadLine: "2026-02-15T00:00:00",
-          Project_Description: "Testing std project actions 2000000 Testing std project actions 2000000Testing std project actions 2000000",
-          Responsible: "Md Waseem Akram",
-          SubmittedTo: "Aquib Shahbaz",
-          SubmittedBy: "Md Waseem Akram",
-          Emp_No: "400162",
-          Rec_Date: "02/16/2024 16:43:21",
-          MainProjectName: ""
-         };
-   })
- 
-    this.approvalservice.NewUpdateAcceptApprovalsService(allAprv).subscribe(data =>{
+    this.approvalservice.NewUpdateAcceptApprovalsService(this.standardjson).subscribe(data =>{
       console.log(data,"accept-data");
-
-      // this.applyFilters();
+       this.notifyService.showSuccess("All tasks requests Approved.",'Success');
+      this.getapprovalStats();
     });
   }
 
@@ -2868,10 +2836,16 @@ check_allocation() {
   }
 
 
-  submitDar() {
-   if((!(this.actionCode&&this.workdes&&this.starttime&&this.endtime))||(this.bothActTlSubm&&this._remarks===''))
-     this.notProvided=true;
-   else{
+ submitDar(){
+   const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
+   if(
+   (isPrjCoreSecondary?this.actionCode:true)&&
+   this.workdes&&
+   this.starttime&&
+   this.endtime&&
+   ((isPrjCoreSecondary&&this.bothActTlSubm)?this._remarks:true)
+   ){
+    // if all required field are provided
 
 
     if (this.starttime != null && this.endtime != null) {
@@ -2928,39 +2902,41 @@ check_allocation() {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
 
-// Timeline submitted
-// if action submission is also required
-if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
-  this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
-  this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
-  this.Sub_Desc = this.projectActionInfo[this.currentActionView].Project_Description;
-  this.Sub_StartDT = this.projectActionInfo[this.currentActionView].StartDate;
-  this.Sub_EndDT = this.projectActionInfo[this.currentActionView].EndDate;
-  this.Sub_Autho = this.projectActionInfo[this.currentActionView].Team_Res;
-  this.Sub_Status = this.projectActionInfo[this.currentActionView].Status;
-  this.actionCompleted();
-  this.closeDarSideBar();
+        // Timeline submitted
+        // if action submission is also required
+        if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
+          this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
+          this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
+          this.Sub_Desc = this.projectActionInfo[this.currentActionView].Project_Description;
+          this.Sub_StartDT = this.projectActionInfo[this.currentActionView].StartDate;
+          this.Sub_EndDT = this.projectActionInfo[this.currentActionView].EndDate;
+          this.Sub_Autho = this.projectActionInfo[this.currentActionView].Team_Res;
+          this.Sub_Status = this.projectActionInfo[this.currentActionView].Status;
+          this.actionCompleted();
+          this.closeDarSideBar();
 
-  this.bothActTlSubm=false;
-  this._remarks='';
-  this._inputAttachments='';
-}
+          this.bothActTlSubm=false;
+          this._remarks='';
+          this._inputAttachments='';
+        }
       });
-    this.dar_details();
-    this.getDarTime();
+      this.dar_details();
+      this.getDarTime();
 
-    this.workdes = "";
-    this.starttime = null;
-    this.endtime = null;
-    this.notProvided=false;
+      this.workdes = "";
+      this.starttime = null;
+      this.endtime = null;
+      this.notProvided=false;
     // document.getElementById("newdetails").classList.remove("position-fixed");
     // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("rightbar-overlay").style.display = "none";
     // this.Clear_Feilds();
 
-   }
-  }
 
+   }
+   else // some mandatory field are missing.
+     this.notProvided=true;
+ }
 
 
 
@@ -3248,7 +3224,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
 
-  closeInfoProject() {
+  closeInfoProject() { debugger
     // For closing sidebar on 'X' buttton
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     // For sidebar overlay background removing the slide on 'X' button
@@ -3259,8 +3235,8 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
     this._inputAttachments = '';
     this._remarks = '';
     this.selectedFile = null;
-    $('#_file1').val('');
-    $('#upload').html('Select a file');
+    // $('#_file1').val('');
+    // $('#upload').html('Select a file');
     // this.OnClickCheckboxProjectUpdate();
     // this.Clear_Feilds();
   }
@@ -6745,9 +6721,9 @@ onGraphOptionChanged(option:string){
 
 //  Full Graph code end
 
-approval_btn(){
-  alert('approval accepted')
-}
+// approval_btn(){
+//   alert('approval accepted')
+// }
 
 // trackbyfuncton(index, item){
 //   if(!item) return null;

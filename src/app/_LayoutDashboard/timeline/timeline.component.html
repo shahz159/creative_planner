@@ -461,7 +461,7 @@
 
 
 
-            <ng-container  *ngIf="bothActTlSubm">
+            <ng-container  *ngIf="project_type==='core'&&project_code&&bothActTlSubm">
             
                 <div class="form-group mt-3">
                     <label>Attachments</label>
@@ -499,7 +499,7 @@
                 </div>
              </ng-container>
 
-             <ng-container   >
+             <ng-container *ngIf="project_type==='core'&&project_code">
                 <!-- *ngIf="projectActionInfo&&projectActionInfo[currentActionView]" -->
                 <div class="d-flex align-items-center" >
                     <!-- *ngIf="['Delay','InProcess'].includes(projectActionInfo[currentActionView].Status)" -->

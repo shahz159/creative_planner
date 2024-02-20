@@ -1579,9 +1579,11 @@
                                                 </div>
                                                 Task Complete approvals
                                             </div>
-                                            <!-- <div>
-                                                <button (click)="approval_btn()" class="btn btn-outline-success btn-sm mr-4 fs-8">Accept All</button>
-                                            </div> -->
+                                            <div *ngIf="projectInfo&&standardjson">
+                                                <button 
+                                                 *ngIf="(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)&&standardjson.length>0"  
+                                                 (click)="acceptAllStdApprReq()" class="btn btn-outline-success btn-sm mr-4 fs-8 fw-700">Accept All</button>
+                                            </div>
                                             <div class="kt-project-type curser-pointer d-none">
                                                 <div class="Kt-Pd-Status Add_Action_btn">
                                                     <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg"
@@ -4450,7 +4452,7 @@
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
 
-            <div class="M_fsize">
+            <!-- <div class="M_fsize">
                 Total
                 <div class="badge badge-pill badge-outline-info">
                     {{_totalMemos}}
@@ -4459,9 +4461,16 @@
                 <div class="badge badge-pill badge-outline-success">
                     {{_linkedMemos}}
                 </div>
+            </div> -->
+            <div>
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    {{_linkedMemos}}
+                </div>
             </div>
+
             <div class="kt-nav__separator"></div>
-        </li>
+        </li> 
         <li class="kt-nav__item px-4">
             <div class="matchip-drp-dwn">
 
@@ -6684,7 +6693,7 @@
                                     (change)="onFileChange($event)" [value]="selectedFile">
                                 <label class="custom-file-label" id="upload" for="_pdf">
                                     <ng-container
-                                        *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}
+                                        *ngIf="selectedFile;else selFileFrMprj">{{_inputAttachments}}
                                     </ng-container>
                                     <ng-template #selFileFrMprj> Select a file</ng-template>
                                 </label>
@@ -6759,7 +6768,7 @@
                                             </span>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="_file1"
+                                            <input type="file" class="" id="_file1"
                                                 accept="application/pdf" (change)="onFileChange($event)" />
                                             <label class="custom-file-label"  for="_file1">
                                                 <ng-container *ngIf="_inputAttachments;else selectfile">{{_inputAttachments}}</ng-container>
