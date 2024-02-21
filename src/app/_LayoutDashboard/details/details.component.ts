@@ -329,8 +329,8 @@ if(this.tlTotalHours){
 // 1. bar chart.
 var options = {
   series: [{
-    data: ['001', '002'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
-      : [AL, this.tlTotalHours, Math.round(AL - this.tlTotalHours)]
+    data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
+      : [AL, this.tlTotalHours, (AL - this.tlTotalHours).toFixed(2)]
   }],
   chart: {
     type: 'bar',
@@ -1049,6 +1049,8 @@ this.prjPIECHART.render();
 
   closeInfo() {
     this._remarks = ''
+    this.selectedFile=null;
+    this._inputAttachments='';
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1468,11 +1470,11 @@ this.prjPIECHART.render();
 
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
-        this.requestType = (this.requestDetails[0]['Request_type']);
+        this.requestType = (this.requestDetails[0]['Request_type']);     
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
@@ -1519,21 +1521,30 @@ this.prjPIECHART.render();
           }
 
         }
-        if (this.requestType == 'Task Complete') {
-          this.getstandardapprovalStats();
-          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
+        if (this.requestType == 'Task Complete') { 
+          console.log("requestDetails :",this.requestDetails);
+          this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
-          console.log(this.complete_List,"fahan")
          this.sidno = (this.complete_List[0]['StandardId']);
          this.emp = (this.complete_List[0]['Emp_No']);
          this.repdate = (this.complete_List[0]['Reportdate']);
          this.submitby = (this.complete_List[0]['SubmittedBy']);
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
+         this.getstandardapprovalStats();  
+
         }
 
+      }
+      else{
+        // if there is no requests
+        this.isApprovalSection=false;
+        // if there is no requests
 
-
+        // if there are no std task aprv request
+         this.standardjson=[];
+         this.currentStdAprView=undefined;
+        // if there is no std task aprv request 
       }
       this.getRequestAcessdetails();
     });
@@ -1542,11 +1553,19 @@ this.prjPIECHART.render();
   }
 
 standardjson:any;
+currentStdAprView:number=0;
   getstandardapprovalStats(){
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+      console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']);
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); console.log('standardjson values:',this.standardjson);
+      if(this.standardjson.length>0){
+          this.isApprovalSection=true;
+          this.isTextAreaVisible=false;
+          this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
+      }
+   
     });
   }
 
@@ -1643,9 +1662,59 @@ standardjson:any;
   }
 
 
+
+
+  showStdTaskAprvReq(index){
+    if(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true){
+      if(!Number.isNaN(index)){
+        this.currentStdAprView=index;
+  
+          this.requestComments=this.standardjson[index].Remarks;  // remarks
+          this.completedoc=this.standardjson[index].ProofDoc;    // task attachment
+          this.requestType=this.standardjson[index].Req_Type;    // Request type
+          this.Submitted_By=this.standardjson[index].SubmittedBy; // Request by
+          this.requestDate=this.standardjson[index].Rec_Date;     // Request date
+          this.sidno=this.standardjson[index].SNo;     
+          this.emp=this.standardjson[index].Emp_No;
+          this.repdate=this.standardjson[index].Rec_Date;
+          this.submitby=this.standardjson[index].SubmittedBy;
+          this.iscloud=this.standardjson[index].IsCloud;
+          this.contenttype=this.standardjson[index].contenttype;
+  
+          const aprObj={
+            SNo:this.standardjson[index].SNo,
+            Type:this.standardjson[index].Req_Type,
+            ReportType:this.standardjson[index].ReportType,
+            RejectType:this.standardjson[index].RejectType,
+            sendFrom:this.standardjson[index].sendFrom,
+            Project_Code:this.standardjson[index].Project_Code,
+            Remarks: this.standardjson[index].Remarks,
+            Rec_Date: this.standardjson[index].Rec_Date 
+        };
+        this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
+      }
+    }
+    else
+     this.currentStdAprView=undefined;
+  }
+
+
+  acceptAllStdApprReq(){
+    this.approvalservice.NewUpdateAcceptApprovalsService(this.standardjson).subscribe(data =>{
+      console.log(data,"accept-data");
+       this.notifyService.showSuccess("All tasks requests Approved.",'Success');
+      this.getapprovalStats();
+    });
+  }
+
+
+
+ 
+
   isApprovalSection: boolean = true;
 
   Close_Approval() {
+    this.comments=null;
     this.isApprovalSection = false;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
@@ -1847,9 +1916,8 @@ standardjson:any;
     this._inputAttachments = e.target.files[0].name;
   }
   onFileChange(e) {
-    this._inputAttachments = e.target.files[0].name;
-    this.selectedFile = <File>e.target.files[0];
-
+      this._inputAttachments = e.target.files[0].name;
+      this.selectedFile = <File>e.target.files[0];  
   }
 
 
@@ -2093,7 +2161,7 @@ standardjson:any;
   totalHours: any;
   totalRecords: any;
   _CurrentpageRecords: any;
-  showaction: boolean = true;
+  showaction: boolean = false;
   workdes: string="";
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   dateF = new FormControl(new Date());
@@ -2115,7 +2183,7 @@ standardjson:any;
   Responsible_EmpNo: string;
   noact_msg: boolean = false;
   date = new Date();
-  actionCode: string='';
+  actionCode: any;
   timecount: any;
   minutes: any;
   hours: any;
@@ -2150,8 +2218,9 @@ standardjson:any;
   totalSubtaskHours:number=0;
 
   getResponsibleActions() {
+  
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {
+      (data) => {   
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -2162,24 +2231,27 @@ standardjson:any;
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
-
-
         console.log('darArr:', this.Category_List);
 
-        if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.Responsible_EmpNo == this.Current_user_ID)) {
+        if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
+// user is prj owner
+// user is prj resp + he does not contains any actions.         
           this.showaction = false;
-
         }
-        else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.Responsible_EmpNo != this.Current_user_ID) {
+        else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
+// user is authority/support  + he does not contain any actions.         
           this.showaction = true;
           this.noact_msg = true;
-
         }
         else {
-          this.showaction = true;
-          const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
-          if (selectedActionOpt)
-            this.actionCode = selectedActionOpt.Project_Code;
+// user is prj resp + he contains actions.
+// user is authority/support + he contains actions.
+                this.showaction = true;
+                if(this.currentActionView!==undefined){
+                  const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
+                  if (selectedActionOpt)
+                  this.actionCode = selectedActionOpt.Project_Code;
+                }
         }
       });
 
@@ -2192,7 +2264,7 @@ standardjson:any;
   }
 
 
-
+ 
   selectedOwner: any;
   ProjectType: string
   ProjectDescription: string
@@ -2768,10 +2840,17 @@ check_allocation() {
   }
 
 
-  submitDar() {
-   if((!(this.actionCode&&this.workdes&&this.starttime&&this.endtime))||(this.bothActTlSubm&&this._remarks===''))
-     this.notProvided=true;
-   else{
+ submitDar(){
+ 
+   const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
+   if(
+   ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
+   this.workdes&&
+   this.starttime&&
+   this.endtime&&
+   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?this._remarks:true)
+   ){
+    // if all mandatory fields are provided.
 
 
     if (this.starttime != null && this.endtime != null) {
@@ -2802,25 +2881,61 @@ check_allocation() {
     this.objProjectDto.WorkAchieved = this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-    if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
+
+   // new start
+
+   if(['003','008','011'].includes(this.projectInfo.Project_Block)){
+    // std, routine or todo    
+    this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    this.objProjectDto.Master_code = this.URL_ProjectCode;
+    this.objProjectDto.Project_Code = this.URL_ProjectCode;
+   }
+   else{
+      // core, secondary
+
+    
+     if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
+       // user is project owner.
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
-    }
-    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount == 0)) {
+     }
+     else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+      // user is project responsible.
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.URL_ProjectCode;
-    }
-    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
-      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
-      this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.URL_ProjectCode;
-    }
-    else {
-      this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.actionCode;
-    }
+      this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.  
+     }
+     else{
+           // user is authority/support.
+           this.objProjectDto.Master_code = this.URL_ProjectCode;
+           this.objProjectDto.Project_Code = this.actionCode;
+     }
+
+   }
+
+   // new end
+
+
+    // if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
+    //   this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    // }
+    // else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount == 0)) {
+    //   this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    // }
+    // else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
+    //   this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    // }
+    // else {
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.actionCode;
+    // }
 
 
     this.service._InsertDARServie(this.objProjectDto)
@@ -2828,39 +2943,41 @@ check_allocation() {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
 
-// Timeline submitted
-// if action submission is also required
-if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
-  this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
-  this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
-  this.Sub_Desc = this.projectActionInfo[this.currentActionView].Project_Description;
-  this.Sub_StartDT = this.projectActionInfo[this.currentActionView].StartDate;
-  this.Sub_EndDT = this.projectActionInfo[this.currentActionView].EndDate;
-  this.Sub_Autho = this.projectActionInfo[this.currentActionView].Team_Res;
-  this.Sub_Status = this.projectActionInfo[this.currentActionView].Status;
-  this.actionCompleted();
-  this.closeDarSideBar();
+        // Timeline submitted
+        // if action submission is also required
+        if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
+          this._Subtaskname = this.projectActionInfo[this.currentActionView].Project_Name;
+          this.Sub_ProjectCode = this.projectActionInfo[this.currentActionView].Project_Code;
+          this.Sub_Desc = this.projectActionInfo[this.currentActionView].Project_Description;
+          this.Sub_StartDT = this.projectActionInfo[this.currentActionView].StartDate;
+          this.Sub_EndDT = this.projectActionInfo[this.currentActionView].EndDate;
+          this.Sub_Autho = this.projectActionInfo[this.currentActionView].Team_Res;
+          this.Sub_Status = this.projectActionInfo[this.currentActionView].Status;
+          this.actionCompleted();
+          this.closeDarSideBar();
 
-  this.bothActTlSubm=false;
-  this._remarks='';
-  this._inputAttachments='';
-}
+          this.bothActTlSubm=false;
+          this._remarks='';
+          this._inputAttachments='';
+        }
       });
-    this.dar_details();
-    this.getDarTime();
+      this.dar_details();
+      this.getDarTime();
 
-    this.workdes = "";
-    this.starttime = null;
-    this.endtime = null;
-    this.notProvided=false;
+      this.workdes = "";
+      this.starttime = null;
+      this.endtime = null;
+      this.notProvided=false;
     // document.getElementById("newdetails").classList.remove("position-fixed");
     // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("rightbar-overlay").style.display = "none";
     // this.Clear_Feilds();
 
-   }
-  }
 
+   }
+   else // some mandatory field are missing.
+     this.notProvided=true;
+ }
 
 
 
@@ -3148,7 +3265,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
 
-  closeInfoProject() {
+  closeInfoProject() { debugger
     // For closing sidebar on 'X' buttton
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     // For sidebar overlay background removing the slide on 'X' button
@@ -3159,8 +3276,8 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
     this._inputAttachments = '';
     this._remarks = '';
     this.selectedFile = null;
-    $('#_file1').val('');
-    $('#upload').html('Select a file');
+    // $('#_file1').val('');
+    // $('#upload').html('Select a file');
     // this.OnClickCheckboxProjectUpdate();
     // this.Clear_Feilds();
   }
@@ -4071,7 +4188,6 @@ config: AngularEditorConfig = {
 
 
 Task_type(value:number){
-
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
@@ -4345,9 +4461,8 @@ Task_type(value:number){
   GetProjectAndsubtashDrpforCalender() {
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
-        this.ProjectListArray = JSON.parse(data['Projectlist']);
+        this.ProjectListArray = JSON.parse(data['Projectlist']);      
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
-
         const racisPeople=this.Project_List.map(item=>item.Emp_No);
         this._EmployeeListForDropdown.sort((el:any)=>{
         return racisPeople.includes(el.Emp_No)?-1:+1
@@ -5475,7 +5590,7 @@ onPrjSelected(e:any){
 
  getPrjName(projectCode:string){
   if(this.ProjectListArray){
-   const P=this.ProjectListArray.find(pr=>pr.Project_Code===projectCode);
+   const P=this.ProjectListArray.find(pr=>pr.Project_Code.trim()==projectCode.trim());
    return P?P.BlockNameProject:'';
   }
    return [];
@@ -5685,8 +5800,8 @@ debugger
     else {
       this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
       this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.hold_date = this.release_date;
+      this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code; 
+      this.approvalObj.hold_date = this.release_date; 
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Remarks = this.hold_remarks;
       this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
@@ -6653,9 +6768,9 @@ onGraphOptionChanged(option:string){
 
 //  Full Graph code end
 
-approval_btn(){
-  alert('approval accepted')
-}
+// approval_btn(){
+//   alert('approval accepted')
+// }
 
 // trackbyfuncton(index, item){
 //   if(!item) return null;

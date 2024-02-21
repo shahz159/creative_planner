@@ -207,7 +207,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         console.log("Data---->", this.CategoryList);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);    
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         
         
@@ -888,7 +888,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     myWindow.focus();
   }
 
+  openActionInDetails(pcode,acode){
+   let Url=`${document.baseURI}Details/${pcode}/?actionCode=${acode}`;
+   const myWindow = window.open(Url);
+   myWindow.focus();
+  }
+
 
 }
   
-
+ 

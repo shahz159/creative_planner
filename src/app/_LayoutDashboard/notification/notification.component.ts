@@ -742,93 +742,9 @@ acceptSelectedValues() {
 
     console.log(this.selectedItems,"accept");
 
-    // this.selectedItems.forEach(element => {
-    //   this.approvalObj.Project_Code=element.Project_Code;
-    //   this.approvalObj.SNo=element.Sno;
-    //   this.approvalObj.Duration=0;
-    //   this.approvalObj.Remarks='Accepted';
-    //   this.approvalObj.RejectType=element.Reject_Type;
-    //   this.approvalObj.OtherType=0;
-    //   this.approvalObj.sendFrom="WR";
+    
 
-    //   switch(element.Req_Type){
-    //                        case "New Project":
-    //                             this.approvalObj.Type = "Approved Project";
-    //                             break;
-    //                         case "New Project Reject Release":
-    //                             this.approvalObj.Type = "Approved Project";
-    //                             break;
-    //                         case "New Project Hold":
-    //                             this.approvalObj.Type = "Approved Hold Project";
-    //                             break;
-    //                         case "Project Complete":
-    //                             this.approvalObj.Type = "Project Complete";
-    //                             break;
-    //                         case "Project Complete Reject Release":
-    //                             this.approvalObj.Type = "Project Complete";
-    //                             break;
-    //                         case "Project Complete Hold":
-    //                             this.approvalObj.Type = "Approved Project Complete Hold";
-    //                             break;
-    //                         case "Deadline Extend":
-    //                             this.approvalObj.Type = "Deadline Extend";
-    //                             break;
-    //                         case "Deadline Extend Hold":
-    //                             this.approvalObj.Type = "Approved Deadline Hold";
-    //                             break;
-    //                         case "KPI Achieved":
-    //                             this.approvalObj.Type = "KPI Completed";
-    //                             break;
-    //                         case "KPI Enactive":
-    //                             this.approvalObj.Type = "KPI Enactive";
-    //                             break;
-    //                         case "KPI Enactive Hold":
-    //                             this.approvalObj.Type = "KPI Enactive Hold";
-    //                             break;
-    //                         case "KPI Achieved Hold":
-    //                             this.approvalObj.Type = "KPI Completed";
-    //                             break;
-    //                         case "New Todo":
-    //                             this.approvalObj.Type = "ToDo InProcess";
-    //                             break;
-    //                         case "ToDo Achieved":
-    //                             this.approvalObj.Type = "ToDo Completed";
-    //                             break;
-    //                         case "Enactive":
-    //                             this.approvalObj.Type = "Standardtask Enactive";
-    //                             break;
-    //                         case "Task Complete":
-    //                             this.approvalObj.Type = "StandardTask Completed";
-    //                             break;
-    //                         case "Task Complete Hold":
-    //                             this.approvalObj.Type = "StandardTask Completed";
-    //                             break;
-    //                         case "Standardtask Enactive":
-    //                             this.approvalObj.Type = "Standardtask Enactive";
-    //                             break;
-    //                         case "Standardtask Enactive Hold":
-    //                             this.approvalObj.Type = "Standardtask Enactive";
-    //                             break;
-    //                         case "Project Forward":
-    //                             this.approvalObj.Type = "Project Forward";
-    //                             break;
-    //                         case "Revert Back":
-    //                             this.approvalObj.Type = "Revert Back";
-    //                             break;
-    //                         case "Project Hold":
-    //                             this.approvalObj.Type = "Project Hold";
-    //                             break;
-    //                         case "Not Achieved":
-    //                             this.approvalObj.Type = "StandardTask Completed";
-    //                             break;
-    //                         default:
-    //                             break;
-    //   }
-
-
-    // });
-
-  if( this.selectedItems.length > 0){
+  if( this.selectedItems.length > 0){ 
     debugger
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");

@@ -80,14 +80,27 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
   Mode: string;
   _subtaskDiv: boolean;
+  delayType: string;
+  delayType1: string='Projects';
+  delayType2: string='Actions';
 
-  ngOnInit() {
+
+  ngOnInit() { 
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
     this.Z2A = false;
     this._subtaskDiv = true;
     this.Mode = this.activatedRoute.snapshot.params.Mode;
-    this.GetCompletedProjects();
+    if(this.Mode=='DelayProjects'){
+      this.delayType=this.delayType1;
+      this.getDelayProjects(this.delayType1);
+    }
+    else if(this.Mode=='AssignedActions'){
+      this.getAssignedActions('TOME');   
+    }
+    else{
+      this.GetCompletedProjects();
+    }
     this.getAssignedProjects(this.type1);
     this.router.navigate(["../ViewProjects/" + this.Mode]);
     // this.notFoundData=true;
@@ -144,8 +157,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
   notSelectedAnything_msg: string;
   notSelectedAnything_msg2: string;
 
+
+
   GetCompletedProjects() {
-    // debugger
     // this.Mode = this.service._getMessage();
     let EmpNo = this.Current_user_ID;
     let Pgno: number = this.CurrentPageNo;
@@ -155,14 +169,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._ObjCompletedProj.PageNumber = Pgno;
     this._ObjCompletedProj.PageSize = 30;
 
-    if (this.Mode != "AssignedTask" && this.Mode != "") {
+    if (this.Mode != "AssignedTask" && this.Mode != "Delay" && this.Mode != "") {
       this.projectsDataTable = false;
       this.AssignedTask = true;
-
-      if (this.Mode == "Delay") {
-        this._Statustitle = "Delay Projects";
-        this._totalProjectsCount = parseInt(sessionStorage.getItem('DelayCount'));
-      }
+     
       if (this.Mode == "UnderApproval") {
         this._Statustitle = "Under Approval Projects";
         this._totalProjectsCount = parseInt(sessionStorage.getItem('CompletedCount'));
@@ -183,6 +193,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
         this._Statustitle = "Projects Not Started";
         this._totalProjectsCount = parseInt(sessionStorage.getItem('ProjectsNotStarted'));
       }
+
       //Reset The List for New Data
       this._ProjectDataList = [];
       this.service._GetCompletedProjects(this._ObjCompletedProj)
@@ -194,7 +205,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this._CurrentpageRecords = 0;
           }
           else {
-            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);  console.log("_ProjectDataList:",this._ProjectDataList);
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
@@ -203,6 +214,56 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
         });
     }
+  }
+
+
+  getDelayProjects(type) {
+    this.projectsDataTable = false;
+    this.AssignedTask = true;
+    this.delayType=type;
+    if(type=='Projects'){
+      this.Mode='DelayProjects';
+    }
+    else{
+      this.Mode='DelayActions';
+    }
+    let EmpNo = this.Current_user_ID;
+    let Pgno: number = this.CurrentPageNo;
+    //Passing to OBJ DTO...
+    this._ObjCompletedProj.Mode = this.Mode;
+    this._ObjCompletedProj.Emp_No = EmpNo;
+    this._ObjCompletedProj.PageNumber = Pgno;
+    this._ObjCompletedProj.PageSize = 30;
+
+
+
+      if (this.Mode == "DelayProjects") {
+        this._totalProjectsCount = parseInt(sessionStorage.getItem('DelayCount'));
+      }
+      else
+      {
+        this._totalProjectsCount = parseInt(sessionStorage.getItem('DelayActionCount'));
+      }
+      //Reset The List for New Data
+      this._ProjectDataList = [];
+      this.service._GetCompletedProjects(this._ObjCompletedProj)
+        .subscribe((data) => {
+          if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
+            this.notSelectedAnything_msg = "Sorry, No records found in Delay" + type;
+            this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
+            this.CurrentPageNo = 0;
+            this._CurrentpageRecords = 0;
+          }
+          else {
+            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+            this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+            this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+            this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+            this._CurrentpageRecords = this._ProjectDataList.length;
+            this._totalProjectsCount = data[0]['delaycount'];
+            console.log(this._ProjectDataList,"delay actions")
+          }
+        });
   }
 
   type1: string = "Assigned by me";
@@ -387,7 +448,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.CurrentPageNo = 1;
     this.applyFilters();
   }
-  applyFilters() {
+  applyFilters() {  
     if (this.Mode != "AssignedTask" && this.Mode != "") {
       this.selectedEmp_String = this.checkedItems_Emp.map(select => {
         return select.Emp_No;
@@ -407,7 +468,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ObjCompletedProj.Project_SearchText = this.searchText;
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service._GetCompletedProjects(this._ObjCompletedProj)
-        .subscribe(data => {
+        .subscribe(data => { 
           this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
@@ -807,10 +868,15 @@ export class ViewDashboardProjectsComponent implements OnInit {
     myWindow.focus();
   }
   
-  newDetails(pcode) {
+  newDetails(pcode,acode:string|undefined) { 
+  
+    let qparams='';
+    if(acode!==undefined){
+      qparams=`?actionCode=${acode}`;
+    }
     let name: string = 'Details';
     var url = document.baseURI + name;
-    var myurl = `${url}/${pcode}`;
+    var myurl = `${url}/${pcode}${qparams}`;
     var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
@@ -840,5 +906,51 @@ export class ViewDashboardProjectsComponent implements OnInit {
   }
 
 
+
+
+
+// assigned actions by me, to me start
+actionAssignedType:"BYME"|"TOME"="TOME";
+
+getAssignedActions(type:'BYME'|'TOME'){
+    this.actionAssignedType=type;
+    this.AssignedTask = true;
+    this.projectsDataTable = false;
+    this._Statustitle='Assigned Actions'
+
+    let EmpNo = this.Current_user_ID;
+    let Pgno: number = this.CurrentPageNo;
+
+    this._ObjCompletedProj.Mode = type==='TOME'?'AssignedActions':'AssignedActionsbyMe';
+    this._ObjCompletedProj.Emp_No = EmpNo;
+    this._ObjCompletedProj.PageNumber = Pgno;
+    this._ObjCompletedProj.PageSize = 30;
+
+   //Reset The List for New Data
+    this._ProjectDataList = [];
+
+    this.service._GetCompletedProjects(this._ObjCompletedProj)
+      .subscribe((data) => {
+        if (JSON.parse(data[0]['JsonData_Json']).length == 0) {    console.log('no list present');
+          this.notSelectedAnything_msg = `No Actions found Assigned ${type==='BYME'?'By You':'To You'}`;
+          this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
+          this.CurrentPageNo = 0;
+          this._CurrentpageRecords = 0;
+        }
+        else {
+          this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);  console.log(type+' _ProjectDataList->',this._ProjectDataList);
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
+          this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+          this._CurrentpageRecords = this._ProjectDataList.length;
+          this._totalProjectsCount = data[0]['delaycount'];   
+          // console.log(this._ProjectDataList,"delay actions")
+        }
+      });
+  
+}
+
+
+// assigned action by me, to me end
 
 }
