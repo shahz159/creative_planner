@@ -1579,9 +1579,11 @@
                                                 </div>
                                                 Task Complete approvals
                                             </div>
-                                            <!-- <div>
-                                                <button (click)="approval_btn()" class="btn btn-outline-success btn-sm mr-4 fs-8">Accept All</button>
-                                            </div> -->
+                                            <div *ngIf="projectInfo&&standardjson">
+                                                <button 
+                                                 *ngIf="(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)&&standardjson.length>0"  
+                                                 (click)="acceptAllStdApprReq()" class="btn btn-outline-success btn-sm mr-4 fs-8 fw-700">Accept All</button>
+                                            </div>
                                             <div class="kt-project-type curser-pointer d-none">
                                                 <div class="Kt-Pd-Status Add_Action_btn">
                                                     <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg"
@@ -1595,10 +1597,9 @@
                                         </div>
 
 
-                                            <div class="kt-project-action-list-view flipped">
+                                            <div class="kt-project-action-list-view flipped" *ngIf="standardjson&&standardjson.length>0;else noTasksAvailable">
                                                     <div class="kt-project-acion-content">
-                                                <ng-container  *ngFor="let item of standardjson; let i=index">
-                                                        <div  class="kt-projcect-act-list" >
+                                                        <div  *ngFor="let item of standardjson; let i=index"  class="kt-projcect-act-list"  (click)="showStdTaskAprvReq(i)"   [ngClass]="{'Active':currentStdAprView===i}">
                                                             <div class="row curser-pointer">
                                                                 <div class="col-lg-8 pl-0 pr-1">
                                                                     <div class="kt-p-box border-r-0">
@@ -1632,17 +1633,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                </ng-container>
-                                                </div>
+                                                  </div>
                                             </div>
-
-
+                                          <ng-template #noTasksAvailable>
                                             <div class="no-prjact-found ">
                                                 <img class="no-prjact-found-img"
                                                     src="./assets/images/noActionPresent.png" />
                                                 <h3 class="blank-txt fs-5 no-prjact-found-label">No Tasks for approvals.</h3>
                                             </div>
-
+                                         </ng-template>
                                     </div>
                                 </ng-template>
                             </ng-container>
@@ -1969,7 +1968,7 @@
         <ng-container *ngIf="
             +ProjectPercentage>100||
             (([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0)||
-            myUnderApprvActions.length>0||
+            myUnderApprvActions.length>0|| MeetingCount>0||
             myDelayPrjActions.length>0
             ">
 
@@ -2073,6 +2072,7 @@
             </span>
         </div>
 
+
         <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list">
         <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0"
         (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:'All'});   showActionDetails(this.delayActionsOfEmps[0].delayActions[0].IndexId-1); ">
@@ -2099,37 +2099,62 @@
                 days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                     *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
         </span>
+
+
         </div>
+        </div>
+
+
+        <div class="notification meeting cursor-pointer" *ngIf="MeetingCount>0" (click)="openMeetingSidebar()"><svg xmlns="http://www.w3.org/2000/svg"
+            height="16" width="16" viewBox="0 0 1024 1024" version="1.1" class="iconify iconify--mdi">
+            <path _ngcontent-pef-c397=""
+              d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+            </path>
+          </svg><span class="notif-msg" style=" cursor: pointer;" >
+            You have {{MeetingCount}} Meeting Scheduled for Today.</span>
         </div>
 
          </div>
         </div>
 
+
         </ng-container>
 
 </ng-container>
 
-<div  class="kt-Note-msg d-flex" *ngIf="projectInfo.Status=='Not Started' && projectInfo.ResponsibleEmpNo==Current_user_ID"><div  class="kt-note-icon" style="align-self: flex-start;"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;"><path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path><path  d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z"></path><path  d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z"></path><path  d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z"></path><path  d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z"></path><path  d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z"></path><path  d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z"></path><path d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z"></path></svg></div><div  class="notifications-list">
+<div  class="kt-Note-msg d-flex" *ngIf="projectInfo&&(projectInfo.Status=='Not Started' && projectInfo.ResponsibleEmpNo==Current_user_ID)"><div  class="kt-note-icon" style="align-self: flex-start;"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;"><path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path><path  d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z"></path><path  d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z"></path><path  d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z"></path><path  d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z"></path><path  d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z"></path><path  d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z"></path><path d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z"></path></svg></div><div  class="notifications-list">
 
 <div class="notification not-star cursor-pointer"><svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="not-star" class="notif-img"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g ><path  d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path  d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg><span  class="notif-msg" style=" cursor: pointer;">
     Please submit the draft to start working on the project.</span></div>
-
-
-
+</div>
 </div>
 
+
+
+
+<div  class="kt-Note-msg d-flex" *ngIf="projectInfo&&(projectInfo.Status=='Not Started' && projectInfo.ResponsibleEmpNo!=Current_user_ID)"><div  class="kt-note-icon" style="align-self: flex-start;"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;"><path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path><path  d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z"></path><path  d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z"></path><path  d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z"></path><path  d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z"></path><path  d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z"></path><path  d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z"></path><path d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z"></path></svg></div>
+<div  class="notifications-list">
+
+    <div class="notification not-star cursor-pointer"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
+        fill="not-star" class="notif-img">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <g>
+            <path
+              d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
+            </path>
+            <path
+              d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
+            </path>
+          </g>
+        </g>
+      </svg><span class="notif-msg" style=" cursor: pointer;">
+        Please inform the responsible of the project to submit the draft to start working on the project.</span>
+    </div>
+    </div>
+
 </div>
-
-<div  class="kt-Note-msg d-flex" *ngIf="projectInfo.Status=='Not Started' && projectInfo.ResponsibleEmpNo!=Current_user_ID"><div  class="kt-note-icon" style="align-self: flex-start;"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;"><path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path><path  d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z"></path><path  d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z"></path><path  d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z"></path><path  d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z"></path><path  d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z"></path><path  d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z"></path><path d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z"></path></svg></div><div  class="notifications-list">
-
-    <div class="notification not-star cursor-pointer"><svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="not-star" class="notif-img"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g ><path  d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path  d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg><span  class="notif-msg" style=" cursor: pointer;">
-        Please inform the responsible of the project to submit the draft to start working on the project.</span></div>
-    
-    
-    
-    </div>
-    
-    </div>
 
 
 
@@ -2505,7 +2530,7 @@
                                                                 [(ngModel)]="comments"></textarea>
                                                         </ng-container>
                                                         <ng-container *ngIf="selectedType == '1'">
-                                                            <label>Enter Comments<span class="text-danger">*</span></label>
+                                                            <label>Enter Comments</label>
                                                             <textarea class="form-control kt-approval-msg"
                                                                 id="exampleTextarea" rows="3"
                                                                 [(ngModel)]="comments"></textarea>
@@ -3654,7 +3679,7 @@
                                                                     'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
                                                                     }">
                                                                 {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Under Approval':
-                                                                  projectActionInfo[currentActionView].Status=='InProcess'? 'In-Process': 
+                                                                  projectActionInfo[currentActionView].Status=='InProcess'? 'In-Process':
                                                                   projectActionInfo[currentActionView].Status=='Not Started'? 'Draft': projectActionInfo[currentActionView].Status}}
                                                             </div>
                                                             <div class="Requested_user_info">
@@ -4427,7 +4452,7 @@
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
 
-            <div class="M_fsize">
+            <!-- <div class="M_fsize">
                 Total
                 <div class="badge badge-pill badge-outline-info">
                     {{_totalMemos}}
@@ -4436,9 +4461,16 @@
                 <div class="badge badge-pill badge-outline-success">
                     {{_linkedMemos}}
                 </div>
+            </div> -->
+            <div>
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    {{_linkedMemos}}
+                </div>
             </div>
+
             <div class="kt-nav__separator"></div>
-        </li>
+        </li> 
         <li class="kt-nav__item px-4">
             <div class="matchip-drp-dwn">
 
@@ -4472,7 +4504,7 @@
 
 
                    <ng-container *ngIf="memosOptions">
-                    <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value).slice(0,3000)" [value]="memo.MailId">
+                    <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value).slice(0,1000)" [value]="memo.MailId">
                         <mat-checkbox color="primary" [checked]="(selectedMemos.indexOf(memo)!==-1)"></mat-checkbox>
                         {{memo.Subject}}
                     </mat-option>
@@ -4551,13 +4583,13 @@
     </div>
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
-            <p class="text-primary">
-                Portfolios</p>
+            <!-- <p class="text-primary">
+                Portfolios</p> -->
             <div class="M_fsize">
-                Total
+                <!-- Total
                 <div class="badge badge-pill badge-outline-info">
                     {{totalPortfolios}}
-                </div>
+                </div> -->
                 Linked
                 <div class="badge badge-pill badge-outline-success">
                     {{_portfolioLength}}
@@ -4758,8 +4790,10 @@
         <div class="kt-portlet__body">
 
             <div>
+
+            <ng-container *ngIf="projectInfo">
                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
-                    *ngIf="projectInfo&&((!['Standard Tasks','Routine Tasks','To do List'].includes(projectInfo.Project_Type))&& showaction!=false)">
+                 *ngIf="(['001','002'].includes(projectInfo.Project_Block)&& showaction)">
                     <label>Action <span class="text-danger">*</span></label>
                     <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
                         [(ngModel)]="actionCode" (change)="onActionChanged($event)">
@@ -4772,11 +4806,14 @@
                         create
                         atleast one action to submit timeline</span>
                 </div>
+            </ng-container>
+
+
                 <div class="form-group">
                     <label>Work Description<span class="text-danger">*</span></label>
                     <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"
                         placeholder="Define your achievement here."></textarea>
-                    <span style="color:red" *ngIf="workdes===''&&notProvided" >Please Provide Description.</span>
+                    <span style="color:red" *ngIf="workdes===''&&notProvided" >please provide description.</span>
                 </div>
 
                 <div class="form-group">
@@ -4805,7 +4842,7 @@
                                 <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
                             </ng-option>
                         </ng-select>
-                        <span style="color:red" *ngIf="starttime===null&&notProvided">Please Provided starttime</span>
+                        <span style="color:red" *ngIf="starttime===null&&notProvided">please provide start time.</span>
                     </div>
 
                     <div class="form-group w-100">
@@ -4818,9 +4855,9 @@
                                 <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
                             </ng-option>
                         </ng-select>
-                        <span style="color:red" *ngIf="endtime===null&&notProvided">Please Provided endtime</span>
-                        <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than
-                            Start
+                        <span style="color:red" *ngIf="endtime===null&&notProvided">please provide end time.</span>
+                        <span style="color:red" id="err1" *ngIf="(endtime < starttime)">end time cannot be less than
+                            start
                             time!!</span>
                     </div>
                 </div>
@@ -6661,7 +6698,8 @@
                                     (change)="onFileChange($event)" [value]="selectedFile">
                                 <label class="custom-file-label" id="upload" for="_pdf">
                                     <ng-container
-                                        *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}</ng-container>
+                                        *ngIf="selectedFile;else selFileFrMprj">{{_inputAttachments}}
+                                    </ng-container>
                                     <ng-template #selFileFrMprj> Select a file</ng-template>
                                 </label>
                             </div>
@@ -6735,13 +6773,13 @@
                                             </span>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="_file1"
-                                                accept="application/pdf" (change)="onFileChange($event)">
-                                            <label class="custom-file-label" id="upload" for="_file1">
-                                                <ng-container>
-                                                    Select a file
-                                                </ng-container>
-                                            </label>
+                                            <input type="file" class="" id="_file1"
+                                                accept="application/pdf" (change)="onFileChange($event)" />
+                                            <label class="custom-file-label"  for="_file1">
+                                                <ng-container *ngIf="_inputAttachments;else selectfile">{{_inputAttachments}}</ng-container>
+                                                  <ng-template #selectfile>Select a file</ng-template>
+                                            </label> 
+                                           
                                         </div>
                                     </div>
                                     <span class="text-info"> *Accept only pdf files </span>
@@ -6963,7 +7001,7 @@
                                          <ng-template #act_release>
                                             <div class="px-4 py-3">
                                                 <b>Action: {{projectActionInfo&&projectActionInfo[currentActionView].Project_Name}}</b><br>
-                                                This action is on hold until {{hold_upto}}
+                                                This action is on hold until {{projectActionInfo&&projectActionInfo[currentActionView].Holddate}}
                                             </div>
                                          </ng-template>
 
@@ -7391,12 +7429,29 @@
                                                                 {{ meeting.Location!==''?meeting.Location:'online'}}
                                                             </div>
 
+
                                                             <!-- <div class="kt-met-app">
                                                                 <img alt="Logo" src="assets/icons/Artboard Copy.png"
                                                                     id="creative" style="width: 20px;">
                                                                 <span>Join In Stream Planner</span>
                                                             </div> -->
                                                         </div>
+
+                                                       <div class="kt-met-dtl">
+                                                        <div class="kt-met-label">
+                                                          Participant:
+                                                        </div>
+                                                        <ng-container  *ngFor="let item of meeting.usersjson; let last = last">
+                                                          <div class="kt-met-info"  let last = last >{{ item.TM_DisplayName  + (last ? ' ' : ', ') }}</div>
+                                                        </ng-container>
+
+                                                       </div>
+
+
+
+
+
+
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -7562,6 +7617,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
+                                                        <div class="kt-met-dtl">
+                                                          <div class="kt-met-label">
+                                                            Participant:
+                                                          </div>
+                                                          <div class="kt-met-info" *ngFor="let item of meeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
+                                                         </div>
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -7726,6 +7787,14 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
+                                                        <div class="kt-met-dtl">
+                                                          <div class="kt-met-label">
+                                                            Participant:
+                                                          </div>
+                                                          <div class="kt-met-info" *ngFor="let item of lmeeting.usersjson; let last = last" >
+                                                            {{ item.TM_DisplayName + (last ? ' ' : ', ') }}
+                                                          </div>
+                                                         </div>
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -7889,6 +7958,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
+                                                        <div class="kt-met-dtl">
+                                                          <div class="kt-met-label">
+                                                            Participant:
+                                                          </div>
+                                                          <div class="kt-met-info" *ngFor="let item of lmmeeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
+                                                         </div>
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8049,6 +8124,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
+                                                        <div class="kt-met-dtl">
+                                                          <div class="kt-met-label">
+                                                            Participant:
+                                                          </div>
+                                                          <div class="kt-met-info" *ngFor="let item of omeeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
+                                                         </div>
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8230,6 +8311,12 @@
                                                                 <span>Join In Stream Planner</span>
                                                             </div> -->
                                                         </div>
+                                                        <div class="kt-met-dtl">
+                                                          <div class="kt-met-label">
+                                                            Participant:
+                                                          </div>
+                                                          <div class="kt-met-info" *ngFor="let item of meeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
+                                                         </div>
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8378,13 +8465,13 @@
                             </div>
 
                             <div class="form-group" id="core_viw121" style="display:none">
-                            <label class="cus-lbl">Select Project</label>
-                            <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [multiple]="true" (change)="MasterCode=$event.includes(URL_ProjectCode)?$event:[URL_ProjectCode].concat($event)">
+                            <!-- <label class="cus-lbl">Select Project</label> -->
+                            <!-- <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [multiple]="true" (change)="MasterCode=$event.includes(URL_ProjectCode)?$event:[URL_ProjectCode].concat($event)">
                                 <ng-option [value]="p.Project_Code" *ngFor="let p of ProjectListArray">{{p.BlockNameProject}}</ng-option>
-                            </ng-select>
+                            </ng-select> -->
 
-                            <!--  mat meetings dropdwn here start
-                                 <mat-form-field class="drp-dwn-field w-100">
+                      
+                                 <mat-form-field class="drp-dwn-field w-100" *ngIf="ProjectListArray">
                                     <mat-label>Select Project </mat-label>
                                     <mat-chip-list #selectedProjectDrpDwn>
                                         <ng-container *ngIf="ScheduleType==='Event'">
@@ -8410,14 +8497,14 @@
                                     <mat-autocomplete aria-label="ProjectDrpDwn" #ProjectDrpDwn="matAutocomplete"
                                         (optionSelected)="onPrjSelected($event); projectTF.value=''; "
                                         (opened)="isProjectDrpDwnOpen=true" (closed)="isProjectDrpDwnOpen=false; ">
-                                        <mat-option *ngFor="let pr of ProjectListArray|filter:projectTF.value"
+                                        <mat-option *ngFor="let pr of (ProjectListArray|filter:projectTF.value).slice(0,1000)"
                                             [value]="pr.Project_Code">
                                             <mat-checkbox color="primary"
                                                 [checked]="MasterCode.indexOf(pr.Project_Code)!==-1"></mat-checkbox>
                                             {{pr.BlockNameProject}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>   -->
+                                </mat-form-field>   
 
                             </div>
 
@@ -8484,13 +8571,13 @@
 
                                 <div class="form-group" id="core_Dms" style="display:none">
 
-                                <label class="cus-lbl">Add DMS</label>
+                                <!-- <label class="cus-lbl">Add DMS</label>
                                 <ng-select [multiple]="true" [(ngModel)]="SelectDms">
                                     <ng-option *ngFor="let m of Memos_List" [value]="m.MailId"> {{m.Subject}}</ng-option>
-                                </ng-select>
+                                </ng-select> -->
 
-<!--
-                                    <mat-form-field class="drp-dwn-field w-100" >
+
+                                    <mat-form-field class="drp-dwn-field w-100" *ngIf="Memos_List">
                                         <mat-label>Add DMS</mat-label>
                                         <mat-chip-list #selectedDmsMemoDrpDwn>
                                             <mat-chip *ngFor="let d of SelectDms" class="Data_chip_kt"
@@ -8514,7 +8601,7 @@
                                         <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
                                             (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
                                             (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
-                                            <mat-option *ngFor="let m of Memos_List|filter:dmsMemoTF.value"
+                                            <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
                                                 [value]="m.MailId">
                                                 <mat-checkbox color="primary"
                                                     [checked]="SelectDms.indexOf(m)!==-1"></mat-checkbox>
@@ -8522,7 +8609,7 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-                                 -->
+                                 
                                 </div>
 
                                 <div class="form-group" id="Guest_Name" style="display:none">
