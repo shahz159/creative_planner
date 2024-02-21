@@ -5794,8 +5794,8 @@ debugger
     else {
       this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
       this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.hold_date = this.release_date;
+      this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code; 
+      this.approvalObj.hold_date = this.release_date; 
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Remarks = this.hold_remarks;
       this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
