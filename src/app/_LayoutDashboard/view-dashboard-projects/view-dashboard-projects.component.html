@@ -326,7 +326,7 @@
                                                         aria-label=": activate to sort column descending">
                                                     </th>
                                                     <th></th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                    <th [appSort]="_ProjectDataList" data-order="desc" *ngIf="Mode!='DelayActions'"
                                                         data-name="Project_Name" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" style="width: 0px;"
                                                         class="curser-pointer" (click)="_SortPortfoliolist()"
@@ -340,6 +340,21 @@
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>
                                                         Project Name
+                                                    </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc" *ngIf="Mode=='DelayActions'"
+                                                        data-name="Project_Name" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" style="width: 0px;"
+                                                        class="curser-pointer" (click)="_SortPortfoliolist()"
+                                                        aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                                                        <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fas fa-sort-alpha-up"></i>
+                                                        </a>
+                                                        <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip"
+                                                            title="Click to sort">
+                                                            <i class="fa fa-sort-alpha-down-alt"></i>
+                                                        </a>
+                                                        Action Name
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0"
@@ -433,12 +448,18 @@
                                                                     title="Not Linked"></a>
                                                         </ng-template>
                                                     </td>
-                                                    <td>
+                                                    <td *ngIf="Mode!='DelayActions'">
                                                         <p class="kt-widget__title mb-0">
                                                             {{item.Project_Name}}
                                                             <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
                                                         </p>
 
+                                                    </td>
+                                                    <td *ngIf="Mode=='DelayActions'">
+                                                        <p class="kt-widget__title mb-0" title="Action name">
+                                                            {{item.Action_Name}}
+                                                        </p>
+                                                        <span title="Project name">{{item.Project_Name}}</span>
                                                     </td>
                                                     <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span>
                                                     </td>

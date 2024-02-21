@@ -80,6 +80,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
   Mode: string;
   _subtaskDiv: boolean;
+  delayType: string;
+  delayType1: string='Projects';
+  delayType2: string='Actions';
 
   ngOnInit() {
     console.log("------base Url-------->", this.router.url);
@@ -87,7 +90,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.Z2A = false;
     this._subtaskDiv = true;
     this.Mode = this.activatedRoute.snapshot.params.Mode;
-    if(this.Mode=='Delay'){
+    if(this.Mode=='DelayProjects'){
+      this.delayType=this.delayType1;
       this.getDelayProjects(this.delayType1);
     }
     else{
@@ -148,9 +152,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   notFoundData: boolean;
   notSelectedAnything_msg: string;
   notSelectedAnything_msg2: string;
-  delayType: string;
-  delayType1: string='Projects';
-  delayType2: string='Actions';
+
 
 
   GetCompletedProjects() {
@@ -214,13 +216,12 @@ export class ViewDashboardProjectsComponent implements OnInit {
   getDelayProjects(type) {
     this.projectsDataTable = false;
     this.AssignedTask = true;
-
     this.delayType=type;
-    if(type='Projects'){
+    if(type=='Projects'){
       this.Mode='DelayProjects';
     }
     else{
-      this.Mode='DelayActions'
+      this.Mode='DelayActions';
     }
     let EmpNo = this.Current_user_ID;
     let Pgno: number = this.CurrentPageNo;
@@ -256,6 +257,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
+            console.log(this._ProjectDataList,"delay actions")
           }
         });
   }
