@@ -7001,7 +7001,7 @@
                                          <ng-template #act_release>
                                             <div class="px-4 py-3">
                                                 <b>Action: {{projectActionInfo&&projectActionInfo[currentActionView].Project_Name}}</b><br>
-                                                This action is on hold until {{hold_upto}}
+                                                This action is on hold until {{projectActionInfo&&projectActionInfo[currentActionView].Holddate}}
                                             </div>
                                          </ng-template>
 
