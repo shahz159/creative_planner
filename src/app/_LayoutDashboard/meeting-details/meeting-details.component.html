@@ -1675,11 +1675,12 @@
                                 (click)="openMemoDrpDwn()">add</mat-icon></button>
                     </div>
                           <mat-autocomplete #memoDrpDown="matAutocomplete"   #DMSDROPDOWN
-                         (optionSelected)="onMemoClicked($event); dmsSelectTF.value=''; "
-                        (closed)="isDMSDrpDwnOpen=false;" (opened)="isDMSDrpDwnOpen=true">
-                       <ng-container *ngIf="Memos_List">
-
-                       <mat-option  *ngFor="let memo of (Memos_List|filter:dmsSelectTF.value).slice(0,3000)" [value]="memo.MailId">
+                         (optionSelected)="onMemoClicked($event);  "
+                        (closed)="isDMSDrpDwnOpen=false" 
+                        (opened)="isDMSDrpDwnOpen=true">
+                     
+                        <ng-container *ngIf="Memos_List">
+                       <mat-option  *ngFor="let memo of Memos_List" [value]="memo.MailId">
                         <mat-checkbox color="primary" [checked]="(selectedMemos.indexOf(memo)!==-1)"></mat-checkbox>
                         {{memo.Subject}}
                     </mat-option>

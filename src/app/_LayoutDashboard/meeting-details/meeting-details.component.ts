@@ -842,7 +842,12 @@ addNewDMS() {
    requestAnimationFrame(()=>this.customTrigger.openPanel());
 }
 
-
+removeSelectedMemo(item){
+  const index=this.selectedMemos.indexOf(item);
+  if(index!==-1){
+    this.selectedMemos.splice(index,1);
+  }
+}
 
 addDMSToTheProject(){
     
