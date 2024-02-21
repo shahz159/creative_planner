@@ -1207,3 +1207,44 @@ ul.attendees-note-userlist {
     color:#e0e0e0;
     transform: none;
     }
+
+
+    div#DemoList-table {
+        background-color: white;
+        box-shadow: 0 0 1px rgb(124, 123, 123);
+        margin-top: 10px;
+      
+      }
+      
+      div#DemoList-table div.demo {
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+        padding: 1em;
+        cursor: pointer;
+      }
+      
+      div#DemoList-table div.demo:hover {
+        background-color: #F2F3F7;
+        transition-duration: 0.4s;
+      }
+      
+      div#DemoList-table div.demo a {
+        color: #5867DD;
+      }
+      
+      div#DemoList-table div.demo i:hover {
+        background-color: #5867DD;
+       color: #fff;
+       transition-duration:0.4s;
+       border-radius: 2px;
+      }
+      
+      div#DemoList-table div.demo i {
+        color: #5867DD;
+        box-shadow:0 0 1px #5867DD;
+        border-radius: 2px;
+      }
+      
