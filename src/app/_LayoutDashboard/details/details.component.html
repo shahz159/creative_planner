@@ -4583,13 +4583,13 @@
     </div>
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
-            <p class="text-primary">
-                Portfolios</p>
+            <!-- <p class="text-primary">
+                Portfolios</p> -->
             <div class="M_fsize">
-                Total
+                <!-- Total
                 <div class="badge badge-pill badge-outline-info">
                     {{totalPortfolios}}
-                </div>
+                </div> -->
                 Linked
                 <div class="badge badge-pill badge-outline-success">
                     {{_portfolioLength}}
@@ -4790,8 +4790,10 @@
         <div class="kt-portlet__body">
 
             <div>
+
+            <ng-container *ngIf="projectInfo">
                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
-                    *ngIf="projectInfo&&((!['Standard Tasks','Routine Tasks','To do List'].includes(projectInfo.Project_Type))&& showaction!=false)">
+                 *ngIf="(['001','002'].includes(projectInfo.Project_Block)&& showaction)">
                     <label>Action <span class="text-danger">*</span></label>
                     <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
                         [(ngModel)]="actionCode" (change)="onActionChanged($event)">
@@ -4804,11 +4806,14 @@
                         create
                         atleast one action to submit timeline</span>
                 </div>
+            </ng-container>
+
+
                 <div class="form-group">
                     <label>Work Description<span class="text-danger">*</span></label>
                     <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"
                         placeholder="Define your achievement here."></textarea>
-                    <span style="color:red" *ngIf="workdes===''&&notProvided" >Please Provide Description.</span>
+                    <span style="color:red" *ngIf="workdes===''&&notProvided" >please provide description.</span>
                 </div>
 
                 <div class="form-group">
@@ -4837,7 +4842,7 @@
                                 <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
                             </ng-option>
                         </ng-select>
-                        <span style="color:red" *ngIf="starttime===null&&notProvided">Please Provided starttime</span>
+                        <span style="color:red" *ngIf="starttime===null&&notProvided">please provide start time.</span>
                     </div>
 
                     <div class="form-group w-100">
@@ -4850,9 +4855,9 @@
                                 <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
                             </ng-option>
                         </ng-select>
-                        <span style="color:red" *ngIf="endtime===null&&notProvided">Please Provided endtime</span>
-                        <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than
-                            Start
+                        <span style="color:red" *ngIf="endtime===null&&notProvided">please provide end time.</span>
+                        <span style="color:red" id="err1" *ngIf="(endtime < starttime)">end time cannot be less than
+                            start
                             time!!</span>
                     </div>
                 </div>

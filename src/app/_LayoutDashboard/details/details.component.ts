@@ -329,7 +329,7 @@ if(this.tlTotalHours){
 // 1. bar chart.
 var options = {
   series: [{
-    data: ['001', '002'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
+    data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
       : [AL, this.tlTotalHours, (AL - this.tlTotalHours).toFixed(2)]
   }],
   chart: {
@@ -2161,7 +2161,7 @@ currentStdAprView:number=0;
   totalHours: any;
   totalRecords: any;
   _CurrentpageRecords: any;
-  showaction: boolean = true;
+  showaction: boolean = false;
   workdes: string="";
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   dateF = new FormControl(new Date());
@@ -2183,7 +2183,7 @@ currentStdAprView:number=0;
   Responsible_EmpNo: string;
   noact_msg: boolean = false;
   date = new Date();
-  actionCode: string='';
+  actionCode: any;
   timecount: any;
   minutes: any;
   hours: any;
@@ -2230,24 +2230,22 @@ currentStdAprView:number=0;
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
-
-
         console.log('darArr:', this.Category_List);
 
-        if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.Responsible_EmpNo == this.Current_user_ID)) {
+        if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
           this.showaction = false;
-
         }
-        else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.Responsible_EmpNo != this.Current_user_ID) {
+        else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
           this.showaction = true;
           this.noact_msg = true;
-
         }
         else {
-          this.showaction = true;
-          const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
-          if (selectedActionOpt)
-            this.actionCode = selectedActionOpt.Project_Code;
+                this.showaction = true;
+                if(this.currentActionView!==undefined){
+                  const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
+                  if (selectedActionOpt)
+                  this.actionCode = selectedActionOpt.Project_Code;
+                }
         }
       });
 
@@ -2837,9 +2835,10 @@ check_allocation() {
 
 
  submitDar(){
+  debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    if(
-   (isPrjCoreSecondary?this.actionCode:true)&&
+   ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
    this.workdes&&
    this.starttime&&
    this.endtime&&
