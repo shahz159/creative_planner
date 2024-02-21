@@ -2218,8 +2218,9 @@ currentStdAprView:number=0;
   totalSubtaskHours:number=0;
 
   getResponsibleActions() {
+  
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {
+      (data) => {   
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -2233,13 +2234,18 @@ currentStdAprView:number=0;
         console.log('darArr:', this.Category_List);
 
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
+// user is prj owner
+// user is prj resp + he does not contains any actions.         
           this.showaction = false;
         }
         else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
+// user is authority/support  + he does not contain any actions.         
           this.showaction = true;
           this.noact_msg = true;
         }
         else {
+// user is prj resp + he contains actions.
+// user is authority/support + he contains actions.
                 this.showaction = true;
                 if(this.currentActionView!==undefined){
                   const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
@@ -2258,7 +2264,7 @@ currentStdAprView:number=0;
   }
 
 
-
+ 
   selectedOwner: any;
   ProjectType: string
   ProjectDescription: string
@@ -2835,16 +2841,16 @@ check_allocation() {
 
 
  submitDar(){
-  debugger
+ 
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
    this.workdes&&
    this.starttime&&
    this.endtime&&
-   ((isPrjCoreSecondary&&this.bothActTlSubm)?this._remarks:true)
+   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?this._remarks:true)
    ){
-    // if all required field are provided
+    // if all mandatory fields are provided.
 
 
     if (this.starttime != null && this.endtime != null) {
@@ -2875,25 +2881,61 @@ check_allocation() {
     this.objProjectDto.WorkAchieved = this.workdes;
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
-    if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
+
+   // new start
+
+   if(['003','008','011'].includes(this.projectInfo.Project_Block)){
+    // std, routine or todo    
+    this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    this.objProjectDto.Master_code = this.URL_ProjectCode;
+    this.objProjectDto.Project_Code = this.URL_ProjectCode;
+   }
+   else{
+      // core, secondary
+
+    
+     if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
+       // user is project owner.
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
-    }
-    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount == 0)) {
+     }
+     else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+      // user is project responsible.
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.URL_ProjectCode;
-    }
-    else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
-      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
-      this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.URL_ProjectCode;
-    }
-    else {
-      this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code = this.actionCode;
-    }
+      this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.  
+     }
+     else{
+           // user is authority/support.
+           this.objProjectDto.Master_code = this.URL_ProjectCode;
+           this.objProjectDto.Project_Code = this.actionCode;
+     }
+
+   }
+
+   // new end
+
+
+    // if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
+    //   this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    // }
+    // else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks') && (this.inProcessCount == 0 && this.delaycount == 0)) {
+    //   this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    // }
+    // else if ((this.projectInfo.Project_Type == 'Core Tasks' || this.projectInfo.Project_Type == 'Secondary Tasks' || this.projectInfo.OwnerEmpNo==this.Current_user_ID)) {
+    //   this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.URL_ProjectCode;
+    // }
+    // else {
+    //   this.objProjectDto.Master_code = this.URL_ProjectCode;
+    //   this.objProjectDto.Project_Code = this.actionCode;
+    // }
 
 
     this.service._InsertDARServie(this.objProjectDto)
