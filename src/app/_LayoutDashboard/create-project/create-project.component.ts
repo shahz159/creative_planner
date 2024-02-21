@@ -579,6 +579,8 @@ onFileChanged(event: any) {
 
   closeInfos(){
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+
     // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
@@ -830,6 +832,7 @@ onProjectOwnerChanged(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -854,7 +857,7 @@ onProjectOwnerChanged(){
   Project_details_edit() {
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
-    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);

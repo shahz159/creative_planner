@@ -2646,13 +2646,15 @@ check_allocation() {
 
 
 
-  limit =  60; // Set the initial limit
+  limit = 60;  // Set the initial limit
+  limited_data= 98;
+  
   isExpanded = false;
   toggleReadMore() {
     this.isExpanded = !this.isExpanded;
   }
 
-  limit_data=60;
+  limit_data=75;
   isExpandeds = false;
   _toggleReadMore() {
     this.isExpandeds = !this.isExpandeds;
@@ -2919,7 +2921,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {
         this._portfoliosList = data as [];
-        // console.log(data ,'raohan')
+       console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
           singleSelection: false,
           idField: 'Portfolio_ID',
@@ -2938,6 +2940,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
   Portfolio_Select(selecteditems) {
+    debugger
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -2992,7 +2995,7 @@ if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[thi
 
 
   addProjectToPortfolio() {
-    debugger
+
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
     if (this.selectedportID != null) {

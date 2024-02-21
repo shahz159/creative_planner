@@ -5,14 +5,14 @@ import { MeetingDetailsRoutingModule } from './meeting-details-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MeetingDetailsComponent } from './meeting-details.component';
 import { FormsModule } from '@angular/forms';
-import { TodoComponent } from './todo/todo.component';
+
 
 
 
 @NgModule({
   declarations: [
-    MeetingDetailsComponent,
-    TodoComponent
+    MeetingDetailsComponent
+    
   ],
   imports: [
     CommonModule,

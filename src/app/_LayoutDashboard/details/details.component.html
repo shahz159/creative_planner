@@ -524,7 +524,7 @@
                                         <div class="kt-project-desc">
                                             <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limit_data}}
                                              {{ isExpandeds ? (projectInfo&&projectInfo.Project_Description | slice:limit_data): ' ' }}
-                                                   <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>60">
+                                                   <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>75">
                                                     <a href="javascript:void(0)"
                                                     (click)="_toggleReadMore()" >{{ isExpandeds ? 'less' : 'more...' }}</a>
                                                 </ng-container>
@@ -1658,7 +1658,7 @@
                             <div class="kt-info-box">
                                 <div class="kt-project-tool-bar">
                                     <div class="d-flex flex-grow-1 align-items-center gap_ic">
-                                        <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
+                                        <a id="dmsasfa" class="kt-inbox__icon curser-pointer " (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                            <ng-container *ngIf="isDMS>0">
                                                 <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
                                                  height="29" title="Link DMS"  >
@@ -2378,9 +2378,9 @@
 
                                         </div>
                                         <div class="kt-project-desc w-80">
-                                         <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limit}}
-                                            {{ isExpanded ? (projectInfo&&projectInfo.Project_Description | slice:limit): ' ' }}
-                                            <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>60">
+                                         <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limited_data}}
+                                            {{ isExpanded ? (projectInfo&&projectInfo.Project_Description | slice:limited_data): ' ' }}
+                                            <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>98">
                                                 <a href="javascript:void(0)"
                                                 (click)="toggleReadMore()">{{ isExpanded ? 'less' : 'more...' }}</a>
                                             </ng-container>
@@ -3622,13 +3622,13 @@
                                         </div> -->
                                             <div class="kt-project-desc w-80">
                                                 <span>{{projectActionInfo[currentActionView].Project_Description |
-                                                    slice:0:limit}}
+                                                    slice:0:limited_data}}
                                                     {{ isExpanded ?
                                                     (projectActionInfo[currentActionView].Project_Description |
-                                                    slice:limit): ' ' }}
+                                                    slice:limited_data): ' ' }}
                                                 </span>
                                                 <ng-container
-                                                    *ngIf="projectActionInfo[currentActionView].Project_Description.length>60">
+                                                    *ngIf="projectActionInfo[currentActionView].Project_Description.length>98">
                                                     <a href="javascript:void(0)" (click)="toggleReadMore()">{{
                                                         isExpanded ? ' less' : 'more...' }}</a>
                                                 </ng-container>
@@ -4398,7 +4398,7 @@
     <div id="LinkSideBar-header" class="px-4 pt-4 pb-2">
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
             <h4 class="font-weight-600 m-0 d-flex">
-                <a class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
+                <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">
                     <!-- <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"> -->
                  <ng-container *ngIf="_linkedMemos>0">
                     <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
@@ -4588,7 +4588,7 @@
                 <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
                     (optionSelected)="onPrtClicked($event)" (closed)="isPortDrpDwnOpen=false"
                     (opened)="isPortDrpDwnOpen=true">
-                    <mat-option *ngFor=" let prt of _portfoliosList" [value]="prt.Portfolio_ID"
+                   <mat-option *ngFor=" let prt of _portfoliosList" [value]="prt.Portfolio_ID"
                         (click)="Portfolio_Select(ngDropdwonPort)">
                         <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
                         {{prt.Portfolio_Name}}  - {{prt.TM_DisplayName}}
@@ -5312,7 +5312,7 @@
                                                     class="ng-star-inserted"> -->
                                                     <div data-toggle="tooltip" data-placement="top" title=""
                                                         class="user-icon-round" style="width: 25px; height: 25px;">
-                                                        <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{data.Modifiedby[0]}}</span>
+                                                        <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{data.Modifiedby&&data.Modifiedby[0]}}</span>
                                                     </div>
                                             </div>
                                             <div class="text-muted ml-2 fs-7">{{data.Modifiedby}}</div>

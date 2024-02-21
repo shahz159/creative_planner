@@ -133,7 +133,7 @@
                 <!-- <p>{{item.Project_Description}} </p> -->
                 <p>{{item.Project_Description | slice:0:limit}}
                     {{ isExpandeds ? (item.Project_Description | slice:limit): ' ' }}
-                    <ng-container *ngIf="item.Project_Description.length>60">
+                    <ng-container *ngIf="item.Project_Description.length>115">
                         <a href="javascript:void(0)"
                         (click)="toggleReadMores()">{{ isExpandeds ? 'less' : 'more...' }}</a>
                     </ng-container>

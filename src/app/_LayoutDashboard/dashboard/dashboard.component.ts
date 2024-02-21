@@ -1016,6 +1016,7 @@ export class DashboardComponent implements OnInit {
 
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.copyTask = true;
     this.editTask = false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
@@ -1221,6 +1222,7 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
@@ -2204,6 +2206,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
@@ -3723,6 +3726,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
 
 
   }
@@ -4045,6 +4049,16 @@ export class DashboardComponent implements OnInit {
     // }
   }
 
+
+  newMeetingReport() {
+    let name: string = 'Meeting-Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${this.Schedule_ID}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
+  
   meetingDetails() {
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
@@ -4287,7 +4301,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
+   
   }
   Insert_indraft() {
     if(this.draftid!=0){
@@ -4428,6 +4442,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this._SEndDate = null;

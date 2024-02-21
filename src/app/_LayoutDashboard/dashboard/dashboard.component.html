@@ -456,9 +456,9 @@
                                 <button type="button" (click)="penshow1()" class="draft-btn">draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
-                            <div class="fc pend-bg">
+                            <!-- <div class="fc pend-bg">
                                 <button type="button" (click)="meetingDetails()" class="draft-btn">new meeting</button>
-                            </div>
+                            </div> -->
                             <!-- <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
                                 <button type="button" (click)="penshow2()" class="pend-btn">delay actions</button>
                                 <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
@@ -998,6 +998,22 @@
 
                         </div>
                     </div> -->
+                    
+
+
+                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <span class="kt-meeting-status-icon">
+                        <svg enable-background="new 0 0 32 32" height="19px" id="Layer_1"
+                            version="1.1" viewBox="0 0 32 32" width="19px" xml:space="preserve"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path
+                                d="M30,6h-0.887c-0.525,0-1.029,0.207-1.404,0.576L25,9.248V8c0-1.657-1.344-3-3-3H3  C1.346,5,0,6.345,0,8v6.972V24c0,1.656,1.343,3,3,3h19c1.656,0,3-1.344,3-3v-1.221l2.709,2.672c0.375,0.369,0.879,0.576,1.404,0.576  H30c1.104,0,2-0.895,2-2V8C32,6.895,31.104,6,30,6z M3,25c-0.552,0-1-0.449-1-1V8c0-0.553,0.447-1,1-1h19c0.551,0,1,0.448,1,1v16  c0,0.551-0.449,1-1,1H3z M30,24.027h-0.887H29l-4-4V20l-1-1v-6l5-5h0.113H30V24.027z"
+                                fill="currentcolor" id="video" />
+                        </svg>
+                    </span>
+                 </div>
+
 
                     <div class="icons-right met-done curser-pointer"
                         *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="meetingReport()">
@@ -1007,7 +1023,7 @@
                             (click)="sweet_end()">
                             <span></span><small>End now</small>
                         </div> -->
-
+                    
                     <div class="icons-right curser-pointer" *ngIf="Meeting_status==false && Schedule_type1=='Event'"
                         data-toggle="tooltip" title="Start meeting" (click)="meetingReport()">
                         <span></span>

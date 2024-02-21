@@ -904,6 +904,7 @@ export class MeetingReportComponent implements OnInit {
 
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
+              debugger
               this._MemosSubjectList = JSON.parse(data['JsonData']);
 
               this._MemosSubjectList.forEach(element => {
