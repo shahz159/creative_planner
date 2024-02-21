@@ -12,13 +12,31 @@
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                            <strong *ngIf="sendtype=='Req'">Approval</strong>
-                            <strong *ngIf="sendtype=='Res'">Information</strong>
+                            <strong *ngIf="sendtype=='Req'" (click)="showPrjAprv()"  >Project Approval</strong>
+                            <strong *ngIf="sendtype=='Res'"  (click)="showPrjAprv()" >Information</strong>
                         </h3>
+
+                        <!-- <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+                          <strong *ngIf="sendtype=='Req'"  (click)="showLeaveAprv()">Leave Approval</strong>
+                          <strong *ngIf="sendtype=='Res'" (click)="showLeaveAprv()"  >Information</strong>
+
+
+                        </h3> -->
+
+
                         <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
                             <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approval <span class="noti-cus">{{WScount}}</span></a>
                             <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
                         </div>
+
+                        <!-- <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtons">
+                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">leaveApproval <span class="noti-cus">1</span></a>
+                          <a [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information <span class="noti-cus">2</span></a>
+                      </div> -->
+
+
+
                         <div *ngIf="sendtype=='Req' && selectedItems.length >0">
                             <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
                             <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
@@ -214,7 +232,11 @@
                             <div class="">
 
                                 <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
-                                <div class="table-responsive">
+
+
+
+                         <!--Project aprv list start-->
+                                <div id="prj-aprv-list" class="table-responsive">
                                     <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
                                         style="width: 0px;">
                                         <thead>
@@ -487,6 +509,54 @@
                                         </tbody>
                                     </table>
                                 </div>
+                         <!--Project aprv list end-->
+
+
+                        <!--Leave aprv list start-->
+                                <div id="leave-aprv-list" class="table-responsive">
+                                  <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
+                                      style="width: 0px;">
+                                      <thead>
+                                          <tr role="row">
+                                            <th style="width: 50px;">  <input type="checkbox" id="singlecheck" [checked]=""   class="form-check-input ps-1 btn px-0 mr-2"></th>
+                                             <th>View</th>
+                                             <th >Leave Type</th>
+                                             <th>Start Date</th>
+                                             <th>End Date</th>
+                                             <th>Status</th>
+                                             <th>Name</th>
+                                             <th>Received On</th>
+                                             <th></th>
+
+
+
+
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr role="row" class="" *ngFor="let item of _newNotificationLeave" [class.active]="item.isActive">
+
+                                            <td   class="kt-widget__title mb-0">
+                                                  <input type="checkbox" id="singlecheck" [checked]=""   class="form-check-input ps-1 btn px-0 mr-2">
+                                                </td>
+                                              <td class="kt-widget__title mb-0">leave</td>
+
+                                                 <td  class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
+                                                  <td  class="kt-widget__title mb-0">{{item.Start_Date}}</td>
+                                                  <td  class="kt-widget__title mb-0">{{item.End_Date}}</td>
+                                                  <td  class="kt-widget__title mb-0">{{item.Req_Type}}</td>
+                                                   <td  class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
+
+                                                    <td  class="kt-widget__title mb-0">{{item.Req_Date}}</td>
+
+                                                     <td  class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
+
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                        <!--Leave aprv list end-->
+
                             </div>
                         </div>
                     </div>

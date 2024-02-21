@@ -892,6 +892,15 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Projects/NewGetUserMeetingCount", this.ObjDto);
   }
 
+  GetEmployeeLeaveRequests(Emp_no){
+    this.ObjDto.Emp_No=Emp_no
+    return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveRequests",this.ObjDto)
+  }
+
+  GetEmployeeLeaveResponses(Emp_no){
+    this.ObjDto.Emp_No=Emp_no
+    return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveResponses",this.ObjDto)
+  }
 
   getDeadlineCountbyProjectcode(pCode) {
     this.ObjDto.Project_Code = pCode;

@@ -7427,9 +7427,12 @@
 
                                                        <div class="kt-met-dtl">
                                                         <div class="kt-met-label">
-                                                          participant :
+                                                          Participant:
                                                         </div>
-                                                        <div class="kt-met-info" *ngFor="let item of MeetingParticipants; let last = last" >{{ item.TM_DisplayName + (last ? '.' : ',') }}</div>
+                                                        <ng-container  *ngFor="let item of meeting.usersjson; let last = last">
+                                                          <div class="kt-met-info"  let last = last >{{ item.TM_DisplayName  + (last ? ' ' : ', ') }}</div>
+                                                        </ng-container>
+
                                                        </div>
 
 
@@ -7604,9 +7607,9 @@
                                                         </div>
                                                         <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
-                                                            participant :
+                                                            Participant:
                                                           </div>
-                                                          <div class="kt-met-info" *ngFor="let item of MeetingParticipants; let last = last" >{{ item.TM_DisplayName + (last ? '.' : ',') }}</div>
+                                                          <div class="kt-met-info" *ngFor="let item of meeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
                                                          </div>
                                                     </div>
 
@@ -7774,9 +7777,11 @@
                                                         </div>
                                                         <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
-                                                            participant :
+                                                            Participant:
                                                           </div>
-                                                          <div class="kt-met-info" *ngFor="let item of MeetingParticipants; let last = last" >{{ item.TM_DisplayName + (last ? '.' : ',') }}</div>
+                                                          <div class="kt-met-info" *ngFor="let item of lmeeting.usersjson; let last = last" >
+                                                            {{ item.TM_DisplayName + (last ? ' ' : ', ') }}
+                                                          </div>
                                                          </div>
                                                     </div>
 
@@ -7943,9 +7948,9 @@
                                                         </div>
                                                         <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
-                                                            participant :
+                                                            Participant:
                                                           </div>
-                                                          <div class="kt-met-info" *ngFor="let item of MeetingParticipants; let last = last" >{{ item.TM_DisplayName + (last ? '.' : ',') }}</div>
+                                                          <div class="kt-met-info" *ngFor="let item of lmmeeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
                                                          </div>
                                                     </div>
 
@@ -8109,9 +8114,9 @@
                                                         </div>
                                                         <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
-                                                            participant :
+                                                            Participant:
                                                           </div>
-                                                          <div class="kt-met-info" *ngFor="let item of olderMeetings ; let last = last" >{{ item.TM_DisplayName + (last ? '.' : ',') }}</div>
+                                                          <div class="kt-met-info" *ngFor="let item of omeeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
                                                          </div>
                                                     </div>
 
@@ -8294,6 +8299,12 @@
                                                                 <span>Join In Stream Planner</span>
                                                             </div> -->
                                                         </div>
+                                                        <div class="kt-met-dtl">
+                                                          <div class="kt-met-label">
+                                                            Participant:
+                                                          </div>
+                                                          <div class="kt-met-info" *ngFor="let item of meeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
+                                                         </div>
                                                     </div>
 
                                                     <div class="mt-dtl-right">

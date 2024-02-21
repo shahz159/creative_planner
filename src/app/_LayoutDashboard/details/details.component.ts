@@ -3596,6 +3596,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   Addguest:any
   MeetingParticipants:any
 
+
   GetmeetingDetails() {
 
     // first initialize all meetings variables to empty . and to avoid any miscalculation .  this is mandatory before calculating.
@@ -3655,13 +3656,16 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.upcomingMeetings = this.getUpcomingMeeting();
         this.upcomingMeetings.reverse();                                         // get upcoming meetings.
         this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
-        this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);   // format them.
+        this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
+        console.log("UPCOMMING MEETINGS:",this.upcomingMeetings);
+
 
 
 
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
         this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
+        console.log(this.todaymeetings,"this.todaymeetings")
 
         for (let i = 1; i <= 7; i++) {
           const date = new Date();                     // get the current date.
@@ -3669,7 +3673,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
           this.last7dmeetings = this.last7dmeetings.concat(this.getMeetingsByDate(this.datepipe.transform(date, 'yyyy-MM-dd')));
         }                                                                                               // get last 7 days meetings.
         this.lst7dCnt = this.last7dmeetings.length;                                                    // store totalno of meetings.
-        this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);                              // format them.
+        this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);
+        console.log (this.last7dmeetings,"last7dmeetings")                        // format them.
 
 
         const date1 = new Date();                 // currentdate.
@@ -3692,8 +3697,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.oldMtgCnt = this.olderMeetings.length;
 
         this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
+        console.log(this.lastMonthMeetings,"this.lastMonthMeetings")
         this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
-        console.log(this.olderMeetings,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")    // format them.
+        console.log(this.olderMeetings,"olderrr meetings")    // format them.
 
       });
 

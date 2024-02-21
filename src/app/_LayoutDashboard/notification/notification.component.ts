@@ -51,6 +51,7 @@ export class NotificationComponent implements OnInit {
     private router: Router,public BsService: BsServiceService
   ) {
     this.notificationDTO=new NotificationActivityDTO();
+
    }
 
 
@@ -59,6 +60,9 @@ export class NotificationComponent implements OnInit {
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.viewAll(this.sendtype);
+    this.showPrjAprv();
+    this.newNotificationLeave()
+    this.newNotificationLeaveRequests()
   }
 
 
@@ -325,7 +329,40 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
+
+
+
+
+
   }
+
+
+  showPrjAprv(){
+    document.getElementById('prj-aprv-list').classList.remove('d-none');
+    document.getElementById('leave-aprv-list').classList.add('d-none');
+  }
+
+  showLeaveAprv(){
+     document.getElementById('prj-aprv-list').classList.add('d-none');
+     document.getElementById('leave-aprv-list').classList.remove('d-none');
+  }
+
+
+  newNotificationLeaveRequests(){
+    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data)=>{
+      console.log(data,"newNotificationLeaveRequests")
+    })
+  }
+
+  _newNotificationLeave:any=[]
+  newNotificationLeave(){
+    this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data)=>{
+      this._newNotificationLeave=JSON.parse(data[0]['LeaveResponses_json'])
+      console.log(  this._newNotificationLeave,'newNotificationLeaves')
+    })
+  }
+
+
 
 
   checkedItems_Status: any = [];
