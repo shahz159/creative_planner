@@ -516,6 +516,7 @@ export class ActionToProjectComponent implements OnInit {
       fd.append("AssignId", this.task_id.toString());
       fd.append("Owner", this.owner);
       fd.append("isattachment",this.completionattachment.toString());
+
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
       }
@@ -679,7 +680,7 @@ export class ActionToProjectComponent implements OnInit {
 
     this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
-
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);

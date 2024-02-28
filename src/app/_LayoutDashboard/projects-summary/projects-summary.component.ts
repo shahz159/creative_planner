@@ -1103,7 +1103,7 @@ $(document).ready(function(){
     if(this._ProjectDataList[0].Status=='Delay'){
       this.delaySrtOrder=this.delaySrtOrder==='ASC'?'DESC':'ASC';
       this._ProjectDataList = this._ProjectDataList.sort((a, b) => {
-       return this.delaySrtOrder==='ASC'?a.Delaydays - b.Delaydays:b.Delaydays-a.Delaydays;
+       return this.delaySrtOrder==='DESC'?a.Delaydays - b.Delaydays:b.Delaydays-a.Delaydays;
       });
      // console.log(this._ProjectDataList,'_ProjectDataList')
     }

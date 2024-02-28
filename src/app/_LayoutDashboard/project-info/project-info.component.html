@@ -115,7 +115,7 @@
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold'}">
                                         <ng-container *ngIf="item.Status!='Project Hold'">{{
-                                        item.Status=='InProcess'?'In-Process':
+                                        item.Status=='InProcess'?'In-Process':item.Status=='Not Started'?'Draft':
                                         (item.Status=='Under Approval'?'New Project Under Approval':item.Status)}}
                                         </ng-container>
                                         <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
@@ -133,7 +133,7 @@
                 <!-- <p>{{item.Project_Description}} </p> -->
                 <p>{{item.Project_Description | slice:0:limit}}
                     {{ isExpandeds ? (item.Project_Description | slice:limit): ' ' }}
-                    <ng-container *ngIf="item.Project_Description.length>60">
+                    <ng-container *ngIf="item.Project_Description.length>115">
                         <a href="javascript:void(0)"
                         (click)="toggleReadMores()">{{ isExpandeds ? 'less' : 'more...' }}</a>
                     </ng-container>
@@ -168,7 +168,7 @@
                                                 >
                                                  <ng-container *ngIf="item.Status !== 'Project Hold'">
                                                   <span class=" font-weight-400 ">
-                                                   {{ item.Status === 'InProcess' ? 'In-Process' : (item.Status === 'Under Approval' ? 'New Project Under Approval' : item.Status) }}
+                                                   {{ item.Status === 'InProcess' ? 'In-Process' : item.Status === 'Not Started' ? 'Draft' : (item.Status === 'Under Approval' ? 'New Project Under Approval' : item.Status) }}
                                                  </span>
                                                   </ng-container>
 
@@ -254,7 +254,7 @@
                                                 'Cancelled': item.Status=='Cancelled',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}" >
-                            {{item.Status=='Under Approval'?'New Project Under Approval':(item.Status=='InProcess'?'In-Process':item.Status)}}
+                            {{item.Status=='Under Approval'?'New Project Under Approval':item.Status=='Not Started'?'Draft': item.Status=='InProcess'?'In-Process':item.Status}}
                         </div>
 
                         <div class="Requested_user_info">

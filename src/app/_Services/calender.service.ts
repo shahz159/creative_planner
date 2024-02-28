@@ -80,7 +80,6 @@ export class CalenderService {
     return this.http.post(this.rootUrl + "CalenderAPI/NewAdmin_meetingco", this.obj_CalenderDTO);
   }
   NewPrevious_meetingreport(obj:CalenderDTO){
-    debugger
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
    

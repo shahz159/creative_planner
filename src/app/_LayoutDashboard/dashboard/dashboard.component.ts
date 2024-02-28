@@ -236,9 +236,10 @@ export class DashboardComponent implements OnInit {
   _objStatusDTO: StatusDTO;
   Project_Mode: string = "My";
   DelayCount: any = sessionStorage.getItem('DelayCount');
+  DelayActionCount: any = sessionStorage.getItem('DelayActionCount');
   CompletedCount: any = sessionStorage.getItem('CompletedCount');
   TotalExpiryInMonth: any = sessionStorage.getItem('TotalExpiryInMonth');
-  TotalExpiryPortfolio: number = 0;
+  AssignActionCount: any = sessionStorage.getItem('AssignActionCount');
   EmployeeVacationInDays: any = sessionStorage.getItem('EmployeeVacationInDays');
   TotalDARSubmitted: any = sessionStorage.getItem('TotalDARSubmitted');
   TodaysDARAchievement: any = sessionStorage.getItem('TodaysDARAchievement');
@@ -1016,6 +1017,7 @@ export class DashboardComponent implements OnInit {
 
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.copyTask = true;
     this.editTask = false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
@@ -1221,6 +1223,7 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
@@ -1240,6 +1243,12 @@ export class DashboardComponent implements OnInit {
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
+        if(this._OldRecurranceId=='0'){
+          this._PopupConfirmedValue=1;
+        }
+        else{
+          this._PopupConfirmedValue=2;
+        }
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
@@ -2154,6 +2163,7 @@ export class DashboardComponent implements OnInit {
       _arraytext.push(this.maxDate);
     }
 
+
     // alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
     // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
     // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
@@ -2204,6 +2214,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
@@ -2980,6 +2991,13 @@ export class DashboardComponent implements OnInit {
 
   SelectDropDown(val) {
     this.selectedrecuvalue = val.value.toString();
+    // alert(this.selectedrecuvalue)
+    if(this.selectedrecuvalue=='0'){
+      this._PopupConfirmedValue=1;
+    }
+    else{
+      this._PopupConfirmedValue=2;
+    }
     this._labelName = "Start Date :";
     document.getElementById("div_endDate").style.display = "block";
     for (let index = 0; index < this.dayArr.length; index++) {
@@ -3723,6 +3741,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
 
 
   }
@@ -3841,6 +3860,12 @@ export class DashboardComponent implements OnInit {
         this.DelayCount = data[0]['DelayCount'];
         sessionStorage.setItem('DelayCount', this.DelayCount);
 
+        this.DelayActionCount = data[0]['DelayActionCount'];
+        sessionStorage.setItem('DelayActionCount', this.DelayActionCount);
+
+        this.AssignActionCount = data[0]['AssignActionCount'];
+        sessionStorage.setItem('AssignActionCount', this.AssignActionCount);
+
         this.CompletedCount = data[0]['CompletedCount'];
         sessionStorage.setItem('CompletedCount', this.CompletedCount);
 
@@ -3903,7 +3928,7 @@ export class DashboardComponent implements OnInit {
 
   Delay_Click() {
     this._ProjectDataList = [];
-    let Mode: string = "Delay";
+    let Mode: string = "DelayProjects";
 
     var url = document.baseURI + this.page_Name;
     var myurl = `${url}/${Mode}`;
@@ -3962,13 +3987,13 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  Portfolio_Click() {
-    //this.router.navigate(['/Portfolios/']);
-    const Url = 'backend/Portfolio';
-    var url = document.baseURI + 'Portfolio';
-    var myurl = `${url}`;
-    var myWindow = window.open(Url);
-    myWindow.focus();
+  AssignedActions_Click() {
+      this._ProjectDataList = [];
+      let Mode: string = "AssignedActions";
+      var url = document.baseURI + this.page_Name;
+      var myurl = `${url}/${Mode}`;
+      var myWindow = window.open(myurl);
+      myWindow.focus();
   }
 
   bttn_RACI() {
@@ -4045,6 +4070,16 @@ export class DashboardComponent implements OnInit {
     // }
   }
 
+
+  newMeetingReport() {
+    let name: string = 'Meeting-Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${this.Schedule_ID}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
+  
   meetingDetails() {
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
@@ -4287,7 +4322,7 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
+   
   }
   Insert_indraft() {
     if(this.draftid!=0){
@@ -4428,6 +4463,8 @@ export class DashboardComponent implements OnInit {
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this._SEndDate = null;

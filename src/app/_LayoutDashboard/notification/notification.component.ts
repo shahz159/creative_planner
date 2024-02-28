@@ -51,6 +51,7 @@ export class NotificationComponent implements OnInit {
     private router: Router,public BsService: BsServiceService
   ) {
     this.notificationDTO=new NotificationActivityDTO();
+
    }
 
 
@@ -59,6 +60,9 @@ export class NotificationComponent implements OnInit {
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.viewAll(this.sendtype);
+    this.showPrjAprv();
+    this.newNotificationLeave()
+    this.newNotificationLeaveRequests()
   }
 
 
@@ -325,6 +329,11 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
+
+
+
+
+
   }
   open_leave_requisition() {
     $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
@@ -338,6 +347,34 @@ export class NotificationComponent implements OnInit {
     document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
   }
+
+  showPrjAprv(){
+    document.getElementById('prj-aprv-list').classList.remove('d-none');
+    document.getElementById('leave-aprv-list').classList.add('d-none');
+  }
+
+  showLeaveAprv(){
+     document.getElementById('prj-aprv-list').classList.add('d-none');
+     document.getElementById('leave-aprv-list').classList.remove('d-none');
+  }
+
+
+  newNotificationLeaveRequests(){
+    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data)=>{
+      console.log(data,"newNotificationLeaveRequests")
+    })
+  }
+
+  _newNotificationLeave:any=[]
+  newNotificationLeave(){
+    this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data)=>{
+      this._newNotificationLeave=JSON.parse(data[0]['LeaveResponses_json'])
+      console.log(  this._newNotificationLeave,'newNotificationLeaves')
+    });
+  }
+
+
+
 
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
@@ -716,93 +753,9 @@ acceptSelectedValues() {
 
     console.log(this.selectedItems,"accept");
 
-    // this.selectedItems.forEach(element => {
-    //   this.approvalObj.Project_Code=element.Project_Code;
-    //   this.approvalObj.SNo=element.Sno;
-    //   this.approvalObj.Duration=0;
-    //   this.approvalObj.Remarks='Accepted';
-    //   this.approvalObj.RejectType=element.Reject_Type;
-    //   this.approvalObj.OtherType=0;
-    //   this.approvalObj.sendFrom="WR";
+    
 
-    //   switch(element.Req_Type){
-    //                        case "New Project":
-    //                             this.approvalObj.Type = "Approved Project";
-    //                             break;
-    //                         case "New Project Reject Release":
-    //                             this.approvalObj.Type = "Approved Project";
-    //                             break;
-    //                         case "New Project Hold":
-    //                             this.approvalObj.Type = "Approved Hold Project";
-    //                             break;
-    //                         case "Project Complete":
-    //                             this.approvalObj.Type = "Project Complete";
-    //                             break;
-    //                         case "Project Complete Reject Release":
-    //                             this.approvalObj.Type = "Project Complete";
-    //                             break;
-    //                         case "Project Complete Hold":
-    //                             this.approvalObj.Type = "Approved Project Complete Hold";
-    //                             break;
-    //                         case "Deadline Extend":
-    //                             this.approvalObj.Type = "Deadline Extend";
-    //                             break;
-    //                         case "Deadline Extend Hold":
-    //                             this.approvalObj.Type = "Approved Deadline Hold";
-    //                             break;
-    //                         case "KPI Achieved":
-    //                             this.approvalObj.Type = "KPI Completed";
-    //                             break;
-    //                         case "KPI Enactive":
-    //                             this.approvalObj.Type = "KPI Enactive";
-    //                             break;
-    //                         case "KPI Enactive Hold":
-    //                             this.approvalObj.Type = "KPI Enactive Hold";
-    //                             break;
-    //                         case "KPI Achieved Hold":
-    //                             this.approvalObj.Type = "KPI Completed";
-    //                             break;
-    //                         case "New Todo":
-    //                             this.approvalObj.Type = "ToDo InProcess";
-    //                             break;
-    //                         case "ToDo Achieved":
-    //                             this.approvalObj.Type = "ToDo Completed";
-    //                             break;
-    //                         case "Enactive":
-    //                             this.approvalObj.Type = "Standardtask Enactive";
-    //                             break;
-    //                         case "Task Complete":
-    //                             this.approvalObj.Type = "StandardTask Completed";
-    //                             break;
-    //                         case "Task Complete Hold":
-    //                             this.approvalObj.Type = "StandardTask Completed";
-    //                             break;
-    //                         case "Standardtask Enactive":
-    //                             this.approvalObj.Type = "Standardtask Enactive";
-    //                             break;
-    //                         case "Standardtask Enactive Hold":
-    //                             this.approvalObj.Type = "Standardtask Enactive";
-    //                             break;
-    //                         case "Project Forward":
-    //                             this.approvalObj.Type = "Project Forward";
-    //                             break;
-    //                         case "Revert Back":
-    //                             this.approvalObj.Type = "Revert Back";
-    //                             break;
-    //                         case "Project Hold":
-    //                             this.approvalObj.Type = "Project Hold";
-    //                             break;
-    //                         case "Not Achieved":
-    //                             this.approvalObj.Type = "StandardTask Completed";
-    //                             break;
-    //                         default:
-    //                             break;
-    //   }
-
-
-    // });
-
-  if( this.selectedItems.length > 0){
+  if( this.selectedItems.length > 0){ 
     debugger
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");

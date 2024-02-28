@@ -1,8 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
+import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { CalenderService } from 'src/app/_Services/calender.service';
+import { LinkService } from 'src/app/_Services/link.service';
+import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 
 @Component({
   selector: 'app-meeting-details',
@@ -13,8 +17,10 @@ export class MeetingDetailsComponent implements OnInit {
 
   allTodos:any=[];
   todosVisible:boolean=false;
-
-
+  Scheduleid: any
+  URL_ProjectCode: any;
+  _MasterCode: string;
+  Current_user_ID: string;
 
  _calenderDto: CalenderDTO;
 
@@ -79,14 +85,33 @@ export class MeetingDetailsComponent implements OnInit {
   };
   constructor(
     private CalenderService:CalenderService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    public service: ProjectTypeService,
+    public _LinkService: LinkService,
   ) {
     this._calenderDto=new CalenderDTO;
+    this.objPortfolioDto = new PortfolioDTO();
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+        var scode = params.get('scheduleid');
+        this.Scheduleid = scode;
+      });
 
-    this.meeting_details();
+
+      this.route.paramMap.subscribe(params => {
+        var pcode = params.get('scheduleid');
+          this.URL_ProjectCode = pcode;
+          this._MasterCode = pcode;       
+      });
+  
+   
+      this.Current_user_ID = localStorage.getItem('EmpNo');
+
+
+      this.meeting_details();
+
 
     this.notesContent = 
     `<div>
@@ -443,6 +468,12 @@ export class MeetingDetailsComponent implements OnInit {
 </div>`
 
   }
+
+  @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
+  @ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
+
+ 
+
   View_Attendees_Notes() {
     document.getElementById("Attendees_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -457,23 +488,6 @@ export class MeetingDetailsComponent implements OnInit {
   close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
   }
-
-  EventScheduledjson: any = [];
-  Schedule_ID: any;
-  Scheduleid: any='218303'
-  User_Scheduledjson: any = [];
-
-
-meeting_details(){
-    this.Schedule_ID=this.Scheduleid;
-    this._calenderDto.Schedule_ID=this.Schedule_ID;
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
-    console.log(data,'9999999999999')    
-    this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
-    console.log(this.EventScheduledjson,'----------->')
-   })
-}
   View_Meeting_Attendees() {
     document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -481,4 +495,375 @@ meeting_details(){
   close_meetingattendees_sideBar() {
     document.getElementById("Meeting_Attendees").classList.remove("kt-quick-active--on");
   }
+
+
+
+
+
+  totaldms: number;
+  DMS_Scheduledjson: any = [];
+  dmsIdjson: any = [];
+  EventScheduledjson: any = [];
+  Schedule_ID: any;
+  User_Scheduledjson: any = [];
+  portfolio_Scheduledjson:any=[]
+
+
+meeting_details(){
+    this.Schedule_ID=this.Scheduleid;
+    this._calenderDto.Schedule_ID=this.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
+
+    this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+    console.log(this.EventScheduledjson,'----------->')
+    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
+    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
+    this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
+
+    this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
+    this.totaldms = this.DMS_Scheduledjson.length;
+    this.dmsIdjson = [];
+    if (this.DMS_Scheduledjson.length > 0) {
+
+      this.DMS_Scheduledjson.forEach(element => {
+        var jsonData = {};
+        var columnName = "MailId";
+        jsonData[columnName] = element;
+        this.dmsIdjson.push(jsonData);
+      });
+      this.dmsIdjson = JSON.stringify(this.dmsIdjson);
+    }
+   })
+}
+ 
+
+
+
+
+
+
+
+  startTime: Date;
+  meetingInProgress: boolean = false;
+  meetingPaused: boolean = false;
+  play:boolean=false;
+  pause:boolean=false;
+  meetingStopped: boolean = false;
+  elapsedTime: number = 0;
+  timer: any;
+  duration: number = 60 * 60 * 1000; // 60 minutes * 60 seconds * 1000 milliseconds
+
+  startMeeting() {
+    this.play=true;
+    this.startTime = new Date();
+    this.meetingInProgress = true;
+    this.timer = setInterval(() => {
+      this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+      if (this.elapsedTime >= this.duration) {
+        this.stopMeeting();
+      }
+    }, 1000);
+    console.log(this.startTime,'ijfbviabfvbsvskjvbzsib')
+  }
+
+  pauseMeeting() {
+    this.play=false;
+    this.pause=true;
+    clearInterval(this.timer);
+    this.meetingPaused = true;
+  }
+
+  resumeMeeting() {
+    this.play=true;
+    this.pause=false;
+    this.startTime = new Date(new Date().getTime() - this.elapsedTime);
+    this.meetingPaused = false;
+    this.timer = setInterval(() => {
+      this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+      if (this.elapsedTime >= this.duration) {
+        this.stopMeeting();
+      }
+    }, 1000);
+  }
+
+  stopMeeting() {
+    clearInterval(this.timer);
+    this.meetingInProgress = false;
+    this.meetingStopped = true;
+  }
+
+  leaveMeeting() {
+    this.play=false;
+    this.pause=false;
+    clearInterval(this.timer);
+    this.meetingInProgress = false;
+    this.meetingStopped = true;
+  
+    this.resetMeeting(); // Call the resetMeeting function to reset the meeting state
+  }
+
+  resetMeeting() {
+    this.startTime = null;
+    this.elapsedTime = 0;
+    this.meetingPaused = false;
+    this.meetingStopped = false;
+  }
+
+  formatTime(ms: number): string {
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  private pad(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
+/////////////////////////////////////////// Link Portfolios  Template  Start /////////////////////////////////////////////////////////
+ProjectListArray:any
+PortfolioLists:any
+isPortDrpDwnOpen: any
+ngDropdwonPort: any = [];
+Empty_portDropdown: any;
+_SelectedPorts: any;
+selectedportID: any;
+objPortfolioDto: PortfolioDTO;
+_Message: string;
+
+
+AddPortfolio(){
+    document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
+    document.getElementById("meetingdetails").classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this.GetProjectAndsubtashDrpforCalender();
+}
+closeLinkSideBar(){
+    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+
+    document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
+}
+
+
+
+GetProjectAndsubtashDrpforCalender() {
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+    ((data) => {
+        this.ProjectListArray=JSON.parse(data['Projectlist'])
+        this.PortfolioLists=JSON.parse(data['Portfolio_drp'])
+        // this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+        // console.log(this.PortfolioLists, "Project List Array");
+
+    });
+  }
+
+ 
+
+  closePortDrpDwn() {
+    this.isPortDrpDwnOpen = false;
+    requestAnimationFrame(() => this.customTrigger.closePanel())
+  }
+
+  openPortDrpDwn() {
+    this.isPortDrpDwnOpen = true;
+    requestAnimationFrame(() => this.customTrigger.openPanel())
+  }
+
+
+ 
+
+  onPrtClicked(e: any) {
+    const prtChoosed = this.PortfolioLists.find((p) => p.portfolio_id === e.option.value)
+    if (prtChoosed) {
+      const index = this.ngDropdwonPort.indexOf(prtChoosed)
+      if (index === -1) {
+        this.ngDropdwonPort.push(prtChoosed)
+      } else {
+        this.ngDropdwonPort.splice(index, 1);
+      }
+    }
+    requestAnimationFrame(() => this.customTrigger.openPanel());
+  }
+
+
+  closeAutocompleteDrpDwn(Acomp:string){
+    const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+    requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+  }
+
+  openAutocompleteDrpDwn(Acomp:string){
+    const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+    requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+  }
+
+ 
+
+  Portfolio_Select(selecteditems) {
+    let arr = [];
+    this.Empty_portDropdown = selecteditems;
+    this.Empty_portDropdown.forEach(element => {
+      arr.push({ Port_Id: element.Portfolio_ID })
+      this._SelectedPorts = arr;
+    });
+    this.openAutocompleteDrpDwn('PORTFOLIOdrpdwn')
+  }
+
+
+  Portfolio_Deselect(selecteditems) {
+    const index = this.ngDropdwonPort.indexOf(selecteditems);
+    if (index !== -1) {
+      this.ngDropdwonPort.splice(index, 1);
+    }
+
+    let arr = [];
+
+    this.Empty_portDropdown = this.ngDropdwonPort;
+    if (this.Empty_portDropdown != '') {
+      this.Empty_portDropdown.forEach(element => {
+        arr.push({ Port_Id: element.Portfolio_ID })
+        this._SelectedPorts = arr;
+      });
+    }
+    else {
+      this._SelectedPorts = [];
+    }
+    // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
+  }
+
+
+  
+  addProjectToPortfolio() {
+
+    this.selectedportID = JSON.stringify(this._SelectedPorts);
+    // console.log(this.selectedportID,"portids");
+    if (this.selectedportID != null) {
+      this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
+      this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
+      this.objPortfolioDto.Emp_No = this.Current_user_ID;
+    //   this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
+    //     subscribe((data) => {
+    //       this._Message = (data['message']);
+    //       if (this._Message == 'Updated Successfully') {
+    //         // this.getPortfoliosDetails();
+    //         this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
+    //       } else {
+    //         this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
+    //       }
+    //     });
+
+    }
+  }
+
+////////////////////////////////////Link Portfolios  Template  End/////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// DMS Side-Bar Start /////////////////////////////////////////////////////////
+
+addNewDMS() {
+    // this.GetMemosByEmployeeId();   // get all project's memos and memos for ngselect.
+    document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
+    document.getElementById("meetingdetails").classList.add("position-fixed");
+    // this.currentSidebarOpened='LINK_DMS';
+    this.GetMemosByEmployeeId();
+    this.meeting_details();
+    this.GetDMSList();
+  }
+
+  Memos_List: any;
+  _linkedMemos: number = 0;
+  selectedMemos: { MailId: number, Subject: string }[] = new Array();
+
+  GetMemosByEmployeeId() {
+    // this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
+    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
+      subscribe((data) => {
+        this.Memos_List = JSON.parse(data['JsonData']);
+        this._linkedMemos= this.Memos_List.length
+        // console.log(this.Memos_List, "test iiii");
+      });
+  }
+
+
+
+  _MemosSubjectList: any;
+  checkeddms: any = [];
+  dmscount: number;
+
+    GetDMSList(){
+        this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
+    
+           this._MemosSubjectList = JSON.parse(data['JsonData']);
+           this._MemosSubjectList.forEach(element => {
+            this.checkeddms.push(element.MailId);
+            element.isChecked = true;
+          });
+          
+          this.checkeddms = this.checkeddms.map((num) => num.toString());
+          this.dmscount = this.checkeddms.length;
+
+          console.log('hudc dhus ahj ahbh',this.dmscount)
+        });
+
+    }
+
+
+
+  isDMSDrpDwnOpen: boolean = false;
+
+  closeMemoDrpDwn() {
+    this.isDMSDrpDwnOpen = false;
+    requestAnimationFrame(() => this.customTrigger.closePanel()); // close the panel
+  }
+
+
+  openMemoDrpDwn() {
+    this.isDMSDrpDwnOpen = true;
+    requestAnimationFrame(() => this.customTrigger.openPanel()); // open the panel
+  }
+
+
+
+
+  onMemoClicked(e: any) {
+    const memoChoosed = this.Memos_List.find((c) => c.MailId === e.option.value)
+    if (memoChoosed) {
+      const index = this.selectedMemos.indexOf(memoChoosed)
+      if (index === -1) {
+        // if not present in the selectedcourses then add it
+           this.selectedMemos.push(memoChoosed);
+       }
+       else{ //  if course choosed is already selected then remove it.
+           this.selectedMemos.splice(index,1);
+       }
+   }
+   requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
+
+removeSelectedMemo(item){
+  const index=this.selectedMemos.indexOf(item);
+  if(index!==-1){
+    this.selectedMemos.splice(index,1);
+  }
+}
+
+addDMSToTheProject(){
+    
+}
+
+
+
+
+
+
+           
+/////////////////////////////////////////// DMS Side-Bar End /////////////////////////////////////////////////////////
+
+
+
+
+
+
 }

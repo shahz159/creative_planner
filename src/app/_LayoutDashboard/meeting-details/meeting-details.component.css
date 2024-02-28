@@ -1158,3 +1158,93 @@ ul.attendees-note-userlist {
     background-color: #777272;
     border-radius: 5px;
 }
+#LinkSideBar-header {
+    background-color: #f5f6fc;
+  
+  }
+  .text-primary {
+    color: #009ef7 !important;
+  }
+  
+  .matchip-drp-dwn{
+    display:flex;
+    column-gap:15px;
+    align-items: flex-end;
+}
+
+.drp-dwn-field{
+    margin: 0;
+    padding: 0;
+    flex-grow:1;
+
+}
+.drp-dwn-field input{
+  border:0;
+}
+
+.Data_chip_kt {
+    padding: 6px !important;
+    font-size: 12px;
+    font-weight: 500;
+    color: #60626D !important;
+    padding-right: 2px !important;
+    border-radius: 5px !important;
+    min-height: 22px;
+    background-color: #E6EAFF !important;
+    line-height: 10px;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  }
+  .border-gray-300 {
+    border-color: #dbdfe9 !important;
+  }
+
+  .close-icon{
+    color:#f4f3f3;
+    background-color: gray;
+    border-radius: 50%;
+    }
+    .close-icon:hover{
+    color:#e0e0e0;
+    transform: none;
+    }
+
+
+    div#DemoList-table {
+        background-color: white;
+        box-shadow: 0 0 1px rgb(124, 123, 123);
+        margin-top: 10px;
+      
+      }
+      
+      div#DemoList-table div.demo {
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+        padding: 1em;
+        cursor: pointer;
+      }
+      
+      div#DemoList-table div.demo:hover {
+        background-color: #F2F3F7;
+        transition-duration: 0.4s;
+      }
+      
+      div#DemoList-table div.demo a {
+        color: #5867DD;
+      }
+      
+      div#DemoList-table div.demo i:hover {
+        background-color: #5867DD;
+       color: #fff;
+       transition-duration:0.4s;
+       border-radius: 2px;
+      }
+      
+      div#DemoList-table div.demo i {
+        color: #5867DD;
+        box-shadow:0 0 1px #5867DD;
+        border-radius: 2px;
+      }
+      
