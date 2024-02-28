@@ -23,6 +23,6 @@ export class ApprovalDTO {
     standardid:any;
     json:any;
     isApproval:any;
-
+    Leave_Code:any;
 
 }
