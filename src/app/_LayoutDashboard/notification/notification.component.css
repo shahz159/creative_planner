@@ -925,160 +925,147 @@ a.info-btn svg {
   width: 24px;
   height: 24px;
 }
-
 .leave-requisition-slider-bar {
-height: 100%;
-width: 0;
-position: fixed;
-z-index: 999;
-top: 0;
-right: 0;
-background-color: #ffffff;
-border-left: 1px solid #EDEAE9;
-overflow-x: hidden;
-transition: 0.5s;
-box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-left: 1px solid #EDEAE9;
+  overflow-x: hidden;
+  transition: 0.5s;
+  box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
 }
 .open_requisition_sidebar_info {
-width: 55% !important;
+  width: 55% !important;
 }
 .open_requisition_sidebar_info .kt-portlet__head {
-padding: 1rem;
-border-bottom: 1px solid #ebedf2;
-border-top-left-radius: calc(0.3rem - 1px);
-border-top-right-radius: calc(0.3rem - 1px);
+  padding: 1rem;
+  border-bottom: 1px solid #ebedf2;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
 }
 .open_requisition_sidebar_info .kt-portlet--body {
-margin: 1.3rem;
-border: 1px solid #ededed;
-min-height: calc(100vh - 4vh);
-height: auto;
+  margin: 1.3rem;
+  border: 1px solid #ededed;
+  min-height: calc(100vh - 4vh);
+  height: auto;
 }
 .open_requisition_sidebar_info .leave-title {
-font-size: 16px;
-color: #000000;
-font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+  font-weight: 400;
 }
 
 .open_requisition_sidebar_info .grid{
-align-items: flex-start;
-animation: fade-in .5s forwards;
-display: grid;
-gap: 10px;
-grid-template-columns: repeat(auto-fill,minmax(170px,1fr));
-margin: 0;
-padding: 0px 12px;
-padding-bottom: 12px;
+  align-items: flex-start;
+  animation: fade-in .5s forwards;
+  display: block;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill,minmax(170px,1fr));
+  margin: 0;
+  padding: 0px 12px;
+  padding-bottom: 12px;
 }
 .open_requisition_sidebar_info .kt-info-lable-v {
-color: #939393;
-letter-spacing: 0.3px;
-font-size: 14px;
+  color: #939393;
+  letter-spacing: 0.3px;
+  font-size: 14px;
+  width: 24%;
+  font-weight: 500;
 }
 .open_requisition_sidebar_info .kt-info-data-v {
-background-color: #f0f0f0;
-border-radius: 35px;
-padding: 5px 14px;
-font-weight: 500;
-color: #4f4f4f;
-margin-top: 10px;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+   /* background-color: #f0f0f0; */
+  border-radius: 35px;
+  padding: 5px 14px;
+  /* font-weight: 500; */
+  color: #4f4f4f;
+  /* margin-top: 10px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
 }
 .open_requisition_sidebar_info .cnt-ovrl {
-text-decoration: none;
-font-size: 0.85em;
-overflow: hidden;
-display: -webkit-box;
--webkit-line-clamp: 2;
--webkit-box-orient: vertical;
+  text-decoration: none;
+  font-size: 0.85em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* -webkit-box-orient: vertical; */
+  text-align: left !important;
 }
 .open_requisition_sidebar_info .d-check{
-display: flex;
-width: 100%;
-align-items: center;
-justify-content: space-around;
-margin: 14px 0px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  margin: 14px 0px;
 }
 .open_requisition_sidebar_info .form-check-input[type=radio] {
-border-radius: 50%!important;
-border: 1px solid #adb5bd!important;
+  border-radius: 50%!important;
+  border: 1px solid #adb5bd!important;
 }
 .open_requisition_sidebar_info label {
-color: #252323;
+  color: #252323;
 }
 textarea.form-control {
-height: auto;
-border-radius: 4px 4px 0px 0px;
-z-index: 1;
-position: relative;
+  height: auto;
+  border-radius: 4px 4px 0px 0px;
+  z-index: 1;
+  position: relative;
 }
 .previous-comments {
-border: 1px solid #e2e5ec;
-border-radius: 0px 0px 4px 4px;
-margin-top: -1px;
-background: #fff;
+  border: 1px solid #e2e5ec;
+  border-radius: 0px 0px 4px 4px;
+  margin-top: -1px;
+  background: #fff;
 }
 .previous-comments ul {
-list-style: none;
-padding: 10px 5px;
-margin-bottom: 0px;
-max-height: 110px;
-overflow: auto;
-background: #fff;
+  list-style: none;
+  padding: 10px 5px;
+  margin-bottom: 0px;
+  max-height: 110px;
+  overflow: auto;
+  background: #fff;
 }
 .previous-comments ul::-webkit-scrollbar {
-width: 5px;
+  width: 5px;
 }
 .previous-comments li a {
-color: #000;
-width: 100%;
-display: inline-block;
-padding: 0px 5px;
-line-height: 2;
+  color: #000;
+  width: 100%;
+  display: inline-block;
+  padding: 0px 5px;
+  line-height: 2;
 }
 .previous-comments li a:hover {
-background-color: #ededed;
-color: #000;
+  background-color: #ededed;
+  color: #000;
 }
 .open_requisition_sidebar_info .kt-info-box-tittle {
-display: flex;
-align-items: center;
-font-size: 15px;
-color: #000;
-font-weight: 400;
-letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #000;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 .open_requisition_sidebar_info .kt-title-icon {
-background-color: #527ce2;
-width: 30px;
-height: 30px;
-border-radius: 50px;
-display: flex;
-margin-right: 1rem;
-justify-content: center;
-align-items: center;
+  background-color: #527ce2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  display: flex;
+  margin-right: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 .open_requisition_sidebar_info .action-div{
-background: #e9eeff;
-padding: 10px 0px;
+  background: #e9eeff;
+  padding: 10px 0px;
 }
 
 
-.leave{
-  text-decoration: none;
-
-}
-.leave:hover{
-  text-decoration: underline;
-  color: #00B74A;
-}
-
-.selected {
-  text-decoration: underline;
-  font-weight: bold;
-}
-.leave-dropdown{
-  color:#5867dd
-}

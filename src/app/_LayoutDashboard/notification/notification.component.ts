@@ -349,6 +349,12 @@ LeaveDetail:any
     // sidebar open
 
   }
+  // open_leave_requisition1() {
+  //   $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+  // }
   close_requisition_Info() {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -373,7 +379,6 @@ LeaveDetail:any
       this.leave_Requests=JSON.parse(data[0]['LeaveRequests_json'])
       console.log(this.leave_Requests,"_newNotificationLeaveRequest")
     })
-
 
   }
 

@@ -2164,8 +2164,6 @@ export class DashboardComponent implements OnInit {
     }
 
 
-    alert(this._OldRecurranceId);
-    alert(this.selectedrecuvalue);
     // alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
     // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
     // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
