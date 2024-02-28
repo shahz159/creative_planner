@@ -14,12 +14,12 @@
 
                          <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                            <strong *ngIf="sendtype=='Req'" (click)="showPrjAprv()"  >Project Approval</strong>
-                            <strong *ngIf="sendtype=='Res'"  (click)="showPrjAprv()" >Information</strong>
+                            <strong *ngIf="sendtype=='Req'"   >Project Approval</strong>
+                            <strong *ngIf="sendtype=='Res'"  >Information</strong>
                         </h3>
                         <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
-                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approval <span class="noti-cus">{{WScount}}</span></a>
-                          <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
+                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="showPrjAprv();viewAll(type1)">Project Approval <span class="noti-cus">{{WScount}}</span></a>
+                          <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="showPrjAprv();viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
                         </div>
 
 
@@ -37,12 +37,12 @@
 
                       <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                         <strong  (click)="showLeaveAprv()">Leave Approval</strong>
+                         <strong>Leave Approval</strong>
 
                      </h3>
                      <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
-                       <a   (click)="changeLeavePanel('REQUESTS')" class="dropdown-item ">Leave Requests</a>
-                       <a   (click)="changeLeavePanel('RESPONSES')" class="dropdown-item">Leave Responses</a>
+                       <a   (click)="showLeaveAprv();changeLeavePanel('REQUESTS')" class="dropdown-item ">Leave Requests</a>
+                       <a   (click)="showLeaveAprv();changeLeavePanel('RESPONSES')" class="dropdown-item">Leave Responses</a>
                      </div>
 
                      <!-- <a (click)="open_leave_requisition1()">leave</a> -->
@@ -523,7 +523,7 @@
 
                                 <div id="leave-aprv-list"  class="table-responsive">
                                  <ng-container *ngIf="leavePanel==='REQUESTS'" >
-                                  <h2>leave Request</h2>
+                                  <!-- <h2>leave Request</h2> -->
                                   <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
                                   style="width: 0px;">
 
@@ -572,7 +572,7 @@
 
 
                                 <ng-container *ngIf="leavePanel==='RESPONSES'">
-                                  <h2>leave Response</h2>
+                                  <!-- <h2>leave Response</h2> -->
                                   <table class="table table-hover dataTable no-footer dtr-inline " role="grid"
                                       style="width: 0px;">
 
