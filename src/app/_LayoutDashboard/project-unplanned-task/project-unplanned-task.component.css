@@ -2075,15 +2075,13 @@ span.count {
     border-radius: 12px;
     margin-bottom: 20px;
     min-height: 90px;
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 10px;
+    gap: 10px; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 1rem;
-  }
-  @media screen and (min-width: 1600px){
-    .ticks-grad {
-        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      }
   }
   .example_icon {
     -webkit-box-sizing: border-box;

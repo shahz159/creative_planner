@@ -326,7 +326,18 @@ export class NotificationComponent implements OnInit {
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
   }
+  open_leave_requisition() {
+    $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
+  }
+  close_requisition_Info() {
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
+  }
 
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
