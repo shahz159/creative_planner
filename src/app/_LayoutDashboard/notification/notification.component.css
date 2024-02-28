@@ -1069,3 +1069,11 @@ textarea.form-control {
 }
 
 
+.leave{
+  text-decoration: none;
+
+}
+.leave:hover{
+  text-decoration: underline;
+  color: #00B74A;
+}
