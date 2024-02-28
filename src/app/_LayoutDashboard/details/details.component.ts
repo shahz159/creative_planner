@@ -758,9 +758,9 @@ this.prjPIECHART.render();
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
-            const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-            if(p)
-             obj.contribution=p.RespDuration;
+          //   const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
+          //   if(p)
+          //    obj.contribution=p.RespDuration;
             return obj;
           });
 
@@ -6046,9 +6046,10 @@ debugger
           this.notifyService.showSuccess(this._Message, 'Success');
         }
         this.closeInfo();
-        this.getapprovalStats();
-        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      
       });
+      this.getapprovalStats();
+      this._projectSummary.GetProjectsByUserName('RACIS Projects');
   }
 
   //  $('#_file1').val('');

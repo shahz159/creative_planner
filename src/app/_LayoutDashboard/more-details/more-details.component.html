@@ -1,7 +1,7 @@
 <div class="kt-container  kt-container--fluid p-0 kt-grid__item kt-grid__item--fluid text-dark project-info-page side_view"
     id="moredet" *ngIf="showContent; else loading">
 
-    <ng-container *ngIf="isHierarchy== true || isHierarchy==true; else accessdenied">
+    <ng-container *ngIf="userFound===true || isHierarchy==true; else accessdenied">
         <ng-container
             *ngIf="activity=='New Action' || activity=='Approved Project' || (activity=='Deadline Extend' && send_from=='WR') ||
         (activity=='Project Complete' && send_from=='WR') || (activity=='Project Forward' && send_from=='WR') || (activity=='New Project Rejected') ||
