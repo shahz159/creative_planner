@@ -1876,6 +1876,7 @@ currentStdAprView:number=0;
       if (res != null && res != undefined) {
         this._portfoliolist = JSON.parse(res[0].Portfolio_json);
         this.getPortfolios()
+        
       }
     });
   }
@@ -3033,6 +3034,10 @@ check_allocation() {
 
   }
 
+  originalPortfolio_list: any[];
+
+
+
   getPortfolios() {
     if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
       this._portfolioLength = 0;
@@ -3047,6 +3052,7 @@ check_allocation() {
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {
         this._portfoliosList = data as [];
+        this.originalPortfolio_list=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
           singleSelection: false,
@@ -3066,7 +3072,7 @@ check_allocation() {
 
 
   Portfolio_Select(selecteditems) {
-    debugger
+
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -3147,6 +3153,17 @@ check_allocation() {
     this.getPortfoliosDetails();
     // this._openInfoSideBar = false;
   }
+
+
+  filterPortfolio(input:string){
+    if(input.trim()===''){
+      this._portfoliosList=[...this.originalPortfolio_list];
+    } else{
+     this._portfoliosList=this.originalPortfolio_list.filter(item=>{
+        return `${item.Portfolio_Name}-${item.TM_DisplayName}`.toLocaleLowerCase().includes(input.toLocaleLowerCase())
+     })
+    }
+   }
 
 
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {

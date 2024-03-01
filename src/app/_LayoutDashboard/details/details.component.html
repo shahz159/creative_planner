@@ -4610,7 +4610,7 @@
                     </mat-chip>
                 </mat-chip-list>
                 <div class="d-flex">
-                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
+                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"  (input)="filterPortfolio($event.target.value)"
                         [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                     <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                             (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
