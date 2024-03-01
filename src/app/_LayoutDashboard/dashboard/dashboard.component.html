@@ -450,9 +450,9 @@
                                 <button type="button" (click)="penshow1()" class="draft-btn">draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
-                            <!-- <div class="fc pend-bg">
+                            <div class="fc pend-bg">
                                 <button type="button" (click)="meetingDetails()" class="draft-btn">new meeting</button>
-                            </div> -->
+                            </div>
                             <!-- <div class="fc pend-bg" *ngIf="DelayActionscount>0" id="post1">
                                 <button type="button" (click)="penshow2()" class="pend-btn">delay actions</button>
                                 <span class="kt-dashboard-delay-cnt">{{DelayActionscount}}</span>
@@ -995,7 +995,7 @@
                     
 
 
-                    <!-- <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
                             <span class="kt-meeting-status-icon">
                                 <svg enable-background="new 0 0 32 32" height="19px" id="Layer_1"
                                     version="1.1" viewBox="0 0 32 32" width="19px" xml:space="preserve"
@@ -1007,7 +1007,7 @@
                                 </svg>
                             </span>
                     </div>
- -->
+
 
                     <div class="icons-right met-done curser-pointer"
                         *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="meetingReport()">
@@ -1992,8 +1992,11 @@
                                 class="btn btn-sm btn-light-primary btn-pill footbtns"
                                 (click)="Action_event(1);Event_acceptandReject()">Yes
                             </button>
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
+                            <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" 
+                                class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
                                 data-target="#responsemodal1">No</button>
+                            <button *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"
+                                 class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="Action_event(3);Event_acceptandReject()">No</button>
                             <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)=" Maybe_event(5)">May
                                 be</button>
                             <!-- data-toggle="modal" data-target="#responsemodal" [(ngModel)]="going" -->

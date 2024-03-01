@@ -527,7 +527,7 @@ export class DashboardComponent implements OnInit {
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.Getdraft_datalistmeeting();
-    // this.GetPending_Request();
+    this.GetPending_Request();
     // this.GetDelay_Actions();
     //Setting recurance max date
     //start
@@ -535,7 +535,7 @@ export class DashboardComponent implements OnInit {
     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
     //end
 
-    // this.GetMemosByEmployeeId();
+    this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
 
@@ -550,10 +550,10 @@ export class DashboardComponent implements OnInit {
     var DayNum1 = "DayNum";
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
-    // this.GetProjectAndsubtashDrpforCalender();
-    // this.calendar.updateTodaysDate();
+    this.GetProjectAndsubtashDrpforCalender();
+    this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
-    // this.Event_requests();
+    this.Event_requests();
 
 
     $(document).on('scroll', function () {

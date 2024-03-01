@@ -96,7 +96,7 @@ export class MeetingReportComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '5rem',
+    minHeight: '20rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
