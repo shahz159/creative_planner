@@ -137,7 +137,11 @@
                             "> {{Count_ToDoCompleted}} ToDo
                             Completed</a>
                     </ng-container>
-
+                    <ng-container *ngIf="CountDraftProject>0">
+                        <a href="javascript:void(0)" (click)="labelDrafts()" [hidden]="HideStatusDropdown"
+                        class="badge  draft-project-btn kt-badge--inline mr-2 btn-sm py-10px
+                        "> {{CountDraftProject}} Draft</a>
+                    </ng-container>
                     <!-- </div> -->
                     <!-- <div class="kt-portlet__head-toolbar"> -->
                     <!-- <div [hidden]="HideStatusDropdown" class="mr-3">
@@ -224,7 +228,9 @@
                                                     'projecthold':item1.Status=='Project Hold',
                                                     'TodoAchieved':item1.Status=='ToDo Achieved',
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
-                                                    'NewTodo':item1.Status=='New Todo'}">
+                                                    'NewTodo':item1.Status=='New Todo',
+                                                    'draft-project':item1.Status=='Not Started'
+                                                    }">
                                                 <div class="card-body d-flex align-items-center justify-content-around">
 
                                                     <div class="icond d-flex align-items-center">
@@ -427,6 +433,12 @@
                                                                 >{{item1.Status}}
                                                             </span>
                                                         </div>
+                                                        <div *ngIf="item1.Status=='Not Started'">
+                                                            <span class="draft-project font-weight-400"
+                                                                >Draft
+                                                            </span>
+                                                        </div>
+
                                                     </div>
                                                     <div class="mx-2 p-1" style="flex: 0;" *ngIf="viewpreference != 'View Only'">
                                                       <div class="tb-w-45">

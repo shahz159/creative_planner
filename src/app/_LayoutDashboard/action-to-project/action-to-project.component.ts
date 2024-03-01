@@ -681,6 +681,7 @@ export class ActionToProjectComponent implements OnInit {
     this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("kt-bodyc").classList.remove("position-fixed");
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);
