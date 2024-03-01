@@ -133,12 +133,12 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Allocated Hours<span class="text-danger" *ngIf="selectedEmpNo == Current_user_ID">*</span></label>
+    <div class="form-group">                        <!--*ngIf="selectedEmpNo == Current_user_ID"-->
+        <label>Allocated Hours<span class="text-danger"  >*</span></label>
         <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
         <input id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
             (click)="alertMaxAllocation()">
-        <span *ngIf="selectedEmpNo == Current_user_ID && allocated.touched && allocated.invalid" style="color:red">Allocated hours required!</span>
+        <span *ngIf="_allocated && allocated.touched && allocated.invalid" style="color:red">Allocated hours required!</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 10 hours.</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
         <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a value.</span>
@@ -224,12 +224,14 @@
     <div class="kt-portlet__foot py-3">
 
         <div class="form-group mb-0">
-            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()" *ngIf="selectedEmpNo == Current_user_ID"
+                                                                                       <!-- *ngIf="selectedEmpNo == Current_user_ID" -->
+            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()" 
                 [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)">Submit
             </button>
-            <button type="submit" class="btn  btn-info btn-sm"  (click)="sweetAlert()" *ngIf="selectedEmpNo != Current_user_ID"
+
+            <!-- <button type="submit" class="btn  btn-info btn-sm"  (click)="sweetAlert()" *ngIf="selectedEmpNo != Current_user_ID"
                 [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || (_allocated > maxAllocation)">Submit
-            </button>
+            </button> -->
             <!-- <button type="submit" class="btn btn-primary"  (click)="sweetAlert()" *ngIf="selectedEmpNo != Current_user_ID"
                 >Submit
             </button> -->

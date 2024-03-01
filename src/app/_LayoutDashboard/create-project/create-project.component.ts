@@ -738,8 +738,10 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim())
+      if(this.PrjOwner.trim()===this.PrjResp.trim()){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+      this.onResponsibleChanged();
+      }
   }
 }
 

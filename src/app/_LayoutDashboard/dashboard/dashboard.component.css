@@ -1836,9 +1836,9 @@ height: auto !important;
     border-top: 0;
 }
 .btm-btn{
-    position: fixed;
+    position: absolute;
     bottom: 32px;
-    right: 72px;
+    right: 50px;
     z-index: 110;
 }
 .create-btm {
@@ -2604,3 +2604,340 @@ span.kt-dashboard-delay-cnt {
   background-color: #B2D732;
   color:black;
 }
+
+
+
+
+
+
+/*agenda css start*/
+
+
+.todo-main {
+    width: 100%;
+    margin: auto;
+    background-color: #fff;
+    font-family: var(--font);
+    font-size: 15px;
+    overflow: hidden;
+    color: #455963;
+    /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); */
+    border: 1px solid #e2e5ec;
+    border-radius: 4px;
+  }
+  
+  .todo-list {
+    max-height: 20vh;
+    overflow: auto;
+  }
+
+  .todo-list::-webkit-scrollbar{
+        width:5px;
+  }
+  .todo-list::-webkit-scrollbar-track{
+        background-color: white;
+  }
+  .todo-list::-webkit-scrollbar-thumb{
+         background-color: #cacdd1;
+         border-radius:10px;
+  }
+  
+  .task-status {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border: 2px solid #bbbdc7;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 10px;
+    position: relative;
+  }
+  
+  .task-status:checked {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='405.272' height='405.272'%3e%3cpath d='M393.401 124.425L179.603 338.208c-15.832 15.835-41.514 15.835-57.361 0L11.878 227.836c-15.838-15.835-15.838-41.52 0-57.358 15.841-15.841 41.521-15.841 57.355-.006l81.698 81.699L336.037 67.064c15.841-15.841 41.523-15.829 57.358 0 15.835 15.838 15.835 41.514.006 57.361z' fill='%23fff'/%3e%3c/svg%3e");
+    background-size: 10px;
+    background-color: #4acea3;
+    border-color: #38bb90;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+
+  
+  
+  .task-item + .task-item {
+    border-top: 1px solid #eef0f5;
+  }
+  
+  .task-item:hover {
+    background-color: #f6fbff;
+  }
+  
+  .task-name {
+    margin-right: auto;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+    line-height: 26px;
+  }
+  
+  .task-item.is-completed > .task-name {
+    -webkit-text-decoration: line-through;
+    text-decoration: line-through;
+  }
+  
+  .task-item.is-completed {
+    background-color: rgba(74, 206, 163, 0.1);
+  }
+  
+  .task-header-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 20px 20px 6px 20px;
+  }
+  
+  .task-tools {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 0 20px;
+  }
+  
+
+ 
+/* .task-delete svg{
+    color: #dc4771;
+} */
+
+.task-item:hover > .task-actions, .task-item:focus > .task-actions {
+    display: flex;
+  }
+
+
+
+ 
+
+  .task-button {
+    display: none;
+  }
+
+
+
+
+
+/*new */
+
+
+.task-input {
+    flex: 1;
+    font-size: 1rem;
+    font-family: var(--font);
+    padding: 10px 10px 10px 2px;
+    border: 0;
+    /* box-shadow: 0 -1px 0 #e7ebf7  inset; */
+    color: #455963;
+  }
+  
+  .task-input::-moz-placeholder {
+    color: #a8b5bb;
+  }
+  
+  .task-input:-ms-input-placeholder {
+    color: #a8b5bb;
+  }
+  
+  .task-input::placeholder {
+    color: #a8b5bb;
+  }
+  
+  .task-input:focus {
+    box-shadow: 0 -1px 0 #bdcdd6 inset;
+    outline: none;
+  }
+
+
+.agenda-index{
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Lucida Sans Unicode;
+}
+
+.agenda-item{
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    padding: 0.5em;
+}
+
+
+.remove-agenda-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    margin-left: 8px;
+}
+  .remove-agenda-btn svg {
+    border-radius: 4px;
+    color: #d5d5d5;
+    display: inline-block;
+    width: 20px;
+    height: 24px;
+    max-width: 24px;
+    vertical-align: middle;
+} 
+
+.remove-agenda-btn:hover svg{
+    /* color: #9b9b9b;    */
+    color: #ff8f8f;
+}
+
+.agenda-input-field {
+    display: flex;
+    align-items: center;
+    border:0;
+ }
+
+  
+
+/*new*/
+
+
+
+
+
+
+
+.kt-meeting-title-icon {
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    display: flex;
+    margin-right: 0;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.title-main1{
+    font-family: "Google Sans",Roboto,Arial,sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 28px;
+    color: #3c4043;
+    max-height: 56px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+
+
+._agenda{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 10px;
+    padding: 0.2em 0 0.2em 0;
+}
+
+
+
+._agenda-index{
+    font-family: lucida Sans Unicode;
+    font-weight: bold;
+    color: gray;
+    font-size: 11px;
+    align-self: flex-start;
+    padding-top: 3px;
+}
+
+
+._agenda-name{
+    align-self: flex-start;
+    color: #6e6c6c;
+}
+
+
+.agenda-ctrl-btns{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.edit-agendaname-btn{
+    border:0;
+    background-color:transparent;
+}
+.edit-agendaname-btn svg{
+    fill: #c1c1c1;
+    stroke: #d3d3d3;
+}
+.edit-agendaname-btn:hover svg{
+    fill:#9b9b9b;
+    stroke:#9b9b9b;
+}
+
+.task-name-editfield{
+   outline:0;
+   border:0;
+   flex-grow:1;
+   font-size: 13px;
+   margin: 0;
+   align-self: stretch;     
+}
+
+
+.editing-cancel{
+    border: 0;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.editing-cancel svg{
+    fill: #c1c1c1;
+    stroke: #d3d3d3;
+}
+
+.editing-cancel:hover svg{
+    fill: #d5d5d5;
+    stroke: #9b9b9b;
+}
+
+.editing-save{
+    border: 0;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right:0;
+}
+
+.editing-save svg{
+    fill: none;
+    stroke: #d3d3d3;
+}
+
+.editing-save:hover svg{
+    fill: none;
+    stroke: #9b9b9b;
+}
+
+/*agenda css end*/

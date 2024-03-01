@@ -1207,6 +1207,10 @@ color:#000;
   color: #62B134 ;
 }
 
+.draft-project{
+  color:gray;
+}
+
 .todoachieved{
   color: #335B1B !important;
 }
@@ -1291,6 +1295,12 @@ color:#000;
   color: #1B272D !important;
 
   }
+
+  .draft-project-btn{
+    background-color: #888888 !important;
+    color: #fff;
+ }
+
 
   .Hold_color{
     background-color: #E2D9BC;
