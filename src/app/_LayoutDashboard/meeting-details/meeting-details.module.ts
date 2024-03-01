@@ -5,7 +5,7 @@ import { MeetingDetailsRoutingModule } from './meeting-details-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MeetingDetailsComponent } from './meeting-details.component';
 import { FormsModule } from '@angular/forms';
-
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 
@@ -19,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     MeetingDetailsRoutingModule,
     AngularEditorModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    CKEditorModule
   ]
 })
 export class MeetingDetailsModule { }

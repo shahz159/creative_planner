@@ -968,28 +968,28 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
   _modelProjAlloc: number = 0;
 
-  OnProject_Rename(id, Pcode) {
-    if (this._modelProjectName != "" && this._modelProjDesc != "") {
-      this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
-        this._Message = data['message'];
-        this.notifyService.showSuccess(this._Message, "");
-        // this.GetSubtask_Details();
-        // this.GetProjectsByUserName();
-        this.LoadProjectDetails();
-        this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No, null).subscribe(
-          (data) => {
-            let list: any;
-            list = JSON.parse(data[0]['ProjectInfo']);
-            this._ProjectName = list[0]['Project_Name'];
-            this.Proj_Desc = list[0]['Project_Description'];
-          });
-      });
-      this.onCancel(id);
-    }
-    else {
-      this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
-    }
-  }
+  // OnProject_Rename(id, Pcode) {
+  //   if (this._modelProjectName != "" && this._modelProjDesc != "") {
+  //     this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.Current_user_ID).subscribe(data => {
+  //       this._Message = data['message'];
+  //       this.notifyService.showSuccess(this._Message, "");
+  //       // this.GetSubtask_Details();
+  //       // this.GetProjectsByUserName();
+  //       this.LoadProjectDetails();
+  //       this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No, null).subscribe(
+  //         (data) => {
+  //           let list: any;
+  //           list = JSON.parse(data[0]['ProjectInfo']);
+  //           this._ProjectName = list[0]['Project_Name'];
+  //           this.Proj_Desc = list[0]['Project_Description'];
+  //         });
+  //     });
+  //     this.onCancel(id);
+  //   }
+  //   else {
+  //     this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+  //   }
+  // }
 
   exist_comment: any[] = [];
 

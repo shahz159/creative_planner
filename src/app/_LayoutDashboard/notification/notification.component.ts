@@ -63,6 +63,7 @@ export class NotificationComponent implements OnInit {
     this.showPrjAprv();
     this.newNotificationLeave()
     this.newNotificationLeaveRequests()
+    // this.GetEmployeeLeaveDetail()
   }
 
 
@@ -329,40 +330,64 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
+  }
+
+  LeaveDetail: any
+  currentReqIndex: number = 0;
+  open_leave_requisition(index, submitby, leavecode) {
+    this.currentReqIndex = index;
+    this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
+      this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json'])
+      console.log(this.LeaveDetail, "leavedetailss")
+    });
 
 
-
+    $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
 
   }
 
+
+
+  close_requisition_Info() {
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
+  }
 
   showPrjAprv(){
     document.getElementById('prj-aprv-list').classList.remove('d-none');
     document.getElementById('leave-aprv-list').classList.add('d-none');
   }
 
-  showLeaveAprv(){
-     document.getElementById('prj-aprv-list').classList.add('d-none');
-     document.getElementById('leave-aprv-list').classList.remove('d-none');
+  showLeaveAprv() {
+    document.getElementById('prj-aprv-list').classList.add('d-none');
+    document.getElementById('leave-aprv-list').classList.remove('d-none');
   }
 
 
-  newNotificationLeaveRequests(){
-    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data)=>{
-      console.log(data,"newNotificationLeaveRequests")
+  leave_Requests: any = []
+  newNotificationLeaveRequests() {
+    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
+      this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json'])
+      console.log(this.leave_Requests, "_newNotificationLeaveRequest")
+    })
+
+  }
+
+
+
+  Leave_code: any = []
+  _newNotificationLeave: any = []
+  newNotificationLeave() {
+    this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data) => {
+      this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json'])
+      console.log(this._newNotificationLeave, 'newNotificationLeavesresponse')
     })
   }
-
-  _newNotificationLeave:any=[]
-  newNotificationLeave(){
-    this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data)=>{
-      this._newNotificationLeave=JSON.parse(data[0]['LeaveResponses_json'])
-      console.log(  this._newNotificationLeave,'newNotificationLeaves')
-    })
-  }
-
-
 
 
   checkedItems_Status: any = [];
@@ -742,9 +767,9 @@ acceptSelectedValues() {
 
     console.log(this.selectedItems,"accept");
 
-    
 
-  if( this.selectedItems.length > 0){ 
+
+  if( this.selectedItems.length > 0){
     debugger
     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
@@ -929,4 +954,11 @@ acceptSelectedValues() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 
+
+
+
+  leavePanel:"REQUESTS"|"RESPONSES"="REQUESTS";
+  changeLeavePanel(panel:"REQUESTS"|"RESPONSES"){
+       this.leavePanel=panel;
+  }
 }

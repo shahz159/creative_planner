@@ -19,13 +19,13 @@ export class ApprovalsService {
    GetApprovalStatus(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.standardid = obj.standardid;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetApprovalStatus", this.obj_approvalDTO);
   }
 
   GetProjectApproval(pcode: string) {
     this.obj_approvalDTO.Project_Code = pcode;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetProjectApprovals", this.obj_approvalDTO);
   }
 
@@ -37,25 +37,25 @@ export class ApprovalsService {
 
   GetAppovalandActionDetails(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetAppovalandActionDetails", this.obj_approvalDTO);
   }
 
   GetGlobalRejectList(pcode) {
     this.obj_approvalDTO.Project_Code = "";
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectList", this.obj_approvalDTO);
   }
 
   GetHoldDate(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetHoldDate", this.obj_approvalDTO);
   }
 
   GetRejecttype(obj: ApprovalDTO) {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectType", this.obj_approvalDTO);
   }
 
@@ -64,7 +64,7 @@ export class ApprovalsService {
     this.obj_approvalDTO.hold_date = obj.hold_date;
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Remarks = obj.Remarks;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateReleasedate", this.obj_approvalDTO);
   }
 
@@ -73,7 +73,7 @@ export class ApprovalsService {
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Request_Date = obj.Request_Date;
     this.obj_approvalDTO.Request_type = obj.Request_type;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewResponseServiceforApprovals", this.obj_approvalDTO);
   }
 
@@ -82,11 +82,11 @@ export class ApprovalsService {
 
     return this.http.post(this.rootUrl + "ApprovalAPI/NewMultiResponseforApprovals", this.obj_approvalDTO);
   }
-  
+
   NewUpdateAcceptApprovalsService(obj) {
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateAcceptApprovals",obj);
   }
-  
+
   NewUpdateRejectApprovalsService(obj) {
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateRejectApprovals",obj);
   }
@@ -94,7 +94,7 @@ export class ApprovalsService {
   NewUpdateSingleAcceptApprovalsService(obj) {
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateSingleAcceptApproval",obj);
   }
-  
+
   NewUpdateSingleRejectApprovalsService(obj) {
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateSingleRejectApprovals",obj);
   }
@@ -104,7 +104,7 @@ export class ApprovalsService {
     this.obj_approvalDTO.rejectType = obj.rejectType;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Status = obj.Status;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetRejectCommentsbyRejectType", this.obj_approvalDTO);
 
   }
@@ -114,18 +114,24 @@ export class ApprovalsService {
     this.obj_approvalDTO.rejectType = obj.rejectType;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Status = obj.Status;
-    
+
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetGlobalRejectComments", this.obj_approvalDTO);
 
   }
+
+  GetEmployeeLeaveDetail(submitby,Leave_code){
+    this.obj_approvalDTO.Emp_no=submitby.trim();
+    this.obj_approvalDTO.Leave_Code=Leave_code.trim();
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetEmployeeLeaveDetails", this.obj_approvalDTO)
+  }
+
 
   InsertAcceptApprovalService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Request_type = obj.Request_type;
     this.obj_approvalDTO.Remarks = obj.Remarks;
-
-    return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService", this.obj_approvalDTO);
+return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService", this.obj_approvalDTO);
   }
 
   InsertUpdateProjectCancelReleaseService(obj: ApprovalDTO) {
@@ -180,7 +186,7 @@ export class ApprovalsService {
 
   }
 
-  
+
   InsertConditionalAcceptApprovalService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
