@@ -3112,7 +3112,7 @@
                                                             <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                 {{item.ModifiedDate}}
                                                                 <p
-                                                                    class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
+                                                                    class="kt-dt-l text-gray-400">{{(item.ModifiedTime)}}
                                                                 </p>
                                                             </div>
                                                             <!--end::Label-->
@@ -4193,7 +4193,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3  text-center"
+                                                <div class="col-lg-12  text-center"
                                                     *ngIf="projectActionInfo[currentActionView].Remarks && projectActionInfo[currentActionView].Remarks !='undefined' && projectActionInfo[currentActionView].Remarks !=''">
                                                     <div class="kt-info-lable-v">
                                                         Remarks
@@ -4227,7 +4227,7 @@
                                                                 <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                     {{item.ModifiedDate}}
                                                                     <p
-                                                                        class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
+                                                                        class="kt-dt-l text-gray-400">{{(item.ModifiedTime)}}</p>
                                                                 </div>
                                                                 <!--end::Label-->
 
@@ -5169,10 +5169,10 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z">
                                                             </path>
-                                                        </svg> </span> <span class="tmv-tm">{{formatTimes(item.starttime)}}
+                                                        </svg> </span> <span class="tmv-tm">{{(item.starttime)}}
                                                         </span>
                                                     <span class="mdl-line-h"></span><span
-                                                        class="tmv-tm">{{formatTimes(item.endtime)}} </span> <span
+                                                        class="tmv-tm">{{(item.endtime)}} </span> <span
                                                         class="total-time-kt">{{item.Duration}} Hrs</span>
                                                 </div>
                                                 <div class="date-view-rt">
@@ -5374,7 +5374,7 @@
                                                     </path>
                                                 </svg>
                                             </span>
-                                            <span>{{formatTimes(data.ModifiedTime)}}</span>
+                                            <span>{{(data.ModifiedTime)}}</span>
                                         </div>
                                     </div>
                                 </div>

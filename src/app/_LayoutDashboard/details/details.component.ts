@@ -758,9 +758,9 @@ this.prjPIECHART.render();
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
-            const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-            if(p)
-             obj.contribution=p.RespDuration;
+          //   const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
+          //   if(p)
+          //    obj.contribution=p.RespDuration;
             return obj;
           });
 
@@ -1470,11 +1470,11 @@ this.prjPIECHART.render();
 
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
-        this.requestType = (this.requestDetails[0]['Request_type']);     
+        this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
@@ -1521,7 +1521,7 @@ this.prjPIECHART.render();
           }
 
         }
-        if (this.requestType == 'Task Complete') { 
+        if (this.requestType == 'Task Complete') {
           console.log("requestDetails :",this.requestDetails);
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
@@ -1531,7 +1531,7 @@ this.prjPIECHART.render();
          this.submitby = (this.complete_List[0]['SubmittedBy']);
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
-         this.getstandardapprovalStats();  
+         this.getstandardapprovalStats();
 
         }
 
@@ -1544,7 +1544,7 @@ this.prjPIECHART.render();
         // if there are no std task aprv request
          this.standardjson=[];
          this.currentStdAprView=undefined;
-        // if there is no std task aprv request 
+        // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
     });
@@ -1565,7 +1565,7 @@ currentStdAprView:number=0;
           this.isTextAreaVisible=false;
           this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
       }
-   
+
     });
   }
 
@@ -1668,19 +1668,19 @@ currentStdAprView:number=0;
     if(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true){
       if(!Number.isNaN(index)){
         this.currentStdAprView=index;
-  
+
           this.requestComments=this.standardjson[index].Remarks;  // remarks
           this.completedoc=this.standardjson[index].ProofDoc;    // task attachment
           this.requestType=this.standardjson[index].Req_Type;    // Request type
           this.Submitted_By=this.standardjson[index].SubmittedBy; // Request by
           this.requestDate=this.standardjson[index].Rec_Date;     // Request date
-          this.sidno=this.standardjson[index].SNo;     
+          this.sidno=this.standardjson[index].SNo;
           this.emp=this.standardjson[index].Emp_No;
           this.repdate=this.standardjson[index].Rec_Date;
           this.submitby=this.standardjson[index].SubmittedBy;
           this.iscloud=this.standardjson[index].IsCloud;
           this.contenttype=this.standardjson[index].contenttype;
-  
+
           const aprObj={
             SNo:this.standardjson[index].SNo,
             Type:this.standardjson[index].Req_Type,
@@ -1689,7 +1689,7 @@ currentStdAprView:number=0;
             sendFrom:this.standardjson[index].sendFrom,
             Project_Code:this.standardjson[index].Project_Code,
             Remarks: this.standardjson[index].Remarks,
-            Rec_Date: this.standardjson[index].Rec_Date 
+            Rec_Date: this.standardjson[index].Rec_Date
         };
         this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
       }
@@ -1709,7 +1709,7 @@ currentStdAprView:number=0;
 
 
 
- 
+
 
   isApprovalSection: boolean = true;
 
@@ -1918,7 +1918,7 @@ currentStdAprView:number=0;
   }
   onFileChange(e) {
       this._inputAttachments = e.target.files[0].name;
-      this.selectedFile = <File>e.target.files[0];  
+      this.selectedFile = <File>e.target.files[0];
   }
 
 
@@ -2219,9 +2219,9 @@ currentStdAprView:number=0;
   totalSubtaskHours:number=0;
 
   getResponsibleActions() {
-  
+
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {   
+      (data) => {
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -2236,11 +2236,11 @@ currentStdAprView:number=0;
 
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
 // user is prj owner
-// user is prj resp + he does not contains any actions.         
+// user is prj resp + he does not contains any actions.
           this.showaction = false;
         }
         else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
-// user is authority/support  + he does not contain any actions.         
+// user is authority/support  + he does not contain any actions.
           this.showaction = true;
           this.noact_msg = true;
         }
@@ -2265,7 +2265,7 @@ currentStdAprView:number=0;
   }
 
 
- 
+
   selectedOwner: any;
   ProjectType: string
   ProjectDescription: string
@@ -2730,7 +2730,7 @@ check_allocation() {
 
   limit = 60;  // Set the initial limit
   limited_data= 98;
-  
+
   isExpanded = false;
   toggleReadMore() {
     this.isExpanded = !this.isExpanded;
@@ -2844,7 +2844,7 @@ check_allocation() {
 
 
  submitDar(){
- 
+
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
@@ -2888,7 +2888,7 @@ check_allocation() {
    // new start
 
    if(['003','008','011'].includes(this.projectInfo.Project_Block)){
-    // std, routine or todo    
+    // std, routine or todo
     this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
     this.objProjectDto.Master_code = this.URL_ProjectCode;
     this.objProjectDto.Project_Code = this.URL_ProjectCode;
@@ -2896,7 +2896,7 @@ check_allocation() {
    else{
       // core, secondary
 
-    
+
      if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
        // user is project owner.
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
@@ -2907,7 +2907,7 @@ check_allocation() {
       // user is project responsible.
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.  
+      this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.
      }
      else{
            // user is authority/support.
@@ -3605,6 +3605,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.filterText = "";
     this.SearchItem = "";
   }
+
+
+
 
 
   GetApproval(code) {
@@ -4481,7 +4484,7 @@ Task_type(value:number){
   GetProjectAndsubtashDrpforCalender() {
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
-        this.ProjectListArray = JSON.parse(data['Projectlist']);      
+        this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         const racisPeople=this.Project_List.map(item=>item.Emp_No);
         this._EmployeeListForDropdown.sort((el:any)=>{
@@ -5820,8 +5823,8 @@ debugger
     else {
       this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
       this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
-      this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code; 
-      this.approvalObj.hold_date = this.release_date; 
+      this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code;
+      this.approvalObj.hold_date = this.release_date;
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Remarks = this.hold_remarks;
       this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
@@ -6063,9 +6066,10 @@ debugger
           this.notifyService.showSuccess(this._Message, 'Success');
         }
         this.closeInfo();
-        this.getapprovalStats();
-        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      
       });
+      this.getapprovalStats();
+      this._projectSummary.GetProjectsByUserName('RACIS Projects');
   }
 
   //  $('#_file1').val('');
