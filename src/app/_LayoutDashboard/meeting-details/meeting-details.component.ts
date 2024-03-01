@@ -766,7 +766,6 @@ addNewDMS() {
 
 
     AddDMS_meetingreport() {
-      debugger
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
