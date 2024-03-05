@@ -580,8 +580,7 @@ onFileChanged(event: any) {
   closeInfos(){
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-
-    // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("kt-bodyc").classList.remove("position-fixed");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -738,8 +737,10 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim())
+      if(this.PrjOwner.trim()===this.PrjResp.trim()){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+      this.onResponsibleChanged();
+      }
   }
 }
 
@@ -832,10 +833,11 @@ onProjectOwnerChanged(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("kt-bodyc").classList.add("position-fixed");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-    // document.getElementById("project-creation-page").classList.add("position-fixed");
+    // document.getElementById("project-creation-page").classList.add("position-absolute");
     $("#mysideInfobar12").scrollTop(0);
+    $("#project-creation-page").scrollTop(0);
 
   }
 
@@ -845,7 +847,7 @@ onProjectOwnerChanged(){
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("kt-bodyc").classList.remove("position-fixed");
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -858,6 +860,7 @@ onProjectOwnerChanged(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("kt-bodyc").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);

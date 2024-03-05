@@ -331,30 +331,26 @@ export class NotificationComponent implements OnInit {
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
   }
-LeaveDetail:any
-  currentReqIndex:number=0;
-  open_leave_requisition(submitby,leavecode) {
 
-    this.approvalservice.GetEmployeeLeaveDetail(submitby,leavecode).subscribe((data)=>{
-      this.LeaveDetail=JSON.parse(data[0]['LeaveDetails_json'])
-      // this.currentReqIndex=index;
-      console.log( this.LeaveDetail,"leavedetailss")
-   });
+  LeaveDetail: any
+  currentReqIndex: number = 0;
+  open_leave_requisition(index, submitby, leavecode) {
+    this.currentReqIndex = index;
+    this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
+      this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json'])
+      console.log(this.LeaveDetail, "leavedetailss")
+    });
 
-//  this.GetEmployeeLeaveDetails(this.leave_Requests[this.currentReqIndex].Leave_Code);
-    //  sidebar open
+
     $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    // sidebar open
+
 
   }
-  // open_leave_requisition1() {
-  //   $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
-  //   document.getElementById("rightbar-overlay").style.display = "block";
-  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
-  // }
+
+
   close_requisition_Info() {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -367,17 +363,17 @@ LeaveDetail:any
     document.getElementById('leave-aprv-list').classList.add('d-none');
   }
 
-  showLeaveAprv(){
-     document.getElementById('prj-aprv-list').classList.add('d-none');
-     document.getElementById('leave-aprv-list').classList.remove('d-none');
+  showLeaveAprv() {
+    document.getElementById('prj-aprv-list').classList.add('d-none');
+    document.getElementById('leave-aprv-list').classList.remove('d-none');
   }
 
 
-  leave_Requests:any=[]
-  newNotificationLeaveRequests(){
-    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data)=>{
-      this.leave_Requests=JSON.parse(data[0]['LeaveRequests_json'])
-      console.log(this.leave_Requests,"_newNotificationLeaveRequest")
+  leave_Requests: any = []
+  newNotificationLeaveRequests() {
+    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
+      this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json'])
+      console.log(this.leave_Requests, "_newNotificationLeaveRequest")
     })
 
   }

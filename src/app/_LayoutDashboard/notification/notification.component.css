@@ -1140,3 +1140,12 @@ textarea.form-control {
 .req-form .card-body{
   padding: 0.75rem 1.25rem;
 }
+
+.leave{
+  text-decoration: none;
+
+}
+.leave:hover{
+  text-decoration: underline;
+  color: #00B74A;
+}

@@ -14,12 +14,12 @@
 
                          <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                            <strong *ngIf="sendtype=='Req'" (click)="showPrjAprv()"  >Project Approval</strong>
-                            <strong *ngIf="sendtype=='Res'"  (click)="showPrjAprv()" >Information</strong>
+                            <strong *ngIf="sendtype=='Req'"   >Project Approval</strong>
+                            <strong *ngIf="sendtype=='Res'"  >Information</strong>
                         </h3>
                         <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
-                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active noti-item' : 'dropdown-item noti-item'" (click)="viewAll(type1)">Approval <span class="noti-cus">{{WScount}}</span></a>
-                          <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active noti-item' : 'dropdown-item noti-item'" (click)="viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
+                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="showPrjAprv();viewAll(type1)">Project Approval <span class="noti-cus">{{WScount}}</span></a>
+                          <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="showPrjAprv();viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
                         </div>
 
 
@@ -37,15 +37,15 @@
 
                       <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                         <strong  (click)="showLeaveAprv()">Leave Approval</strong>
+                         <strong>Leave Approval</strong>
 
                      </h3>
                      <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
-                       <a   (click)="changeLeavePanel('REQUESTS')" class="dropdown-item noti-item ">Leave Requests <span class="noti-cus">01</span></a>
-                       <a   (click)="changeLeavePanel('RESPONSES')" class="dropdown-item noti-item">Leave Responses <span class="noti-cus">01</span></a>
+                       <a   (click)="showLeaveAprv();changeLeavePanel('REQUESTS')" class="dropdown-item ">Leave Requests</a>
+                       <a   (click)="showLeaveAprv();changeLeavePanel('RESPONSES')" class="dropdown-item">Leave Responses</a>
                      </div>
 
-                     <!-- <a (click)="open_leave_requisition1()">leave</a> -->
+
                    </div>
 
 
@@ -523,80 +523,65 @@
 
                                 <div id="leave-aprv-list"  class="table-responsive">
                                  <ng-container *ngIf="leavePanel==='REQUESTS'" >
-                                  <h2>leave Request</h2>
+                                  <!-- <h2>leave Request</h2> -->
                                   <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
                                   style="width: 0px;">
 
-                                  <thead>
+                                      <thead>
 
-                                      <tr role="row">
+                                        <tr role="row">
 
-                                         <th>View</th>
-                                        <th>Leave Type</th>
-                                         <th>Start Date</th>
-                                         <th>End Date</th>
-                                         <th>Days Applied</th>
-                                         <th>Request Type</th>
-                                         <th>Company Name</th>
-                                         <th>Employee Name</th>
-                                         <th>Requested On</th>
-                                         <th></th>
+                                          <th>View</th>
+                                          <th>Leave Type</th>
+                                          <th>Start Date</th>
+                                          <th>End Date</th>
+                                          <th>Days Applied</th>
+                                          <th>Request Type</th>
+                                          <th>Company Name</th>
+                                          <th>Employee Name</th>
+                                          <th>Requested On</th>
+                                          <th></th>
 
-
-
-
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index" >
-                                    <td class="kt-widget__title mb-0 leave">
-                                        <a (click)="open_leave_requisition(item.SubmittedBy,item.Leave_Code)" href="javascript:void(0)">
-                                            <span>{{item.Leave_Code}}</span>
-                                            </a>
-                                    </td>
-                                      <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
-                                      <td class="kt-widget__title mb-0">{{item.Start_Date}}</td>
-                                      <td class="kt-widget__title mb-0">{{item.End_Date}}</td>
-                                      <td class="kt-widget__title mb-0">{{item.Days_Count}}</td>
-                                      <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
-
-                                      <td class="kt-widget__title mb-0">{{item.Com_Name}}</td>
-
-                                      <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
-
-                                      <td class="kt-widget__title mb-0">{{item.Req_Date}}</td>
-                                      <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
-                                    </tr>
-                                  </tbody>
-                                 </table>
-
-                                 </ng-container>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index">
+                                          <a (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); " href="javascript:void(0)">
+                                            <td class="kt-widget__title mb-0 leave">{{item.Leave_Code}}</td>
+                                          </a>
+                                          <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Start_Date}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.End_Date}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Days_Count}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Com_Name}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Req_Date}}</td>
+                                          <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
+                                        </tr>
+                                      </tbody>
+                                      </table>
+                                      </ng-container>
 
 
                                 <ng-container *ngIf="leavePanel==='RESPONSES'">
-                                  <h2>leave Response</h2>
+                                  <!-- <h2>leave Response</h2> -->
                                   <table class="table table-hover dataTable no-footer dtr-inline " role="grid"
                                       style="width: 0px;">
 
-                                      <thead>
-
-                                          <tr role="row">
-
-                                             <th>View</th>
-                                            <th>Leave Type</th>
-                                             <th>Start Date</th>
-                                             <th>End Date</th>
-                                             <th>Status</th>
-                                             <th>Name</th>
-                                             <th>Received On</th>
-                                             <th></th>
-
-
-
-
-                                          </tr>
-                                      </thead>
-                                      <tbody>
+                                    <thead>
+                                      <tr role="row">
+                                        <th>View</th>
+                                        <th>Leave Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Name</th>
+                                        <th>Received On</th>
+                                        <th></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
                                           <tr role="row" class="" *ngFor="let item of _newNotificationLeave" [class.active]="item.isActive">
 
 
@@ -771,7 +756,7 @@
                         Name
                     </div>
                     <div class="kt-info-data-v">
-                        Ramesh Neelapala
+                      {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -779,7 +764,7 @@
                         TM I.D No
                     </div>
                     <div class="kt-info-data-v">
-                        400160
+                      {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -787,7 +772,7 @@
                         Position
                     </div>
                     <div class="kt-info-data-v">
-                        Developer
+
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -795,7 +780,7 @@
                         Department
                     </div>
                     <div class="kt-info-data-v">
-                        400160
+
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -803,7 +788,7 @@
                         Company
                     </div>
                     <div class="kt-info-data-v">
-                        Devbox software pvt ltd
+                      {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Com_Name}}
                     </div>
                 </div>
             </div>
@@ -816,7 +801,7 @@
                         Leave Type
                     </div>
                     <div class="kt-info-data-v">
-                        Casual Leave
+                      {{LeaveDetail&&LeaveDetail[0].LeaveType}}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -824,7 +809,7 @@
                         Trip
                     </div>
                     <div class="kt-info-data-v">
-                        Local
+                      {{LeaveDetail&&LeaveDetail[0].Trip}}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -832,7 +817,7 @@
                         Type
                     </div>
                     <div class="kt-info-data-v">
-                        Full
+                      {{LeaveDetail&&LeaveDetail[0].Type}}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -840,7 +825,7 @@
                         Travel
                     </div>
                     <div class="kt-info-data-v">
-                        With Family
+                      {{LeaveDetail&&LeaveDetail[0].Travel}}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -848,7 +833,7 @@
                         Duration
                     </div>
                     <div class="kt-info-data-v">
-                        18/09/2023 - 18/09/2023
+                      {{LeaveDetail&&LeaveDetail[0].Start_Date}}-{{LeaveDetail&&LeaveDetail[0].End_Date }}
                     </div>
                 </div>
                 <div class="col text-center cnt-ovrl">
@@ -856,7 +841,7 @@
                         Applied days
                     </div>
                     <div class="kt-info-data-v">
-                        1
+                      {{LeaveDetail&&LeaveDetail[0].Days_Count}}
                     </div>
                 </div>
             </div>

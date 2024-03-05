@@ -2114,6 +2114,21 @@
             You have {{MeetingCount}} Meeting Scheduled for Today.</span>
         </div>
 
+
+
+        <div  (click)="showActionsWith0AlcHrs()"  class="notification overutilization-notification" style="cursor:pointer;"   *ngIf="actionsWith0hrs&&actionsWith0hrs.length>0">
+            <svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+            <span class="notif-msg" style="color: #c57a05;"> The Project has {{actionsWith0hrs.length}} {{actionsWith0hrs.length>1?'Actions':'Action'}} with 0 Allocated hours, namely 
+                  <ng-container *ngFor="let act of actionsWith0hrs;let i=index">
+                        '{{act.Project_Name}}' {{i+1===actionsWith0hrs.length?'.':', '}}
+                  </ng-container>    
+            </span>
+        </div>
+
+
+
+
+
          </div>
         </div>
 
@@ -2415,7 +2430,8 @@
 
                                         <!-- Request type start  -->
                                         <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!isApprovalSection">
+                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled')"
+                                            >
                                                 <div class="d-flex justify-content-between align-items-center">
 
                                                     <div class="kt-info-box-tittle">
@@ -3112,7 +3128,7 @@
                                                             <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                 {{item.ModifiedDate}}
                                                                 <p
-                                                                    class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
+                                                                    class="kt-dt-l text-gray-400">{{(item.ModifiedTime)}}
                                                                 </p>
                                                             </div>
                                                             <!--end::Label-->
@@ -3292,6 +3308,7 @@
 
 
 
+                                                 <ng-container *ngIf="projectInfo.Project_Block==='001'||projectInfo.Project_Block==='002'">
 
                                                      <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9991 19L9.83911 14C9.56672 13.7429 9.34974 13.433 9.20142 13.0891C9.0531 12.7452 8.97656 12.3745 8.97656 12C8.97656 11.6255 9.0531 11.2548 9.20142 10.9109C9.34974 10.567 9.56672 10.2571 9.83911 10L14.9991 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -3299,6 +3316,8 @@
                                                      <button class="statistics-ctrl-btns"  (click)="closeFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
+
+                                                </ng-container>     
 
                                                 </div>
                                                 <!-- <div id="chart-container" class="Chart">
@@ -3471,8 +3490,7 @@
                                                          (
                                                         projectActionInfo[currentActionView].Team_Res===Current_user_ID||
                                                         projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
-                                                        projectInfo.OwnerEmpNo===Current_user_ID||
-                                                        projectInfo.ResponsibleEmpNo===Current_user_ID
+                                                        projectInfo.OwnerEmpNo===Current_user_ID
                                                         )" (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline
                                                         </button>
 
@@ -4206,6 +4224,18 @@
                                                 </div>
 
 
+                                                
+                                            <div class="col-lg-3  text-center"  *ngIf="projectActionInfo[currentActionView].Status==='Completed'"  >
+                                               
+                                                <div class="kt-info-lable-v">
+                                                    Completed date
+                                                </div>
+                                                <div class="kt-info-data-v">
+                                                    {{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}
+                                                </div>
+
+                                            </div>
+
 
                                             </div>
 
@@ -4227,7 +4257,7 @@
                                                                 <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                     {{item.ModifiedDate}}
                                                                     <p
-                                                                        class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
+                                                                        class="kt-dt-l text-gray-400">{{(item.ModifiedTime)}}</p>
                                                                 </div>
                                                                 <!--end::Label-->
 
@@ -4610,7 +4640,7 @@
                     </mat-chip>
                 </mat-chip-list>
                 <div class="d-flex">
-                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
+                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"  (input)="filterPortfolio($event.target.value)"
                         [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                     <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                             (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
@@ -5169,10 +5199,10 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z">
                                                             </path>
-                                                        </svg> </span> <span class="tmv-tm">{{formatTimes(item.starttime)}}
+                                                        </svg> </span> <span class="tmv-tm">{{(item.starttime)}}
                                                         </span>
                                                     <span class="mdl-line-h"></span><span
-                                                        class="tmv-tm">{{formatTimes(item.endtime)}} </span> <span
+                                                        class="tmv-tm">{{(item.endtime)}} </span> <span
                                                         class="total-time-kt">{{item.Duration}} Hrs</span>
                                                 </div>
                                                 <div class="date-view-rt">
@@ -5374,7 +5404,7 @@
                                                     </path>
                                                 </svg>
                                             </span>
-                                            <span>{{formatTimes(data.ModifiedTime)}}</span>
+                                            <span>{{(data.ModifiedTime)}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -6154,7 +6184,7 @@
                                               </span>
                                             </div>
                                           </div>
-                                          <div *ngIf="Data.contribution"  [title]="Data.contribution+' actions'"   class="prctg-in-project"><span>{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span></div>
+                                          <div *ngIf="Data.contribution"  [title]="Data.totalActions+' actions'"   class="prctg-in-project"><span>{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span></div>
                                         </div>
                                       </div>
                                     </div>
@@ -6825,7 +6855,7 @@
     <!-- For Update Project sidebar  ends here-->
 
 
-    <!--  Project hold sidebar Area Start-->
+    <!--  Project hold,Action hold sidebar Area Start-->
     <div id="prj-hold-sidebar" class="sideInfobar animate-right bg-slide-br">
         <div class="kt-portlet">
 
@@ -6931,7 +6961,7 @@
             </div>
         </div>
     </div>
-    <!--   Project hold sidebar Area End-->
+    <!--   Project hold,Action hold sidebar Area End-->
 
 
     <!--Project release sidebar Area start-->
@@ -9924,6 +9954,7 @@
                                             <input type="text" class="form-control" [(ngModel)]="ActionName"
                                                 placeholder="Search..." />
                                         </div>
+                                        <span style="color:red" class="fs-8" *ngIf="!ActionName" >*action name required.</span>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -9933,6 +9964,7 @@
                                             <textarea type="text" class="form-control" placeholder="Search..." height="60px"
                                                 [(ngModel)]="ActionDescription"></textarea>
                                         </div>
+                                        <span style="color:red" class="fs-8" *ngIf="!ActionDescription" >*action description required.</span>
                                     </div>
                                 </div>
                             </div>
@@ -10012,6 +10044,7 @@
                                         </ng-template>
 
                                     </div>
+                                    <span style="color:red" class="fs-8"  *ngIf="!ActionOwner">*action owner required.</span>
                                 </div>
                             </div>
                             <div class="col-lg-4 text-left">
@@ -10046,6 +10079,7 @@
                                         </ng-template>
 
                                     </div>
+                                    <span style="color:red" class="fs-8"  *ngIf="!ActionResponsible">*action responsible required.</span>
                                 </div>
                             </div>
 
@@ -10067,6 +10101,7 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
+                                    <span style="color:red" class="fs-8"  *ngIf="!selectedcategory">*category required.</span>
                                 </div>
                             </div>
 
@@ -10118,6 +10153,7 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
+                                    <span style="color:red" class="fs-8"  *ngIf="!ActionClient">*client required.</span>
                                 </div>
                             </div>
                         </div>
@@ -10146,6 +10182,7 @@
                                             [value]="ActionstartDate | date : 'dd-MM-yyyy'" placeholder="Start date"
                                             readonly />
                                     </div>
+                                    <span style="color:red" class="fs-8"  *ngIf="!ActionstartDate">*start date required.</span>
                                     <!-- </ng-container> -->
                                 </div>
                             </div>
@@ -10157,7 +10194,7 @@
                                         <input class="form-control" [(ngModel)]="ActionendDate"
                                             [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                                             [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
-                                            placeholder="Deadline Date..." class="form-control border-0 " name="date" />
+                                            placeholder="Deadline Date..." class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"/>
                                         <div class="input-group-append h-2">
                                             <mat-datepicker-toggle matSuffix [for]="ActionsEditsPicker"
                                                 class="btn-secondary border-0">
@@ -10165,6 +10202,7 @@
                                             <mat-datepicker class="form-group " #ActionsEditsPicker></mat-datepicker>
                                         </div>
                                     </div>
+                                    <span style="color:red" class="fs-8"  *ngIf="!ActionendDate">*end date required.</span>
                                 </div>
                             </div>
                             <ng-template #submissionN>
@@ -10199,8 +10237,11 @@
                                             <input type="text" id="myInput" class="form-control readonly"
                                                 *ngIf="ActionAllocatedHours>0" [(ngModel)]="ActionAllocatedHours"
                                                 readonly />
-                                            <input type="text" id="myInput" class="form-control"
+                                             <input type="text" id="myInput" class="form-control"
                                                 *ngIf="ActionAllocatedHours==0" [(ngModel)]="editAllocatedhours" />
+                                                <span *ngIf="(editAllocatedhours==0)" style="color:red" class="fs-8"  >*Allocated hours cannot be 0, please enter a value.</span>
+                                                <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >Daily allocation limit: 10 hours; enter ≤ <b>{{ActionmaxAllocation}}</b> hours.</span>
+                                                <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">*please provide both dates.</span> 
                                         </div>
                                     </div>
                                 </div>
@@ -10227,7 +10268,16 @@
                         <div class="form-group text-end mb-0">
                             <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
                                 (click)="closeInfo()">Cancel</button>
-                            <button type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
+                            <button  [disabled]="
+                                        !(   
+                                            ActionName&&ActionDescription&&
+                                            ActionOwner&&ActionResponsible&&
+                                            selectedcategory&&ActionClient&&
+                                            ActionstartDate&&ActionendDate&&
+                                            editAllocatedhours&&editAllocatedhours<=ActionmaxAllocation
+                                        )
+                                        " 
+                             type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
                                 Update</button>
                         </div>
                     </div>
