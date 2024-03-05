@@ -950,8 +950,8 @@ a.info-btn svg {
 .open_requisition_sidebar_info .kt-portlet--body {
   margin: 1.3rem;
   border: 1px solid #ededed;
-  min-height: calc(100vh - 4vh);
-  height: auto;
+  height: calc(100vh - 80px);
+  overflow: auto;
 }
 .open_requisition_sidebar_info .leave-title {
   font-size: 16px;
@@ -1067,5 +1067,76 @@ textarea.form-control {
   background: #e9eeff;
   padding: 10px 0px;
 }
+.noti-cus{
+  margin-left: 0px;
+}
+.noti-item{
+  justify-content: space-between;
+}
+/*--leave requistion from--*/
 
-
+.req-form{
+  width:970px !important;
+  margin: 0px auto;
+  padding: 20px 0px;
+}
+.req-form .head-title{
+  border: none;
+  padding: 0 0;
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.28571429em;
+  text-transform: none;
+  color: #000000de;
+}
+.req-form .company-details p{
+  margin-bottom: 0px;
+  color: #000000de;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+.head-date{
+  padding: 0;
+  font-weight: 700;
+  font-size: 12px;
+  color: #000000de;
+}
+.logo img {
+  width: 60px;
+}
+.req-form .main-card{
+  position: relative;
+    background: #fff;
+    box-shadow: 0 1px 2px 0 #22242626;
+    margin: 1rem 0;
+    padding: 1em 1em;
+    border-radius: 0.28571429rem;
+    border: 1px solid #22242626;
+}
+.req-form .label{
+  color: #000000de;
+  width: 30%;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+}
+.req-form .data{
+  color: #000000de;
+  font-size: 14px;
+  width: 68%;
+  display: inline-block;
+}
+.req-form .card{
+  border: 0px solid #ebedf2;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+.req-form .card-header{
+  color: #000000de;
+  font-size: 18px;
+  font-weight: 500;
+}
+.req-form .card-body{
+  padding: 0.75rem 1.25rem;
+}

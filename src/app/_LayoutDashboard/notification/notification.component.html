@@ -18,8 +18,8 @@
                             <strong *ngIf="sendtype=='Res'"  (click)="showPrjAprv()" >Information</strong>
                         </h3>
                         <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
-                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type1)">Approval <span class="noti-cus">{{WScount}}</span></a>
-                          <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'" (click)="viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
+                          <a [ngClass]="sendtype=='Req' ? 'dropdown-item active noti-item' : 'dropdown-item noti-item'" (click)="viewAll(type1)">Approval <span class="noti-cus">{{WScount}}</span></a>
+                          <a  [ngClass]="sendtype=='Res' ? 'dropdown-item active noti-item' : 'dropdown-item noti-item'" (click)="viewAll(type2)">Information <span class="noti-cus">{{WRcount}}</span></a>
                         </div>
 
 
@@ -41,8 +41,8 @@
 
                      </h3>
                      <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
-                       <a   (click)="changeLeavePanel('REQUESTS')" class="dropdown-item ">Leave Requests</a>
-                       <a   (click)="changeLeavePanel('RESPONSES')" class="dropdown-item">Leave Responses</a>
+                       <a   (click)="changeLeavePanel('REQUESTS')" class="dropdown-item noti-item ">Leave Requests <span class="noti-cus">01</span></a>
+                       <a   (click)="changeLeavePanel('RESPONSES')" class="dropdown-item noti-item">Leave Responses <span class="noti-cus">01</span></a>
                      </div>
 
                      <!-- <a (click)="open_leave_requisition1()">leave</a> -->
@@ -549,9 +549,11 @@
                                   </thead>
                                   <tbody>
                                     <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index" >
-                                      <a (click)="open_leave_requisition(item.SubmittedBy,item.Leave_Code)" href="javascript:void(0)">
-                                        <td class="kt-widget__title mb-0 leave">{{item.Leave_Code}}</td>
-                                      </a>
+                                    <td class="kt-widget__title mb-0 leave">
+                                        <a (click)="open_leave_requisition(item.SubmittedBy,item.Leave_Code)" href="javascript:void(0)">
+                                            <span>{{item.Leave_Code}}</span>
+                                            </a>
+                                    </td>
                                       <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
                                       <td class="kt-widget__title mb-0">{{item.Start_Date}}</td>
                                       <td class="kt-widget__title mb-0">{{item.End_Date}}</td>
@@ -941,11 +943,12 @@
                 </div>
             </div>
         </div>
-        <div class="px-3 mb-3">
+    </div>
+    <div class="kt-portlet--footer">
+        <div class="px-3 my-3">
             <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;">Submit</button>
         </div>
-
-    </div>
+      </div>
 </div>
 <!--leave requisition end-->
 <div id="Project_info_slider_bar" class="project-info-side-bar animate-right">
@@ -1465,10 +1468,13 @@
               </div>
           </div>
       </div>
-      <div class="px-3 mb-3">
-          <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;">Submit</button>
-      </div>
 
+
+  </div>
+  <div class="kt-portlet--footer">
+    <div class="px-3 my-3">
+        <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;">Submit</button>
+    </div>
   </div>
 </div>
 <!--leave requisition end-->
@@ -1539,3 +1545,142 @@
         </div>
     </div>
 </div> -->
+
+<!--leave requistion form start-->
+<div class="container req-form">
+<div>
+    <div class="row px-3">
+        <div class="col-md-8">
+            <h1 class="head-title">Leave Requistion Form</h1>
+            <h4 class="head-date">22/03/2023</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex align-items-start">
+                <div class="logo">
+                    <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
+                </div>
+                <div class="company-details">
+                    <p>Riyadh, Saudi Arabia - Head Office:</p>
+                    <p> P.O.Box 331799, Riyadh 11373</p>
+                    <p>Kingdom of Saudi Arabia</p>                
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-card">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card h-100">
+                    <div class="card-header">
+                        TEAM MEMBER INFORMATION
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="label">Name</span><span class="data">Aquib Shahbaz</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">TM I.D No</span><span class="data">	400120</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Position</span><span class="data">	Team Lead</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Department</span><span class="data">Software</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Company</span><span class="data">Devbox Software Pvt Ltd</span>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-7">
+                <div class="card h-100">
+                    <div class="card-header">
+                        LEAVE DETAILS
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="label">Leave Type</span><span class="data">Emergency Leave</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Trip</span><span class="data">		Local</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Type</span><span class="data">Partial</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Travel</span><span class="data">	Alone</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Applied Dates</span><span class="data">27/03/2018 - 27/03/2018</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Applied Days</span><span class="data">1</span>
+                        </div>
+                        <div class="mb-2 d-flex">
+                            <span class="label">Remarks</span><span class="data">Please approve my Leave Requisition.</span>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="row" style="padding: 20px 0px;">
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header">
+                        DEPARTMENT HEAD APPROVAL
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="label"> Leave Status</span><span class="data">Approved Leave</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Accepted Dates</span><span class="data">05/04/2018 - 05/04/2018</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">No of Days</span><span class="data">1</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Approved By</span><span class="data">Hussaini Baig Mirza</span>
+                        </div>
+                        <div class="mb-2 d-flex">
+                            <span class="label">Remarks</span><span class="data">Approved(Your Manager Approved the Leave with Modified Dates so Please contact with your manager and HR for Furthur Process)</span>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header">
+                        HR DEPARTMENT
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="label">Leave Status</span><span class="data">Leave Sanction</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Accepted Dates</span><span class="data">05/04/2018 - 05/04/2018</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">No of Days</span><span class="data">1</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="label">Approved By</span><span class="data">Mohammed Asif</span>
+                        </div>
+                        <div class="mb-2 d-flex">
+                            <span class="label">Remarks</span><span class="data">Approved</span>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-100 text-right px-3">
+<button class="btn-sm btn btn-outline-primary mr-2">Back</button>
+<button class="btn-sm btn btn-primary">Print</button>
+</div>
+</div>
+<!--leave requistion form end-->
