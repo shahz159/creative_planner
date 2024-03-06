@@ -464,31 +464,6 @@
                         <ng-container *ngIf="showsearch==false">
                             <full-calendar [options]="calendarOptions"></full-calendar>
                         </ng-container>
-
-
-                        <div class="dropdown no-after btm-btn">
-                            <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
-                                    <svg width="36" height="36" viewBox="0 0 36 36">
-                                        <path fill="#34A853" d="M16 16v14h4V20z"></path>
-                                        <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
-                                        <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
-                                        <path fill="#4285F4" d="M20 16V6h-4v14z"></path>
-                                        <path fill="none" d="M0 0h36v36H0z"></path>
-                                    </svg>
-                                </span>
-                                <!-- {{ScheduleType}} -->
-                                <span class="tsk">Create</span>
-                        
-                            </button>
-                            <div class="dropdown-menu drop-cus btm-dropdn">
-                                <a class="dropdown-item" (click)="Task_type(1)">Task</a>
-                                <a class="dropdown-item" (click)="Task_type(2)">Event</a>
-                            </div>
-                        </div>
-
-
                     </div>
                 </div>
                 <!--end::Portlet-->
@@ -2267,7 +2242,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div id="project" class="eve-area">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">
@@ -2682,7 +2656,27 @@
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 
-<!--removed create btn from here and put it above-->
+<div class="dropdown no-after btm-btn">
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
+        aria-expanded="false">
+        <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
+            <svg width="36" height="36" viewBox="0 0 36 36">
+                <path fill="#34A853" d="M16 16v14h4V20z"></path>
+                <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+                <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+                <path fill="#4285F4" d="M20 16V6h-4v14z"></path>
+                <path fill="none" d="M0 0h36v36H0z"></path>
+            </svg>
+        </span>
+        <!-- {{ScheduleType}} -->
+        <span class="tsk">Create</span>
+
+    </button>
+    <div class="dropdown-menu drop-cus btm-dropdn">
+        <a class="dropdown-item" (click)="Task_type(1)">Task</a>
+        <a class="dropdown-item" (click)="Task_type(2)">Event</a>
+    </div>
+</div>
 
 <div class="col-md-12 progress_container">
     <div class="progress form-group" *ngIf="progress > 0">

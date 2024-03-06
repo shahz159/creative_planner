@@ -73,7 +73,6 @@ export class PortfolioProjectsComponent implements OnInit {
   CountRejecteds: any;
   MaxDelays: any;
   snackBarRef: any;
-  CountDraftProject:number=0;
 
   //_snackBar: any;
   dropdownSettings_Status: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
@@ -249,13 +248,7 @@ export class PortfolioProjectsComponent implements OnInit {
         let EnactiveUA: number = rez['Enactive Under Approval'];
         if (!EnactiveUA) {
           EnactiveUA = 0;
-        } 
-
-        this.CountDraftProject = rez['Not Started'];
-        if (!this.CountDraftProject) {
-          this.CountDraftProject = 0;
         }
-
         this.CountAll_UA = this.CountForward + this.CountCompletionUA + this.CountDeadLineExtendedUA + this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
         this.CountNewProject = this.CountNewProject;
         this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
@@ -981,11 +974,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelProjectHold() {
     this._PortProjStatus = "Project Hold";
     this._PortProjStatus.includes('Project Hold');
-  }
-
-  labelDrafts(){
-    this._PortProjStatus = "Not Started";
-    this._PortProjStatus.includes('Not Started');
   }
 
   //Sorting.....

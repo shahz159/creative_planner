@@ -12,34 +12,22 @@
                     <div class="d-flex">
                         <div class="kt-portlet__head-label">
 
-                            <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                                <strong *ngIf="sendtype=='Req'">Project Approvals</strong>
-                                <strong *ngIf="sendtype=='Res'">Information</strong>
-                            </h3>
-                            <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
-                                <a [ngClass]="sendtype=='Req' ? 'dropdown-item active' : 'dropdown-item'"
-                                    (click)="showPrjAprv();viewAll(type1)">Project Approvals <span
-                                        class="noti-cus">{{WScount}}</span></a>
-                                <a [ngClass]="sendtype=='Res' ? 'dropdown-item active' : 'dropdown-item'"
-                                    (click)="showPrjAprv();viewAll(type2)">Information <span
-                                        class="noti-cus">{{WRcount}}</span></a>
-                            </div>
+                      <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+                        <strong *ngIf="sendtype=='Req'">Project Approval</strong>
+                        <strong *ngIf="sendtype=='Res'">Information</strong>
+                    </h3>
+                    <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
+                        <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
+                            (click)="showPrjAprv();Leaveapprovaltab(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
+                            Project Approval <span class="noti-cus">{{WScount}}</span>
+                        </a>
 
-
-                            <div *ngIf="sendtype=='Req' && selectedItems.length >0">
-                                <button class="btn btn-outline-success btn-sm mr-2 fs-7"
-                                    (click)="acceptSelectedValues()">Accept</button>
-                                <button class="btn btn-outline-danger btn-sm fd-7"
-                                    (click)="rejectpros()">Reject</button>
-                            </div>
-                            <div *ngIf="sendtype=='Res' && selectedItems.length >0">
-                                <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear
-                                    Responses</button>
-                            </div>
-                        </div>
-
+                        <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Res' && selectedDropdown === 'Information') }"
+                            (click)="showPrjAprv();Leaveapprovaltab(); viewAll(type2); selectedDropdown = 'Information';">
+                            Information <span class="noti-cus">{{WRcount}}</span>
+                        </a>
+                    </div>
 
                         <!-- <div class="kt-portlet__head-label">
 
@@ -61,6 +49,28 @@
 
 
                     </div>
+                    <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform()">sample</button> -->
+
+                    <div class="kt-portlet__head-label">
+
+                      <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+                         <strong>{{ leavePanelTitle }}</strong>
+
+                    </h3>
+                    <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
+                      <a (click)="showLeaveAprv(); changeLeavePanel('REQUESTS');" class="dropdown-item"
+                        [ngClass]="{'selected-item-blue': leavePanel === 'REQUESTS' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
+                        Leave Requests
+                      </a>
+
+                      <a (click)="showLeaveAprv(); changeLeavePanel('RESPONSES');" class="dropdown-item"
+                        [ngClass]="{'selected-item-blue': leavePanel === 'RESPONSES' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
+                        Leave Responses
+                      </a>
+                    </div>
+   </div>
+  </div>
 
 
 
@@ -469,8 +479,7 @@
                                                 </td>
                                                 <td>
                                                     <span class="kt-widget__other"
-                                                        *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR
-                                                        '}}</span>
+                                                        *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR'}}</span>
                                                     <span class="kt-widget__other" *ngIf="!item.Project_Cost">SAR
                                                         0.00</span>
                                                     <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
@@ -676,24 +685,23 @@
                                         <table class="table table-hover dataTable no-footer dtr-inline " role="grid"
                                             style="width: 0px;">
 
-                                            <thead>
-                                                <tr role="row">
-                                                    <th>View</th>
-                                                    <th>Leave Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Status</th>
-                                                    <th>Name</th>
-                                                    <th>Received On</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr role="row" class="" *ngFor="let item of _newNotificationLeave"
-                                                    [class.active]="item.isActive">
+                                    <thead>
+                                      <tr role="row">
+                                        <th>View</th>
+                                        <th>Leave Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Name</th>
+                                        <th>Received On</th>
+                                        <th></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                          <tr role="row" class="" *ngFor="let item of _newNotificationLeave; let i=index;" [class.active]="item.isActive">
 
 
-                                                    <td class="kt-widget__title mb-0">leave</td>
+                                              <td class="kt-widget__title mb-0 levress" (click)="leaveform(i,Current_user_ID,item.Leave_Code.trim())">leave</td>
 
                                                     <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
                                                     <td class="kt-widget__title mb-0">{{item.Start_Date}}</td>
@@ -1000,19 +1008,19 @@
             </div>
             <div class="d-check px-3">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="onDecisionChanged('APPROVE')"/>
                     <label class="form-check-label" for="flexRadioDefault1">
                         Approved
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="onDecisionChanged('APPROVEBUT')" />
                     <label class="form-check-label" for="flexRadioDefault2">
                         Approved but from and before date
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="onDecisionChanged('REJECTED')" />
                     <label class="form-check-label" for="flexRadioDefault3">
                         Rejected
                     </label>
@@ -1037,7 +1045,7 @@
             </div>
         </div>
         <div class="px-3 mb-3">
-            <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;">Submit</button>
+            <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;"  (click)="onSubmitLRbtn()">Submit</button>
         </div>
 
     </div>
@@ -1103,13 +1111,11 @@
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
                                                     data-toggle="tooltip" title="Project Status!">
-                                                    {{item.Status==='Under Approval'?'New Project Under
-                                                    Approval':item.Status}}
+                                                    {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
                                                 </h6>
                                                 <h6 class=" text-danger mb-0" data-toggle="tooltip"
                                                     title="Project Status!" *ngIf="item.Status=='Delay'">
-                                                    {{item.Status==='Under Approval'?'New Project Under
-                                                    Approval':item.Status}}
+                                                    {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
                                                     {{item.Delaydays}} days
                                                 </h6>
                                             </div>
@@ -1568,7 +1574,157 @@
     </div>
 </div>
 <!--leave requisition end-->
+<!--leave requisition form start-->
+<div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right" >
+  <div class="kt-portlet--body mb-0">
+      <div class="offcanvas-header d-flex align-items-center justify-content-end kt-portlet__head">
+          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="close_requisition_form()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+          </svg>
+          </a>
+      </div>
+      <div class="container req-form">
+        <div>
+            <div class="row px-3">
+                <div class="col-md-8">
+                    <h1 class="head-title">Leave Requistion Form</h1>
+                    <h4 class="head-date">22/03/2023</h4>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex align-items-start">
+                        <div class="logo">
+                            <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
+                        </div>
+                        <div class="company-details">
+                            <p>Riyadh, Saudi Arabia - Head Office:</p>
+                            <p> P.O.Box 331799, Riyadh 11373</p>
+                            <p>Kingdom of Saudi Arabia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-card">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                TEAM MEMBER INFORMATION
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <span class="label">Name</span><span class="data">Aquib Shahbaz</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">TM I.D No</span><span class="data">	400120</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Position</span><span class="data">	Team Lead</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Department</span><span class="data">Software</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Company</span><span class="data">Devbox Software Pvt Ltd</span>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                LEAVE DETAILS
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <span class="label">Leave Type</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].LeaveType}}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Trip</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Trip}}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Type</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Type}}  </span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Travel</span><span class="data">  {{myLeaveDetails&&myLeaveDetails[0].Travel}} </span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Applied Dates</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Start_Date}}--{{myLeaveDetails&&myLeaveDetails[0].End_Date}}  </span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Applied Days</span><span class="data"> </span>
+                                </div>
+                                <div class="mb-2 d-flex">
+                                    <span class="label">Remarks</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Remarks}}    </span>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="row" style="padding: 20px 0px;">
+                    <div class="col-md-12">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                DEPARTMENT HEAD APPROVAL
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <span class="label"> Leave Status</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Accepted Dates</span><span class="data">05/04/2018 - 05/04/2018</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">No of Days</span><span class="data">1</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Approved By</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
+                                </div>
+                                <div class="mb-2 d-flex">
+                                    <span class="label">Remarks</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                HR DEPARTMENT
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <span class="label">Leave Status</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Accepted Dates</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date}}--{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date}}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">No of Days</span><span class="data">1</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="label">Approved By</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
+                                </div>
+                                <div class="mb-2 d-flex">
+                                    <span class="label">Remarks</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 text-right px-3">
+        <button class="btn-sm btn btn-outline-primary mr-2" (click)="close_requisition_form()">Back</button>
+        <button class="btn-sm btn btn-primary">Print</button>
+        </div>
+        </div>
 
+  </div>
+</div>
+<!--leave requisition form end-->
 <!--
 
                 <div class="mb-3">
@@ -1635,3 +1791,6 @@
         </div>
     </div>
 </div> -->
+<!--leave requistion form start-->
+
+  <!--leave requistion form end-->

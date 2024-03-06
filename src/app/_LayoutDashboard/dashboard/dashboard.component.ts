@@ -36,8 +36,6 @@ import { empty } from 'rxjs';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
-
-
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -609,20 +607,6 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
-
-
-
-    tippy('#agenda-info-icon', {
-      content: "Agenda is mandatory for meeting creation, Please add atleast one.",
-      arrow: true,
-      animation: 'scale-extreme',
-      theme: 'dark',
-      animateFill: true,
-      inertia: true,
-      placement:'left'
-    });
-
-
 
   }
 
@@ -1580,7 +1564,7 @@ export class DashboardComponent implements OnInit {
     }
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-debugger
+
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
@@ -1670,7 +1654,7 @@ debugger
         // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
         // element[vAgendas] = mtgAgendas;
 
-        
+
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -1800,7 +1784,7 @@ debugger
   }
 
   OnSubmitReSchedule(type: number) {
-    
+    debugger
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type=type;
     var start = moment(this.minDate);
@@ -4533,7 +4517,6 @@ debugger
     this.daysSelectedII = [];
     this.singleselectarry = [];
     this.Avaliabletime = [];
-    this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
@@ -4600,7 +4583,6 @@ debugger
     this.daysSelectedII = [];
     this.singleselectarry = [];
     this.Avaliabletime = [];
-    this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
@@ -4903,83 +4885,4 @@ debugger
     document.getElementById("cal-main").classList.remove("col-lg-9");
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
-
-
-  // agenda in event creation start
-agendaInput:string|undefined;
-allAgendas:any=[];
-agendasAdded:number=0;
-addAgenda(){
-  if(this.agendaInput&&this.agendaInput.trim().length>0){
-    this.agendasAdded+=1; 
-    const agenda={
-        index:this.agendasAdded,
-        name:this.agendaInput
-    };
-    this.allAgendas.push(agenda);
-    this.agendaInput=undefined;
-  }
-
-  console.log("allAgendas:",this.allAgendas);
-}
-
-deleteAgenda(index:number){
-  if(this.allAgendas.length>0&&(index<this.allAgendas.length&&index>-1)){
-  Swal.fire({
-    title:'Remove this Agenda ?',
-    text:this.allAgendas[index].name,
-    showConfirmButton:true,
-    showCancelButton:true,
-  }).then(option=>{
-     if(option.isConfirmed){
-      this.allAgendas.splice(index,1);
-     }
-  });    
-  }
-  console.log("allAgendas:",this.allAgendas);
-}
-
-
-editAgenda(index:number){
-    $(`#agenda-label-${index}`).addClass('d-none');
-    $(`#agenda-text-field-${index}`).removeClass('d-none');  
-    $(`#agenda-text-field-${index}`).focus();
-
-    $(`#edit-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
-    $(`#editing-save-${index}`).removeClass('d-none');   // save btn is visible.
-
-    $(`#edit-agendaname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
-    $(`#remove-agenda-btn-${index}`).addClass('d-none');   // delete btn is invisible.
-
-}
-
-cancelAgendaEdit(index:number){  
-  const tf:any=document.getElementById(`agenda-text-field-${index}`); 
-  tf.value=this.allAgendas[index].name;
-
-  $(`#agenda-label-${index}`).removeClass('d-none');   // label is visible.
-  $(`#agenda-text-field-${index}`).addClass('d-none');   // textfield is invisible.
-  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
-  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
-  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
-  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
-}
-
-
-updateAgenda(index:number){
-  const tf:any=document.getElementById(`agenda-text-field-${index}`);
-  this.allAgendas[index].name=tf.value;
-
-  $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
-  $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
-  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
-  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
-  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
-  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
-
-
-  console.log('all agendas after updating:',this.allAgendas);
-}
-  // agenda in event creation end
-  
 }
