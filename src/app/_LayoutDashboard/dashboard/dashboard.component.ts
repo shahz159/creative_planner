@@ -36,8 +36,6 @@ import { empty } from 'rxjs';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
-
-
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -529,7 +527,7 @@ export class DashboardComponent implements OnInit {
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.Getdraft_datalistmeeting();
-    // this.GetPending_Request();
+    this.GetPending_Request();
     // this.GetDelay_Actions();
     //Setting recurance max date
     //start
@@ -537,7 +535,7 @@ export class DashboardComponent implements OnInit {
     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
     //end
 
-    // this.GetMemosByEmployeeId();
+    this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
 
@@ -552,10 +550,10 @@ export class DashboardComponent implements OnInit {
     var DayNum1 = "DayNum";
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
-    // this.GetProjectAndsubtashDrpforCalender();
-    // this.calendar.updateTodaysDate();
+    this.GetProjectAndsubtashDrpforCalender();
+    this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
-    // this.Event_requests();
+    this.Event_requests();
 
 
     $(document).on('scroll', function () {
@@ -609,20 +607,6 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
-
-
-
-    tippy('#agenda-info-icon', {
-      content: "Agenda is mandatory for meeting creation, Please add atleast one.",
-      arrow: true,
-      animation: 'scale-extreme',
-      theme: 'dark',
-      animateFill: true,
-      inertia: true,
-      placement:'left'
-    });
-
-
 
   }
 
@@ -1250,6 +1234,7 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1407,7 +1392,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}))
+          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1579,7 +1564,7 @@ export class DashboardComponent implements OnInit {
     }
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-debugger
+
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
@@ -1665,11 +1650,11 @@ debugger
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
          
-        var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+        // var vAgendas = "Meeting_Agendas";
+        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        // element[vAgendas] = mtgAgendas;
 
-        
+
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -1799,7 +1784,7 @@ debugger
   }
 
   OnSubmitReSchedule(type: number) {
-    
+    debugger
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type=type;
     var start = moment(this.minDate);
@@ -1996,10 +1981,10 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-    debugger
-        var vMeeting_Agendas="Meeting_Agendas";
-        const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-        element[vMeeting_Agendas]=updatedAgnds;
+    // debugger
+    //     var vMeeting_Agendas="Meeting_Agendas";
+    //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+    //     element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -2200,7 +2185,7 @@ debugger
     if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
       var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-      radio1.disabled = true;
+      // radio1.disabled = true;
       radio1.checked = false;
 
       var radio2 = document.getElementById('r2') as HTMLInputElement | null;
@@ -4532,7 +4517,6 @@ debugger
     this.daysSelectedII = [];
     this.singleselectarry = [];
     this.Avaliabletime = [];
-    this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
@@ -4599,7 +4583,6 @@ debugger
     this.daysSelectedII = [];
     this.singleselectarry = [];
     this.Avaliabletime = [];
-    this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
@@ -4902,83 +4885,4 @@ debugger
     document.getElementById("cal-main").classList.remove("col-lg-9");
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
-
-
-  // agenda in event creation start
-agendaInput:string|undefined;
-allAgendas:any=[];
-agendasAdded:number=0;
-addAgenda(){
-  if(this.agendaInput&&this.agendaInput.trim().length>0){
-    this.agendasAdded+=1; 
-    const agenda={
-        index:this.agendasAdded,
-        name:this.agendaInput
-    };
-    this.allAgendas.push(agenda);
-    this.agendaInput=undefined;
-  }
-
-  console.log("allAgendas:",this.allAgendas);
-}
-
-deleteAgenda(index:number){
-  if(this.allAgendas.length>0&&(index<this.allAgendas.length&&index>-1)){
-  Swal.fire({
-    title:'Remove this Agenda ?',
-    text:this.allAgendas[index].name,
-    showConfirmButton:true,
-    showCancelButton:true,
-  }).then(option=>{
-     if(option.isConfirmed){
-      this.allAgendas.splice(index,1);
-     }
-  });    
-  }
-  console.log("allAgendas:",this.allAgendas);
-}
-
-
-editAgenda(index:number){
-    $(`#agenda-label-${index}`).addClass('d-none');
-    $(`#agenda-text-field-${index}`).removeClass('d-none');  
-    $(`#agenda-text-field-${index}`).focus();
-
-    $(`#edit-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
-    $(`#editing-save-${index}`).removeClass('d-none');   // save btn is visible.
-
-    $(`#edit-agendaname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
-    $(`#remove-agenda-btn-${index}`).addClass('d-none');   // delete btn is invisible.
-
-}
-
-cancelAgendaEdit(index:number){  
-  const tf:any=document.getElementById(`agenda-text-field-${index}`); 
-  tf.value=this.allAgendas[index].name;
-
-  $(`#agenda-label-${index}`).removeClass('d-none');   // label is visible.
-  $(`#agenda-text-field-${index}`).addClass('d-none');   // textfield is invisible.
-  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
-  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
-  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
-  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
-}
-
-
-updateAgenda(index:number){
-  const tf:any=document.getElementById(`agenda-text-field-${index}`);
-  this.allAgendas[index].name=tf.value;
-
-  $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
-  $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
-  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
-  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
-  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
-  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
-
-
-  console.log('all agendas after updating:',this.allAgendas);
-}
-  // agenda in event creation end
-  
 }

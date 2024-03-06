@@ -126,6 +126,19 @@ export class ApprovalsService {
   }
 
 
+  approveLeaveRequest(obj:ApprovalDTO){
+    this.obj_approvalDTO.Project_Code=obj.Project_Code;
+    this.obj_approvalDTO.Type=obj.Type;
+    this.obj_approvalDTO.SNo=obj.SNo;
+    this.obj_approvalDTO.Remarks=obj.Remarks;
+    this.obj_approvalDTO.From_Date=obj.From_Date;
+    this.obj_approvalDTO.End_Date=obj.End_Date;
+    this.obj_approvalDTO.sendFrom=obj.sendFrom;
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateLeaveRequest", this.obj_approvalDTO)
+  }
+
+
+
   InsertAcceptApprovalService(obj: ApprovalDTO) {
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;

@@ -65,52 +65,12 @@ export class CalenderService {
   }
 
   Newinsertuser_meetingreport(obj:CalenderDTO){
+    debugger
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.User_list = obj.User_list.toString();
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertuser_meetingreportco", this.obj_CalenderDTO);
   }
-
-  Newinsertproject_meetingreport(obj:CalenderDTO){
-    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-    this.obj_CalenderDTO.Project_Code = obj.Project_Code.toString();
-    return this.http.post(this.rootUrl + "CalenderAPI/NewLinkProjectInMeetingDetails", this.obj_CalenderDTO);
-  }
-
-
-
-
-
-
-
-
-
-
-
-  Newinsertportfolio_meetingreport(obj:CalenderDTO){
-    console.log(obj,'portfolio')
-    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-    this.obj_CalenderDTO.Portfolio = obj.Portfolio;
-    return this.http.post(this.rootUrl + "CalenderAPI/NewLinkPortfolioInMeetingDetails", this.obj_CalenderDTO);
-  }
-
-
-
-
-
-
-  NewinsertDMS_meetingreport(obj:CalenderDTO){
-    console.log(obj,'DMS')
-    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-    this.obj_CalenderDTO.Dms = obj.Dms;
-    return this.http.post(this.rootUrl + "CalenderAPI/NewLinkDMSInMeetingDetails", this.obj_CalenderDTO);
-  }
-
-
-
 
   NewAdmin_meetingreport(obj:CalenderDTO){
     debugger

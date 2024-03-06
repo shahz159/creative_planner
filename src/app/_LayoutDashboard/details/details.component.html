@@ -2262,9 +2262,22 @@
                                                         </div>
                                                         <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
 
-                                                            <button class="Ct-btn Bt-cancel ml-2"
-                                                                *ngIf=" projectInfo.Status!='Completed'"
-                                                                (click)="openPrjCancelSb()">Project Cancel</button>
+                                                            
+                                                            <button (click)="openDarSideBar()" class="Ct-btn ml-2"
+                                                                *ngIf="projectInfo.Status!=='New Project Rejected'">Add
+                                                                Timeline</button>
+                                                            
+                                                            <button class="Ct-btn Bt-Submit ml-2"
+                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
+                                                                Completion</button>
+
+                                                            <button class="Ct-btn Bt-Submit ml-2"
+                                                                *ngIf="(projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
+                                                                (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
+                                                                (click)="OnClickCheckboxProjectUpdate()">Project
+                                                                Completion</button>
+
+
                                                             <button class="Ct-btn Bt-hold ml-2"
                                                                 *ngIf="(projectInfo.Status==='Project Hold');else prHbtn"
                                                                 (click)="openPrjReleaseSideBar()">Project
@@ -2275,24 +2288,13 @@
                                                                     *ngIf="projectInfo.Status==='InProcess'||projectInfo.Status=='Delay'">Project
                                                                     Hold</button>
                                                             </ng-template>
-                                                            <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
-                                                                Completion</button>
-
-                                                            <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="
-                                                 (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
-                                                 (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
-                                                                (click)="OnClickCheckboxProjectUpdate()">Project
-                                                                Completion</button>
-
-                                                            <button (click)="openDarSideBar()" class="Ct-btn ml-2"
-                                                                *ngIf="projectInfo.Status!=='New Project Rejected'">Add
-                                                                Timeline</button>
                                                             <button class=" Bt-newprj-release  ml-2"
                                                                 (click)="openNewPrjReleaseSideBar()"
                                                                 *ngIf="projectInfo.Status=='New Project Rejected' && Current_user_ID == projectInfo.ResponsibleEmpNo">New
                                                                 Project Release</button>
+                                                            <button class="Ct-btn Bt-cancel ml-2"
+                                                                *ngIf=" projectInfo.Status!='Completed'"
+                                                                (click)="openPrjCancelSb()">Project Cancel</button>
 
                                                         </div>
                                                     </div>
@@ -2429,8 +2431,7 @@
 
                                         <!-- Request type start  -->
                                         <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled')"
-                                            >
+                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!isApprovalSection">
                                                 <div class="d-flex justify-content-between align-items-center">
 
                                                     <div class="kt-info-box-tittle">
@@ -3307,7 +3308,6 @@
 
 
 
-                                                 <ng-container *ngIf="projectInfo.Project_Block==='001'||projectInfo.Project_Block==='002'">
 
                                                      <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9991 19L9.83911 14C9.56672 13.7429 9.34974 13.433 9.20142 13.0891C9.0531 12.7452 8.97656 12.3745 8.97656 12C8.97656 11.6255 9.0531 11.2548 9.20142 10.9109C9.34974 10.567 9.56672 10.2571 9.83911 10L14.9991 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -3315,8 +3315,6 @@
                                                      <button class="statistics-ctrl-btns"  (click)="closeFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
-
-                                                </ng-container>     
 
                                                 </div>
                                                 <!-- <div id="chart-container" class="Chart">
@@ -3489,7 +3487,8 @@
                                                          (
                                                         projectActionInfo[currentActionView].Team_Res===Current_user_ID||
                                                         projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
-                                                        projectInfo.OwnerEmpNo===Current_user_ID
+                                                        projectInfo.OwnerEmpNo===Current_user_ID||
+                                                        projectInfo.ResponsibleEmpNo===Current_user_ID
                                                         )" (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline
                                                         </button>
 
@@ -4639,7 +4638,7 @@
                     </mat-chip>
                 </mat-chip-list>
                 <div class="d-flex">
-                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"  (input)="filterPortfolio($event.target.value)"
+                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
                         [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                     <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                             (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
@@ -6183,7 +6182,7 @@
                                               </span>
                                             </div>
                                           </div>
-                                          <div *ngIf="Data.contribution"  [title]="Data.totalActions+' actions'"   class="prctg-in-project"><span>{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span></div>
+                                          <div *ngIf="Data.contribution"  [title]="Data.contribution+' actions'"   class="prctg-in-project"><span>{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span></div>
                                         </div>
                                       </div>
                                     </div>
@@ -6854,7 +6853,7 @@
     <!-- For Update Project sidebar  ends here-->
 
 
-    <!--  Project hold,Action hold sidebar Area Start-->
+    <!--  Project hold sidebar Area Start-->
     <div id="prj-hold-sidebar" class="sideInfobar animate-right bg-slide-br">
         <div class="kt-portlet">
 
@@ -6960,7 +6959,7 @@
             </div>
         </div>
     </div>
-    <!--   Project hold,Action hold sidebar Area End-->
+    <!--   Project hold sidebar Area End-->
 
 
     <!--Project release sidebar Area start-->
@@ -9953,7 +9952,6 @@
                                             <input type="text" class="form-control" [(ngModel)]="ActionName"
                                                 placeholder="Search..." />
                                         </div>
-                                        <span style="color:red" class="fs-8" *ngIf="!ActionName" >*action name required.</span>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -9963,7 +9961,6 @@
                                             <textarea type="text" class="form-control" placeholder="Search..." height="60px"
                                                 [(ngModel)]="ActionDescription"></textarea>
                                         </div>
-                                        <span style="color:red" class="fs-8" *ngIf="!ActionDescription" >*action description required.</span>
                                     </div>
                                 </div>
                             </div>
@@ -10043,7 +10040,6 @@
                                         </ng-template>
 
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionOwner">*action owner required.</span>
                                 </div>
                             </div>
                             <div class="col-lg-4 text-left">
@@ -10078,7 +10074,6 @@
                                         </ng-template>
 
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionResponsible">*action responsible required.</span>
                                 </div>
                             </div>
 
@@ -10100,7 +10095,6 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!selectedcategory">*category required.</span>
                                 </div>
                             </div>
 
@@ -10152,7 +10146,6 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionClient">*client required.</span>
                                 </div>
                             </div>
                         </div>
@@ -10181,7 +10174,6 @@
                                             [value]="ActionstartDate | date : 'dd-MM-yyyy'" placeholder="Start date"
                                             readonly />
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionstartDate">*start date required.</span>
                                     <!-- </ng-container> -->
                                 </div>
                             </div>
@@ -10193,7 +10185,7 @@
                                         <input class="form-control" [(ngModel)]="ActionendDate"
                                             [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                                             [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
-                                            placeholder="Deadline Date..." class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"/>
+                                            placeholder="Deadline Date..." class="form-control border-0 " name="date" />
                                         <div class="input-group-append h-2">
                                             <mat-datepicker-toggle matSuffix [for]="ActionsEditsPicker"
                                                 class="btn-secondary border-0">
@@ -10201,7 +10193,6 @@
                                             <mat-datepicker class="form-group " #ActionsEditsPicker></mat-datepicker>
                                         </div>
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionendDate">*end date required.</span>
                                 </div>
                             </div>
                             <ng-template #submissionN>
@@ -10236,11 +10227,8 @@
                                             <input type="text" id="myInput" class="form-control readonly"
                                                 *ngIf="ActionAllocatedHours>0" [(ngModel)]="ActionAllocatedHours"
                                                 readonly />
-                                             <input type="text" id="myInput" class="form-control"
+                                            <input type="text" id="myInput" class="form-control"
                                                 *ngIf="ActionAllocatedHours==0" [(ngModel)]="editAllocatedhours" />
-                                                <span *ngIf="(editAllocatedhours==0)" style="color:red" class="fs-8"  >*Allocated hours cannot be 0, please enter a value.</span>
-                                                <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >Daily allocation limit: 10 hours; enter ≤ <b>{{ActionmaxAllocation}}</b> hours.</span>
-                                                <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">*please provide both dates.</span> 
                                         </div>
                                     </div>
                                 </div>
@@ -10267,16 +10255,7 @@
                         <div class="form-group text-end mb-0">
                             <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
                                 (click)="closeInfo()">Cancel</button>
-                            <button  [disabled]="
-                                        !(   
-                                            ActionName&&ActionDescription&&
-                                            ActionOwner&&ActionResponsible&&
-                                            selectedcategory&&ActionClient&&
-                                            ActionstartDate&&ActionendDate&&
-                                            editAllocatedhours&&editAllocatedhours<=ActionmaxAllocation
-                                        )
-                                        " 
-                             type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
+                            <button type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
                                 Update</button>
                         </div>
                     </div>
