@@ -130,6 +130,8 @@ export class CreateProjectComponent implements OnInit {
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
+  notificationMsg:number=0;
+
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -608,6 +610,7 @@ onFileChanged(event: any) {
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
+    this.notificationMsg=0;
   }
 
   back_to_options(){
@@ -639,7 +642,8 @@ onFileChanged(event: any) {
     this.findProjectType()
     if(['003','008'].includes(this.Prjtype))
     this.Prjstartdate=new Date();
-
+    
+    this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
   }
 
   Back_to_project_details_tab(){
@@ -651,6 +655,7 @@ onFileChanged(event: any) {
     $('.sbs--basic li').addClass('active');
     $('.sbs--basic li:nth-child(2)').removeClass('active');
     $('.sbs--basic li:nth-child(3)').removeClass('active');
+    this.notificationMsg=['001','002'].includes(this.Prjtype)?1:2;
   }
 
 
@@ -661,7 +666,7 @@ onFileChanged(event: any) {
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(3)').addClass('active');
-
+    this.notificationMsg=3;
   }
 
   back_to_add_team(){

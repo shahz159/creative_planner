@@ -109,7 +109,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   myDelayPrjActions:any=[];
   delayActionsOfEmps:any=[];
   actionsWith0hrs:any=[];
-
+  totalActionsWith0hrs:number=0;
 
 
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -1048,8 +1048,23 @@ drawPie();
      }
 
 
-     this.actionsWith0hrs=this.projectActionInfo.filter((actn:any)=>(actn.AllocatedHours&&parseInt(actn.AllocatedHours)===0));
-      
+     
+    
+     if(this.projectActionInfo){
+      this.actionsWith0hrs=[];   // must be empty before calculation.
+     this.projectActionInfo.forEach((actn)=>{
+            if(Number.parseInt(actn.AllocatedHours)===0){
+              const temp=this.actionsWith0hrs.find(item=>item.name===actn.Responsible);
+              if(temp)
+                  temp.holdactions+=1;
+              else
+              this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });  
+            }
+     });
+     this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
+    }
+
+
 
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
@@ -7373,11 +7388,10 @@ console.log('you are not allowed to submit this project.')
 
 // actions with 0 allc hrs start.
 showActionsWith0AlcHrs(){
-this.filteredPrjAction=this.actionsWith0hrs
+this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
 
 // actions with 0 allc hrs end.
-
 
 
 
