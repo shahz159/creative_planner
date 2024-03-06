@@ -1250,6 +1250,7 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1407,7 +1408,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}))
+          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1665,9 +1666,9 @@ debugger
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
          
-        var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+        // var vAgendas = "Meeting_Agendas";
+        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        // element[vAgendas] = mtgAgendas;
 
         
       });
@@ -1996,10 +1997,10 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-    debugger
-        var vMeeting_Agendas="Meeting_Agendas";
-        const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-        element[vMeeting_Agendas]=updatedAgnds;
+    // debugger
+    //     var vMeeting_Agendas="Meeting_Agendas";
+    //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+    //     element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -2200,7 +2201,7 @@ debugger
     if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
       var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-      radio1.disabled = true;
+      // radio1.disabled = true;
       radio1.checked = false;
 
       var radio2 = document.getElementById('r2') as HTMLInputElement | null;

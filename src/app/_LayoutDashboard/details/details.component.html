@@ -2265,9 +2265,22 @@
                                                         </div>
                                                         <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
 
-                                                            <button class="Ct-btn Bt-cancel ml-2"
-                                                                *ngIf=" projectInfo.Status!='Completed'"
-                                                                (click)="openPrjCancelSb()">Project Cancel</button>
+                                                            
+                                                            <button (click)="openDarSideBar()" class="Ct-btn ml-2"
+                                                                *ngIf="projectInfo.Status!=='New Project Rejected'">Add
+                                                                Timeline</button>
+                                                            
+                                                            <button class="Ct-btn Bt-Submit ml-2"
+                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
+                                                                Completion</button>
+
+                                                            <button class="Ct-btn Bt-Submit ml-2"
+                                                                *ngIf="(projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
+                                                                (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
+                                                                (click)="OnClickCheckboxProjectUpdate()">Project
+                                                                Completion</button>
+
+
                                                             <button class="Ct-btn Bt-hold ml-2"
                                                                 *ngIf="(projectInfo.Status==='Project Hold');else prHbtn"
                                                                 (click)="openPrjReleaseSideBar()">Project
@@ -2278,24 +2291,13 @@
                                                                     *ngIf="projectInfo.Status==='InProcess'||projectInfo.Status=='Delay'">Project
                                                                     Hold</button>
                                                             </ng-template>
-                                                            <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
-                                                                Completion</button>
-
-                                                            <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="
-                                                 (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
-                                                 (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
-                                                                (click)="OnClickCheckboxProjectUpdate()">Project
-                                                                Completion</button>
-
-                                                            <button (click)="openDarSideBar()" class="Ct-btn ml-2"
-                                                                *ngIf="projectInfo.Status!=='New Project Rejected'">Add
-                                                                Timeline</button>
                                                             <button class=" Bt-newprj-release  ml-2"
                                                                 (click)="openNewPrjReleaseSideBar()"
                                                                 *ngIf="projectInfo.Status=='New Project Rejected' && Current_user_ID == projectInfo.ResponsibleEmpNo">New
                                                                 Project Release</button>
+                                                            <button class="Ct-btn Bt-cancel ml-2"
+                                                                *ngIf=" projectInfo.Status!='Completed'"
+                                                                (click)="openPrjCancelSb()">Project Cancel</button>
 
                                                         </div>
                                                     </div>
