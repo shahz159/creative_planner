@@ -162,9 +162,36 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Meeting_notes = obj.Meeting_notes;
+    this.obj_CalenderDTO.AgendaId=obj.AgendaId
     this.obj_CalenderDTO.Status_type = obj.Status_type;
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertmeeting_notes1", this.obj_CalenderDTO);
   }
+
+
+
+
+
+
+  NewAddAgendas(obj:CalenderDTO){
+    this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
+    this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+    this.obj_CalenderDTO.json = obj.json;
+
+    return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   NewGetMeeting_darftdata(obj:CalenderDTO){
 
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
