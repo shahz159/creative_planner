@@ -1,22 +1,22 @@
-/* #loading{ 
-  position: absolute; 
-  left: 50%; 
-  top: 50%; 
-  z-index: 1; 
-  width: 150px; 
-  height: 150px; 
-  margin: -75px 0 0 -75px; 
-  border: 16px solid #f3f3f3; 
-  border-radius: 50%; 
-  border-top: 16px solid #3498db; 
-  width: 120px; 
-  height: 120px; 
-  animation: spin 2s linear infinite; 
-  } 
-    
-  @keyframes spin { 
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
+/* #loading{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   } */
 
   .list-icon-color{
@@ -91,7 +91,7 @@
   .modal .modal-content {
     border-radius: 2px;
 }
-/* 
+/*
   table, th, td {
     padding: 5px;
   }
@@ -133,7 +133,7 @@
 }
 #backBtn:hover{
  background-color:#5867dd ;
- color: white; 
+ color: white;
 }
 #Mdl_closebtn:hover{
   background-color: #dc3545;
@@ -249,31 +249,31 @@
     /* border-radius: 4px; */
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.warning {
-    border-left: 5px solid #ffb822; 
+    border-left: 5px solid #ffb822;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.info {
-    border-left: 5px solid #2786fb; 
+    border-left: 5px solid #2786fb;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.danger {
-    border-left: 5px solid #F58A8B; 
+    border-left: 5px solid #F58A8B;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.UnderApprovals {
-  border-left: 5px solid #BD838C; 
+  border-left: 5px solid #BD838C;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.ForwardUnderApproval {
-  border-left: 5px solid #E0B1D7; 
+  border-left: 5px solid #E0B1D7;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.completeUnderApproval {
-  border-left: 5px solid #98c7bf; 
+  border-left: 5px solid #98c7bf;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.projectHold {
-  border-left: 5px solid #C0B5DC; 
+  border-left: 5px solid #C0B5DC;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.HoldunderApp {
-  border-left: 5px solid #a85098; 
+  border-left: 5px solid #a85098;
 }
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.DeadlineExtended{
-  border-left: 5px solid #E0B1D7; 
+  border-left: 5px solid #E0B1D7;
 }
 .delayDays{
   font-size: 11px;
@@ -776,7 +776,7 @@
   position: absolute;
   top: 3px;
   background-color: #fff;
- 
+
 }
 .show_entries select{
   /* width: 100px; */
@@ -1070,4 +1070,144 @@ span.count2 {
 
 tr.odd.project-list_AC.active{
   background-color: #e0f1ff;
+}
+.under-approval{
+  color:black !important;
+  background-color: #B2D732 !important;
+  padding: 2px 8px;
+  border-radius: 2px;
+  width: max-content;
+  display: inline-block;
+}
+.InProcess{
+  background-color: #1B272D !important;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 2px
+}
+.ToDo-InProcess{
+  background-color: #1B272D  !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.New-Project{
+  background-color: #5789B8 !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+
+}
+.New-Project-Rejected{
+  background-color: #DFDFDF !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.Project-Hold{
+  background-color: #DFDFDF !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.ToDo-Completed{
+  background-color: #62B134 !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.New-Todo{
+  background-color: #6E9BC4 !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.Completion-Under-Approval{
+  background-color: #B2D732 !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+.Cancellation-Under-Approval{
+  background-color: #EE4137 !important;
+color: white !important;
+padding: 2px 8px;
+border-radius: 2px
+}
+
+.Cancelled{
+  background-color: #EE4137 !important;
+color: white !important;
+padding: 2px 8px;
+border-radius: 2px
+}
+
+.Forward-Under-Approval{
+  background-color: #B2D732 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+
+}
+.Project-Complete-Rejected{
+  background-color: #FAF065 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+.Enactive-Under-Approval{
+  background-color: #C9C1E6 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+
+}
+.Deadline-Extend-Under-Approval{
+  background-color: #F88282 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+.Project-Holded{
+  background-color: #DFDFDF !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+
+}
+.Project-Hold-Under-Approval{
+  background-color: #B2D732 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+.Completed{
+  background-color: #62B134 !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.Delay{
+  background-color: #EE4137 !important;
+  color: white !important;
+  padding: 2px 8px;
+  border-radius: 2px
+}
+.Not-Started{
+  background-color: #888888!important;
+  color: white!important;
+  padding: 2px 10px;
+  border-radius: 3px;
 }

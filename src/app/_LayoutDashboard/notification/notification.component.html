@@ -1,193 +1,191 @@
 <app-autosearch [options]="autocompleteOptions">
 </app-autosearch>
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3"
-    id="notifi">
+  id="notifi">
 
-    <div class="row">
+  <div class="row">
 
-        <div class="col-lg-12">
-            <!--begin:: Widgets/Authors Profit-->
-            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
-                <div class="kt-portlet__head">
-                  <div class="d-flex">
-                    <div class="kt-portlet__head-label">
+    <div class="col-lg-12">
+      <!--begin:: Widgets/Authors Profit-->
+      <div class="kt-portlet kt-portlet--bordered-semi mb-2">
+        <div class="kt-portlet__head">
+          <div class="d-flex">
+            <div class="kt-portlet__head-label">
 
-                      <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                        <strong *ngIf="sendtype=='Req'">Project Approval</strong>
-                        <strong *ngIf="sendtype=='Res'">Information</strong>
-                    </h3>
-                    <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
-                        <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
-                            (click)="showPrjAprv();Leaveapprovaltab(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
-                            Project Approval <span class="noti-cus">{{WScount}}</span>
-                        </a>
+              <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+                <strong *ngIf="sendtype=='Req'">Project Approval</strong>
+                <strong *ngIf="sendtype=='Res'">Information</strong>
+              </h3>
+              <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
+                <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
+                  (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
+                  Project Approval <span class="noti-cus">{{WScount}}</span>
+                </a>
 
-                        <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Res' && selectedDropdown === 'Information') }"
-                            (click)="showPrjAprv();Leaveapprovaltab(); viewAll(type2); selectedDropdown = 'Information';">
-                            Information <span class="noti-cus">{{WRcount}}</span>
-                        </a>
+                <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Res' && selectedDropdown === 'Information') }"
+                  (click)="showPrjAprv();Leaveapprovaltab(); titleinfo(); viewAll(type2); selectedDropdown = 'Information';">
+                  Information <span class="noti-cus">{{WRcount}}</span>
+                </a>
+              </div>
+
+              <div *ngIf="sendtype=='Req' && selectedItems.length >0">
+                <button class="btn btn-outline-success btn-sm mr-2 fs-7"
+                  (click)="acceptSelectedValues()">Accept</button>
+                <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
+              </div>
+              <div *ngIf="sendtype=='Res' && selectedItems.length >0">
+                <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear Responses</button>
+              </div>
+            </div>
+            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform()">sample</button> -->
+
+            <div class="kt-portlet__head-label">
+
+              <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+                <strong>{{ leavePanelTitle }}</strong>
+
+              </h3>
+              <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
+                <a (click)="showLeaveAprv(); titlereq(); changeLeavePanel('REQUESTS');" class="dropdown-item"
+                  [ngClass]="{'selected-item-blue': leavePanel === 'REQUESTS' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
+                  Leave Requests
+                </a>
+
+                <a (click)="showLeaveAprv(); titleres(); changeLeavePanel('RESPONSES');" class="dropdown-item"
+                  [ngClass]="{'selected-item-blue': leavePanel === 'RESPONSES' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
+                  Leave Responses
+                </a>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="kt-portlet__head-label mr-2">
+            <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
+              <div class="kt-header__topbar-wrapper">
+                <div class="kt-quick-search kt-quick-search--inline">
+                  <div class="kt-quick-search__form">
+                    <div class="input-group">
+                      <input type="text" [(ngModel)]="searchText" autofocus
+                        (keydown.enter)="search($event.target.value)"
+                        class="form-control project-search kt-quick-search__input pl-3" placeholder="Search Projects"
+                        style="width: 300px">
+                      <div class="input-group-prepend">
+                        <button class="input-group-text" type="submit" (click)="search($event.target.value)">
+                          <i class="flaticon2-search-1"></i>
+                        </button>
+                      </div>
+
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Pagination starts -->
+            <div class="mr-3">
+              <ng-container *ngIf="CurrentPageNo==1">
+                {{CurrentPageNo}} - {{_CurrentpageRecords}}
+              </ng-container>
+              <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                CurrentPageNo}}
+              </ng-container>
+              <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) +
+                _CurrentpageRecords}}
+              </ng-container>
+              of
+              <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+              <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
+            </div>
+            <!-- Pagination ends -->
 
-                        <div *ngIf="sendtype=='Req' && selectedItems.length >0">
-                            <button class="btn btn-outline-success btn-sm mr-2 fs-7" (click)="acceptSelectedValues()">Accept</button>
-                            <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
-                        </div>
-                        <div *ngIf="sendtype=='Res' && selectedItems.length >0">
-                            <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear Responses</button>
-                        </div>
-                    </div>
-                    <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform()">sample</button> -->
+            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+              (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
+              <i class="fas fa-angle-left mr-0"></i></button>
 
-                    <div class="kt-portlet__head-label">
-
-                      <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                         <strong>{{ leavePanelTitle }}</strong>
-
-                    </h3>
-                    <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
-                      <a (click)="showLeaveAprv(); changeLeavePanel('REQUESTS');" class="dropdown-item"
-                        [ngClass]="{'selected-item-blue': leavePanel === 'REQUESTS' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
-                        Leave Requests
-                      </a>
-
-                      <a (click)="showLeaveAprv(); changeLeavePanel('RESPONSES');" class="dropdown-item"
-                        [ngClass]="{'selected-item-blue': leavePanel === 'RESPONSES' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
-                        Leave Responses
-                      </a>
-                    </div>
-   </div>
-  </div>
-
-
-
-
-
-                    <div class="kt-portlet__head-label mr-2">
-                        <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
-                            <div class="kt-header__topbar-wrapper">
-                                <div class="kt-quick-search kt-quick-search--inline">
-                                    <div class="kt-quick-search__form">
-                                        <div class="input-group">
-                                            <input type="text" [(ngModel)]="searchText" autofocus
-                                                (keydown.enter)="search($event.target.value)"
-                                                class="form-control project-search kt-quick-search__input pl-3"
-                                                placeholder="Search Projects" style="width: 300px">
-                                            <div class="input-group-prepend">
-                                                <button class="input-group-text" type="submit"
-                                                    (click)="search($event.target.value)">
-                                                    <i class="flaticon2-search-1"></i>
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Pagination starts -->
-                        <div class="mr-3">
-                            <ng-container *ngIf="CurrentPageNo==1">
-                                {{CurrentPageNo}} - {{_CurrentpageRecords}}
-                            </ng-container>
-                            <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
-                                {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
-                                CurrentPageNo}}
-                            </ng-container>
-                            <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
-                                {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) +
-                                _CurrentpageRecords}}
-                            </ng-container>
-                            of
-                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
-                            <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
-                        </div>
-                        <!-- Pagination ends -->
-
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
-                            <i class="fas fa-angle-left mr-0"></i></button>
-
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
-                            [disabled]="_CurrentpageRecords<20">
-                            <i class="fas fa-angle-right mr-0"></i></button>
-                        <div class="mr-2">
-                            <a class="btn btn-label-primary btn-sm" data-toggle="kt-tooltip" title="Click to sort Asc">
-                                <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
-                            </a>
-                            <!-- <a class="btn btn-label-primary btn-sm" [hidden]="Z2A" (click)="_SortProjectList()"
+            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
+              (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()" [disabled]="_CurrentpageRecords<20">
+              <i class="fas fa-angle-right mr-0"></i></button>
+            <div class="mr-2">
+              <a class="btn btn-label-primary btn-sm" data-toggle="kt-tooltip" title="Click to sort Asc">
+                <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
+              </a>
+              <!-- <a class="btn btn-label-primary btn-sm" [hidden]="Z2A" (click)="_SortProjectList()"
                                 data-toggle="kt-tooltip" title="Click to sort Desc">
                                 <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
                             </a> -->
+            </div>
+            <!-- Filters -->
+            <div class="stores-sec mr-1">
+              <ul class="nav navbar-nav filters">
+                <li class="dropdown mega-dropdown" id="filtermenu">
+                  <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"
+                    data-toggle="dropdown"><i class="fas fa-ellipsis-v mr-0 "></i>
+                  </a>
+                  <div class="dropdown-menu mega-dropdown-menu">
+                    <div (click)="$event.stopPropagation();">
+                      <div class="row">
+                        <div class="col-md-10">
+                          <h5><strong>Total Projects - </strong>
+                            <h5 class="d-inline-block">
+                              <strong>{{_totalProjectsCount}}</strong>
+                            </h5>
+                          </h5>
                         </div>
-                        <!-- Filters -->
-                        <div class="stores-sec mr-1">
-                            <ul class="nav navbar-nav filters">
-                                <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"
-                                        data-toggle="dropdown"><i class="fas fa-ellipsis-v mr-0 "></i>
-                                    </a>
-                                    <div class="dropdown-menu mega-dropdown-menu">
-                                        <div (click)="$event.stopPropagation();">
-                                            <div class="row">
-                                                <div class="col-md-10">
-                                                    <h5><strong>Total Projects - </strong>
-                                                        <h5 class="d-inline-block">
-                                                            <strong>{{_totalProjectsCount}}</strong>
-                                                        </h5>
-                                                    </h5>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <!-- Empty Column -->
-                                                </div>
-                                            </div>
-                                            <hr />
+                        <div class="col-md-2">
+                          <!-- Empty Column -->
+                        </div>
+                      </div>
+                      <hr />
 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <input type="text" class="form-control kt-quick-search__input pl-3"
-                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
-                                                        style="width: 100%;">
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="count-height">
-                                                        <p><strong>Project Type</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <ng-container *ngIf="item.Count !=0">
-                                                                <label class="kt-checkbox">
-                                                                    <input type="checkbox" (change)="isTypeChecked(item)"
-                                                                        [(ngModel)]="item.checked">
-                                                                    {{item.Name}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <span class="count-btn">{{item.Count}}</span>
-                                                            </ng-container>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input type="text" class="form-control kt-quick-search__input pl-3"
+                            placeholder="Search Filters" [(ngModel)]="txtSearch" style="width: 100%;">
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="count-height">
+                            <p><strong>Project Type</strong></p>
+                            <div class="d-flex justify-content-between"
+                              *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                              <ng-container *ngIf="item.Count !=0">
+                                <label class="kt-checkbox">
+                                  <input type="checkbox" (change)="isTypeChecked(item)" [(ngModel)]="item.checked">
+                                  {{item.Name}}
+                                  <span></span>
+                                </label>
+                                <span class="count-btn">{{item.Count}}</span>
+                              </ng-container>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="count-height">
-                                                        <p><strong>Request Type</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of RequestCountFilter |filter:txtSearch">
-                                                            <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isRequestChecked(item)"
-                                                                    [(ngModel)]="item.checked">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="col-md-4">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="count-height">
+                            <p><strong>Request Type</strong></p>
+                            <div class="d-flex justify-content-between"
+                              *ngFor="let item of RequestCountFilter |filter:txtSearch">
+                              <label class="kt-checkbox mb-3">
+                                <input type="checkbox" (change)="isRequestChecked(item)" [(ngModel)]="item.checked">
+                                {{item.Name}}
+                                <span></span>
+                              </label>
+                              <span class="count-btn">{{item.Count}}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div class="col-md-4">
                                                     <div class="count-height">
                                                         <p><strong>Status</strong></p>
                                                         <div class="d-flex justify-content-between"  *ngFor="let item of StatusCountFilter|filter:txtSearch">
@@ -201,169 +199,181 @@
                                                         </div>
                                                     </div>
                                                 </div> -->
-                                                <div class="col-md-4">
-                                                    <div class="count-height">
-                                                        <p><strong>Employees</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch">
-                                                            <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isEmpChecked(item)"
-                                                                    [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <hr>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10">
-                                                <button
-                                                    class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown">Submit</button>
-                                                <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
-                                                    (click)="resetAll()">Reset</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                        <div class="col-md-4">
+                          <div class="count-height">
+                            <p><strong>Employees</strong></p>
+                            <div class="d-flex justify-content-between"
+                              *ngFor="let item of EmpCountInFilter|filter:txtSearch">
+                              <label class="kt-checkbox mb-3">
+                                <input type="checkbox" (change)="isEmpChecked(item)" [(ngModel)]="item.checked"
+                                  [checked]="item">
+                                {{item.Name}}
+                                <span></span>
+                              </label>
+                              <span class="count-btn">{{item.Count}}</span>
+                            </div>
+                          </div>
                         </div>
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
-                            <i class="fas fa-sync-alt mr-0"></i>
-                        </button>
-
+                      </div>
+                      <br>
+                      <hr>
                     </div>
-                </div>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <button class="btn btn-label-success btn-outline-success btn-upper btn-sm btn-bold mr-2"
+                          data-toggle="dropdown">Submit</button>
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2"
+                          (click)="resetAll()">Reset</button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
+            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+              <i class="fas fa-sync-alt mr-0"></i>
+            </button>
 
-            <div class="kt-portlet">
-                <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
+          </div>
+        </div>
+      </div>
+      <div class="not-title">
+        <h5 id="titlepro" style="display: block;">Project Approval</h5>
+        <h5 id="titleinfo" style="display: none;">Information</h5>
+        <h5 id="titlereq" style="display: none;">Leave Request</h5>
+        <h5 id="titleres" style="display: none;">Leave Response</h5>
+      </div>
 
-                    <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                        <div class="">
-                            <div class="">
+      <div class="kt-portlet">
 
-                                <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
+        <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
+
+          <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="">
+              <div class="">
+
+                <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
 
 
 
-                         <!--Project aprv list start-->
-                                <div id="prj-aprv-list" class="table-responsive">
-                                    <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
-                                        style="width: 0px;">
-                                        <thead>
-                                            <tr role="row">
-                                                <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center"
-                                                         rowspan="1" colspan="1" >
-                                                    <input type="checkbox"  id="snocheck" title="Select All"  [(ngModel)]="selectAllCheckbox"  (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
+                <!--Project aprv list start-->
+                <div id="prj-aprv-list" class="table-responsive">
+                  <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                    <thead>
+                      <tr role="row">
+                        <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
+                          colspan="1">
+                          <input type="checkbox" id="snocheck" title="Select All" [(ngModel)]="selectAllCheckbox"
+                            (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
 
-                                                </th>
-                                                <th style="width: 100px;" tabindex="0" aria-controls="project-4"
-                                                    rowspan="1" colspan="1" aria-sort="ascending"
-                                                    aria-label=": activate to sort column descending">
-                                                </th>
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Name" tabindex="0"
-                                                    aria-controls="project-4" class="curser-pointer" rowspan="1"
-                                                    colspan="1" style="width: 0px;" (click)="_SortPortfoliolist()"
-                                                    aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
-                                                    <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
-                                                        <i class="fas fa-sort-alpha-up"></i>
-                                                    </a>
-                                                    <a  [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
-                                                        <i class="fa fa-sort-alpha-down-alt"></i>
-                                                    </a>
-                                                    Project Name
-                                                </th>
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="Exec_BlockName" tabindex="0"
-                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Project Type: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Project Type
-                                                </th>
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Cost" tabindex="0"
-                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Cost: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Cost
-                                                </th>
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="SubmittedBy" tabindex="0"
-                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="User Name: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Submitted By
-                                                </th>
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="DeadLine" tabindex="0"
-                                                    class="curser-pointer" aria-controls="project-4" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="User Name: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Deadline
-                                                </th>
-                                                <!-- <th data-order="desc" data-name="RequestDate" tabindex="0"
+                        </th>
+                        <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+                          aria-sort="ascending" aria-label=": activate to sort column descending">
+                        </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Name" tabindex="0"
+                          aria-controls="project-4" class="curser-pointer" rowspan="1" colspan="1" style="width: 0px;"
+                          (click)="_SortPortfoliolist()"
+                          aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                          <a [hidden]="Z2A1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                            <i class="fas fa-sort-alpha-up"></i>
+                          </a>
+                          <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                            <i class="fa fa-sort-alpha-down-alt"></i>
+                          </a>
+                          Project Name
+                        </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="Exec_BlockName" tabindex="0"
+                          class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                          aria-label="Project Type: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> Project Type
+                        </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Cost" tabindex="0"
+                          class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                          aria-label="Cost: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> Cost
+                        </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="SubmittedBy" tabindex="0"
+                          class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                          aria-label="User Name: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> Submitted By
+                        </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="DeadLine" tabindex="0"
+                          class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                          aria-label="User Name: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> Deadline
+                        </th>
+                        <!-- <th data-order="desc" data-name="RequestDate" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
                                                     aria-label="End Date: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Request Date
                                                 </th> -->
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="RequestType" tabindex="0"
-                                                    aria-controls="project-4" rowspan="1" colspan="1"
-                                                    class="curser-pointer"
-                                                    aria-label="Category: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Request Type
-                                                </th>
-                                                <th [appSort]="_NotificationActivity" data-order="desc" data-name="RACIS" tabindex="0"
-                                                aria-controls="project-4" rowspan="1" colspan="1"
-                                                class="curser-pointer"
-                                                aria-label="Category: activate to sort column ascending">
-                                                <i class="fas fa-sort"></i> RACIS
-                                            </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="RequestType" tabindex="0"
+                          aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer"
+                          aria-label="Category: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> Request Type
+                        </th>
+                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="RACIS" tabindex="0"
+                          aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer"
+                          aria-label="Category: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> RACIS
+                        </th>
 
 
-                                                <!-- <th data-order="desc" data-name="Status" tabindex="0"
+                        <!-- <th data-order="desc" data-name="Status" tabindex="0"
                                                     aria-controls="project-4" rowspan="1" colspan="1"
                                                     class="curser-pointer"
                                                     aria-label="Status: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> Submission Type
                                                 </th> -->
-                                                <th data-order="desc" data-name="Comments" tabindex="0"
-                                                    aria-controls="project-4" rowspan="1" colspan="1"
-                                                    class="curser-pointer cmmts text-ellipsis"
-                                                    aria-label="End Date: activate to sort column ascending">
-                                                    <i class="fas fa-sort"></i> Comments
-                                                </th>
+                        <th data-order="desc" data-name="Comments" tabindex="0" aria-controls="project-4" rowspan="1"
+                          colspan="1" class="curser-pointer cmmts text-ellipsis"
+                          aria-label="End Date: activate to sort column ascending">
+                          <i class="fas fa-sort"></i> Comments
+                        </th>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr role="row" class="odd project-list_AC" *ngFor="let item of _NotificationActivity" [class.active]="item.isActive">
-                                                <td  align="center">
-                                                    <input type="checkbox" id="singlecheck" [checked]="isSelected(item)"  (change)="select($event, item)" class="form-check-input ps-1 btn px-0 mr-2">
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr role="row" class="odd project-list_AC" *ngFor="let item of _NotificationActivity"
+                        [class.active]="item.isActive">
+                        <td align="center">
+                          <input type="checkbox" id="singlecheck" [checked]="isSelected(item)"
+                            (change)="select($event, item)" class="form-check-input ps-1 btn px-0 mr-2">
 
-                                                </td>
-                                                <td align="center">
-                                                    <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" *ngIf="item.Req_Type!='Task Complete'"
-                                                        placement="right" data-trigger="focus" data-toggle="tooltip"
-                                                        title="Project Info!" (click)="openInfo(item.Project_Code1);info_active_btn(item)">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
-                                                            <path d="M12.7177 1.25732H3.29932C2.76888 1.25732 2.26018 1.46804 1.8851 1.84311C1.51003 2.21818 1.29932 2.72689 1.29932 3.25732V19.2573C1.29932 19.7878 1.51003 20.2965 1.8851 20.6715C2.26018 21.0466 2.76888 21.2573 3.29932 21.2573H15.2993C15.8297 21.2573 16.3385 21.0466 16.7135 20.6715C17.0886 20.2965 17.2993 19.7878 17.2993 19.2573V5.92992L12.7177 1.25732Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                            <path d="M9.28955 7.4209H9.29955" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                            <path d="M9.29932 16.4229L9.29932 11.2573" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </a>
-                                                    <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" *ngIf="item.Req_Type=='Task Complete'"
-                                                        placement="right" data-trigger="focus" data-toggle="tooltip"
-                                                        title="Project Info!" (click)="openInfo1(item.Project_Code1, item.Project_Code);info_active_btn(item)">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
-                                                            <path d="M12.7177 1.25732H3.29932C2.76888 1.25732 2.26018 1.46804 1.8851 1.84311C1.51003 2.21818 1.29932 2.72689 1.29932 3.25732V19.2573C1.29932 19.7878 1.51003 20.2965 1.8851 20.6715C2.26018 21.0466 2.76888 21.2573 3.29932 21.2573H15.2993C15.8297 21.2573 16.3385 21.0466 16.7135 20.6715C17.0886 20.2965 17.2993 19.7878 17.2993 19.2573V5.92992L12.7177 1.25732Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                            <path d="M9.28955 7.4209H9.29955" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                            <path d="M9.29932 16.4229L9.29932 11.2573" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        </svg>
-                                                    </a>
-                                                    <!-- <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" *ngIf="item.Req_Type=='Task Complete'"
+                        </td>
+                        <td align="center">
+                          <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button"
+                            *ngIf="item.Req_Type!='Task Complete'" placement="right" data-trigger="focus"
+                            data-toggle="tooltip" title="Project Info!"
+                            (click)="openInfo(item.Project_Code1);info_active_btn(item)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22"
+                              fill="none">
+                              <path
+                                d="M12.7177 1.25732H3.29932C2.76888 1.25732 2.26018 1.46804 1.8851 1.84311C1.51003 2.21818 1.29932 2.72689 1.29932 3.25732V19.2573C1.29932 19.7878 1.51003 20.2965 1.8851 20.6715C2.26018 21.0466 2.76888 21.2573 3.29932 21.2573H15.2993C15.8297 21.2573 16.3385 21.0466 16.7135 20.6715C17.0886 20.2965 17.2993 19.7878 17.2993 19.2573V5.92992L12.7177 1.25732Z"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                              <path d="M9.28955 7.4209H9.29955" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                              <path d="M9.29932 16.4229L9.29932 11.2573" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                          </a>
+                          <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button"
+                            *ngIf="item.Req_Type=='Task Complete'" placement="right" data-trigger="focus"
+                            data-toggle="tooltip" title="Project Info!"
+                            (click)="openInfo1(item.Project_Code1, item.Project_Code);info_active_btn(item)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22"
+                              fill="none">
+                              <path
+                                d="M12.7177 1.25732H3.29932C2.76888 1.25732 2.26018 1.46804 1.8851 1.84311C1.51003 2.21818 1.29932 2.72689 1.29932 3.25732V19.2573C1.29932 19.7878 1.51003 20.2965 1.8851 20.6715C2.26018 21.0466 2.76888 21.2573 3.29932 21.2573H15.2993C15.8297 21.2573 16.3385 21.0466 16.7135 20.6715C17.0886 20.2965 17.2993 19.7878 17.2993 19.2573V5.92992L12.7177 1.25732Z"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                              <path d="M9.28955 7.4209H9.29955" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                              <path d="M9.29932 16.4229L9.29932 11.2573" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                          </a>
+                          <!-- <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" *ngIf="item.Req_Type=='Task Complete'"
                                                         placement="right" data-trigger="focus" data-toggle="tooltip"
                                                         title="Project Info!" (click)="openInfo1(item.Project_Code1, item.Project_Code);info_active_btn(item)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
@@ -376,7 +386,7 @@
                                                             <path d="M11.5103 14.1641C11.5103 13.8164 11.4418 13.4721 11.3087 13.1509C11.1757 12.8297 10.9807 12.5379 10.7348 12.292C10.489 12.0462 10.1971 11.8512 9.87593 11.7181C9.55473 11.5851 9.21046 11.5166 8.86279 11.5166V14.1641H11.5103Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                                         </svg>
                                                     </a> -->
-                                                    <!-- <ng-container *ngIf="item.Master_Code; else newdetails1">
+                          <!-- <ng-container *ngIf="item.Master_Code; else newdetails1">
                                                         <a tabindex="0" class="btn px-0 mr-2" role="button"
                                                             placement="right" data-trigger="focus" data-toggle="tooltip"
                                                             title="More Info!"
@@ -392,102 +402,133 @@
                                                                 <i class="fa fa-chart-bar info-icon-cir"></i>
                                                         </a>
                                                     </ng-template> -->
-                                                    <a tabindex="0" class="btn px-0 info-btn mr-2" role="button"
-                                                    placement="right" data-trigger="focus" data-toggle="tooltip"
-                                                    title="More Info!"
-                                                    (click)="openDetails(item.Master_Code,item.Project_Code1)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
-                                                        <path d="M12.2812 0.814453H2.86279C2.33236 0.814453 1.82365 1.02517 1.44858 1.40024C1.07351 1.77531 0.862793 2.28402 0.862793 2.81445V18.8145C0.862793 19.3449 1.07351 19.8536 1.44858 20.2287C1.82365 20.6037 2.33236 20.8145 2.86279 20.8145H14.8628C15.3932 20.8145 15.9019 20.6037 16.277 20.2287C16.6521 19.8536 16.8628 19.3449 16.8628 18.8145V5.48705L12.2812 0.814453Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        <rect x="3.06885" y="4.28076" width="6.5376" height="2.14" fill="currentColor"></rect>
-                                                        <rect x="3.06885" y="7.14209" width="6.57373" height="2.14" fill="currentColor"></rect>
-                                                        <rect x="11.6045" y="4.28076" width="1.50586" height="2.14" fill="currentColor"></rect>
-                                                        <rect x="11.6045" y="7.14209" width="1.50586" height="2.14" fill="currentColor"></rect>
-                                                        <path d="M11.5101 16.0201C11.2836 16.5558 10.9292 17.028 10.4781 17.3951C10.0269 17.7623 9.49264 18.0134 8.92202 18.1264C8.3514 18.2394 7.76178 18.211 7.20471 18.0435C6.64764 17.876 6.14008 17.5745 5.72641 17.1656C5.31274 16.7566 5.00556 16.2525 4.83171 15.6974C4.65786 15.1423 4.62264 14.553 4.72913 13.9811C4.83562 13.4093 5.08058 12.8722 5.4426 12.4169C5.80461 11.9615 6.27265 11.6018 6.8058 11.3691" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        <path d="M11.5103 14.1641C11.5103 13.8164 11.4418 13.4721 11.3087 13.1509C11.1757 12.8297 10.9807 12.5379 10.7348 12.292C10.489 12.0462 10.1971 11.8512 9.87593 11.7181C9.55473 11.5851 9.21046 11.5166 8.86279 11.5166V14.1641H11.5103Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    </svg>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <p class="kt-widget__title mb-0">
-                                                    {{item.Project_Name}}
+                          <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
+                            data-trigger="focus" data-toggle="tooltip" title="More Info!"
+                            (click)="openDetails(item.Master_Code,item.Project_Code1)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22"
+                              fill="none">
+                              <path
+                                d="M12.2812 0.814453H2.86279C2.33236 0.814453 1.82365 1.02517 1.44858 1.40024C1.07351 1.77531 0.862793 2.28402 0.862793 2.81445V18.8145C0.862793 19.3449 1.07351 19.8536 1.44858 20.2287C1.82365 20.6037 2.33236 20.8145 2.86279 20.8145H14.8628C15.3932 20.8145 15.9019 20.6037 16.277 20.2287C16.6521 19.8536 16.8628 19.3449 16.8628 18.8145V5.48705L12.2812 0.814453Z"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                              <rect x="3.06885" y="4.28076" width="6.5376" height="2.14" fill="currentColor"></rect>
+                              <rect x="3.06885" y="7.14209" width="6.57373" height="2.14" fill="currentColor"></rect>
+                              <rect x="11.6045" y="4.28076" width="1.50586" height="2.14" fill="currentColor"></rect>
+                              <rect x="11.6045" y="7.14209" width="1.50586" height="2.14" fill="currentColor"></rect>
+                              <path
+                                d="M11.5101 16.0201C11.2836 16.5558 10.9292 17.028 10.4781 17.3951C10.0269 17.7623 9.49264 18.0134 8.92202 18.1264C8.3514 18.2394 7.76178 18.211 7.20471 18.0435C6.64764 17.876 6.14008 17.5745 5.72641 17.1656C5.31274 16.7566 5.00556 16.2525 4.83171 15.6974C4.65786 15.1423 4.62264 14.553 4.72913 13.9811C4.83562 13.4093 5.08058 12.8722 5.4426 12.4169C5.80461 11.9615 6.27265 11.6018 6.8058 11.3691"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                              </path>
+                              <path
+                                d="M11.5103 14.1641C11.5103 13.8164 11.4418 13.4721 11.3087 13.1509C11.1757 12.8297 10.9807 12.5379 10.7348 12.292C10.489 12.0462 10.1971 11.8512 9.87593 11.7181C9.55473 11.5851 9.21046 11.5166 8.86279 11.5166V14.1641H11.5103Z"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                              </path>
+                            </svg>
+                          </a>
+                        </td>
+                        <td>
+                          <p class="kt-widget__title mb-0">
+                            {{item.Project_Name}}
 
-                                                    </p>
-                                                    <span class="kt-widget__other d-block st-line" title="Main Project name" *ngIf="item.Master_Code">{{item.MainProjectName}}</span>
-                                                </td>
-                                                <td>
-                                                    <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
-                                                    <span class="kt-widget__other d-block st-line" title="category" *ngIf="item.Category">{{item.Category}}</span>
-                                                    <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
-                                                </td>
-                                                <td>
-                                                    <span class="kt-widget__other" *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR '}}</span>
-                                                    <span class="kt-widget__other" *ngIf="!item.Project_Cost">SAR 0.00</span>
-                                                    <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
-                                                    <!-- <span class="kt-widget__other" *ngIf="!item.Category">No Category</span> -->
-                                                </td>
-                                                <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
-                                                <td>
-                                                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
-                                                        <span class="kt-widget__other text-nowrap">{{item.SubmissionType}}</span>
-                                                        <span class="kt-widget__other d-block st-line">{{item.DurationTime}}</span>
-                                                    </div>
-                                                    <ng-template #Projecttype>
-                                                        <span class="kt-widget__other text-nowrap">
-                                                            {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
-                                                            <span class="kt-widget__other d-block st-line" title="Allocated hrs">{{item.Duration}} hrs</span>
-                                                    </ng-template>
+                          </p>
+                          <span class="kt-widget__other d-block st-line" title="Main Project name"
+                            *ngIf="item.Master_Code">{{item.MainProjectName}}</span>
+                        </td>
+                        <td>
+                          <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
+                          <span class="kt-widget__other d-block st-line" title="category"
+                            *ngIf="item.Category">{{item.Category}}</span>
+                          <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
+                        </td>
+                        <td>
+                          <span class="kt-widget__other" *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR
+                            '}}</span>
+                          <span class="kt-widget__other" *ngIf="!item.Project_Cost">SAR 0.00</span>
+                          <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
+                          <!-- <span class="kt-widget__other" *ngIf="!item.Category">No Category</span> -->
+                        </td>
+                        <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
+                        <td>
+                          <div
+                            *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
+                            <span class="kt-widget__other text-nowrap">{{item.SubmissionType}}</span>
+                            <span class="kt-widget__other d-block st-line">{{item.DurationTime}}</span>
+                          </div>
+                          <ng-template #Projecttype>
+                            <span class="kt-widget__other text-nowrap">
+                              {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
+                            <span class="kt-widget__other d-block st-line" title="Allocated hrs">{{item.Duration}}
+                              hrs</span>
+                          </ng-template>
 
-                                                </td>
-                                                <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
-                                                <td>
-                                                    <span class="text-info font-weight-400"
-                                                        *ngIf="item.Req_Type=='New Project' || item.Req_Type=='Request Access' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
+                        </td>
+                        <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
+                        <td>
+                          <span class="text-info font-weight-400"
+                            *ngIf="item.Req_Type=='New Project' || item.Req_Type=='Request Access' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
                                                                || item.Req_Type=='ToDo Achieved'">{{item.Req_Type}}</span>
-                                                    <span class="text-danger font-weight-400"
-                                                        *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
+                          <span class="text-danger font-weight-400"
+                            *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
                                                                || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
                                                                || item.Req_Type=='New Action Rejected' || item.Req_Type=='Project Cancel'">{{item.Req_Type}}</span>
-                                                    <span class="text-success font-weight-400"
-                                                        *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
+                          <span class="text-success font-weight-400"
+                            *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
                                                         || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'">{{item.Req_Type}}</span>
-                                                    <span class="text-primary font-weight-400"
-                                                        *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span>
-                                                        <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line" title="Forward to">{{item.ForwardTo}}</span>
-                                                </td>
+                          <span class="text-primary font-weight-400"
+                            *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type}}</span>
+                          <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line"
+                            title="Forward to">{{item.ForwardTo}}</span>
+                        </td>
 
-                                                  <td>
-                                                    <div  class="kt-media-group">
-                                                        <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                            <span>{{item.Owner}}</span>
-                                                          </a>
-                                                          <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                              <span>{{item.Owner}}</span>
-                                                          </a>
+                        <td>
+                          <div class="kt-media-group">
+                            <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer"
+                              class="kt-media kt-media--sm kt-media--circle">
+                              <span>{{item.Owner}}</span>
+                            </a>
+                            <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Owner & Support: {{item.Project_Owner}}"
+                              data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                              <span>{{item.Owner}}</span>
+                            </a>
 
-                                                          <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                              <span>{{item.Resp}}</span>
-                                                            </a>
-                                                          <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                            <span>{{item.Autho}}</span>
-                                                          </a>
-                                                          <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                              <span>{{item.Autho}}</span>
-                                                            </a>
+                            <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Responsible: {{item.Team_Res}}"
+                              data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                              <span>{{item.Resp}}</span>
+                            </a>
+                            <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Authority: {{item.Team_Autho}}"
+                              data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                              <span>{{item.Autho}}</span>
+                            </a>
+                            <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}"
+                              data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                              <span>{{item.Autho}}</span>
+                            </a>
 
-                                                            <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                              <span>{{item.Support}}</span>
-                                                            </a>
-                                                          <a *ngIf="item.Coord==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.Team_Coor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
-                                                            <span>1+</span>
-                                                          </a>
-                                                          <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
-                                                              <span>1+</span>
-                                                            </a>
+                            <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Support: {{item.Team_Support}}"
+                              data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                              <span>{{item.Support}}</span>
+                            </a>
+                            <a *ngIf="item.Coord==item.Informer" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top" title="Coordinator & Informer: {{item.Team_Coor}} "
+                              data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                              <span>1+</span>
+                            </a>
+                            <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand"
+                              data-placement="top"
+                              title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} "
+                              data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                              <span>1+</span>
+                            </a>
 
-                                                </div>
-                                                </td>
+                          </div>
+                        </td>
 
-                                                <!-- <td>
+                        <!-- <td>
                                                     <div *ngIf="item.Send_From=='WS'">
                                                         <span class="text-info font-weight-400">Request</span>
                                                     </div>
@@ -495,25 +536,28 @@
                                                         <span class="text-primary font-weight-400">Response</span>
                                                     </div>
                                                 </td> -->
-                                                <td class="cmmts text-ellipsis" data-toggle="tooltip" title="{{item.Req_Coments}}"
-                                                    *ngIf="item.Req_Coments">{{item.Req_Coments}}
-                                                    <p data-toggle="tooltip" title="Request date">{{item.Rec_Date | date:'dd-MM-yyyy' }}</p>
-                                                </td>
-                                                <td *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
-                                                    Not Provided</td>
-                                                <div class="hvr-item" *ngIf="item.Send_From=='WR'" data-toggle="tooltip" title="{{item.Req_Coments}}">
-                                                    <div class="chck-div" (click)="clearResponse(item.Project_Code,item.Rec_Date,item.Req_Type)">
-                                                        <span class="chk-icn">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="svg-icn">
-                                                                <path d="M11.602 13.7599L13.014 15.1719L21.4795 6.7063L22.8938 8.12051L13.014 18.0003L6.65 11.6363L8.06421 10.2221L10.189 12.3469L11.6025 13.7594L11.602 13.7599ZM11.6037 10.9322L16.5563 5.97949L17.9666 7.38977L13.014 12.3424L11.6037 10.9322ZM8.77698 16.5873L7.36396 18.0003L1 11.6363L2.41421 10.2221L3.82723 11.6352L3.82604 11.6363L8.77698 16.5873Z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span class="mark-txt">
-                                                            Mark as read
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="hvr-item" *ngIf="item.Send_From=='WS'" data-toggle="tooltip" title="{{item.Req_Coments}}">
+                        <td class="cmmts text-ellipsis" data-toggle="tooltip" title="{{item.Req_Coments}}"
+                          *ngIf="item.Req_Coments">{{item.Req_Coments}}
+                          <p data-toggle="tooltip" title="Request date">{{item.Rec_Date | date:'dd-MM-yyyy' }}</p>
+                        </td>
+                        <td *ngIf="item.Req_Coments==null || item.Req_Coments=='' || item.Req_Coments==undefined">
+                          Not Provided</td>
+                        <div class="hvr-item" *ngIf="item.Send_From=='WR'" data-toggle="tooltip"
+                          title="{{item.Req_Coments}}">
+                          <div class="chck-div" (click)="clearResponse(item.Project_Code,item.Rec_Date,item.Req_Type)">
+                            <span class="chk-icn">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="svg-icn">
+                                <path
+                                  d="M11.602 13.7599L13.014 15.1719L21.4795 6.7063L22.8938 8.12051L13.014 18.0003L6.65 11.6363L8.06421 10.2221L10.189 12.3469L11.6025 13.7594L11.602 13.7599ZM11.6037 10.9322L16.5563 5.97949L17.9666 7.38977L13.014 12.3424L11.6037 10.9322ZM8.77698 16.5873L7.36396 18.0003L1 11.6363L2.41421 10.2221L3.82723 11.6352L3.82604 11.6363L8.77698 16.5873Z">
+                                </path>
+                              </svg>
+                            </span>
+                            <span class="mark-txt">
+                              Mark as read
+                            </span>
+                          </div>
+                        </div>
+                        <!-- <div class="hvr-item" *ngIf="item.Send_From=='WS'" data-toggle="tooltip" title="{{item.Req_Coments}}">
 
                                                         <div>
                                                             <button  class="btn btn-outline-success btn-sm mr-2 fs-7">Accept</button>
@@ -522,111 +566,112 @@
 
                                                 </div> -->
 
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                         <!--Project aprv list end-->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--Project aprv list end-->
 
-                        <!--Leave aprv list start-->
+                <!--Leave aprv list start-->
 
-                                <div id="leave-aprv-list"  class="table-responsive">
-                                 <ng-container *ngIf="leavePanel==='REQUESTS'" >
-                                  <!-- <h2>leave Request</h2> -->
-                                  <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
-                                  style="width: 0px;">
+                <div id="leave-aprv-list" class="table-responsive">
+                  <ng-container *ngIf="leavePanel==='REQUESTS'">
+                    <!-- <h2>leave Request</h2> -->
+                    <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
 
-                                      <thead>
+                      <thead>
 
-                                        <tr role="row">
+                        <tr role="row">
 
-                                          <th>View</th>
-                                          <th>Leave Type</th>
-                                          <th>Start Date</th>
-                                          <th>End Date</th>
-                                          <th>Days Applied</th>
-                                          <th>Request Type</th>
-                                          <th>Company Name</th>
-                                          <th>Employee Name</th>
-                                          <th>Requested On</th>
-                                          <th></th>
+                          <th>View</th>
+                          <th>Leave Type</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Days Applied</th>
+                          <th>Request Type</th>
+                          <th>Company Name</th>
+                          <th>Employee Name</th>
+                          <th>Requested On</th>
+                          <th></th>
 
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index">
-                                          <a (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); " href="javascript:void(0)">
-                                            <td class="kt-widget__title mb-0 leave">{{item.Leave_Code}}</td>
-                                          </a>
-                                          <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Start_Date}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.End_Date}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Days_Count}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Com_Name}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Req_Date}}</td>
-                                          <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
-                                        </tr>
-                                      </tbody>
-                                      </table>
-                                      </ng-container>
-
-
-                                <ng-container *ngIf="leavePanel==='RESPONSES'">
-                                  <!-- <h2>leave Response</h2> -->
-                                  <table class="table table-hover dataTable no-footer dtr-inline " role="grid"
-                                      style="width: 0px;">
-
-                                    <thead>
-                                      <tr role="row">
-                                        <th>View</th>
-                                        <th>Leave Type</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Status</th>
-                                        <th>Name</th>
-                                        <th>Received On</th>
-                                        <th></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                          <tr role="row" class="" *ngFor="let item of _newNotificationLeave; let i=index;" [class.active]="item.isActive">
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index">
+                          <a (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); "
+                            href="javascript:void(0)">
+                            <td class="kt-widget__title mb-0 leave">{{item.Leave_Code}}</td>
+                          </a>
+                          <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Start_Date | date: 'dd-MM-yyyy'}}</td>
+                          <td class="kt-widget__title mb-0">{{item.End_Date | date: 'dd-MM-yyyy'}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Days_Count}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Com_Name}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Req_Date | date: 'dd-MM-yyyy h:mm:ss a' }}</td>
+                          <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </ng-container>
 
 
-                                              <td class="kt-widget__title mb-0 levress" (click)="leaveform(i,Current_user_ID,item.Leave_Code.trim())">leave</td>
+                  <ng-container *ngIf="leavePanel==='RESPONSES'">
+                    <!-- <h2>leave Response</h2> -->
+                    <table class="table table-hover dataTable no-footer dtr-inline " role="grid" style="width: 0px;">
 
-                                                 <td  class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
-                                                  <td  class="kt-widget__title mb-0">{{item.Start_Date}}</td>
-                                                  <td  class="kt-widget__title mb-0">{{item.End_Date}}</td>
-                                                  <td  class="kt-widget__title mb-0">{{item.Req_Type}}</td>
-                                                   <td  class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
+                      <thead>
+                        <tr role="row">
+                          <th>View</th>
+                          <th>Leave Type</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Status</th>
+                          <th>Name</th>
+                          <th>Received On</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr role="row" class="" *ngFor="let item of _newNotificationLeave; let i=index;"
+                          [class.active]="item.isActive">
 
-                                                    <td  class="kt-widget__title mb-0">{{item.Req_Date}}</td>
 
-                                                     <td  class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
+                          <td class="kt-widget__title mb-0 levress"
+                            (click)="leaveform(i,Current_user_ID,item.Leave_Code.trim())">leave</td>
 
-                                          </tr>
-                                      </tbody>
-                                  </table>
-                                </ng-container>
+                          <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Start_Date | date: 'dd-MM-yyyy'}}</td>
+                          <td class="kt-widget__title mb-0">{{item.End_Date | date: 'dd-MM-yyyy'}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
+                          <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
 
-                              </div>
-                        <!--Leave aprv list end-->
+                          <td class="kt-widget__title mb-0">{{item.Req_Date | date: 'dd-MM-yyyy h:mm:ss a'}}</td>
 
-                            </div>
-                        </div>
-                    </div>
+                          <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </ng-container>
 
                 </div>
-                <div class="text-center py-4" style="color: lightgrey" *ngIf="(emptyspace==false)">
-                    <h4>{{_filtersMessage}}</h4>
-                    <p>{{_filtersMessage2}}</p>
-                </div>
+                <!--Leave aprv list end-->
+
+              </div>
             </div>
+          </div>
 
-            <!-- notifications cards -->
-            <!-- <div class="">
+        </div>
+        <div class="text-center py-4" style="color: lightgrey" *ngIf="(emptyspace==false)">
+          <h4>{{_filtersMessage}}</h4>
+          <p>{{_filtersMessage2}}</p>
+        </div>
+      </div>
+
+      <!-- notifications cards -->
+      <!-- <div class="">
                 <div class="">
 
                     <div class="card my-1 shadow-sm brdr notifi-list mb-2 mt-4 d-none" *ngFor="let item of notifArray">
@@ -692,304 +737,309 @@
                 </div>
             </div> -->
 
-        </div>
-
     </div>
+
+  </div>
 
 </div>
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 <!--leave requisition start-->
 <div id="leave_requisition_slider_bar" class="leave-requisition-slider-bar animate-right">
-    <div class="kt-portlet--body mb-0">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
-            <div  class="d-flex align-items-center">
-                <div  class="kt-info-box-tittle m-0">
-                    <div  class="kt-title-icon"><span
-                            class="svg-icon kt-title-icon m-0"><svg  width="22px" height="22px" fill="#fff"
-                                xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
-                                xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
-                                y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;">
-                                <switch >
-                                    <foreignObject
-                                        requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1"
-                                        height="1"></foreignObject>
-                                    <g  i:extraneous="self">
-                                        <g >
-                                            <path
-                                                d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z">
-                                            </path>
-                                            <path
-                                                d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z">
-                                            </path>
-                                            <path
-                                                d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z">
-                                            </path>
-                                            <path
-                                                d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z">
-                                            </path>
-                                            <path
-                                                d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z">
-                                            </path>
-                                            <path
-                                                d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z">
-                                            </path>
-                                            <path
-                                                d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z">
-                                            </path>
-                                            <path
-                                                d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z">
-                                            </path>
-                                            <path
-                                                d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z">
-                                            </path>
-                                        </g>
-                                    </g>
-                                </switch>
-                            </svg></span></div> Leave Requisition Details
-                </div>
-            </div>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="close_requisition_Info()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
-            </svg>
-            </a>
+  <div class="kt-portlet--body mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <div class="d-flex align-items-center">
+        <div class="kt-info-box-tittle m-0">
+          <div class="kt-title-icon"><span class="svg-icon kt-title-icon m-0"><svg width="22px" height="22px"
+                fill="#fff" xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+                xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
+                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;">
+                <switch>
+                  <foreignObject requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1"
+                    height="1"></foreignObject>
+                  <g i:extraneous="self">
+                    <g>
+                      <path
+                        d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z">
+                      </path>
+                      <path
+                        d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z">
+                      </path>
+                      <path
+                        d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z">
+                      </path>
+                      <path
+                        d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z">
+                      </path>
+                      <path
+                        d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z">
+                      </path>
+                      <path
+                        d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z">
+                      </path>
+                      <path
+                        d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z">
+                      </path>
+                      <path
+                        d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z">
+                      </path>
+                      <path
+                        d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z">
+                      </path>
+                    </g>
+                  </g>
+                </switch>
+              </svg></span></div> Leave Requisition Details
         </div>
-        <div class="mb-3 mt-3 px-3">
-            <div class="leave-title">Team Member Information</div>
-            <div class="grid px-3 pt-3">
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Name
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        TM I.D No
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Position
-                    </div>
-                    <div class="kt-info-data-v">
-
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Department
-                    </div>
-                    <div class="kt-info-data-v">
-
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Company
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Com_Name}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div  class="mb-3 px-3">
-            <div class="leave-title">Leave Details</div>
-            <div class="grid px-3 pt-3">
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Leave Type
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{LeaveDetail&&LeaveDetail[0].LeaveType}}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Trip
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{LeaveDetail&&LeaveDetail[0].Trip}}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Type
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{LeaveDetail&&LeaveDetail[0].Type}}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Travel
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{LeaveDetail&&LeaveDetail[0].Travel}}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Duration
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{LeaveDetail&&LeaveDetail[0].Start_Date}}-{{LeaveDetail&&LeaveDetail[0].End_Date }}
-                    </div>
-                </div>
-                <div class="col text-center cnt-ovrl">
-                    <div class="kt-info-lable-v">
-                        Applied days
-                    </div>
-                    <div class="kt-info-data-v">
-                      {{LeaveDetail&&LeaveDetail[0].Days_Count}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mb-3 px-3">
-            <div class="leave-title">Remarks</div>
-            <div class="">
-                <div class="cnt-ovrl">
-                    <div class="kt-info-data-v">
-                        Please Approve my leave request
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mb-3 action-div px-3">
-            <div  class="kt-info-box-tittle">
-                <div  class="kt-title-icon"><span  class="svg-icon"><svg
-                             width="20px" height="20px" viewBox="0 0 24 28"
-                            xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g  id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                stroke-linejoin="round"></g>
-                            <g  id="SVGRepo_iconCarrier">
-                                <defs >
-                                    <style >
-                                        .cls-1 {
-                                            fill: none;
-                                            stroke: #ffffff;
-                                            stroke-linecap: round;
-                                            stroke-linejoin: round;
-                                            stroke-width: 1.5px;
-                                        }
-                                    </style>
-                                </defs>
-                                <g  id="ic-statistics-workflow">
-                                    <circle  cx="12" cy="6" r="3" class="cls-1"></circle>
-                                    <rect  x="2" y="16" width="8" height="5" rx="2" class="cls-1">
-                                    </rect>
-                                    <rect  x="14" y="16" width="8" height="5" rx="2" class="cls-1">
-                                    </rect>
-                                    <path  d="M6,16V14a2,2,0,0,1,2-2h8a2,2,0,0,1,2,2v2" class="cls-1">
-                                    </path>
-                                    <line  x1="12" y1="9" x2="12" y2="12" class="cls-1"></line>
-                                </g>
-                            </g>
-                        </svg></span></div> Action
-            </div>
-            <div class="d-check px-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="onDecisionChanged('APPROVE')"/>
-                    <label class="form-check-label" for="flexRadioDefault1">
-                      Approved
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="onDecisionChanged('APPROVEBUT')" />
-                    <label class="form-check-label" for="flexRadioDefault2">
-                      Approved but from and before date
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="onDecisionChanged('REJECTED')" />
-                    <label class="form-check-label" for="flexRadioDefault3">
-                      Rejected
-                    </label>
-                </div>
-            </div>
-            <div class="px-3 mb-3">
-                <label>Comments</label>
-                <textarea  id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-                <div class="previous-comments">
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0)">previous comment 1</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">previous comment 2</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">previous comment 3</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="px-3 mb-3">
-            <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;"  (click)="onSubmitLRbtn()">Submit</button>
-        </div>
-
+      </div>
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+        (click)="close_requisition_Info()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
     </div>
+    <div class="mb-3 mt-3 px-3">
+      <div class="leave-title">Team Member Information</div>
+      <div class="grid px-3 pt-3">
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Name
+          </div>
+          <div class="kt-info-data-v">
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            TM I.D No
+          </div>
+          <div class="kt-info-data-v">
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Position
+          </div>
+          <div class="kt-info-data-v">
+
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Department
+          </div>
+          <div class="kt-info-data-v">
+
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Company
+          </div>
+          <div class="kt-info-data-v">
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Com_Name}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 px-3">
+      <div class="leave-title">Leave Details</div>
+      <div class="grid px-3 pt-3">
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Leave Type
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].LeaveType}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Trip
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Trip}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Type
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Type}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Travel
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Travel}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Duration
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Start_Date | date:'dd-MM-yyyy'}}-{{LeaveDetail&&LeaveDetail[0].End_Date |
+            date:'dd-MM-yyyy'}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Applied days
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Days_Count}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 px-3">
+      <div class="leave-title">Remarks</div>
+      <div class="">
+        <div class="cnt-ovrl">
+          <div class="kt-info-data-v">
+            Please Approve my leave request
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 action-div px-3">
+      <div class="kt-info-box-tittle">
+        <div class="kt-title-icon"><span class="svg-icon"><svg width="20px" height="20px" viewBox="0 0 24 28"
+              xmlns="http://www.w3.org/2000/svg" fill="#000000">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: none;
+                      stroke: #ffffff;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-width: 1.5px;
+                    }
+                  </style>
+                </defs>
+                <g id="ic-statistics-workflow">
+                  <circle cx="12" cy="6" r="3" class="cls-1"></circle>
+                  <rect x="2" y="16" width="8" height="5" rx="2" class="cls-1">
+                  </rect>
+                  <rect x="14" y="16" width="8" height="5" rx="2" class="cls-1">
+                  </rect>
+                  <path d="M6,16V14a2,2,0,0,1,2-2h8a2,2,0,0,1,2,2v2" class="cls-1">
+                  </path>
+                  <line x1="12" y1="9" x2="12" y2="12" class="cls-1"></line>
+                </g>
+              </g>
+            </svg></span></div> Action
+      </div>
+      <div class="d-check px-3">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+            (click)="onDecisionChanged('APPROVE')" />
+          <label class="form-check-label" for="flexRadioDefault1">
+            Approved
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+            (click)="onDecisionChanged('APPROVEBUT')" />
+          <label class="form-check-label" for="flexRadioDefault2">
+            Approved but from and before date
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
+            (click)="onDecisionChanged('REJECTED')" />
+          <label class="form-check-label" for="flexRadioDefault3">
+            Rejected
+          </label>
+        </div>
+      </div>
+      <div class="px-3 mb-3">
+        <label>Comments</label>
+        <textarea id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+        <div class="previous-comments">
+          <ul>
+            <li>
+              <a href="javascript:void(0)">previous comment 1</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">previous comment 2</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">previous comment 3</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="px-3 mb-3">
+      <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;" (click)="onSubmitLRbtn()">Submit</button>
+    </div>
+
+  </div>
 </div>
 <!--leave requisition end-->
 <div id="Project_info_slider_bar" class="project-info-side-bar animate-right">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>
 
 <div id="rejectbar" class="sideInfobar animate-right">
-   <div class="kt-portlet mb-0">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
-            <h4 class="m-0">Reject Projects</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
-            </svg>
-            </a>
-        </div>
-        <div class="kt-portlet--body mb-0">
+  <div class="kt-portlet mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <h4 class="m-0">Reject Projects</h4>
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="kt-portlet--body mb-0">
 
-            <div class="brb-1 pb-1">
+      <div class="brb-1 pb-1">
 
-                <div class="card-body card-car">
+        <div class="card-body card-car">
 
-                    <div class="card card-mid flex-1">
-                        <div class="card-header">
-                        <h5 clas="card-title"> Projects List  </h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class=" cus-scroll scroll-y">
-                                <div class="meetdt" *ngFor="let item of selectedItems">
+          <div class="card card-mid flex-1">
+            <div class="card-header">
+              <h5 clas="card-title"> Projects List </h5>
+            </div>
+            <div class="card-body p-0">
+              <div class=" cus-scroll scroll-y">
+                <div class="meetdt" *ngFor="let item of selectedItems">
 
-                                    <div id="" class="eve-area">
-                                        <div class="">
-                                            <div class="event-main">
-                                                <span class="event-color event-color--info"></span>
-                                                <span class="event-title mr-2">
-                                                    <a href="javascript:;">{{item.Project_Name}}</a>
-                                                </span>
-                                            </div>
+                  <div id="" class="eve-area">
+                    <div class="">
+                      <div class="event-main">
+                        <span class="event-color event-color--info"></span>
+                        <span class="event-title mr-2">
+                          <a href="javascript:;">{{item.Project_Name}}</a>
+                        </span>
+                      </div>
 
 
-                                        </div>
-                                        <div class="btm-des">
+                    </div>
+                    <div class="btm-des">
 
-                                            <!-- <div class="desc-1">{{item.Project_Description}}</div> -->
+                      <!-- <div class="desc-1">{{item.Project_Description}}</div> -->
 
-                                            <div class="ml-4 mr-2 status-d">
-                                                    <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
+                      <div class="ml-4 mr-2 status-d">
+                        <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
                                                         'text-success mb-0':item.Status=='Completed',
                                                         'text-warning mb-0':item.Status=='InProcess',
                                                         'text-primary mb-0':item.Status=='Under Approval',
@@ -1001,22 +1051,21 @@
                                                         'text-completed mb-0':item.Status=='Completion Under Approval',
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
-                                                                data-toggle="tooltip" title="Project Status!">
-                                                            {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
-                                                    </h6>
-                                                    <h6 class=" text-danger mb-0"  data-toggle="tooltip"
-                                                        title="Project Status!"
-                                                        *ngIf="item.Status=='Delay'">
-                                                        {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
-                                                        {{item.Delaydays}} days
-                                                    </h6>
-                                                </div>
-                                            <div>
+                          data-toggle="tooltip" title="Project Status!">
+                          {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
+                        </h6>
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
+                          *ngIf="item.Status=='Delay'">
+                          {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
+                          {{item.Delaydays}} days
+                        </h6>
+                      </div>
+                      <div>
 
-                                            </div>
-                                            <span class="mr-2 showv">|</span>
-                                            <div class="ml-1 mr-2 status-d">
-                                                <h6 [ngClass]="{
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="ml-1 mr-2 status-d">
+                        <h6 [ngClass]="{
                                                     'text-success mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete'
                                                     || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project',
                                                     'text-primary mb-0':item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back',
@@ -1024,32 +1073,31 @@
                                                     || item.Req_Type=='ToDo Achieved',
                                                     'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
                                                     || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
-                                                    }"
-                                                            data-toggle="tooltip" title="Request type">
-                                                    {{item.Req_Type}}
-                                                </h6>
-                                            </div>
-                                            <span class="mr-2 showv">|</span>
-                                            <div class="">
-                                                <span class="showv mr-2 text-muted">
-                                                    <i class="far fa-calendar-alt mr-1"></i>
-                                                    {{item.DPG  | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}}
-                                                </span>
-                                            </div>
-                                            <span class="mr-2 showv">|</span>
-                                            <div class="">
-                                                <span class="showv mr-2 text-muted">
-                                                    <i class="far fa-user mr-1"></i>
-                                                    <!-- <div class="initial-box color-7 b-50 mr-2">WA</div> -->
-                                                    {{item.Responsible}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                    }" data-toggle="tooltip" title="Request type">
+                          {{item.Req_Type}}
+                        </h6>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-calendar-alt mr-1"></i>
+                          {{item.DPG | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}}
+                        </span>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-user mr-1"></i>
+                          <!-- <div class="initial-box color-7 b-50 mr-2">WA</div> -->
+                          {{item.Responsible}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-                                </div>
+                </div>
 
-                                <!-- <div class="meetdt">
+                <!-- <div class="meetdt">
 
                                     <div id="" class="eve-area">
                                         <div class="d-flex-cen">
@@ -1130,491 +1178,508 @@
                                     </div>
 
                                 </div> -->
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+              </div>
             </div>
-
-
-
-            <div class="">
-                <div class="card-body" id="comts1">
-                    <div class="crd-hdr">
-                        <div class="crd-title"><h5>Reject Comments</h5></div>
-                    </div>
-                    <div class="col-md-12 checked-rad pl-1 pt-3">
-                        <div class="form-group">
-                            <label class="mb-2">Reject Type</label><span style="color:red">*</span>
-                            <ng-select required name="rej_type"
-                            placeholder="Select Reject Type" [(ngModel)]="rejectType"
-                            (change)="rejectApproval()">
-                            <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
-                                {{item.RejectType}}
-                            </ng-option>
-                        </ng-select>
-                        <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
-                        <span *ngIf="noRejectType==true" style="color:red">Please select Reject
-                            type!!</span>
-                        </div>
-
-                        <label class="mb-2"  *ngIf="rejectType && rejectcomments>0">Select From
-                            Existing Comments</label>
-                        <div class="appr-comts" *ngIf="rejectType && rejectcomments>0">
-
-                            <div class="exs-cmts card">
-                                <div class="card-header">
-                                    <h6 class="mb-0">Existing Comments</h6>
-                                </div>
-                                <div class="crd-bdy scroll-y">
-                                    <div class="cmts-items"
-                                        *ngFor="let item of rejectcommentsList;let i=index">
-                                        <h6
-                                            [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
-                                            {{item.Req_Coments}}</h6>
-                                        <div class="cmts-actns">
-                                            <span class="cmts-svg"
-                                                *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
-                                                (click)="clickonselect(item.Req_Coments)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                            <span class="cmts-svg"
-                                                *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
-                                                (click)="clickondeselect(item.Req_Coments,i)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <div class="form-group" *ngIf="rejectType">
-                            <label class="mb-2">Enter Comments</label><span
-                                style="color:red">*</span>
-                                <!-- <div [innerHTML]="comments"></div> -->
-                            <textarea class="form-control h-100px"  [(ngModel)]="comments"></textarea>
-                        </div>
-
-
-                        <div class="d-flex justify-content-end mb-2">
-                            <button class="btn btn-sm btn-secondary mr-2" (click)="resetReject()">Reset</button>
-                            <button type="submit" class="btn btn-sm btn-info" [disabled]="!comments || !rejectType" (click)="submitReject()">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
 
         </div>
-   </div>
+      </div>
+
+
+
+      <div class="">
+        <div class="card-body" id="comts1">
+          <div class="crd-hdr">
+            <div class="crd-title">
+              <h5>Reject Comments</h5>
+            </div>
+          </div>
+          <div class="col-md-12 checked-rad pl-1 pt-3">
+            <div class="form-group">
+              <label class="mb-2">Reject Type</label><span style="color:red">*</span>
+              <ng-select required name="rej_type" placeholder="Select Reject Type" [(ngModel)]="rejectType"
+                (change)="rejectApproval()">
+                <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
+                  {{item.RejectType}}
+                </ng-option>
+              </ng-select>
+              <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
+              <span *ngIf="noRejectType==true" style="color:red">Please select Reject
+                type!!</span>
+            </div>
+
+            <label class="mb-2" *ngIf="rejectType && rejectcomments>0">Select From
+              Existing Comments</label>
+            <div class="appr-comts" *ngIf="rejectType && rejectcomments>0">
+
+              <div class="exs-cmts card">
+                <div class="card-header">
+                  <h6 class="mb-0">Existing Comments</h6>
+                </div>
+                <div class="crd-bdy scroll-y">
+                  <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
+                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                      {{item.Req_Coments}}</h6>
+                    <div class="cmts-actns">
+                      <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                        (click)="clickonselect(item.Req_Coments)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path
+                            d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                          </path>
+                        </svg>
+                      </span>
+                      <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                        (click)="clickondeselect(item.Req_Coments,i)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path
+                            d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                          </path>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="form-group" *ngIf="rejectType">
+              <label class="mb-2">Enter Comments</label><span style="color:red">*</span>
+              <!-- <div [innerHTML]="comments"></div> -->
+              <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
+            </div>
+
+
+            <div class="d-flex justify-content-end mb-2">
+              <button class="btn btn-sm btn-secondary mr-2" (click)="resetReject()">Reset</button>
+              <button type="submit" class="btn btn-sm btn-info" [disabled]="!comments || !rejectType"
+                (click)="submitReject()">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!--leave requisition start-->
-<div id="leave_requisition_slider_bar" class="leave-requisition-slider-bar animate-right d-none" >
+<div id="leave_requisition_slider_bar" class="leave-requisition-slider-bar animate-right d-none">
   <div class="kt-portlet--body mb-0">
-      <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
-          <div  class="d-flex align-items-center">
-              <div  class="kt-info-box-tittle m-0">
-                  <div  class="kt-title-icon"><span
-                          class="svg-icon kt-title-icon m-0"><svg  width="22px" height="22px" fill="#fff"
-                              xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
-                              xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
-                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
-                              y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;">
-                              <switch >
-                                  <foreignObject
-                                      requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1"
-                                      height="1"></foreignObject>
-                                  <g  i:extraneous="self">
-                                      <g >
-                                          <path
-                                              d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z">
-                                          </path>
-                                          <path
-                                              d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z">
-                                          </path>
-                                          <path
-                                              d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z">
-                                          </path>
-                                          <path
-                                              d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z">
-                                          </path>
-                                          <path
-                                              d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z">
-                                          </path>
-                                          <path
-                                              d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z">
-                                          </path>
-                                          <path
-                                              d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z">
-                                          </path>
-                                          <path
-                                              d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z">
-                                          </path>
-                                          <path
-                                              d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z">
-                                          </path>
-                                      </g>
-                                  </g>
-                              </switch>
-                          </svg></span></div> Leave Requisition Details
-              </div>
-          </div>
-          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="close_requisition_Info()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
-              <path fill="none" d="M0 0h24v24H0z"></path>
-              <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
-          </svg>
-          </a>
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <div class="d-flex align-items-center">
+        <div class="kt-info-box-tittle m-0">
+          <div class="kt-title-icon"><span class="svg-icon kt-title-icon m-0"><svg width="22px" height="22px"
+                fill="#fff" xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+                xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
+                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;">
+                <switch>
+                  <foreignObject requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1"
+                    height="1"></foreignObject>
+                  <g i:extraneous="self">
+                    <g>
+                      <path
+                        d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z">
+                      </path>
+                      <path
+                        d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z">
+                      </path>
+                      <path
+                        d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z">
+                      </path>
+                      <path
+                        d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z">
+                      </path>
+                      <path
+                        d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z">
+                      </path>
+                      <path
+                        d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z">
+                      </path>
+                      <path
+                        d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z">
+                      </path>
+                      <path
+                        d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z">
+                      </path>
+                      <path
+                        d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z">
+                      </path>
+                    </g>
+                  </g>
+                </switch>
+              </svg></span></div> Leave Requisition Details
+        </div>
       </div>
-      <div class="mb-3 mt-3 px-3" >
-          <div class="leave-title"  >Team Member Information</div>
-          <div class="grid px-3 pt-3">
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Name
-                  </div>
-                  <div class="kt-info-data-v">
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+        (click)="close_requisition_Info()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="mb-3 mt-3 px-3">
+      <div class="leave-title">Team Member Information</div>
+      <div class="grid px-3 pt-3">
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Name
+          </div>
+          <div class="kt-info-data-v">
 
-                    {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}
 
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      TM I.D No
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Position
-                  </div>
-                  <div class="kt-info-data-v">
-                    <!-- {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}} -->
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Department
-                  </div>
-                  <div class="kt-info-data-v">
-                    <!-- {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}} -->
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Company
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Com_Name}}
-                  </div>
-              </div>
           </div>
-      </div>
-      <div  class="mb-3 px-3">
-          <div class="leave-title">Leave Details</div>
-          <div class="grid px-3 pt-3">
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Leave Type
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].LeaveType}}
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Trip
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].Trip}}
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Type
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].Type}}
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Travel
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].Travel}}
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Duration
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].Start_Date}}-{{LeaveDetail&&LeaveDetail[0].End_Date}}
-                  </div>
-              </div>
-              <div class="col text-center cnt-ovrl">
-                  <div class="kt-info-lable-v">
-                      Applied days
-                  </div>
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].Days_Count}}
-                  </div>
-              </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            TM I.D No
           </div>
-      </div>
-      <div class="mb-3 px-3">
-          <div class="leave-title">Remarks</div>
-          <div class="">
-              <div class="cnt-ovrl">
-                  <div class="kt-info-data-v">
-                    {{LeaveDetail&&LeaveDetail[0].Remarks}}
-                  </div>
-              </div>
+          <div class="kt-info-data-v">
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}
           </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Position
+          </div>
+          <div class="kt-info-data-v">
+            <!-- {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}} -->
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Department
+          </div>
+          <div class="kt-info-data-v">
+            <!-- {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}} -->
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Company
+          </div>
+          <div class="kt-info-data-v">
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Com_Name}}
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="mb-3 px-3">
+      <div class="leave-title">Leave Details</div>
+      <div class="grid px-3 pt-3">
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Leave Type
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].LeaveType}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Trip
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Trip}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Type
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Type}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Travel
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Travel}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Duration
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Start_Date | date:'dd-MM-yyyy'}}-{{LeaveDetail&&LeaveDetail[0].End_Date |
+            date:'dd-MM-yyyy'}}
+          </div>
+        </div>
+        <div class="col text-center cnt-ovrl">
+          <div class="kt-info-lable-v">
+            Applied days
+          </div>
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Days_Count}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 px-3">
+      <div class="leave-title">Remarks</div>
+      <div class="">
+        <div class="cnt-ovrl">
+          <div class="kt-info-data-v">
+            {{LeaveDetail&&LeaveDetail[0].Remarks}}
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div class="mb-3 action-div px-3">
-          <div  class="kt-info-box-tittle">
-              <div  class="kt-title-icon"><span  class="svg-icon"><svg
-                           width="20px" height="20px" viewBox="0 0 24 28"
-                          xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                          <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                          <g  id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                              stroke-linejoin="round"></g>
-                          <g  id="SVGRepo_iconCarrier">
-                              <defs >
-                                  <style >
-                                      .cls-1 {
-                                          fill: none;
-                                          stroke: #ffffff;
-                                          stroke-linecap: round;
-                                          stroke-linejoin: round;
-                                          stroke-width: 1.5px;
-                                      }
-                                  </style>
-                              </defs>
-                              <g  id="ic-statistics-workflow">
-                                  <circle  cx="12" cy="6" r="3" class="cls-1"></circle>
-                                  <rect  x="2" y="16" width="8" height="5" rx="2" class="cls-1">
-                                  </rect>
-                                  <rect  x="14" y="16" width="8" height="5" rx="2" class="cls-1">
-                                  </rect>
-                                  <path  d="M6,16V14a2,2,0,0,1,2-2h8a2,2,0,0,1,2,2v2" class="cls-1">
-                                  </path>
-                                  <line  x1="12" y1="9" x2="12" y2="12" class="cls-1"></line>
-                              </g>
-                          </g>
-                      </svg></span></div> Action
-          </div>
-          <div class="d-check px-3">
-              <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    Approved
-                  </label>
-              </div>
-              <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    Approved but from and before date
-                  </label>
-              </div>
-              <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                  <label class="form-check-label" for="flexRadioDefault3">
-                    Rejected
-                  </label>
-              </div>
-          </div>
-          <div class="px-3 mb-3">
-              <label>Comments</label>
-              <textarea  id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-              <div class="previous-comments">
-                  <ul>
-                      <li>
-                          <a href="javascript:void(0)">previous comment 1</a>
-                      </li>
-                      <li>
-                          <a href="javascript:void(0)">previous comment 2</a>
-                      </li>
-                      <li>
-                          <a href="javascript:void(0)">previous comment 3</a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
+    <div class="mb-3 action-div px-3">
+      <div class="kt-info-box-tittle">
+        <div class="kt-title-icon"><span class="svg-icon"><svg width="20px" height="20px" viewBox="0 0 24 28"
+              xmlns="http://www.w3.org/2000/svg" fill="#000000">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: none;
+                      stroke: #ffffff;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-width: 1.5px;
+                    }
+                  </style>
+                </defs>
+                <g id="ic-statistics-workflow">
+                  <circle cx="12" cy="6" r="3" class="cls-1"></circle>
+                  <rect x="2" y="16" width="8" height="5" rx="2" class="cls-1">
+                  </rect>
+                  <rect x="14" y="16" width="8" height="5" rx="2" class="cls-1">
+                  </rect>
+                  <path d="M6,16V14a2,2,0,0,1,2-2h8a2,2,0,0,1,2,2v2" class="cls-1">
+                  </path>
+                  <line x1="12" y1="9" x2="12" y2="12" class="cls-1"></line>
+                </g>
+              </g>
+            </svg></span></div> Action
+      </div>
+      <div class="d-check px-3">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">
+            Approved
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+          <label class="form-check-label" for="flexRadioDefault2">
+            Approved but from and before date
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+          <label class="form-check-label" for="flexRadioDefault3">
+            Rejected
+          </label>
+        </div>
       </div>
       <div class="px-3 mb-3">
-          <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;">Submit</button>
+        <label>Comments</label>
+        <textarea id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+        <div class="previous-comments">
+          <ul>
+            <li>
+              <a href="javascript:void(0)">previous comment 1</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">previous comment 2</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">previous comment 3</a>
+            </li>
+          </ul>
+        </div>
       </div>
+    </div>
+    <div class="px-3 mb-3">
+      <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;">Submit</button>
+    </div>
 
   </div>
 </div>
 <!--leave requisition end-->
 <!--leave requisition form start-->
-<div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right" >
+<div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right">
   <div class="kt-portlet--body mb-0">
-      <div class="offcanvas-header d-flex align-items-center justify-content-end kt-portlet__head">
-          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="close_requisition_form()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
-              <path fill="none" d="M0 0h24v24H0z"></path>
-              <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
-          </svg>
-          </a>
-      </div>
-      <div class="container req-form">
-        <div>
-            <div class="row px-3">
-                <div class="col-md-8">
-                    <h1 class="head-title">Leave Requistion Form</h1>
-                    <h4 class="head-date">22/03/2023</h4>
-                </div>
-                <div class="col-md-4">
-                    <div class="d-flex align-items-start">
-                        <div class="logo">
-                            <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
-                        </div>
-                        <div class="company-details">
-                            <p>Riyadh, Saudi Arabia - Head Office:</p>
-                            <p> P.O.Box 331799, Riyadh 11373</p>
-                            <p>Kingdom of Saudi Arabia</p>
-                        </div>
-                    </div>
-                </div>
+    <div class="offcanvas-header d-flex align-items-center justify-content-end kt-portlet__head">
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+        (click)="close_requisition_form()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="container req-form">
+      <div>
+        <div class="row px-3">
+          <div class="col-md-8">
+            <h1 class="head-title">Leave Requistion Form</h1>
+            <h4 class="head-date">22-03-2023</h4>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-start">
+              <div class="logo">
+                <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
+              </div>
+              <div class="company-details">
+                <p>Riyadh, Saudi Arabia - Head Office:</p>
+                <p> P.O.Box 331799, Riyadh 11373</p>
+                <p>Kingdom of Saudi Arabia</p>
+              </div>
             </div>
-            <div class="main-card">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                TEAM MEMBER INFORMATION
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-2">
-                                    <span class="label">Name</span><span class="data">Aquib Shahbaz</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">TM I.D No</span><span class="data">	400120</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Position</span><span class="data">	Team Lead</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Department</span><span class="data">Software</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Company</span><span class="data">Devbox Software Pvt Ltd</span>
-                                </div>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                LEAVE DETAILS
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-2">
-                                    <span class="label">Leave Type</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].LeaveType}}</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Trip</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Trip}}</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Type</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Type}}  </span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Travel</span><span class="data">  {{myLeaveDetails&&myLeaveDetails[0].Travel}} </span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Applied Dates</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Start_Date}}--{{myLeaveDetails&&myLeaveDetails[0].End_Date}}  </span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Applied Days</span><span class="data"> </span>
-                                </div>
-                                <div class="mb-2 d-flex">
-                                    <span class="label">Remarks</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Remarks}}    </span>
-                                </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-                <div class="row" style="padding: 20px 0px;">
-                    <div class="col-md-12">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                DEPARTMENT HEAD APPROVAL
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-2">
-                                    <span class="label"> Leave Status</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Accepted Dates</span><span class="data">05/04/2018 - 05/04/2018</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">No of Days</span><span class="data">1</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Approved By</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
-                                </div>
-                                <div class="mb-2 d-flex">
-                                    <span class="label">Remarks</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
-                                </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                HR DEPARTMENT
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-2">
-                                    <span class="label">Leave Status</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Accepted Dates</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date}}--{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date}}</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">No of Days</span><span class="data">1</span>
-                                </div>
-                                <div class="mb-2">
-                                    <span class="label">Approved By</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
-                                </div>
-                                <div class="mb-2 d-flex">
-                                    <span class="label">Remarks</span><span class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
-                                </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="w-100 text-right px-3">
+        <div class="main-card">
+          <div class="row">
+            <div class="col-md-5">
+              <div class="card h-100">
+                <div class="card-header">
+                  TEAM MEMBER INFORMATION
+                </div>
+                <div class="card-body">
+                  <div class="mb-2">
+                    <span class="label">Name</span><span class="data">Aquib Shahbaz</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">TM I.D No</span><span class="data"> 400120</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Position</span><span class="data"> Team Lead</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Department</span><span class="data">Software</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Company</span><span class="data">Devbox Software Pvt Ltd</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="card h-100">
+                <div class="card-header">
+                  LEAVE DETAILS
+                </div>
+                <div class="card-body">
+                  <div class="mb-2">
+                    <span class="label">Leave Type</span><span
+                      class="data">{{myLeaveDetails&&myLeaveDetails[0].LeaveType}}</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Trip</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Trip}}</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Type</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Type}}
+                    </span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Travel</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Travel}}
+                    </span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Applied Dates</span>
+                    {{myLeaveDetails&&myLeaveDetails[0].Start_Date |
+                    date:'dd-MM-yyyy'}}-{{myLeaveDetails&&myLeaveDetails[0].End_Date | date:'dd-MM-yyyy'}}
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Applied Days</span><span class="data"> </span>
+                  </div>
+                  <div class="mb-2 d-flex">
+                    <span class="label">Remarks</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Remarks}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 20px 0px;">
+            <div class="col-md-12">
+              <div class="card h-100">
+                <div class="card-header">
+                  DEPARTMENT HEAD APPROVAL
+                </div>
+                <div class="card-body">
+                  <div class="mb-2">
+                    <span class="label"> Leave Status</span><span
+                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Accepted Dates</span><span class="data">05-04-2018 - 05-04-2018</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">No of Days</span><span class="data">1</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Approved By</span><span
+                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
+                  </div>
+                  <div class="mb-2 d-flex">
+                    <span class="label">Remarks</span><span
+                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card h-100">
+                <div class="card-header">
+                  HR DEPARTMENT
+                </div>
+                <div class="card-body">
+                  <div class="mb-2">
+                    <span class="label">Leave Status</span><span
+                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
+                  </div>
+
+                  <div class="mb-2">
+                    <span class="label">Accepted Dates</span>
+                    {{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date |
+                    date:'dd-MM-yyyy
+                    '}}-{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date |
+                    date:'dd-MM-yyyy'}}
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">No of Days</span><span class="data">1</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="label">Approved By</span><span
+                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
+                  </div>
+                  <div class="mb-2 d-flex">
+                    <span class="label">Remarks</span><span
+                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 text-right px-3">
         <button class="btn-sm btn btn-outline-primary mr-2" (click)="close_requisition_form()">Back</button>
         <button class="btn-sm btn btn-primary">Print</button>
-        </div>
-        </div>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -1687,4 +1752,4 @@
 </div> -->
 <!--leave requistion form start-->
 
-  <!--leave requistion form end-->
+<!--leave requistion form end-->

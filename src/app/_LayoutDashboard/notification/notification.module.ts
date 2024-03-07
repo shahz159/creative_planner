@@ -22,6 +22,6 @@ import { ProjectsSummaryModule } from '../projects-summary/projects-summary.modu
   exports:[
     NotificationComponent
   ],
-  providers: []
+  providers: [],
 })
 export class NotificationModule { }
