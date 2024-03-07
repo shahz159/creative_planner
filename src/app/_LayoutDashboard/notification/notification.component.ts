@@ -1,3 +1,4 @@
+import { DropdownDTO } from './../../_Models/dropdown-dto';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
@@ -63,6 +64,12 @@ export class NotificationComponent implements OnInit {
     this.showPrjAprv();
     this.newNotificationLeave()
     this.newNotificationLeaveRequests()
+    this.Leaveapprovaltab()
+    this.selectedDropdown = 'ProjectApproval';
+
+
+
+
     // this.GetEmployeeLeaveDetail()
   }
 
@@ -249,6 +256,12 @@ export class NotificationComponent implements OnInit {
 
   }
 
+  showLeaveAprv() {
+    document.getElementById('prj-aprv-list').classList.add('d-none');
+    document.getElementById('leave-aprv-list').classList.remove('d-none');
+
+  }
+
   openInfo1(pcode,sid) {
     this.BsService.SetNewStandardId(sid);
     // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
@@ -328,14 +341,20 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
-    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     this.router.navigate(["Notifications"]);
+    $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
+    document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
   }
 
-  LeaveDetail: any
+  LeaveDetail: any;
+  myLeaveDetails:any;
   currentReqIndex: number = 0;
+  currentResIndex:number=0;
   open_leave_requisition(index, submitby, leavecode) {
-    this.currentReqIndex = index;
+    this.currentReqIndex = index;    debugger
     this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
       this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json'])
       console.log(this.LeaveDetail, "leavedetailss")
@@ -363,11 +382,32 @@ export class NotificationComponent implements OnInit {
     document.getElementById('leave-aprv-list').classList.add('d-none');
   }
 
-  showLeaveAprv() {
-    document.getElementById('prj-aprv-list').classList.add('d-none');
-    document.getElementById('leave-aprv-list').classList.remove('d-none');
-  }
 
+  leaveform(index,currentuser,leavecode){
+
+    this.currentResIndex=index;
+    this.approvalservice.GetEmployeeLeaveDetail(currentuser, leavecode).subscribe((data) => {
+        console.log("responssesse:",data);
+        this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
+        console.log("leave deatils asdf:",this.myLeaveDetails);
+        // this.myLeaveDetails=JSON.parse(data[0]['LeaveResponsedetails']);
+        // console.log('asdf:',this.myLeaveDetails);
+      });
+
+
+
+
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("leave_requisition_form_slider_bar").classList.add("kt-quick-panel--on");
+    $('#leave_requisition_form_slider_bar').addClass('open_requisition_sidebar_info');
+  }
+  close_requisition_form() {
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
+  }
 
   leave_Requests: any = []
   newNotificationLeaveRequests() {
@@ -385,7 +425,7 @@ export class NotificationComponent implements OnInit {
   newNotificationLeave() {
     this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data) => {
       this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json'])
-      console.log(this._newNotificationLeave, 'newNotificationLeavesresponse')
+      console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ')
     })
   }
 
@@ -954,11 +994,81 @@ acceptSelectedValues() {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 
+  dropdown = true;
+  leavePanelTitle: string = 'Leave Approval';
+  leavePanel: "REQUESTS" | "RESPONSES" = "REQUESTS";
+  selectedLeaveApproval: string = '';
+  selectedDropdown: string = 'none';
 
-
-
-  leavePanel:"REQUESTS"|"RESPONSES"="REQUESTS";
-  changeLeavePanel(panel:"REQUESTS"|"RESPONSES"){
-       this.leavePanel=panel;
+  changeLeavePanel(panel: "REQUESTS" | "RESPONSES") {
+    this.leavePanel = panel;
+    this.leavePanelTitle = panel === 'REQUESTS' ? 'Leave Requests' : 'Leave Responses';
+    this.selectedDropdown = 'none';
+    this.dropdown = true;
+    this.isSelectedBlue = true;
   }
+
+  isSelectedBlue: boolean = true;
+   Leaveapprovaltab() {
+    this.isSelectedBlue = false;
+  }
+
+  // leaveapp:"Project Approval"| "information"="Project Approval"
+  // projectapp(app:"Project Approval"| "information"){
+  //   this.leaveapp=app
+  // }
+
+//  leave requests approval start
+leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined;
+onSubmitLRbtn(){
+
+
+
+  let type:any;
+  if(this.leaveDecision==='REJECTED'){
+        // leave request rejected
+        type="Leave Rejected";
+  }
+  else{
+      // leave request approve
+      if (this.leave_Requests[this.currentReqIndex].Req_Type.trim() == "New Leave")
+        type = "Approved Leave";
+      else if (this.leave_Requests[this.currentReqIndex].Req_Type.trim() == "Modified Leave")
+        type = "Approved Leave";
+      else if (this.leave_Requests[this.currentReqIndex].Req_Type.trim() == "Approved Leave")
+        type = "Leave Sanction";
+  }
+
+  this.approvalObj.Project_Code=this.leave_Requests[this.currentReqIndex].Leave_Code.trim();
+  this.approvalObj.Type=type;
+  this.approvalObj.SNo=this.leave_Requests[this.currentReqIndex].Sno;
+  this.approvalObj.Remarks=this.LeaveDetail[0].Remarks;
+  this.approvalObj.From_Date=this.LeaveDetail[0].Start_Date;
+  this.approvalObj.End_Date=this.LeaveDetail[0].End_Date;
+  this.approvalObj.sendFrom=this.leave_Requests[this.currentReqIndex].SubmittedBy.trim();
+  this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
+         console.log("approveleaveRequest:",res);
+
+  })
+
+
+}
+
+onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
+  this.leaveDecision=decision
+}
+
+
+// leave requests approval end
+
+
+
+
+
+
+
+
+
+
+
 }

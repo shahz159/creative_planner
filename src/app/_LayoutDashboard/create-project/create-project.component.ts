@@ -130,6 +130,8 @@ export class CreateProjectComponent implements OnInit {
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
+  notificationMsg:number=0;
+
 
   constructor(private router: Router,
     private createProjectService:CreateprojectService,
@@ -150,6 +152,7 @@ export class CreateProjectComponent implements OnInit {
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
+    this.timearrays();
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
     this.getPortfolios();
@@ -194,7 +197,7 @@ export class CreateProjectComponent implements OnInit {
           })
           this.PrjSupport=defaultvalue?[defaultvalue]:[];
 
-          this.Prjtype=this.ProjectType_json[0].Typeid;// by default prj type core is selected.
+          // this.Prjtype=this.ProjectType_json[0].Typeid;// by default prj type core is selected.
           this.Project_Type=this.ProjectType_json[0].ProjectType;
           this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
           this.Prjtype==='002'?'Secondary Tasks':
@@ -397,19 +400,27 @@ export class CreateProjectComponent implements OnInit {
            Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
            SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
            // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
-           Duration:'0',
+           Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours.length?this.Allocated_Hours:'0'):'0',
            DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
            Remarks:this._remarks,
          
    
      };
+    //  alert(this.Allocated_Hours)
      console.log("PRJ INFORMATION :",projectInfo);
      this.ProjectDto.Status=JSON.stringify(projectInfo);
      this.ProjectDto.Emp_No=localStorage.getItem('EmpNo');
      this.ProjectDto.isTemplate=this.saveAsTemplate;
+    //  alert(this.unique_id)
+    if(this.unique_id){
+      this.ProjectDto.assignid=this.assigntask_json[this.unique_id-1].Assign_Id;
+    }
+    else{
+      this.ProjectDto.assignid=null;
+    }
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
-     
+     console.log(this.ProjectDto,"dto")
      //1. creating project
      this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
    
@@ -419,7 +430,9 @@ export class CreateProjectComponent implements OnInit {
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
    
-               this.notification.showSuccess(this.PrjName+" Successfully saved.","Project Saved");
+               this.notification.showSuccess("Saved successfully.","");
+               this.notification.showInfo("Please submit the project for approval.","");
+
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
@@ -434,7 +447,7 @@ export class CreateProjectComponent implements OnInit {
            else if(res&&res.message==='Success1'){
           
              this.PrjCode=res.Project_Code;
-               this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner :"+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
+               this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner : "+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
@@ -580,7 +593,8 @@ onFileChanged(event: any) {
   closeInfos(){
     document.getElementById("Project_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-    document.getElementById("kt-bodyc").classList.remove("position-fixed");
+
+    // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -608,9 +622,11 @@ onFileChanged(event: any) {
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
+    this.notificationMsg=0;
   }
 
   back_to_options(){
+    this.unique_id=null;
     $('.np-step-1').removeClass('d-none');
     $('.np-step-2').addClass('d-none');
     $('.Assigned-projects-list').addClass('d-none');
@@ -629,6 +645,7 @@ onFileChanged(event: any) {
 
 
   Move_to_add_team(){
+    // alert(this.Allocated_Hours)
     $('.right-side-dv').removeClass('d-none');
     $('.add_tema_tab').show();
     $('.Project_details_tab').hide();
@@ -639,7 +656,8 @@ onFileChanged(event: any) {
     this.findProjectType()
     if(['003','008'].includes(this.Prjtype))
     this.Prjstartdate=new Date();
-
+    
+    this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
   }
 
   Back_to_project_details_tab(){
@@ -651,6 +669,7 @@ onFileChanged(event: any) {
     $('.sbs--basic li').addClass('active');
     $('.sbs--basic li:nth-child(2)').removeClass('active');
     $('.sbs--basic li:nth-child(3)').removeClass('active');
+    this.notificationMsg=['001','002'].includes(this.Prjtype)?1:2;
   }
 
 
@@ -661,7 +680,7 @@ onFileChanged(event: any) {
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(3)').addClass('active');
-
+    this.notificationMsg=3;
   }
 
   back_to_add_team(){
@@ -737,10 +756,8 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim()){
+      if(this.PrjOwner.trim()===this.PrjResp.trim())
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
-      this.onResponsibleChanged();
-      }
   }
 }
 
@@ -833,11 +850,10 @@ onProjectOwnerChanged(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementById("kt-bodyc").classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-    // document.getElementById("project-creation-page").classList.add("position-absolute");
+    // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
-    $("#project-creation-page").scrollTop(0);
 
   }
 
@@ -847,7 +863,7 @@ onProjectOwnerChanged(){
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("kt-bodyc").classList.remove("position-fixed");
+    // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     this.router.navigate(["/backend/createproject/"]);
   }
 
@@ -860,7 +876,6 @@ onProjectOwnerChanged(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-    document.getElementById("kt-bodyc").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -1206,7 +1221,7 @@ addreschange() {
 sendApproval(){
 
 
-  if(this.PrjActionsInfo.length){
+  // if(this.PrjActionsInfo.length){
   // atleast one action must be created.
 
       this.ProjectDto.Emp_No=this.Current_user_ID;
@@ -1225,14 +1240,14 @@ sendApproval(){
      });
 
 
-}
-else{
-  Swal.fire(
-    'Action Required',
-    'Please provide atleast one action to submit the project.',
-    'error'
-  );
-}
+// }
+// else{
+//   Swal.fire(
+//     'Action Required',
+//     'Please provide atleast one action to submit the project.',
+//     'error'
+//   );
+// }
 
 
 
@@ -1320,7 +1335,7 @@ openTemplate(template:any){
   this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
 
     const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
-    console.log(res);
+    console.log(res, "temp");
 
 
    this.PrjOfType=PInfo.Project_Type;
@@ -1329,8 +1344,8 @@ openTemplate(template:any){
    this.PrjName=PInfo.Project_Name;
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
-   this._allocated=PInfo.AllocatedHours;
-
+   this.prjsubmission=PInfo.SubmissionId;
+   
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;

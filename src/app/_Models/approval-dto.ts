@@ -24,5 +24,7 @@ export class ApprovalDTO {
     json:any;
     isApproval:any;
     Leave_Code:any;
+    From_Date:any;
+    End_Date:any;
 
 }

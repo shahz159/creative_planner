@@ -32,7 +32,7 @@
                       </div>
                     </div>
                     <div class="option-section">
-                      <div (click)="Scratech_btn();timearrays()">
+                      <div (click)="Scratech_btn();">
                         <div class="op-card Scratech">
                           <div class="op-svg-ic">
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
@@ -455,7 +455,7 @@
                                             </span>
                                           </div>
                                           <div class="kt-dl-icon"><span class="kt-svg-ic"
-                                              (click)="Scratech_btn();onButtonClick(record)">
+                                              (click)="Scratech_btn();onButtonClick(record,i+1)">
                                               <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -804,7 +804,7 @@
 
                                   </div>
                                 </div>
-                                <div *ngIf="['001','002','011'].includes(Prjtype);else SubmDiv" class="col text-center ng-star-inserted">
+                                <div *ngIf="['001','002','011'].includes(Prjtype);else SubmDiv" class="col text-center ">
                                   <div class="kt-info-lable-v"> Deadline </div>
                                   <div class="kt-project-sts-data">
                                     <ng-container *ngIf="projectInfo&&projectInfo.EndDate !=''; else Deadline">
@@ -816,7 +816,7 @@
                                   </div>
                                 </div>
                                 <ng-template #SubmDiv>
-                                  <div class="col text-center ng-star-inserted">
+                                  <div class="col text-center ">
                                     <div class="kt-info-lable-v"> Submission </div>
                                     <div class="kt-project-sts-data">{{
                                     prjsubmission==1?'Daily':
@@ -830,7 +830,7 @@
                                 </ng-template>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Duration </div>
-                                  <div class="kt-project-sts-data ng-star-inserted">
+                                  <div class="kt-project-sts-data ">
                                     <ng-container *ngIf="['001','002','011'].includes(Prjtype);else DuraDiv">
                                             <ng-container *ngIf="projectInfo&&projectInfo.Duration !=''; else days">
                                               {{projectInfo&&projectInfo.Duration}} days
@@ -846,18 +846,19 @@
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Allocated </div>
-                                  <div class="kt-project-sts-data ng-star-inserted">
-                                    <ng-container *ngIf="['001','002','011'].includes(Prjtype);else AllcDiv">
-                                              <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours !=''; else Hrs">
+                                  <div class="kt-project-sts-data">
+                                    <!-- <ng-container *ngIf="['001','002'].includes(Prjtype);else AllcDiv"> -->
+                                              <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours; else Hrs">
                                                 {{projectInfo&&projectInfo.AllocatedHours}} Hrs
                                               </ng-container>
                                               <ng-template #Hrs>
-                                                0 Hrs
+                                                <ng-container *ngIf="Allocated_Hours">{{Allocated_Hours}} Hrs</ng-container>
+                                                <ng-container *ngIf="!Allocated_Hours || Allocated_Hours!=''">0 Hrs</ng-container>
                                               </ng-template>
-                                    </ng-container>
+                                    <!-- </ng-container>
                                     <ng-template #AllcDiv>
                                       {{Allocated_Hours}} Hrs
-                                    </ng-template>
+                                    </ng-template> -->
                                   </div>
                                 </div>
                               </div>
@@ -1115,17 +1116,116 @@
                       </ul>
                     </div>
                   </div>
+
+                  <div class="kt-Note-msg  d-flex">
+                      <div class="kt-note-icon" style="align-self:flex-start">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1"
+                            x="0px" y="0px" viewBox="0 0 66 65" style="enable-background:new 0 0 66 66;" xml:space="preserve">
+                            <path
+                              d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z" />
+                            <path
+                              d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z" />
+                            <path
+                              d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z" />
+                            <path
+                              d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z" />
+                            <path
+                              d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z" />
+                            <path
+                              d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z" />
+                            <path
+                              d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z" />
+                            <path
+                              d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z" />
+                          </svg>
+                      </div>
+                      <div class="notifications-list">
+
+                      <div class="notification i-notification  cursor-pointer ">
+                           <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
+                  
+                          <ng-container [ngSwitch]="notificationMsg">
+                                <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation! Enter the initial project details to continue.</span>
+                                <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away for creating the project.</span>
+                                <span *ngSwitchCase="2" class="notif-msg">You are 1 step away for creating the project.</span>
+                                <span *ngSwitchCase="3" class="notif-msg">Project not yet submitted. Click the 'Submit Project' button to submit the project for approval or continue adding actions.</span>
+                                <span *ngSwitchCase="4" class="notif-msg">Click the 'Submit Project' button to send the project for approval.</span>
+                          </ng-container>
+      
+                      </div>
+
+                      <div *ngIf="notificationMsg===3" class="notification i-notification  cursor-pointer ">
+                        <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
+                        <span  class="notif-msg"> Need to make changes? Click the 
+                           <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="11" height="12" class="ml-1"><path d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z" style="fill:#2786fb"></path><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z" style="fill: #2786fb"></path></svg>
+                           'Edit' button to update your project details.
+                        </span>
+                      </div>
+                
+
+                      </div> 
+                  </div>
+              
+                   
+                   
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   <div class="card">
                     <div class="card-body p-3">
                       <div class="tabs-data-vc">
                         <div class="Project_details_tab">
                           <div class="kt-prd-dtl">
                             <div class="row">
+                              <div class="col-lg-12 mb-3">
+                                <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
+                                  <label>Project name<span class="text-danger">*</span></label>
+                                  <input class="form-control" type="text"
+                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel" />
+                                  <span style="color: red;" class=""
+                                    *ngIf="PrjName&&PrjName.trim().split(' ').length<3">please enter atleast 3
+                                    words</span>
+                                  <span style="color: red;" class=""
+                                    *ngIf="PrjNameF.touched&&PrjName===''">*project name required</span>
+                                </div>
+                              </div>
+                              <div class="col-lg-12 mb-3">
+                                <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
+                                  <label>Project description<span class="text-danger">*</span></label>
+                                  <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
+                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"></textarea>
+                                  <span style="color:red" *ngIf="PrjDes&&PrjDes.trim().split(' ').length<5">please enter
+                                    atleast 5 words</span>
+                                  <span style="color:red" *ngIf="prjDescr.touched&&!PrjDes">*description is
+                                    required</span>
+                                </div>
+                              </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
                                   <ng-select class="kt-form-vd" placeholder="select type" [(ngModel)]="Prjtype"
-                                    #PrjTYPE="ngModel">
+                                    #PrjTYPE="ngModel"  (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid">{{item.ProjectType}} </ng-option>
                                   </ng-select>
@@ -1156,32 +1256,10 @@
                                     required</span>
                                 </div>
                               </div>
-                              <div class="col-lg-12 mb-3">
-                                <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                  <label>Project name<span class="text-danger">*</span></label>
-                                  <input class="form-control" type="text"
-                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel" />
-                                  <span style="color: red;" class="ng-star-inserted"
-                                    *ngIf="PrjName&&PrjName.trim().split(' ').length<3">please enter atleast 3
-                                    words</span>
-                                  <span style="color: red;" class="ng-star-inserted"
-                                    *ngIf="PrjNameF.touched&&PrjName===''">*project name required</span>
-                                </div>
-                              </div>
-                              <div class="col-lg-12 mb-3">
-                                <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                  <label>Project description<span class="text-danger">*</span></label>
-                                  <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
-                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"></textarea>
-                                  <span style="color:red" *ngIf="PrjDes&&PrjDes.trim().split(' ').length<5">please enter
-                                    atleast 5 words</span>
-                                  <span style="color:red" *ngIf="prjDescr.touched&&!PrjDes">*description is
-                                    required</span>
-                                </div>
-                              </div>
+                              
 
                               <ng-container *ngIf="Prjtype !=='003' && Prjtype!=='008'">
-                                <div class="col-lg-6 mb-3">
+                                <div class="col-lg-4 mb-3">
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>Start date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border">
@@ -1200,7 +1278,8 @@
                                     required</span>
                                 </div>
 
-                                <div class="col-lg-6 mb-3">
+                                <div class="col-lg-4 mb-3">
+                                  <!-- \[ngClass]="{'col-lg-6 mb-3': Prjtype!='011','col-lg-4 mb-3':  Prjtype=='011'}"  -->
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>End date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border">
@@ -1215,6 +1294,21 @@
                                     <span *ngIf="EdDate.touched&&!Prjenddate" style="color:red">*end date
                                       required</span>
                                   </div>
+                                </div>
+                                <div class="col-lg-4 mb-3">
+                                    <label>Allocated Hours
+                                      <span class="text-danger" *ngIf="Prjtype=='011'">*</span>
+                                    </label>
+                                  
+                                    <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
+                                      [(ngModel)]="Allocated_Hours" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()">
+                                    <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
+                                      required!</span>
+                                    <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
+                                      hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+                                    <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:red">*Allocated hours cannot be 0, please enter a
+                                      value.</span>
+                                    <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:red">{{_message}}</span>
                                 </div>
                               </ng-container>
 
@@ -1308,7 +1402,7 @@
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-lg-4 mb-3"  *ngIf="prjsubmission=='6'">
+                                <div class="col-lg-4 mb-3"  *ngIf="(Prjtype=='003' || Prjtype=='008') && prjsubmission=='6'">
                                   <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <div class="input-icon Sub_In_ed">
                                       <label>Recurrence<span class="text-danger">*</span></label>
@@ -1390,7 +1484,7 @@
                                   </div>
                                   <div *ngIf="fileAttachment" id="" class="dropzone dropzone-multi form-group">
                                     <div id="div_exixtingfiles" class="dropzone-items">
-                                      <div class="ng-star-inserted">
+                                      <div class="">
                                         <div class="dropzone-item p-3 m-0 border br-0">
                                           <div class="dropzone-file">
                                             <div class="dropzone-filename">
@@ -1430,10 +1524,11 @@
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back to options</button>
                               <button type="button" (click)="Move_to_add_team()"
                               [disabled]="!(Prjtype&&PrjClient&&PrjCategory&&(PrjName&&PrjName.trim().split(' ').length>=3)&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&
-                              (['001','002','011'].includes(Prjtype)&&Prjstartdate&&Prjenddate)||
-                              ( ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours.length) || (prjsubmission==6&&Allocated_Hours.length&&Annual_date) ))
+                              (['001','002'].includes(Prjtype)&&Prjstartdate&&Prjenddate) || 
+                              (['011'].includes(Prjtype)&&Prjstartdate&&Prjenddate&&Allocated_Hours) ||
+                              ( ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date) ))
                               )"
-                                class="btn btn-move-fw my-ct-v-btn btn-next">Next step
+                                class="btn btn-move-fw my-ct-v-btn btn-next">Next
                               </button>
                               <!-- [disabled]="!(Prjtype&&(PrjName&&PrjName.trim().split(' ').length>=3)&&PrjClient&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&PrjCategory&&Prjstartdate&&Prjenddate&&Prjduration)" -->
                             </div>
@@ -1596,10 +1691,13 @@
                               <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"
                                 (click)="Back_to_project_details_tab()">
                                 Previous Step</button>
+
+                              <button type="button" class="btn btn-move-fw my-ct-v-btn btn-next mr-2">Draft</button>
+
                               <button *ngIf="Prjtype!='001'&&Prjtype!='002'" type="button" (click)="createProject()"
-                                class="btn btn-move-fw my-ct-v-btn btn-next">Submit Project</button>
+                                class="btn btn-move-fw my-ct-v-btn btn-info">Submit Project</button>
                               <button *ngIf="Prjtype=='001'||Prjtype=='002'" type="button" (click)="createProject()"
-                                class="btn btn-move-fw my-ct-v-btn btn-next">Draft & Next</button>
+                                class="btn btn-move-fw my-ct-v-btn btn-next">Next</button>
                               <!-- (click)="createProject()" -->
                             </div>
                           </div>
@@ -1752,7 +1850,7 @@
                                   <div class="kt-info-data-v"> {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
                                   </div>
                                 </div>
-                                <div class="col text-center ng-star-inserted">
+                                <div class="col text-center ">
                                   <div class="kt-info-lable-v"> Deadline </div>
                                   <div class="kt-info-data-v"> {{projectInfo&&projectInfo.EndDate | date :
                                     'dd-MM-yyyy'}}
@@ -1760,13 +1858,13 @@
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Duration </div>
-                                  <div class="kt-info-data-v ng-star-inserted"> {{projectInfo&&projectInfo.Duration}}
+                                  <div class="kt-info-data-v "> {{projectInfo&&projectInfo.Duration}}
                                     days
                                   </div>
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Allocated</div>
-                                  <div class="kt-info-data-v ng-star-inserted">
+                                  <div class="kt-info-data-v ">
                                     {{projectInfo&&projectInfo.AllocatedHours}}
                                     Hrs </div>
                                 </div>
@@ -1874,7 +1972,7 @@
                                                 </div>
                                                 <div *ngIf="fileAttachment" id="" class="dropzone dropzone-multi form-group">
                                                   <div id="div_exixtingfiles" class="dropzone-items">
-                                                    <div class="ng-star-inserted">
+                                                    <div class="">
                                                       <div class="dropzone-item p-3 m-0 border br-0">
                                                         <div class="dropzone-file">
                                                           <div class="dropzone-filename">
@@ -2031,19 +2129,19 @@
                                   <div class="kt-info-data-v">
                                     {{PrjActionsInfo[currentActionView].StartDate|date:'EE-MM-YYYY'}} </div>
                                 </div>
-                                <div class="col text-center ng-star-inserted">
+                                <div class="col text-center ">
                                   <div class="kt-info-lable-v"> Deadline </div>
                                   <div class="kt-info-data-v">
                                     {{PrjActionsInfo[currentActionView].EndDate|date:'EE-MM-YYYY'}} </div>
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Duration </div>
-                                  <div class="kt-info-data-v ng-star-inserted">
+                                  <div class="kt-info-data-v ">
                                     {{PrjActionsInfo[currentActionView].Duration}} days </div>
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Allocated </div>
-                                  <div class="kt-info-data-v ng-star-inserted">
+                                  <div class="kt-info-data-v ">
                                     {{PrjActionsInfo[currentActionView].AllocatedHours}} hrs </div>
                                 </div>
                                 <div class="col-lg-3  text-center" *ngIf="PrjActionsInfo[currentActionView].Remarks">
@@ -2083,7 +2181,7 @@
                           </div>
                           <div class="kt-ctv-btn-two mt-1">
                             <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button> -->
-                            <button type="button" class="btn btn-move-fw my-ct-v-btn btn-next"
+                            <button type="button" class="btn btn-move-fw my-ct-v-btn btn-info"
                               (click)="sendApproval()">Submit Project</button>
                             </div>
                           </div>

@@ -1969,7 +1969,8 @@
             +ProjectPercentage>100||
             (([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0)||
             myUnderApprvActions.length>0|| MeetingCount>0||
-            myDelayPrjActions.length>0
+            myDelayPrjActions.length>0||
+            projectInfo.Status==='Not Started'
             ">
 
         <div class="kt-Note-msg  d-flex">
@@ -2073,8 +2074,8 @@
         </div>
 
 
-        <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list">
-        <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0"
+        <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list" style="cursor:pointer;">
+        <div class="notification delay-notification cursor-pointer " *ngIf="TOTAL_ACTIONS_IN_DELAY>0"
         (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:'All'});   showActionDetails(this.delayActionsOfEmps[0].delayActions[0].IndexId-1); ">
         <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2118,10 +2119,19 @@
 
         <div  (click)="showActionsWith0AlcHrs()"  class="notification overutilization-notification" style="cursor:pointer;"   *ngIf="actionsWith0hrs&&actionsWith0hrs.length>0">
             <svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
-            <span class="notif-msg" style="color: #c57a05;"> The Project has {{actionsWith0hrs.length}} {{actionsWith0hrs.length>1?'Actions':'Action'}} with 0 Allocated hours, namely 
-                  <ng-container *ngFor="let act of actionsWith0hrs;let i=index">
-                        '{{act.Project_Name}}' {{i+1===actionsWith0hrs.length?'.':', '}}
-                  </ng-container>    
+            <span class="notif-msg" style="color: #c57a05;">
+                
+                The project has {{totalActionsWith0hrs}} {{totalActionsWith0hrs>1?'Actions':'Action'}} with 0 allocated hours,
+                <ng-container *ngIf="totalActionsWith0hrs===1;else tothem">
+                    assigned to {{actionsWith0hrs[0].name}}.
+                </ng-container>
+                <ng-template #tothem>
+                    with 
+                    <ng-container *ngFor="let act of actionsWith0hrs; let i=index;">
+                            {{act.name}}({{act.holdactions}}){{i+1===actionsWith0hrs.length-1?' and':(i+1===actionsWith0hrs.length)?'':', '}}
+                    </ng-container> assigned to them.
+                </ng-template>
+                  
             </span>
         </div>
 
@@ -2129,47 +2139,34 @@
 
 
 
+      <ng-container *ngIf="projectInfo&&projectInfo.Status=='Not Started'">
+            <div class="notification not-star" *ngIf="projectInfo.ResponsibleEmpNo==Current_user_ID">
+                <svg width="22px" height="22px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" style="
+                    stroke: #484848;
+                    stroke-width: 2px;
+                    fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
+                    <span  class="notif-msg" style=" cursor: pointer;">Please submit the draft to start working on the project.</span>
+            </div>
+
+            <div class="notification not-star cursor-pointer" *ngIf="projectInfo.ResponsibleEmpNo!=Current_user_ID">
+                <svg width="22px" height="22px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" style="
+                stroke: #484848;
+                stroke-width: 2px;
+                fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
+                
+              <span class="notif-msg" style=" cursor: pointer;">
+                Please inform the responsible of the project to submit the draft to start working on the project.</span>
+            </div>
+      </ng-container>
+
+
+
          </div>
         </div>
-
 
         </ng-container>
 
 </ng-container>
-
-<div  class="kt-Note-msg d-flex" *ngIf="projectInfo&&(projectInfo.Status=='Not Started' && projectInfo.ResponsibleEmpNo==Current_user_ID)"><div  class="kt-note-icon" style="align-self: flex-start;"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;"><path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path><path  d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z"></path><path  d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z"></path><path  d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z"></path><path  d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z"></path><path  d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z"></path><path  d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z"></path><path d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z"></path></svg></div><div  class="notifications-list">
-
-<div class="notification not-star cursor-pointer"><svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="not-star" class="notif-img"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g ><path  d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path  d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg><span  class="notif-msg" style=" cursor: pointer;">
-    Please submit the draft to start working on the project.</span></div>
-</div>
-</div>
-
-
-
-
-<div  class="kt-Note-msg d-flex" *ngIf="projectInfo&&(projectInfo.Status=='Not Started' && projectInfo.ResponsibleEmpNo!=Current_user_ID)"><div  class="kt-note-icon" style="align-self: flex-start;"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;"><path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path><path  d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z"></path><path  d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z"></path><path  d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z"></path><path  d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z"></path><path  d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z"></path><path  d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z"></path><path d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z"></path></svg></div>
-<div  class="notifications-list">
-
-    <div class="notification not-star cursor-pointer"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
-        fill="not-star" class="notif-img">
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-          <g>
-            <path
-              d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
-            </path>
-            <path
-              d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
-            </path>
-          </g>
-        </g>
-      </svg><span class="notif-msg" style=" cursor: pointer;">
-        Please inform the responsible of the project to submit the draft to start working on the project.</span>
-    </div>
-    </div>
-
-</div>
 
 
 
@@ -2265,9 +2262,22 @@
                                                         </div>
                                                         <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
 
-                                                            <button class="Ct-btn Bt-cancel ml-2"
-                                                                *ngIf=" projectInfo.Status!='Completed'"
-                                                                (click)="openPrjCancelSb()">Project Cancel</button>
+                                                            
+                                                            <button (click)="openDarSideBar()" class="Ct-btn ml-2"
+                                                                *ngIf="projectInfo.Status!=='New Project Rejected'">Add
+                                                                Timeline</button>
+                                                            
+                                                            <button class="Ct-btn Bt-Submit ml-2"
+                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
+                                                                Completion</button>
+
+                                                            <button class="Ct-btn Bt-Submit ml-2"
+                                                                *ngIf="(projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
+                                                                (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
+                                                                (click)="OnClickCheckboxProjectUpdate()">Project
+                                                                Completion</button>
+
+
                                                             <button class="Ct-btn Bt-hold ml-2"
                                                                 *ngIf="(projectInfo.Status==='Project Hold');else prHbtn"
                                                                 (click)="openPrjReleaseSideBar()">Project
@@ -2278,24 +2288,13 @@
                                                                     *ngIf="projectInfo.Status==='InProcess'||projectInfo.Status=='Delay'">Project
                                                                     Hold</button>
                                                             </ng-template>
-                                                            <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
-                                                                Completion</button>
-
-                                                            <button class="Ct-btn Bt-Submit ml-2"
-                                                                *ngIf="
-                                                 (projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&
-                                                 (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
-                                                                (click)="OnClickCheckboxProjectUpdate()">Project
-                                                                Completion</button>
-
-                                                            <button (click)="openDarSideBar()" class="Ct-btn ml-2"
-                                                                *ngIf="projectInfo.Status!=='New Project Rejected'">Add
-                                                                Timeline</button>
                                                             <button class=" Bt-newprj-release  ml-2"
                                                                 (click)="openNewPrjReleaseSideBar()"
                                                                 *ngIf="projectInfo.Status=='New Project Rejected' && Current_user_ID == projectInfo.ResponsibleEmpNo">New
                                                                 Project Release</button>
+                                                            <button class="Ct-btn Bt-cancel ml-2"
+                                                                *ngIf=" projectInfo.Status!='Completed'"
+                                                                (click)="openPrjCancelSb()">Project Cancel</button>
 
                                                         </div>
                                                     </div>
@@ -2380,7 +2379,7 @@
                                                     <div class="Kt-Pd-Status Hold"> Hold until {{hold_upto}}</div>
                                                 </div>
                                                 <div class="kt-project-type "
-                                                    *ngSwitchCase="'Cancelled Under Approval'">
+                                                    *ngSwitchCase="'Cancellation Under Approval'">
                                                     <div class="Kt-Pd-Status Delay"> Cancelled Under
                                                         Approval
                                                     </div>
@@ -2405,7 +2404,9 @@
                                         *ngSwitchCase="'Not Started'">
                                         <div class="Kt-Pd-Status not-started"> Draft
                                         </div>
-                                    </div>
+                                     </div>
+
+
 
 
                                                 <!-- <div class="kt-project-type">
@@ -2430,8 +2431,7 @@
 
                                         <!-- Request type start  -->
                                         <ng-container *ngIf="Current_user_ID  == approvalEmpId">
-                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled')"
-                                            >
+                                            <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!isApprovalSection">
                                                 <div class="d-flex justify-content-between align-items-center">
 
                                                     <div class="kt-info-box-tittle">
@@ -3128,7 +3128,7 @@
                                                             <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                 {{item.ModifiedDate}}
                                                                 <p
-                                                                    class="kt-dt-l text-gray-400">{{(item.ModifiedTime)}}
+                                                                    class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
                                                                 </p>
                                                             </div>
                                                             <!--end::Label-->
@@ -3308,7 +3308,6 @@
 
 
 
-                                                 <ng-container *ngIf="projectInfo.Project_Block==='001'||projectInfo.Project_Block==='002'">
 
                                                      <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9991 19L9.83911 14C9.56672 13.7429 9.34974 13.433 9.20142 13.0891C9.0531 12.7452 8.97656 12.3745 8.97656 12C8.97656 11.6255 9.0531 11.2548 9.20142 10.9109C9.34974 10.567 9.56672 10.2571 9.83911 10L14.9991 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -3316,8 +3315,6 @@
                                                      <button class="statistics-ctrl-btns"  (click)="closeFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
-
-                                                </ng-container>     
 
                                                 </div>
                                                 <!-- <div id="chart-container" class="Chart">
@@ -3490,7 +3487,8 @@
                                                          (
                                                         projectActionInfo[currentActionView].Team_Res===Current_user_ID||
                                                         projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
-                                                        projectInfo.OwnerEmpNo===Current_user_ID
+                                                        projectInfo.OwnerEmpNo===Current_user_ID||
+                                                        projectInfo.ResponsibleEmpNo===Current_user_ID
                                                         )" (click)="openDarSideBar()" class="Ct-btn ml-2">Add Timeline
                                                         </button>
 
@@ -4211,7 +4209,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-12  text-center"
+                                                <div class="col-lg-3  text-center"
                                                     *ngIf="projectActionInfo[currentActionView].Remarks && projectActionInfo[currentActionView].Remarks !='undefined' && projectActionInfo[currentActionView].Remarks !=''">
                                                     <div class="kt-info-lable-v">
                                                         Remarks
@@ -4231,7 +4229,7 @@
                                                     Completed date
                                                 </div>
                                                 <div class="kt-info-data-v">
-                                                    {{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}
+                                                    {{projectActionInfo[currentActionView].CD| date :'dd-MM-yyyy'}}
                                                 </div>
 
                                             </div>
@@ -4257,7 +4255,7 @@
                                                                 <div class=" timeline-label fw-bold text-gray-800 fs-7">
                                                                     {{item.ModifiedDate}}
                                                                     <p
-                                                                        class="kt-dt-l text-gray-400">{{(item.ModifiedTime)}}</p>
+                                                                        class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
                                                                 </div>
                                                                 <!--end::Label-->
 
@@ -4640,7 +4638,7 @@
                     </mat-chip>
                 </mat-chip-list>
                 <div class="d-flex">
-                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"  (input)="filterPortfolio($event.target.value)"
+                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
                         [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                     <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                             (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
@@ -5199,10 +5197,10 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z">
                                                             </path>
-                                                        </svg> </span> <span class="tmv-tm">{{(item.starttime)}}
+                                                        </svg> </span> <span class="tmv-tm">{{formatTimes(item.starttime)}}
                                                         </span>
                                                     <span class="mdl-line-h"></span><span
-                                                        class="tmv-tm">{{(item.endtime)}} </span> <span
+                                                        class="tmv-tm">{{formatTimes(item.endtime)}} </span> <span
                                                         class="total-time-kt">{{item.Duration}} Hrs</span>
                                                 </div>
                                                 <div class="date-view-rt">
@@ -6184,7 +6182,7 @@
                                               </span>
                                             </div>
                                           </div>
-                                          <div *ngIf="Data.contribution"  [title]="Data.totalActions+' actions'"   class="prctg-in-project"><span>{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span></div>
+                                          <div *ngIf="Data.contribution"  [title]="Data.contribution+' actions'"   class="prctg-in-project"><span>{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span></div>
                                         </div>
                                       </div>
                                     </div>
@@ -6855,7 +6853,7 @@
     <!-- For Update Project sidebar  ends here-->
 
 
-    <!--  Project hold,Action hold sidebar Area Start-->
+    <!--  Project hold sidebar Area Start-->
     <div id="prj-hold-sidebar" class="sideInfobar animate-right bg-slide-br">
         <div class="kt-portlet">
 
@@ -6961,7 +6959,7 @@
             </div>
         </div>
     </div>
-    <!--   Project hold,Action hold sidebar Area End-->
+    <!--   Project hold sidebar Area End-->
 
 
     <!--Project release sidebar Area start-->
@@ -9954,7 +9952,6 @@
                                             <input type="text" class="form-control" [(ngModel)]="ActionName"
                                                 placeholder="Search..." />
                                         </div>
-                                        <span style="color:red" class="fs-8" *ngIf="!ActionName" >*action name required.</span>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -9964,7 +9961,6 @@
                                             <textarea type="text" class="form-control" placeholder="Search..." height="60px"
                                                 [(ngModel)]="ActionDescription"></textarea>
                                         </div>
-                                        <span style="color:red" class="fs-8" *ngIf="!ActionDescription" >*action description required.</span>
                                     </div>
                                 </div>
                             </div>
@@ -10044,7 +10040,6 @@
                                         </ng-template>
 
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionOwner">*action owner required.</span>
                                 </div>
                             </div>
                             <div class="col-lg-4 text-left">
@@ -10079,7 +10074,6 @@
                                         </ng-template>
 
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionResponsible">*action responsible required.</span>
                                 </div>
                             </div>
 
@@ -10101,7 +10095,6 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!selectedcategory">*category required.</span>
                                 </div>
                             </div>
 
@@ -10153,7 +10146,6 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionClient">*client required.</span>
                                 </div>
                             </div>
                         </div>
@@ -10182,7 +10174,6 @@
                                             [value]="ActionstartDate | date : 'dd-MM-yyyy'" placeholder="Start date"
                                             readonly />
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionstartDate">*start date required.</span>
                                     <!-- </ng-container> -->
                                 </div>
                             </div>
@@ -10194,7 +10185,7 @@
                                         <input class="form-control" [(ngModel)]="ActionendDate"
                                             [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                                             [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
-                                            placeholder="Deadline Date..." class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"/>
+                                            placeholder="Deadline Date..." class="form-control border-0 " name="date" />
                                         <div class="input-group-append h-2">
                                             <mat-datepicker-toggle matSuffix [for]="ActionsEditsPicker"
                                                 class="btn-secondary border-0">
@@ -10202,7 +10193,6 @@
                                             <mat-datepicker class="form-group " #ActionsEditsPicker></mat-datepicker>
                                         </div>
                                     </div>
-                                    <span style="color:red" class="fs-8"  *ngIf="!ActionendDate">*end date required.</span>
                                 </div>
                             </div>
                             <ng-template #submissionN>
@@ -10237,11 +10227,8 @@
                                             <input type="text" id="myInput" class="form-control readonly"
                                                 *ngIf="ActionAllocatedHours>0" [(ngModel)]="ActionAllocatedHours"
                                                 readonly />
-                                             <input type="text" id="myInput" class="form-control"
+                                            <input type="text" id="myInput" class="form-control"
                                                 *ngIf="ActionAllocatedHours==0" [(ngModel)]="editAllocatedhours" />
-                                                <span *ngIf="(editAllocatedhours==0)" style="color:red" class="fs-8"  >*Allocated hours cannot be 0, please enter a value.</span>
-                                                <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >Daily allocation limit: 10 hours; enter ≤ <b>{{ActionmaxAllocation}}</b> hours.</span>
-                                                <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">*please provide both dates.</span> 
                                         </div>
                                     </div>
                                 </div>
@@ -10268,16 +10255,7 @@
                         <div class="form-group text-end mb-0">
                             <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
                                 (click)="closeInfo()">Cancel</button>
-                            <button  [disabled]="
-                                        !(   
-                                            ActionName&&ActionDescription&&
-                                            ActionOwner&&ActionResponsible&&
-                                            selectedcategory&&ActionClient&&
-                                            ActionstartDate&&ActionendDate&&
-                                            editAllocatedhours&&editAllocatedhours<=ActionmaxAllocation
-                                        )
-                                        " 
-                             type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
+                            <button type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
                                 Update</button>
                         </div>
                     </div>

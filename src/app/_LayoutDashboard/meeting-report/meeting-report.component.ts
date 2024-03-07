@@ -96,7 +96,7 @@ export class MeetingReportComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '5rem',
+    minHeight: '20rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
@@ -568,6 +568,7 @@ export class MeetingReportComponent implements OnInit {
     console.log(val, "ttt");
   }
   Adduser_meetingreport() {
+
     for (const element of this.ngEmployeeDropdown1) {
       this.ngEmployeeDropdown.push(element);
     }

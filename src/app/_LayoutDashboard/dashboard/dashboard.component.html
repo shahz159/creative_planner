@@ -464,31 +464,6 @@
                         <ng-container *ngIf="showsearch==false">
                             <full-calendar [options]="calendarOptions"></full-calendar>
                         </ng-container>
-
-
-                        <div class="dropdown no-after btm-btn">
-                            <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
-                                    <svg width="36" height="36" viewBox="0 0 36 36">
-                                        <path fill="#34A853" d="M16 16v14h4V20z"></path>
-                                        <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
-                                        <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
-                                        <path fill="#4285F4" d="M20 16V6h-4v14z"></path>
-                                        <path fill="none" d="M0 0h36v36H0z"></path>
-                                    </svg>
-                                </span>
-                                <!-- {{ScheduleType}} -->
-                                <span class="tsk">Create</span>
-                        
-                            </button>
-                            <div class="dropdown-menu drop-cus btm-dropdn">
-                                <a class="dropdown-item" (click)="Task_type(1)">Task</a>
-                                <a class="dropdown-item" (click)="Task_type(2)">Event</a>
-                            </div>
-                        </div>
-
-
                     </div>
                 </div>
                 <!--end::Portlet-->
@@ -1241,7 +1216,7 @@
 
 
 
-            <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
+            <!-- <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
                         <div class="boxcl-div">
                             <div class="kt-meeting-title-icon">
                             <svg stroke="#5f6368" xmlns="http://www.w3.org/2000/svg" width="25" height="19" viewBox="0 0 16 17">
@@ -1293,7 +1268,7 @@
                                 </div>
                             </div>
                         </div>
-             </div>
+             </div> -->
 
 
 
@@ -2075,8 +2050,11 @@
                                 class="btn btn-sm btn-light-primary btn-pill footbtns"
                                 (click)="Action_event(1);Event_acceptandReject()">Yes
                             </button>
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
+                            <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" 
+                                class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
                                 data-target="#responsemodal1">No</button>
+                            <button *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"
+                                 class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="Action_event(3);Event_acceptandReject()">No</button>
                             <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)=" Maybe_event(5)">May
                                 be</button>
                             <!-- data-toggle="modal" data-target="#responsemodal" [(ngModel)]="going" -->
@@ -2264,7 +2242,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div id="project" class="eve-area">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">
@@ -2679,7 +2656,27 @@
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 
-<!--removed create btn from here and put it above-->
+<div class="dropdown no-after btm-btn">
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-tsk create-btm" data-toggle="dropdown"
+        aria-expanded="false">
+        <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
+            <svg width="36" height="36" viewBox="0 0 36 36">
+                <path fill="#34A853" d="M16 16v14h4V20z"></path>
+                <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+                <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+                <path fill="#4285F4" d="M20 16V6h-4v14z"></path>
+                <path fill="none" d="M0 0h36v36H0z"></path>
+            </svg>
+        </span>
+        <!-- {{ScheduleType}} -->
+        <span class="tsk">Create</span>
+
+    </button>
+    <div class="dropdown-menu drop-cus btm-dropdn">
+        <a class="dropdown-item" (click)="Task_type(1)">Task</a>
+        <a class="dropdown-item" (click)="Task_type(2)">Event</a>
+    </div>
+</div>
 
 <div class="col-md-12 progress_container">
     <div class="progress form-group" *ngIf="progress > 0">
@@ -2753,7 +2750,7 @@
 
 <!--agenda field start--> 
 
-<div class="form-group" id="agenda-field">
+<!-- <div class="form-group" id="agenda-field">
     <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
     <span id="agenda-info-icon" class="ml-1">
         <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
@@ -2769,7 +2766,6 @@
                     <input class="task-input ml-2" id="todo-input" name="text" placeholder="Enter Agenda and hit 'Enter'." autofocus="true"
                       [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
                     />
-                        <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
                     <button class="task-button" id="btn1">Add Task</button>
                 </div>
             </div>
@@ -2825,7 +2821,7 @@
 
 
 
-</div>
+</div> -->
 
 
 

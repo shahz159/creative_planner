@@ -109,7 +109,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   myDelayPrjActions:any=[];
   delayActionsOfEmps:any=[];
   actionsWith0hrs:any=[];
-
+  totalActionsWith0hrs:number=0;
 
 
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -210,19 +210,23 @@ export class DetailsComponent implements OnInit, AfterViewInit {
        else {
         this.router.navigate(["../backend/ProjectsSummary"]);
       }
-    });   
-    this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // 1. GET PROJECT CODE.
-    this.Current_user_ID = localStorage.getItem('EmpNo');                                               // 2. GET EMPLOYEE ID.
-    this.getProjectDetails(this.URL_ProjectCode);                                                      // 3. GET PROJECT DETAILS.
+    });
 
-   
+
+
+
+    this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
+    this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
+    this.getProjectDetails(this.URL_ProjectCode);
+
+    // get all project details from the api.
     this.getapprovalStats();
     this.getusername();
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
     this.getapproval_actiondetails();      // get main project approval state.
     this.getholdate();
-    this.GetPeopleDatils();  
+    this.GetPeopleDatils();
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
@@ -254,7 +258,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-   this.getResponsibleActions();
+    this.getResponsibleActions();
     this.GetActivityDetails();
   }
 
@@ -268,7 +272,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   getusermeetings(){
     this.objProjectDto.Project_Code=this.URL_ProjectCode;
     this.service.GetUserMeetingcount(this.objProjectDto).subscribe(data => {
-      console.log('meetingcount:',data);
     this.MeetingCount=JSON.parse(data['MeetingCount'])
       console.log(this.MeetingCount, "meetings count");
     });
@@ -375,204 +378,87 @@ this.prjBARCHART = new ApexCharts(document.querySelector("#Bar-chart"), options)
 this.prjBARCHART.render();
 
 // 2. pie chart.
-// let usedhr=this.tlTotalHours;
-// let remaininghr=['003','008'].includes(this.projectInfo.Project_Block)?(AL-this.tlTotalHours):(Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours);
+let usedhr=this.tlTotalHours;
+let remaininghr=['003','008'].includes(this.projectInfo.Project_Block)?(AL-this.tlTotalHours):(Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours);
 
-// if(remaininghr<0){
-//   remaininghr=0;
-//   usedhr=this.projectInfo.AllocatedHours;
-// }
+if(remaininghr<0){
+  remaininghr=0;
+  usedhr=this.projectInfo.AllocatedHours;
+}
 
-// var options1 = {
-//   series: [usedhr,remaininghr],
-//   chart: {
-//     width: 480,
-//     type: 'donut',
-//     dropShadow: {
-//       enabled: true,
-//       color: '#b1b1b1',
-//       top: 0,
-//       left: 0,
-//       blur: 1,
-//       opacity: 0.5
-//     }
-//   },
-//   stroke: {
-//     width: 0,
-//   },
-//   plotOptions: {
-//     pie: {
-//       donut: {
-//         labels: {
-//           show: true,
-//           total: {
-//             showAlways: true,
-//             show: true
-//           }
-//         }
-//       }
-//     }
-//   },
-//   labels: ["Used Hours", "Remaining Hours"],
-//   dataLabels: {
-//    style:{
-//      colors:['#2b4790','#616262'],
-//      fontWeight:'normal',
-//    },
-
-//   },
-//   states: {
-//     hover: {
-//       filter: 'none'
-//     }
-//   },
-//   theme: {
-//     palette: 'palette2'
-//   },
-//   colors: ['#8faeff', '#dbe1e4'],
-//   title: {
-//     text: "Hours used",
-//     style: {
-//       fontSize: '10px',
-//       color: '#6b6b6b',
-//       fontFamily: 'Lucida Sans Unicode',
-//       fontWeight: 'bold'
-
-//     }
-//   },
-//   responsive: [{
-//     breakpoint: 480,
-//     options: {
-//       chart: {
-//         width: 200
-//       },
-//       legend: {
-//         position: 'bottom'
-//       }
-//     }
-//   }]
-// };
-// if(this.prjPIECHART)
-// this.prjPIECHART.destroy();
-// this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1);
-// this.prjPIECHART.render();
-
-
-
-// new pie chart code start
-
-const drawPie=()=>{
-  if(this.PeopleOnProject){
-
-     
-     const result=this.PeopleOnProject.filter(item=>item.totalActions);
-     const _emps=result.map(item=>{
-
-        const obj={
-          Emp_Name:item.Emp_Name,
-          total_actions:item.totalActions,
-        }
-  
-  
-        this.filterstatus.forEach(st=>{
-          const actns=this.getFilteredPrjActions(st.Status,item.Emp_No);
-          if(actns.length>0){
-               obj[st.Status]=actns.length;
-          }
-        })
-          
-  
-            return obj;
-       });
-
-
-
-
-
-      var options123 = {
-        series: _emps.map(item=>item.total_actions),
-        chart: {
-          width: 420,
-          type: 'pie',
-          toolbar: {
+var options1 = {
+  series: [usedhr,remaininghr],
+  chart: {
+    width: 480,
+    type: 'donut',
+    dropShadow: {
+      enabled: true,
+      color: '#b1b1b1',
+      top: 0,
+      left: 0,
+      blur: 1,
+      opacity: 0.5
+    }
+  },
+  stroke: {
+    width: 0,
+  },
+  plotOptions: {
+    pie: {
+      donut: {
+        labels: {
+          show: true,
+          total: {
+            showAlways: true,
             show: true
           }
-        },
-        labels: _emps.map(item=>(item.Emp_Name.substring(0,item.Emp_Name.indexOf('(')))),
-        legend: {
-          position: 'bottom',
-          fontSize: '10px',
-          fontFamily: 'Lucida Sans Unicode',
-          fontWeight: 900,
-          offsetY: 8,
-          markers: {
-            width: 9,
-            height: 9,
-            radius: 2
-          },
-          itemMargin: {
-            vertical: 5
-          }
-        },
-        colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a'],
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }],
-
-        tooltip: {
-          enabled: true,
-          custom: ({ series, seriesIndex,dataPointIndex,w})=>{
-
-          let temp:any={};  
-          Object.assign(temp,_emps[seriesIndex])
-          delete temp.Emp_Name;
-          delete temp.total_actions;
-
-          let r=[];
-          for(let k in temp){
-              r.push(k+' : '+temp[k])
-          }
-
-            return `<div style="background-color:#6c78e699; color:white; padding:3px;">
-                    <div> <u>${_emps[seriesIndex].Emp_Name.substring(0,_emps[seriesIndex].Emp_Name.indexOf('('))}</u> </div>
-                    <div> Total :  ${series[seriesIndex]} Actions.</div>
-                          ${
-                            r.join('<br/>')
-                          }
-                   </div>`;
-          }
         }
+      }
+    }
+  },
+  labels: ["Used Hours", "Remaining Hours"],
+  dataLabels: {
+   style:{
+     colors:['#2b4790','#616262'],
+     fontWeight:'normal',
+   },
 
-        
-      };
-      
-      var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
-      chart.render();
-      
-      
+  },
+  states: {
+    hover: {
+      filter: 'none'
+    }
+  },
+  theme: {
+    palette: 'palette2'
+  },
+  colors: ['#8faeff', '#dbe1e4'],
+  title: {
+    text: "Hours used",
+    style: {
+      fontSize: '10px',
+      color: '#6b6b6b',
+      fontFamily: 'Lucida Sans Unicode',
+      fontWeight: 'bold'
 
-
-}
-else{
-    this.GetPeopleDatils();
-    setTimeout(()=>drawPie(),10000);
-}
-}
-
-drawPie();
-
-
-// new pie chart code end
-
-
+    }
+  },
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 200
+      },
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }]
+};
+if(this.prjPIECHART)
+this.prjPIECHART.destroy();
+this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1);
+this.prjPIECHART.render();
 
 
 }else{
@@ -580,241 +466,6 @@ drawPie();
 }
 
   }
-
-
-
-  drawStatisticsNew(){
-   if(this.currentActionView===undefined){
-
-        // 1. bar chart start.
-            this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, '1', this.Current_user_ID).subscribe((res: any) => {
-            
-              let tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
-
-
-                //standard  graph cal start    may need updation.
-                let x=0;
-                let AL=0;
-                if(['003','008'].includes(this.projectInfo.Project_Block)){
-
-                  let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
-                  let d2=new Date();                           // TODAY DATE.
-                  x=0;
-                  switch(this.projectInfo.SubmissionId){
-                        case 1:{ x=moment(d1).diff(d2,'days');    };break;
-                        case 2:{ x=moment(d1).diff(d2,'weeks');    };break;
-                        case 3:{ x=moment(d1).diff(d2,'months');    };break;
-                        case 4:{ x=moment(d1).diff(d2,'quarters');   };break;
-                        case 5:{      };break;
-                        case 6:{ x=moment(d1).diff(d2,'years');     };break;
-                  }
-
-
-                  let timestr=this.projectInfo.StandardAllocatedHours;
-                  let t=timestr.split(':');
-                  let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
-                  AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
-
-                }
-                //standard graph cal end
-
-
-
-            
-              var options = {
-                series: [{
-                  data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, tlTotalHrs, ((+this.projectInfo.AllocatedHours) - tlTotalHrs).toFixed(2)]
-                    : [AL, tlTotalHrs, (AL - tlTotalHrs).toFixed(2)]
-                }],
-                chart: {
-                  type: 'bar',
-                  height: 350
-                },
-                plotOptions: {
-                  bar: {
-                    distributed: true,
-                    horizontal: false,
-                    columnWidth: '62%',
-                  }
-                },
-                dataLabels: {
-                  enabled: true,
-                  style:{
-                    colors:['#3a81c9','#3e6be0','#303031'],
-                    fontFamily:'Lucida Sans Unicode'
-                  },
-                  formatter: function (v) {
-                    return v + ' hrs';
-                  }
-                },
-                yaxis: {
-                  title: {
-                    text: ''
-                  },
-                  labels: {}
-                },
-                xaxis: {
-                  categories: ['Allocated', 'Used', 'Remaining'],
-                  labels: {
-                    rotate: -90
-                  }
-                },
-                colors:['003', '008'].includes(this.projectInfo.Project_Block)?
-                      ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-                      ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
-
-              };
-
-              if (this.prjBARCHART)
-                this.prjBARCHART.destroy();
-
-              let bchr=document.querySelector("#Bar-chart");
-              if(bchr)
-              {
-                this.prjBARCHART = new ApexCharts(bchr, options); 
-                this.prjBARCHART.render();
-              }
-              
-            
-
-            
-
-            });
-        //  bar chart end.
-
-        // 2. Pie chart start.
-
-        if(['001','002'].includes(this.projectInfo.Project_Block)){
-            // core, secondary.
-            if(Array.isArray(this.projectActionInfo)&&this.projectActionInfo.length>0){
-                // actions are available.
-              let peoples=JSON.parse(this.projectActionInfo[0].filteremployee);
-
-              let _users=peoples.map(item=>{
-                const obj:any={
-                  Emp_Name:item.Responsible,
-                };
-
-                let totalactions=0;
-                this.filterstatus.forEach(st=>{
-                  const actns=this.getFilteredPrjActions(st.Status,item.Team_Res);
-                  if(actns.length>0){
-                      obj[st.Status]=actns.length;
-                      totalactions+=actns.length;
-                  }
-                });
-                obj.total_actions=totalactions;
-                return obj;
-
-              });
-
-
-
-
-
-
-
-
-
-
-              var options123 = {
-                series: _users.map(item=>item.total_actions),
-                chart: {
-                  width: 420,
-                  type: 'pie',
-                  toolbar: {
-                    show: true
-                  }
-                },
-                labels: _users.map(item=>item.Emp_Name),
-                legend: {
-                  position: 'bottom',
-                  fontSize: '10px',
-                  fontFamily: 'Lucida Sans Unicode',
-                  fontWeight: 900,
-                  offsetY: 8,
-                  markers: {
-                    width: 9,
-                    height: 9,
-                    radius: 2
-                  },
-                  itemMargin: {
-                    vertical: 5
-                  }
-                },
-                colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a'],
-                responsive: [{
-                  breakpoint: 480,
-                  options: {
-                    chart: {
-                      width: 200
-                    },
-                    legend: {
-                      position: 'bottom'
-                    }
-                  }
-                }],
-
-                tooltip: {
-                  enabled: true,
-                  custom: ({ series, seriesIndex,dataPointIndex,w})=>{
-
-                  let temp:any={};  
-                  Object.assign(temp,_users[seriesIndex])
-                  delete temp.Emp_Name;
-                  delete temp.total_actions;
-
-                  let r=[];
-                  for(let k in temp){
-                      r.push(k+' : '+temp[k])
-                  }
-
-                    return `<div style="background-color:#6c78e699; color:white; padding:3px;">
-                            <div> <u>${_users[seriesIndex].Emp_Name}</u> </div>
-                            <div> Total :  ${series[seriesIndex]} Actions.</div>
-                                  ${
-                                    r.join('<br/>')
-                                  }
-                          </div>`;
-                  }
-                }
-
-                
-              };
-              
-              var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
-              chart.render();
-              
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }
-        }
-
-        // Pie chart end.
-   }
-  }
-
-
 
 
   private loadData() {
@@ -1048,8 +699,23 @@ drawPie();
      }
 
 
-     this.actionsWith0hrs=this.projectActionInfo.filter((actn:any)=>(actn.AllocatedHours&&parseInt(actn.AllocatedHours)===0));
-      
+     
+    
+     if(this.projectActionInfo){
+      this.actionsWith0hrs=[];   // must be empty before calculation.
+     this.projectActionInfo.forEach((actn)=>{
+            if(Number.parseInt(actn.AllocatedHours)===0){
+              const temp=this.actionsWith0hrs.find(item=>item.name===actn.Responsible);
+              if(temp)
+                  temp.holdactions+=1;
+              else
+              this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });  
+            }
+     });
+     this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
+    }
+
+
 
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
@@ -1074,10 +740,8 @@ drawPie();
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex)
     }
-    this.onTLSrtOrdrChanged('Date');  // for utilization bar 'tlTotalHours'
-    // setTimeout(() => this.drawStatistics(), 5000);
-    setTimeout(()=>this.drawStatisticsNew(),5000);
-
+    this.onTLSrtOrdrChanged('Date');  // new added for graph.
+    setTimeout(() => this.drawStatistics(), 5000);
     });
   }
   uniqueName:any
@@ -1097,7 +761,7 @@ drawPie();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-        
+
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
 
@@ -1110,25 +774,15 @@ drawPie();
           this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
           this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
 
-          if(this.Subtask_Res_List){
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
-           
-            // contribution
-                  const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-                  if(p)
-                  { 
-                    obj.contribution=p.RespDuration;
-                    obj.totalActions=p.SubtaskCount;
-                  }
-             // contribution
-
+          //   const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
+          //   if(p)
+          //    obj.contribution=p.RespDuration;
             return obj;
           });
-         }
 
-             console.log('People on project:',this.PeopleOnProject);
         }
       });
 
@@ -1169,7 +823,7 @@ drawPie();
   firstFiveRecords: any[] = [];
   GetActivityDetails() {
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
-      (data) => {  
+      (data) => {
         if (data !== null && data !== undefined) {
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
@@ -1227,7 +881,7 @@ drawPie();
   actionCost: any = '';
 
   showProjectDetails() {
-    $(document).ready(() => this.drawStatisticsNew());
+    $(document).ready(() => this.drawStatistics());
     this.showActionDetails(undefined);
     this.getapprovalStats();
   }
@@ -1525,14 +1179,11 @@ drawPie();
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
 
-    
-    $('#kt_tab_pane_2_4').removeClass("show active");
-    $('a[href="#kt_tab_pane_2_4"]').removeClass("active");  // ADD SUPPORTS TAB.
-    
-    $('#kt_tab_pane_user-request_approver').removeClass("show active");
-    $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");
-    
+    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
 
+    document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
 
 
     // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
@@ -1899,7 +1550,8 @@ drawPie();
          this.submitby = (this.complete_List[0]['SubmittedBy']);
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
-         this.getstandardapprovalStats();  
+         this.getstandardapprovalStats();
+
         }
 
       }
@@ -2243,7 +1895,6 @@ currentStdAprView:number=0;
       if (res != null && res != undefined) {
         this._portfoliolist = JSON.parse(res[0].Portfolio_json);
         this.getPortfolios()
-        
       }
     });
   }
@@ -2371,7 +2022,6 @@ currentStdAprView:number=0;
                       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
                       this.getAttachments(1);
                       this.calculateProjectActions();
-                      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
                     }
                     else
                     this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
@@ -2425,7 +2075,6 @@ currentStdAprView:number=0;
                 this.getProjectDetails(this.URL_ProjectCode);
                 this.getAttachments(1);
                 this.calculateProjectActions();
-                this.GetActivityDetails();
                 // this.GetSubtask_Details();
                 // this.GetProjectDetails();
                 // this.getapprovalStats();
@@ -2455,7 +2104,6 @@ currentStdAprView:number=0;
               this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
-          this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
       });   //swal end
 
@@ -2493,7 +2141,7 @@ currentStdAprView:number=0;
                 if (prjActionindex !== -1) {
                   const prjActionComp = { ...prjAction, Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
                   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
-                  this.clearFilterConfigs();   // clear filter.
+                  this.clearFilterConfigs();
                 }  // updated project action.
 
                 this._remarks = "";
@@ -2566,6 +2214,7 @@ currentStdAprView:number=0;
 
   openDarSideBar() {
     // opens the dar side bar
+
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2590,13 +2239,13 @@ currentStdAprView:number=0;
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {        
+      (data) => {
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
-        this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);   
+        this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
@@ -2605,15 +2254,8 @@ currentStdAprView:number=0;
 
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
 // user is prj owner
-// user is prj resp + he does not contains any actions.           
+// user is prj resp + he does not contains any actions.
           this.showaction = false;
-          if(this.currentActionView!==undefined&&this.projectInfo.OwnerEmpNo == this.Current_user_ID){
-               // user is prj owner he can submit timeline on any action selected.
-            this.showaction=true;
-            this.darArr=this.projectActionInfo; 
-            this.actionCode=this.projectActionInfo[this.currentActionView].Project_Code;
-           }
- 
         }
         else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
 // user is authority/support  + he does not contain any actions.
@@ -2629,7 +2271,6 @@ currentStdAprView:number=0;
                   if (selectedActionOpt)
                   this.actionCode = selectedActionOpt.Project_Code;
                 }
-               
         }
       });
 
@@ -2639,7 +2280,6 @@ currentStdAprView:number=0;
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
         this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
       });
-
   }
 
 
@@ -2848,7 +2488,6 @@ currentStdAprView:number=0;
         }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
-        this.GetActivityDetails();
       });
     }
     else if (val == 1) {
@@ -2872,7 +2511,6 @@ currentStdAprView:number=0;
         this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
         this.closeInfo();
-        this.GetActivityDetails();
       });
     }
 
@@ -2899,7 +2537,7 @@ currentStdAprView:number=0;
   ActionResponsibleid: any
   ActionClientid: any
   OGActionClient: any
-  ActionmaxAllocation:number=0;
+
 
 
   /// Action Edits start
@@ -2927,25 +2565,7 @@ currentStdAprView:number=0;
     this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration
     this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours;
     this.editAllocatedhours = this.ActionAllocatedHours;
-    this.onActionDateChanged();
-
   }
-
-onActionDateChanged(){  
-  let start_dt=new Date(this.ActionstartDate);
-  let end_dt=new Date(this.ActionendDate);
-  let Difference_In_Time = start_dt.getTime() - end_dt.getTime();
-  let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-  if(Difference_In_Days==0){
-    Difference_In_Days=-1;
-    this.ActionmaxAllocation = (-Difference_In_Days) * 10 / 1;
-  }
-  else{
-    this.ActionmaxAllocation = (-Difference_In_Days) * 10 / 1 +10;
-  }
-
-}
-
 
   onAction_update() {
 
@@ -3042,7 +2662,7 @@ onActionDateChanged(){
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
             this.notifyService.showSuccess("Updated successfully", "Success");
-           
+            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
@@ -3058,7 +2678,6 @@ onActionDateChanged(){
           }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
-          this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
     //    this.close_space();
@@ -3081,7 +2700,7 @@ onActionDateChanged(){
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
         this.notifyService.showSuccess("Updated successfully", "Success");
-       
+        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
@@ -3097,7 +2716,7 @@ onActionDateChanged(){
       }
 
       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+
       this.closeInfo();
     });
   }
@@ -3243,7 +2862,7 @@ check_allocation() {
 
 
  submitDar(){
- debugger
+
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
@@ -3301,7 +2920,6 @@ check_allocation() {
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
-
      }
      else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
       // user is project responsible.
@@ -3345,11 +2963,6 @@ check_allocation() {
       .subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
-
-        if(this.currentActionView!==undefined)
-         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get action activities update.
-        else  
-         this.GetActivityDetails();     // get project activities update.
 
         // Timeline submitted
         // if action submission is also required
@@ -3439,10 +3052,6 @@ check_allocation() {
 
   }
 
-  originalPortfolio_list: any[];
-
-
-
   getPortfolios() {
     if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
       this._portfolioLength = 0;
@@ -3457,7 +3066,6 @@ check_allocation() {
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {
         this._portfoliosList = data as [];
-        this.originalPortfolio_list=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
           singleSelection: false,
@@ -3477,7 +3085,7 @@ check_allocation() {
 
 
   Portfolio_Select(selecteditems) {
-
+    debugger
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -3560,17 +3168,6 @@ check_allocation() {
   }
 
 
-  filterPortfolio(input:string){
-    if(input.trim()===''){
-      this._portfoliosList=[...this.originalPortfolio_list];
-    } else{
-     this._portfoliosList=this.originalPortfolio_list.filter(item=>{
-        return `${item.Portfolio_Name}-${item.TM_DisplayName}`.toLocaleLowerCase().includes(input.toLocaleLowerCase())
-     })
-    }
-   }
-
-
   DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
     this.deletedBy = this.Current_user_ID;
 
@@ -3637,7 +3234,6 @@ check_allocation() {
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
       // console.log(data,"appact");
-     
       if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
         if (data[0]['actiondetails'] != '[]') {
           let action_details = JSON.parse(data[0]['actiondetails']);
@@ -6141,12 +5737,6 @@ removeSelectedDMSMemo(item){
           this.closePrjHoldSideBar();
           this.getProjectDetails(this.URL_ProjectCode);
           this.getholdate();
-
-          if(this.currentActionView!==undefined){
-          this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-          }else{
-            this.GetActivityDetails();
-          }
         }
       });
     }
@@ -6165,7 +5755,7 @@ removeSelectedDMSMemo(item){
 
 // Project / Action release.
   holdreleaseProject() {
-    
+    debugger
     if(this.currentActionView===undefined){
           // project release
           if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
@@ -6179,7 +5769,6 @@ removeSelectedDMSMemo(item){
               if (this._Message == '1') {
                 this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
                 this.getProjectDetails(this.URL_ProjectCode);
-                this.GetActivityDetails();
               }
               else if (this._Message == '2' || this._Message == '0') {
                 this.notifyService.showError("Project release failed", "Failed");
@@ -6191,7 +5780,7 @@ removeSelectedDMSMemo(item){
             this.closePrjReleaseSideBar();
             this.notifyService.showError("Access denied", "Failed")
           }
- 
+
 
     }
     else{
@@ -6206,13 +5795,12 @@ removeSelectedDMSMemo(item){
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
           this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-
+debugger
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
               this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
               this.getProjectDetails(this.URL_ProjectCode);
-              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
             }
             else if (this._Message == '2' || this._Message == '0') {
               this.notifyService.showError("Action release failed", "Failed");
@@ -6690,7 +6278,7 @@ filterConfig:{filterby:string,sortby:string}={
          filterby:'All',
          sortby:'All'
 };
-onFilterConfigChanged({filterBy,sortBy}){  
+onFilterConfigChanged({filterBy,sortBy}){
   this.filterConfig.filterby=filterBy;
   this.filterConfig.sortby=sortBy;
   this.filterConfigChanged=true;
@@ -7035,9 +6623,6 @@ openFullGraph(){
 
   $('.CHARTS').css('grid-template-columns', '1fr 1fr');
 
-
-
-
 }
 
 closeFullGraph(){
@@ -7373,10 +6958,8 @@ console.log('you are not allowed to submit this project.')
 
 // actions with 0 allc hrs start.
 showActionsWith0AlcHrs(){
-this.filteredPrjAction=this.actionsWith0hrs
+this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
-
-// actions with 0 allc hrs end.
 
 
 

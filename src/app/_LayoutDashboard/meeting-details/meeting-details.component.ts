@@ -675,7 +675,7 @@ addNewDMS() {
      if(data!=''&& data!=undefined){
      
       this._MemosSubjectList = JSON.parse(data['JsonData']);
-      console.log(this._MemosSubjectList,'meemmemem')
+      console.log(this._MemosSubjectList,'DMS Link')
       this._MemosSubjectList.forEach(element => {
        this.checkeddms.push(element.MailId);
        element.isChecked = true;
@@ -791,7 +791,7 @@ addNewDMS() {
       this._calenderDto.Emp_No = this.Current_user_ID;
      
       this._calenderDto.Dms =this.selectedEmploy_DMS.map(item=>item.MailId).toString()
-     
+   
       this.CalenderService.NewinsertDMS_meetingreport(this._calenderDto).subscribe
         (data => {    
       this.GetDMSList();                                                                                                         
@@ -1192,7 +1192,7 @@ Addproject_meetingreport() {
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
-  this._calenderDto.Project_Code = this.selectedEmploy_Projects.map(item=>item.Project_Code)
+  this._calenderDto.Project_Code = this.selectedEmploy_Projects.map(item=>item.Project_Code).join(',');
 
   this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe
     (data => {

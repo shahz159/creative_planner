@@ -1077,3 +1077,98 @@ textarea.form-control {
   text-decoration: underline;
   color: #00B74A;
 }
+.selected-item-blue{
+  background-color:#5867dd;
+  color: #ffffff;
+}
+/*--leave requistion from--*/
+
+.req-form{
+  width:970px !important;
+  margin: 0px auto;
+  padding: 20px 0px;
+}
+.req-form .head-title{
+  border: none;
+  padding: 0 0;
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.28571429em;
+  text-transform: none;
+  color: #000000de;
+}
+.req-form .company-details p{
+  margin-bottom: 0px;
+  color: #000000de;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+.head-date{
+  padding: 0;
+  font-weight: 700;
+  font-size: 12px;
+  color: #000000de;
+}
+.logo img {
+  width: 60px;
+}
+.req-form .main-card{
+  position: relative;
+    background: #fff;
+    box-shadow: 0 1px 2px 0 #22242626;
+    margin: 1rem 0;
+    padding: 1em 1em;
+    border-radius: 0.28571429rem;
+    border: 1px solid #22242626;
+}
+.req-form .label{
+  color: #000000de;
+  width: 30%;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+}
+.req-form .data{
+  color: #000000de;
+  font-size: 14px;
+  width: 68%;
+  display: inline-block;
+}
+.req-form .card{
+  border: 0px solid #ebedf2;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+.req-form .card-header{
+  color: #000000de;
+  font-size: 18px;
+  font-weight: 500;
+}
+.req-form .card-body{
+  padding: 0.75rem 1.25rem;
+}
+.leave-requisition-form-slider-bar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-left: 1px solid #EDEAE9;
+  overflow-x: hidden;
+  transition: 0.5s;
+  box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
+}
+.leave-requisition-form-slider-bar.open_requisition_form_sidebar_info {
+  width: 70% !important;
+}
+.levress{
+  text-decoration: none;
+}
+.levress:hover{
+ text-decoration: underline;
+ color: #007bff;
+cursor: pointer;
+}
