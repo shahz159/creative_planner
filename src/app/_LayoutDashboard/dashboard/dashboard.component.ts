@@ -527,7 +527,7 @@ export class DashboardComponent implements OnInit {
     //Get Schedule Json on calender
     this.GetScheduledJson();
     this.Getdraft_datalistmeeting();
-    // this.GetPending_Request();
+    this.GetPending_Request();
     // this.GetDelay_Actions();
     //Setting recurance max date
     //start
@@ -535,7 +535,7 @@ export class DashboardComponent implements OnInit {
     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
     //end
 
-    // this.GetMemosByEmployeeId();
+    this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
 
@@ -550,10 +550,10 @@ export class DashboardComponent implements OnInit {
     var DayNum1 = "DayNum";
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
-    // this.GetProjectAndsubtashDrpforCalender();
-    // this.calendar.updateTodaysDate();
+    this.GetProjectAndsubtashDrpforCalender();
+    this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
-    // this.Event_requests();
+    this.Event_requests();
 
 
     $(document).on('scroll', function () {
@@ -1234,6 +1234,7 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1391,6 +1392,8 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
+          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
@@ -1646,6 +1649,10 @@ export class DashboardComponent implements OnInit {
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
+         
+        // var vAgendas = "Meeting_Agendas";
+        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        // element[vAgendas] = mtgAgendas;
 
 
       });
@@ -1973,6 +1980,12 @@ export class DashboardComponent implements OnInit {
 
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+
+    // debugger
+    //     var vMeeting_Agendas="Meeting_Agendas";
+    //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+    //     element[vMeeting_Agendas]=updatedAgnds;
+
       });
       if (this._OldRecurranceId == '0') {
         if (this.selectedrecuvalue != this._OldRecurranceId) {
@@ -2172,7 +2185,7 @@ export class DashboardComponent implements OnInit {
     if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
       var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-      radio1.disabled = true;
+      // radio1.disabled = true;
       radio1.checked = false;
 
       var radio2 = document.getElementById('r2') as HTMLInputElement | null;

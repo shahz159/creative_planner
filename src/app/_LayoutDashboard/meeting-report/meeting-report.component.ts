@@ -96,7 +96,7 @@ export class MeetingReportComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '5rem',
+    minHeight: '20rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
@@ -406,8 +406,6 @@ export class MeetingReportComponent implements OnInit {
     else{
       this.notifyService.showInfo("Something went wrong","");
     }
-
-
   }
 
 
@@ -424,7 +422,7 @@ export class MeetingReportComponent implements OnInit {
       this._calenderDto.Meeting_notes = this.Notes_Type;
       this._calenderDto.Status_type = "Left"
       // alert(this.Notes_Type)
-      // console.log(this._calenderDto);
+      console.log(this._calenderDto);
       this.CalenderService.NewGetMeeting_notes(this._calenderDto).subscribe
         (data => {
 
@@ -904,7 +902,6 @@ export class MeetingReportComponent implements OnInit {
 
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
-              debugger
               this._MemosSubjectList = JSON.parse(data['JsonData']);
 
               this._MemosSubjectList.forEach(element => {
@@ -1277,7 +1274,7 @@ export class MeetingReportComponent implements OnInit {
   task_id: any;
 
   GetProjectTypeList(taskName, id) {
-    // debugger
+
     this._taskName = taskName;
     this.task_id = id;
     this.router.navigate(["Meeting-Report/" + this.Schedule_ID + "/ActionToAssign/2"]);

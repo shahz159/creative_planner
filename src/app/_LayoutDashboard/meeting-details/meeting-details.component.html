@@ -1,11 +1,11 @@
 <div class="kt-grid kt-grid--hor kt-grid--root">
     <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 p-3 "
-        id="meetingdetails">
+        id="meetingdetails" >
         <div class="row"  *ngFor="let item of EventScheduledjson"  >
-            <div class="col-lg-5">
-                <div class="card h-100">
+            <div class="col-lg-5"  >
+                <div class="card h-100" >
                     <div class="card-body p-4">
-                        <div class="kt-meeting-main">
+                        <div class="kt-meeting-main" >
                             <div class="kt-meeting-box">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="kt-meeting-title mt-0 mb-2">
@@ -18,7 +18,7 @@
                                             </svg>
 
                                         </div>
-                                        <span class="kt-meeting-title-name">Meeting Details</span>
+                                        <span class="kt-meeting-title-name" (click)="currentAgendaProject()">Meeting Details</span>
                                     </div>
                                     <div class="kt-meeting-status started mt-0 mb-2">
                                         <span class="kt-meeting-status-icon">
@@ -84,9 +84,9 @@
                                         <span class="kt-meeting-status-time">12:45</span>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" (click)="currentAgendaProject()">
                                     <div class="col-12">
-                                        <div class="kt-meeting-content active">
+                                        <div class="kt-meeting-content" [ngClass]="{'Active' : currentAgendaView === undefined}">
                                             <h2>{{item.Task_Name}}</h2>
                                             <p [innerHTML]="item.Description"></p>
                                         </div>
@@ -138,6 +138,7 @@
                                     <div class="col-lg-3 pl-1">
                                         <div class="kt-metric-app">
                                             <span>
+                                                <a href="https://meet.google.com/?hs=197&authuser=0" target="_blank">
                                                 <div class="app-logo">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="57"
@@ -151,12 +152,16 @@
                                                                 <use xlink:href="#image0_365_5696"
                                                                     transform="scale(0.00806452 0.025)" />
                                                             </pattern>
+                                                           
                                                             <image id="image0_365_5696" width="124" height="40"
                                                                 xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAoCAYAAAA8AZ5fAAAHJElEQVR4Ae2bTYgjRRSAawVBFCSLBw8qxIM/CMqKLIhewiJJbuamiJOudCfp6r1MQI+yGxxRUdbNisKisBkEWZbJkgVB3VHsu8LMUXZF+6yXHDws6DK9vOp+XVXdXT2ZpDMzmemBotPprp/3vnqv3qvKEFL8FRooNFBooNDAcdTAf189vOrfJP25yk+kchx1t3Qy/3Pm9PDOhUd8f5PMX34mxtIp4DgNGGD/fea0nxvwm+TGcdLfUsmKsHMFvknchBLG9TLZqPbJsFJKPCu+2B8NyLAXCvxatUFG1QkZ1XyyUevNKx3t9UqUskrTslebJutDodRpUMbK87Z9ZOvHYS8M+PXqeQ4aYHPg1f6sSgXQTZOdNyx7YljM1xR3WcEbFhsaFnONtn1xVh2l1kuDnTvwcaVERrWhAnsO4GDRu4BWJgBMjFThD/GXhsm8cBInl8RZx62DnSfw2z8+6JFRbTsBe0bgTcsxFGs2mUfbrE87nVNgzfxqdRuGZY/Fe872rDo6qHq5A3/z3d8qb7zzq68ra59dGvg/kMpUZZNsp6Vw2zce8MtfvBC4b3Tj8hUCtz38AVABkfnUYoOs6rTNPcGY0t7SBYe5A3927f/K0x/c9XXlqffv0ixlys/8TeLGga9/e9IvffScTy68lBtww4rcnA9WLY/hqH1eKuD9K4/6ZO35oOQE/G3upsPgzGTeUQMcl2cpgE++v8+nl58QsAF6TsCbFltHd95q26/HFTTPfZDWsYFhOWMokOLtFt3zLMGyVzGablpsAO1kjSNMIalSB+IOKJTRoATLTxbwWcZL8nbp3nf3++VPnlFh5wjcaNvbCDxLqXt5xmOCthO1i+3jVRfdG6Z9Ed9JuXppkwWCSXlJUupJY4C4A2TQAc/o26OW09DKnydwd/SQmwo7T+Ai19a6c0q5Ul2ev0IOm1IgygelcNhSTGCYPJ93DUtMLIASh55UOH/fDetjOujJgWLQl7RfgH2J1AvrQWyiBZ7sO5IxUT8BPk/g5JuKSz4+lbTufQcOUbl2EwaVMuQWJKVtEO0rgMAaJRgIIcj/RRyB3/MJRFlZXnbAbaPSZcuOB5vUdHrymLFNqX+ehyf6pmInkVLIXqIJlW4QuQIf1Vxy9TU/FXpOa7hQgD1BRcavtHM2AAWw4iWcCM0WG4TWjRMgdWMDFI8goA70FazxAXBQcrz/4B3hIWASKaCkSSDXlSeKDrjyjtR32D54M5Qn8hJyH7mu4QSAQ34N0D99UbX0nIA3WyJoQ6UoAmXcyEpfMbs9OeJvhS4+rXrcasS9rd3IgfZR+RBcyve6ccuTC98RE5zxCSliGHs7Y1vZxfoJeXK3cHlD5cuXBfScgMtKgbU5IVDGF7AfjRCgnWkgQHNCyUEaiG1k9b9iMojCubXBZzjMwXudVwhccug5NGu4mADguiP37UPswHcad9tcWihwgH/5lQB6TsA5AGldBWgZjKNHSnAW5u8qFH07QrGBRQul6/cBFMCxyaVLJ2UPhBYq9RWz8Mh1u+Cd5NgjEjrtw+Pv/Vt5sn/H15XHPvyzR+DcepqCLl22cvj89au55eEgQ8zKExF0XE4FtsV8dN+U0hJanc5a5UmBa/huywq4WiVAgzVcigV0fSnrs8bCmy17gGOOB34o94p5FnZHT+C9em3/USHd2762fH5OvyUaB5t1f60KhydQku3tcS8dBIhHtaBgSLUgJePP8Xw8dnRKLbYuKyB2uDKGyYHPgwMa4TbRFcfg8X6xDp9ccj4t7fMDaIQFywv2xSdILKfXWXjg9nFM9qQpNp9OvOU4Jw2TH6fCUjJMt/r9As4j+Ho5FfoMwDlUnsqg8JGLi6LUSLnhWhqHzdsAK5eWCF6H36vt0rbq8sG61PbtSVo7stI5rCn6gnZ1wIXcsrxpfTtbct84IQnZT+DQa3AmPlAsfUbgAbBE3psEbjIP3bgQXHwCELI7VUBCMNRhqQdI3MvEAUZpkZ16OpcKHerwTRhxlJsFnMsNQaHp/GVYbEcaL3zeoVrrhpr7DRz1vFHvR9DnAI7NgSKp1W2EwdKQ72nDXni4FuJ7WdfgDD3YF+f1TdjXzj5ShecUonAL9uDZkE6x/w5jgHHhWHkd2ivJ8QKOG668dIKlSh4/7xsOkyD7MO0rvJ2U9+Q6BwccRjGqNsj12pBcrUfrpjq4o3cHkThMrDTJlIBsl4mWVn+67w7Kwqcb3ZF6SwoQEwcraiZhby1OcOqVSPeWt/AofVQ/9v+IEMssPNhDaLWcVuja8bdrUdq4OOjs9zLp3F4l3Vv9RLl0rs9/Ow7r7Mylnnk+vDjBDl/L4W6fHGjJQeaOLrc+fJIUI5paAxDkGaa9FUbYPLI2LPuXrExi6saLFw+vBniUzX/lkp0JHF4JipEVGig0UGig0EChgUIDhQYKDRQaKDRQaKDQwBQauAdTl8bB7DWeVQAAAABJRU5ErkJggg==" />
                                                         </defs>
                                                     </svg>
                                                 </div>
-                                                <div class="app-title">Google Meet</div>
+                                                <div class="app-title">
+                                                </div>
+                                                  Google Meet
+                                                </a>
                                             </span>
                                             <span class="d-none">
                                                 <div class="app-logo">
@@ -375,11 +380,10 @@
                                                     </clipPath>
                                                 </defs>
                                             </svg>
-
                                         </div>
                                         <span class="kt-meeting-title-name">Agenda</span>
                                     </div>
-                                    <div class="kt-meeting-agenda mt-0 mb-2">
+                                    <!-- <div class="kt-meeting-agenda mt-0 mb-2">
                                         <span class="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="18"
                                                 fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus">
@@ -388,24 +392,132 @@
                                                 </path>
                                             </svg>
                                         </span>
-                                        <span class="title">Add Agenda</span>
+                                        <span class="title"  data-toggle="modal"
+                                        data-target="#exampleModalCenter" >Add Agenda</span>         
+                                    </div> -->
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="action-section">
+                                    <div class="todo-main">
+                                        <div class="task-header">
+                                            <div class="task-tools">
+                                                <div class="task-count"></div>
+                                            </div>
+                                             <div class="agenda-input-field p-1">
+                                                <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
+                                                <input class="task-input ml-2" id="todo-input" name="text" placeholder="Enter Agenda '." autofocus="true"
+                                                  [(ngModel)]="agendaInput"   
+                                                />
+                                                    <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
+                                                <ng-container *ngIf="agendaInput">
+                                                <button (click)="addAgenda()"  _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-0"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
+                                                </button>
+                                            </ng-container>
+                                            </div>
+                                        </div>
+                                   
+                            
+                            
+                                        <!-- <div class="todo-list">
+                                            <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">
+                                                <span class="agenda-index">{{i+1}}.</span>
+                                                <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label> 
+                                                <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>                       
+                                            <div class="agenda-ctrl-btns">
+                                               
+                                               
+                                                <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
+                                                    <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
+                                                </button>
+                            
+                                                <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(i)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                        role="img" font-size="1.5rem" width="1em" height="1em"
+                                                        viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                        <path fill="currentColor"
+                                                            d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                            
+                                             <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
+                                               <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
+                                             </button>
+                            
+                                             <button (click)="updateAgenda(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
+                                                <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
+                                             </button>                
+                                            </div>                         
+                                            </div>
+                                        </div>                                     -->
                                     </div>
                                 </div>
+
+
+
+
+
+
+
                                 <div class="row">
-                                    <div class="col-12">
-                                        <ul class="kt-agenda-list">
-                                            <li class="kt-agenda-item active">
-                                                <div class="item-number">01</div>
-                                                <div class="item-info">
-                                                    <div class="item-details">
-                                                        <div class="item-label">Devbox website</div>
-                                                        <div class="item-title">ui and ux design for devbox new website
+                                    <div class="col-12"  >
+                                        <ul class="kt-agenda-list">                                          
+                                            <li *ngFor="let item of Agendas_List;let i = index;" (click)="showAgendaDetails(item,i)">
+                                                <div class="kt-agenda-item " [ngClass]="{'Active':currentAgendaView===i}">
+                                                    <div class="item-number">{{i+1}}</div>
+                                                    <div class="item-info">
+                                                        <div class="item-details">
+                                                            
+                                                            <!-- <div class="item-title" [id]="'agenda-label-'+i" class="task-name">{{item.Agenda_Name}}
+                                                                                                   
+                                                            </div> -->
+                                                            <label [id]="'agenda-label-'+i" class="task-name">{{item.Agenda_Name}}</label> 
+                                                            <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="item.Agenda_Name"/>
+                                                        
                                                         </div>
+                                                        <div>
+                                                        <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
+                                                            <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
+                                                        </button>
+                                                        <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(item.AgendaId)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                                role="img" font-size="1.5rem" width="1em" height="1em"
+                                                                viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                                <path fill="currentColor"
+                                                                    d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                        <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
+                                                            <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
+                                                          </button>
+                                         
+                                                          <button (click)="updateAgenda(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
+                                                             <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
+                                                          </button>   
                                                     </div>
-                                                    <div class="item-count">12</div>
-                                                </div>
-                                            </li>
-                                            <li class="kt-agenda-item">
+                                                    </div>
+                                                </div> 
+                                            </li>     
+                                                                             
+                                            <!-- <li class="kt-agenda-item">
                                                 <div class="item-number">02</div>
                                                 <div class="item-info">
                                                     <div class="item-details">
@@ -422,9 +534,9 @@
                                                         <div class="item-label">Devbox website</div>
                                                         <div class="item-title">website Child Pages design</div>
                                                     </div>
-                                                    <!-- <div class="item-count">12</div> -->
+                                                    <div class="item-count">12</div>
                                                 </div>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </div>
                                 </div>
@@ -539,14 +651,22 @@
                                         </svg>
                                     </a>
 
-                                    <a class="kt-inbox__icon" title="meetings">
+                                    <!-- <a class="kt-inbox__icon" title="meetings">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
                                             class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
                                             <path
                                                 d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z" />
                                         </svg>
+                                    </a> -->
 
-                                    </a>
+                                       <a class="kt-inbox__icon" title="Previous Meeting Notes"  (click)="Slide_meeting()">
+                                        <svg _ngcontent-qva-c394="" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 125" x="0px" y="0px"><path _ngcontent-qva-c394="" d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect _ngcontent-qva-c394="" x="16.37" y="37.13" width="44.1" height="8"></rect><rect _ngcontent-qva-c394="" x="16.37" y="53.09" width="30.8" height="8"></rect><rect _ngcontent-qva-c394="" x="16.37" y="22.13" width="44.1" height="8"></rect><path _ngcontent-qva-c394="" d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
+                                      </a> 
+
+
+                                    <a class="kt-inbox__icon" title="Projects"  (click)="AddProjects()" >
+                                        <i _ngcontent-pre-c394="" class="fab-icn fab fa-wpforms " style="font-size: 1.4em;"></i>
+                                    </a>                                 
                                 </div>
                             </div>
 
@@ -1036,8 +1156,21 @@
                         <div class="kt-info-box kt-info-meeting-box meeting-notes border-0">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="kt-project-name d-flex align-items-start flex-column">
-                                    <h4>Website Development static</h4>
-                                    <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6>
+
+                                   <!-- <h4> Website Development static</h4> -->
+                               <ng-container *ngIf="currentAgendaView=== undefined ;else Agenda">
+                                <ng-container *ngFor="let data of EventScheduledjson">
+                                   <h4>{{data.Task_Name}}</h4>
+                                   <h6 [innerHTML]="data.Description"></h6>
+                                 </ng-container>
+                                </ng-container>
+                               
+                                      <ng-template #Agenda>
+                                        <h4>{{Agendas_List[currentAgendaView].Agenda_Name}}</h4>
+                                      </ng-template>
+                            
+                                      
+                                    <!-- <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6> -->
                                 </div>
                                 <div class="kt-btn-notes-div">
                                     <div class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
@@ -1078,57 +1211,65 @@
                             </div>
                             <hr class="dotted">
                             <div class="meeting-notes">
-                                <angular-editor [config]="config" [(ngModel)]="notesContent"></angular-editor>
+                                <!-- <angular-editor [config]="config" [(ngModel)]="notesContent"></angular-editor> -->
+                                <angular-editor  [editor]="Editor" 
+                               [(ngModel)]="Notes_Type"
+                               (keyup)="addBulletPointsOnEnter($event)"></angular-editor >
                             </div>
 
-
-
-
-
-
-
-
-                            <div style="display: flex; flex-flow: wrap; margin-right: 70px;">
-                                <span class="todo">
-                                    <button class="suggestion-btn" (click)="callfunction()" id='create-to-do-btn' >
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="suggestion-svg" viewBox="0 0 1024 1024" version="1.1">
-                                            <path
-                                                d="M674.507676 598.338391 287.079856 598.338391c-14.136975 0-25.638937 11.499915-25.638937 25.63689 0 14.137998 11.501962 25.640983 25.638937 25.640983l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.640983C700.148659 609.838306 688.646698 598.338391 674.507676 598.338391zM794.746154 384.583029c-14.137998 0-25.640983 11.501962-25.640983 25.63996l0 494.299873c0 0.130983 0 0.280386-0.001023 0.433882-0.899486 0.279363-2.665713 0.644683-5.764284 0.644683L200.047664 905.601426c-4.312212 0-7.564279-2.971681-7.564279-6.913457L192.483384 191.851493c0-4.493338 0.974188-8.28878 1.811252-9.821693l373.337917 0c14.136975 0 25.63996-11.501962 25.63996-25.63996 0-14.136975-11.501962-25.638937-25.63996-25.638937l-374.069581 0c-30.336936 0-52.357462 25.696242-52.357462 61.099566l0 706.836477c0 32.086789 26.396183 58.19133 58.84113 58.19133l563.293223 0c34.119075 0 57.042157-21.041222 57.042157-52.356438L820.382021 410.224012C820.383044 396.086014 808.883129 384.583029 794.746154 384.583029zM674.507676 745.295394 287.079856 745.295394c-14.136975 0-25.638937 11.499915-25.638937 25.63689 0 14.137998 11.501962 25.640983 25.638937 25.640983l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.640983C700.148659 756.795309 688.646698 745.295394 674.507676 745.295394zM879.595634 157.107177c-3.77293-14.409175-12.871145-28.250414-24.964578-37.975916l-43.827181-35.240619c-12.880355-10.352789-29.27679-16.290011-44.986587-16.290011-16.876366 0-31.594579 6.747681-41.439808 18.995633l-19.624966 24.381293c-6.380314 7.968485-7.987928 17.577331-5.222955 26.916023l-114.241904 142.063553-2.486634 3.090385-22.812565 85.303828c-9.749038 30.859845 4.449335 48.075949 13.806447 55.608505 6.783497 5.450129 14.468526 8.728802 22.851451 9.754155 0.984421 0.246617 2.125407 0.488117 3.440355 0.632403 1.003863 0.110517 2.053776 0.167822 3.118014 0.167822l0.014326 0c4.588505 0 10.047844-0.9967 17.180288-3.13541l2.877537-1.065262 83.402525-41.897226 119.874181-149.07934c0.440022 0.017396 0.880043 0.032746 1.320065 0.032746 9.218966 0 17.411555-3.862981 23.077601-10.892071l19.562545-24.342408C880.924909 191.1976 884.15037 174.495196 879.595634 157.107177zM674.469813 348.564697l-56.738235 28.537963c-2.958378 0.579191-5.734608 1.684362-8.277524 3.296069-0.313132 0.198521-0.615007 0.385786-0.905626 0.562818 0.12382-0.318248 0.25378-0.639566 0.39295-0.971118 0.99977-2.437515 1.588171-5.022387 1.753947-7.702426l17.732873-66.078974 105.73209-131.488707 48.647977 39.113833L674.469813 348.564697zM831.385633 172.919305l-7.679913 9.550517-68.139913-54.779627 7.687076-9.56382c0.291642-0.132006 1.144056-0.38374 2.604314-0.38374 4.28356 0 9.735735 2.071172 13.570063 5.15644l43.832298 35.245735c3.493567 2.805906 6.421246 7.018857 7.642051 10.993378C831.497173 171.081447 831.492056 172.446537 831.385633 172.919305zM487.474932 291.067168l-200.394053 0c-14.136975 0-25.638937 11.501962-25.638937 25.63996 0 14.136975 11.501962 25.637913 25.638937 25.637913l200.394053 0c14.137998 0 25.63996-11.500938 25.63996-25.637913C513.114892 302.56913 501.611907 291.067168 487.474932 291.067168zM674.507676 438.023148 287.079856 438.023148c-14.136975 0-25.638937 11.500938-25.638937 25.638937s11.501962 25.638937 25.638937 25.638937l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.638937S688.646698 438.023148 674.507676 438.023148z" />
-                                        </svg>
-                                        <span class="suggestion-name">To-do list</span>
-                                    </button>
-                                    <div class="iframe">
-                                        <img
-                                            src="https://img.freepik.com/premium-vector/list-icon-with-hand-drawn-text-checklist-task-list-vector-illustration-flat-style-white-background_157943-819.jpg">
+                            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+                                <div class="accordion-item">
+                                  <h2 class="accordion-header" id="headingOne">
+                                    <a class="accordion-button" type="button" data-toggle="collapse" data-target="#attendes_notes" aria-expanded="false" aria-controls="attendes_notes">
+                                      <div class="head-content">
+                                        <span class="accordion-heading">View All Team members notes</span><span class="message-count"> 24 Messages</span>
+                                      </div>
+                                      <div>
+                                        <span class="accordion-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none">
+                                                <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </h2>
+                                  <div id="attendes_notes" class="accordion-collapse collapse" aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+                                    <div class="accordion-body">
+                                        <ul class="attendees-note-userlist">
+                                            <li class="attendees-note-user">
+                                                <div class="user-info">
+                                                    <span class="user-icon">
+                                                        <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                                    </span>
+                                                    <span>
+                                                        <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
+                                                        <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                                                    </span>
+                                                </div>
+                                                <div class="user-notes">
+                                                    <p>How likely are you to recommend our company to your friends and family ?</p>
+                                                    <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+                        
+                                            </li>
+                                            <li class="attendees-note-user">
+                                                <div class="user-info">
+                                                    <span class="user-icon">
+                                                        <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                                    </span>
+                                                    <span>
+                                                        <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
+                                                        <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                                                    </span>
+                                                </div>
+                                                <div class="user-notes">
+                                                    <p>How likely are you to recommend our company to your friends and family ?</p>
+                                                    <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </span>
-                                <span>
-                                    <button class="suggestion-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="suggestion-svg" viewBox="0 0 1024 1024" version="1.1">
-                                            <path
-                                                d="M674.507676 598.338391 287.079856 598.338391c-14.136975 0-25.638937 11.499915-25.638937 25.63689 0 14.137998 11.501962 25.640983 25.638937 25.640983l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.640983C700.148659 609.838306 688.646698 598.338391 674.507676 598.338391zM794.746154 384.583029c-14.137998 0-25.640983 11.501962-25.640983 25.63996l0 494.299873c0 0.130983 0 0.280386-0.001023 0.433882-0.899486 0.279363-2.665713 0.644683-5.764284 0.644683L200.047664 905.601426c-4.312212 0-7.564279-2.971681-7.564279-6.913457L192.483384 191.851493c0-4.493338 0.974188-8.28878 1.811252-9.821693l373.337917 0c14.136975 0 25.63996-11.501962 25.63996-25.63996 0-14.136975-11.501962-25.638937-25.63996-25.638937l-374.069581 0c-30.336936 0-52.357462 25.696242-52.357462 61.099566l0 706.836477c0 32.086789 26.396183 58.19133 58.84113 58.19133l563.293223 0c34.119075 0 57.042157-21.041222 57.042157-52.356438L820.382021 410.224012C820.383044 396.086014 808.883129 384.583029 794.746154 384.583029zM674.507676 745.295394 287.079856 745.295394c-14.136975 0-25.638937 11.499915-25.638937 25.63689 0 14.137998 11.501962 25.640983 25.638937 25.640983l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.640983C700.148659 756.795309 688.646698 745.295394 674.507676 745.295394zM879.595634 157.107177c-3.77293-14.409175-12.871145-28.250414-24.964578-37.975916l-43.827181-35.240619c-12.880355-10.352789-29.27679-16.290011-44.986587-16.290011-16.876366 0-31.594579 6.747681-41.439808 18.995633l-19.624966 24.381293c-6.380314 7.968485-7.987928 17.577331-5.222955 26.916023l-114.241904 142.063553-2.486634 3.090385-22.812565 85.303828c-9.749038 30.859845 4.449335 48.075949 13.806447 55.608505 6.783497 5.450129 14.468526 8.728802 22.851451 9.754155 0.984421 0.246617 2.125407 0.488117 3.440355 0.632403 1.003863 0.110517 2.053776 0.167822 3.118014 0.167822l0.014326 0c4.588505 0 10.047844-0.9967 17.180288-3.13541l2.877537-1.065262 83.402525-41.897226 119.874181-149.07934c0.440022 0.017396 0.880043 0.032746 1.320065 0.032746 9.218966 0 17.411555-3.862981 23.077601-10.892071l19.562545-24.342408C880.924909 191.1976 884.15037 174.495196 879.595634 157.107177zM674.469813 348.564697l-56.738235 28.537963c-2.958378 0.579191-5.734608 1.684362-8.277524 3.296069-0.313132 0.198521-0.615007 0.385786-0.905626 0.562818 0.12382-0.318248 0.25378-0.639566 0.39295-0.971118 0.99977-2.437515 1.588171-5.022387 1.753947-7.702426l17.732873-66.078974 105.73209-131.488707 48.647977 39.113833L674.469813 348.564697zM831.385633 172.919305l-7.679913 9.550517-68.139913-54.779627 7.687076-9.56382c0.291642-0.132006 1.144056-0.38374 2.604314-0.38374 4.28356 0 9.735735 2.071172 13.570063 5.15644l43.832298 35.245735c3.493567 2.805906 6.421246 7.018857 7.642051 10.993378C831.497173 171.081447 831.492056 172.446537 831.385633 172.919305zM487.474932 291.067168l-200.394053 0c-14.136975 0-25.638937 11.501962-25.638937 25.63996 0 14.136975 11.501962 25.637913 25.638937 25.637913l200.394053 0c14.137998 0 25.63996-11.500938 25.63996-25.637913C513.114892 302.56913 501.611907 291.067168 487.474932 291.067168zM674.507676 438.023148 287.079856 438.023148c-14.136975 0-25.638937 11.500938-25.638937 25.638937s11.501962 25.638937 25.638937 25.638937l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.638937S688.646698 438.023148 674.507676 438.023148z" />
-                                        </svg>
-                                        <span class="suggestion-name">Meeting note</span>
-                                    </button>
-                                </span>
-                                <span>
-                                    <button class="suggestion-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="suggestion-svg" viewBox="0 0 1024 1024" version="1.1">
-                                            <path
-                                                d="M674.507676 598.338391 287.079856 598.338391c-14.136975 0-25.638937 11.499915-25.638937 25.63689 0 14.137998 11.501962 25.640983 25.638937 25.640983l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.640983C700.148659 609.838306 688.646698 598.338391 674.507676 598.338391zM794.746154 384.583029c-14.137998 0-25.640983 11.501962-25.640983 25.63996l0 494.299873c0 0.130983 0 0.280386-0.001023 0.433882-0.899486 0.279363-2.665713 0.644683-5.764284 0.644683L200.047664 905.601426c-4.312212 0-7.564279-2.971681-7.564279-6.913457L192.483384 191.851493c0-4.493338 0.974188-8.28878 1.811252-9.821693l373.337917 0c14.136975 0 25.63996-11.501962 25.63996-25.63996 0-14.136975-11.501962-25.638937-25.63996-25.638937l-374.069581 0c-30.336936 0-52.357462 25.696242-52.357462 61.099566l0 706.836477c0 32.086789 26.396183 58.19133 58.84113 58.19133l563.293223 0c34.119075 0 57.042157-21.041222 57.042157-52.356438L820.382021 410.224012C820.383044 396.086014 808.883129 384.583029 794.746154 384.583029zM674.507676 745.295394 287.079856 745.295394c-14.136975 0-25.638937 11.499915-25.638937 25.63689 0 14.137998 11.501962 25.640983 25.638937 25.640983l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.640983C700.148659 756.795309 688.646698 745.295394 674.507676 745.295394zM879.595634 157.107177c-3.77293-14.409175-12.871145-28.250414-24.964578-37.975916l-43.827181-35.240619c-12.880355-10.352789-29.27679-16.290011-44.986587-16.290011-16.876366 0-31.594579 6.747681-41.439808 18.995633l-19.624966 24.381293c-6.380314 7.968485-7.987928 17.577331-5.222955 26.916023l-114.241904 142.063553-2.486634 3.090385-22.812565 85.303828c-9.749038 30.859845 4.449335 48.075949 13.806447 55.608505 6.783497 5.450129 14.468526 8.728802 22.851451 9.754155 0.984421 0.246617 2.125407 0.488117 3.440355 0.632403 1.003863 0.110517 2.053776 0.167822 3.118014 0.167822l0.014326 0c4.588505 0 10.047844-0.9967 17.180288-3.13541l2.877537-1.065262 83.402525-41.897226 119.874181-149.07934c0.440022 0.017396 0.880043 0.032746 1.320065 0.032746 9.218966 0 17.411555-3.862981 23.077601-10.892071l19.562545-24.342408C880.924909 191.1976 884.15037 174.495196 879.595634 157.107177zM674.469813 348.564697l-56.738235 28.537963c-2.958378 0.579191-5.734608 1.684362-8.277524 3.296069-0.313132 0.198521-0.615007 0.385786-0.905626 0.562818 0.12382-0.318248 0.25378-0.639566 0.39295-0.971118 0.99977-2.437515 1.588171-5.022387 1.753947-7.702426l17.732873-66.078974 105.73209-131.488707 48.647977 39.113833L674.469813 348.564697zM831.385633 172.919305l-7.679913 9.550517-68.139913-54.779627 7.687076-9.56382c0.291642-0.132006 1.144056-0.38374 2.604314-0.38374 4.28356 0 9.735735 2.071172 13.570063 5.15644l43.832298 35.245735c3.493567 2.805906 6.421246 7.018857 7.642051 10.993378C831.497173 171.081447 831.492056 172.446537 831.385633 172.919305zM487.474932 291.067168l-200.394053 0c-14.136975 0-25.638937 11.501962-25.638937 25.63996 0 14.136975 11.501962 25.637913 25.638937 25.637913l200.394053 0c14.137998 0 25.63996-11.500938 25.63996-25.637913C513.114892 302.56913 501.611907 291.067168 487.474932 291.067168zM674.507676 438.023148 287.079856 438.023148c-14.136975 0-25.638937 11.500938-25.638937 25.638937s11.501962 25.638937 25.638937 25.638937l387.42782 0c14.137998 0 25.640983-11.501962 25.640983-25.638937S688.646698 438.023148 674.507676 438.023148z" />
-                                        </svg>
-                                        <span class="suggestion-name">Project plan</span>
-                                    </button>
-                                </span>
-                            </div>
-
-
-
-
-
-
-
-
+                                  </div>
+                                </div>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -1233,13 +1374,256 @@
 </div>
 <!--Attendees Notes End-->
 
+
+<!-- DMS Sidebar Template start-->
+
+<div id="LinkSideBar" class="sideInfobar animate-right ">
+    <div id="LinkSideBar-header" class="px-4 pt-4 pb-2">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+            <h4 class="font-weight-600 m-0 d-flex">
+                <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">           
+                    <ng-container *ngIf="_linkedMemos>0">
+                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
+                 </ng-container>
+                    <ng-container  *ngIf="_linkedMemos==0" >
+                    <img width="23px" class="black-white"
+                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
+                    title="Not Linked">
+                 </ng-container>
+                </a> Link DMS
+            </h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                (click)="closeLinkSideBar() ">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+
+            <div class="M_fsize">
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    {{_MemosSubjectList&&_MemosSubjectList.length}}
+                </div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <li class="kt-nav__item px-4">
+            <div class="matchip-drp-dwn">
+              <mat-form-field class="drp-dwn-field ">
+                    <mat-label>Select DMSs</mat-label>
+                    <mat-chip-list #selectedTeamMembers>
+                        <mat-chip *ngFor="let data of selectedEmploy_DMS" class="Data_chip_kt"
+                            (removed)="RemoveDMS(data)">
+                            {{data.Subject}}
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div class="d-flex">
+                        <input #fruitInputs class="flex-1" [matChipInputFor]="selectedTeamMembers"
+                            [matAutocomplete]="TeamMemberDrpDwns"
+                            (input)="filterEmployeesDMs($event.target.value)" #SupportTF 
+                            />
+                        <button *ngIf="isDMSDrpDwnOpen"
+                            class="bg-transparent border-0 "><mat-icon class="close-icon"
+                                (click)=" this.isDMSDrpDwnOpen=false;  
+                                 closeAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">cancel</mat-icon></button>
+                        <button *ngIf="!isDMSDrpDwnOpen"
+                            class="bg-transparent border-0"><mat-icon class="add-icon"
+                                (click)="this.isDMSDrpDwnOpen=true;
+                                 openAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">add</mat-icon></button>
+                    </div>
+                    <mat-autocomplete aria-label="supportDrpDwnDMS" #TeamMemberDrpDwns="matAutocomplete"
+                        (optionSelected)="selectedChip_DMS($event); SupportTF.value=''; "
+                        (opened)="isDMSDrpDwnOpen=true"
+                        (closed)="isDMSDrpDwnOpen=false;    ">
+                            <mat-option class="mat-font" *ngFor="let item of Memos_List "  [value]="item.MailId">
+                            <mat-checkbox color="primary"  [checked]="selectedEmploy_DMS.indexOf(item)!==-1" (change)="selectedChip_DMS($event)"></mat-checkbox>
+                            {{item.Subject}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                 <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
+                   (click)="AddDMS_meetingreport()" >Link</button>
+            </div>
+        </li>
+        <li class="kt-nav__item px-4">
+                <div id="DemoList-table" *ngIf="_MemosSubjectList&&_MemosSubjectList ;else noDMSFound">
+                <div class="demo" *ngFor="let memo of _MemosSubjectList">
+                    <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
+                    <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
+                </div>
+            </div>
+            <ng-template #noDMSFound class="d-none">
+                <div class="no-DMS-found">
+                    <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
+                    <div class="bnk-txt mt-2 d-flex justify-content-center">
+                        <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
+                    </div>
+                </div>
+            </ng-template>
+        </li>
+        <li class="kt-nav__foot"></li> 
+    </ul>
+</div>
+
+<!-- DMS Sidebar Template End-->
+
+
+<!-- Link Portfolios  Template  Start-->
+
+<div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right">
+    <div class="px-4 pt-4 pb-1" id="LinkSideBar-header">
+        <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+            <h4 class="font-weight-bold m-0 d-flex">
+                <a class="kt-inbox__icon  pb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
+                </a>Link Portfolio
+            </h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+            (click)="closeLinkSideBar()"  >
+           
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <ul class="kt-nav">
+        <li class="kt-nav__head d-block">
+            <p class="text-primary">
+                Portfolios</p>
+            <div class="M_fsize">
+                Linked
+                <div class="badge badge-pill badge-outline-success">
+                    {{portfolio_Scheduledjson.length}}
+                </div>
+            </div>
+            <div class="kt-nav__separator"></div>
+        </li>
+        <div class="d-flex align-items-end p-3" style="column-gap:10px">
+            <mat-form-field class="drp-dwn-field w-100">
+                <mat-label>Select Portfolios</mat-label>
+                <mat-chip-list #selectedportfolioslist>
+                    <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
+                    (removed)="Portfolio_Deselect(prt)" >
+    
+                        {{prt.Portfolio_Name}} - {{prt.DisplayName}}
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                </mat-chip-list>
+                <div class="d-flex">
+                    <input  #fruitInputportfolio class="border-gray" [placeholder]="'Select Portfolio(s)'"   (input)="filterPortfolio($event.target.value)"
+                        [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
+                    <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
+                        (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
+                    <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
+                        (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
+                </div>
+                <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
+                (optionSelected)="onPrtClicked($event)"  (closed)="isPortDrpDwnOpen=false"
+                (opened)="isPortDrpDwnOpen=true"
+                    >
+                    <mat-option *ngFor=" let prt of PortfolioLists" [value]="prt.portfolio_id"
+                    (click)="Portfolio_Select(ngDropdwonPort)" >
+                        <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
+                        {{prt.Portfolio_Name}}  - {{prt.DisplayName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button class="btn btn-label-primary btn-upper mb-4" 
+            (click)="Addportfolios_meetingreport()">Link</button>
+        </div>
+    </ul>
+
+    <div class="kt-inbox mt-0 scrollbar1">
+        <!-- <div class="kt-inbox mt-0 scrollbar1" *ngIf="_portfolioLength>0"> -->
+        <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
+            <div class="kt-inbox__items flex-grow-1" data-type="inbox">
+                <div class="card brdr-5 shadow-sm" *ngFor="let data of portfolio_Scheduledjson; let i=index">
+                    <div class="Replied_border_left_true_primary">
+                        <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
+                            <!-- <div class="kt-inbox__details"
+                                (click)="OnPortfolioClick(tezz.Portfolio_ID,tezz.Portfolio_Name,tezz.Created_By)"> -->
+                                <div class="kt-inbox__details">
+                                <div class="kt-inbox__sender"  (click)="OnCardClick(data.numberval)">
+                                    <span class="kt-inbox__subject">
+                                        <!-- <a href="javascript:void(0)"
+                                            (click)="OnPortfolioClick(tezz.Portfolio_ID,tezz.Portfolio_Name,tezz.Created_By)"
+                                            *ngIf="tezz.Portfolio_Name !=''"> -->
+
+                                            {{data.Portfolio_Name}}
+                                    
+                                        <!-- </a> -->
+                                        </span>
+                                </div>
+                                <div class="kt-inbox__labels">
+                                    <span
+                                        class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge.kt-badge-light-bold kt-badge--inline">
+                                        <div>
+                                            Owner: {{data.Portfolio_owner}}
+                                        </div>
+                                    </span>
+                                    <span
+                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">                          
+                                        Total {{data.count}} Project(s)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="kt-inbox__datetime">                              
+                                <small>{{data.Created_DT |date:'medium'}}</small>
+                            </div>                          
+                                <div class="delete-btn" >
+                                <i class="fas fa-edit invisible"></i>                          
+                                    <a (click)="DeletePortfolios(data.numberval)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="portfolio_Scheduledjson==0">
+        <ng-container >
+        <div class="">
+            <div class="d-flex-center">
+                <div class="m-auto">
+                    <img src="./assets/images/portfolio.png" width="268" height="256" class="portfolioNot_Found" />
+                    <div class="bnk-txt mt-3">
+                        <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+</div>
+
+<!-- Link Portfolios  Template  End -->
+
+
 <!-- Meeting Attendees Start-->
+
 <div id="Meeting_Attendees" class="meeting-attendes sideInfobar animate-right">
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
                 <h4 class="m-0">Meeting Attendees 
-                    <span class="head-muted">(14)
+                    <span class="head-muted">{{User_Scheduledjson.length}}
                     </span>
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -1256,31 +1640,69 @@
 
         <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="meeting-search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Add by name, email">
-                    <div class="input-group-append">
+                <div class="input-group mt-2">
+                    <!-- <input type="text" class="form-control" placeholder="Add by name, email"> -->
+
+                    <mat-form-field class="drp-dwn-field ">
+                        <mat-label>Add Support team</mat-label>
+                        <mat-chip-list #selectedTeamMember>
+                            <mat-chip *ngFor="let data of selectedEmployees" class="Data_chip_kt"
+                                (removed)="remove(data)">
+                                {{data.DisplayName}}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <div class="d-flex">
+                            <input #fruitInput class="flex-1" [matChipInputFor]="selectedTeamMember"
+                                [matAutocomplete]="TeamMemberDrpDwn"
+                                (input)="filterEmployees($event.target.value)" 
+                               />
+                            <button *ngIf="isSupportDrpDwnOpen"
+                                class="bg-transparent border-0 "><mat-icon class="close-icon"
+                                    (click)=" this.isSupportDrpDwnOpen=false;  
+                                     closeAutocompleteDrpDwn_part('supportDrpDwn');">cancel</mat-icon></button>
+                            <button *ngIf="!isSupportDrpDwnOpen"
+                                class="bg-transparent border-0"><mat-icon class="add-icon"
+                                    (click)="this.isSupportDrpDwnOpen=true;
+                                     openAutocompleteDrpDwn_part('supportDrpDwn');">add</mat-icon></button>
+                        </div>
+                        <mat-autocomplete aria-label="supportDrpDwn" #TeamMemberDrpDwn="matAutocomplete"
+                            (optionSelected)="selectedChip($event);  "
+                            (opened)="isSupportDrpDwnOpen=true"
+                            (closed)="isSupportDrpDwnOpen=false;">
+                            <!-- <mat-option class="mat-font" *ngFor="let item of _EmployeeListForDropdown |filter : SupportTF.value"  [value]="e.Emp_No"> -->
+                                <mat-option class="mat-font" *ngFor="let item of _EmployeeListForDropdown "  [value]="item.Emp_No">
+                                <mat-checkbox color="primary"  [checked]="selectedEmployees.indexOf(item)!==-1" (change)="selectedChip($event)"></mat-checkbox>
+                                {{item.DisplayName}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <!-- <div class="input-group-append">
                       <button class="btn btn-secondary" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
                             <path d="M7.65103 13.3919C11.0875 13.3919 13.8734 10.6061 13.8734 7.16959C13.8734 3.73309 11.0875 0.947266 7.65103 0.947266C4.21454 0.947266 1.42871 3.73309 1.42871 7.16959C1.42871 10.6061 4.21454 13.3919 7.65103 13.3919Z" stroke="#818181" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M15.4283 14.9478L12.0449 11.5645" stroke="#818181" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                       </button>
-                    </div>
+                    </div> -->
                   </div>
                   <div>
-                    <button class="meeting-button">invite</button>
+                    <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
                   </div>
             </div>
             <div class="kt-chat__messages">
-                <ul class="meeting-attendees-userlist">
+                <ul class="meeting-attendees-userlist"  *ngFor="let item of User_Scheduledjson;let i=index">
                     <li class="meeting-attendees-user">
                         <div class="user-info">
                             <span class="user-icon">
                                 <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
                             </span>
                             <span>
-                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
-                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                                <div class="user-name">{{item.TM_DisplayName}} <span class="user-time">2 mins</span></div>
+                                <div><span class="user-role">{{item.Designation_Name}}</span> <span class="user-company">{{item.Com_Name}}</span></div>
                             </span>
                         </div>
                         <div class="user-status-info">
@@ -1318,7 +1740,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="meeting-attendees-user">
+                    <!-- <li class="meeting-attendees-user">
                         <div class="user-info">
                             <span class="user-icon">
                                 <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
@@ -1452,22 +1874,25 @@
                                 </span>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Meeting Attendees End-->
 
-<!-- Link Portfolios  Template  Start-->
-<div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right">
+
+<!-- Projects  Template  Start-->
+
+<div id="LinkSideBar2" class="sideInfobar shadow-0 animate-right">
     <div class="px-4 pt-4 pb-1" id="LinkSideBar-header">
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
             <h4 class="font-weight-bold m-0 d-flex">
                 <a class="kt-inbox__icon  pb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
-                </a>Link Portfolio
+                    <i _ngcontent-pre-c394="" class="fab-icn fab fa-wpforms " style="font-size: 1.2em;"></i>
+                </a>Projects
             </h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
             (click)="closeLinkSideBar()"  >
@@ -1484,49 +1909,56 @@
     <ul class="kt-nav">
         <li class="kt-nav__head d-block">
             <p class="text-primary">
-                Portfolios</p>
+               Projects</p>
             <div class="M_fsize">
                 Linked
                 <div class="badge badge-pill badge-outline-success">
-                    {{portfolio_Scheduledjson.length}}
+                    {{Project_code&&Project_code.length}}
                 </div>
             </div>
             <div class="kt-nav__separator"></div>
         </li>
         <div class="d-flex align-items-end p-3" style="column-gap:10px">
-            <mat-form-field class="drp-dwn-field w-100">
-                <mat-label>Select Portfolios</mat-label>
-                <mat-chip-list #selectedportfolioslist>
-                    <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
-                    (removed)="Portfolio_Deselect(prt)" >
-    
-                        {{prt.Portfolio_Name}} - {{prt.DisplayName}}
+
+
+            <mat-form-field class="drp-dwn-field ">
+                <mat-label>Selects Projects</mat-label>
+                <mat-chip-list #selectedTeamMember_projects>
+                    <mat-chip *ngFor="let data of selectedEmploy_Projects" class="Data_chip_kt"
+                        (removed)="removeProjects(data)">
+                        {{data.BlockNameProject}}
                         <button matChipRemove>
                             <mat-icon>cancel</mat-icon>
                         </button>
                     </mat-chip>
                 </mat-chip-list>
                 <div class="d-flex">
-                    <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
-                        [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
-                    <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                        (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
-                    <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
-                        (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
+                    <input #fruitInputpro class="flex-1" [matChipInputFor]="selectedTeamMember_projects"
+                        [matAutocomplete]="ProjectsDrpDwn"
+                        (input)="filterProjects($event.target.value)" #SupportTF 
+                        />
+                    <button *ngIf="isSupportDrpDwnProjects"
+                        class="bg-transparent border-0 "><mat-icon class="close-icon"
+                            (click)=" this.isSupportDrpDwnProjects=false;  
+                             closeAutocompleteDrpDwn_Project('supportDrpDwnpro');">cancel</mat-icon></button>
+                    <button *ngIf="!isSupportDrpDwnProjects"
+                        class="bg-transparent border-0"><mat-icon class="add-icon"
+                            (click)="this.isSupportDrpDwnProjects=true;
+                             openAutocompleteDrpDwn_Project('supportDrpDwnpro');">add</mat-icon></button>
                 </div>
-                <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
-                (optionSelected)="onPrtClicked($event)"  (closed)="isPortDrpDwnOpen=false"
-                (opened)="isPortDrpDwnOpen=true"
-                    >
-                    <mat-option *ngFor=" let prt of PortfolioLists" [value]="prt.portfolio_id"
-                    (click)="Portfolio_Select(ngDropdwonPort)" >
-                        <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
-                        {{prt.Portfolio_Name}}  - {{prt.DisplayName}}
+                <mat-autocomplete aria-label="supportDrpDwnpro" #ProjectsDrpDwn="matAutocomplete"
+                    (optionSelected)="selectedChip_project($event); SupportTF.value=''; "
+                    (opened)="isSupportDrpDwnProjects=true"
+                    (closed)="isSupportDrpDwnProjects=false;">
+                    <!-- <mat-option class="mat-font" *ngFor="let item of _EmployeeListForDropdown |filter : SupportTF.value"  [value]="e.Emp_No"> -->
+                        <mat-option class="mat-font" *ngFor="let item of ProjectListArray "  [value]="item.Project_Code">
+                        <mat-checkbox color="primary"  [checked]="selectedEmploy_Projects.indexOf(item)!==-1" (change)="selectedChip_project($event)"></mat-checkbox>
+                        {{item.BlockNameProject}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <button class="btn btn-label-primary btn-upper mb-4" [disabled]="_SelectedPorts==' '|| _SelectedPorts==null"
-            (click)="addProjectToPortfolio()"   >Link</button>
+            <button class="btn btn-label-primary mb-4" 
+            (click)="Addproject_meetingreport()">Add Projects</button>
         </div>
     </ul>
 
@@ -1534,7 +1966,7 @@
         <!-- <div class="kt-inbox mt-0 scrollbar1" *ngIf="_portfolioLength>0"> -->
         <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
             <div class="kt-inbox__items flex-grow-1" data-type="inbox">
-                <div class="card brdr-5 shadow-sm" *ngFor="let data of portfolio_Scheduledjson; let i=index">
+                <div class="card brdr-5 shadow-sm" *ngFor="let item of Project_code; let i=index">
                     <div class="Replied_border_left_true_primary">
 
                         <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
@@ -1547,7 +1979,7 @@
                                         <!-- <a href="javascript:void(0)"
                                             (click)="OnPortfolioClick(tezz.Portfolio_ID,tezz.Portfolio_Name,tezz.Created_By)"
                                             *ngIf="tezz.Portfolio_Name !=''"> -->
-                                            {{data.Portfolio_Name}}
+                                            {{item.Project_Name}}
                                         <!-- </a> -->
                                         </span>
                                 </div>
@@ -1555,13 +1987,13 @@
                                     <span
                                         class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge.kt-badge-light-bold kt-badge--inline">
                                         <div>
-                                            <!-- Owner: {{data.TM_DisplayName}} -->
+                                            Owner: {{item.TM_DisplayName}}
                                         </div>
                                     </span>
-                                    <span
+                                    <!-- <span
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
-                                        <!-- Total {{tezz.Count}} Project(s) -->
-                                    </span>
+                                        Total {{tezz.Count}} Project(s)
+                                    </span> -->
                                 </div>
                             </div>
                             <div class="kt-inbox__datetime">
@@ -1569,11 +2001,10 @@
                             </div>
                             <!-- <div class="delete-btn" *ngIf="Status!='Cancelled'"> -->
                                 <div class="delete-btn" >
-                                <i class="fas fa-edit invisible"></i>
-                                <!-- <a
-                                    (click)="DeleteProject(Pid,tezz.Portfolio_ID,_MasterCode,_ProjectName,tezz.Created_By)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a> -->
+                                <i class="fas fa-edit invisible"></i>                                    
+                                        <a (click)="DeleteProject(item.stringval)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>                          
                             </div>
                         </div>
                     </div>
@@ -1581,7 +2012,7 @@
             </div>
         </div>
     </div>
-    <!-- <ng-container *ngIf="_portfolioLength===0"> -->
+    <ng-container *ngIf="Project_code&&Project_code.length<0">
         <ng-container >
         <div class="">
             <div class="d-flex-center">
@@ -1594,123 +2025,65 @@
             </div>
         </div>
     </ng-container>
+    </ng-container>
 </div>
-<!-- Link Portfolios  Template  End -->
+<!-- Projects  Template  End -->
 
+<!--  Previous Meeting Notes  sidebar  start -->
+<div id="Previous_sidebar" class="sideInfobar animate-right">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
+                <h4 class="m-0"> Previous Meeting Notes</h4>
+                <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeInfo()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                        fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+            <div class="kt-met-flr">
+                <div class="d-flex">
+                    <div class="kt-left-view">
 
+                    </div>
+                </div>
+            </div>
 
+            <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
+                <ng-container *ngIf="term.Previous_meeting.length>0">
+                    <div class="kt-meeting-list-view">
+                        <a data-toggle="collapse" aria-expanded="false"
+                            class="mb-0 titlediv d-flex align-items-baseline justify-content-between collapsed"
+                            href="#Note_{{i+1}}">
 
+                            <span class="kt-text-wrap"><i class="material-icons fs-2 mr-2">expand_more</i>
+                                {{term.Schedule_date}}</span>
+                        </a>
+                    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-<!-- DMS Sidebar Template start-->
-
-<div id="LinkSideBar" class="sideInfobar animate-right">
-    <div id="LinkSideBar-header" class="px-4 pt-4 pb-2">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-            <h4 class="font-weight-600 m-0 d-flex">
-                <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">
-                 <ng-container *ngIf="_linkedMemos>0">
-                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
-                 </ng-container>
-
-                 <ng-container *ngIf="_linkedMemos==0">
-                    <img width="23px" class="black-white"
-                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
-                    title="Not Linked">
-                 </ng-container>
-                </a> Link DMS
-            </h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-                (click)="closeLinkSideBar() ">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                    </path>
-                </svg>
-            </a>
+                    <div class="kt-widget__items mt-2 mr-1 px-2 collapse" id="Note_{{i+1}}">
+                        <div *ngFor="let pre of term.Previous_meeting">
+              
+                            <div class="kt-card N-user-1">
+                                <div class="kt-user-dt">
+                                    <div class="kt-user-2lt kt-clr-1">{{pre.initials}}</div>
+                                    <div class="kt-user-name">{{pre.Emp_Name}}</div>
+                                </div>
+                                <div class="kt-user-note kt-clr-bg-1">
+                                    <p [innerHtml]="pre.Meeting_notes"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
         </div>
     </div>
-    <ul class="kt-nav">
-        <li class="kt-nav__head d-block">
 
-            <div class="M_fsize">
-                Linked
-                <div class="badge badge-pill badge-outline-success">
-                    {{dmscount}}
-                </div>
-            </div>
-            <div class="kt-nav__separator"></div>
-        </li>
-        <li class="kt-nav__item px-4">
-            <div class="matchip-drp-dwn">
+<!--  Previous Meeting Notes sidebar End -->
 
-                <mat-form-field class="drp-dwn-field">
-                    <mat-label>Select DMS</mat-label>
-                    <mat-chip-list #selectedmemoslist>
-                        <mat-chip *ngFor="let memo of selectedMemos" class="Data_chip_kt"
-                            (removed)="removeSelectedMemo(memo)">
-                            {{memo.Subject}}
-                            <button matChipRemove>
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </mat-chip>
-                    </mat-chip-list>
-                    <div class="d-flex">
-                        <input class="border-gray" [matChipInputFor]="selectedmemoslist" [matAutocomplete]="memoDrpDown"
-                            #dmsSelectTF />
-                        <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                (click)="closeMemoDrpDwn()">cancel</mat-icon></button>
-                        <button *ngIf="!isDMSDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
-                                (click)="openMemoDrpDwn()">add</mat-icon></button>
-                    </div>
-                          <mat-autocomplete #memoDrpDown="matAutocomplete"   #DMSDROPDOWN
-                         (optionSelected)="onMemoClicked($event);  "
-                        (closed)="isDMSDrpDwnOpen=false" 
-                        (opened)="isDMSDrpDwnOpen=true">
-                     
-                        <ng-container *ngIf="Memos_List">
-                       <mat-option  *ngFor="let memo of Memos_List" [value]="memo.MailId">
-                        <mat-checkbox color="primary" [checked]="(selectedMemos.indexOf(memo)!==-1)"></mat-checkbox>
-                        {{memo.Subject}}
-                    </mat-option>
-                    </ng-container>
-                </mat-autocomplete>
-                </mat-form-field>
-
-              <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
-                    (click)="addDMSToTheProject()">Link</button> 
-            </div>
-        </li>
-        <li class="kt-nav__item px-4">
-            <div id="DemoList-table" *ngIf="_MemosSubjectList&&_linkedMemos;else noDMSFound">
-                <div class="demo" *ngFor="let memo of _MemosSubjectList">
-                    <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
-                    <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
-                </div>
-            </div>
-            <ng-template #noDMSFound>
-                <div class="no-DMS-found">
-                    <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
-                    <div class="bnk-txt mt-2 d-flex justify-content-center">
-                        <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
-                    </div>
-                </div>
-            </ng-template>
-        </li>
-        <li class="kt-nav__foot"></li>
-    </ul>
-</div>
-
-
-<!-- DMS Sidebar Template End-->
