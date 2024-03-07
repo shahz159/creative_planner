@@ -11,6 +11,8 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import * as  Editor from 'ckeditor5-custom-build/build/ckeditor';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-meeting-details',
@@ -95,6 +97,7 @@ public Editor:any = Editor;
     public service: ProjectTypeService,
     public notifyService: NotificationService,
     public _LinkService: LinkService,
+    private dialog: MatDialog,
   ) {
     this._calenderDto=new CalenderDTO;
     this.objPortfolioDto = new PortfolioDTO();
@@ -540,10 +543,10 @@ meeting_details(){
     console.log(this.Agendas_List,'Agendas_List');
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
     this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
-    
+   
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
     this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code)
-   
+
     this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
     this.totaldms = this.DMS_Scheduledjson.length;
     this.dmsIdjson = [];
@@ -665,15 +668,15 @@ selectedEmpId: any = [];
 addNewDMS() {
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("meetingdetails").classList.add("position-fixed");
-   
     this.GetDMSList();
     this.GetMemosByEmployeeId();
   }
 
   GetDMSList(){
+  
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
      if(data!=''&& data!=undefined){
-     
+      alert('sdjhjdc ')
       this._MemosSubjectList = JSON.parse(data['JsonData']);
       console.log(this._MemosSubjectList,'DMS Link')
       this._MemosSubjectList.forEach(element => {
@@ -730,21 +733,6 @@ addNewDMS() {
       this.openAutocompleteDrpDwn('supportDrpDwnDMS');// open the panel
     }
 
-    // remove(employee: any): void {
-  
-    //   const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === employee.Emp_No);
-    //   this.isSelection = false;
-    //   if (index !== -1) {
-    //     // Remove the employee from the selectedEmployees array
-    //     this.selectedEmployees.splice(index, 1);
-    //     this.selectedEmpIds.splice(index, 1);
-    
-    //     console.log(this.selectedEmpIds, "selected supprem")
-    //   }
-    //   employee.checked = false;
-    //   this.closeAutocompleteDrpDwn('supportDrpDwn'); 
-    // }
-
     RemoveDMS(employee: any): void {
       debugger
       const index = this.selectedEmploy_DMS.findIndex((emp) => emp.MailId === employee.MailId);
@@ -793,12 +781,51 @@ addNewDMS() {
       this._calenderDto.Dms =this.selectedEmploy_DMS.map(item=>item.MailId).toString()
    
       this.CalenderService.NewinsertDMS_meetingreport(this._calenderDto).subscribe
-        (data => {    
-      this.GetDMSList();                                                                                                         
+        (data => {                                                                                                           
         });
       this.notifyService.showSuccess("DMS added successfully", "Success");
+      this.GetDMSList();      
       this.selectedEmploy_DMS=[];
+
     }
+
+
+
+    DMSName: string;
+
+    deleteMemos(MailId: number) {
+  
+      this._MemosSubjectList.forEach(element => {
+          this.DMSName = element.Subject
+      });
+      //if (createdBy == this.Current_user_ID) {
+      let String_Text = 'Delete';
+      const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          mode: 'delete',
+          title1: 'Confirmation ',
+          message1: this.DMSName
+        }
+      });
+      confirmDialog.afterClosed().subscribe(result => {
+  
+        this.Schedule_ID = this.Scheduleid;
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+        this._calenderDto.Emp_No = this.Current_user_ID;
+        this._calenderDto.Dms = MailId.toString();
+  
+        if (result === true) {
+          this.CalenderService.DeleteDMSOfMeeting(this._calenderDto).subscribe((data) => {      
+            this.notifyService.showSuccess("Deleted successfully ", '');
+            this.GetDMSList()
+          });
+        }
+        else {
+          this.notifyService.showError("Action Cancelled ", '');
+        }
+      });
+    }
+
 
    
 /////////////////////////////////////////// DMS Side-Bar End /////////////////////////////////////////////////////////
@@ -1003,6 +1030,43 @@ GetProjectAndsubtashDrpforCalender() {
     this.ngDropdwonPort=[];
   }
 
+
+  portfolioName: string;
+
+  DeletePortfolios(port_id: number) {
+
+    this.portfolio_Scheduledjson.forEach(element => {
+        this.portfolioName = element.Portfolio_Name
+    });
+    //if (createdBy == this.Current_user_ID) {
+    let String_Text = 'Delete';
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: this.portfolioName
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+
+      this.Schedule_ID = this.Scheduleid;
+      this._calenderDto.Schedule_ID = this.Schedule_ID;
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.Portfolio = port_id.toString();
+
+      if (result === true) {
+        this.CalenderService.DeletePortfoliosOfMeeting(this._calenderDto).subscribe((data) => {
+         this.meeting_details()
+          this.notifyService.showSuccess("Deleted successfully ", '');
+        });
+      }
+      else {
+        this.notifyService.showError("Action Cancelled ", '');
+      }
+    });
+  }
+
+
 ////////////////////////////////////Link Portfolios  Template  End/////////////////////////////////////////////////////
 
 
@@ -1204,6 +1268,45 @@ Addproject_meetingreport() {
 }
 
 
+
+
+ProjectsName: string;
+
+DeleteProject(Project_Code: number) {
+
+  this.Project_code.forEach(element => {
+      this.ProjectsName = element.Project_Name
+  });
+  //if (createdBy == this.Current_user_ID) {
+  let String_Text = 'Delete';
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'delete',
+      title1: 'Confirmation ',
+      message1: this.ProjectsName
+    }
+  });
+  confirmDialog.afterClosed().subscribe(result => {
+
+   
+    this._calenderDto.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Project_Code = Project_Code.toString();
+
+    if (result === true) {
+      this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
+       this.meeting_details()
+        this.notifyService.showSuccess("Deleted successfully ", '');
+      });
+    }
+    else {
+      this.notifyService.showError("Action Cancelled ", '');
+    }
+  });
+}
+
+
+
 /////////////////////////////////////////// Project Side-Bar End /////////////////////////////////////////////////////////
 /////////////////////////////////////////// Previous Meeting Notes Side-Bar start /////////////////////////////////////////////////////////
 
@@ -1258,7 +1361,7 @@ addAgenda(){
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.json = mtgAgendas;
     this._calenderDto.Status_type = "Left";
-    this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
+    this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe
     (data => {
        this.meeting_details();
       // window.close();
@@ -1269,32 +1372,39 @@ addAgenda(){
   
 }
 
-deleteAgenda(index:number){
-  debugger
-  if(this.Agendas_List.length>0&&(index<this.Agendas_List.length&&index>-1)){
-  Swal.fire({
-    title:'Remove this Agenda ?',
-    text:this.Agendas_List[index].name,
-    showConfirmButton:true,
-    showCancelButton:true,
-  }).then(option=>{
-     if(option.isConfirmed){
-      this.Agendas_List.splice(index,1);
+AgendasName: string;
 
-     var x =this.Agendas_List[this.currentAgendaView].AgendaId;
-     this._calenderDto.AgendaId=x
-     
-      console.log(this._calenderDto,')))))))))))))))');
+deleteAgenda(flagid: number) {
 
-     this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
-      (data => {
-         this.meeting_details();
-        // window.close();
-      })
-     }
-  });    
-  }
-  
+  this.Agendas_List.forEach(element => {
+      this.AgendasName = element.Agenda_Name
+  });
+  //if (createdBy == this.Current_user_ID) {
+  let String_Text = 'Delete';
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'delete',
+      title1: 'Confirmation ',
+      message1: this.AgendasName
+    }
+  });
+  confirmDialog.afterClosed().subscribe(result => {
+
+   
+    this._calenderDto.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = flagid
+
+    if (result === true) {
+      this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
+       this.meeting_details()
+        this.notifyService.showSuccess("Deleted successfully ", '');
+      });
+    }
+    else {
+      this.notifyService.showError("Action Cancelled ", '');
+    }
+  });
 }
 
 

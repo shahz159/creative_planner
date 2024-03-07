@@ -49,7 +49,7 @@ export class CalenderDTO {
     previousmeet_data:string;
     AdminMeeting_Status:string;
     type:number;
-    AgendaId:any
+    AgendaId:any;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;
