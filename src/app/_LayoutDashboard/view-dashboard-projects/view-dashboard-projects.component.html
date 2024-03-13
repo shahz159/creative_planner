@@ -154,7 +154,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Status=='Under Approval' ? 'New Project Under Approval' :(item.Status=='InProcess'?'In-Process':item.Status)}}
+                                                                {{item.Status=='Under Approval' ? 'New Project Under Approval' :(item.Status=='InProcess'?'In-Process':item.Status=="Not Started" ? 'Draft':item.Status)}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -449,7 +449,7 @@
                                                                 <path d="M9.29932 16.4229L9.29932 11.2573" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
                                                             </svg>
                                                         </a>
-                                                        
+
                                                         <a *ngIf="(delayType==='Actions'||Mode==='AssignedActions'); else justopenprj"   tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!"  (click)="newDetails(item.Master_Code,item.Project_Code)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
@@ -565,7 +565,7 @@
 
                                                         <div *ngIf="item.Status=='Not Started'">
                                                           <span class="not-started">
-                                                               Not Started
+                                                              Draft
                                                           </span>
                                                         </div>
 

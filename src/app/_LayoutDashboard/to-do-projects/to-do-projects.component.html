@@ -129,7 +129,9 @@
                                                                 <label class="kt-checkbox mb-3">
                                                                     <input type="checkbox" (change)="isStatusChecked(item)"
                                                                         [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name=='Under Approval'?'New Project Under Approval':(item.Name=='InProcess'?'In-Process':item.Name) }}
+                                                                    {{ item.Name === 'Under Approval' ? 'New Project Under Approval' :
+                                                                    (item.Name === 'InProcess' ? 'In-Process' :
+                                                                    (item.Name === 'Not Started' ? 'Draft' : item.Name)) }}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
@@ -549,15 +551,19 @@
                                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                                     'text-underApproval':item.SubProject_Status=='Forward Under Approval',
                                                     'text-info':item.SubProject_Status=='New Project',
+                                                    'not-started':item.SubProject_Status=='Not Started',
                                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}"
                                                     *ngIf="item.SubProject_Status != 'Delay'">
-                                        <p> {{item.SubProject_Status  =='Under Approval'?'New Project Under Approval ':(item.SubProject_Status=='InProcess' ? 'In-Process' :item.SubProject_Status)}}</p>
+                                        <p> {{ item.SubProject_Status === 'Under Approval' ? 'New Project Under Approval' :
+                                          (item.SubProject_Status === 'Not Started' ? 'Draft' :
+                                          (item.SubProject_Status === 'InProcess' ? 'In-Process' : item.SubProject_Status)) }}
+                                       </p>
                                         </span>
 
                                     <span data-toggle="tooltip" title="Action Status!" *ngIf="item.SubProject_Status == 'Delay'"
                                         class="mr-2 text-nowrap mb-2 d-inline-block text-danger">
-                                    <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval ' :item.SubProject_Status }} {{item.Delaydays}} days</p>
+                                    <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval' :(item.SubProject_Status=="Not Started" ? "Draft" :item.SubProject_Status)}} {{item.Delaydays}} days</p>
                                     </span>
                                         <!-- 'text-success':item.SubProject_Status=='Completion Under Approval' -->
                                     </p>
