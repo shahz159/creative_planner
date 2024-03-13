@@ -49,4 +49,14 @@ export class CreateprojectService {
     return this.http.post(this.rootUrl+'Projects/NewDeleteProjectTemplate',prjDTO);
   }
 
+
+  GetCPProjectCost(prjDTO:ProjectDetailsDTO){ 
+      return this.http.post('http://217.145.247.42:81/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',prjDTO);
+  }
+
+
+
+
+
+
 }

@@ -1392,7 +1392,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1503,7 +1503,7 @@ export class DashboardComponent implements OnInit {
 
 
   OnSubmitSchedule() {
-
+   debugger
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1650,9 +1650,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
          
-        // var vAgendas = "Meeting_Agendas";
-        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        // element[vAgendas] = mtgAgendas;
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
 
 
       });
@@ -1981,10 +1981,10 @@ export class DashboardComponent implements OnInit {
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-    // debugger
-    //     var vMeeting_Agendas="Meeting_Agendas";
-    //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-    //     element[vMeeting_Agendas]=updatedAgnds;
+    debugger
+        var vMeeting_Agendas="Meeting_Agendas";
+        const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+        element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -2723,9 +2723,10 @@ export class DashboardComponent implements OnInit {
       _index=-1;
     }
     this.timingarryend = this.Time_End.splice(_index + 1);
+    
     this.EndTimearr = this.timingarryend;
     this.timearr1 = this.Startts.split(":");
-    let vahr = this.timearr1[0];
+    let vahr = this.timearr1[0]; 
     let mins = this.timearr1[1].toString();
 
     if (vahr == 11 && mins.includes("AM")) {
@@ -4526,6 +4527,7 @@ export class DashboardComponent implements OnInit {
     this.daysSelectedII = [];
     this.singleselectarry = [];
     this.Avaliabletime = [];
+    this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
@@ -4592,6 +4594,7 @@ export class DashboardComponent implements OnInit {
     this.daysSelectedII = [];
     this.singleselectarry = [];
     this.Avaliabletime = [];
+    this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
     this.Doubleclick(this.event);
@@ -4894,4 +4897,88 @@ export class DashboardComponent implements OnInit {
     document.getElementById("cal-main").classList.remove("col-lg-9");
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
+
+
+  // agenda in event creation start
+  agendaInput:string|undefined;
+  allAgendas:any=[];
+  agendasAdded:number=0;
+  addAgenda(){
+    if(this.agendaInput&&this.agendaInput.trim().length>0){
+      this.agendasAdded+=1; 
+      const agenda={
+          index:this.agendasAdded,
+          name:this.agendaInput
+      };
+      this.allAgendas.push(agenda);
+      this.agendaInput=undefined;
+    }
+  
+    console.log("allAgendas:",this.allAgendas);
+  }
+  
+  deleteAgenda(index:number){
+    if(this.allAgendas.length>0&&(index<this.allAgendas.length&&index>-1)){
+    Swal.fire({
+      title:'Remove this Agenda ?',
+      text:this.allAgendas[index].name,
+      showConfirmButton:true,
+      showCancelButton:true,
+    }).then(option=>{
+       if(option.isConfirmed){
+        this.allAgendas.splice(index,1);
+       }
+    });    
+    }
+    console.log("allAgendas:",this.allAgendas);
+  }
+  
+  
+  editAgenda(index:number){
+      $(`#agenda-label-${index}`).addClass('d-none');
+      $(`#agenda-text-field-${index}`).removeClass('d-none');  
+      $(`#agenda-text-field-${index}`).focus();
+  
+      $(`#edit-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
+      $(`#editing-save-${index}`).removeClass('d-none');   // save btn is visible.
+  
+      $(`#edit-agendaname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
+      $(`#remove-agenda-btn-${index}`).addClass('d-none');   // delete btn is invisible.
+  
+  }
+  
+  cancelAgendaEdit(index:number){  
+    const tf:any=document.getElementById(`agenda-text-field-${index}`); 
+    tf.value=this.allAgendas[index].name;
+  
+    $(`#agenda-label-${index}`).removeClass('d-none');   // label is visible.
+    $(`#agenda-text-field-${index}`).addClass('d-none');   // textfield is invisible.
+    $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+    $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+    $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+    $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+  }
+  
+  
+  updateAgenda(index:number){
+    const tf:any=document.getElementById(`agenda-text-field-${index}`);
+    this.allAgendas[index].name=tf.value;
+  
+    $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
+    $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
+    $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+    $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+    $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+    $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+  
+  
+    console.log('all agendas after updating:',this.allAgendas);
+  }
+    // agenda in event creation end
+
+
+
+
+
+
 }
