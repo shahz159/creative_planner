@@ -73,7 +73,8 @@ export class PortfolioProjectsComponent implements OnInit {
   CountRejecteds: any;
   MaxDelays: any;
   snackBarRef: any;
-
+  CountDeleted:any
+  showDeletedPrjOnly:boolean=false;
   //_snackBar: any;
   dropdownSettings_Status: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   EmpDropdwn: unknown[];
@@ -143,6 +144,7 @@ export class PortfolioProjectsComponent implements OnInit {
   _MessageIfNotOwner: string;
   createdBy:any;
   lastProject:any;
+  Deletedproject:any
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -171,12 +173,14 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
-        this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']); 
+        this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         this.lastProject=this._ProjectsListBy_Pid.length;
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
-        //console.log('JsonStatusCount------->', this._StatusCountDB);
+        this.Deletedproject=JSON.parse(data[0]['PortfolioDeletedProjects']);
+        console.log(" this.Deletedproject", this.Deletedproject)
+        this.CountDeleted=this.Deletedproject.length
         // this.LoadingBar_state.stop();
         this.TotalProjects = this._ProjectsListBy_Pid.length;
         var rez = {};
@@ -297,7 +301,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.PreferenceTpye = data[0]["PreferenceType"];
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
         this.Share_preferences = false;
-        this.viewpreference=this.With_Data[0].Preferences;
+        this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
         if (this.PreferenceTpye == 1) {
           if (this.With_Data[0].Preferences == "View Only") {
             this.Share_preferences = true;
@@ -695,6 +699,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!this.CountInprocess) {
                 this.CountInprocess = 0;
               }
+
               this.Count_ToDoAchieved = rez['ToDo Achieved'];
               if (!this.Count_ToDoAchieved) {
                 this.Count_ToDoAchieved = 0;
@@ -810,6 +815,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!this.CountInprocess) {
                 this.CountInprocess = 0;
               }
+
               this.Count_ToDoAchieved = rez['ToDo Achieved'];
               if (!this.Count_ToDoAchieved) {
                 this.Count_ToDoAchieved = 0;
@@ -929,24 +935,37 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
   labelAll() {
     this._PortProjStatus = "";
+    this.showDeletedPrjOnly=false;
   }
 
   labelInprocess() {
-    this._PortProjStatus = "InProcess"
+    this._PortProjStatus = "InProcess";
+    this.showDeletedPrjOnly=false;
   }
+
+
+  labeldeletedproject(){
+    this.showDeletedPrjOnly=true;
+    this._PortProjStatus = "";
+  }
+
+
 
   labelDelay() {
     this._PortProjStatus = "Delay";
+    this.showDeletedPrjOnly=false;
   }
 
   labelCompleted() {
     this._PortProjStatus = 'Completed';
+    this.showDeletedPrjOnly=false;
     console.log('_PortProjStatus:',this._PortProjStatus);
     console.log('_ProjectsListBy_Pid:',this._ProjectsListBy_Pid);
   }
 
   labelNewProject() {
     this._PortProjStatus = "New Project";
+    this.showDeletedPrjOnly=false;
     if (this._PortProjStatus.includes('New Project')) {
       this._PortProjStatus = 'New Project';
     }
@@ -955,25 +974,30 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelRejecteds() {
     this._PortProjStatus = "Rejected";
     this._PortProjStatus.includes('Rejected');
+    this.showDeletedPrjOnly=false;
     //this._PortProjStatus.includes('New Project Rejected');
   }
 
   labelToDoAchieved() {
     this._PortProjStatus = "ToDo Achieved";
+    this.showDeletedPrjOnly=false;
     // this._PortProjStatus.includes('ToDo Achieved');
   }
   labelToDoCompleted() {
     this._PortProjStatus = "ToDo Completed";
+    this.showDeletedPrjOnly=false;
   }
 
   labelUA() {
     this._PortProjStatus = "Under Approval";
     this._PortProjStatus.includes('Under Approval')
+    this.showDeletedPrjOnly=false;
   }
 
   labelProjectHold() {
     this._PortProjStatus = "Project Hold";
     this._PortProjStatus.includes('Project Hold');
+    this.showDeletedPrjOnly=false;
   }
 
   //Sorting.....
@@ -1061,7 +1085,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       (data) => {
         //this.LoadingBar_state.start();
         this.barchartData = data as BarChartDTO[];
-        //console.log("BarChartData", this.barchartData);
+        console.log("BarChartData", this.barchartData);
         BarChart.data = this.barchartData;
         //legend start
         BarChart.legend = new am4charts.Legend();
@@ -1106,6 +1130,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
             series2.columns.template.width = am4core.percent(50);
             series2.columns.template.tooltipText = "InProcess : [bold]{InProcessCount}[/]";
           }
+
+
+
           //Series 2 (Completion Under Approval)
           if (element.CUA_Count != 0 && element.Status == 'Completion Under Approval') {
             let series4 = BarChart.series.push(new am4charts.ColumnSeries3D());

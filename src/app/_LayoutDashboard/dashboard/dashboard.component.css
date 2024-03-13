@@ -2937,3 +2937,93 @@ span.kt-dashboard-delay-cnt {
 }
 
 /*agenda css end*/
+.matchip-drp-dwn{
+    display:flex;
+    column-gap:15px;
+    align-items: flex-end;
+  }
+  .drp-dwn-field{
+   margin: 0;
+   padding: 0;
+   flex-grow:1;
+  }
+  .drp-dwn-field input{
+  border:0;
+  }
+  .drp-dwn-submitbtn {
+  margin-bottom:15px;
+  }
+  .close-icon{
+  color:#f4f3f3;
+  background-color: gray;
+  border-radius: 50%;
+  }
+  .close-icon:hover{
+  color:#e0e0e0;
+  transform: none;
+  }
+  .add-icon{
+  color:white;
+  border-radius: 50%;
+  background-color: #646C9A;
+  }
+  .add-icon:hover{
+  background-color: #3D4991;
+  transform: none;
+  color:white;
+  }
+
+  .Data_chip_kt {
+    padding: 6px !important;
+    font-size: 12px;
+    font-weight: 500;
+    color: #60626D !important;
+    padding-right: 2px !important;
+    border-radius: 5px !important;
+    min-height: 22px;
+    background-color: #E6EAFF !important;
+    line-height: 10px;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  }
+  input.mat-chip-input {
+    width: 150px;
+    margin: 0px;
+    width: 100%;
+    flex: unset;
+    height: 30px;
+    line-height: 30px;
+    padding-bottom: 5px;
+  }
+  .mat-form-field-underline {
+    height: 1px;
+    background-color: #CACACA !important;
+  }
+  input.mat-chip-input::placeholder {
+    font-size: 13px;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 400;
+  }
+  mat-icon.mat-icon.notranslate.curser-pointer {
+    /* height: 20px; */
+    width: 20px;
+    font-size: 20px;
+  }
+  
+  
+  /* portfolio start*/
+  .matchip-drp-dwn{
+    display:flex;
+    column-gap:15px;
+    align-items: flex-end;
+  }
+  .drp-dwn-field{
+   margin: 0;
+   padding: 0;
+   flex-grow:1;
+  }
+  .drp-dwn-field input{
+  border:0;
+  }
+  .drp-dwn-submitbtn {
+  margin-bottom:15px;
+  }

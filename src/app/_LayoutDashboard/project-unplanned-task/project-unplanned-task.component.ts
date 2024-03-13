@@ -22,6 +22,7 @@ import { Router } from '@angular/router';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 // import { ac } from 'src/app/_LayoutDashboard/action-to-project/action-to-project.component';
 import tippy from 'node_modules/tippy.js';
+import {  ElementRef } from '@angular/core';
 import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.component';
 
 @Component({
@@ -51,7 +52,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     public ProjectTypeService: ProjectTypeService,
     public router: Router,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
-    public BsService: BsServiceService
+    public BsService: BsServiceService,
+    private el: ElementRef
+
     // ,_Id
     // ,_Name
   ) {
@@ -88,7 +91,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
     this.getrunwayCount();
-    
+
+
       tippy('#tippy1', {
         content: "Runway Tasks!!",
         arrow: true,
@@ -100,7 +104,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // trigger: 'click',
         // delay: [1000, 200]
       });
-      
+
       tippy('#tippy2', {
         content: "Add Category!",
         arrow: true,
@@ -136,7 +140,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // trigger: 'click',
         // delay: [1000, 200]
       });
-    
+
 
     //   window.onload = () => {
     //   tippy('#tippy1', {
@@ -167,7 +171,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   _CompletedList = [];
 
   EnterSubmit(_Demotext) {
-   
+
     if (_Demotext != "") {
 
       this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
@@ -188,13 +192,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     else {
       this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
     }
-    this.clearFeilds(); 
+    this.clearFeilds();
   }
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
   CountsJson: any;
-  
+
   GetAssigned_SubtaskProjects() {
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -202,15 +206,15 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        
+
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         console.log("Data---->", this.CategoryList);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);    
+        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        
-        
+
+
       });
   }
 
@@ -272,8 +276,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
-           
-          
+
+
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
           this.IfNoTaskFound = "";
@@ -290,7 +294,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           this._ObjCompletedProj.Mode = 'Todo';
           // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
         }
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']); 
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         let _Accepted =0;
         let _Pending =0;
         let _Rejected=0;
@@ -312,20 +316,35 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   OnRadioClick(id) {
+
     this._ObjAssigntaskDTO.TypeOfTask = "Update";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = id;
     this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
     this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
       (data) => {
-        this._TodoList = JSON.parse(data['TodoList']);
-        this._CompletedList = JSON.parse(data['CompletedList']);
+
+        this.GetAssigned_SubtaskProjects();
+        // this._TodoList = JSON.parse(data['TodoList']);
+        // this._CompletedList
+        // this._CompletedList = JSON.parse(data['CompletedList']);
+
         let message: string = data['Message'];
-        this._Demotext = "";
-        //this.GetAssignTask();
+        this.GetAssigned_SubtaskProjects();
+          this._Demotext = "";
         this.notifyService.showSuccess("", message);
-        // this.closeInfo();
+
+  //  if (message=='Todomeeting'){
+  //   this.GetAssigned_SubtaskProjects();
+  //   this._Demotext = "";
+  //   this.notifyService.showSuccess("", message);
+  //  }
+  //  else{
+  //   this.notifyService.showError('error',message)
+  //  }
+
       });
+
   }
 
   On_Uncheck(id) {
@@ -335,14 +354,26 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
     this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
       (data) => {
-        this._TodoList = JSON.parse(data['TodoList']);
-        this._CompletedList = JSON.parse(data['CompletedList']);
+
+
         let message: string = data['Message'];
-        this._Demotext = "";
-        //this.GetAssignTask();
-        this.notifyService.showInfo("", message);
-        // this.closeInfo();
+        this.GetAssigned_SubtaskProjects();
+       this._Demotext = "";
+ this.notifyService.showInfo("", message);
+
+
+        // if( message =='Todomeeting'){
+        // this.GetAssigned_SubtaskProjects();
+        // this._Demotext = "";
+
+        // this.notifyService.showInfo("", message);
+        // }
+        // else{
+        //   this.notifyService.showError('error',message)
+        // }
+
       });
+
   }
 
   _Deletetask(id, name) {
@@ -409,7 +440,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this._ObjCompletedProj.Mode = 'AssignedTask';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
+        this.EmployeeList = JSON.parse(data[0]&&data[0]['EmployeeList']);
         //console.log(this.EmployeeList);
         this.dropdownSettings_Employee = {
           singleSelection: true,
@@ -466,7 +497,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //   alert(this._selectedcatid);
     //   this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
     // },3000);
-   
+
   }
 
   Mdl_CategoryName: string = "";
@@ -501,7 +532,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CountsAccepted: any;
   CountsPending: any;
   CountsRejected: any;
-  
+
 
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
@@ -532,7 +563,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']); 
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         let _Accepted =0;
         let _Pending =0;
         let _Rejected=0;
@@ -557,7 +588,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
 
- 
+
   ProjectTypelist: any;
   _taskName: string = "";
   _description: string;
@@ -588,13 +619,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //   });
     //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
-    
+
     document.getElementById("Project_info_slider_bar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#Project_info_slider_bar").scrollTop(0);
-    
+
   }
 
   detailsbar() {
@@ -613,13 +644,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.router.navigate(["UnplannedTask/ActionToProject/2"]);
     this.BsService.SetNewAssignId(this._AssignId);
     this.BsService.SetNewAssignedName(this._taskName);
-    
+
     document.getElementById("Project_info_slider_bar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#Project_info_slider_bar").scrollTop(0);
-   
+
     //this.GetProjectsByUserName();
   }
 
@@ -863,13 +894,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   closeInfo() {
-    this.clearFeilds();  
+    this.clearFeilds();
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
-    this.router.navigate(["UnplannedTask/"]); 
+    this.router.navigate(["UnplannedTask/"]);
   }
 
   moreDetails(ProjectCode) {
@@ -895,6 +926,14 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
 
+
+
+  scrollTo(sectionId: string): void {
+
+    const element = this.el.nativeElement.querySelector(`#${sectionId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+  }
+
 }
-  
- 

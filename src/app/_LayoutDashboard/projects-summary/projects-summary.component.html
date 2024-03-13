@@ -143,7 +143,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
-                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"  
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
                                                         style="width: 100%;">
                                                 </div>
                                             </div>
@@ -180,11 +180,11 @@
                                                         </div>
                                                         <ng-container *ngFor="let item of Cancelled |filter:txtSearch">
                                                         <div class="d-flex justify-content-between" *ngIf="cancelcheck=='1' && canceledit==false">
-                                                            <label class="kt-checkbox mb-3">                          
+                                                            <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
                                                                 <p>{{item.name}}</p>
                                                                 <span></span>
-                                                            </label>                           
+                                                            </label>
                                                             <span class="count-btn">{{cancelcount}}</span>
                                                         </div>
                                                     </ng-container>
@@ -685,7 +685,7 @@
                                                         </th>
 
                                                     <!-- <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name!='Delay'" > -->
-                                                   
+
                                                 </ng-container>
 
                                                     <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter[0].Name=='Delay')" >
@@ -696,7 +696,7 @@
                                                         <i class="fas fa-sort"></i> Status
                                                         </th>
                                                     </ng-container>
-                                                   
+
                                                     <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Status: activate to sort column ascending">
                                                         Link
@@ -861,9 +861,9 @@
                                                                 Approval</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
-                                                            <span class="Delay_color font-weight-400"></span>
+                                                            <span class=" font-weight-400"></span>
                                                             <span *ngIf="item.Delaydays>=0"
-                                                                class="Delay_color delayDays">
+                                                                class="Delay_color ">
                                                                 <strong>{{item.Delaydays}} days Delay </strong>
                                                             </span>
                                                         </div>
@@ -872,11 +872,11 @@
                                                             <span class="InProcess_color font-weight-400">In-Process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
-                                                            <span class="text-primary font-weight-400">ToDo
+                                                            <span class="TODOinprocess font-weight-400">ToDo
                                                                 InProcess</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project'">
-                                                            <span class="text-primary font-weight-400">New
+                                                            <span class="NEWPROJECT font-weight-400">New
                                                                 Project</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project Rejected'">
@@ -914,9 +914,9 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)">Completed  <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info"></b>
-                                                            <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
-                                                          </span>
+                                                            <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)">Completed </span> <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)"></b>
+                                                            <span class="kt-widget__other d-block st-line" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Team_Res)"title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
+
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                                             <span class="Forward_Under_Approval_color font-weight-400">Forward
@@ -952,8 +952,8 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #c0b5dc;">Project Hold Under Approval
+                                                            <span class="Project_Hold_Under_Approval font-weight-400"
+                                                              >Project Hold Under Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Achieved'">
