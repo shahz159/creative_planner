@@ -505,7 +505,7 @@ export class DashboardComponent implements OnInit {
     this.MinLastNameLength = true;
     this._subname = false;
     this._subname1 = false;
-    this.TImetable();
+    // this.TImetable();
     this.ScheduleType = "Create"
     this.GetTimeslabfordate();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
@@ -2071,6 +2071,9 @@ export class DashboardComponent implements OnInit {
               text: 'Meeting already exists on the selected scheduled date. Please change the Schedule date and try again.',
             });
           }
+          else if(this._Message == 'Nothing to Update'){
+            this.notifyService.showInfo(this._Message, "Update failed");
+          }
           else{
             this.notifyService.showSuccess(this._Message, "Success");
           }
@@ -2176,28 +2179,29 @@ export class DashboardComponent implements OnInit {
       _arraytext.push(this.maxDate);
     }
 
+    // alert(this.maxDate)
 
-    // alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
-    // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
+    alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
+    alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
     // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
 
 
     if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
       var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-      // radio1.disabled = true;
-      radio1.checked = false;
+      radio1.disabled = false;
+      radio1.checked = true;
 
       var radio2 = document.getElementById('r2') as HTMLInputElement | null;
       radio2.disabled = false;
-      radio2.checked = true;
+      radio2.checked = false;
 
-      var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-      radio3.disabled = false;
-      radio3.checked = false;
-      document.getElementById("div_thisevent").style.display = "none";
+      // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+      // radio3.disabled = false;
+      // radio3.checked = false;
+      // document.getElementById("div_thisevent").style.display = "none";
 
-      this._PopupConfirmedValue = 2;
+      this._PopupConfirmedValue = 1;
     }
     else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
       document.getElementById("div_thisevent").style.display = "block";
@@ -2209,12 +2213,14 @@ export class DashboardComponent implements OnInit {
       radio2.disabled = false;
       radio2.checked = false;
 
-      var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-      radio3.disabled = false;
-      radio3.checked = false;
+      // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+      // radio3.disabled = false;
+      // radio3.checked = false;
       this._PopupConfirmedValue = 1;
 
     }
+
+    alert(this._PopupConfirmedValue)
   }
 
   Select_flag(val) {
@@ -2682,7 +2688,7 @@ export class DashboardComponent implements OnInit {
   }
 
   addstarttime() {
-
+    debugger
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -2693,7 +2699,7 @@ export class DashboardComponent implements OnInit {
       this.AllEndtime.push(element.TSEnd);
       this.StartTimearr.push(element.TSStart);
       this.Alltimes.push(element.TSStart);
-      // console.log( this.Alltimes,"times")
+      //  console.log( this.Alltimes,"times")
     });
 
 
@@ -2713,6 +2719,9 @@ export class DashboardComponent implements OnInit {
     this.Time_End = this.AllEndtime;
     // this.Startts = TSStart;
     let _index = this.Time_End.indexOf(this.Startts);
+    if(_index+1===this.Time_End.length){
+      _index=-1;
+    }
     this.timingarryend = this.Time_End.splice(_index + 1);
     this.EndTimearr = this.timingarryend;
     this.timearr1 = this.Startts.split(":");
