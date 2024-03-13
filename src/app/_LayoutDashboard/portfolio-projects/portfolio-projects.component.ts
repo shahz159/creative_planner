@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { EmployeeDTO } from 'src/app/_Models/employee-dto';
@@ -102,7 +102,9 @@ export class PortfolioProjectsComponent implements OnInit {
   _PortfolioOwner: string;
   viewpreference:any;
 
-  constructor(public service: ProjectTypeService,
+  constructor(
+    private el: ElementRef,
+    public service: ProjectTypeService,
     private notifyService: NotificationService,
     private cdr: ChangeDetectorRef, private router: Router,
     private route: ActivatedRoute,
@@ -125,6 +127,12 @@ export class PortfolioProjectsComponent implements OnInit {
   Url_portfolioId: number;
 
   ngOnInit(): void {
+    setTimeout(() => {
+      const buttonElement = this.el.nativeElement.querySelector('.badge');
+      if (buttonElement) {
+        buttonElement.focus();
+      }
+    }, 0);
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
@@ -1030,7 +1038,14 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     else {
       this.Project_Graph = "Graphs"
       this.ProjectsClick();
+      setTimeout(() => {
+        const buttonElement = this.el.nativeElement.querySelector('.badge');
+        if (buttonElement) {
+          buttonElement.focus();
+        }
+      }, 0);
     }
+
   }
 
   HideProjects: boolean;

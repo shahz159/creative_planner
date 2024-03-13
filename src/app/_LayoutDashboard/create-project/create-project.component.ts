@@ -144,7 +144,7 @@ export class CreateProjectComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public approvalservice: ApprovalsService,
     ) {
-      this.approvalObj = new ApprovalDTO();   
+      this.approvalObj = new ApprovalDTO();
   }
 
 
@@ -170,7 +170,7 @@ export class CreateProjectComponent implements OnInit {
       this.ProjectDto.Emp_No='400172';
       this.ProjectDto.Hours="20";
       this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:any)=>{
-      
+
           console.log('prj cost here:',res);
       })
 
@@ -193,7 +193,7 @@ export class CreateProjectComponent implements OnInit {
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
-         this.allUser_json=JSON.parse(res[0].allUser_json); 
+         this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
@@ -391,7 +391,7 @@ createSRTProject(){
       if(choice.isConfirmed){
         this.createProject();
       }
-   }); 
+   });
 }
 
 
@@ -406,7 +406,7 @@ createSRTProject(){
       const d=new Date();
       d.setFullYear(d.getFullYear()+2);
       const enddateofRS=d;
-   
+
      const projectInfo={
            ProjectType:this.Prjtype,
            Client:this.PrjClient,
@@ -429,7 +429,7 @@ createSRTProject(){
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
            Remarks:this._remarks,
            Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0
-   
+
      };
     //  alert(this.Allocated_Hours)
      console.log("PRJ INFORMATION :",projectInfo);
@@ -447,20 +447,20 @@ createSRTProject(){
      console.log(this.ProjectDto,"dto")
      //1. creating project
      this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-   
+
            console.log("res after project creation:",res);
-   
+
            if(res&&res.message==='Success'){
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
-   
+
                this.notification.showSuccess("Saved successfully.","");
                this.notification.showInfo("Please submit the project for approval.","");
 
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
-   
+
                // 3. Move to next step
                if(this.Prjtype==='001'||this.Prjtype==='002')
                {    // when core, secondary
@@ -469,13 +469,13 @@ createSRTProject(){
              this.BsService.ProjectCreatedEvent.emit();
            }
            else if(res&&res.message==='Success1'){
-          
+
              this.PrjCode=res.Project_Code;
                this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner : "+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
-   
+
                  this.router.navigate(['./backend/ProjectsSummary']);
                  // this.closeInfo()
             this.BsService.ProjectCreatedEvent.emit();
@@ -484,8 +484,8 @@ createSRTProject(){
            {
              this.notification.showError("Unable to create Project","Project Creation Failed");
            }
-   
-   
+
+
      });
 
     }
@@ -675,19 +675,34 @@ onFileChanged(event: any) {
 
 
   Move_to_add_team(){
-    // alert(this.Allocated_Hours)
-    $('.right-side-dv').removeClass('d-none');
-    $('.add_tema_tab').show();
-    $('.Project_details_tab').hide();
-    $('.sbs--basic .active').addClass('finished');
-    $('.sbs--basic li').removeClass('active');
-    $('.sbs--basic li:nth-child(2)').addClass('active');
 
-    this.findProjectType()
-    if(['003','008'].includes(this.Prjtype))
-    this.Prjstartdate=new Date();
-    
-    this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+
+    if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.PrjName.trim().split(' ').length>=3)&&(this.PrjDes&&this.PrjDes.trim().split(' ').length>=5)&&
+    (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate) ||
+    (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
+    ( ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
+    )){
+          // alert(this.Allocated_Hours)
+          $('.right-side-dv').removeClass('d-none');
+          $('.add_tema_tab').show();
+          $('.Project_details_tab').hide();
+          $('.sbs--basic .active').addClass('finished');
+          $('.sbs--basic li').removeClass('active');
+          $('.sbs--basic li:nth-child(2)').addClass('active');
+          this.findProjectType()
+          if(['003','008'].includes(this.Prjtype))
+          this.Prjstartdate=new Date();
+          this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+    }
+    else{
+      this.notProvided=true;
+    }
+
+
+
+
+
+
   }
 
   Back_to_project_details_tab(){
@@ -776,7 +791,7 @@ onResponsibleChanged(){
       this.PrjOwner=newowr.EmpNo;
     }
     this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
-  
+
   // selected responsible cannot be selected in the support.
     const obj=this.PrjSupport.find(item=>item.Emp_No==this.PrjResp);
     if(obj)this.PrjSupport.splice(this.PrjSupport.indexOf(obj),1);
@@ -814,7 +829,7 @@ onProjectOwnerChanged(){
       this.assigntask_json=JSON.parse(res[0].Assigntask_json);
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
-      
+
       this.draft_json=JSON.parse(res[0].draft_json);
       this.draft_json=this.draft_json.map(dft=>{
         const d=moment(new Date()).diff(moment(dft.CreatedOn),'days');
@@ -824,7 +839,7 @@ onProjectOwnerChanged(){
          d===1?'Yesterday':
          [2,3].includes(d)?d+' days ago':
          this.datepipe.transform(dft.CreatedOn,'dd-MM-yyyy')
-       };  
+       };
       });
 
 
@@ -949,10 +964,10 @@ PrjActionsInfo:any=[];
 currentActionView:number|undefined;
 getActionsDetails(){
   this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
-    console.log("LLL:",res); 
+    console.log("LLL:",res);
     if(res[0].Action_Json)
-    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);  
-    else 
+    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+    else
     this.PrjActionsInfo=[];
   });
 }
@@ -1410,7 +1425,7 @@ openTemplate(template:any){
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
    this.prjsubmission=PInfo.SubmissionId;
-   
+
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
@@ -1529,7 +1544,7 @@ newpfl_massage(){
 // this.Prjstartdate='';
 // this.Prjenddate='';
 // this.ngDropdwonPort=[];
-// this.fileAttachment=null;  
+// this.fileAttachment=null;
 
 // }
 
@@ -1541,17 +1556,17 @@ getPrjCost():void{
 console.log("input allocated hr:",this.Allocated_Hours);
 let alhr=this.Allocated_Hours;
 if(['003','008'].includes(this.Prjtype)){
-     //eg: '00 Hr : 15 Mins'   
+     //eg: '00 Hr : 15 Mins'
      const h=Number.parseInt(alhr.split(':')[0]);
      const m=Number.parseInt(alhr.split(':')[1]);
      alhr=h+'.'+m;
 }
-   
+
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.Hours=alhr;
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
     if(res.Status){
-       this.PrjCost=res.Data;  
+       this.PrjCost=res.Data;
     }
   })
 }
@@ -1613,7 +1628,9 @@ this.getActionsDetails();
 
 }
 
-
+submitDar(){
+  this.notProvided=true
+}
 
 // DRAFT PROJECT CODE END.
 
