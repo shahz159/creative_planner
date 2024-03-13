@@ -1148,6 +1148,7 @@ export class MeetingReportComponent implements OnInit {
   sched_date: any;
   notes_data: any;
   Notes: any = [];
+  
   GetPreviousdate_meetingdata() {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
