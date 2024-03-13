@@ -1569,6 +1569,13 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         const date1: Date = new Date(this._StartDate);
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        }
+        else {
+          this._SEndDate = this.scstartdate;
+        }
+
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -1894,6 +1901,12 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         const date1: Date = new Date(this._StartDate);
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        }
+        else {
+          this._SEndDate = this.scstartdate;
+        }
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -1996,7 +2009,10 @@ export class DashboardComponent implements OnInit {
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this._OldRecurranceId == this.selectedrecuvalue) {
         if (this._OldEnd_date != this._EndDate) {
-          this._calenderDto.flagid = 3;
+          if(this._PopupConfirmedValue==1)
+            this._calenderDto.flagid = 1;
+          else
+            this._calenderDto.flagid = 2;
         }
       }
       if (this.Schedule_ID != 0) {
@@ -2695,8 +2711,8 @@ export class DashboardComponent implements OnInit {
     this.StartTimearr = [];
 
     this._arrayObj.forEach(element => {
-      this.EndTimearr.push(element.TSEnd);
-      this.AllEndtime.push(element.TSEnd);
+      this.EndTimearr.push(element.TSStart);
+      this.AllEndtime.push(element.TSStart);
       this.StartTimearr.push(element.TSStart);
       this.Alltimes.push(element.TSStart);
       //  console.log( this.Alltimes,"times")
@@ -2736,7 +2752,7 @@ export class DashboardComponent implements OnInit {
       mins = mins.replace("PM", "AM")
     }
 
-    if (this.timearr1[0] == 23) {
+    if (this.timearr1[0] == 11) {
       this._arrayObj.forEach(element => {
         this.EndTimearr.push(element.TSStart);
 
@@ -2747,10 +2763,13 @@ export class DashboardComponent implements OnInit {
 
       }
       this.Endtms = vahr.toString() + ':' + mins;
-      if (vahr == '00') {
+      // alert(this.Startts)
+      // alert(this.Endtms)
+
+      if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
-        // alert(this.scstartdate)
-        document.getElementById("Schenddate").style.display = "none";
+        //  alert(this.scstartdate)
+        // document.getElementById("Schenddate").style.display = "block";
 
       }
       else {
