@@ -565,7 +565,7 @@
                                                                 </div>
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge done kt-badge-light-bold kt-badge--inline">
                                                                 {{item.ToDo_Status}}
                                                             </span>
                                                         </div>
@@ -594,8 +594,8 @@
                                                     <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
                                                         <div
                                                             class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
-                                                           
-                                                           
+
+
 
                                                             <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="View Action!" >
@@ -613,9 +613,9 @@
 
 
 
-                                                           
-                                                           
-                                                           
+
+
+
                                                             <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
                                                         </div>
                                                         <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
@@ -676,7 +676,7 @@
                                                                 <!-- <div></div> -->
                                                              </span>
                                                              <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
-                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                 <div> {{item.Status }} {{item.Delaydays}} days</div>
                                                              </span>
                                                              <!-- <span  data-toggle="tooltip" title="Action Status!"
@@ -818,11 +818,11 @@
                                                                       'In-Process':item.Project_status}}</div>
                                                              </span>
                                                              <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
-                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                     <div> {{item.Project_status}} {{item.Delaydays}} days</div>
                                                              </span>
                                                              <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
-                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-danger">
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline hold">
                                                                     <div> Hold </div>
                                                              </span>
                                                             <!-- <span

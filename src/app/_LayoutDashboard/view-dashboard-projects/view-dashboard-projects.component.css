@@ -1135,54 +1135,92 @@ tr.odd.project-list_AC.active{
 
 .new-project {
 
-  color:#B2D732 !important;
+  background-color:#B2D732 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 
 }
 .New-project{
   background-color: #5789B8;
   color:black;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .Delay_color{
-  color: #EE4137 !important;
-  color: black;
-  padding:2px 8px;
-  border-radius: 2px;
+  background-color: #EE4137 !important;
+  color: white;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .InProcess_color{
-  color:#1B272D !important;
+  background-color:#1B272D !important;
+  color: white;
+  padding:2px 10px;
+  border-radius: 3px;
+
 }
 .Under_Approval_color{
-  color: #888888 !important;
+  background-color: #888888 !important;
+  color: black;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .Hold_color{
-  color:#E2D9BC  !important;
+  background-color:#E2D9BC  !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .New_Project_Rejected_color{
-  color: #DFDFDF !important;
+  background-color: #DFDFDF !important;
+  color:black ;
+  padding:2px 10px;
+  border-radius: 3px;
+
 }
 .ToDo_Completed_color{
-  color:#000 !important;
+  background-color:#62B134 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .New_Todo_color{
-  color: #6E9BC4 !important;
+  background-color: #6E9BC4 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .Completion_Under_Approval_color{
-  color: #B2D732 !important;
+  background-color: #B2D732 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
-.ToDo_Completed_color{
-  color:#000 !important;
-}
+
 .Forward_Under_Approval_color{
-  color: #B2D732 !important;
+  background-color: #B2D732 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .Project_Complete_Rejected_color{
-  color: #FAF065 !important;
+  background-color: #FAF065 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .Enactive_Under_Approval_color{
-  color: #C9C1E6 !important;
+  background-color: #C9C1E6 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 .Deadline_Extend_Under_Approval_color{
-  color: #F88282 !important;
+  background-color: #F88282 !important;
+  color: #000;
+  padding:2px 10px;
+  border-radius: 3px;
 }
 a.info-btn {
   width: 34px;
@@ -1202,9 +1240,15 @@ a.info-btn svg {
   height: 24px;
 }
 .in-process{
-  color:  #1B272D ;
+  background-color:  #1B272D ;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .not-started{
-  color: #888888 !important;
+  background-color: #888888 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 

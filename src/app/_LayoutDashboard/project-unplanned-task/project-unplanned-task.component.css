@@ -2140,3 +2140,15 @@ span.count {
     justify-content: center;
     font-weight: 600;
   }
+  .delay{
+    background-color:#EE4137 !important;
+    color: white !important;
+    padding: 2px 10px;
+    border-radius: 3px;
+  }
+.hold{
+  background-color: #E2D9BC!important;
+  color: black Im !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
