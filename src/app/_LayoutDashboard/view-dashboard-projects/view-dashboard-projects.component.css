@@ -1181,7 +1181,7 @@ tr.odd.project-list_AC.active{
 }
 .ToDo_Completed_color{
   background-color:#62B134 !important;
-  color: #000;
+  color: white !important;
   padding:2px 10px;
   border-radius: 3px;
 }

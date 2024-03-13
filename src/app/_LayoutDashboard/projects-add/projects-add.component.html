@@ -123,7 +123,7 @@
 
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name =='Under Approval'?'New Project Under Approval':item.Name}}
+                                                                {{item.Name =='Under Approval'?'New Project Under Approval': item.Name =='InProcess' ? 'In-Process' :(item.Name=='Not Started'?'Draft' :item.Name)}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -366,11 +366,11 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="InProcess font-weight-400">InProcess</span>
+                                                            <span class="InProcess font-weight-400">In-Process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="ToDo-InProcess font-weight-400">ToDo
-                                                                InProcess</span>
+                                                                In-Process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project'">
                                                             <span class="New-Project font-weight-400">New
@@ -424,6 +424,10 @@
                                                           <span class="Not-Started font-weight-400">Draft
                                                           </span>
                                                       </div>
+                                                      <div *ngIf="item.Status=='ToDo Achieved'">
+                                                        <span class="ToDo-Achieved font-weight-400">ToDo Achieved
+                                                        </span>
+                                                    </div>
                                                         <div *ngIf="item.Status=='Project Complete Rejected'">
                                                             <span class="Project-Complete-Rejected font-weight-400">Project
                                                                 Complete
