@@ -1552,6 +1552,7 @@ if(['003','008'].includes(this.Prjtype)){
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
     if(res.Status){
        this.PrjCost=res.Data;  
+       console.log(this.PrjCost);
     }
   })
 }
@@ -1562,18 +1563,27 @@ if(['003','008'].includes(this.Prjtype)){
 // DRAFT PROJECT CODE START.
 
 deleteDraft(index:number){
-    console.log(this.draft_json[index]);
+ 
     Swal.fire({
-      icon:'question',
-      iconColor:'#ff0000',
+      
       showCancelButton:true,
       showConfirmButton:true,
       title:'Are you sure?',
-      text:'This action will permanently delete this draft.'
+      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'.`,
     }).then(choice=>{
          if(choice.isConfirmed){
 
-           console.log('draft is deleted.');
+          this.ProjectDto.Project_Code=this.draft_json[index].Project_Code;
+          this.ProjectDto.Emp_No=this.Current_user_ID;
+          this.createProjectService.NewDeleteDraft(this.ProjectDto).subscribe((res:any)=>{
+                     if(res.message=='1'){   
+                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted.`,"Deleted Successfully.");
+                       this.GetAssignedTaskDetails();
+                     }
+                     else{
+                        this.notifyService.showError(`Failed to delete ${this.draft_json[index].Project_Name}.`,"Failed.");
+                     }
+           });
 
          }
     });

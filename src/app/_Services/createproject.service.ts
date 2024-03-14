@@ -55,7 +55,9 @@ export class CreateprojectService {
   }
 
 
-
+  NewDeleteDraft(prjDTO:ProjectDetailsDTO){
+     return this.http.post(this.rootUrl+'Projects/NewDeleteDraft',prjDTO);
+  }
 
 
 

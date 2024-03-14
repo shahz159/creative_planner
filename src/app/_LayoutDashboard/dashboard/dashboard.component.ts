@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { NotificationActivityDTO } from 'src/app/_Models/notification-activity-dto';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 //import { ScriptService } from 'src/app/_Services/script.service';
@@ -36,6 +36,7 @@ import { empty } from 'rxjs';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -487,7 +488,6 @@ export class DashboardComponent implements OnInit {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
-
       themeSystem: "solar",
       weekNumbers: true,
       eventClick: this.handleEventClick.bind(this),
@@ -502,6 +502,17 @@ export class DashboardComponent implements OnInit {
       nowIndicator: true,
       allDaySlot: false
     };
+
+    tippy('#agenda-info-icon', {
+      content: "Agenda is mandatory for meeting creation, Please provide atleast 1.",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'dark',
+      animateFill: true,
+      inertia: true,
+      placement:'left'
+    });
+
     this.MinLastNameLength = true;
     this._subname = false;
     this._subname1 = false;
@@ -607,6 +618,14 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
+
+
+
+   
+
+
+
+
 
   }
 
@@ -1654,7 +1673,7 @@ export class DashboardComponent implements OnInit {
         const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
         element[vAgendas] = mtgAgendas;
 
-
+debugger
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -2610,7 +2629,7 @@ export class DashboardComponent implements OnInit {
 
     this._calenderDto.Scheduled_date = this.doubleclickdate;
     this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => { debugger
         this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
         // this._total = this.Avaliabletime[0].SlotsJson.length;
         this.timeslotsavl = [];
@@ -4980,5 +4999,142 @@ export class DashboardComponent implements OnInit {
 
 
 
+    // mat-autocomplete dropdowns code start.
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
+openAutocompleteDrpDwn(Acomp:string){
+      const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+      requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+}
+    
+closeAutocompleteDrpDwn(Acomp:string){
+      const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+      requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+}
+    
+
+
+
+isDMSMemoDrpDwnOpen:boolean=false;
+onDMSMemoSelected(e){
+  const memoChoosed=this.Memos_List.find((c)=>c.MailId===e.option.value);
+  if(memoChoosed){
+      if(!this.SelectDms)   // if SelectDms is null,undefined,''    
+      this.SelectDms=[];
+      
+       const index=this.SelectDms.indexOf(memoChoosed.MailId);
+       if(index===-1){
+          // if not present then add it
+          this.SelectDms.push(memoChoosed.MailId);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.SelectDms.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('MemoDrpDwn');
+}
+removeSelectedDMSMemo(item){
+  const index=this.SelectDms.indexOf(item);
+  if(index!==-1){
+    this.SelectDms.splice(index,1);
+  }
+}
+
+isParticipantsDrpDwnOpen:boolean=false;
+onParticipantSelected(e: any) {
+  const participantChoosed = this._EmployeeListForDropdown.find((c) => c.Emp_No === e.option.value);
+  if (participantChoosed) {
+    if(!this.ngEmployeeDropdown)   // if ngEmployeeDropdown is null,undefined,''    
+    this.ngEmployeeDropdown=[];
+    
+    const index = this.ngEmployeeDropdown.indexOf(participantChoosed.Emp_No);
+    if (index === -1) {
+      // if not present then add it
+      this.ngEmployeeDropdown.push(participantChoosed.Emp_No);
+    }
+    else { //  if item choosed is already selected then remove it.
+      this.ngEmployeeDropdown.splice(index, 1);
+    }
+  }
+  this.openAutocompleteDrpDwn('ParticipantsDrpDwn');
+}
+
+removeSelectedParticipant(item){
+  const index=this.ngEmployeeDropdown.indexOf(item);
+  if(index!==-1){
+    this.ngEmployeeDropdown.splice(index,1);
+  }
+}
+
+
+isPortfolioDrpDwnOpen:boolean=false;
+onPortfolioSelected(e:any){  
+  const portfolioChoosed:any=this.Portfoliolist_1.find((p:any)=>p.portfolio_id===e.option.value);
+  console.log(portfolioChoosed);
+  if(portfolioChoosed){
+          if(!this.Portfolio)   // if Portfolio is null,undefined,''    
+          this.Portfolio=[];
+       const index=this.Portfolio.indexOf(portfolioChoosed.portfolio_id);
+       if(index===-1){
+          // if not present then add it
+          this.Portfolio.push(portfolioChoosed.portfolio_id);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.Portfolio.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+}
+
+
+removeSelectedPortfolio(item){
+  const index=this.Portfolio.indexOf(item);
+  if(index!==-1){
+    this.Portfolio.splice(index,1);
+  }
+}
+
+
+
+getObjOf(arr,id,idName){
+    const obj=arr.find(item=>item[idName]==id);
+    return obj;
+}
+
+
+
+isProjectsDrpDwnOpen:boolean=false;
+removeSelectedProject(item){
+  const index=this.MasterCode.indexOf(item);
+  if(index!==-1){
+    this.MasterCode.splice(index,1);
+  }
+}
+
+onProjectSelected(e:any){
+  const prjChoosed=this.ProjectListArray.find((p:any)=>p.Project_Code===e.option.value);
+  if(prjChoosed){
+    if(!this.MasterCode)   // if Portfolio is null,undefined,''    
+    this.MasterCode=[];
+          const index=this.MasterCode.indexOf(prjChoosed.Project_Code);
+          if(index===-1){
+              // if not present then add it
+              this.MasterCode.push(prjChoosed.Project_Code);
+          }
+          else {
+            this.MasterCode.splice(index,1);
+          }
+  }
+  this.openAutocompleteDrpDwn('ProjectsDrpDwn');
+}
+
+
+getProjectName(projectCode:string){
+  if(this.ProjectListArray){
+   const P=this.ProjectListArray.find(pr=>pr.Project_Code.trim()==projectCode.trim());
+   return P?P.BlockNameProject:'';
+  }
+   return [];
+}
+    // mat-autocomplete dropdowns code end.
 
 }
