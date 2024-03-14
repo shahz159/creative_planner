@@ -3713,7 +3713,39 @@ export class DashboardComponent implements OnInit {
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
     // }
-  }
+      // const event = info.event;
+      // const start = new Date(event.start);
+      // const end = new Date(event.end);
+
+      // // Normalize the start and end dates to midnight for comparison
+      // const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
+      // const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+
+      // // Check if the event spans more than the start day
+      // const isMultiDayEvent = endMidnight > startMidnight;
+
+      // if (isMultiDayEvent) {
+      //   // Get the current view's start date at midnight
+      //   const viewStart = new Date(info.view.currentStart);
+      //   const viewStartMidnight = new Date(viewStart.getFullYear(), viewStart.getMonth(), viewStart.getDate()).getTime();
+        
+      //   // Determine the day label
+      //   let dayLabel;
+      //   if (startMidnight === viewStartMidnight) {
+      //     dayLabel = "Day (1/2)";
+      //   } else if (endMidnight === viewStartMidnight) {
+      //     dayLabel = "Day (2/2)";
+      //   }
+
+      //   if (dayLabel) {
+      //     // Remove any existing day count before appending the new one
+      //     const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
+      //     const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+
+      //     event.setProp('title', newTitle);
+      //   }
+      // }
+  }                                 
 
   public handleAddressChange(address: Address) {
 
