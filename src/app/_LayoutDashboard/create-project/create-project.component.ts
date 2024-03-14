@@ -220,6 +220,7 @@ export class CreateProjectComponent implements OnInit {
 
       }
       this.getFindName()
+      this.changeprojecttype();
      });
   }
 
@@ -679,8 +680,8 @@ onFileChanged(event: any) {
 
     if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.PrjName.trim().split(' ').length>=3)&&(this.PrjDes&&this.PrjDes.trim().split(' ').length>=5)&&
     (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate) ||
-    (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
-    ( ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
+    (['011'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
+    ( ['003','008'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.prjsubmission&&this.Allocated_Hours&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
     )){
           // alert(this.Allocated_Hours)
           $('.right-side-dv').removeClass('d-none');
@@ -1627,8 +1628,9 @@ this.getActionsDetails();
 
 }
 
-submitDar(){
-  this.notProvided=true
+reset(){
+  this.PrjCategory=null,this.Prjtype=null,this.PrjName=null,this.PrjDes=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
+
 }
 
 // DRAFT PROJECT CODE END.
@@ -1637,4 +1639,19 @@ isValidString(inputString: string, maxWords: number): boolean {
   return inputString && inputString.trim() && inputString.trim().split(/\s+/).length < maxWords;
 }
 
+newProject_Type:any
+
+changeprojecttype(){
+
+  this.newProject_Type=this.Prjtype;
+ alert(this.newProject_Type)
+
+
+if(this.Prjtype==='003'|| this.Prjtype==='008'){
+  this.PrjCategory=null,this.PrjName=null,this.PrjDes=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
 }
+}
+
+
+}
+

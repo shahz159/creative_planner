@@ -32,7 +32,7 @@
                       </div>
                     </div>
                     <div class="option-section">
-                      <div (click)="Scratech_btn();">
+                      <div (click)="Scratech_btn(); reset()" >
                         <div class="op-card Scratech">
                           <div class="op-svg-ic">
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
@@ -1019,8 +1019,10 @@
                                                 {{projectInfo&&projectInfo.AllocatedHours}} Hrs
                                               </ng-container>
                                               <ng-template #Hrs>
-                                                <ng-container *ngIf="Allocated_Hours">{{Allocated_Hours}} Hrs</ng-container>
-                                                <ng-container *ngIf="!Allocated_Hours || Allocated_Hours!=''">0 Hrs</ng-container>
+                                                <ng-container *ngIf="Allocated_Hours!=''&&(Prjtype==='003'|| Prjtype==='008')">{{Allocated_Hours}} </ng-container>
+                                                <ng-container *ngIf="Allocated_Hours!=''&&(Prjtype==='001'|| Prjtype==='002')">{{Allocated_Hours}} Hrs</ng-container>
+                                                <ng-container *ngIf="Allocated_Hours==''">0 Hrs</ng-container>
+
                                               </ng-template>
                                     <!-- </ng-container>
                                     <ng-template #AllcDiv>
@@ -1391,10 +1393,10 @@
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="select type" [(ngModel)]="Prjtype"
+                                  <ng-select class="kt-form-vd" placeholder="select type" [(ngModel)]="Prjtype" (change)="changeprojecttype()"
                                     #PrjTYPE="ngModel"  (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
-                                      [value]="item.Typeid">{{item.ProjectType}} </ng-option>
+                                      [value]="item.Typeid"  >{{item.ProjectType}} </ng-option>
                                   </ng-select>
                                   <span style="color:red" *ngIf="!Prjtype&&notProvided">project type
                                     required</span>
@@ -1469,8 +1471,8 @@
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                       [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()"     min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
-                                    <span *ngIf=" notProvided" style="color:red">Allocated hours missing
-                                      </span>
+
+
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:red">*Allocated hours cannot be 0, please enter a
@@ -2941,13 +2943,13 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Name:</h4>
-                    <p>Project Name should be more than 3 words and Please try to avoid using special characters like @
+                    <p>Project Name should be atleast 3 words and Please try to avoid using special characters like @
                       # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: Enhancement of Transportation and Distribiution Division through GPS Technology</p>
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Description:</h4>
-                    <p>Project Description should be more than 5 words and Please try to avoid using special characters
+                    <p>Project Description should be atleast 5 words and Please try to avoid using special characters
                       like -@ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: The task is created on the advice from the President to enhance the transportation &amp;
                       distribution division through GPS technology and developing transportation KPIs tracking report on
@@ -3001,7 +3003,7 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Sub Section:</h4>
-                    <p>select Starting Date &amp; Time and the expected Ending Date &amp; Time of the given project. A
+                    <p>select Starting Date &amp;  and the expected Ending Date of the given project. A
                       team member cannot select the DPG (Date of Project Given) which is less than the current date. You
                       should not select the past date as a deadline. System will not accept.</p>
                   </div>
