@@ -1588,6 +1588,13 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         const date1: Date = new Date(this._StartDate);
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        }
+        else {
+          this._SEndDate = this.scstartdate;
+        }
+
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -1913,6 +1920,12 @@ debugger
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         const date1: Date = new Date(this._StartDate);
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        }
+        else {
+          this._SEndDate = this.scstartdate;
+        }
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -2015,7 +2028,10 @@ debugger
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this._OldRecurranceId == this.selectedrecuvalue) {
         if (this._OldEnd_date != this._EndDate) {
-          this._calenderDto.flagid = 3;
+          if(this._PopupConfirmedValue==1)
+            this._calenderDto.flagid = 1;
+          else
+            this._calenderDto.flagid = 2;
         }
       }
       if (this.Schedule_ID != 0) {
@@ -2714,8 +2730,8 @@ debugger
     this.StartTimearr = [];
 
     this._arrayObj.forEach(element => {
-      this.EndTimearr.push(element.TSEnd);
-      this.AllEndtime.push(element.TSEnd);
+      this.EndTimearr.push(element.TSStart);
+      this.AllEndtime.push(element.TSStart);
       this.StartTimearr.push(element.TSStart);
       this.Alltimes.push(element.TSStart);
       //  console.log( this.Alltimes,"times")
@@ -2755,7 +2771,7 @@ debugger
       mins = mins.replace("PM", "AM")
     }
 
-    if (this.timearr1[0] == 23) {
+    if (this.timearr1[0] == 11) {
       this._arrayObj.forEach(element => {
         this.EndTimearr.push(element.TSStart);
 
@@ -2766,10 +2782,13 @@ debugger
 
       }
       this.Endtms = vahr.toString() + ':' + mins;
-      if (vahr == '00') {
+      // alert(this.Startts)
+      // alert(this.Endtms)
+
+      if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
-        // alert(this.scstartdate)
-        document.getElementById("Schenddate").style.display = "none";
+        //  alert(this.scstartdate)
+        // document.getElementById("Schenddate").style.display = "block";
 
       }
       else {
@@ -3713,7 +3732,39 @@ debugger
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
     // }
-  }
+      // const event = info.event;
+      // const start = new Date(event.start);
+      // const end = new Date(event.end);
+
+      // // Normalize the start and end dates to midnight for comparison
+      // const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
+      // const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+
+      // // Check if the event spans more than the start day
+      // const isMultiDayEvent = endMidnight > startMidnight;
+
+      // if (isMultiDayEvent) {
+      //   // Get the current view's start date at midnight
+      //   const viewStart = new Date(info.view.currentStart);
+      //   const viewStartMidnight = new Date(viewStart.getFullYear(), viewStart.getMonth(), viewStart.getDate()).getTime();
+        
+      //   // Determine the day label
+      //   let dayLabel;
+      //   if (startMidnight === viewStartMidnight) {
+      //     dayLabel = "Day (1/2)";
+      //   } else if (endMidnight === viewStartMidnight) {
+      //     dayLabel = "Day (2/2)";
+      //   }
+
+      //   if (dayLabel) {
+      //     // Remove any existing day count before appending the new one
+      //     const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
+      //     const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+
+      //     event.setProp('title', newTitle);
+      //   }
+      // }
+  }                                 
 
   public handleAddressChange(address: Address) {
 

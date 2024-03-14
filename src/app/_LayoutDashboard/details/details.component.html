@@ -1580,8 +1580,8 @@
                                                 Task Complete approvals
                                             </div>
                                             <div *ngIf="projectInfo&&standardjson">
-                                                <button 
-                                                 *ngIf="(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)&&standardjson.length>0"  
+                                                <button
+                                                 *ngIf="(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)&&standardjson.length>0"
                                                  (click)="acceptAllStdApprReq()" class="btn btn-outline-success btn-sm mr-4 fs-8 fw-700">Accept All</button>
                                             </div>
                                             <div class="kt-project-type curser-pointer d-none">
@@ -2120,18 +2120,18 @@
         <div  (click)="showActionsWith0AlcHrs()"  class="notification overutilization-notification" style="cursor:pointer;"   *ngIf="actionsWith0hrs&&actionsWith0hrs.length>0">
             <svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
             <span class="notif-msg" style="color: #c57a05;">
-                
+
                 The project has {{totalActionsWith0hrs}} {{totalActionsWith0hrs>1?'Actions':'Action'}} with 0 allocated hours,
                 <ng-container *ngIf="totalActionsWith0hrs===1;else tothem">
                     assigned to {{actionsWith0hrs[0].name}}.
                 </ng-container>
                 <ng-template #tothem>
-                    with 
+                    with
                     <ng-container *ngFor="let act of actionsWith0hrs; let i=index;">
                             {{act.name}}({{act.holdactions}}){{i+1===actionsWith0hrs.length-1?' and':(i+1===actionsWith0hrs.length)?'':', '}}
                     </ng-container> assigned to them.
                 </ng-template>
-                  
+
             </span>
         </div>
 
@@ -2153,7 +2153,7 @@
                 stroke: #484848;
                 stroke-width: 2px;
                 fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
-                
+
               <span class="notif-msg" style=" cursor: pointer;">
                 Please inform the responsible of the project to submit the draft to start working on the project.</span>
             </div>
@@ -2262,11 +2262,11 @@
                                                         </div>
                                                         <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
 
-                                                            
+
                                                             <button (click)="openDarSideBar()" class="Ct-btn ml-2"
                                                                 *ngIf="projectInfo.Status!=='New Project Rejected'">Add
                                                                 Timeline</button>
-                                                            
+
                                                             <button class="Ct-btn Bt-Submit ml-2"
                                                                 *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
                                                                 Completion</button>
@@ -4222,9 +4222,9 @@
                                                 </div>
 
 
-                                                
+
                                             <div class="col-lg-3  text-center"  *ngIf="projectActionInfo[currentActionView].Status==='Completed'"  >
-                                               
+
                                                 <div class="kt-info-lable-v">
                                                     Completed date
                                                 </div>
@@ -4498,7 +4498,7 @@
             </div>
 
             <div class="kt-nav__separator"></div>
-        </li> 
+        </li>
         <li class="kt-nav__item px-4">
             <div class="matchip-drp-dwn">
 
@@ -6806,8 +6806,8 @@
                                             <label class="custom-file-label"  for="_file1">
                                                 <ng-container *ngIf="_inputAttachments;else selectfile">{{_inputAttachments}}</ng-container>
                                                   <ng-template #selectfile>Select a file</ng-template>
-                                            </label> 
-                                           
+                                            </label>
+
                                         </div>
                                     </div>
                                     <span class="text-info"> *Accept only pdf files </span>
@@ -8498,7 +8498,7 @@
                                 <ng-option [value]="p.Project_Code" *ngFor="let p of ProjectListArray">{{p.BlockNameProject}}</ng-option>
                             </ng-select> -->
 
-                      
+
                                  <mat-form-field class="drp-dwn-field w-100" *ngIf="ProjectListArray">
                                     <mat-label>Select Project </mat-label>
                                     <mat-chip-list #selectedProjectDrpDwn>
@@ -8532,7 +8532,7 @@
                                             {{pr.BlockNameProject}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>   
+                                </mat-form-field>
 
                             </div>
 
@@ -8637,7 +8637,7 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-                                 
+
                                 </div>
 
                                 <div class="form-group" id="Guest_Name" style="display:none">
@@ -9869,7 +9869,7 @@
     </div>
         <!-------- Project Details edit view end --------->
 
-      
+
        <!-------- Action edit view start --------->
        <div class="sideInfobar animate-right" id="Action_Details_Edit_form">
         <div class="kt-portlet__body scroll-auto">
@@ -10240,7 +10240,7 @@
                                             *ngIf="ActionAllocatedHours==0" [(ngModel)]="editAllocatedhours" />
                                             <span *ngIf="(editAllocatedhours==0)" style="color:red" class="fs-8"  >*Allocated hours cannot be 0, please enter a value.</span>
                                             <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >Daily allocation limit: 10 hours; enter ≤ <b>{{ActionmaxAllocation}}</b> hours.</span>
-                                            <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">*please provide both dates.</span> 
+                                            <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">*please provide both dates.</span>
                                     </div>
                                 </div>
                             </div>
@@ -10268,14 +10268,14 @@
                         <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
                             (click)="closeInfo()">Cancel</button>
                         <button  [disabled]="
-                                    !(   
+                                    !(
                                         ActionName&&ActionDescription&&
                                         ActionOwner&&ActionResponsible&&
                                         selectedcategory&&ActionClient&&
                                         ActionstartDate&&ActionendDate&&
                                         editAllocatedhours&&editAllocatedhours<=ActionmaxAllocation
                                     )
-                                    " 
+                                    "
                          type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
                             Update</button>
                     </div>

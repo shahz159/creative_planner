@@ -172,7 +172,9 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                  [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name==='Under Approval'?'New Project Under Approval':( item.Name==='InProcess'?'In-Process':item.Name)}}
+                                                                 {{ item.Name === 'Under Approval' ? 'New Project Under Approval' :
+                                                                 (item.Name === 'InProcess' ? 'In-Process' :
+                                                                 (item.Name === 'Not Started' ? 'Draft' : item.Name)) }}
 
                                                                 <span></span>
                                                             </label>

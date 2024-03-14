@@ -1208,8 +1208,8 @@ color:#000;
   color:black !important;;
 }
 
-.todo-completed{
-  background-color: #62B134 ;
+.todo-completed-head{
+  background-color: #62B134!important ;
   color: white;
 }
 
@@ -1281,7 +1281,7 @@ color:#000;
 
 .Cancellation_Under_Approval_color{
   background-color: #EE4137!important;
-  color: white;
+  color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -1332,6 +1332,7 @@ color:#000;
   padding: 2px 10px;
   border-radius: 3px;
 }
+
 
 .Delay-head{
   background-color: #EE4137 !important;
@@ -1404,7 +1405,7 @@ color:#000;
     padding: 2px 10px;
     border-radius: 3px;
 }
-.in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved{
+.in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head {
   position: relative;
 }
 .in-processs:focus::after {
@@ -1470,6 +1471,27 @@ color:#000;
   bottom: -32%;
   left: 38%;
 }
+.rejected:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #DFDFDF;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.todo-completed-head:focus::after{
+content: "";
+position: absolute !important;
+border-top: 10px solid #62B134;
+border-left: 10px solid transparent;
+border-right: 10px solid transparent;
+bottom: -32%;
+left: 38%;
+}
+/* focus end */
+
+
 
 .Not-Started{
   background-color: #888888!important;
