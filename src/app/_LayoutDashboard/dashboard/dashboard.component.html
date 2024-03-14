@@ -995,7 +995,7 @@
                     
 
 
-                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <!-- <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
                             <span class="kt-meeting-status-icon">
                                 <svg enable-background="new 0 0 32 32" height="19px" id="Layer_1"
                                     version="1.1" viewBox="0 0 32 32" width="19px" xml:space="preserve"
@@ -1006,7 +1006,7 @@
                                         fill="currentcolor" id="video" />
                                 </svg>
                             </span>
-                    </div>
+                    </div> -->
 
 
                     <div class="icons-right met-done curser-pointer"
@@ -1196,10 +1196,10 @@
                                 <div class="d-flex">
                                     <div class="title-day">{{item.Schedule_date| date:'EEEE, MMMM d'}}
                                         <span>,</span>
-                                        <span>{{item.NewSt_Time }} –
+                                        <span>{{item.NewSt_Time }} 
 
                                         </span>
-                                    </div>
+                                    </div>-
                                     <div class="title-day">
                                         <span *ngIf="item.Schedule_date!=item.SEndDate">
                                             {{item.SEndDate| date:'EEEE, MMMM d'}}
@@ -1215,7 +1215,7 @@
                     </div>
 
 
-             <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
+             <!-- <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
                         <div class="boxcl-div">
                             <div class="kt-meeting-title-icon">
                             <svg stroke="#5f6368" xmlns="http://www.w3.org/2000/svg" width="25" height="19" viewBox="0 0 16 17">
@@ -1267,7 +1267,7 @@
                                 </div>
                             </div>
                         </div>
-             </div>  
+             </div>   -->
 
 
 
@@ -2749,7 +2749,7 @@
 
 <!--agenda field start--> 
 
-<div class="form-group" id="agenda-field">
+<!-- <div class="form-group" id="agenda-field">
     <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
     <span id="agenda-info-icon" class="ml-1">
         <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
@@ -2820,14 +2820,14 @@
 
 
 
-</div>  
+</div>   -->
 
 
 
 
 
 <!--agenda field end-->
-
+                <!--this is for Schedule task start-->
                 <div class="form-group" id="core_viw123">
                     <label class="cus-lbl">Select Project <span class="text-danger"
                             *ngIf="ScheduleType=='Task'">*</span>
@@ -2849,15 +2849,57 @@
                     </div>
                     <span *ngIf="_subname == true" style="color:red">Please select project!</span>
                 </div>
+                <!--this is for Schedule task end-->
+                <!--this is for Schedule event start-->
                 <div class="form-group" id="core_viw121" style="display:none">
-                    <label class="cus-lbl">Select Project </label>
+                    <!-- <label class="cus-lbl">Select Project</label>
                     <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project"
                         [(ngModel)]="MasterCode">
                         <ng-option *ngFor="let item of  ProjectListArray" [value]="item.Project_Code">
                             {{item.BlockNameProject}}</ng-option>
-                    </ng-select>
-                </div>
+                    </ng-select>    -->
 
+
+                     <mat-form-field class="drp-dwn-field w-100"  *ngIf="ProjectListArray">
+                        <mat-label>Select Project</mat-label>
+                        <mat-chip-list #selectedProjects>                                           
+                            <mat-chip *ngFor="let prjcode of MasterCode" class="Data_chip_kt" (removed)="removeSelectedProject(prjcode)">
+                                {{getProjectName(prjcode)}}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <div class="d-flex">
+                            <input class="flex-1" [matChipInputFor]="selectedProjects"
+                                [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
+                         
+                            <button *ngIf="isProjectsDrpDwnOpen"
+                                class="bg-transparent border-0 "  (click)="this.isProjectsDrpDwnOpen=false; closeAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                <mat-icon class="close-icon">cancel</mat-icon></button>
+                              
+                            <button *ngIf="!isProjectsDrpDwnOpen"
+                                class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                <mat-icon class="add-icon"
+                                    >add</mat-icon></button>
+                        </div>
+                       
+                        <mat-autocomplete aria-label="ProjectsDrpDwn" #ProjectsDrpDwn="matAutocomplete"
+                        (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
+                        (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
+                            
+                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value).slice(0,1000)" [value]="prj.Project_Code">
+                                <mat-checkbox color="primary"
+                                    [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
+                                   {{prj.BlockNameProject}}
+                            </mat-option>
+
+                        </mat-autocomplete>
+                    </mat-form-field>   
+
+
+                </div>
+                <!--this is for Schedule event end-->
                 <div class="content-main show pt-0" id="core_viw">
                     <div class="form-group" id="subtaskid">
                         <label class="cus-lbl">Select Action</label>
@@ -2878,28 +2920,155 @@
                         </div>
                     </div>
                     <div class="form-group" id="core_viw222" style="display:none">
-                        <label class="cus-lbl">Add Portfolio </label> 
+                     <!-- <label class="cus-lbl">Add Portfolio </label> 
                         <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio"
                             [(ngModel)]="Portfolio">
                             <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
                                 {{item.Portfolio_Name}} - {{item.DisplayName}}</ng-option>
-                        </ng-select>
+                        </ng-select>    -->
+
+
+
+
+
+
+
+                         <mat-form-field class="drp-dwn-field w-100"  *ngIf="Portfoliolist_1">
+                            <mat-label>Add Portfolio</mat-label>
+                            <mat-chip-list #selectedPortfolios>                                           
+                                <mat-chip *ngFor="let prtid of Portfolio" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtid)">
+                                         {{getObjOf(Portfoliolist_1,prtid,'portfolio_id').Portfolio_Name}}-{{getObjOf(Portfoliolist_1,prtid,'portfolio_id').DisplayName}}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                            </mat-chip-list>
+                            <div class="d-flex">
+                                <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                                    [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
+                             
+                                <button *ngIf="isPortfolioDrpDwnOpen"
+                                    class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
+                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                  
+                                <button *ngIf="!isPortfolioDrpDwnOpen"
+                                    class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
+                                    <mat-icon class="add-icon"
+                                        >add</mat-icon></button>
+                            </div>
+                           
+                            <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
+                            (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
+                            (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
+                                
+                                <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value).slice(0,1000)" [value]="prt.portfolio_id">
+                                    <mat-checkbox color="primary"
+                                        [checked]="Portfolio!=null&&Portfolio.indexOf(prt.portfolio_id)!==-1"></mat-checkbox>
+                                        {{prt.Portfolio_Name}} - {{prt.DisplayName}}
+                                </mat-option>
+
+                            </mat-autocomplete>
+                        </mat-form-field>   
+
+
                     </div>
                     <div class="form-group" id="core_Dms" style="display:none">
-                        <label class="cus-lbl">Add DMS </label>
+                           <!-- <label class="cus-lbl">Add DMS </label>
                         <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select DMS"
                             [(ngModel)]="SelectDms">
                             <ng-option *ngFor="let item of  Memos_List" [value]="item.MailId">
                                 {{item.Subject}} - {{item.DisplayName}}</ng-option>
-                        </ng-select>
+                        </ng-select>    -->
+                       
+             
+                       <mat-form-field class="drp-dwn-field w-100"  *ngIf="Memos_List">
+                            <mat-label>Add DMS</mat-label>
+                            <mat-chip-list #selectedDmsMemoDrpDwn>                                           
+                                <mat-chip *ngFor="let d of SelectDms" class="Data_chip_kt" (removed)="removeSelectedDMSMemo(d)">
+                                    {{getObjOf(Memos_List,d,'MailId').Subject}} - {{getObjOf(Memos_List,d,'MailId').DisplayName}}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                            </mat-chip-list>
+                            <div class="d-flex">
+                                <input class="flex-1" [matChipInputFor]="selectedDmsMemoDrpDwn"
+                                    [matAutocomplete]="MemoDrpDwn" #dmsMemoTF />
+                             
+                                <button *ngIf="isDMSMemoDrpDwnOpen"
+                                    class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
+                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                  
+                                <button *ngIf="!isDMSMemoDrpDwnOpen"
+                                    class="bg-transparent border-0" (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">
+                                     
+                                    <mat-icon class="add-icon"
+                                        >add</mat-icon></button>
+                            </div>
+                           
+                            <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
+                            (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
+                            (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
+                                
+                                <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
+                                    [value]="m.MailId">
+                                    <mat-checkbox color="primary"
+                                        [checked]="SelectDms!=null&&SelectDms.indexOf(m.MailId)!==-1"></mat-checkbox>
+                                    {{m.Subject}} - {{m.DisplayName}}
+                                </mat-option>
+
+                            </mat-autocomplete>
+                        </mat-form-field>   
+
                     </div>
                     <div class="form-group" id="Guest_Name" style="display:none">
-                        <label class="cus-lbl">Add Participants </label>
+                         <!-- <label class="cus-lbl">Add Participants </label> 
                         <ng-select [multiple]="true" class="kt-input form-control" name="ngEmployeeDropdown"
                             placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
                             <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
                                 {{item.DisplayName}} </ng-option>
-                        </ng-select>
+                        </ng-select>    -->
+
+
+                        <mat-form-field class="drp-dwn-field w-100"  *ngIf="_EmployeeListForDropdown">
+                            <mat-label>Add Participants</mat-label>
+                            <mat-chip-list #selectedParticipants>                                           
+                                <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt" (removed)="removeSelectedParticipant(p)">
+                                    {{getObjOf(_EmployeeListForDropdown,p,'Emp_No').DisplayName}}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                            </mat-chip-list>
+                            <div class="d-flex">
+                                <input class="flex-1" [matChipInputFor]="selectedParticipants"
+                                    [matAutocomplete]="ParticipantsDrpDwn" #ParticipantsTF />
+                             
+                                <button *ngIf="isParticipantsDrpDwnOpen"
+                                    class="bg-transparent border-0 "  (click)="this.isParticipantsDrpDwnOpen=false; closeAutocompleteDrpDwn('ParticipantsDrpDwn');">
+                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                  
+                                <button *ngIf="!isParticipantsDrpDwnOpen"
+                                    class="bg-transparent border-0" (click)="this.isParticipantsDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantsDrpDwn');">
+                                    <mat-icon class="add-icon"
+                                        >add</mat-icon></button>
+                            </div>
+                           
+                            <mat-autocomplete aria-label="ParticipantsDrpDwn" #ParticipantsDrpDwn="matAutocomplete"
+                            (optionSelected)="onParticipantSelected($event); ParticipantsTF.value=''; "
+                            (opened)="isParticipantsDrpDwnOpen=true" (closed)="isParticipantsDrpDwnOpen=false; ">
+                                
+                                <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value).slice(0,1000)"
+                                    [value]="p.Emp_No">
+                                    <mat-checkbox color="primary"
+                                        [checked]="ngEmployeeDropdown!=null&&ngEmployeeDropdown.indexOf(p.Emp_No)!==-1"></mat-checkbox>
+                                    {{p.DisplayName}}
+                                </mat-option>
+
+                            </mat-autocomplete>
+                        </mat-form-field>  
+
+
                     </div>
                     <div>
                         <div class="form-group" id="online-add">
