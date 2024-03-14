@@ -702,7 +702,6 @@ onFileChanged(event: any) {
 
 
 
-
   }
 
   Back_to_project_details_tab(){
@@ -1634,8 +1633,8 @@ submitDar(){
 
 // DRAFT PROJECT CODE END.
 
-
-
-
+isValidString(inputString: string, maxWords: number): boolean {
+  return inputString && inputString.trim() && inputString.trim().split(/\s+/).length < maxWords;
+}
 
 }

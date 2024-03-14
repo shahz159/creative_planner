@@ -141,6 +141,14 @@
                             class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px">
                             {{CountRejecteds}} Rejected</a>
                     </ng-container>
+
+                    <ng-container *ngIf="Count_ToDoCompleted > 0">
+                      <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
+                          class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px">
+                          {{Count_ToDoCompleted}} ToDoCompleted</a>
+                  </ng-container>
+
+
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
                         <a href="javascript:void(0)" (click)="labelToDoAchieved()" [hidden]="HideStatusDropdown"
                             class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px "

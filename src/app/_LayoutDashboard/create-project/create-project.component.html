@@ -1371,7 +1371,7 @@
                                   <input class="form-control" type="text"
                                     placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel" />
                                   <span style="color: red;" class=""
-                                    *ngIf="PrjName&&PrjName.trim().split(' ').length<3">please enter atleast 3
+                                  *ngIf="isValidString(PrjName, 3)" >please enter atleast 3
                                     words</span>
                                   <span style="color: red;" class=""
                                     *ngIf="PrjName===''&&notProvided">project name required</span>
@@ -1382,7 +1382,7 @@
                                   <label>Project description<span class="text-danger">*</span></label>
                                   <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
                                     placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"></textarea>
-                                  <span style="color:red" *ngIf="PrjDes&&PrjDes.trim().split(' ').length<5">please enter
+                                  <span style="color:red"*ngIf="isValidString(PrjDes, 5)">please enter
                                     atleast 5 words</span>
                                   <span style="color:red" *ngIf="!PrjDes&&notProvided">description is
                                     required</span>
@@ -1440,7 +1440,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <span *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </span>
+                                  <div *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </div>
                                   <span *ngIf="!Prjstartdate&&notProvided" style="color:red">start date
                                     required</span>
                                 </div>
@@ -1469,13 +1469,14 @@
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                       [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()"     min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
-                                    <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
-                                      required!</span>
+                                    <span *ngIf=" notProvided" style="color:red">Allocated hours missing
+                                      </span>
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:red">*Allocated hours cannot be 0, please enter a
                                       value.</span>
                                     <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:red">{{_message}}</span>
+
                                 </div>
                               </ng-container>
 
@@ -1487,8 +1488,10 @@
                                       placeholder="Select submission type">
                                       <ng-option [value]="item.SubmissionId" *ngFor="let item of SubmissionType">
                                         {{item.SubmissionName}}
+
                                       </ng-option>
                                     </ng-select>
+                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:red">submission type missing</span>
                                   </div>
                                 </div>
                               </div>
@@ -1500,7 +1503,7 @@
                                       <div class="input-icon Sub_In_ed">
                                         <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours"  (ngModelChange)="getPrjCost()"   #Alloc="ngModel">
                                         </ng-select>
-                                        <span *ngIf="Alloc.touched" style="color:red">*submission type missing</span>
+                                        <span *ngIf="notProvided" style="color:red">Allocated hour missing</span>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
