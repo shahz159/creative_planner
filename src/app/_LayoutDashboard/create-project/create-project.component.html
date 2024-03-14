@@ -1440,7 +1440,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <span *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </span>
+                                  <div *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </div>
                                   <span *ngIf="!Prjstartdate&&notProvided" style="color:red">start date
                                     required</span>
                                 </div>
@@ -1469,13 +1469,14 @@
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                       [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()"     min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
-                                    <span *ngIf="allocated.touched && allocated.invalid" style="color:red">Allocated hours
-                                      required!</span>
+                                    <span *ngIf=" notProvided" style="color:red">Allocated hours missing
+                                      </span>
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:red">*Allocated hours cannot be 0, please enter a
                                       value.</span>
                                     <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:red">{{_message}}</span>
+
                                 </div>
                               </ng-container>
 
