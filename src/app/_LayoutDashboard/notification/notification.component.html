@@ -1597,10 +1597,10 @@
                   <div class="mb-2">
                     <span class="label">Applied Dates</span>
                     {{myLeaveDetails&&myLeaveDetails[0].Start_Date |
-                    date:'dd-MM-yyyy'}}-{{myLeaveDetails&&myLeaveDetails[0].End_Date | date:'dd-MM-yyyy'}}
+                    date:'dd-MM-yyyy'}} - {{myLeaveDetails&&myLeaveDetails[0].End_Date | date:'dd-MM-yyyy'}}
                   </div>
                   <div class="mb-2">
-                    <span class="label">Applied Days</span><span class="data"> </span>
+                    <span class="label">Applied Days</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Days_Count}} </span>
                   </div>
                   <div class="mb-2 d-flex">
                     <span class="label">Remarks</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Remarks}}

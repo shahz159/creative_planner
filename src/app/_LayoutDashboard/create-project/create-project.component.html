@@ -1020,9 +1020,8 @@
                                               </ng-container>
                                               <ng-template #Hrs>
                                                 <ng-container *ngIf="Allocated_Hours!=''&&(Prjtype==='003'|| Prjtype==='008')">{{Allocated_Hours}} </ng-container>
-                                                <ng-container *ngIf="Allocated_Hours!=''&&(Prjtype==='001'|| Prjtype==='002')">{{Allocated_Hours}} Hrs</ng-container>
-                                                <ng-container *ngIf="Allocated_Hours==''">0 Hrs</ng-container>
-
+                                                <!-- <ng-container *ngIf="Allocated_Hours!=''&&(Prjtype==='001'|| Prjtype==='002')">{{Allocated_Hours}} Hrs</ng-container>                                            -->
+                                                <ng-container *ngIf="Allocated_Hours==null"> 0 Hrs</ng-container>
                                               </ng-template>
                                     <!-- </ng-container>
                                     <ng-template #AllcDiv>
@@ -1371,22 +1370,22 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project name<span class="text-danger">*</span></label>
                                   <input class="form-control" type="text"
-                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel" />
-                                  <span style="color: red;" class=""
-                                  *ngIf="isValidString(PrjName, 3)" >please enter atleast 3
+                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=(!isValidString(PrjName,3))"   />
+                                  <span style="color:rgb(217,48,37)" class=""
+                                  *ngIf="isPrjNameValid" >please enter atleast 3
                                     words</span>
-                                  <span style="color: red;" class=""
-                                    *ngIf="PrjName===''&&notProvided">project name required</span>
+                                  <span style="color:rgb(217,48,37)" class=""
+                                    *ngIf="!PrjName&&notProvided">project name required</span>
                                 </div>
                               </div>
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project description<span class="text-danger">*</span></label>
                                   <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
-                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"></textarea>
-                                  <span style="color:red"*ngIf="isValidString(PrjDes, 5)">please enter
+                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=(!isValidString(PrjDes,5))"  ></textarea>
+                                  <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid">please enter
                                     atleast 5 words</span>
-                                  <span style="color:red" *ngIf="!PrjDes&&notProvided">description is
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">description is
                                     required</span>
                                 </div>
                               </div>
@@ -1398,30 +1397,30 @@
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid"  >{{item.ProjectType}} </ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!Prjtype&&notProvided">project type
+                                  <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">project type
                                     required</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Client<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="select client" [(ngModel)]="PrjClient"
+                                   <ng-select class="kt-form-vd" placeholder="select client" [(ngModel)]="PrjClient"
                                     #PrjCLIENT="ngModel">
                                     <ng-option *ngFor="let item of Client_json"
                                       [value]="item.ClientId">{{item.ClientName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjClient&&notProvided">client required</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="(!PrjClient)&&notProvided">client required</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                  <label>Category<span class="text-danger">*</span></label>
+                                  <label>Category<span class="text-danger" >*</span></label>
                                   <ng-select class="kt-form-vd" placeholder="select category" [(ngModel)]="PrjCategory"
                                     #Prjcatgry="ngModel">
                                     <ng-option *ngFor="let item of Category_json"
                                       [value]="item.CategoryId">{{item.CategoryName}}</ng-option>
                                   </ng-select>
-                                  <span *ngIf="(!PrjCategory)&&notProvided" style="color:red">category
+                                  <span *ngIf="(!PrjCategory)&&notProvided" style="color:rgb(217,48,37)">category
                                     required</span>
                                 </div>
                               </div>
@@ -1432,7 +1431,7 @@
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>Start date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border">
-                                      <input class="form-control ng-pristine" name="date" [(ngModel)]="Prjstartdate"
+                                      <input class="form-control ng-pristine" name="date" [(ngModel)]="Prjstartdate" (ngModelChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
                                         id="d-date" placeholder="select start date" [matDatepicker]="picker2"
                                         (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
                                         #SrtDate="ngModel" />
@@ -1443,7 +1442,7 @@
                                     </div>
                                   </div>
                                   <div *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </div>
-                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:red">start date
+                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">start date
                                     required</span>
                                 </div>
 
@@ -1452,7 +1451,7 @@
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>End date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border">
-                                      <input class="form-control ng-pristine" [(ngModel)]="Prjenddate" id="end-date"
+                                      <input class="form-control ng-pristine" [(ngModel)]="Prjenddate"  id="end-date"
                                         placeholder="select end date" [matDatepicker]="picker3" (click)="picker3.open()"
                                         [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel" />
                                       <div class="input-group-text p-0">
@@ -1460,7 +1459,7 @@
                                         <mat-datepicker #picker3></mat-datepicker>
                                       </div>
                                     </div>
-                                    <span *ngIf="!Prjenddate&&notProvided" style="color:red">end date
+                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">end date
                                       required</span>
                                   </div>
                                 </div>
@@ -1473,11 +1472,11 @@
                                       [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()"     min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
 
 
-                                    <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
+                                    <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 9
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-                                    <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:red">*Allocated hours cannot be 0, please enter a
+                                    <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">*Allocated hours cannot be 0, please enter a
                                       value.</span>
-                                    <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:red">{{_message}}</span>
+                                    <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217,48,37)">{{_message}}</span>
 
                                 </div>
                               </ng-container>
@@ -1493,7 +1492,7 @@
 
                                       </ng-option>
                                     </ng-select>
-                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:red">submission type missing</span>
+                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:rgb(217,48,37)">submission type missing</span>
                                   </div>
                                 </div>
                               </div>
@@ -1505,7 +1504,7 @@
                                       <div class="input-icon Sub_In_ed">
                                         <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours"  (ngModelChange)="getPrjCost()"   #Alloc="ngModel">
                                         </ng-select>
-                                        <span *ngIf="notProvided" style="color:red">Allocated hour missing</span>
+                                        <span *ngIf="notProvided" style="color:rgb(217,48,37)">Allocated hour missing</span>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
@@ -1712,7 +1711,7 @@
                                     (change)="onProjectOwnerChanged();    setRACIS(); ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjOwner">please select owner.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">please select owner.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1725,7 +1724,7 @@
                                     <ng-option
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjResp">please select responsible.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">please select responsible.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1737,7 +1736,7 @@
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
                                       [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjAuth">please select authority.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjAuth">please select authority.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1748,7 +1747,7 @@
                                     <ng-option *ngFor="let p of allUser_json"
                                       [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjCrdtr">please select coordinator.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjCrdtr">please select coordinator.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1759,7 +1758,7 @@
                                     <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name
                                       }}</ng-option>
                                   </ng-select>
-                                  <span style="color:red" *ngIf="!PrjInformer">please select informer.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjInformer">please select informer.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
