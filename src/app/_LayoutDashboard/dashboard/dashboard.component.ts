@@ -2653,26 +2653,26 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  // Doubleclick(event: any) {
+  Doubleclick(event: any) {
 
-  //   this.preventSingleClick = true;
-  //   clearTimeout(this.timer);
+    this.preventSingleClick = true;
+    clearTimeout(this.timer);
 
-  //   this._calenderDto.Scheduled_date = this.doubleclickdate;
-  //   this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
-  //     ((data) => { debugger
-  //       this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
-  //       // this._total = this.Avaliabletime[0].SlotsJson.length;
-  //       this.timeslotsavl = [];
+    this._calenderDto.Scheduled_date = this.doubleclickdate;
+    this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
+      ((data) => { debugger
+        this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
+        // this._total = this.Avaliabletime[0].SlotsJson.length;
+        this.timeslotsavl = [];
 
 
-  //     })
-  //   // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
+      })
+    // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
 
-  //   // console.log(event)
-  //   this.calendar.updateTodaysDate();
+    // console.log(event)
+    this.calendar.updateTodaysDate();
 
-  // }
+  }
 
   getavltime(e) {
     this.timeslotsavl = [];
@@ -4623,7 +4623,7 @@ export class DashboardComponent implements OnInit {
     this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
-    // this.Doubleclick(this.event);
+    this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
@@ -4690,7 +4690,7 @@ export class DashboardComponent implements OnInit {
     this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
-    // this.Doubleclick(this.event);
+    this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
