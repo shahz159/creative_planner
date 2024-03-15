@@ -1727,8 +1727,7 @@ saveAsDraft(){
 
 //  draft project creation code end.
 newProject_Type:any
-
-prevPrjType:string|undefined;
+prevPrjType:string|undefined; 
 changeprojecttype(){
 
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
