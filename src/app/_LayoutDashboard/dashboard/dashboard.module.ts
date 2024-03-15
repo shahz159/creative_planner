@@ -31,6 +31,8 @@ import { DatePickerFormatDirective } from "./date-picker-format.directive";
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 FullCalendarModule.registerPlugins([
   interactionPlugin,
   dayGridPlugin,
@@ -64,7 +66,8 @@ FullCalendarModule.registerPlugins([
     ,PdfViewerModule
     ,NgxDocViewerModule,
     GuidedTourModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    ScrollingModule
   ],
   providers: [DatePipe
     ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},

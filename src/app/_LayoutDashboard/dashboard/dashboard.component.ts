@@ -3732,40 +3732,48 @@ debugger
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
     // }
-      // const event = info.event;
-      // const start = new Date(event.start);
-      // const end = new Date(event.end);
+    
 
-      // // Normalize the start and end dates to midnight for comparison
-      // const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-      // const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+  const event = info.event;
+  const start = new Date(event.start);
+  const end = new Date(event.end);
 
-      // // Check if the event spans more than the start day
-      // const isMultiDayEvent = endMidnight > startMidnight;
+  // Normalize the start and end to the start of the day for comparison
+  const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate());
 
-      // if (isMultiDayEvent) {
-      //   // Get the current view's start date at midnight
-      //   const viewStart = new Date(info.view.currentStart);
-      //   const viewStartMidnight = new Date(viewStart.getFullYear(), viewStart.getMonth(), viewStart.getDate()).getTime();
-        
-      //   // Determine the day label
-      //   let dayLabel;
-      //   if (startMidnight === viewStartMidnight) {
-      //     dayLabel = "Day (1/2)";
-      //   } else if (endMidnight === viewStartMidnight) {
-      //     dayLabel = "Day (2/2)";
-      //   }
+  // Calculate the view range
+  const viewStart = new Date(info.view.activeStart);
+  const viewStartMidnight = new Date(viewStart.getFullYear(), viewStart.getMonth(), viewStart.getDate());
 
-      //   if (dayLabel) {
-      //     // Remove any existing day count before appending the new one
-      //     const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
-      //     const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+  const viewEnd = new Date(info.view.activeEnd);
+  // Correcting this line to make sure we get the end of the visible range
+  const viewEndMidnight = new Date(viewEnd.getFullYear(), viewEnd.getMonth(), viewEnd.getDate());
 
-      //     event.setProp('title', newTitle);
-      //   }
-      // }
-  }                                 
+  // Check if the event spans more than one day
+  const isMultiDayEvent = startMidnight.getTime() !== endMidnight.getTime();
 
+  console.log(event.title, 'Start:', startMidnight, 'End:', endMidnight, 'View Start:', viewStartMidnight, 'View End:', viewEndMidnight);
+
+  if (isMultiDayEvent) {
+    let dayLabel = '';
+    // Adjusting the condition to ensure that the day label corresponds correctly
+    if (startMidnight.getTime() < viewEndMidnight.getTime() && endMidnight.getTime() > viewStartMidnight.getTime()) {
+      // If the event starts before the view end and ends after the view start, it's visible in the current view
+      dayLabel = startMidnight.getTime() >= viewStartMidnight.getTime() ? 'Day (1/2)' : 'Day (2/2)';
+    }
+
+    // Apply the label if it's not already there
+    if (dayLabel && !event.title.includes(dayLabel)) {
+      const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
+      const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+      event.setProp('title', newTitle);
+    }
+  }
+  
+  }  
+  
+ 
   public handleAddressChange(address: Address) {
 
     if (this.checkAddressURL(address.name.toString())) {
