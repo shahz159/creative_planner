@@ -1479,7 +1479,7 @@
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                       [(ngModel)]="Allocated_Hours"      min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
-                                    <span *ngIf=" notProvided" style="color:red">Allocated hours missing
+                                    <span *ngIf=" !Allocated_Hours&&notProvided" style="color:red">Allocated hours missing
                                       </span>
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
