@@ -2725,7 +2725,7 @@
 
 
 
-        <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+        <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="TaskEvent-Sidebar">
             <div class="">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
@@ -2817,9 +2817,6 @@
 
 
 
-
-
-
 </div>   -->
 
 
@@ -2884,7 +2881,7 @@
                                     >add</mat-icon></button>
                         </div>
                        
-                        <mat-autocomplete aria-label="ProjectsDrpDwn" #ProjectsDrpDwn="matAutocomplete"
+                        <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
                         (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
                         (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
                             
@@ -3300,11 +3297,12 @@
                             <div class="wc-cus" style="display:none" id="calender_1">
                                 <mat-card class="demo-inline-calendar-card ">
                                     <div>
-                                        <mat-calendar (dblclick)="Doubleclick($event)" (selectedChange)="select($event)"
+                                        <mat-calendar (selectedChange)="select($event)"
                                             [dateClass]="isSelected" [minDate]="minDate" [maxDate]="maxDate">
                                         </mat-calendar>
                                     </div>
                                 </mat-card>
+                                <!-- (dblclick)="Doubleclick($event)" -->
                             </div>
                             <div *ngIf="preventSingleClick==true"
                                 class="d-none align-items-center flex-wrap pl-3 pt-3 width-cus border">

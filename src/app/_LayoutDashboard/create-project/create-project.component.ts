@@ -304,8 +304,11 @@ export class CreateProjectComponent implements OnInit {
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
+
+       this.getPrjCost(this.projectInfo.AllocatedHours);
+
       console.log(this.projectInfo, "projectInfo");
   })
 
@@ -465,7 +468,15 @@ createSRTProject(){
                // 3. Move to next step
                if(this.Prjtype==='001'||this.Prjtype==='002')
                {    // when core, secondary
-                 this.Move_to_Add_action_tab();
+                if(this.saveAsDraft)
+                {
+                  this.notification.showSuccess("Project saved as draft.","Success");
+                  this.back_to_options();
+                  this.GetAssignedTaskDetails();
+                }
+                else
+                this.Move_to_Add_action_tab();
+
                }
              this.BsService.ProjectCreatedEvent.emit();
            }
@@ -1599,9 +1610,9 @@ newpfl_massage(){
 
 // CALCULATE PROJECT COST START.
 
-getPrjCost():void{
-console.log("input allocated hr:",this.Allocated_Hours);
-let alhr=this.Allocated_Hours;
+getPrjCost(alchr:string):void{
+console.log("input allocated hr:",alchr);
+let alhr=alchr;
 if(['003','008'].includes(this.Prjtype)){
      //eg: '00 Hr : 15 Mins'
      const h=Number.parseInt(alhr.split(':')[0]);
@@ -1701,6 +1712,21 @@ isValidString(inputString: string, maxWords: number): boolean {
   return x;
 }
 
+
+
+
+
+// draft project creation code start.
+savePrjAsDraft:boolean=false;
+saveAsDraft(){
+   this.savePrjAsDraft=true;
+   this.createProject();
+}
+
+
+
+//  draft project creation code end.
+newProject_Type:any
 
 prevPrjType:string|undefined;
 changeprojecttype(){

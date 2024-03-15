@@ -251,6 +251,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       placement:'right',
       interactive: true
     });
+
+
+
+   
+
+
+
   }
 
 
@@ -3299,6 +3306,8 @@ check_allocation() {
 
   }
 
+  originalportfolios:any
+
   getPortfolios() {
     if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
       this._portfolioLength = 0;
@@ -3313,6 +3322,7 @@ check_allocation() {
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {
         this._portfoliosList = data as [];
+        this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
           singleSelection: false,
@@ -3385,6 +3395,17 @@ check_allocation() {
     // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
   }
 
+
+  filterportfolio(input:string){
+   if(input.trim()===''){
+    this._portfoliosList=[...this.originalportfolios];
+
+   }else{
+    this._portfoliosList=this.originalportfolios.filter(item=>{
+      return `${item.Portfolio_Name}-${item.TM_DisplayName}`.toLocaleLowerCase().includes(input.toLocaleLowerCase())
+    })
+   }
+  }
 
   addProjectToPortfolio() {
 
@@ -4102,8 +4123,18 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-
   openMeetingSidebar() {
+     
+   
+
+    // window.addEventListener('scroll',()=>{
+    //   this.autocompletes.forEach((ac)=>{
+    //           if(ac.panelOpen)
+    //           ac.updatePosition();      
+    //   });
+    // },true);
+
+
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -4556,7 +4587,20 @@ Task_type(value:number){
         $('#core_viw222').css('display','block');
         $('#core_Dms').css('display','block');
        $('#online-add').css('display','block');
+
+
+      const es=document.getElementById('event-Sidebar');
+      es.addEventListener('scroll',()=>{
+            this.autocompletes.forEach((ac)=>{
+              if(ac.panelOpen)
+              ac.updatePosition();      
+            });
+      })
+
+
+
     })
+
 
   }
 
@@ -7218,8 +7262,6 @@ console.log('you are not allowed to submit this project.')
 showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
-
-
 
 
 

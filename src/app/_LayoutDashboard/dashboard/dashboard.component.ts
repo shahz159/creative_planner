@@ -37,6 +37,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -465,6 +466,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  
+
+
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
@@ -1411,7 +1416,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1676,11 +1681,11 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
          
-        var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+        // var vAgendas = "Meeting_Agendas";
+        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        // element[vAgendas] = mtgAgendas;
 
-debugger
+// debugger
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -2013,10 +2018,10 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-    debugger
-        var vMeeting_Agendas="Meeting_Agendas";
-        const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-        element[vMeeting_Agendas]=updatedAgnds;
+    // debugger
+    //     var vMeeting_Agendas="Meeting_Agendas";
+    //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+    //     element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -2216,8 +2221,8 @@ debugger
 
     // alert(this.maxDate)
 
-    alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
-    alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
+    // alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
+    // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
     // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
 
 
@@ -2255,7 +2260,7 @@ debugger
 
     }
 
-    alert(this._PopupConfirmedValue)
+    // alert(this._PopupConfirmedValue)
   }
 
   Select_flag(val) {
@@ -2318,6 +2323,16 @@ debugger
       document.getElementById("core_viw222").style.display = "block";
       document.getElementById("core_Dms").style.display = "block";
       document.getElementById("online-add").style.display = "block";
+
+
+    const TEsb=document.getElementById('TaskEvent-Sidebar')
+    TEsb.addEventListener('scroll',()=>{
+          this.autocompletes.forEach((ac)=>{
+            if(ac.panelOpen)
+            ac.updatePosition();      
+          });
+    })
+
 
     }
 
@@ -2638,26 +2653,26 @@ debugger
       });
   }
 
-  Doubleclick(event: any) {
+  // Doubleclick(event: any) {
 
-    this.preventSingleClick = true;
-    clearTimeout(this.timer);
+  //   this.preventSingleClick = true;
+  //   clearTimeout(this.timer);
 
-    this._calenderDto.Scheduled_date = this.doubleclickdate;
-    this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
-      ((data) => { debugger
-        this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
-        // this._total = this.Avaliabletime[0].SlotsJson.length;
-        this.timeslotsavl = [];
+  //   this._calenderDto.Scheduled_date = this.doubleclickdate;
+  //   this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
+  //     ((data) => { debugger
+  //       this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
+  //       // this._total = this.Avaliabletime[0].SlotsJson.length;
+  //       this.timeslotsavl = [];
 
 
-      })
-    // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
+  //     })
+  //   // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
 
-    // console.log(event)
-    this.calendar.updateTodaysDate();
+  //   // console.log(event)
+  //   this.calendar.updateTodaysDate();
 
-  }
+  // }
 
   getavltime(e) {
     this.timeslotsavl = [];
@@ -3732,40 +3747,48 @@ debugger
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
     // }
-      // const event = info.event;
-      // const start = new Date(event.start);
-      // const end = new Date(event.end);
+    
 
-      // // Normalize the start and end dates to midnight for comparison
-      // const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-      // const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+  const event = info.event;
+  const start = new Date(event.start);
+  const end = new Date(event.end);
 
-      // // Check if the event spans more than the start day
-      // const isMultiDayEvent = endMidnight > startMidnight;
+  // Normalize the start and end to the start of the day for comparison
+  const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate());
 
-      // if (isMultiDayEvent) {
-      //   // Get the current view's start date at midnight
-      //   const viewStart = new Date(info.view.currentStart);
-      //   const viewStartMidnight = new Date(viewStart.getFullYear(), viewStart.getMonth(), viewStart.getDate()).getTime();
-        
-      //   // Determine the day label
-      //   let dayLabel;
-      //   if (startMidnight === viewStartMidnight) {
-      //     dayLabel = "Day (1/2)";
-      //   } else if (endMidnight === viewStartMidnight) {
-      //     dayLabel = "Day (2/2)";
-      //   }
+  // Calculate the view range
+  const viewStart = new Date(info.view.activeStart);
+  const viewStartMidnight = new Date(viewStart.getFullYear(), viewStart.getMonth(), viewStart.getDate());
 
-      //   if (dayLabel) {
-      //     // Remove any existing day count before appending the new one
-      //     const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
-      //     const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+  const viewEnd = new Date(info.view.activeEnd);
+  // Correcting this line to make sure we get the end of the visible range
+  const viewEndMidnight = new Date(viewEnd.getFullYear(), viewEnd.getMonth(), viewEnd.getDate());
 
-      //     event.setProp('title', newTitle);
-      //   }
-      // }
-  }                                 
+  // Check if the event spans more than one day
+  const isMultiDayEvent = startMidnight.getTime() !== endMidnight.getTime();
 
+  console.log(event.title, 'Start:', startMidnight, 'End:', endMidnight, 'View Start:', viewStartMidnight, 'View End:', viewEndMidnight);
+
+  if (isMultiDayEvent) {
+    let dayLabel = '';
+    // Adjusting the condition to ensure that the day label corresponds correctly
+    if (startMidnight.getTime() < viewEndMidnight.getTime() && endMidnight.getTime() > viewStartMidnight.getTime()) {
+      // If the event starts before the view end and ends after the view start, it's visible in the current view
+      dayLabel = startMidnight.getTime() >= viewStartMidnight.getTime() ? 'Day (1/2)' : 'Day (2/2)';
+    }
+
+    // Apply the label if it's not already there
+    if (dayLabel && !event.title.includes(dayLabel)) {
+      const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
+      const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+      event.setProp('title', newTitle);
+    }
+  }
+  
+  }  
+  
+ 
   public handleAddressChange(address: Address) {
 
     if (this.checkAddressURL(address.name.toString())) {
@@ -4600,7 +4623,7 @@ debugger
     this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
-    this.Doubleclick(this.event);
+    // this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
@@ -4667,7 +4690,7 @@ debugger
     this.allAgendas=[];
     this.TImetable();
     this.selectedrecuvalue = "0";
-    this.Doubleclick(this.event);
+    // this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
