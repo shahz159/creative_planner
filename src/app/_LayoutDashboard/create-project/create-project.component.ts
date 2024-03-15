@@ -306,7 +306,7 @@ export class CreateProjectComponent implements OnInit {
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
        this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
-       
+
        this.getPrjCost(this.projectInfo.AllocatedHours);
 
       console.log(this.projectInfo, "projectInfo");
@@ -472,9 +472,9 @@ createSRTProject(){
                 {
                   this.notification.showSuccess("Project saved as draft.","Success");
                   this.back_to_options();
-                  this.GetAssignedTaskDetails(); 
+                  this.GetAssignedTaskDetails();
                 }
-                else 
+                else
                 this.Move_to_Add_action_tab();
 
                }
@@ -688,13 +688,28 @@ onFileChanged(event: any) {
 
   Move_to_add_team(){
 
+    // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
+debugger
 
-    if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.PrjName.trim().split(' ').length>=3)&&(this.PrjDes&&this.PrjDes.trim().split(' ').length>=5)&&
-    (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate) ||
-    (['011'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
-    ( ['003','008'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.prjsubmission&&this.Allocated_Hours&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
-    )){
-          // alert(this.Allocated_Hours)
+const isNameValid=this.isValidString(this.PrjName,3);
+const isDesValid=this.isValidString(this.PrjDes,5);
+
+  if(
+
+    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&isNameValid)&&(this.PrjDes&&isDesValid))&&
+    (
+      (['001','002','011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Prjtype=='011'?this.Allocated_Hours:true))||
+      ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
+
+    )
+
+
+
+
+
+  )
+  {
+    // when all mandatory fields of step1 are provided.
           $('.right-side-dv').removeClass('d-none');
           $('.add_tema_tab').show();
           $('.Project_details_tab').hide();
@@ -705,10 +720,42 @@ onFileChanged(event: any) {
           if(['003','008'].includes(this.Prjtype))
           this.Prjstartdate=new Date();
           this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
-    }
-    else{
-      this.notProvided=true;
-    }
+  }
+  else{
+     // when some mandatory fields are missing.
+     this.notProvided=true;
+  }
+
+
+
+
+
+
+
+
+
+
+
+    // if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.PrjName.trim().split(' ').length>=3)&&(this.PrjDes&&this.PrjDes.trim().split(' ').length>=5)&&
+    // (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate) ||
+    // (['011'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
+    // ( ['003','008'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.prjsubmission&&this.Allocated_Hours&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
+    // )){
+    //       // alert(this.Allocated_Hours)
+    //       $('.right-side-dv').removeClass('d-none');
+    //       $('.add_tema_tab').show();
+    //       $('.Project_details_tab').hide();
+    //       $('.sbs--basic .active').addClass('finished');
+    //       $('.sbs--basic li').removeClass('active');
+    //       $('.sbs--basic li:nth-child(2)').addClass('active');
+    //       this.findProjectType()
+    //       if(['003','008'].includes(this.Prjtype))
+    //       this.Prjstartdate=new Date();
+    //       this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+    // }
+    // else{
+    //   this.notProvided=true;
+    // }
 
 
 
@@ -1577,7 +1624,7 @@ if(['003','008'].includes(this.Prjtype)){
   this.ProjectDto.Hours=alhr;
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
     if(res.Status){
-       this.PrjCost=res.Data;  
+       this.PrjCost=res.Data;
        console.log(this.PrjCost);
     }
   })
@@ -1589,9 +1636,9 @@ if(['003','008'].includes(this.Prjtype)){
 // DRAFT PROJECT CODE START.
 
 deleteDraft(index:number){
- 
+
     Swal.fire({
-      
+
       showCancelButton:true,
       showConfirmButton:true,
       title:'Are you sure?',
@@ -1602,7 +1649,7 @@ deleteDraft(index:number){
           this.ProjectDto.Project_Code=this.draft_json[index].Project_Code;
           this.ProjectDto.Emp_No=this.Current_user_ID;
           this.createProjectService.NewDeleteDraft(this.ProjectDto).subscribe((res:any)=>{
-                     if(res.message=='1'){   
+                     if(res.message=='1'){
                        this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted.`,"Deleted Successfully.");
                        this.GetAssignedTaskDetails();
                      }
@@ -1656,8 +1703,13 @@ reset(){
 
 // DRAFT PROJECT CODE END.
 
+isPrjNameValid:boolean=false;
+isPrjDesValid:boolean=false;
+
 isValidString(inputString: string, maxWords: number): boolean {
-  return inputString && inputString.trim() && inputString.trim().split(/\s+/).length < maxWords;
+  debugger
+  const x=!(inputString && inputString.trim() && inputString.trim().split(/\s+/).length < maxWords);
+  return x;
 }
 
 
@@ -1675,18 +1727,38 @@ saveAsDraft(){
 
 //  draft project creation code end.
 newProject_Type:any
-
+prevPrjType:string|undefined; 
 changeprojecttype(){
 
-  this.newProject_Type=this.Prjtype;
- alert(this.newProject_Type)
+  if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
+    if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
+          this.prjsubmission=null;
+          this.Allocated_Hours=null;
+    }
 
-if(this.Prjtype==='003'|| this.Prjtype==='008'){
-  this.PrjCategory=null,this.PrjName=null,this.PrjDes=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
+    if(['003','008'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype)){
+      this.Prjstartdate=null;
+      this.Prjenddate=null;
+      this.Allocated_Hours=null;
+    }
+
+  }
+
+  this.prevPrjType=this.Prjtype;
 }
-}
 
+
+// switch (this.Prjtype) {
+
+//   case '001':  this.PrjCategory,this.start_Date,this.end_Date,this.Allocated_Hours ; break;
+//   case '002':  this.PrjCategory,this.start_Date,this.end_Date,this.Allocated_Hours ; break;
+//   case '011':  this.PrjCategory,this.start_Date,this.end_Date,this.Allocated_Hours ; break;
+
+//     case '003':  this.PrjCategory=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null; break;
+//     case '008':  this.PrjCategory=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null; break;
+//   // default: { };
+// }
 
 }
 
