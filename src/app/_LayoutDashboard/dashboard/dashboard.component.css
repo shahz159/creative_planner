@@ -3027,3 +3027,10 @@ span.kt-dashboard-delay-cnt {
   .drp-dwn-submitbtn {
   margin-bottom:15px;
   }
+
+
+
+  .dropdown-panel {
+    position: static !important;
+  }
+  

@@ -4639,7 +4639,7 @@
                 </mat-chip-list>
                 <div class="d-flex">
                     <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
-                        [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
+                      (input)="filterportfolio($event.target.value)"  [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                     <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                             (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
                     <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
@@ -5402,7 +5402,7 @@
                                                     </path>
                                                 </svg>
                                             </span>
-                                            <span>{{(data.ModifiedTime)}}</span>
+                                            <span>{{formatTimes(data.ModifiedTime)}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -8441,7 +8441,7 @@
                         <h4 class="m-0 ml-2">Schedule {{ScheduleType}}</h4>
                     </div>
 
-                    <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y"    >
+                    <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="event-Sidebar">
                         <div class="">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>

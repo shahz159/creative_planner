@@ -37,6 +37,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -465,6 +466,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  
+
+
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
@@ -2318,6 +2323,16 @@ debugger
       document.getElementById("core_viw222").style.display = "block";
       document.getElementById("core_Dms").style.display = "block";
       document.getElementById("online-add").style.display = "block";
+
+
+    const TEsb=document.getElementById('TaskEvent-Sidebar')
+    TEsb.addEventListener('scroll',()=>{
+          this.autocompletes.forEach((ac)=>{
+            if(ac.panelOpen)
+            ac.updatePosition();      
+          });
+    })
+
 
     }
 

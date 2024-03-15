@@ -1015,17 +1015,27 @@
                                   <div class="kt-info-lable-v"> Allocated </div>
                                   <div class="kt-project-sts-data">
                                     <!-- <ng-container *ngIf="['001','002'].includes(Prjtype);else AllcDiv"> -->
-                                              <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours; else Hrs">
+                                              <!-- <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours; else Hrs">
                                                 {{projectInfo&&projectInfo.AllocatedHours}} Hrs
                                               </ng-container>
                                               <ng-template #Hrs>
                                                 <ng-container *ngIf="Allocated_Hours">{{Allocated_Hours}} Hrs</ng-container>
                                                 <ng-container *ngIf="!Allocated_Hours || Allocated_Hours!=''">0 Hrs</ng-container>
-                                              </ng-template>
+                                              </ng-template> -->
                                     <!-- </ng-container>
                                     <ng-template #AllcDiv>
                                       {{Allocated_Hours}} Hrs
                                     </ng-template> -->
+
+                                     <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours; else Hrs1">
+                                          {{projectInfo.AllocatedHours+' Hrs'}}
+                                     </ng-container>
+                                     <ng-template #Hrs1>
+                                             {{  Allocated_Hours?Allocated_Hours+ (['001','002','011'].includes(Prjtype)?' Hrs':''):'0 Hrs' }}
+                                     </ng-template>
+
+
+
                                   </div>
                                 </div>
                               </div>
@@ -1468,7 +1478,7 @@
                                     </label>
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
-                                      [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()"     min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
+                                      [(ngModel)]="Allocated_Hours"      min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
                                     <span *ngIf=" notProvided" style="color:red">Allocated hours missing
                                       </span>
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
@@ -1501,7 +1511,7 @@
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours"  (ngModelChange)="getPrjCost()"   #Alloc="ngModel">
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
                                         </ng-select>
                                         <span *ngIf="notProvided" style="color:red">Allocated hour missing</span>
                                       </div>
@@ -1510,7 +1520,7 @@
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()"           >
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" >
                                           <ng-option *ngFor="let item of Daily_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
@@ -1521,7 +1531,7 @@
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours"  (ngModelChange)="getPrjCost()">
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                           <ng-option *ngFor="let item of Week_array" [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <span style="color:#646c9a"> Max Duration limit is 2 hrs only.</span>
@@ -1531,7 +1541,7 @@
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()">
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                           <ng-option *ngFor="let item of Month_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
@@ -1542,7 +1552,7 @@
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()">
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                           <ng-option *ngFor="let item of Quarter_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
@@ -1553,7 +1563,7 @@
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()" >
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                           <ng-option *ngFor="let item of Halfyear_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
@@ -1563,7 +1573,7 @@
                                     <div class="input-icon Sub_In_ed" *ngSwitchCase="6">
                                        <label>Allocated hours<span class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getPrjCost()">
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                           <ng-option *ngFor="let item of Halfyear_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
@@ -1694,7 +1704,7 @@
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back to options</button>
                               <button type="button"
 
-                                class="btn btn-move-fw my-ct-v-btn btn-next" (click)="Move_to_add_team()">Next
+                                class="btn btn-move-fw my-ct-v-btn btn-next" (click)="Move_to_add_team(); getPrjCost(Allocated_Hours);">Next
                               </button>
                               <!-- [disabled]="!(Prjtype&&(PrjName&&PrjName.trim().split(' ').length>=3)&&PrjClient&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&PrjCategory&&Prjstartdate&&Prjenddate&&Prjduration)" -->
                             </div>
@@ -1858,7 +1868,7 @@
                                 (click)="Back_to_project_details_tab()">
                                 Previous Step</button>
 
-                              <button type="button" class="btn btn-move-fw my-ct-v-btn btn-next mr-2">Draft</button>
+                              <button *ngIf="Prjtype=='001'||Prjtype=='002'"    type="button" class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="saveAsDraft()">Save as Draft</button>
 
                               <button *ngIf="Prjtype!='001'&&Prjtype!='002'" type="button" (click)="createSRTProject()"
                                 class="btn btn-move-fw my-ct-v-btn btn-info">Submit Project</button>

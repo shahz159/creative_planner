@@ -31,6 +31,7 @@ import { DatePickerFormatDirective } from "./date-picker-format.directive";
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 FullCalendarModule.registerPlugins([
   interactionPlugin,
   dayGridPlugin,

@@ -130,7 +130,7 @@
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
 
     <div class="form-group">                          <!--*ngIf="selectedEmpNo == Current_user_ID"--> 
@@ -138,10 +138,10 @@
         <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
         <input id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
             (click)="alertMaxAllocation()">
-        <span *ngIf="!_allocated" style="color:red">Allocated hours required!</span>
-        <span *ngIf="_allocated > maxAllocation" style="color:red">*Allocation per day limit is 10 hours.</span>
+        <span *ngIf="allocated.touched&&!_allocated" style="color:red">Allocated hours required!&nbsp;</span>
+        <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-        <span *ngIf="(_allocated==0)" style="color:red">*Allocated hours cannot be 0, please enter a value.</span>
+        <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value.</span>
         <span *ngIf="this._StartDate == null || this._EndDate == null" style="color:red">{{_message}}</span>
     </div>
 
