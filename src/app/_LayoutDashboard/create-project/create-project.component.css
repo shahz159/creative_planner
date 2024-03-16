@@ -1357,27 +1357,27 @@ span.info-ic-guide svg {
   box-shadow: 10px 50px 50px #0000001a;
 }
 
-.Scratech:hover .op-svg-ic svg path {
+.Scratech .op-svg-ic svg path {
   stroke: #195ABC;
 }
 
-.Scratech:hover .op-svg-ic svg circle {
+.Scratech .op-svg-ic svg circle {
   stroke: #669DF6;
 }
 
-.projects:hover .op-svg-ic svg path {
+.projects .op-svg-ic svg path {
   fill: #669DF6;
 }
 
-.projects:hover .op-svg-ic svg .dtv {
+.projects .op-svg-ic svg .dtv {
   fill: #195ABC;
 }
 
-.template:hover .op-svg-ic svg path {
+.template .op-svg-ic svg path {
   fill: #669DF6;
 }
 
-.template:hover .op-svg-ic svg .dtv {
+.template .op-svg-ic svg .dtv {
   fill: #195ABC;
 }
 
@@ -2506,16 +2506,16 @@ color: #2786fb;
 }
 
 
-.draft-prjs-option:hover .op-svg-ic svg path.folder {
+.draft-prjs-option .op-svg-ic svg path.folder {
   fill:#195ABC;
 }
 
 
-.draft-prjs-option:hover .op-svg-ic svg path.paper {
+.draft-prjs-option .op-svg-ic svg path.paper {
   fill:#669DF6;
 }
 
-.draft-prjs-option:hover .op-svg-ic svg path.line {
+.draft-prjs-option .op-svg-ic svg path.line {
   fill:#669DF6;
 }
 
