@@ -3680,10 +3680,11 @@
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                    (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
-                    (click)="OnSubmitReSchedule(2)">Update and Release</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+                    (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button> 
+                
             </div>
         </div>
     </div>
