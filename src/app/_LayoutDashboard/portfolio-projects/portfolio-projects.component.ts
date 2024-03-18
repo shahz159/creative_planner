@@ -1040,6 +1040,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     else {
       this.Project_Graph = "Graphs"
       this.ProjectsClick();
+      this.labelAll()
       setTimeout(() => {
         const buttonElement = this.el.nativeElement.querySelector('.badge');
         if (buttonElement) {
