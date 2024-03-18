@@ -1730,7 +1730,6 @@ saveAsDraft(){
 newProject_Type:any
 prevPrjType:string|undefined; 
 changeprojecttype(){
-
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
     if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
