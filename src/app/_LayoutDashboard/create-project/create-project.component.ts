@@ -385,7 +385,7 @@ export class CreateProjectComponent implements OnInit {
 createSRTProject(){
    Swal.fire({
      title:"Are you Sure?",
-     text:`You will be going to spend ${this.PrjCost} SAR on this Project. Do you want to Continue?`,
+     text:`You will be going to spend "${this.PrjCost}.00 SAR" on this Project. Do you want to Continue?`,
      showConfirmButton:true,
      showCancelButton:true,
      confirmButtonText: 'Yes, Confirm!',
@@ -428,7 +428,7 @@ createSRTProject(){
            Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
            SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
            // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
-           Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours.length?this.Allocated_Hours:'0'):'0',
+           Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours ?this.Allocated_Hours:'0'):'0',
            DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
            Remarks:this._remarks,
@@ -468,7 +468,7 @@ createSRTProject(){
                // 3. Move to next step
                if(this.Prjtype==='001'||this.Prjtype==='002')
                {    // when core, secondary
-                if(this.saveAsDraft)
+                if(this.savePrjAsDraft==true)
                 {
                   this.notification.showSuccess("Project saved as draft.","Success");
                   this.back_to_options();
@@ -698,15 +698,11 @@ const isDesValid=this.isValidString(this.PrjDes,5);
 
     (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&isNameValid)&&(this.PrjDes&&isDesValid))&&
     (
-      (['001','002','011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Prjtype=='011'?this.Allocated_Hours:true))||
+      (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
+      (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours))||
       ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
 
     )
-
-
-
-
-
   )
   {
     // when all mandatory fields of step1 are provided.
@@ -912,6 +908,11 @@ onProjectOwnerChanged(){
 
   notifytemp(){
     this.notification.showInfo("","You do not have any Templates");
+
+  }
+
+  notifydraft(){
+    this.notification.showInfo("","You do not have any drafts");
 
   }
 
@@ -1350,7 +1351,7 @@ sendApproval(){
 
    Swal.fire({
        title:'Are you Sure?',
-       text:`You will be going to spend ${this.PrjCost} SAR on this project. Do you want to continue?`,
+       text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
        showConfirmButton:true,
        showCancelButton:true,
        confirmButtonText: 'Yes, Confirm!',
@@ -1729,7 +1730,6 @@ saveAsDraft(){
 newProject_Type:any
 prevPrjType:string|undefined; 
 changeprojecttype(){
-
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
     if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){

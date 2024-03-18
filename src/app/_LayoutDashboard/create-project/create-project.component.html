@@ -27,7 +27,7 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="title-view-md">
-                        <h2>Let’s get started!</h2>
+                        <h2 class="text-primary">Let’s get started!</h2>
                         <p>Please select from the below options to create project.</p>
                       </div>
                     </div>
@@ -52,34 +52,55 @@
 
 
 
-
-                      <div (click)="draftsProjects()">
-                        <div class="op-card draft-prjs-option">
-                          <div class="op-svg-ic">
-                             <svg  version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="75px" height="81px" viewBox="0 0 592.813 592.814" xml:space="preserve">
-                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                              <g id="SVGRepo_iconCarrier">
-                                <g>
-                                  <path class="folder" d="M589.173,356.232l-104.756,198.26c-5.125,9.858-19.653,20.285-30.872,20.285l-420.096,0.077 c-8.875,0-17.384-3.518-23.655-9.794C3.523,558.783,0,550.283,0,541.405l0.068-326.209c0-18.448,14.955-33.417,33.405-33.435 l30.715-0.029v28.496H43.639c-4.022,0-7.885,1.596-10.731,4.442c-2.843,2.846-4.442,6.706-4.442,10.731l0.03,305.796 c0,8.388,6.797,15.173,15.176,15.173h21.045l99.28-200.836c5.609-11.219,16.208-20.286,27.411-20.286h243.14l0.083-80.823 c15.876,1.472,28.406,14.641,28.406,30.893v49.931H574.55C587.719,325.384,598.808,338.406,589.173,356.232z" fill="lightgray" stroke="none" stroke-width="0"></path>
-                                  <path class="paper" d="M83.558,445.272c-0.907-99.969,0-399.884,0-399.884c0-15.132,12.306-27.429,27.423-27.429h219.614c3.518,0,6.874,1.472,9.251,4.061l71,77.141c2.128,2.323,3.321,5.364,3.321,8.515v199.839h-23.034V124.932c0-3.159-2.565-5.725-5.728-5.725h-54.343c-6.36,0-11.532-5.163-11.532-11.511V46.721c0-3.16-2.565-5.725-5.728-5.725H110.995c-2.423,0-4.395,1.971-4.395,4.392v374.739l-17.626,35.66C88.975,455.781,83.649,455.391,83.558,445.272z" fill="#d6d6d6" stroke="none" stroke-width="1"></path>
-                                  <path class="line" d="M355.065,142.667H142.813c-7.82,0-14.168,6.354-14.168,14.174c0,7.814,6.354,14.171,14.168,14.171h212.258c7.82,0,14.187-6.362,14.187-14.171C369.245,149.027,362.88,142.667,355.065,142.667z" fill="#d6d6d6" stroke="none" stroke-width="0"></path>
-                                  <path class="line" d="M369.245,239.376c0-7.814-6.359-14.162-14.18-14.162H142.813c-7.82,0-14.168,6.36-14.168,14.162c0,7.814,6.354,14.162,14.168,14.162h212.258C362.88,253.539,369.245,247.19,369.245,239.376z" fill="#d6d6d6" stroke="none" stroke-width="0"></path>
-                                  <path class="line" d="M128.636,322.47c0,7.813,6.357,14.162,14.171,14.162h5.089c8.958-24.967,31.164-28.324,31.164-28.324h-36.253C135.005,308.308,128.636,314.656,128.636,322.47z" fill="#d6d6d6" stroke="none" stroke-width="0" stroke-dasharray="4 4"></path></g>
-                                </g>
-                            </svg>
-                          </div>
-                          <div class="op-title-ic">
-                            <p>Drafts</p>
-                            <span *ngIf="draft_json" class="_counts-square">{{draft_json.length}}</span>
+                      <ng-container  *ngIf="draft_json&&draft_json.length>0">
+                        <div (click)="draftsProjects()">
+                          <div class="op-card draft-prjs-option">
+                            <div class="op-svg-ic">
+                               <svg  version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="75px" height="81px" viewBox="0 0 592.813 592.814" xml:space="preserve">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                  <g>
+                                    <path class="folder" d="M589.173,356.232l-104.756,198.26c-5.125,9.858-19.653,20.285-30.872,20.285l-420.096,0.077 c-8.875,0-17.384-3.518-23.655-9.794C3.523,558.783,0,550.283,0,541.405l0.068-326.209c0-18.448,14.955-33.417,33.405-33.435 l30.715-0.029v28.496H43.639c-4.022,0-7.885,1.596-10.731,4.442c-2.843,2.846-4.442,6.706-4.442,10.731l0.03,305.796 c0,8.388,6.797,15.173,15.176,15.173h21.045l99.28-200.836c5.609-11.219,16.208-20.286,27.411-20.286h243.14l0.083-80.823 c15.876,1.472,28.406,14.641,28.406,30.893v49.931H574.55C587.719,325.384,598.808,338.406,589.173,356.232z" fill="lightgray" stroke="none" stroke-width="0"></path>
+                                    <path class="paper" d="M83.558,445.272c-0.907-99.969,0-399.884,0-399.884c0-15.132,12.306-27.429,27.423-27.429h219.614c3.518,0,6.874,1.472,9.251,4.061l71,77.141c2.128,2.323,3.321,5.364,3.321,8.515v199.839h-23.034V124.932c0-3.159-2.565-5.725-5.728-5.725h-54.343c-6.36,0-11.532-5.163-11.532-11.511V46.721c0-3.16-2.565-5.725-5.728-5.725H110.995c-2.423,0-4.395,1.971-4.395,4.392v374.739l-17.626,35.66C88.975,455.781,83.649,455.391,83.558,445.272z" fill="#d6d6d6" stroke="none" stroke-width="1"></path>
+                                    <path class="line" d="M355.065,142.667H142.813c-7.82,0-14.168,6.354-14.168,14.174c0,7.814,6.354,14.171,14.168,14.171h212.258c7.82,0,14.187-6.362,14.187-14.171C369.245,149.027,362.88,142.667,355.065,142.667z" fill="#d6d6d6" stroke="none" stroke-width="0"></path>
+                                    <path class="line" d="M369.245,239.376c0-7.814-6.359-14.162-14.18-14.162H142.813c-7.82,0-14.168,6.36-14.168,14.162c0,7.814,6.354,14.162,14.168,14.162h212.258C362.88,253.539,369.245,247.19,369.245,239.376z" fill="#d6d6d6" stroke="none" stroke-width="0"></path>
+                                    <path class="line" d="M128.636,322.47c0,7.813,6.357,14.162,14.171,14.162h5.089c8.958-24.967,31.164-28.324,31.164-28.324h-36.253C135.005,308.308,128.636,314.656,128.636,322.47z" fill="#d6d6d6" stroke="none" stroke-width="0" stroke-dasharray="4 4"></path></g>
+                                  </g>
+                              </svg>
+                            </div>
+                            <div class="op-title-ic">
+                              <p>My Drafts</p>
+                              <span *ngIf="draft_json" class="_counts-square">{{draft_json.length}}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-
-
-
-
-
+                      </ng-container>
+                     
+                      <ng-container  *ngIf="draft_json&&draft_json.length<=0">
+                        <div (click)="notifydraft()">
+                          <div class="op-card draft-prjs-option">
+                            <div class="op-svg-ic">
+                               <svg  version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="75px" height="81px" viewBox="0 0 592.813 592.814" xml:space="preserve">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                  <g>
+                                    <path class="folder" d="M589.173,356.232l-104.756,198.26c-5.125,9.858-19.653,20.285-30.872,20.285l-420.096,0.077 c-8.875,0-17.384-3.518-23.655-9.794C3.523,558.783,0,550.283,0,541.405l0.068-326.209c0-18.448,14.955-33.417,33.405-33.435 l30.715-0.029v28.496H43.639c-4.022,0-7.885,1.596-10.731,4.442c-2.843,2.846-4.442,6.706-4.442,10.731l0.03,305.796 c0,8.388,6.797,15.173,15.176,15.173h21.045l99.28-200.836c5.609-11.219,16.208-20.286,27.411-20.286h243.14l0.083-80.823 c15.876,1.472,28.406,14.641,28.406,30.893v49.931H574.55C587.719,325.384,598.808,338.406,589.173,356.232z" fill="lightgray" stroke="none" stroke-width="0"></path>
+                                    <path class="paper" d="M83.558,445.272c-0.907-99.969,0-399.884,0-399.884c0-15.132,12.306-27.429,27.423-27.429h219.614c3.518,0,6.874,1.472,9.251,4.061l71,77.141c2.128,2.323,3.321,5.364,3.321,8.515v199.839h-23.034V124.932c0-3.159-2.565-5.725-5.728-5.725h-54.343c-6.36,0-11.532-5.163-11.532-11.511V46.721c0-3.16-2.565-5.725-5.728-5.725H110.995c-2.423,0-4.395,1.971-4.395,4.392v374.739l-17.626,35.66C88.975,455.781,83.649,455.391,83.558,445.272z" fill="#d6d6d6" stroke="none" stroke-width="1"></path>
+                                    <path class="line" d="M355.065,142.667H142.813c-7.82,0-14.168,6.354-14.168,14.174c0,7.814,6.354,14.171,14.168,14.171h212.258c7.82,0,14.187-6.362,14.187-14.171C369.245,149.027,362.88,142.667,355.065,142.667z" fill="#d6d6d6" stroke="none" stroke-width="0"></path>
+                                    <path class="line" d="M369.245,239.376c0-7.814-6.359-14.162-14.18-14.162H142.813c-7.82,0-14.168,6.36-14.168,14.162c0,7.814,6.354,14.162,14.168,14.162h212.258C362.88,253.539,369.245,247.19,369.245,239.376z" fill="#d6d6d6" stroke="none" stroke-width="0"></path>
+                                    <path class="line" d="M128.636,322.47c0,7.813,6.357,14.162,14.171,14.162h5.089c8.958-24.967,31.164-28.324,31.164-28.324h-36.253C135.005,308.308,128.636,314.656,128.636,322.47z" fill="#d6d6d6" stroke="none" stroke-width="0" stroke-dasharray="4 4"></path></g>
+                                  </g>
+                              </svg>
+                            </div>
+                            <div class="op-title-ic">
+                              <p>My Drafts</p>
+                              <!-- <span *ngIf="draft_json" class="_counts-square">{{draft_json.length}}</span> -->
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
 
                       <ng-container *ngIf="assigntask_json&&assigntask_json.length>0">
                         <div (click)="Assigned_projects()">
@@ -264,14 +285,12 @@
 
                           </div>
                           <div class="op-title-ic">
-                            <p>Templates</p>
+                            <p>Saved Templates</p>
                             <span *ngIf="template_json"  class="_counts-square">{{template_json.length}}</span>
                           </div>
                         </div>
                       </div>
                     </ng-container>
-
-
 
                     <ng-container  *ngIf="template_json&&template_json.length<=0">
                       <div>
@@ -1479,9 +1498,9 @@
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                       [(ngModel)]="Allocated_Hours"      min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
-                                    <span *ngIf=" !Allocated_Hours&&notProvided" style="color:red">Allocated hours missing
+                                    <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
                                       </span>
-                                    <span *ngIf="Allocated_Hours > maxAllocation" style="color:red">*Allocation per day limit is 9
+                                    <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 9
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">*Allocated hours cannot be 0, please enter a
                                       value.</span>
@@ -1823,7 +1842,7 @@
                                       </ng-template>
                                     </mat-autocomplete>
                                   </mat-form-field>
-                                  <span style="color:red" *ngIf="PrjSupport.length===0">please select support.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">please select support.</span>
                                 </div>
                               </div>
 
