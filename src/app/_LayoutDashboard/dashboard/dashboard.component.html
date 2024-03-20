@@ -2856,17 +2856,21 @@
                             {{item.BlockNameProject}}</ng-option>
                     </ng-select>    -->
 
-
+                <ng-container *ngIf="ScheduleType=='Event'">
                      <mat-form-field class="drp-dwn-field w-100"  *ngIf="ProjectListArray">
                         <mat-label>Select Project</mat-label>
-                        <mat-chip-list #selectedProjects>                                           
-                            <mat-chip *ngFor="let prjcode of MasterCode" class="Data_chip_kt" (removed)="removeSelectedProject(prjcode)">
-                                {{getProjectName(prjcode)}}
-                                <button matChipRemove>
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                            </mat-chip>
+                        
+                        <mat-chip-list #selectedProjects>
+                                                              
+                                    <mat-chip *ngFor="let prjcode of MasterCode"  class="Data_chip_kt" (removed)="removeSelectedProject(prjcode)">
+                                        {{getProjectName(prjcode)}}
+                                        <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip> 
+                              
                         </mat-chip-list>
+
                         <div class="d-flex">
                             <input class="flex-1" [matChipInputFor]="selectedProjects"
                                 [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
@@ -2893,7 +2897,7 @@
 
                         </mat-autocomplete>
                     </mat-form-field>   
-
+                </ng-container>
 
                 </div>
                 <!--this is for Schedule event end-->

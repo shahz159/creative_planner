@@ -2397,7 +2397,7 @@ export class DashboardComponent implements OnInit {
 
       this._calenderDto.Project_Code = MasterCode;
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-        ((data) => {
+        ((data) => { 
           // console.log(data);
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
@@ -3698,8 +3698,7 @@ export class DashboardComponent implements OnInit {
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
-
-
+ 
         this.calendarOptions = {
 
           initialView: 'listWeek',
@@ -3726,7 +3725,8 @@ export class DashboardComponent implements OnInit {
             hour12: true
           },
           nowIndicator: true,
-          allDaySlot: false
+          allDaySlot: false,
+          datesSet:()=>{ this.TwinEvent=[];  }
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -3739,7 +3739,15 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  customizeEvent(info) {
+
+
+
+
+
+  TwinEvent=[];
+  customizeEvent=(info)=>{
+    
+    debugger
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -3757,8 +3765,10 @@ export class DashboardComponent implements OnInit {
     const end = new Date(event.end);
 
     // Normalize the start and end to the start of the day for comparison
-    const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-    const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+    let startMidnight:any = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    let endMidnight:any = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    startMidnight=startMidnight.getTime();
+    endMidnight=endMidnight.getTime();
 
     // Calculate the view range
     const viewStart = new Date(info.view.activeStart);
@@ -3773,23 +3783,62 @@ export class DashboardComponent implements OnInit {
     const eventIsWithinView = startMidnight <= viewEndMidnight && endMidnight >= viewStartMidnight;
 
     // Only process events that are within the view and span more than one day
-    if (eventIsWithinView && startMidnight !== endMidnight) {
-      let dayLabel = '';
-      if (startMidnight >= viewStartMidnight && startMidnight <= viewEndMidnight) {
-        dayLabel = 'Day (2/2)';
-      }
-      if (endMidnight > viewStartMidnight && endMidnight < viewEndMidnight) {
-        dayLabel = 'Day (1/2)';
-      }
+ 
+    // if (eventIsWithinView && (startMidnight !== endMidnight)) {
+    //   let dayLabel = '';
+     
+    //   if (startMidnight >= viewStartMidnight && startMidnight <= viewEndMidnight) {
+    //     dayLabel = 'Day (2/2)';
+    //   }
+    //   if (endMidnight > viewStartMidnight && endMidnight < viewEndMidnight) {
+    //     dayLabel = 'Day (1/2)';
+    //   }
 
-      // Check if the label should be applied
+    // //   // Check if the label should be applied
+    //   if (dayLabel && !event.title.includes(dayLabel)) {
+    //     const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
+    //     const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+    //     event.setProp('title', newTitle);
+    //   }
+    // }
+
+    if (eventIsWithinView && (startMidnight !== endMidnight)) {
+   
+      if(start<viewStart){
+        this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
+      }
+      const r=this.TwinEvent.includes(event._def.extendedProps.Schedule_ID);
+
+      let dayLabel = '';
+     
+      if (r) {
+        dayLabel = 'Day (2/2)';
+        const index=this.TwinEvent.indexOf(event._def.extendedProps.Schedule_ID);
+        this.TwinEvent.splice(index,1);
+       
+      }
+      else{
+        dayLabel = 'Day (1/2)';
+        this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
+      }
+   
+     
+      
+
+    //   // Check if the label should be applied
       if (dayLabel && !event.title.includes(dayLabel)) {
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
-        event.setProp('title', newTitle);
+        // event.setProp('title', newTitle);
+        info.el.children[2].innerText=newTitle;
       }
     }
+    
+
+
+
   }
+
 
 
   public handleAddressChange(address: Address) {

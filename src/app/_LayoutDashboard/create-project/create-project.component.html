@@ -1046,7 +1046,7 @@
                                       {{Allocated_Hours}} Hrs
                                     </ng-template> -->
 
-                                     <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours; else Hrs1">
+                                     <ng-container *ngIf="projectInfo&&(![null,undefined,''].includes(projectInfo.AllocatedHours)); else Hrs1">
                                           {{projectInfo.AllocatedHours+' Hrs'}}
                                      </ng-container>
                                      <ng-template #Hrs1>

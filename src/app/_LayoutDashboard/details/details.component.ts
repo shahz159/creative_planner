@@ -957,7 +957,7 @@ this.prjPIECHART.render();
     }
     this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
     // setTimeout(() => this.drawStatistics(), 5000);
-    setTimeout(()=>this.drawStatisticsNew(),5000);
+    setTimeout(()=>this.drawStatisticsNew(),3000);
     });
   }
   uniqueName:any
@@ -6028,12 +6028,13 @@ removeSelectedDMSMemo(item){
           this.closePrjHoldSideBar();
           this.getProjectDetails(this.URL_ProjectCode);
           this.getholdate();
-
+          this.getRejectType();
 
           if(this.currentActionView!==undefined){
             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
             }else{
               this.GetActivityDetails();
+
             }
 
 
@@ -6070,6 +6071,7 @@ removeSelectedDMSMemo(item){
               if (this._Message == '1') {
                 this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
                 this.getProjectDetails(this.URL_ProjectCode);
+                this.getRejectType();
               }
               else if (this._Message == '2' || this._Message == '0') {
                 this.notifyService.showError("Project release failed", "Failed");
@@ -6831,7 +6833,7 @@ getRejectType() {
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
     this.lastactivity = JSON.parse(data[0]["lastactivity"]);
-    console.log(this.activity, this.lastactivity)
+    console.log('activity:',this.activity,'last activity:', this.lastactivity);
   });
 }
 
@@ -7262,6 +7264,9 @@ console.log('you are not allowed to submit this project.')
 showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
+
+
+
 
 
 
