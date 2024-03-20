@@ -1694,7 +1694,7 @@ export class DashboardComponent implements OnInit {
         const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
         element[vAgendas] = mtgAgendas;
 
-        // debugger
+        debugger
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
