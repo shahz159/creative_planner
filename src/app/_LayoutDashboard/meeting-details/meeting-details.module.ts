@@ -4,6 +4,8 @@ import { MaterialModule } from "src/app/material-module";
 import { MeetingDetailsRoutingModule } from './meeting-details-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MeetingDetailsComponent } from './meeting-details.component';
+import { FormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 // import { FormsModule } from '@angular/forms';
 
 
@@ -19,6 +21,8 @@ import { MeetingDetailsComponent } from './meeting-details.component';
     MeetingDetailsRoutingModule,
     AngularEditorModule,
     MaterialModule,
+    FormsModule,
+    Ng2SearchPipeModule
     // FormsModule
   ]
 })

@@ -415,13 +415,14 @@ export class MeetingReportComponent implements OnInit {
   }
 
   addBulletPointsOnEnter(event: any) {
+  
     if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.CurrentUser_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type;
       this._calenderDto.Status_type = "Left"
-      // alert(this.Notes_Type)
+     
       console.log(this._calenderDto);
       this.CalenderService.NewGetMeeting_notes(this._calenderDto).subscribe
         (data => {
@@ -441,7 +442,7 @@ export class MeetingReportComponent implements OnInit {
       (data => {
         this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
         this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
-        console.log(this.Meetingnotes_time, 'notes111')
+        console.log(this.Notes_Type, 'Notes_Type')
       });
 
   }
