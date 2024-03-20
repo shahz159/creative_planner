@@ -1722,7 +1722,7 @@ export class DashboardComponent implements OnInit {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-
+debugger
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
