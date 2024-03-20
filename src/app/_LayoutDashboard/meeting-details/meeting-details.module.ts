@@ -5,6 +5,8 @@ import { MeetingDetailsRoutingModule } from './meeting-details-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MeetingDetailsComponent } from './meeting-details.component';
 import { FormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// import { FormsModule } from '@angular/forms';
 
 
 
@@ -19,7 +21,9 @@ import { FormsModule } from '@angular/forms';
     MeetingDetailsRoutingModule,
     AngularEditorModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    Ng2SearchPipeModule
+    // FormsModule
   ]
 })
 export class MeetingDetailsModule { }

@@ -1900,11 +1900,11 @@ span.count {
 
 .assigned-task{
   background-color: #A847F0;
-  color: #000;
+  color: white !important;
 }
 .total-project{
   background-color: #35A79C;
-  color:#000;
+  color:white;
 }
 
 .accepted{
@@ -1925,6 +1925,8 @@ span.count {
 .task{
   background-color: #D4A4FF;
   color:black;
+  /* border: none;
+  outline: none; */
 
 }
 
@@ -1990,6 +1992,9 @@ span.count {
   background-color: #62B134 !important;
   color:white !important;
 }
+
+
+
 .accepteds{
   background-color: #0272D0  !important;
  color: white;
@@ -2140,3 +2145,63 @@ span.count {
     justify-content: center;
     font-weight: 600;
   }
+  .delay{
+    background-color:#EE4137 !important;
+    color: white !important;
+    padding: 2px 10px;
+    border-radius: 3px;
+  }
+.hold{
+  background-color: #E2D9BC!important;
+  color: black Im !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.action-to-project{
+  background-color: rgb(123 104 238 / 15%);
+  color: black !important;
+  font-size: 12px;
+    font-weight: 500;
+
+}
+.done, .total-project, .assigned-task, .action-to-project, .task, .accepted, .pending, .rejected{
+  position: relative;
+  border: none;
+}
+.done:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #62B134;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.assigned-task:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #A847Fd;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.action-to-project:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid rgb(123 104 238 / 15%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+
+.task:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #D4A4FF;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 28%;
+}

@@ -16,6 +16,7 @@ export class BarChartDTO {
     DelayCount: number;
     InProcessCount: number;
     StatusColor: string;
+    Deletedcount:number;
 
     UA_Count: number;
     Completed_Count: number;

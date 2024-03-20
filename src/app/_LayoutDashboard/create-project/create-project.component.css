@@ -1338,16 +1338,16 @@ span.info-ic-guide svg {
   color: #777;
   font-size: 17px;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
 }
 
 .option-section {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
   color: #fff;
-  width: 60vw;
+  width: 58vw;
   margin: auto;
   margin-top: 4rem;
 }
@@ -1357,27 +1357,27 @@ span.info-ic-guide svg {
   box-shadow: 10px 50px 50px #0000001a;
 }
 
-.Scratech:hover .op-svg-ic svg path {
+.Scratech .op-svg-ic svg path {
   stroke: #195ABC;
 }
 
-.Scratech:hover .op-svg-ic svg circle {
+.Scratech .op-svg-ic svg circle {
   stroke: #669DF6;
 }
 
-.projects:hover .op-svg-ic svg path {
+.projects .op-svg-ic svg path {
   fill: #669DF6;
 }
 
-.projects:hover .op-svg-ic svg .dtv {
+.projects .op-svg-ic svg .dtv {
   fill: #195ABC;
 }
 
-.template:hover .op-svg-ic svg path {
+.template .op-svg-ic svg path {
   fill: #669DF6;
 }
 
-.template:hover .op-svg-ic svg .dtv {
+.template .op-svg-ic svg .dtv {
   fill: #195ABC;
 }
 
@@ -1910,13 +1910,16 @@ textarea {
 .kt-note-icon {
   width: 40px;
   height: 40px;
-  background: rgb(233, 15, 15);
-  background: linear-gradient(6deg, rgba(233, 15, 15, 1) 0%, rgba(222, 21, 11, 1) 0%, rgb(253, 126, 122) 69%);
+  background:linear-gradient(6deg,#6388e3 0%, #6388e3 0%, #6388e3 69%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
   border-radius: 50px;
+}
+
+.kt-note-icon svg {
+  fill: #fff;
 }
 
 
@@ -2425,3 +2428,161 @@ tr.odd.project-list_AC.active{
   margin-top: -13px;
   border-width: 13px;
 }
+
+
+
+
+
+
+
+/* notification css start*/
+.notification{
+
+  display: flex;
+  align-items: center;
+  column-gap: 13px;
+  padding: 12px 15px 12px 15px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 12px 0px #e9e9e93b;
+  margin: 0 0 10px 10px;
+
+}
+
+
+.notifications-list{
+  width:100%;
+}
+
+.i-notification{
+  /* background-color: #dde7ff; */
+ background-color: #eaf2f9;
+
+}
+
+.notification .notif-img{
+  align-self: flex-start;
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+  fill: transparent;
+  stroke: #2786fb;
+}
+.notification .notif-msg{
+flex-grow: 1;
+font-family: var(--font-family-sans-serif);
+font-weight: 500;
+font-size: 14px;
+color: #2786fb;
+}
+
+.kt-Note-msg {
+  width: 100%;
+  padding: 10px;
+  background-color:#fff;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 16px #cccccc80;
+}
+
+/* notification css end*/
+
+
+
+/*draft project css  start*/
+
+.draft-prjs-option .op-svg-ic svg path.folder {
+    fill:#b5b5b5;
+}
+
+
+.draft-prjs-option .op-svg-ic svg path.paper {
+  fill:lightgray;
+}
+
+
+.draft-prjs-option .op-svg-ic svg path.line {
+  fill:lightgray;
+}
+
+
+.draft-prjs-option .op-svg-ic svg path.folder {
+  fill:#195ABC;
+}
+
+
+.draft-prjs-option .op-svg-ic svg path.paper {
+  fill:#669DF6;
+}
+
+.draft-prjs-option .op-svg-ic svg path.line {
+  fill:#669DF6;
+}
+
+
+
+
+.Drafts-list {
+  width: 100%;
+  padding: 20px;
+  padding-bottom: 0px;
+}
+
+.Drafts-list .card-Scroll {
+  height: calc(100vh - 260px);
+}
+
+
+
+.label-draft-count{
+  color:#939191;
+  font-size:12px;
+}
+
+.label-draft-text{
+  color: #999999;
+  margin-left: 5px;
+}
+
+
+._counts-square{
+  color:#b1b0b0;
+  font-weight: normal;
+  font-family: Lucida Sans Unicode;
+  font-size: 12px;
+  background-color: #ffffff;
+  padding: 0.1em 0.4em 0.1em 0.4em;
+  border-radius: 3px;
+}
+
+.op-card:hover ._counts-square{
+  color: #195ABC;
+  font-weight: bold;
+  font-family: Lucida Sans Unicode;
+  font-size: 12px;
+  padding: 0.1em 0.4em 0.1em 0.4em;
+  border-radius: 3px;
+  box-shadow: 0px 0px 2px #195abc0f;
+  /* background-image: linear-gradient(359deg, #b5b5b526, #d1d3d51f); */
+  background-color: #ffffff;
+}
+
+
+/*draft projects css end*/
+
+
+::ng-deep.mat-form-field.mat-focused .mat-form-field-label {
+  color: #646c9a;
+}
+
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-label {
+  color: #646c9a;
+  font-size: 18px;
+  font-family: var(--font-family-sans-serif);
+  font-size: 17px;
+}
+
+
+
+
+

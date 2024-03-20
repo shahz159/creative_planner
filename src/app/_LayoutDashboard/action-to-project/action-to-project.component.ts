@@ -571,9 +571,9 @@ export class ActionToProjectComponent implements OnInit {
         else if(this._Urlid == 5){
 
 
-           this.createproject.getActionsDetails();
-           this.createproject.newProjectDetails(this._MasterCode);
-
+          this.createproject.getActionsDetails();
+          this.createproject.newProjectDetails(this._MasterCode);
+         
           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
           this.closeInfo();
         }

@@ -3908,9 +3908,11 @@ span.Rq_date_V {
 }
 
 #release-tabs .nav-item a.active{
-  color:#5867dd;
+  color: #5867dd;
   font-weight: bold;
-  font-family:lucida Sans unicode;
+  font-family: lucida Sans unicode;
+  border-bottom: 3px solid #5867dd12;
+  padding:0.3em;
 }
 
 .kt-card-cmt {
@@ -4541,3 +4543,39 @@ p.kt-dt-l {
 .meeting{
 background-color: #e2e8f0c9;
     color: #475569}
+
+
+.new-prjrejected-notf {
+      background-color:#dfdfdf8f !important;  
+}
+
+.new-prjrejected-notf .notif-msg{
+  color:#333333 !important;
+}
+.new-prjrejected-notf svg{
+   fill:#5858586e   !important;
+}
+
+
+.prjhold-notf{
+    background-color: #e2d9bca6 !important;
+}
+
+.prjhold-notf svg{
+  fill:#9d9d9d !important;
+}
+
+
+
+/*project release now btn*/
+/* .release-now-shrtcut{
+  border: 1px solid #E2d9bc;
+  color: #E2d9bc;
+  display: flex;
+  align-items: center;
+}
+
+.release-now-shrtcut:hover{
+   background-color: #E2d9bc;
+   color:#000;
+} */
