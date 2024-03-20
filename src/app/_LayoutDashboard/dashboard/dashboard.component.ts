@@ -1041,7 +1041,7 @@ export class DashboardComponent implements OnInit {
 
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.copyTask = true;
     this.editTask = false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
@@ -1098,8 +1098,8 @@ export class DashboardComponent implements OnInit {
         document.getElementById("Monthly_121").style.display = "none";
         document.getElementById("weekly_121").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-        document.getElementById("rightbar-overlay").style.display = "block";
-        document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+        // document.getElementById("rightbar-overlay").style.display = "block";
+        // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
         this.AllDatesSDandED = [];
         var jsonData = {};
@@ -1247,7 +1247,7 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
@@ -1321,8 +1321,8 @@ export class DashboardComponent implements OnInit {
         document.getElementById("Monthly_121").style.display = "none";
         document.getElementById("weekly_121").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-        document.getElementById("rightbar-overlay").style.display = "block";
-        document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+        // document.getElementById("rightbar-overlay").style.display = "block";
+        // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
         this.AllDatesSDandED = [];
         var jsonData = {};
@@ -1593,18 +1593,25 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         const date1: Date = new Date(this._StartDate);
-        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
-        }
-        else {
-          this._SEndDate = this.scstartdate;
-        }
+        // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+        //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+        // }
+        // else {
+        //   this._SEndDate = this._StartDate;
+        // }
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
 
         const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+        }
+        else{
+          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        }
+        // var dd = moment(date3).add(diffInDays, 'days')
+        // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
         console.log(dd,date3,diffInDays,date2,this._SEndDate,"update edit")
         var SEndDates = "SEndDate";
@@ -1922,12 +1929,13 @@ export class DashboardComponent implements OnInit {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+        debugger
         const date1: Date = new Date(this._StartDate);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+          this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         }
         else {
-          this._SEndDate = this.scstartdate;
+          this._SEndDate = this._StartDate;
         }
         const date2: Date = new Date(this._SEndDate);
 
@@ -1941,7 +1949,7 @@ export class DashboardComponent implements OnInit {
         // var SEndDates = "SEndDate";
         // element[SEndDates] = (date3);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          var date3 = moment(this._SEndDate).format("YYYY-MM-DD").toString();
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
         }
         else{
           var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
@@ -2274,9 +2282,9 @@ export class DashboardComponent implements OnInit {
 
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
@@ -2805,13 +2813,13 @@ export class DashboardComponent implements OnInit {
       // alert(this.Endtms)
 
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-        this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
         // document.getElementById("Schenddate").style.display = "block";
 
       }
       else {
-        this._SEndDate = this.scstartdate;
+        this._SEndDate = this._StartDate;
       }
 
     }
@@ -3555,8 +3563,8 @@ export class DashboardComponent implements OnInit {
     $('.bg-ovr1').removeClass('d-block');
     document.getElementsByClassName("bg-ovr1")[0].classList.remove("d-block");
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
     document.getElementById("div_endDate").style.display = "none";
