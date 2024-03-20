@@ -169,14 +169,14 @@
   flex: 0.5;
   text-align: left;
 }
-.card.brdr {
+.table-card.brdr {
   border-left: 4px solid #2786fb;
   border-radius: 5px;
 }
-.card.brdr.danger {
+.table-card.brdr.danger {
   border-left: 4px solid #dc3545;
 }
-.card.brdr.success {
+.table-card.brdr.success {
   border-left: 4px solid #1dc9b7;
 }
 ::ng-deep .dropdown-list{
@@ -1188,7 +1188,12 @@ span.count2 {
 }
 
 .new-project {
-  color:#B2D732 !important
+  background-color:#B2D732 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
 }
 .new-project-head{
 background-color:#B2D732 ;
@@ -1203,12 +1208,16 @@ color:#000;
   color:black !important;;
 }
 
-.todo-completed{
-  color: #62B134 ;
+.todo-completed-head{
+  background-color: #62B134!important ;
+  color: white;
 }
 
 .todoachieved{
-  color: #335B1B !important;
+  background-color: #335B1B !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .New-project{
@@ -1225,79 +1234,132 @@ color:#000;
   color:#fff;
 }
 .Delay_color{
-  color: #EE4137 !important;
+  background-color: #EE4137 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 
 }
 .Completed_color{
-  color: #62B134 !important;
+  background-color: #62B134 !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+
 }
 .InProcess_color{
-  color:#1B272D !important;
+  background-color:#1B272D !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .Project_Complete_Rejected_color{
-  color: #FAF065 !important;
+  background-color: #FAF065 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+
 }
 .Hold_color{
-  background-color: #DFDFDF  !important;
-  color:black
+  background-color: #E2D9BC  !important;
+  color:black!important;
+
 }
 
 .Under_Approval_color{
-  color: #888888 !important;
+  background-color:#B2D732!important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .New_Todo_color{
-  color: #6E9BC4 !important;
+  background-color: #6E9BC4 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Cancellation_Under_Approval_color{
-  color: #000 !important;
+  background-color: #EE4137!important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Cancelled_color{
   color: #DFDFDF !important;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Forward_Under_Approval_color{
-  color: #B2D732 !important;
+  background-color: #B2D732 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
 }
 
 .New_Project_Rejected_color{
-  color: #DFDFDF !important;
+  background-color: #DFDFDF !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 
 }
 .Deadline_Extend_Under_Approval_color{
-  color: #F88282 !important;
+  background-color: #F88282 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .Enactive_Under_Approval_color{
-  color: #C9C1E6 !important;
+  background-color: #C9C1E6 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .ToDo_Achieved_color{
-  color: #000 !important;
+  background-color: #335B1B !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .ToDo_Completed_color{
-  color:#000 !important;
+  background-color: #62B134 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
+
 
 .Delay-head{
   background-color: #EE4137 !important;
   color: #fff;
+
   }
 
   .complteed_color{
     background-color: #62B134 !important;
     color:#fff;
+
   }
   .in-process{
-  color: #1B272D !important;
+  background-color: #1B272D !important;
+  color: white!important;
+  padding: 2px 10px;
+  border-radius: 3px;
 
   }
 
-  .Hold_color{
+
+  .Hold{
     background-color: #E2D9BC;
     color:#000 !important;
-  }
-  .Hold{
-    color:#E2D9BC !important;
+    padding: 2px 10px;
+    border-radius: 3px;
+
   }
   a.info-btn {
     width: 34px;
@@ -1320,8 +1382,120 @@ color:#000;
     background-color: #1B272D;
     color:white;
 
-  }
-  .completion-under-approval{
-  color: #B2D732;
 
   }
+  .completion-under-approval{
+  background-color: #B2D732;
+  color: black;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+
+
+
+  }
+  .attach{
+    padding: 6px;
+    cursor: pointer;
+  }
+.todos-completed {
+  background-color: #62B134!important;
+    color: white!important;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+.in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head {
+  position: relative;
+}
+.in-processs:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #1b272d;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.total-project:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #35a79c;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.Delay-head:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #ee4137;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.complteed_color:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #62b134;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.new-project-head:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #b2d732;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.Hold_color:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #E2D9BC;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.todo-achieved:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #335B1B;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.rejected:focus::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #DFDFDF;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.todo-completed-head:focus::after{
+content: "";
+position: absolute !important;
+border-top: 10px solid #62B134;
+border-left: 10px solid transparent;
+border-right: 10px solid transparent;
+bottom: -32%;
+left: 38%;
+}
+/* focus end */
+
+
+
+.Not-Started{
+  background-color: #888888!important;
+  color: white!important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}

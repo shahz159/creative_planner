@@ -613,7 +613,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge kt-badge.kt-badge-light-bold kt-badge--inline {{item.Status === 'Under Approval' ? 'new-project' : ''}}">
+                                                                class="kt-inbox__label kt-badge kt-badge new-project-under kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status==='Under Approval'? "New Project Under Approval" : (item.Status=='InProcess'?'In-Process':item.Status)}}
                                                             </span>
                                                         </div>
@@ -632,6 +632,9 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+
 
                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                             <div _ngcontent-spk-c396=""
@@ -684,7 +687,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge Forward_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>
@@ -753,7 +756,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge Completed_color kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>
@@ -1031,7 +1034,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge new-project kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>
@@ -1100,7 +1103,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge Enactive_Under_Approval_color  kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>
@@ -1169,7 +1172,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge Deadline_Extend_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>
@@ -1238,7 +1241,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge Project_Hold_Under_Approval kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>
@@ -1306,7 +1309,7 @@
                                                                 {{item.ProjectsCount}} Project(s)
                                                             </span>
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                                class="kt-inbox__label kt-badge kt-badge  kt-badge.kt-badge-light-bold kt-badge--inline">
                                                                 {{item.Status}}
                                                             </span>
                                                         </div>

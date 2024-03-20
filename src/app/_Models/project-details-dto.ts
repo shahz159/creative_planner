@@ -60,5 +60,6 @@ export class ProjectDetailsDTO {
     assignid:number;
     portfolioids:string;
     MeetingCount:any;
+    Hours:string;
 
 }

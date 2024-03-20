@@ -30,6 +30,7 @@ import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment
 import { DatePickerFormatDirective } from "./date-picker-format.directive";
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 FullCalendarModule.registerPlugins([
   interactionPlugin,
@@ -63,7 +64,8 @@ FullCalendarModule.registerPlugins([
     , NgxDaterangepickerMd.forRoot()
     ,PdfViewerModule
     ,NgxDocViewerModule,
-    GuidedTourModule
+    GuidedTourModule,
+    Ng2SearchPipeModule
   ],
   providers: [DatePipe
     ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},

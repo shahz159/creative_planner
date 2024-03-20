@@ -416,3 +416,21 @@ ul {
 .kt-widget19__stats .dropdown-item {
     cursor: pointer;
 }
+.accepted{
+  background-color: #0272D0 !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.Pending{
+  background-color: #1B272D !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.rejected{
+  background-color: #DFDFDF !important;
+  color: black !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+}

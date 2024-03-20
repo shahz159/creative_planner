@@ -275,9 +275,7 @@
 .dataTables_wrapper .dataTable .plist-details tr td:first-child.DeadlineExtended{
   border-left: 5px solid #E0B1D7;
 }
-.delayDays{
-  font-size: 11px;
-}
+
 
 .kt-inbox .kt-inbox__aside .kt-inbox__nav .kt-nav .kt-nav__item .kt-nav__link g [fill] {
   -webkit-transition: fill 0.3s ease;
@@ -2504,54 +2502,101 @@ tr.odd.project-list_AC.active{
 }
 
 .InProcess_color{
-  color:#1B272D !important;
+  background-color:#1B272D !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+  color: white;
 }
 
 .Delay_color{
-  color: #EE4137 !important;
+  background-color: #EE4137 !important;
+  color:white;
+ padding: 2px 10px;
+  border-radius: 3px;
+  font-size: 11px
+
+
 }
 
 .ToDo_Completed_color{
-  color:#62B134 !important;
+  background-color:#62B134 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .Forward_Under_Approval_color{
-  color: #B2D732 !important;
+  background-color: #B2D732 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .ToDo_Achieved_color{
-  color:#335B1B !important;
-}
+  background-color:#335B1B !important;
+  color: white;
+  padding: 2px 10px;
+   border-radius: 3px;
+  }
 .Not_Started{
-  color: #888888 !important;
+  background-color: #888888 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
+  text-align: center;
 }
 
 
 .Deadline_Extend_Under_Approval_color{
-  color: #F88282 !important;
+  background-color: #F88282 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Cancellation_Under_Approval_color{
-  color: #EE4137 !important;
+  background-color: #EE4137 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Completion_Under_Approval_color{
-  color: #B2D732 !important;
+  background-color: #B2D732 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Hold_color{
-  color:#E2D9BC  !important;
+  background-color:#E2D9BC  !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Completed_color{
-  color: #62B134 !important;
+  background-color: #62B134 !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+
+
+
+
 }
 
 .Under_Approval_color{
-  color: #B2D732 !important;
+  background-color: #B2D732 !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+  color: #000;
 }
 
 .New_Project_Rejected_color{
-  color: #DFDFDF !important;
+  background-color: #DFDFDF !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Not_Started_color{
@@ -2559,17 +2604,29 @@ tr.odd.project-list_AC.active{
 }
 
 .Cancelled_color{
-  color: #EE4137 !important;
+  background-color: #EE4137 !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .Enactive_Under_Approval_color{
-  color: #C9C1E6 !important;
+  background-color: #C9C1E6 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 .New_Todo_color{
-  color: #6E9BC4 !important;
+  background-color: #6E9BC4 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 
 .Project_Complete_Rejected_color{
-  color: #FAF065 !important;
+  background-color: #FAF065 !important;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
 }
 a.info-btn {
   width: 34px;
@@ -2587,4 +2644,28 @@ a.info-btn:hover {
 a.info-btn svg {
   width: 24px;
   height: 24px;
+}
+.TODOinprocess{
+  background-color: #1B272D;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.NEWPROJECT{
+  background-color: #5789B8;
+  color: black;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+
+
+.Project_Hold_Under_Approval{
+  background-color: #c0b5dc;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+}
+.attachment{
+  padding: 5px;
+  cursor: pointer;
 }

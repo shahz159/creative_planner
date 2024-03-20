@@ -208,9 +208,9 @@
                                             <i class="fas fa-project-diagram text-muted mr-1"></i>
                                             <b>{{ProjectType}}</b>
                                         </span>
-                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'text-success':Status=='Accepted',
-                                        'text-warning':Status=='Pending',
-                                        'text-danger':Status=='Rejected'
+                                        <span class="mr-3 text-nowrap mb-2 d-inline-block" [ngClass]="{'accepted':Status=='Accepted',
+                                        'Pending':Status=='Pending',
+                                        'rejected':Status=='Rejected'
                                        }">
                                             <b>{{Status}}</b>
                                         </span>

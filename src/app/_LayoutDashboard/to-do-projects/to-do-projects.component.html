@@ -129,7 +129,9 @@
                                                                 <label class="kt-checkbox mb-3">
                                                                     <input type="checkbox" (change)="isStatusChecked(item)"
                                                                         [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name=='Under Approval'?'New Project Under Approval':(item.Name=='InProcess'?'In-Process':item.Name) }}
+                                                                    {{ item.Name === 'Under Approval' ? 'New Project Under Approval' :
+                                                                    (item.Name === 'InProcess' ? 'In-Process' :
+                                                                    (item.Name === 'Not Started' ? 'Draft' : item.Name)) }}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
@@ -214,7 +216,7 @@
                                           'dead-line' :item.Status=='Deadline Extend Under Approval',
                                         'text-underApp':item.Status=='Under Approval',
                                         'Completion-Under-Approval':item.Status=='Completion Under Approval',
-                                        'text-cancel':item.Status=='Cancellation Under Approval' || item.Status=='Cancelled',
+                                        'text-cancels':item.Status=='Cancellation Under Approval' || item.Status=='Cancelled',
                                         'text-Rejected':item.Status=='New Project Rejected',
                                         'text-underApproval':item.Status=='Enactive Under Approval',
                                         'text-underApproval':item.Status=='Forward Under Approval',
@@ -350,7 +352,7 @@
                                         'dead-line':Project_Status=='Deadline Extend Under Approval',
                                         'text-underApp':Project_Status=='Under Approval',
                                         'Completion-Under-Approval':Project_Status=='Completion Under Approval',
-                                        'text-cancel':Project_Status=='Cancellation Under Approval' || Project_Status=='Cancelled',
+                                        'text-cancels':Project_Status=='Cancellation Under Approval' || Project_Status=='Cancelled',
                                         'text-Rejected':Project_Status=='New Project Rejected',
                                         'todo-achieved':Project_Status=='ToDo Achieved',
                                         'text-underApproval':Project_Status=='Enactive Under Approval',
@@ -363,7 +365,7 @@
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block text-danger" *ngIf="Project_Status=='Delay'">
-                                    {{Project_Status =='Under Approval'?'New Project Under Approval':(Project_Status=='InProcess'?'In-Process':Project_Status)}} {{delaydays}} days
+                                    {{Project_Status =='Under Approval'?'New Project Under Approval':(Project_Status=='InProcess'?'In-Process' : Project_Status=='Not Started'?'Draft' :Project_Status)}} {{delaydays}} days
                                 </span>
                                 <span data-toggle="tooltip" title="Project Status!"
                                         class="mr-3 text-nowrap mb-2 d-inline-block hold" *ngIf="Project_Status=='Project Hold'">
@@ -549,15 +551,19 @@
                                                     'text-underApproval':item.SubProject_Status=='Enactive Under Approval',
                                                     'text-underApproval':item.SubProject_Status=='Forward Under Approval',
                                                     'text-info':item.SubProject_Status=='New Project',
+                                                    'not-started':item.SubProject_Status=='Not Started',
                                                     'text-CompleteRejected':item.SubProject_Status=='Project Complete Rejected',
                                                     'text-Todo':item.SubProject_Status=='ToDo Completed'}"
                                                     *ngIf="item.SubProject_Status != 'Delay'">
-                                        <p> {{item.SubProject_Status  =='Under Approval'?'New Project Under Approval ':(item.SubProject_Status=='InProcess' ? 'In-Process':item.SubProject_Status)}}</p>
+                                        <p> {{ item.SubProject_Status === 'Under Approval' ? 'New Project Under Approval' :
+                                          (item.SubProject_Status === 'Not Started' ? 'Draft' :
+                                          (item.SubProject_Status === 'InProcess' ? 'In-Process' : item.SubProject_Status)) }}
+                                       </p>
                                         </span>
 
                                     <span data-toggle="tooltip" title="Action Status!" *ngIf="item.SubProject_Status == 'Delay'"
                                         class="mr-2 text-nowrap mb-2 d-inline-block text-danger">
-                                    <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval ':item.SubProject_Status}} {{item.Delaydays}} days</p>
+                                    <p> {{item.SubProject_Status  ==='Under Approval'?'New Project Under Approval' :(item.SubProject_Status=="Not Started" ? "Draft" :item.SubProject_Status)}} {{item.Delaydays}} days</p>
                                     </span>
                                         <!-- 'text-success':item.SubProject_Status=='Completion Under Approval' -->
                                     </p>

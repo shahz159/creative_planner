@@ -69,10 +69,26 @@
                         role="button">
                         {{TotalProjects}} Projects </a> -->
                     <!-- <div [hidden]="HideStatusDropdown"> -->
+
+
+
                     <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-                        class="badge total-project kt-badge--inline mr-2 py-10px btn-sm">
-                        <span class="count">{{TotalProjects}}</span> Total Projects
-                    </a>
+                    class="badge total-project kt-badge--inline mr-2 py-10px btn-sm" tabindex="0" >
+                    <span>{{TotalProjects}}</span> Total Projects
+                </a>
+
+
+
+
+
+                      <ng-container  >
+                      <a  href="javascript:void(0)" *ngIf="CountDeleted>0"  (click)="labeldeletedproject()"        [hidden]="HideStatusDropdown"
+                        class="badge Delay-head kt-badge--inline mr-2 py-10px btn-sm"><span >{{CountDeleted}}</span>
+                        Deleted Projects </a>
+                      </ng-container>
+
+
+
 
 
 
@@ -123,8 +139,16 @@
                     <ng-container *ngIf="CountRejecteds > 0">
                         <a href="javascript:void(0)" (click)="labelRejecteds()" [hidden]="HideStatusDropdown"
                             class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px">
-                            {{CountRejecteds}} Rejected's</a>
+                            {{CountRejecteds}} Rejected</a>
                     </ng-container>
+
+                    <ng-container *ngIf="Count_ToDoCompleted > 0">
+                      <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
+                          class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px">
+                          {{Count_ToDoCompleted}} ToDoCompleted</a>
+                  </ng-container>
+
+
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
                         <a href="javascript:void(0)" (click)="labelToDoAchieved()" [hidden]="HideStatusDropdown"
                             class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px "
@@ -182,10 +206,10 @@
                                     <div class="row">
 
                                         <div class="col-sm-12" *ngIf="_MessageIfNotOwner==''">
-                                            <div class="card my-1 shadow-sm brdr kt-pot-ttls">
-                                                <div class="card-body d-flex align-items-center justify-content-around">
-                                                    <div class="icond"></div>
-                                                    <div class="mx-2 p-1" style="flex: 1;" (click)="_SortProjectList()"> <p class="kt-widget__title mb-0" style="width: 250px;"  >
+                                            <table class="brdr kt-pot-ttls table table-hover dataTable no-footer dtr-inline" style="border-collapse: collapse !important;">
+                                                <thead>
+                                                    <td class="icond"></td>
+                                                    <td (click)="_SortProjectList()"> <p class="kt-widget__title mb-0">
                                                         <a [hidden]="Z2A" class="mr-2" data-toggle="kt-tooltip"
                                                             title="Click to sort">
                                                             <i class="fas fa-sort-alpha-up"></i>
@@ -193,24 +217,29 @@
                                                         <a [hidden]="A2Z" class="mr-2" data-toggle="kt-tooltip"
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
-                                                        </a>ProjectName</p></div>
-                                                    <div class="mx-2 p-1"><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></div>
-                                                    <div class="mx-2 p-1"><span class="kt-widget__other"><i class="fas fa-sort"></i> Category</span></div>
-                                                    <div class="mx-2 p-1" style="flex: 1;"><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></div>
-                                                    <div class="mx-2 p-1"><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></div>
-                                                    <div class="mx-2 p-1"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </div>
-                                                    <div class="mx-2 p-1" style="flex: 0.5;"><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </div>
-                                                    <div class="mx-2 p-1"  style="flex: 0;"><span class="kt-widget__other tb-w-45"> Actions</span> </div>
+                                                        </a>ProjectName</p></td>
+                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></td>
+                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Category</span></td>
+                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></td>
+                                                    <td ><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></td>
+                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </td>
+                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </td>
+                                                    <td>
+                                                      <div class="mx-2 p-1"> <span class="kt-widget__other " *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>  Deleted by</span></div>
+                                                     <span class="kt-widget__other tb-w-45" *ngIf="!showDeletedPrjOnly"> Actions</span>
+                                                    </td>
 
-                                                </div>
-                                            </div>
-                                        
+                                                </thead>
 
-                                        
-                                            <ng-container
-                                            *ngFor="let item1 of _ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
 
-                                            <div *ngIf="item1.Status.includes(_PortProjStatus)||_PortProjStatus==''"   class="card my-1 shadow-sm brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+
+
+                                            <tbody>
+                                              <ng-container
+                                            *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
+
+
+                                            <tr *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -225,9 +254,8 @@
                                                     'TodoAchieved':item1.Status=='ToDo Achieved',
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
                                                     'NewTodo':item1.Status=='New Todo'}">
-                                                <div class="card-body d-flex align-items-center justify-content-around">
 
-                                                    <div class="icond d-flex align-items-center">
+                                                    <td class="icond d-flex align-items-center">
                                                         <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
                                                             placement="right" data-trigger="focus" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
@@ -262,18 +290,17 @@
                                                                     src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
                                                                     title="Not Linked"></a>
                                                         </ng-template>
-                                                    </div>
-                                                    <div class="mx-2 p-1" style="flex: 1;">
+                                                    </td>
+                                                    <td>
                                                         <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}}
-                                                        </p>     
-                                                    </div>
-                                                    <div>                                    
-                                                        <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>                              
-                                                    </div>
-                                                    <div class="mx-2 p-1">
+                                                        </p>
+                                                    </td>
+
+
+                                                    <td>
                                                         <span class="kt-widget__other">{{item1.Exec_BlockName}}</span>
-                                                    </div>
-                                                    <div class="mx-2 p-1">
+                                                    </td>
+                                                    <td>
                                                         <div *ngIf="item1.ReportType==null;else ReportType">
                                                             <span class="kt-widget__other">Developemt</span>
                                                         </div>
@@ -281,11 +308,11 @@
                                                             <span
                                                                 class="kt-widget__other">{{item1.ReportType}}</span>
                                                         </ng-template>
-                                                    </div>
-                                                    <div class="mx-2 p-1" style="flex: 1;">
+                                                    </td>
+                                                    <td>
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
-                                                    </div>
-                                                    <div class="mx-2 p-1">
+                                                    </td>
+                                                    <td>
                                                         <span class="kt-widget__other text-nowrap ng-star-inserted">
                                                             <div
                                                                 *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
@@ -305,14 +332,14 @@
                                                                     {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
                                                             </div> -->
                                                         </span>
-                                                    </div>
-                                                    <div class="mx-2 p-1" data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
+                                                    </td>
+                                                    <td data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
                                                         <span class="kt-widget__other">
                                                             <!-- |dateAgo -->
                                                             {{item1.Project_StartDate|dateAgo}}
                                                         </span>
-                                                    </div>
-                                                    <div class="mx-2 p-1">
+                                                    </td>
+                                                    <td>
                                                         <div *ngIf="item1.Status=='Delay'">
                                                             <span
                                                                 class="Delay_color font-weight-400">{{item1.Status}}
@@ -326,10 +353,13 @@
                                                         </div>
                                                         <div *ngIf="item1.Status=='Completed'">
                                                             <span
-                                                                class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}}    <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info" ></b>
+                                                                class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
+                                                                <div class="d-flex align-items-center justify-content-start">
+                                                                  <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
 
-                                                                <span class="kt-widget__other d-block st-line" title="Approved by and completed date">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                              </span>
+                                                                <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
+                                                                </div>
+
                                                                 <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
 
@@ -348,6 +378,7 @@
                                                             <span
                                                                 class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
                                                         </div>
+
                                                         <div *ngIf="item1.Status=='Project Hold'">
                                                             <span
                                                                 class="Hold font-weight-400">Hold</span>
@@ -361,6 +392,16 @@
                                                                 class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
                                                             <br>
                                                         </div>
+
+                                                        <div *ngIf="item1.Status=='Not Started'">
+                                                          <span
+                                                              class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
+                                                          <br>
+                                                      </div>
+
+
+
+
                                                         <div *ngIf="item1.Status=='New Todo'">
                                                             <span
                                                                 class="New_Todo_color font-weight-400">{{item1.Status}}
@@ -423,26 +464,78 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item1.Status=='ToDo Completed'">
-                                                            <span class="todo-completed font-weight-400"
+                                                            <span class="todos-completed font-weight-400"
                                                                 >{{item1.Status}}
                                                             </span>
                                                         </div>
-                                                    </div>
-                                                    <div class="mx-2 p-1" style="flex: 0;" *ngIf="viewpreference != 'View Only'">
+                                                    </td>
+
+                                                    <ng-container *ngIf="!showDeletedPrjOnly;else deletedby">
+                                                    <td *ngIf="viewpreference != 'View Only'">
                                                       <div class="tb-w-45">
                                                         <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
                                                         (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
                                                         <i class="fas fa-trash-alt mr-0"
                                                             aria-hidden="true"></i>
+                                                     </a>
+                                                      </div>
+
+                                                    </td>
+                                                  </ng-container>
+
+                                                    <ng-template #deletedby>
+                                                      <td>
+
+                                                          <span
+                                                              class=" font-weight-400 curser-pointer" > {{item1.Deleted_by}} </span>   <br/>
+                                                              <div class="d-flex align-items-center justify-content-start">
+                                                              <span class="kt-widget__other d-block st-line" title="Deleted date"> {{item1.Deleted_DT | date: 'dd-MM-yyyy '}}  </span>
+                                                              </div>
+
+                                                      </td>
+                                                    </ng-template>
+
+
+
+
+                                                  <!-- <div class="mx-2 p-1" style="flex: 0;" *ngIf="showDeletedPrjOnly ==='DeleteProject' ">
+                                                      <div class="tb-w-45">
+                                                        <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
+                                                        (click)="labeldeletedproject()"  >
+                                                        action
                                                     </a>
                                                       </div>
 
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    </div> -->
 
-                                           </ng-container>`
-                                     
+
+
+
+
+
+
+
+
+                                            </tr>
+
+
+                                           </ng-container>
+                                            </tbody>
+
+
+
+
+
+
+
+
+
+
+                                          </table>
+
+
+
+
                                             <div class="d-flex justify-content-between mt-1" *ngIf="_MessageIfNotOwner==''">
                                                 <div>
                                                     <!-- [hidden]="Share_preferences" -->

@@ -109,7 +109,7 @@ export class CreateProjectComponent implements OnInit {
   fileAttachment:any;
   prjsubmission:any
   _inputAttachments:any='';
-
+  PrjCost:number=0;
 
 
   Daily_array: any = [];
@@ -166,6 +166,16 @@ export class CreateProjectComponent implements OnInit {
       this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
       this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
 
+
+      this.ProjectDto.Emp_No='400172';
+      this.ProjectDto.Hours="20";
+      this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:any)=>{
+
+          console.log('prj cost here:',res);
+      })
+
+
+
   }
 
 
@@ -183,7 +193,7 @@ export class CreateProjectComponent implements OnInit {
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
-         this.allUser_json=JSON.parse(res[0].allUser_json); 
+         this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
@@ -210,6 +220,7 @@ export class CreateProjectComponent implements OnInit {
 
       }
       this.getFindName()
+      this.changeprojecttype();
      });
   }
 
@@ -293,8 +304,11 @@ export class CreateProjectComponent implements OnInit {
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
+
+       this.getPrjCost(this.projectInfo.AllocatedHours);
+debugger
       console.log(this.projectInfo, "projectInfo");
   })
 
@@ -368,7 +382,21 @@ export class CreateProjectComponent implements OnInit {
     this.Annual_array = this.generateTimeIntervals(64, 15, 16);
   }
 
-
+createSRTProject(){
+   Swal.fire({
+     title:"Are you Sure?",
+     text:`You will be going to spend "${this.PrjCost}.00 SAR" on this Project. Do you want to Continue?`,
+     showConfirmButton:true,
+     showCancelButton:true,
+     confirmButtonText: 'Yes, Confirm!',
+     cancelButtonText: 'Cancel'
+   })
+   .then(choice=>{
+      if(choice.isConfirmed){
+        this.createProject();
+      }
+   });
+}
 
 
  createProject(){
@@ -382,7 +410,7 @@ export class CreateProjectComponent implements OnInit {
       const d=new Date();
       d.setFullYear(d.getFullYear()+2);
       const enddateofRS=d;
-   
+
      const projectInfo={
            ProjectType:this.Prjtype,
            Client:this.PrjClient,
@@ -400,12 +428,12 @@ export class CreateProjectComponent implements OnInit {
            Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
            SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
            // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
-           Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours.length?this.Allocated_Hours:'0'):'0',
+           Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours ?this.Allocated_Hours:'0'):'0',
            DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
            Remarks:this._remarks,
-         
-   
+           Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0
+
      };
     //  alert(this.Allocated_Hours)
      console.log("PRJ INFORMATION :",projectInfo);
@@ -423,35 +451,43 @@ export class CreateProjectComponent implements OnInit {
      console.log(this.ProjectDto,"dto")
      //1. creating project
      this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
-   
+
            console.log("res after project creation:",res);
-   
+
            if(res&&res.message==='Success'){
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
-   
+
                this.notification.showSuccess("Saved successfully.","");
                this.notification.showInfo("Please submit the project for approval.","");
 
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
-   
+
                // 3. Move to next step
                if(this.Prjtype==='001'||this.Prjtype==='002')
                {    // when core, secondary
-                 this.Move_to_Add_action_tab();
+                if(this.savePrjAsDraft==true)
+                {
+                  this.notification.showSuccess("Project saved as draft.","Success");
+                  this.back_to_options();
+                  this.GetAssignedTaskDetails();
+                }
+                else
+                this.Move_to_Add_action_tab();
+
                }
              this.BsService.ProjectCreatedEvent.emit();
            }
            else if(res&&res.message==='Success1'){
-          
+
              this.PrjCode=res.Project_Code;
                this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner : "+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
-   
+
                  this.router.navigate(['./backend/ProjectsSummary']);
                  // this.closeInfo()
             this.BsService.ProjectCreatedEvent.emit();
@@ -460,8 +496,8 @@ export class CreateProjectComponent implements OnInit {
            {
              this.notification.showError("Unable to create Project","Project Creation Failed");
            }
-   
-   
+
+
      });
 
     }
@@ -631,6 +667,7 @@ onFileChanged(event: any) {
     $('.np-step-2').addClass('d-none');
     $('.Assigned-projects-list').addClass('d-none');
     $('.Templates-list').addClass('d-none');
+    $('.Drafts-list').addClass('d-none');
   }
 
   Assigned_projects(){
@@ -643,21 +680,83 @@ onFileChanged(event: any) {
     $('.np-step-1').addClass('d-none');
   }
 
+  draftsProjects(){
+    $('.Drafts-list').removeClass('d-none');
+    $('.np-step-1').addClass('d-none');
+  }
+
 
   Move_to_add_team(){
-    // alert(this.Allocated_Hours)
-    $('.right-side-dv').removeClass('d-none');
-    $('.add_tema_tab').show();
-    $('.Project_details_tab').hide();
-    $('.sbs--basic .active').addClass('finished');
-    $('.sbs--basic li').removeClass('active');
-    $('.sbs--basic li:nth-child(2)').addClass('active');
 
-    this.findProjectType()
-    if(['003','008'].includes(this.Prjtype))
-    this.Prjstartdate=new Date();
-    
-    this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+    // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
+debugger
+
+const isNameValid=this.isValidString(this.PrjName,3);
+const isDesValid=this.isValidString(this.PrjDes,5);
+
+  if(
+
+    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&isNameValid)&&(this.PrjDes&&isDesValid))&&
+    (
+      (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
+      (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours))||
+      ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
+
+    )
+  )
+  {
+    // when all mandatory fields of step1 are provided.
+          $('.right-side-dv').removeClass('d-none');
+          $('.add_tema_tab').show();
+          $('.Project_details_tab').hide();
+          $('.sbs--basic .active').addClass('finished');
+          $('.sbs--basic li').removeClass('active');
+          $('.sbs--basic li:nth-child(2)').addClass('active');
+          this.findProjectType()
+          if(['003','008'].includes(this.Prjtype))
+          this.Prjstartdate=new Date();
+          this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+  }
+  else{
+     // when some mandatory fields are missing.
+     this.notProvided=true;
+  }
+
+
+
+
+
+
+
+
+
+
+
+    // if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.PrjName.trim().split(' ').length>=3)&&(this.PrjDes&&this.PrjDes.trim().split(' ').length>=5)&&
+    // (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate) ||
+    // (['011'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
+    // ( ['003','008'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.prjsubmission&&this.Allocated_Hours&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
+    // )){
+    //       // alert(this.Allocated_Hours)
+    //       $('.right-side-dv').removeClass('d-none');
+    //       $('.add_tema_tab').show();
+    //       $('.Project_details_tab').hide();
+    //       $('.sbs--basic .active').addClass('finished');
+    //       $('.sbs--basic li').removeClass('active');
+    //       $('.sbs--basic li:nth-child(2)').addClass('active');
+    //       this.findProjectType()
+    //       if(['003','008'].includes(this.Prjtype))
+    //       this.Prjstartdate=new Date();
+    //       this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+    // }
+    // else{
+    //   this.notProvided=true;
+    // }
+
+
+
+
+
   }
 
   Back_to_project_details_tab(){
@@ -746,7 +845,7 @@ onResponsibleChanged(){
       this.PrjOwner=newowr.EmpNo;
     }
     this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
-  
+
   // selected responsible cannot be selected in the support.
     const obj=this.PrjSupport.find(item=>item.Emp_No==this.PrjResp);
     if(obj)this.PrjSupport.splice(this.PrjSupport.indexOf(obj),1);
@@ -756,8 +855,10 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim())
+      if(this.PrjOwner.trim()===this.PrjResp.trim()){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+      this.onResponsibleChanged();
+      }
   }
 }
 
@@ -774,13 +875,28 @@ onProjectOwnerChanged(){
   conditional_List:any
   assigntask_json:any
   template_json:any;
+  draft_json:any;
 
   GetAssignedTaskDetails(){
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
-    ((res)=>{
+    ((res)=>{  console.log("draft_json:",JSON.parse(res[0].draft_json));
       this.assigntask_json=JSON.parse(res[0].Assigntask_json);
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
+
+      this.draft_json=JSON.parse(res[0].draft_json);
+      this.draft_json=this.draft_json.map(dft=>{
+        const d=moment(new Date()).diff(moment(dft.CreatedOn),'days');
+        return {
+         ...dft,
+         ModifiedDate:d===0?'Today':
+         d===1?'Yesterday':
+         [2,3].includes(d)?d+' days ago':
+         this.datepipe.transform(dft.CreatedOn,'dd-MM-yyyy')
+       };
+      });
+
+
       console.log(this.assigntask_json,'--------------->')
  });
   }
@@ -792,6 +908,11 @@ onProjectOwnerChanged(){
 
   notifytemp(){
     this.notification.showInfo("","You do not have any Templates");
+
+  }
+
+  notifydraft(){
+    this.notification.showInfo("","You do not have any drafts");
 
   }
 
@@ -840,7 +961,7 @@ onProjectOwnerChanged(){
 
 
   openActionSideBar() {
-
+debugger
     if(this.PrjActionsInfo.length===0)
       this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
 
@@ -903,7 +1024,10 @@ currentActionView:number|undefined;
 getActionsDetails(){
   this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
     console.log("LLL:",res);
-    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);   console.log("after action date:",this.PrjActionsInfo)
+    if(res[0].Action_Json)
+    this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+    else
+    this.PrjActionsInfo=[];
   });
 }
 
@@ -1224,20 +1348,37 @@ sendApproval(){
   // if(this.PrjActionsInfo.length){
   // atleast one action must be created.
 
-      this.ProjectDto.Emp_No=this.Current_user_ID;
-      this.ProjectDto.isTemplate=this.saveAsTemplate;
-      this.ProjectDto.Project_Code=this.PrjCode;
-      this.ProjectDto.Remarks=this._remarks;
-      this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
-         if(res&&res.message==='Success'){
-               this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
-               this.router.navigate(['./backend/ProjectsSummary']);
-              //  this.closeInfo();
-          }
-         else{
-            this.notification.showError('something went wrong!','Failed');
-         }
-     });
+
+   Swal.fire({
+       title:'Are you Sure?',
+       text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
+       showConfirmButton:true,
+       showCancelButton:true,
+       confirmButtonText: 'Yes, Confirm!',
+       cancelButtonText: 'Cancel'
+   })
+   .then(choice=>{
+
+      if(choice.isConfirmed){
+              this.ProjectDto.Emp_No=this.Current_user_ID;
+              this.ProjectDto.isTemplate=this.saveAsTemplate;
+              this.ProjectDto.Project_Code=this.PrjCode;
+              this.ProjectDto.Remarks=this._remarks;
+              this.ProjectDto.Project_Cost=this.PrjCost;
+              this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+                if(res&&res.message==='Success'){
+                      this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+                      this.router.navigate(['./backend/ProjectsSummary']);
+                      //  this.closeInfo();
+                  }
+                else{
+                    this.notification.showError('something went wrong!','Failed');
+                }
+              });
+      }
+
+   });
+
 
 
 // }
@@ -1248,8 +1389,6 @@ sendApproval(){
 //     'error'
 //   );
 // }
-
-
 
 }
 // send prj to project owner for approval end
@@ -1345,7 +1484,7 @@ openTemplate(template:any){
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
    this.prjsubmission=PInfo.SubmissionId;
-   
+
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
@@ -1464,18 +1603,162 @@ newpfl_massage(){
 // this.Prjstartdate='';
 // this.Prjenddate='';
 // this.ngDropdwonPort=[];
-// this.fileAttachment=null;  
+// this.fileAttachment=null;
 
 // }
 
 
 
+// CALCULATE PROJECT COST START.
+
+getPrjCost(alchr:string):void{
+console.log("input allocated hr:",alchr);
+let alhr=alchr;
+if(['003','008'].includes(this.Prjtype)){
+     //eg: '00 Hr : 15 Mins'
+     const h=Number.parseInt(alhr.split(':')[0]);
+     const m=Number.parseInt(alhr.split(':')[1]);
+     alhr=h+'.'+m;
+}
+
+  this.ProjectDto.Emp_No=this.Current_user_ID;
+  this.ProjectDto.Hours=alhr;
+  this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
+    if(res.Status){
+       this.PrjCost=res.Data;
+       console.log(this.PrjCost);
+    }
+  })
+}
+
+
+// CALCULATE PROJECT COST END.
+
+// DRAFT PROJECT CODE START.
+
+deleteDraft(index:number){
+
+    Swal.fire({
+
+      showCancelButton:true,
+      showConfirmButton:true,
+      title:'Are you sure?',
+      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'.`,
+    }).then(choice=>{
+         if(choice.isConfirmed){
+
+          this.ProjectDto.Project_Code=this.draft_json[index].Project_Code;
+          this.ProjectDto.Emp_No=this.Current_user_ID;
+          this.createProjectService.NewDeleteDraft(this.ProjectDto).subscribe((res:any)=>{
+                     if(res.message=='1'){
+                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted.`,"Deleted Successfully.");
+                       this.GetAssignedTaskDetails();
+                     }
+                     else{
+                        this.notifyService.showError(`Failed to delete ${this.draft_json[index].Project_Name}.`,"Failed.");
+                     }
+           });
+
+         }
+    });
+}
 
 
 
+openDraft(index:number){
+  console.log(this.draft_json[index]);
+  this.Prjtype=this.draft_json[index].Project_Block;
+  this.PrjCode=this.draft_json[index].Project_Code;
+  this.notificationMsg=3;
 
+// // opens the step-3 view
+document.getElementsByClassName('np-step-1')[0].classList.add('d-none');
+document.getElementsByClassName('Assigned-projects-list')[0].classList.add('d-none');
+document.getElementsByClassName('Templates-list')[0].classList.add('d-none');
+document.getElementsByClassName('Drafts-list')[0].classList.add('d-none');
+document.getElementsByClassName('np-step-2')[0].classList.remove('d-none');
+document.getElementsByClassName('right-side-dv')[0].classList.remove('d-none');
+$('.Project_details_tab,.add_tema_tab').hide();
+$('.action-left-view').removeClass('d-none');
+$('.sbs--basic li').removeClass('active');
+$('.sbs--basic li:nth-child(1)').addClass('finished');
+$('.sbs--basic li:nth-child(2)').addClass('finished');
 
+setTimeout(()=>{
+$('.Add_action_tab').show();
+$('.sbs--basic li:nth-child(3)').addClass('active');
+},1);   // Prjtype is used in these elements. we must execute these after change detection completes.
 
+//  opens the step-3 view
+
+this.newProjectDetails(this.draft_json[index].Project_Code);
+this.getActionsDetails();
 
 
 }
+
+reset(){
+  this.PrjCategory=null,this.Prjtype=null,this.PrjName=null,this.PrjDes=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
+
+}
+
+// DRAFT PROJECT CODE END.
+
+isPrjNameValid:boolean=false;
+isPrjDesValid:boolean=false;
+
+isValidString(inputString: string, maxWords: number): boolean {
+  debugger
+  const x=!(inputString && inputString.trim() && inputString.trim().split(/\s+/).length < maxWords);
+  return x;
+}
+
+
+
+
+
+// draft project creation code start.
+savePrjAsDraft:boolean=false;
+saveAsDraft(){
+   this.savePrjAsDraft=true;
+   this.createProject();
+}
+
+
+
+//  draft project creation code end.
+newProject_Type:any
+prevPrjType:string|undefined; 
+changeprojecttype(){
+  if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
+
+    if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
+          this.prjsubmission=null;
+          this.Allocated_Hours=null;
+    }
+
+    if(['003','008'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype)){
+      this.Prjstartdate=null;
+      this.Prjenddate=null;
+      this.Allocated_Hours=null;
+    }
+
+  }
+
+  this.prevPrjType=this.Prjtype;
+}
+
+
+// switch (this.Prjtype) {
+
+//   case '001':  this.PrjCategory,this.start_Date,this.end_Date,this.Allocated_Hours ; break;
+//   case '002':  this.PrjCategory,this.start_Date,this.end_Date,this.Allocated_Hours ; break;
+//   case '011':  this.PrjCategory,this.start_Date,this.end_Date,this.Allocated_Hours ; break;
+
+//     case '003':  this.PrjCategory=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null; break;
+//     case '008':  this.PrjCategory=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null; break;
+//   // default: { };
+// }
+
+}
+

@@ -251,6 +251,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       placement:'right',
       interactive: true
     });
+
+
+
+   
+
+
+
   }
 
 
@@ -466,6 +473,214 @@ this.prjPIECHART.render();
 }
 
   }
+
+  drawStatisticsNew(){
+    if(this.currentActionView===undefined){
+ 
+         // 1. bar chart start.
+             this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, '1', this.Current_user_ID).subscribe((res: any) => {
+             
+               let tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
+ 
+ 
+                 //standard  graph cal start    may need updation.
+                 let x=0;
+                 let AL=0;
+                 if(['003','008'].includes(this.projectInfo.Project_Block)){
+ 
+                   let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
+                   let d2=new Date();                           // TODAY DATE.
+                   x=0;
+                   switch(this.projectInfo.SubmissionId){
+                         case 1:{ x=moment(d1).diff(d2,'days');    };break;
+                         case 2:{ x=moment(d1).diff(d2,'weeks');    };break;
+                         case 3:{ x=moment(d1).diff(d2,'months');    };break;
+                         case 4:{ x=moment(d1).diff(d2,'quarters');   };break;
+                         case 5:{      };break;
+                         case 6:{ x=moment(d1).diff(d2,'years');     };break;
+                   }
+ 
+ 
+                   let timestr=this.projectInfo.StandardAllocatedHours;
+                   let t=timestr.split(':');
+                   let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
+                   AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
+ 
+                 }
+                 //standard graph cal end
+ 
+ 
+ 
+             
+               var options = {
+                 series: [{
+                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, tlTotalHrs, ((+this.projectInfo.AllocatedHours) - tlTotalHrs).toFixed(2)]
+                     : [AL, tlTotalHrs, (AL - tlTotalHrs).toFixed(2)]
+                 }],
+                 chart: {
+                   type: 'bar',
+                   height: 350
+                 },
+                 plotOptions: {
+                   bar: {
+                     distributed: true,
+                     horizontal: false,
+                     columnWidth: '62%',
+                   }
+                 },
+                 dataLabels: {
+                   enabled: true,
+                   style:{
+                     colors:['#3a81c9','#3e6be0','#303031'],
+                     fontFamily:'Lucida Sans Unicode'
+                   },
+                   formatter: function (v) {
+                     return v + ' hrs';
+                   }
+                 },
+                 yaxis: {
+                   title: {
+                     text: ''
+                   },
+                   labels: {}
+                 },
+                 xaxis: {
+                   categories: ['Allocated', 'Used', 'Remaining'],
+                   labels: {
+                     rotate: -90
+                   }
+                 },
+                 colors:['003', '008'].includes(this.projectInfo.Project_Block)?
+                       ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
+                       ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
+ 
+               };
+ 
+               if (this.prjBARCHART)
+                 this.prjBARCHART.destroy();
+ 
+               let bchr=document.querySelector("#Bar-chart");
+               if(bchr)
+               {
+                 this.prjBARCHART = new ApexCharts(bchr, options); 
+                 this.prjBARCHART.render();
+               }
+               
+             
+ 
+             
+ 
+             });
+         //  bar chart end.
+ 
+         // 2. Pie chart start.
+ 
+         if(['001','002'].includes(this.projectInfo.Project_Block)){
+             // core, secondary.
+             if(Array.isArray(this.projectActionInfo)&&this.projectActionInfo.length>0){
+                 // actions are available.
+               let peoples=JSON.parse(this.projectActionInfo[0].filteremployee);
+ 
+               let _users=peoples.map(item=>{
+                 const obj:any={
+                   Emp_Name:item.Responsible,
+                 };
+ 
+                 let totalactions=0;
+                 this.filterstatus.forEach(st=>{
+                   const actns=this.getFilteredPrjActions(st.Status,item.Team_Res);
+                   if(actns.length>0){
+                       obj[st.Status]=actns.length;
+                       totalactions+=actns.length;
+                   }
+                 });
+                 obj.total_actions=totalactions;
+                 return obj;
+ 
+               });
+ 
+ 
+ 
+ 
+ 
+               var options123 = {
+                 series: _users.map(item=>item.total_actions),
+                 chart: {
+                   width: 420,
+                   type: 'pie',
+                   toolbar: {
+                     show: true
+                   }
+                 },
+                 labels: _users.map(item=>item.Emp_Name),
+                 legend: {
+                   position: 'bottom',
+                   fontSize: '10px',
+                   fontFamily: 'Lucida Sans Unicode',
+                   fontWeight: 900,
+                   offsetY: 8,
+                   markers: {
+                     width: 9,
+                     height: 9,
+                     radius: 2
+                   },
+                   itemMargin: {
+                     vertical: 5
+                   }
+                 },
+                 colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a'],
+                 responsive: [{
+                   breakpoint: 480,
+                   options: {
+                     chart: {
+                       width: 200
+                     },
+                     legend: {
+                       position: 'bottom'
+                     }
+                   }
+                 }],
+ 
+                 tooltip: {
+                   enabled: true,
+                   custom: ({ series, seriesIndex,dataPointIndex,w})=>{
+ 
+                   let temp:any={};  
+                   Object.assign(temp,_users[seriesIndex])
+                   delete temp.Emp_Name;
+                   delete temp.total_actions;
+ 
+                   let r=[];
+                   for(let k in temp){
+                       r.push(k+' : '+temp[k])
+                   }
+ 
+                     return `<div style="background-color:#6c78e699; color:white; padding:3px;">
+                             <div> <u>${_users[seriesIndex].Emp_Name}</u> </div>
+                             <div> Total :  ${series[seriesIndex]} Actions.</div>
+                                   ${
+                                     r.join('<br/>')
+                                   }
+                           </div>`;
+                   }
+                 }
+ 
+                 
+               };
+               
+               var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
+               chart.render();
+               
+
+             }
+         }
+ 
+         // Pie chart end.
+    }
+   }
+ 
+ 
+
 
 
   private loadData() {
@@ -740,8 +955,9 @@ this.prjPIECHART.render();
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex)
     }
-    this.onTLSrtOrdrChanged('Date');  // new added for graph.
-    setTimeout(() => this.drawStatistics(), 5000);
+    this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
+    // setTimeout(() => this.drawStatistics(), 5000);
+    setTimeout(()=>this.drawStatisticsNew(),3000);
     });
   }
   uniqueName:any
@@ -881,7 +1097,7 @@ this.prjPIECHART.render();
   actionCost: any = '';
 
   showProjectDetails() {
-    $(document).ready(() => this.drawStatistics());
+    $(document).ready(() => this.drawStatisticsNew());
     this.showActionDetails(undefined);
     this.getapprovalStats();
   }
@@ -1179,13 +1395,18 @@ this.prjPIECHART.render();
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
 
-    document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");  // ADD SUPPORTS TAB.
+    // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active"); 
 
-    document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
-    document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
+    // document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
+    // document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
 
-
+    $('#kt_tab_pane_2_4').removeClass("show active");
+    $('a[href="#kt_tab_pane_2_4"]').removeClass("active");   // ADD SUPPORTS TAB.
+    
+    $('#kt_tab_pane_user-request_approver').removeClass("show active");
+    $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");
+    
     // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
 
@@ -2022,6 +2243,7 @@ currentStdAprView:number=0;
                       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
                       this.getAttachments(1);
                       this.calculateProjectActions();
+                      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
                     }
                     else
                     this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
@@ -2104,6 +2326,7 @@ currentStdAprView:number=0;
               this.getAttachments(1);      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+          this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
       });   //swal end
 
@@ -2537,7 +2760,7 @@ currentStdAprView:number=0;
   ActionResponsibleid: any
   ActionClientid: any
   OGActionClient: any
-
+  ActionmaxAllocation:number=0;
 
 
   /// Action Edits start
@@ -2565,7 +2788,29 @@ currentStdAprView:number=0;
     this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration
     this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours;
     this.editAllocatedhours = this.ActionAllocatedHours;
+    this.onActionDateChanged();
   }
+
+
+  onActionDateChanged(){  
+    let start_dt=new Date(this.ActionstartDate);
+    let end_dt=new Date(this.ActionendDate);
+    let Difference_In_Time = start_dt.getTime() - end_dt.getTime();
+    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if(Difference_In_Days==0){
+      Difference_In_Days=-1;
+      this.ActionmaxAllocation = (-Difference_In_Days) * 10 / 1;
+    }
+    else{
+      this.ActionmaxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+    }
+  
+  }
+
+
+
+
+
 
   onAction_update() {
 
@@ -2678,6 +2923,7 @@ currentStdAprView:number=0;
           }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
+          this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         });
       } else if (response.dismiss === Swal.DismissReason.cancel) {
     //    this.close_space();
@@ -2716,7 +2962,7 @@ currentStdAprView:number=0;
       }
 
       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-
+      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       this.closeInfo();
     });
   }
@@ -2964,6 +3210,14 @@ check_allocation() {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
 
+
+        if(this.currentActionView!==undefined)
+        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get action activities update.
+       else  
+        this.GetActivityDetails();     // get project activities update.
+
+
+
         // Timeline submitted
         // if action submission is also required
         if(this.bothActTlSubm&&['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status)){
@@ -3052,6 +3306,8 @@ check_allocation() {
 
   }
 
+  originalportfolios:any
+
   getPortfolios() {
     if ((this._portfoliolist.length == 1) && (this._portfoliolist[0]['Portfolio_Name'] == '')) {
       this._portfolioLength = 0;
@@ -3066,6 +3322,7 @@ check_allocation() {
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {
         this._portfoliosList = data as [];
+        this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
           singleSelection: false,
@@ -3138,6 +3395,17 @@ check_allocation() {
     // console.log("Deselect Memos--->", this._SelectedPorts, this.Empty_portDropdown);
   }
 
+
+  filterportfolio(input:string){
+   if(input.trim()===''){
+    this._portfoliosList=[...this.originalportfolios];
+
+   }else{
+    this._portfoliosList=this.originalportfolios.filter(item=>{
+      return `${item.Portfolio_Name}-${item.TM_DisplayName}`.toLocaleLowerCase().includes(input.toLocaleLowerCase())
+    })
+   }
+  }
 
   addProjectToPortfolio() {
 
@@ -3855,8 +4123,18 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-
   openMeetingSidebar() {
+     
+   
+
+    // window.addEventListener('scroll',()=>{
+    //   this.autocompletes.forEach((ac)=>{
+    //           if(ac.panelOpen)
+    //           ac.updatePosition();      
+    //   });
+    // },true);
+
+
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -4309,7 +4587,20 @@ Task_type(value:number){
         $('#core_viw222').css('display','block');
         $('#core_Dms').css('display','block');
        $('#online-add').css('display','block');
+
+
+      const es=document.getElementById('event-Sidebar');
+      es.addEventListener('scroll',()=>{
+            this.autocompletes.forEach((ac)=>{
+              if(ac.panelOpen)
+              ac.updatePosition();      
+            });
+      })
+
+
+
     })
+
 
   }
 
@@ -5737,6 +6028,17 @@ removeSelectedDMSMemo(item){
           this.closePrjHoldSideBar();
           this.getProjectDetails(this.URL_ProjectCode);
           this.getholdate();
+          this.getRejectType();
+
+          if(this.currentActionView!==undefined){
+            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+            }else{
+              this.GetActivityDetails();
+
+            }
+
+
+
         }
       });
     }
@@ -5755,7 +6057,7 @@ removeSelectedDMSMemo(item){
 
 // Project / Action release.
   holdreleaseProject() {
-    debugger
+   
     if(this.currentActionView===undefined){
           // project release
           if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
@@ -5769,6 +6071,7 @@ removeSelectedDMSMemo(item){
               if (this._Message == '1') {
                 this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
                 this.getProjectDetails(this.URL_ProjectCode);
+                this.getRejectType();
               }
               else if (this._Message == '2' || this._Message == '0') {
                 this.notifyService.showError("Project release failed", "Failed");
@@ -5795,12 +6098,13 @@ removeSelectedDMSMemo(item){
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
           this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-debugger
+
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
               this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
               this.getProjectDetails(this.URL_ProjectCode);
+              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
             }
             else if (this._Message == '2' || this._Message == '0') {
               this.notifyService.showError("Action release failed", "Failed");
@@ -6529,7 +6833,7 @@ getRejectType() {
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
     this.lastactivity = JSON.parse(data[0]["lastactivity"]);
-    console.log(this.activity, this.lastactivity)
+    console.log('activity:',this.activity,'last activity:', this.lastactivity);
   });
 }
 
@@ -6960,6 +7264,7 @@ console.log('you are not allowed to submit this project.')
 showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
+
 
 
 

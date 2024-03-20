@@ -8,6 +8,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 
+
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
@@ -48,6 +49,7 @@ export class NotificationComponent implements OnInit {
   constructor(
     public service: ProjectTypeService,
     public approvalservice: ApprovalsService,
+
     private notifyService: NotificationService,
     private router: Router,public BsService: BsServiceService
   ) {
@@ -262,6 +264,31 @@ export class NotificationComponent implements OnInit {
 
   }
 
+  titleapp() {
+    document.getElementById("titlepro").style.display = "block";
+    document.getElementById("titleinfo").style.display = "none";
+    document.getElementById("titlereq").style.display = "none";
+    document.getElementById("titleres").style.display = "none";
+  }
+  titleinfo() {
+    document.getElementById("titleinfo").style.display = "block";
+    document.getElementById("titlepro").style.display = "none";
+    document.getElementById("titlereq").style.display = "none";
+    document.getElementById("titleres").style.display = "none";
+  }
+  titlereq() {
+    document.getElementById("titlereq").style.display = "block";
+    document.getElementById("titlepro").style.display = "none";
+    document.getElementById("titleinfo").style.display = "none";
+    document.getElementById("titleres").style.display = "none";
+  }
+  titleres() {
+    document.getElementById("titleres").style.display = "block";
+    document.getElementById("titlepro").style.display = "none";
+    document.getElementById("titleinfo").style.display = "none";
+    document.getElementById("titlereq").style.display = "none";
+  }
+
   openInfo1(pcode,sid) {
     this.BsService.SetNewStandardId(sid);
     // document.getElementById("Project_info_slider_bar").classList.add("kt-quick-panel--on");
@@ -354,7 +381,7 @@ export class NotificationComponent implements OnInit {
   currentReqIndex: number = 0;
   currentResIndex:number=0;
   open_leave_requisition(index, submitby, leavecode) {
-    this.currentReqIndex = index;    debugger
+    this.currentReqIndex = index;
     this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
       this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json'])
       console.log(this.LeaveDetail, "leavedetailss")
@@ -1060,15 +1087,6 @@ onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
 
 
 // leave requests approval end
-
-
-
-
-
-
-
-
-
 
 
 }
