@@ -43,6 +43,8 @@ import { FormControl } from '@angular/forms';
 // import { IfStmt } from '@angular/compiler';
 // import { string } from '@amcharts/amcharts4/core';
 declare var $: any;
+declare const ApexCharts:any;
+
 export const MY_FORMATS = {
   parse: {
     dateInput: "YYYY-MM-DD"
@@ -610,12 +612,14 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  // ngAfterViewInit() {
+  ngAfterViewInit() {
 
-  //   setTimeout(() => {
-  //     this.startTour();
-  //   }, 3000);
-  // }
+
+    this.drawBarGraph();
+    // setTimeout(() => {
+    //   this.startTour();
+    // }, 3000);
+  }
 
 
   public startTour() {
@@ -4872,4 +4876,42 @@ export class DashboardComponent implements OnInit {
     document.getElementById("cal-main").classList.remove("col-lg-9");
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
+
+
+
+
+// bar graph
+
+drawBarGraph(){
+  var options = {
+    series: [{
+    data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
+      this.RejectedCount, this.CompletedCount, this.AssignActionCount]
+  }],
+    chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
+      ' Under Approval Projects', 'Assigned Actions'
+    ],
+  }
+  };
+  
+  var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
+  chart.render();
+}
+
+// bar graph
+
 }

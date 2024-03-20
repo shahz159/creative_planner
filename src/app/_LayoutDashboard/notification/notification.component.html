@@ -555,9 +555,11 @@
                                       </thead>
                                       <tbody>
                                         <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index">
-                                          <a (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); " href="javascript:void(0)">
-                                            <td class="kt-widget__title mb-0 leave">{{item.Leave_Code}}</td>
-                                          </a>
+                                            <td class="kt-widget__title mb-0">
+                                                <a (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); " href="javascript:void(0)">
+                                                    <span>{{item.Leave_Code}}</span>
+                                                  </a>
+                                            </td>
                                           <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
                                           <td class="kt-widget__title mb-0">{{item.Start_Date}}</td>
                                           <td class="kt-widget__title mb-0">{{item.End_Date}}</td>
@@ -1471,14 +1473,14 @@
 <!--leave requisition form start-->
 <div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right" >
   <div class="kt-portlet--body mb-0">
-      <div class="offcanvas-header d-flex align-items-center justify-content-end kt-portlet__head">
+      <!-- <div class="offcanvas-header d-flex align-items-center justify-content-end kt-portlet__head">
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="close_requisition_form()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
               <path fill="none" d="M0 0h24v24H0z"></path>
               <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
           </svg>
           </a>
-      </div>
+      </div> -->
       <div class="container req-form">
         <div>
             <div class="row px-3">
@@ -1611,7 +1613,7 @@
             </div>
         </div>
         <div class="w-100 text-right px-3">
-        <button class="btn-sm btn btn-outline-primary mr-2" (click)="close_requisition_form()">Back</button>
+        <button class="btn-sm btn btn-outline-secondary mr-2" (click)="close_requisition_form()">Back</button>
         <button class="btn-sm btn btn-primary">Print</button>
         </div>
         </div>

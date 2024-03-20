@@ -1084,7 +1084,7 @@ textarea.form-control {
 /*--leave requistion from--*/
 
 .req-form{
-  width:970px !important;
+  /* width:970px !important; */
   margin: 0px auto;
   padding: 20px 0px;
 }
@@ -1161,8 +1161,11 @@ textarea.form-control {
   transition: 0.5s;
   box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
 }
-.leave-requisition-form-slider-bar.open_requisition_form_sidebar_info {
+.leave-requisition-form-slider-bar.open_requisition_sidebar_info {
   width: 70% !important;
+}
+.leave-requisition-form-slider-bar.open_requisition_sidebar_info .kt-portlet--body {
+  padding: 10px;
 }
 .levress{
   text-decoration: none;
@@ -1171,4 +1174,9 @@ textarea.form-control {
  text-decoration: underline;
  color: #007bff;
 cursor: pointer;
+}
+a.dropdown-item{
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
