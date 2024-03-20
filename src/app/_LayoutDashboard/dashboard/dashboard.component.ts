@@ -1417,7 +1417,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1686,9 +1686,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
 
-        // var vAgendas = "Meeting_Agendas";
-        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        // element[vAgendas] = mtgAgendas;
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
 
         // debugger
       });
@@ -2030,9 +2030,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
         // debugger
-        //     var vMeeting_Agendas="Meeting_Agendas";
-        //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-        //     element[vMeeting_Agendas]=updatedAgnds;
+            var vMeeting_Agendas="Meeting_Agendas";
+            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+            element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -3239,7 +3239,7 @@ export class DashboardComponent implements OnInit {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-        console.log(this.EventScheduledjson, "Testing1");
+        console.log(this.EventScheduledjson, "Testing1"); 
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
