@@ -6,7 +6,7 @@
                 <div class="card h-100" >
                     <div class="card-body p-3">
                         <div class="kt-meeting-main" >
-                            <div class="kt-meeting-main-active p-2" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject()">
+                            <div class="kt-meeting-main-active p-2" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject();GetMeetingnotes_data()">
                                 <div class="kt-meeting-box">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="kt-meeting-title mt-0 mb-2">
@@ -412,7 +412,7 @@
                                                 />
                                                     <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
                                                 <ng-container *ngIf="agendaInput">
-                                                <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-0"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
+                                                <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-agena"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
                                                 </button>
                                             </ng-container>
                                             </div>
@@ -1159,14 +1159,10 @@
                                 [(ngModel)]="Notes_Type"
                                 (keyup)="addBulletPointsOnEnter($event)"></angular-editor >
 
-
                                 <!-- <angular-editor  [editor]="Editor" 
                                [(ngModel)]="Notes_Type"
                                (keyup)="addBulletPointsOnEnter($event)"></angular-editor > -->
                             </div>
-
-
-
 
 
 
@@ -1217,6 +1213,19 @@
                                                     </button>
                                                 </mat-menu>
                                             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                            
                                             <button class="task-delete task-btns"
                                                 (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -2084,26 +2093,31 @@
 
             <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
                 <!-- <ng-container *ngIf="term.Previous_meeting.length>0"> -->
-                    <ng-container *ngIf="term.Previous_meeting.length>0">
+                    <ng-container *ngIf="term.MeetingDetails.length>0">
                     <div class="kt-meeting-list-view">
                         <a data-toggle="collapse" aria-expanded="false"
                             class="mb-0 titlediv d-flex align-items-baseline justify-content-between collapsed"
                             href="#Note_{{i+1}}">
 
                             <span class="kt-text-wrap"><i class="material-icons fs-2 mr-2">expand_more</i>
-                                {{term.Schedule_date}}</span>
+                                {{term.Schedule_date | date : 'dd-MM-YYYY'}}</span>
                         </a>
                     </div>
 
                     <div class="kt-widget__items mt-2 mr-1 px-2 collapse" id="Note_{{i+1}}">
-                        <div *ngFor="let pre of term.Previous_meeting">
+                        <div *ngFor="let pre of term.MeetingDetails">
               
                             <div class="kt-card N-user-1">
                                 <div class="kt-user-dt">
-                                    <div class="kt-user-2lt kt-clr-1">{{pre.initials}}</div>
-                                    <div class="kt-user-name">{{pre.Emp_Name}}</div>
+                                    <div class="kt-user-2lt kt-clr-1" *ngIf="(!pre.Agenda_name && pre.Meeting_notes)">{{pre.Initials}}</div>
+                                    <div class="kt-user-2lt kt-clr-1" *ngIf="pre.Agenda_name">{{pre.Initials}}</div>
+                                    <div class="kt-user-name" *ngIf="(!pre.Agenda_name && pre.Meeting_notes)"> Meeting Notes | {{pre.Emp_Name}} </div>
+                                    <div class="kt-user-name" *ngIf="pre.Agenda_name"> {{pre.Agenda_name}} | {{pre.Emp_Name}} </div>
                                 </div>
-                                <div class="kt-user-note kt-clr-bg-1">
+                                <div class="kt-user-note kt-clr-bg-1" *ngIf="(!pre.Agenda_name && pre.Meeting_notes)">
+                                    <p [innerHtml]="pre.Meeting_notes"></p>
+                                </div>
+                                <div class="kt-user-note kt-clr-bg-1" *ngIf="pre.Agenda_name">
                                     <p [innerHtml]="pre.Meeting_notes"></p>
                                 </div>
                             </div>

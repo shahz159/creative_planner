@@ -121,7 +121,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.Current_user_ID = localStorage.getItem('EmpNo');
       this.meeting_details(); 
       this.addAgenda();
-     
+      this.GetMeetingnotes_data();
   }
 
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
@@ -1032,9 +1032,10 @@ GetPreviousdate_meetingdata() {
 
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
     (data => {
+   
       this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
-       console.log(this.Previousdata_meeting,'55555555555555555555')
-      this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
+      console.log(data,'sdcvsdyy') 
+      this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.MeetingDetails.length > 0);
     });
 }
 
@@ -1047,6 +1048,7 @@ allAgendas:any=[];
 agendasAdded:number=0;
 
 addAgenda(){
+
   if(this.agendaInput&&this.agendaInput.trim().length>0){
     this.agendasAdded+=1; 
     const agenda={
@@ -1055,8 +1057,13 @@ addAgenda(){
     };   
     this.allAgendas.push(agenda);
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?agenda:[]);
+
     this._calenderDto.json = mtgAgendas;
     this._calenderDto.flagid=1;
+    this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+
     this._calenderDto.Status_type = "Left";
     this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
     (data => {
@@ -1074,8 +1081,14 @@ addAgenda(){
 updateAgenda1(index:number){
       const tf:any=document.getElementById(`agenda-text-field-${index}`);
       const newname=tf.value;
+
+  
+      this.Schedule_ID = this.Scheduleid;
+      this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.flagid=2;
+      this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.json=JSON.stringify({ id:this.Agendas_List[index].AgendaId, name:newname });
+      
       this.CalenderService.NewEditsAgendas(this._calenderDto).subscribe
       (data => {
         this.meeting_details();
@@ -1087,9 +1100,15 @@ AgendasName: string;
 
 deleteAgenda(AgendaId: number) {
 
-  this.Agendas_List.forEach(element => {
-      this.AgendasName = element.Agenda_Name
-  });
+
+  const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
+  debugger
+  if (AgendasNames) {
+    this.AgendasName = AgendasNames.Agenda_Name;
+  }
+  // this.Agendas_List.forEach(element => {
+  //     this.AgendasName = element.Agenda_Name
+  // });
   //if (createdBy == this.Current_user_ID) {
   let String_Text = 'Delete';
   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -1106,9 +1125,12 @@ deleteAgenda(AgendaId: number) {
       name:this.agendaInput,
   };   
   this.allAgendas.push(agenda);
-  const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  const mtgAgendas=JSON.stringify(this.allAgendas.length>0?agenda:[]);
+  this.Schedule_ID = this.Scheduleid;
+
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.json = mtgAgendas;
-  this._calenderDto.Emp_No = AgendaId;
+   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = 3;
   
     if (result === true) {
@@ -1214,7 +1236,7 @@ addBulletPointsOnEnter(event: any) {
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type;
-      this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
+      this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
       this._calenderDto.Status_type = "Left";
 
       console.log(this._calenderDto,' ||||||||||||||||||||  ');
@@ -1235,12 +1257,17 @@ GetMeetingnotes_data() {
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
-     
+ console.log(this._calenderDto, 'yeysy')
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
-      this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
-      console.log(this.Notes_Type, 'Notes_Type')
+
+       if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
+        this.Notes_Type = ''
+       }else {
+        this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
+       }
+      console.log(this.Meetingnotes_time, 'Notes_Type')
     });
 
 }
@@ -1258,9 +1285,6 @@ Private_Notes:any
 
 /////////////////////////////////////////// Private Notes sidebar End /////////////////////////////////////////////////////////
  
- 
-
-/////////////////////////////////////////// Private Notes sidebar End /////////////////////////////////////////////////////////
  
 /////////////////////////////////////////// List of Attachment sidebar start /////////////////////////////////////////////////////////
  

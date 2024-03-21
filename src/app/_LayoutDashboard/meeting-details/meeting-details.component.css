@@ -2745,3 +2745,36 @@ span.admin-check-svg {
 .checkbox.checkbox-outline>input:checked~span:after {
     border-color: #6993FF;
 }
+.task-button {
+    display: none;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .ast-kt-dw {
+    position: relative;
+    top: 4px;
+  }
+  .task-delete {
+    margin-left: 8px;
+  }
+  .task-delete svg{
+    color: #dc4771;
+}
+.task-btns {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  .task-btns svg {
+    border-radius: 4px;
+    color: #737373;
+    display: inline-block;
+    width: 20px;
+    height: 24px;
+    max-width: 24px;
+    vertical-align: middle;
+}
