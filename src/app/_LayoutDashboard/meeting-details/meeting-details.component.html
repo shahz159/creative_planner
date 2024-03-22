@@ -1155,10 +1155,68 @@
                             <div class="meeting-notes">
                                 <!-- <angular-editor [config]="config" [(ngModel)]="notesContent"></angular-editor> -->
 
-                                <angular-editor  [config]="config"
-                                [(ngModel)]="Notes_Type"
-                                (keyup)="addBulletPointsOnEnter($event)"></angular-editor >
-
+                                <angular-editor [config]="config" [(ngModel)]="Notes_Type" (keyup)="addBulletPointsOnEnter($event)">
+                                        
+                                </angular-editor >
+                                <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
+                                    <div class="todo-main">
+                                        <div class="task-header">
+                                            <h1 class="task-header-title">Assign Task</h1>
+                                            <div class="task-tools">
+                                                <div class="task-count"></div>
+                                            </div>
+                                            <form class="task-form">
+                                                <input class="task-input" id="todo-input" name="text"
+                                                    [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)"
+                                                    placeholder="Add a new task..." autofocus="true">
+                                                <button class="task-button" (click)="EnterSubmit(_Demotext)"
+                                                    id="btn1">Add Task</button>
+                                            </form>
+                                        </div>
+                                        <div class="todo-list">
+                                            <div class="
+                                            " *ngFor="let item of _TodoList; let i=index;">
+                                                <input class="task-status" type="checkbox">
+                                                <label class="task-name">{{item.Task_Name}}</label>
+                                                <div class="task-actions">
+    
+                                                    <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                        aria-label="Example icon-button with a menu" matTooltip="More"
+                                                        class="cursor-pointer ast-kt-dw">
+                                                        <mat-icon color="primary">more_vert</mat-icon>
+                                                    </span>
+                                                    <mat-menu #menu="matMenu" xPosition="after">
+                                                        <button mat-menu-item mat
+                                                            (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                            <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                            <span>Assign Task/Project</span>
+                                                        </button>
+    
+                                                        <button mat-menu-item mat
+                                                            (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                            <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                            <span>Add Action To Project</span>
+                                                        </button>
+                                                    </mat-menu>
+                                                </div>
+                                                <button class="task-delete task-btns"
+                                                    (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                        role="img" font-size="1.5rem" width="1em" height="1em"
+                                                        viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                        <path fill="currentColor"
+                                                            d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="task-list">
+                                            <div class="task-empty" *ngIf="!text">Not found a task</div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- <angular-editor  [editor]="Editor" 
                                [(ngModel)]="Notes_Type"
@@ -1176,65 +1234,7 @@
 
 
 
-                            <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
-                                <div class="todo-main">
-                                    <div class="task-header">
-                                        <h1 class="task-header-title">Assign Task</h1>
-                                        <div class="task-tools">
-                                            <div class="task-count"></div>
-                                        </div>
-                                        <form class="task-form">
-                                            <input class="task-input" id="todo-input" name="text"
-                                                [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)"
-                                                placeholder="Add a new task..." autofocus="true">
-                                            <button class="task-button" (click)="EnterSubmit(_Demotext)"
-                                                id="btn1">Add Task</button>
-                                        </form>
-                                    </div>
-                                    <div class="todo-list">
-                                        <div class="
-                                        " *ngFor="let item of _TodoList; let i=index;">
-                                            <input class="task-status" type="checkbox">
-                                            <label class="task-name">{{item.Task_Name}}</label>
-                                            <div class="task-actions">
-
-                                                <span mat-icon-button [matMenuTriggerFor]="menu"
-                                                    aria-label="Example icon-button with a menu" matTooltip="More"
-                                                    class="cursor-pointer ast-kt-dw">
-                                                    <mat-icon color="primary">more_vert</mat-icon>
-                                                </span>
-                                                <mat-menu #menu="matMenu" xPosition="after">
-                                                    <button mat-menu-item mat
-                                                        (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-                                                        <mat-icon class="mr-2" color='primary'>group</mat-icon>
-                                                        <span>Assign Task/Project</span>
-                                                    </button>
-
-                                                    <button mat-menu-item mat
-                                                        (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
-                                                        <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
-                                                        <span>Add Action To Project</span>
-                                                    </button>
-                                                </mat-menu>
-                                            </div>
-                                            <button class="task-delete task-btns"
-                                                (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                                    role="img" font-size="1.5rem" width="1em" height="1em"
-                                                    viewBox="0 0 24 24" class="iconify iconify--mdi">
-                                                    <path fill="currentColor"
-                                                        d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
-                                                    </path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="task-list">
-                                        <div class="task-empty" *ngIf="!text">Not found a task</div>
-                                    </div>
-                                </div>
-                            </div>
+                            
 
 
 
