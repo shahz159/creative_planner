@@ -152,7 +152,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   comments_list: any;
   new_cost: any;
   ObjSubTaskDTO: SubTaskDTO;
-  Activity_List: any
+  Activity_List: any=[];
   Project_List: any;
   filteredEmployees: any = [];
   Client_List: any;
@@ -1035,11 +1035,13 @@ this.prjPIECHART.render();
   }
 
 
-
+  activitiesLoading:boolean=false;
+  activitiesOf:'ACTION-ACTIVITIES'|'PROJECT-ACTIVITIES'='PROJECT-ACTIVITIES';
   firstFiveRecords: any[] = [];
   GetActivityDetails() {
+    this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
-      (data) => {
+      (data) => {   
         if (data !== null && data !== undefined) {
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
@@ -1056,14 +1058,17 @@ this.prjPIECHART.render();
           })
 
         }
+        this.activitiesLoading=false;  // end the loading.
       })
   }
 
-  ActionActivity_List:any;
+ 
+  ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
   GetActionActivityDetails(code) {
+    this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
-      (data) => {
+      (data) => {  
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
@@ -1071,13 +1076,14 @@ this.prjPIECHART.render();
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                   return {
                    ...item,
-                   ModifiedDate:d===0?'Today':
+                   ModifiedDate:d===0?'Today': 
                    d===1?'Yesterday':
                    [2,3].includes(d)?d+' days ago':
                    this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                  };
            })
         }
+        this.activitiesLoading=false;   // end the loading.
       })
   }
 
@@ -1340,12 +1346,19 @@ this.prjPIECHART.render();
     this.GetprojectComments()
    }
 
-  View_Activity() {
+  View_Activity(type:"PROJECT-ACTIVITIES"|"ACTION-ACTIVITIES") {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
     this.currentSidebarOpened='ACTIVITY_LOG';
-    this.GetActivityDetails();
+    this.activitiesOf=type;
+    if(this.activitiesOf==='PROJECT-ACTIVITIES'){
+      this.GetActivityDetails();    // get all activities of the project.
+    }
+    else if(this.activitiesOf==='ACTION-ACTIVITIES'){
+      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get all activities of the action selcted.
+    }
+    
   }
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
@@ -1711,6 +1724,7 @@ this.prjPIECHART.render();
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+      debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -2027,7 +2041,7 @@ currentStdAprView:number=0;
             this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
-
+            this.getRejectType();
 
           });
       }
@@ -3619,6 +3633,7 @@ check_allocation() {
                 this.notifyService.showSuccess(this._Message, 'Success');
               }
           }
+          this.GetActivityDetails();
           this.closeInfoProject();
           this.getProjectDetails(this.URL_ProjectCode);
           // this.getapproval_actiondetails();
@@ -6057,15 +6072,16 @@ removeSelectedDMSMemo(item){
 
 // Project / Action release.
   holdreleaseProject() {
-   
+   debugger
     if(this.currentActionView===undefined){
           // project release
           if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
+            debugger
             this.approvalObj.Project_Code = this.URL_ProjectCode;
             this.approvalObj.Request_type = 'Project Release';
             this.approvalObj.Emp_no = this.Current_user_ID;
             this.approvalObj.Remarks = this.hold_remarks;
-            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { debugger
               this.closePrjReleaseSideBar();
               this._Message = (data['message']);
               if (this._Message == '1') {
@@ -6838,8 +6854,8 @@ getRejectType() {
 }
 
 releasenewProject(){
-  debugger
-  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+
+  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo||this.Current_user_ID==this.projectInfo.OwnerEmpNo){
     this.approvalObj.Project_Code = this.URL_ProjectCode;
     this.approvalObj.Request_type = 'New Project Reject Release';
     this.approvalObj.Emp_no = this.Current_user_ID;
@@ -6853,6 +6869,17 @@ releasenewProject(){
         this.getProjectDetails(this.URL_ProjectCode);
         this.getRejectType();
         this.getapproval_actiondetails();
+
+
+        if(this.Current_user_ID==this.projectInfo.OwnerEmpNo)
+        { 
+          this.isApprovalSection=true; // back to initial value
+          this.isTextAreaVisible=false;    // back to initial value
+          this.getapprovalStats();
+        }
+
+
+
       }
       else if (this._Message == '2' || this._Message == '0') {
         this.notifyService.showError("Project release failed", "Failed");

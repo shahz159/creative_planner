@@ -3714,6 +3714,7 @@ debugger
         this.calendarOptions = {
 
           initialView: 'listWeek',
+          
           firstDay: moment().weekday(),
 
           // timeZone: 'local',
@@ -3729,6 +3730,7 @@ debugger
           eventClick: this.GetClickEventJSON_Calender.bind(this),
           events: this.Scheduledjson,
           eventDidMount: this.customizeEvent,
+          
           dayMaxEvents: 4,
           eventTimeFormat: {
             hour: 'numeric',
@@ -3758,8 +3760,7 @@ debugger
 
   TwinEvent=[];
   customizeEvent=(info)=>{
-    
-    debugger
+ 
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -3841,8 +3842,19 @@ debugger
       if (dayLabel && !event.title.includes(dayLabel)) {
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
-        // event.setProp('title', newTitle);
-        info.el.children[2].innerText=newTitle;
+        
+       
+        if(info.view.type==='listWeek'){
+         
+          info.el.children[2].innerText=newTitle;
+        }
+        else{
+           event.setProp('title', event.title);
+           this.TwinEvent=[];
+        }
+        
+      
+      
       }
     }
     

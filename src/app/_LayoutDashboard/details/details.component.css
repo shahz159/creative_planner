@@ -3588,11 +3588,11 @@ a.Kt_cmt_user_name {
 }
 
 .View_more_act {
-  position: absolute;
+  /* position: absolute;
   top: -38px;
-  right: 0;
+  right: 0; */
   background-color: #ecefff;
-  padding: 1px 10px;
+  padding: 3px 10px;
   border-radius: 5px;
 }
 .lable-dv lable {
@@ -4199,11 +4199,11 @@ span.Kt-m-count {
 
 /*recent activity graph css start*/
 .View_graph_act {
-  position: absolute;
+  /* position: absolute;
   top: -38px;
-  right: 100px;
+  right: 100px; */
   background-color: #ecefff;
-  padding: 1px 10px;
+  padding: 3px 10px;
   border-radius: 5px;
 }
 
@@ -4554,11 +4554,12 @@ background-color: #e2e8f0c9;
 }
 .new-prjrejected-notf svg{
    fill:#5858586e   !important;
+   align-self: flex-start;
 }
 
 
 .prjhold-notf{
-    background-color: #e2d9bca6 !important;
+    background-color: #e2d9bc78 !important;
 }
 
 .prjhold-notf svg{
@@ -4568,14 +4569,52 @@ background-color: #e2e8f0c9;
 
 
 /*project release now btn*/
-/* .release-now-shrtcut{
-  border: 1px solid #E2d9bc;
-  color: #E2d9bc;
-  display: flex;
-  align-items: center;
+.release-now-shrtcut{
+  background-color: white;
+  color: #d5bb69;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 2px solid #f1da91;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+ 
+}
+.release-now-shrtcut:hover{
+    background-color:#f1da91;
+    color:white;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-out;
 }
 
-.release-now-shrtcut:hover{
-   background-color: #E2d9bc;
-   color:#000;
-} */
+.btn-inside-notifi{
+  transform: scale(1.03);
+}
+.btn-inside-notifi:active{
+  transform: scale(1);
+  box-shadow: none;
+  transition-duration:0.3s;
+}
+
+
+
+
+.re-release-prj-shrtcut{
+  text-wrap: nowrap;
+  background-color: #f9f9f9b3;
+  align-self: flex-start;
+  color: #10b14e;
+  padding: 5px 10px;
+  border: 2px solid #10B14B;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  box-shadow: none;
+}
+
+.re-release-prj-shrtcut:hover{
+  background-color: #10B14B;
+  color: white;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-out;
+}
