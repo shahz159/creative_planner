@@ -45,6 +45,8 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 // import { IfStmt } from '@angular/compiler';
 // import { string } from '@amcharts/amcharts4/core';
 declare var $: any;
+declare const ApexCharts:any;
+
 export const MY_FORMATS = {
   parse: {
     dateInput: "YYYY-MM-DD"
@@ -473,7 +475,7 @@ export class DashboardComponent implements OnInit {
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
-    this._labelName = "Schedule Date :";
+    this._labelName = "Schedule Date";
     this.timelineType = this.type1;
     this.selectedSort = 'today';
     this.MinLastNameLength = true;
@@ -634,12 +636,14 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  // ngAfterViewInit() {
+  ngAfterViewInit() {
 
-  //   setTimeout(() => {
-  //     this.startTour();
-  //   }, 3000);
-  // }
+
+    this.drawBarGraph();
+    // setTimeout(() => {
+    //   this.startTour();
+    // }, 3000);
+  }
 
 
   public startTour() {
@@ -1041,7 +1045,7 @@ export class DashboardComponent implements OnInit {
 
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.copyTask = true;
     this.editTask = false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
@@ -1098,8 +1102,8 @@ export class DashboardComponent implements OnInit {
         document.getElementById("Monthly_121").style.display = "none";
         document.getElementById("weekly_121").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-        document.getElementById("rightbar-overlay").style.display = "block";
-        document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+        // document.getElementById("rightbar-overlay").style.display = "block";
+        // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
         this.AllDatesSDandED = [];
         var jsonData = {};
@@ -1247,7 +1251,7 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
@@ -1321,8 +1325,8 @@ export class DashboardComponent implements OnInit {
         document.getElementById("Monthly_121").style.display = "none";
         document.getElementById("weekly_121").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-        document.getElementById("rightbar-overlay").style.display = "block";
-        document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+        // document.getElementById("rightbar-overlay").style.display = "block";
+        // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
         this.AllDatesSDandED = [];
         var jsonData = {};
@@ -1348,7 +1352,7 @@ export class DashboardComponent implements OnInit {
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
           this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
@@ -1356,12 +1360,12 @@ export class DashboardComponent implements OnInit {
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
           document.getElementById("div_endDate").style.display = "block";
           this.selectedrecuvalue = '1';
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
@@ -1384,7 +1388,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("div_endDate").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121").style.display = "block";
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           this.selectedrecuvalue = '3';
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
@@ -1417,7 +1421,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1593,18 +1597,25 @@ export class DashboardComponent implements OnInit {
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
         const date1: Date = new Date(this._StartDate);
-        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
-        }
-        else {
-          this._SEndDate = this.scstartdate;
-        }
+        // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+        //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+        // }
+        // else {
+        //   this._SEndDate = this._StartDate;
+        // }
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
 
         const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+        }
+        else{
+          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        }
+        // var dd = moment(date3).add(diffInDays, 'days')
+        // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
         console.log(dd,date3,diffInDays,date2,this._SEndDate,"update edit")
         var SEndDates = "SEndDate";
@@ -1679,11 +1690,11 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
 
-        // var vAgendas = "Meeting_Agendas";
-        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        // element[vAgendas] = mtgAgendas;
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
 
-        // debugger
+        debugger
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -1715,7 +1726,7 @@ export class DashboardComponent implements OnInit {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-
+debugger
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
@@ -1922,12 +1933,13 @@ export class DashboardComponent implements OnInit {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+        debugger
         const date1: Date = new Date(this._StartDate);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+          this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         }
         else {
-          this._SEndDate = this.scstartdate;
+          this._SEndDate = this._StartDate;
         }
         const date2: Date = new Date(this._SEndDate);
 
@@ -1941,7 +1953,7 @@ export class DashboardComponent implements OnInit {
         // var SEndDates = "SEndDate";
         // element[SEndDates] = (date3);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          var date3 = moment(this._SEndDate).format("YYYY-MM-DD").toString();
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
         }
         else{
           var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
@@ -2022,9 +2034,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
         // debugger
-        //     var vMeeting_Agendas="Meeting_Agendas";
-        //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-        //     element[vMeeting_Agendas]=updatedAgnds;
+            var vMeeting_Agendas="Meeting_Agendas";
+            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+            element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -2274,9 +2286,9 @@ export class DashboardComponent implements OnInit {
 
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
@@ -2397,7 +2409,7 @@ export class DashboardComponent implements OnInit {
 
       this._calenderDto.Project_Code = MasterCode;
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-        ((data) => {
+        ((data) => { 
           // console.log(data);
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
@@ -2805,13 +2817,13 @@ export class DashboardComponent implements OnInit {
       // alert(this.Endtms)
 
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-        this._SEndDate = moment(this.scstartdate, "YYYY-MM-DD").add(1, 'days');
+        this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
         // document.getElementById("Schenddate").style.display = "block";
 
       }
       else {
-        this._SEndDate = this.scstartdate;
+        this._SEndDate = this._StartDate;
       }
 
     }
@@ -3078,7 +3090,7 @@ export class DashboardComponent implements OnInit {
     else {
       this._PopupConfirmedValue = 2;
     }
-    this._labelName = "Start Date :";
+    this._labelName = "Start Date";
     document.getElementById("div_endDate").style.display = "block";
     for (let index = 0; index < this.dayArr.length; index++) {
       this.dayArr[index].checked = false;
@@ -3117,7 +3129,7 @@ export class DashboardComponent implements OnInit {
     }
     if (val.value == 0) {
       this.maxDate = moment(this.minDate).format("YYYY-MM-DD").toString()
-      this._labelName = "Schedule Date :";
+      this._labelName = "Schedule Date";
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("div_endDate").style.display = "none";
       this.daysSelectedII = [];
@@ -3231,7 +3243,7 @@ export class DashboardComponent implements OnInit {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-        console.log(this.EventScheduledjson, "Testing1");
+        console.log(this.EventScheduledjson, "Testing1"); 
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -3555,8 +3567,8 @@ export class DashboardComponent implements OnInit {
     $('.bg-ovr1').removeClass('d-block');
     document.getElementsByClassName("bg-ovr1")[0].classList.remove("d-block");
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121").style.display = "none";
     document.getElementById("div_endDate").style.display = "none";
@@ -3698,8 +3710,7 @@ export class DashboardComponent implements OnInit {
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
-
-
+ 
         this.calendarOptions = {
 
           initialView: 'listWeek',
@@ -3726,7 +3737,8 @@ export class DashboardComponent implements OnInit {
             hour12: true
           },
           nowIndicator: true,
-          allDaySlot: false
+          allDaySlot: false,
+          datesSet:()=>{ this.TwinEvent=[];  }
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -3739,7 +3751,15 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  customizeEvent(info) {
+
+
+
+
+
+  TwinEvent=[];
+  customizeEvent=(info)=>{
+    
+    debugger
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -3757,8 +3777,10 @@ export class DashboardComponent implements OnInit {
     const end = new Date(event.end);
 
     // Normalize the start and end to the start of the day for comparison
-    const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-    const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+    let startMidnight:any = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    let endMidnight:any = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    startMidnight=startMidnight.getTime();
+    endMidnight=endMidnight.getTime();
 
     // Calculate the view range
     const viewStart = new Date(info.view.activeStart);
@@ -3773,23 +3795,62 @@ export class DashboardComponent implements OnInit {
     const eventIsWithinView = startMidnight <= viewEndMidnight && endMidnight >= viewStartMidnight;
 
     // Only process events that are within the view and span more than one day
-    if (eventIsWithinView && startMidnight !== endMidnight) {
-      let dayLabel = '';
-      if (startMidnight >= viewStartMidnight && startMidnight <= viewEndMidnight) {
-        dayLabel = 'Day (2/2)';
-      }
-      if (endMidnight > viewStartMidnight && endMidnight < viewEndMidnight) {
-        dayLabel = 'Day (1/2)';
-      }
+ 
+    // if (eventIsWithinView && (startMidnight !== endMidnight)) {
+    //   let dayLabel = '';
+     
+    //   if (startMidnight >= viewStartMidnight && startMidnight <= viewEndMidnight) {
+    //     dayLabel = 'Day (2/2)';
+    //   }
+    //   if (endMidnight > viewStartMidnight && endMidnight < viewEndMidnight) {
+    //     dayLabel = 'Day (1/2)';
+    //   }
 
-      // Check if the label should be applied
+    // //   // Check if the label should be applied
+    //   if (dayLabel && !event.title.includes(dayLabel)) {
+    //     const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
+    //     const newTitle = `${titleWithoutDay} - ${dayLabel}`;
+    //     event.setProp('title', newTitle);
+    //   }
+    // }
+
+    if (eventIsWithinView && (startMidnight !== endMidnight)) {
+   
+      if(start<viewStart){
+        this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
+      }
+      const r=this.TwinEvent.includes(event._def.extendedProps.Schedule_ID);
+
+      let dayLabel = '';
+     
+      if (r) {
+        dayLabel = 'Day (2/2)';
+        const index=this.TwinEvent.indexOf(event._def.extendedProps.Schedule_ID);
+        this.TwinEvent.splice(index,1);
+       
+      }
+      else{
+        dayLabel = 'Day (1/2)';
+        this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
+      }
+   
+     
+      
+
+    //   // Check if the label should be applied
       if (dayLabel && !event.title.includes(dayLabel)) {
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
-        event.setProp('title', newTitle);
+        // event.setProp('title', newTitle);
+        info.el.children[2].innerText=newTitle;
       }
     }
+    
+
+
+
   }
+
 
 
   public handleAddressChange(address: Address) {
@@ -4995,6 +5056,41 @@ export class DashboardComponent implements OnInit {
   }
 
 
+
+
+// bar graph
+
+drawBarGraph(){
+  var options = {
+    series: [{
+    data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
+      this.RejectedCount, this.CompletedCount, this.AssignActionCount]
+  }],
+    chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
+      ' Under Approval Projects', 'Assigned Actions'
+    ],
+  }
+  };
+  
+  var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
+  chart.render();
+}
+
+// bar graph
   // agenda in event creation start
   agendaInput: string | undefined;
   allAgendas: any = [];

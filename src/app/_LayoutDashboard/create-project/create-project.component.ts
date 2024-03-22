@@ -308,7 +308,7 @@ export class CreateProjectComponent implements OnInit {
        this.ProjectType = this.projectInfo.Project_Type;
 
        this.getPrjCost(this.projectInfo.AllocatedHours);
-
+debugger
       console.log(this.projectInfo, "projectInfo");
   })
 

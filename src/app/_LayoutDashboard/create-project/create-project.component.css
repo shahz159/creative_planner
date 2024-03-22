@@ -1241,12 +1241,13 @@ button.Create_pp {
 }
 
 .btn-move-fw {
-  background-color: transparent;
-  color: #2786fb;
+  background-color: #2786fb;
+  color: #fff;
   font-size: 14px;
   border: 2px solid #2786fb;
   opacity: 1;
   font-size: 13px;
+  width: 120px;
   letter-spacing: 0;
   border-radius: 3px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -2436,18 +2437,19 @@ tr.odd.project-list_AC.active{
 
 
 /* notification css start*/
-.notification{
+.notifications-list .notification:first-child{
+  margin-top: 0px;
+}
 
+.notification{
   display: flex;
   align-items: center;
   column-gap: 13px;
   padding: 12px 15px 12px 15px;
   border-radius: 5px;
   box-shadow: 2px 2px 12px 0px #e9e9e93b;
-  margin: 0 0 10px 10px;
-
+  margin: 10px 0 10px 10px;
 }
-
 
 .notifications-list{
   width:100%;
@@ -2483,6 +2485,39 @@ color: #2786fb;
   margin-bottom: 1rem;
   border-radius: 4px;
   box-shadow: 0 2px 16px #cccccc80;
+}
+
+.error-notification{
+
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  padding: 1px 10px 1px 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 12px 0px #e9e9e93b;
+
+}
+
+.error-notification.i-notification{
+  background-color: #f5e9e8;
+  width: 100%;
+
+}
+
+.error-notification .notif-img{
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+  fill: transparent;
+  stroke: #F44336;
+}
+.error-notification .notif-msg{
+  flex-grow: 1;
+  font-family: var(--font-family-sans-serif);
+  font-weight: 500;
+  font-size: 12px;
+  color: #F44336;
 }
 
 /* notification css end*/
@@ -2583,6 +2618,8 @@ color: #2786fb;
 }
 
 
-
+.error-border, .error-date .input-group-text, .error-date .form-control, ::ng-deep .error-vd .ng-select-container {
+  border: 1px solid #F44336 !important;
+}
 
 

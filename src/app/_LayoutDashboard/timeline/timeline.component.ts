@@ -16,6 +16,7 @@ import 'moment/locale/ja';
 import 'moment/locale/fr';
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD-MM-YYYY',
@@ -50,6 +51,7 @@ export const MY_DATE_FORMATS = {
 export class TimelineComponent implements OnInit {
 
   constructor(public service: ProjectTypeService,
+    private projectMoreDetailsService: ProjectMoreDetailsService,
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private _adapter: DateAdapter<any>,
@@ -122,6 +124,7 @@ export class TimelineComponent implements OnInit {
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
     // this.french();
+   this.getPADetails('400186055','ACTION');
   }
 
 
@@ -336,7 +339,7 @@ getTimelineActions(){
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-    this.actionList=JSON.parse(data[0]['ActionList']);
+    this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
     if((this.actionList==null || this.actionList=='' || this.actionList.length==0) && (this.Current_user_ID==this.owner_empno || this.Current_user_ID==this.resp_empno)){
@@ -602,5 +605,80 @@ onFileChange(e) {
 
 
 // complete action with timeline end
+
+
+
+
+
+
+// timeline new code start.
+// pcomplete_details:any;
+// proj_details:any;
+// action_details:any;
+// getPrjRelatedDetails(){
+
+
+
+
+
+
+//   // this.projectMoreDetailsService.getProjectMoreDetails(this.master_code).subscribe(res => {
+//   //          this.pcomplete_details=res[0];
+//   //          this.proj_details=this.pcomplete_details.ProjectInfo_Json;
+//   //          console.log('proj_details:',this.proj_details);     
+//   // });
+// }
+
+p_details:any;
+a_details:any;
+getPADetails(prjcode,of:'PROJECT'|'ACTION'){
+    if(prjcode)
+    {
+      if(of==='PROJECT'){
+        this.p_details=null;
+        this.a_details=null;
+      }
+      else{
+        this.a_details=null;
+      }
+  
+      this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
+                 console.log("|||=>",res[0].ProjectStates_Json);
+                 if(of==='PROJECT'){
+                  
+                  this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
+                  this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => {
+                      const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
+                      this.p_details={
+                        ...this.p_details,
+                        usedHours:tlTotalHrs,
+                        remainingHours:+(this.p_details.AllocatedHours-tlTotalHrs).toFixed(1)
+                      }; 
+                  });
+                  
+                 }
+                 else{
+                  this.a_details=JSON.parse(res[0].ProjectStates_Json)[0];
+                  this.service.DARGraphCalculations_Json(prjcode).subscribe((res:any)=>{
+                    const maxDuration = (res[0]['ProjectMaxDuration']);
+                    const UsedInDAR = (res[0]['TotalHoursUsedInDAR']);
+                    this.a_details={
+                             ...this.a_details,
+                             usedHours:UsedInDAR,
+                             remainingHours:+(maxDuration-UsedInDAR).toFixed(1)
+                            };
+                   });
+                 }        
+      });
+
+
+    }
+}
+
+
+
+
+
+// timeline new code end.
 
 }

@@ -737,8 +737,8 @@
 
                                             <div class="form-group mt-notes" id="Descrip_Name"
                                                >
-                                                <label class="cus-lbl">Meeting notes </label>
-                                                <angular-editor [(ngModel)]="Notes_Type" #myTextarea
+                                                <label class="cus-lbl ">Meeting notes </label>
+                                                <angular-editor  [(ngModel)]="Notes_Type" #myTextarea
                                                     (keyup)="addBulletPointsOnEnter($event)"
                                                     [config]="config"></angular-editor>
                                             </div>
@@ -1961,7 +1961,7 @@
                             href="#Note_{{i+1}}">
 
                             <span class="kt-text-wrap"><i class="material-icons fs-2 mr-2">expand_more</i>
-                                {{term.Schedule_date}}</span>
+                                {{term.Schedule_date | date:'dd-MM-YYYY'}}</span>
                         </a>
                     </div>
 
