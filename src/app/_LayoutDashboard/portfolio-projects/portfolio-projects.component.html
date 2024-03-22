@@ -73,23 +73,16 @@
 
 
                     <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-                    class="badge total-project kt-badge--inline mr-2 py-10px btn-sm" tabindex="0" >
-                    <span>{{TotalProjects}}</span> Total Projects
-                </a>
+                      class="badge total-project kt-badge--inline mr-2 py-10px btn-sm" tabindex="0">
+                      <span>{{TotalProjects}}</span> Total Projects
+                    </a>
 
 
-
-
-
-                      <ng-container  >
-                      <a  href="javascript:void(0)" *ngIf="CountDeleted>0"  (click)="labeldeletedproject()"        [hidden]="HideStatusDropdown"
-                        class="badge Delay-head kt-badge--inline mr-2 py-10px btn-sm"><span >{{CountDeleted}}</span>
+                    <ng-container>
+                      <a href="javascript:void(0)" *ngIf="CountDeleted>0" (click)="labeldeletedproject()" [hidden]="HideStatusDropdown"
+                        class="badge Delay-head kt-badge--inline mr-2 py-10px btn-sm"><span>{{CountDeleted}}</span>
                         Deleted Projects </a>
-                      </ng-container>
-
-
-
-
+                    </ng-container>
 
 
                     <!-- End -->
@@ -112,6 +105,15 @@
                         <a href="javascript:void(0)" (click)="labelDelay()" [hidden]="HideStatusDropdown"
                             class="badge Delay-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
                     </ng-container>
+
+                    <ng-container *ngIf="CountNotStarted > 0">
+                    <a href="javascript:void(0)" (click)="labelDraft()" [hidden]="HideStatusDropdown"
+                    class="badge Not-started-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountNotStarted}} Draft</a>
+            </ng-container>
+
+
+
+
                     <ng-container *ngIf="CountCompleted > 0">
                         <a href="javascript:void(0)" (click)="labelCompleted()" [hidden]="HideStatusDropdown"
                             class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px"> {{CountCompleted}}

@@ -273,7 +273,7 @@
                                 <i class="fas fa-plus mr-0"></i>
                             </button>
 
-                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1">
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"  (click)="_completed()" >
                                 <i class="fas fa-sort-alpha-up fa-lg mr-0"></i>
                             </button>
                             <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" title="RACIS">
@@ -403,7 +403,7 @@
                                     <i class="fas fa-wallet text-muted mr-1"></i>
                                     <b>{{Client_Name}}</b>
                                 </span>
-                                <span data-toggle="tooltip" title="Report Type!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="ReportType">
+                                <span data-toggle="tooltip" title="Category" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="ReportType">
                                     <i class="fas fa-bars text-muted mr-1"></i>
                                     <b>{{ReportType}}</b>
                                 </span>
@@ -449,7 +449,7 @@
                                         <span class="text-info" [hidden]="Editbutton" id="EidtBtn_{{item.id}}"
                                         *ngIf="CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho"
                                             (click)="OnEditProject(item.id,item.Project_Name)">
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-edit curser-pointer"></i>
                                         </span>
                                         <span class="kt-inbox__subject" style="display:none;" id="spanTextbox_{{item.id}}">
                                             <div class="d-flex">
@@ -471,7 +471,7 @@
                                         <span class="text-info" [hidden]="Editbutton"
                                         *ngIf="CurrentUser_ID == EmpNo_Own || CurrentUser_ID == EmpNo_Res || CurrentUser_ID == EmpNo_Autho"
                                             (click)="OnEditProject_Desc(item.id,item.Project_Description)">
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-edit curser-pointer"></i>
                                         </span>
                                         <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_{{item.id}}">
                                             <div class="d-flex">
@@ -504,7 +504,7 @@
                                                 {{item.SubtaskAllocated}} Hrs</span></b>
                                             <span class="text-info" [hidden]="Editbutton"
                                                 (click)="OnEditProject_Alloc(item.id,item.SubtaskAllocated)">
-                                                <i class="fas fa-edit" ></i>
+                                                <i class="fas fa-edit curser-pointer" ></i>
                                         <!-- *ngIf="item.Subtask_Res==CurrentUser_ID" = For Subatask assignedto otherthan Authority validation -->
                                             </span>
                                             <span class="kt-inbox__subject" style="display:none;" id="spanTextarea_all{{item.id}}">

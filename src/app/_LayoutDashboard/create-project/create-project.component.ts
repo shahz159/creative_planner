@@ -537,7 +537,7 @@ createSRTProject(){
 
   file: File | null = null;
 onFileChanged(event: any) {
-  debugger
+
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
@@ -689,17 +689,17 @@ onFileChanged(event: any) {
   Move_to_add_team(){
 
     // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
-debugger
 
-const isNameValid=this.isValidString(this.PrjName,3);
-const isDesValid=this.isValidString(this.PrjDes,5);
+debugger
+this.isPrjNameValid=this.isValidString(this.PrjName,3);
+this.isPrjDesValid=this.isValidString(this.PrjDes,5);
 
   if(
 
-    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&isNameValid)&&(this.PrjDes&&isDesValid))&&
+    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid)&&(this.PrjDes&&this.isPrjDesValid))&&
     (
       (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
-      (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours))||
+      (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours)) ||
       ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
 
     )
@@ -932,8 +932,14 @@ onProjectOwnerChanged(){
   onButtonClick(value:any,id:number){
     this.bind_Project = [value]
     // this.duration=this.bind_Project[0].Duration;
-    this.Prjstartdate = this.bind_Project[0].Start_Date
-    this.Prjenddate = this.bind_Project[0].End_Date
+
+    const cDate=new Date();
+    const psdate=new Date(this.bind_Project[0].Start_Date);
+
+    this.Prjstartdate = psdate<cDate?null:this.bind_Project[0].Start_Date
+    this.Prjenddate = psdate<cDate?null:this.bind_Project[0].End_Date
+
+
     console.log(this.bind_Project,'+++++++++++>')
     this.PrjName=this.bind_Project[0].Task_Name;
     this.CreateName=this.bind_Project[0].Created_Name;
@@ -941,6 +947,8 @@ onProjectOwnerChanged(){
     this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
     this.duration=this.bind_Project[0].Duration+1
+    // this.Prjstartdate =this.bind_Project[0].Start_Date
+    // this.Prjenddate = this.bind_Project[0].End_Date
   }
 
   conditionalList:any
@@ -961,7 +969,7 @@ onProjectOwnerChanged(){
 
 
   openActionSideBar() {
-debugger
+
     if(this.PrjActionsInfo.length===0)
       this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
 
@@ -1200,7 +1208,7 @@ projectEdit(val) {
   console.log(jsonvalue, 'json');
 
   if (val == 0) {
-    debugger
+
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Project_Code = this.PrjCode;
     this.approvalObj.json = jsonvalue;
@@ -1492,6 +1500,7 @@ openTemplate(template:any){
    this.PrjAuditor='';
    this.PrjInformer='';
    this.PrjSupport=[];
+   this.Allocated_Hours=null
    //  this.fileAttachment=new File()
 
 
@@ -1698,19 +1707,21 @@ this.getActionsDetails();
 }
 
 reset(){
-  this.PrjCategory=null,this.Prjtype=null,this.PrjName=null,this.PrjDes=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
+  this.PrjCategory=null,this.Prjtype=null,this.PrjName=null,this.PrjDes=null,this.Prjstartdate=null,this.Prjenddate=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
 
 }
 
 // DRAFT PROJECT CODE END.
 
-isPrjNameValid:boolean=false;
-isPrjDesValid:boolean=false;
+isPrjNameValid:boolean=true;
+isPrjDesValid:boolean=true;
+
 
 isValidString(inputString: string, maxWords: number): boolean {
-  debugger
-  const x=!(inputString && inputString.trim() && inputString.trim().split(/\s+/).length < maxWords);
-  return x;
+
+    let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
+    const valid=rg.test(inputString);
+    return valid;
 }
 
 
@@ -1728,14 +1739,18 @@ saveAsDraft(){
 
 //  draft project creation code end.
 newProject_Type:any
-prevPrjType:string|undefined; 
+prevPrjType:string|undefined;
 changeprojecttype(){
+
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
+debugger
     if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
           this.prjsubmission=null;
           this.Allocated_Hours=null;
     }
+
+
 
     if(['003','008'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype)){
       this.Prjstartdate=null;
@@ -1743,6 +1758,11 @@ changeprojecttype(){
       this.Allocated_Hours=null;
     }
 
+  }
+
+  const datediff=Math.abs(moment(this.Prjstartdate).diff(moment(this.Prjenddate),'days'));
+  if(this.Prjtype==='011'&&datediff>3){
+       this.Prjenddate=null;
   }
 
   this.prevPrjType=this.Prjtype;
@@ -1760,5 +1780,12 @@ changeprojecttype(){
 //   // default: { };
 // }
 
-}
+
+
+
+
+  }
+
+
+
 

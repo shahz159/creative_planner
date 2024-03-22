@@ -763,7 +763,7 @@
                                                         </div>
                                                         <div class="kt-project-sts-data"
                                                             *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else continuos">
-                                                            {{projectInfo.Duration}} days
+                                                            {{projectInfo.Duration +1}} days
                                                         </div>
                                                         <ng-template #continuos>
                                                             <div class="kt-project-sts-data"> Continuous</div>
@@ -2939,7 +2939,7 @@
 
                                                 <div class="kt-info-data-v"
                                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continuous1">
-                                                    {{projectInfo&&projectInfo.Duration}} days
+                                                    {{projectInfo&&projectInfo.Duration +1}} days
                                                 </div>
                                                 <ng-template #continuous1>
                                                     <div class="kt-info-data-v">
@@ -4134,7 +4134,7 @@
                                                         Duration
                                                     </div>
                                                     <div class="kt-info-data-v">
-                                                        {{projectActionInfo[currentActionView].Duration}} days
+                                                        {{projectActionInfo[currentActionView].Duration +1}} days
                                                     </div>
                                                 </div>
 
@@ -5392,7 +5392,7 @@
                                                     </path>
                                                 </svg>
                                             </span>
-                                            <span>{{data.ModifiedDate |date:'dd/MM/YYYY'}}</span>
+                                            <span>{{data.ModifiedDate |date:'dd-MM-YYYY'}}</span>
                                             <span class="svg-icns time-icn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18"
                                                     height="18">
@@ -9719,7 +9719,7 @@
                                 <div class="kt-info-lable-v"> Duration</div>
                                 <div class="input-icon Sub_In_ed"
                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                                    <input type="text" class="form-control readonly" value="{{projectInfo.Duration}} days "
+                                    <input type="text" class="form-control readonly" value="{{projectInfo.Duration +1}} days "
                                         placeholder="Duration..." readonly />
                                 </div>
                                 <ng-template #continue>
@@ -9771,7 +9771,7 @@
                                             <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                                 <ng-option *ngFor="let item of Week_array">{{item}}</ng-option>
                                             </ng-select>
-                                            <span class="Wd_text_kt"> Max Duration limit is 2hrs only.</span>
+                                            <span class="Wd_text_kt"> Max Duration limit is 2 hrs only.</span>
                                         </div>
                                     </div>
                                     <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="3"> Allocated hours
@@ -10223,7 +10223,7 @@
                                 <div class="kt-info-lable-v"> Duration</div>
                                 <div class="input-icon Sub_In_ed"
                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'));">
-                                    <input type="text" class="form-control readonly" value="{{ActionDuration}} days "
+                                    <input type="text" class="form-control readonly" value="{{ActionDuration +1}} days "
                                         placeholder="Duration..." readonly />
                                 </div>
                             </div>
