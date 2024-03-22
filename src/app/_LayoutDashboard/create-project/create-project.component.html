@@ -1337,7 +1337,7 @@
                       </div>
                       <div class="notifications-list">
 
-                      <div class="notification i-notification  cursor-pointer ">
+                      <div class="notification i-notification  cursor-pointer mb-0">
                            <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
 
                           <ng-container [ngSwitch]="notificationMsg">
@@ -1397,59 +1397,56 @@
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project name<span class="text-danger">*</span></label>
-                                  <input class="form-control" type="text"
+                                  <input class="form-control" [ngClass]="{'error-border': !PrjName && notProvided}" type="text"
                                     placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=(!isValidString(PrjName,3))"   />
                                   <span style="color:rgb(217,48,37)" class=""
                                   *ngIf="isPrjNameValid" >please enter atleast 3
                                     words</span>
                                   <span style="color:rgb(217,48,37)" class=""
-                                    *ngIf="!PrjName&&notProvided">project name required</span>
+                                    *ngIf="!PrjName&&notProvided">Please enter project name</span>
                                 </div>
                               </div>
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project description<span class="text-danger">*</span></label>
-                                  <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
+                                  <textarea class="form-control form-control kt-desc-textarea" [ngClass]="{'error-border': !PrjDes && notProvided}" data-kt-autosize="true"
                                     placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=(!isValidString(PrjDes,5))"  ></textarea>
                                   <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid">please enter
                                     atleast 5 words</span>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">description is
-                                    required</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="select type" [(ngModel)]="Prjtype" (change)="changeprojecttype()"
+                                  <ng-select class="kt-form-vd" placeholder="select type" [ngClass]="{'error-vd': !Prjtype && notProvided}" [(ngModel)]="Prjtype" (change)="changeprojecttype()"
                                     #PrjTYPE="ngModel"  (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid"  >{{item.ProjectType}} </ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">project type
-                                    required</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">Please select project type</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Client<span class="text-danger">*</span></label>
-                                   <ng-select class="kt-form-vd" placeholder="select client" [(ngModel)]="PrjClient"
+                                   <ng-select class="kt-form-vd" placeholder="select client" [ngClass]="{'error-vd': (!PrjClient)&&notProvided}" [(ngModel)]="PrjClient"
                                     #PrjCLIENT="ngModel">
                                     <ng-option *ngFor="let item of Client_json"
                                       [value]="item.ClientId">{{item.ClientName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="(!PrjClient)&&notProvided">client required</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="(!PrjClient)&&notProvided">Please select project client</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Category<span class="text-danger" >*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="select category" [(ngModel)]="PrjCategory"
+                                  <ng-select class="kt-form-vd" placeholder="select category" [ngClass]="{'error-vd': !PrjCategory && notProvided}" [(ngModel)]="PrjCategory"
                                     #Prjcatgry="ngModel">
                                     <ng-option *ngFor="let item of Category_json"
                                       [value]="item.CategoryId">{{item.CategoryName}}</ng-option>
                                   </ng-select>
-                                  <span *ngIf="(!PrjCategory)&&notProvided" style="color:rgb(217,48,37)">category
-                                    required</span>
+                                  <span *ngIf="(!PrjCategory)&&notProvided" style="color:rgb(217,48,37)">Please select project category</span>
                                 </div>
                               </div>
 
@@ -1458,7 +1455,7 @@
                                 <div class="col-lg-4 mb-3">
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>Start date<span class="text-danger">*</span></label>
-                                    <div class="d-flex date-border">
+                                    <div class="d-flex date-border" [ngClass]="{'error-date': !Prjstartdate && notProvided}">
                                       <input class="form-control ng-pristine" name="date" [(ngModel)]="Prjstartdate" (ngModelChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
                                         id="d-date" placeholder="select start date" [matDatepicker]="picker2"
                                         (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
@@ -1470,15 +1467,14 @@
                                     </div>
                                   </div>
                                   <div *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </div>
-                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">start date
-                                    required</span>
+                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">Please select project start date</span>
                                 </div>
 
                                 <div class="col-lg-4 mb-3">
                                   <!-- \[ngClass]="{'col-lg-6 mb-3': Prjtype!='011','col-lg-4 mb-3':  Prjtype=='011'}"  -->
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>End date<span class="text-danger">*</span></label>
-                                    <div class="d-flex date-border">
+                                    <div class="d-flex date-border" [ngClass]="{'error-date': !Prjenddate && notProvided}">
                                       <input class="form-control ng-pristine" [(ngModel)]="Prjenddate"  id="end-date"
                                         placeholder="select end date" [matDatepicker]="picker3" (click)="picker3.open()"
                                         [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel" />
@@ -1487,8 +1483,7 @@
                                         <mat-datepicker #picker3></mat-datepicker>
                                       </div>
                                     </div>
-                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">end date
-                                      required</span>
+                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date</span>
                                   </div>
                                 </div>
                                 <div class="col-lg-4 mb-3">
@@ -1497,7 +1492,18 @@
                                     </label>
 
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
-                                      [(ngModel)]="Allocated_Hours"      min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
+                                    [ngClass]="{
+                                      'error-border': Prjtype == '011' && (
+                                          (!Allocated_Hours && notProvided) || 
+                                          (allocated.touched && allocated.invalid && Allocated_Hours == 0) || 
+                                          !Prjstartdate || 
+                                          !Prjenddate || 
+                                          this.Prjstartdate == null || 
+                                          this.Prjenddate == null
+                                      )
+                                  }"
+                                  
+                                    [(ngModel)]="Allocated_Hours"      min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
                                     <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
                                       </span>
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 9
@@ -1513,14 +1519,14 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label class="input-icon Sub_In_ed">Submission type<span class="text-danger">*</span></label>
                                   <div class="input-icon Sub_In_ed">
-                                    <ng-select class="curser-pointer" [(ngModel)]="prjsubmission"
+                                    <ng-select class="curser-pointer" [ngClass]="{'error-vd': !prjsubmission && notProvided}" [(ngModel)]="prjsubmission"
                                       placeholder="Select submission type">
                                       <ng-option [value]="item.SubmissionId" *ngFor="let item of SubmissionType">
                                         {{item.SubmissionName}}
 
                                       </ng-option>
                                     </ng-select>
-                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:rgb(217,48,37)">submission type missing</span>
+                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:rgb(217,48,37)">Please select submission type</span>
                                   </div>
                                 </div>
                               </div>
@@ -1530,9 +1536,9 @@
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="input-icon Sub_In_ed">
-                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
+                                        <ng-select placeholder="select allocated hours" class="curser-pointer" [ngClass]="{'error-vd': notProvided}" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
                                         </ng-select>
-                                        <span *ngIf="notProvided" style="color:rgb(217,48,37)">Allocated hour missing</span>
+                                        <span *ngIf="notProvided" style="color:rgb(217,48,37)">Please select allocated hour</span>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
@@ -1717,7 +1723,14 @@
                               </div>
                             </div>
                           </div>
-                          <div class="tb-ftv mt-1">
+                          <div class="tb-ftv mt-1 d-flex align-items-center justify-content-between">
+                            <div style="width: 50%;">
+                              <div class="error-notification i-notification  cursor-pointer" [ngClass]="{'your-class': (!PrjName || !PrjDes || !Prjtype || !PrjClient || !PrjCategory|| !Prjstartdate || !Prjenddate) && notProvided}" *ngIf="(!PrjName || !PrjDes || !Prjtype || !PrjClient || !PrjCategory|| !Prjstartdate || !Prjenddate) && notProvided">
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
+     
+                                     <span  class="notif-msg">One of the field is incorrect or invalid. please, follow the examples in order to continue.</span>
+                                    </div>
+                                  </div>
                             <div class="kt-ctv-btn mt-0">
                               <button type="button" (click)="back_to_options();"
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back to options</button>
@@ -1735,8 +1748,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Owner<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjOwner"
-                                    (change)="onProjectOwnerChanged();    setRACIS(); ">
+                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjOwner" (change)="onProjectOwnerChanged();    setRACIS(); ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">please select owner.</span>

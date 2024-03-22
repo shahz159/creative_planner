@@ -38,7 +38,7 @@ export class MeetingDetailsComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '5rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
@@ -121,7 +121,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.Current_user_ID = localStorage.getItem('EmpNo');
       this.meeting_details(); 
       this.addAgenda();
-     
+      this.GetMeetingnotes_data();
   }
 
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
@@ -346,17 +346,21 @@ selectedEmpId: any = [];
 
 
 addNewDMS() {
+
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("meetingdetails").classList.add("position-fixed");
-    this.GetDMSList();
     this.GetMemosByEmployeeId();
+    this.GetDMSList();
+  
   }
 
   GetDMSList(){
+  
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
      if(data!=''&& data!=undefined){
       this._MemosSubjectList = JSON.parse(data['JsonData']);
       console.log(this._MemosSubjectList,'DMS Link')
+
       this._MemosSubjectList.forEach(element => {
        this.checkeddms.push(element.MailId);
        element.isChecked = true;
@@ -371,6 +375,7 @@ addNewDMS() {
   GetMemosByEmployeeId() { 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
+        debugger
         this.Memos_List = JSON.parse(data['JsonData']);    
         this._linkedMemos= this.Memos_List.length
         if(this._MemosSubjectList){
@@ -458,11 +463,18 @@ addNewDMS() {
       this._calenderDto.Dms =this.selectedEmploy_DMS.map(item=>item.MailId).toString()
 
       this.CalenderService.NewinsertDMS_meetingreport(this._calenderDto).subscribe
-        (data => {                                                                                          
+        ((data:any)=> {  
+          if(data.message=='1'){
+            this.notifyService.showSuccess("DMS added successfully", "Success");
+            this.selectedEmploy_DMS=[];
+            this.GetMemosByEmployeeId()
+            this.GetDMSList();
+          }
+                                                                                          
         });
-      this.notifyService.showSuccess("DMS added successfully", "Success");
-      this.meeting_details();    
-      this.selectedEmploy_DMS=[];
+     
+        
+      
 
     }
 
@@ -1032,9 +1044,10 @@ GetPreviousdate_meetingdata() {
 
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
     (data => {
+
       this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
-       console.log(this.Previousdata_meeting,'55555555555555555555')
-      this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.Previous_meeting.length > 0);
+      console.log(this.Previousdata_meeting,'pre meeting notes') 
+      // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.MeetingDetails.length > 0);
     });
 }
 
@@ -1047,6 +1060,7 @@ allAgendas:any=[];
 agendasAdded:number=0;
 
 addAgenda(){
+
   if(this.agendaInput&&this.agendaInput.trim().length>0){
     this.agendasAdded+=1; 
     const agenda={
@@ -1055,8 +1069,13 @@ addAgenda(){
     };   
     this.allAgendas.push(agenda);
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?agenda:[]);
+
     this._calenderDto.json = mtgAgendas;
     this._calenderDto.flagid=1;
+    this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+
     this._calenderDto.Status_type = "Left";
     this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
     (data => {
@@ -1074,8 +1093,14 @@ addAgenda(){
 updateAgenda1(index:number){
       const tf:any=document.getElementById(`agenda-text-field-${index}`);
       const newname=tf.value;
+
+  
+      this.Schedule_ID = this.Scheduleid;
+      this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.flagid=2;
+      this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.json=JSON.stringify({ id:this.Agendas_List[index].AgendaId, name:newname });
+      
       this.CalenderService.NewEditsAgendas(this._calenderDto).subscribe
       (data => {
         this.meeting_details();
@@ -1087,9 +1112,15 @@ AgendasName: string;
 
 deleteAgenda(AgendaId: number) {
 
-  this.Agendas_List.forEach(element => {
-      this.AgendasName = element.Agenda_Name
-  });
+
+  const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
+  debugger
+  if (AgendasNames) {
+    this.AgendasName = AgendasNames.Agenda_Name;
+  }
+  // this.Agendas_List.forEach(element => {
+  //     this.AgendasName = element.Agenda_Name
+  // });
   //if (createdBy == this.Current_user_ID) {
   let String_Text = 'Delete';
   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -1106,9 +1137,12 @@ deleteAgenda(AgendaId: number) {
       name:this.agendaInput,
   };   
   this.allAgendas.push(agenda);
-  const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  const mtgAgendas=JSON.stringify(this.allAgendas.length>0?agenda:[]);
+  this.Schedule_ID = this.Scheduleid;
+
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.json = mtgAgendas;
-  this._calenderDto.Emp_No = AgendaId;
+   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = 3;
   
     if (result === true) {
@@ -1214,7 +1248,7 @@ addBulletPointsOnEnter(event: any) {
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type;
-      this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
+      this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
       this._calenderDto.Status_type = "Left";
 
       console.log(this._calenderDto,' ||||||||||||||||||||  ');
@@ -1235,12 +1269,17 @@ GetMeetingnotes_data() {
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
-     
+  
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
-      this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
-      console.log(this.Notes_Type, 'Notes_Type')
+
+        this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
+      
+        // if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
+        //   this.Notes_Type = ''
+        //  }else { }
+      console.log(this.Meetingnotes_time, 'Notes_Type')
     });
 
 }
@@ -1258,9 +1297,6 @@ Private_Notes:any
 
 /////////////////////////////////////////// Private Notes sidebar End /////////////////////////////////////////////////////////
  
- 
-
-/////////////////////////////////////////// Private Notes sidebar End /////////////////////////////////////////////////////////
  
 /////////////////////////////////////////// List of Attachment sidebar start /////////////////////////////////////////////////////////
  

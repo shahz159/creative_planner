@@ -1,9 +1,9 @@
 <div class="kt-grid kt-grid--hor kt-grid--root">
     <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 p-3 "
-        id="meetingdetails" >
-        <div class="row"  *ngFor="let item of EventScheduledjson"  >
-            <div class="col-lg-5"  >
-                <div class="card h-100" >
+        id="meetingdetails">
+        <div class="row" *ngFor="let item of EventScheduledjson">
+            <div class="col-lg-5">
+                <div class="card h-100">
                     <div class="card-body p-3">
                         <div class="kt-meeting-main" >
                             <div class="kt-meeting-main-active p-2" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject()">
@@ -17,9 +17,9 @@
                                                         d="M18.5303 1.36195C18.4166 1.28357 18.2856 1.23402 18.1485 1.21759C18.0114 1.20117 17.8724 1.21835 17.7434 1.26767L16.7586 1.63752V1.45024C16.7586 1.10925 16.6231 0.782232 16.382 0.541119C16.1409 0.300007 15.8139 0.164551 15.4729 0.164551H12.0444C11.7034 0.164551 11.3764 0.300007 11.1353 0.541119C10.8942 0.782232 10.7587 1.10925 10.7587 1.45024V3.16448H4.33031C3.76221 3.16516 3.21757 3.39114 2.81586 3.79285C2.41415 4.19456 2.18818 4.73919 2.1875 5.30729V13.5683C1.75867 13.719 1.39706 14.0167 1.16678 14.4086C0.936495 14.8005 0.852413 15.2612 0.929437 15.7092C1.00646 16.1572 1.23962 16.5634 1.58757 16.8559C1.93552 17.1484 2.37579 17.3082 2.83034 17.307H16.9729C17.4274 17.3082 17.8677 17.1484 18.2157 16.8559C18.5636 16.5634 18.7968 16.1572 18.8738 15.7092C18.9508 15.2612 18.8667 14.8005 18.6364 14.4086C18.4062 14.0167 18.0446 13.719 17.6157 13.5683V8.30723C17.6157 8.19357 17.5706 8.08456 17.4902 8.00419C17.4098 7.92382 17.3008 7.87866 17.1872 7.87866C17.0735 7.87866 16.9645 7.92382 16.8841 8.00419C16.8038 8.08456 16.7586 8.19357 16.7586 8.30723V13.45H13.3554C13.1843 13.4503 13.0149 13.4846 12.8571 13.5508C12.6993 13.617 12.5562 13.7138 12.4361 13.8357L12.1018 14.1785C12.0619 14.2193 12.0142 14.2516 11.9616 14.2737C11.909 14.2958 11.8525 14.3071 11.7954 14.3071H8.04722C7.9367 14.3071 7.83045 14.2644 7.75066 14.188L7.35381 13.8074C7.11472 13.5775 6.79578 13.4494 6.46412 13.45H3.04462V5.30729C3.04462 4.96631 3.18007 4.63929 3.42119 4.39818C3.6623 4.15706 3.98932 4.02161 4.33031 4.02161H10.7587V4.87873C10.7587 5.21972 10.8942 5.54674 11.1353 5.78785C11.3764 6.02896 11.7034 6.16442 12.0444 6.16442H15.4729C15.8139 6.16442 16.1409 6.02896 16.382 5.78785C16.6231 5.54674 16.7586 5.21972 16.7586 4.87873V4.69145L17.7404 5.06001C17.8697 5.10981 18.0092 5.12737 18.1469 5.11116C18.2845 5.09496 18.4161 5.04549 18.5303 4.96702C18.6446 4.88829 18.7382 4.78295 18.8028 4.66008C18.8675 4.5372 18.9013 4.40045 18.9014 4.2616V2.06737C18.9013 1.92852 18.8675 1.79177 18.8028 1.66889C18.7382 1.54601 18.6446 1.44068 18.5303 1.36195ZM6.76068 14.4262L7.15753 14.8068C7.39659 15.0367 7.71555 15.1648 8.04722 15.1642H11.7954C11.9666 15.164 12.1359 15.1297 12.2937 15.0635C12.4515 14.9973 12.5946 14.9004 12.7147 14.7785L13.049 14.4357C13.089 14.3951 13.1367 14.3628 13.1893 14.3407C13.2419 14.3187 13.2984 14.3072 13.3554 14.3071H16.9729C17.257 14.3071 17.5296 14.42 17.7305 14.6209C17.9314 14.8218 18.0443 15.0943 18.0443 15.3785C18.0443 15.6627 17.9314 15.9352 17.7305 16.1361C17.5296 16.337 17.257 16.4499 16.9729 16.4499H2.83034C2.54618 16.4499 2.27367 16.337 2.07274 16.1361C1.87181 15.9352 1.75893 15.6627 1.75893 15.3785C1.75893 15.0943 1.87181 14.8218 2.07274 14.6209C2.27367 14.42 2.54618 14.3071 2.83034 14.3071H6.46412C6.57463 14.3071 6.68088 14.3498 6.76068 14.4262ZM15.9015 4.87873C15.9015 4.99239 15.8563 5.1014 15.776 5.18177C15.6956 5.26214 15.5866 5.30729 15.4729 5.30729H12.0444C11.9308 5.30729 11.8218 5.26214 11.7414 5.18177C11.661 5.1014 11.6159 4.99239 11.6159 4.87873V1.45024C11.6159 1.33657 11.661 1.22757 11.7414 1.1472C11.8218 1.06683 11.9308 1.02167 12.0444 1.02167H15.4729C15.5866 1.02167 15.6956 1.06683 15.776 1.1472C15.8563 1.22757 15.9015 1.33657 15.9015 1.45024V4.87873ZM18.0443 4.25903L16.7586 3.77647V2.55207L18.0443 2.06737V4.25903Z"
                                                         fill="white"></path>
                                                 </svg>
-    
+
                                             </div>
-                                            <span class="kt-meeting-title-name" >Meeting Details</span>
+                                            <span class="kt-meeting-title-name">Meeting Details</span>
                                         </div>
                                         <div class="kt-meeting-status started mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
@@ -35,24 +35,24 @@
                                             <!-- <span class="kt-meeting-status-title">Started</span>
                                             <span class="text-white">|</span>
                                             <span class="kt-meeting-status-time">12:45</span> -->
-    
-                                          <ng-container *ngIf="!meetingInProgress && !meetingStopped">
-                                          <span class="kt-meeting-status-title" (click)="startMeeting()">
-                                           Start Meeting       
-                                          </span>
-                                        </ng-container>
-                                        <ng-container *ngIf="meetingInProgress">
-                                            <span (click)="leaveMeeting()">Leave Meeting</span>
-                                        </ng-container>
-                                            <span class="text-white">|</span>                                       
+
+                                            <ng-container *ngIf="!meetingInProgress && !meetingStopped">
+                                                <span class="kt-meeting-status-title" (click)="startMeeting()">
+                                                    Start Meeting
+                                                </span>
+                                            </ng-container>
+                                            <ng-container *ngIf="meetingInProgress">
+                                                <span (click)="leaveMeeting()">Leave Meeting</span>
+                                            </ng-container>
+                                            <span class="text-white">|</span>
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
-                                                                                     
-                                                <span>{{startTime |date: 'h:mm'}}</span> 
-                                                         
+
+                                                <span>{{startTime |date: 'h:mm'}}</span>
+
                                             </span>
-    
-    
-    
+
+
+
                                         </div>
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
@@ -85,7 +85,7 @@
                                             <span class="kt-meeting-status-time">12:45</span>
                                         </div>
                                     </div>
-                                    <div class="row" >
+                                    <div class="row">
                                         <div class="col-12">
                                             <div class="kt-meeting-content">
                                                 <h2>{{item.Task_Name}}</h2>
@@ -119,45 +119,47 @@
                                                     <div class="kt-sub-name">Organizer</div>
                                                 </div>
                                                 <div class="kt-metric-sub-info">
-                                                    <div class="kt-sub-label">{{User_Scheduledjson.length}} Invitees</div>
+                                                    <div class="kt-sub-label">{{User_Scheduledjson.length}} Invitees
+                                                    </div>
                                                     <div class="kt-sub-name">Participants</div>
                                                 </div>
                                                 <div class="kt-metric-sub-info">
-                                                    <div class="kt-sub-label"  title="{{item.Location}}">
+                                                    <div class="kt-sub-label" title="{{item.Location}}">
                                                         <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}
                                                         </a>
                                                     </div>
                                                     <div class="kt-sub-name">Location</div>
-                                                    <!-- <div class="main-s">{{item.FullAddress_loc}}</div>  -->                    
+                                                    <!-- <div class="main-s">{{item.FullAddress_loc}}</div>  -->
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 pl-1">
                                             <div class="kt-metric-app">
                                                 <span>
-                                                    <a href="https://meet.google.com/?hs=197&authuser=0" target="_blank">
-                                                    <div class="app-logo">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="57"
-                                                            height="19" viewBox="0 0 57 19" fill="none">
-                                                            <rect x="0.0625" y="0.252441" width="56.4736" height="18.2173"
-                                                                fill="url(#pattern0)" />
-                                                            <defs>
-                                                                <pattern id="pattern0"
-                                                                    patternContentUnits="objectBoundingBox" width="1"
-                                                                    height="1">
-                                                                    <use xlink:href="#image0_365_5696"
-                                                                        transform="scale(0.00806452 0.025)" />
-                                                                </pattern>
-                                                               
-                                                                <image id="image0_365_5696" width="124" height="40"
-                                                                    xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAoCAYAAAA8AZ5fAAAHJElEQVR4Ae2bTYgjRRSAawVBFCSLBw8qxIM/CMqKLIhewiJJbuamiJOudCfp6r1MQI+yGxxRUdbNisKisBkEWZbJkgVB3VHsu8LMUXZF+6yXHDws6DK9vOp+XVXdXT2ZpDMzmemBotPprp/3vnqv3qvKEFL8FRooNFBooNDAcdTAf189vOrfJP25yk+kchx1t3Qy/3Pm9PDOhUd8f5PMX34mxtIp4DgNGGD/fea0nxvwm+TGcdLfUsmKsHMFvknchBLG9TLZqPbJsFJKPCu+2B8NyLAXCvxatUFG1QkZ1XyyUevNKx3t9UqUskrTslebJutDodRpUMbK87Z9ZOvHYS8M+PXqeQ4aYHPg1f6sSgXQTZOdNyx7YljM1xR3WcEbFhsaFnONtn1xVh2l1kuDnTvwcaVERrWhAnsO4GDRu4BWJgBMjFThD/GXhsm8cBInl8RZx62DnSfw2z8+6JFRbTsBe0bgTcsxFGs2mUfbrE87nVNgzfxqdRuGZY/Fe872rDo6qHq5A3/z3d8qb7zzq68ra59dGvg/kMpUZZNsp6Vw2zce8MtfvBC4b3Tj8hUCtz38AVABkfnUYoOs6rTNPcGY0t7SBYe5A3927f/K0x/c9XXlqffv0ixlys/8TeLGga9/e9IvffScTy68lBtww4rcnA9WLY/hqH1eKuD9K4/6ZO35oOQE/G3upsPgzGTeUQMcl2cpgE++v8+nl58QsAF6TsCbFltHd95q26/HFTTPfZDWsYFhOWMokOLtFt3zLMGyVzGablpsAO1kjSNMIalSB+IOKJTRoATLTxbwWcZL8nbp3nf3++VPnlFh5wjcaNvbCDxLqXt5xmOCthO1i+3jVRfdG6Z9Ed9JuXppkwWCSXlJUupJY4C4A2TQAc/o26OW09DKnydwd/SQmwo7T+Ai19a6c0q5Ul2ev0IOm1IgygelcNhSTGCYPJ93DUtMLIASh55UOH/fDetjOujJgWLQl7RfgH2J1AvrQWyiBZ7sO5IxUT8BPk/g5JuKSz4+lbTufQcOUbl2EwaVMuQWJKVtEO0rgMAaJRgIIcj/RRyB3/MJRFlZXnbAbaPSZcuOB5vUdHrymLFNqX+ehyf6pmInkVLIXqIJlW4QuQIf1Vxy9TU/FXpOa7hQgD1BRcavtHM2AAWw4iWcCM0WG4TWjRMgdWMDFI8goA70FazxAXBQcrz/4B3hIWASKaCkSSDXlSeKDrjyjtR32D54M5Qn8hJyH7mu4QSAQ34N0D99UbX0nIA3WyJoQ6UoAmXcyEpfMbs9OeJvhS4+rXrcasS9rd3IgfZR+RBcyve6ccuTC98RE5zxCSliGHs7Y1vZxfoJeXK3cHlD5cuXBfScgMtKgbU5IVDGF7AfjRCgnWkgQHNCyUEaiG1k9b9iMojCubXBZzjMwXudVwhccug5NGu4mADguiP37UPswHcad9tcWihwgH/5lQB6TsA5AGldBWgZjKNHSnAW5u8qFH07QrGBRQul6/cBFMCxyaVLJ2UPhBYq9RWz8Mh1u+Cd5NgjEjrtw+Pv/Vt5sn/H15XHPvyzR+DcepqCLl22cvj89au55eEgQ8zKExF0XE4FtsV8dN+U0hJanc5a5UmBa/huywq4WiVAgzVcigV0fSnrs8bCmy17gGOOB34o94p5FnZHT+C9em3/USHd2762fH5OvyUaB5t1f60KhydQku3tcS8dBIhHtaBgSLUgJePP8Xw8dnRKLbYuKyB2uDKGyYHPgwMa4TbRFcfg8X6xDp9ccj4t7fMDaIQFywv2xSdILKfXWXjg9nFM9qQpNp9OvOU4Jw2TH6fCUjJMt/r9As4j+Ho5FfoMwDlUnsqg8JGLi6LUSLnhWhqHzdsAK5eWCF6H36vt0rbq8sG61PbtSVo7stI5rCn6gnZ1wIXcsrxpfTtbct84IQnZT+DQa3AmPlAsfUbgAbBE3psEbjIP3bgQXHwCELI7VUBCMNRhqQdI3MvEAUZpkZ16OpcKHerwTRhxlJsFnMsNQaHp/GVYbEcaL3zeoVrrhpr7DRz1vFHvR9DnAI7NgSKp1W2EwdKQ72nDXni4FuJ7WdfgDD3YF+f1TdjXzj5ShecUonAL9uDZkE6x/w5jgHHhWHkd2ivJ8QKOG668dIKlSh4/7xsOkyD7MO0rvJ2U9+Q6BwccRjGqNsj12pBcrUfrpjq4o3cHkThMrDTJlIBsl4mWVn+67w7Kwqcb3ZF6SwoQEwcraiZhby1OcOqVSPeWt/AofVQ/9v+IEMssPNhDaLWcVuja8bdrUdq4OOjs9zLp3F4l3Vv9RLl0rs9/Ow7r7Mylnnk+vDjBDl/L4W6fHGjJQeaOLrc+fJIUI5paAxDkGaa9FUbYPLI2LPuXrExi6saLFw+vBniUzX/lkp0JHF4JipEVGig0UGig0EChgUIDhQYKDRQaKDRQaKDQwBQauAdTl8bB7DWeVQAAAABJRU5ErkJggg==" />
-                                                            </defs>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="app-title">
-                                                    </div>
-                                                      Google Meet
+                                                    <a href="https://meet.google.com/?hs=197&authuser=0"
+                                                        target="_blank">
+                                                        <div class="app-logo">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="57"
+                                                                height="19" viewBox="0 0 57 19" fill="none">
+                                                                <rect x="0.0625" y="0.252441" width="56.4736"
+                                                                    height="18.2173" fill="url(#pattern0)" />
+                                                                <defs>
+                                                                    <pattern id="pattern0"
+                                                                        patternContentUnits="objectBoundingBox"
+                                                                        width="1" height="1">
+                                                                        <use xlink:href="#image0_365_5696"
+                                                                            transform="scale(0.00806452 0.025)" />
+                                                                    </pattern>
+
+                                                                    <image id="image0_365_5696" width="124" height="40"
+                                                                        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAoCAYAAAA8AZ5fAAAHJElEQVR4Ae2bTYgjRRSAawVBFCSLBw8qxIM/CMqKLIhewiJJbuamiJOudCfp6r1MQI+yGxxRUdbNisKisBkEWZbJkgVB3VHsu8LMUXZF+6yXHDws6DK9vOp+XVXdXT2ZpDMzmemBotPprp/3vnqv3qvKEFL8FRooNFBooNDAcdTAf189vOrfJP25yk+kchx1t3Qy/3Pm9PDOhUd8f5PMX34mxtIp4DgNGGD/fea0nxvwm+TGcdLfUsmKsHMFvknchBLG9TLZqPbJsFJKPCu+2B8NyLAXCvxatUFG1QkZ1XyyUevNKx3t9UqUskrTslebJutDodRpUMbK87Z9ZOvHYS8M+PXqeQ4aYHPg1f6sSgXQTZOdNyx7YljM1xR3WcEbFhsaFnONtn1xVh2l1kuDnTvwcaVERrWhAnsO4GDRu4BWJgBMjFThD/GXhsm8cBInl8RZx62DnSfw2z8+6JFRbTsBe0bgTcsxFGs2mUfbrE87nVNgzfxqdRuGZY/Fe872rDo6qHq5A3/z3d8qb7zzq68ra59dGvg/kMpUZZNsp6Vw2zce8MtfvBC4b3Tj8hUCtz38AVABkfnUYoOs6rTNPcGY0t7SBYe5A3927f/K0x/c9XXlqffv0ixlys/8TeLGga9/e9IvffScTy68lBtww4rcnA9WLY/hqH1eKuD9K4/6ZO35oOQE/G3upsPgzGTeUQMcl2cpgE++v8+nl58QsAF6TsCbFltHd95q26/HFTTPfZDWsYFhOWMokOLtFt3zLMGyVzGablpsAO1kjSNMIalSB+IOKJTRoATLTxbwWcZL8nbp3nf3++VPnlFh5wjcaNvbCDxLqXt5xmOCthO1i+3jVRfdG6Z9Ed9JuXppkwWCSXlJUupJY4C4A2TQAc/o26OW09DKnydwd/SQmwo7T+Ai19a6c0q5Ul2ev0IOm1IgygelcNhSTGCYPJ93DUtMLIASh55UOH/fDetjOujJgWLQl7RfgH2J1AvrQWyiBZ7sO5IxUT8BPk/g5JuKSz4+lbTufQcOUbl2EwaVMuQWJKVtEO0rgMAaJRgIIcj/RRyB3/MJRFlZXnbAbaPSZcuOB5vUdHrymLFNqX+ehyf6pmInkVLIXqIJlW4QuQIf1Vxy9TU/FXpOa7hQgD1BRcavtHM2AAWw4iWcCM0WG4TWjRMgdWMDFI8goA70FazxAXBQcrz/4B3hIWASKaCkSSDXlSeKDrjyjtR32D54M5Qn8hJyH7mu4QSAQ34N0D99UbX0nIA3WyJoQ6UoAmXcyEpfMbs9OeJvhS4+rXrcasS9rd3IgfZR+RBcyve6ccuTC98RE5zxCSliGHs7Y1vZxfoJeXK3cHlD5cuXBfScgMtKgbU5IVDGF7AfjRCgnWkgQHNCyUEaiG1k9b9iMojCubXBZzjMwXudVwhccug5NGu4mADguiP37UPswHcad9tcWihwgH/5lQB6TsA5AGldBWgZjKNHSnAW5u8qFH07QrGBRQul6/cBFMCxyaVLJ2UPhBYq9RWz8Mh1u+Cd5NgjEjrtw+Pv/Vt5sn/H15XHPvyzR+DcepqCLl22cvj89au55eEgQ8zKExF0XE4FtsV8dN+U0hJanc5a5UmBa/huywq4WiVAgzVcigV0fSnrs8bCmy17gGOOB34o94p5FnZHT+C9em3/USHd2762fH5OvyUaB5t1f60KhydQku3tcS8dBIhHtaBgSLUgJePP8Xw8dnRKLbYuKyB2uDKGyYHPgwMa4TbRFcfg8X6xDp9ccj4t7fMDaIQFywv2xSdILKfXWXjg9nFM9qQpNp9OvOU4Jw2TH6fCUjJMt/r9As4j+Ho5FfoMwDlUnsqg8JGLi6LUSLnhWhqHzdsAK5eWCF6H36vt0rbq8sG61PbtSVo7stI5rCn6gnZ1wIXcsrxpfTtbct84IQnZT+DQa3AmPlAsfUbgAbBE3psEbjIP3bgQXHwCELI7VUBCMNRhqQdI3MvEAUZpkZ16OpcKHerwTRhxlJsFnMsNQaHp/GVYbEcaL3zeoVrrhpr7DRz1vFHvR9DnAI7NgSKp1W2EwdKQ72nDXni4FuJ7WdfgDD3YF+f1TdjXzj5ShecUonAL9uDZkE6x/w5jgHHhWHkd2ivJ8QKOG668dIKlSh4/7xsOkyD7MO0rvJ2U9+Q6BwccRjGqNsj12pBcrUfrpjq4o3cHkThMrDTJlIBsl4mWVn+67w7Kwqcb3ZF6SwoQEwcraiZhby1OcOqVSPeWt/AofVQ/9v+IEMssPNhDaLWcVuja8bdrUdq4OOjs9zLp3F4l3Vv9RLl0rs9/Ow7r7Mylnnk+vDjBDl/L4W6fHGjJQeaOLrc+fJIUI5paAxDkGaa9FUbYPLI2LPuXrExi6saLFw+vBniUzX/lkp0JHF4JipEVGig0UGig0EChgUIDhQYKDRQaKDRQaKDQwBQauAdTl8bB7DWeVQAAAABJRU5ErkJggg==" />
+                                                                </defs>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="app-title">
+                                                        </div>
+                                                        Google Meet
                                                     </a>
                                                 </span>
                                                 <span class="d-none">
@@ -165,8 +167,8 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="22"
                                                             height="22" viewBox="0 0 22 22" fill="none">
-                                                            <rect x="0.324707" y="0.867188" width="20.8064" height="20.8064"
-                                                                fill="url(#pattern1)" />
+                                                            <rect x="0.324707" y="0.867188" width="20.8064"
+                                                                height="20.8064" fill="url(#pattern1)" />
                                                             <defs>
                                                                 <pattern id="pattern1"
                                                                     patternContentUnits="objectBoundingBox" width="1"
@@ -186,8 +188,8 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="48"
                                                             height="12" viewBox="0 0 48 12" fill="none">
-                                                            <rect x="0.331543" y="0.949219" width="46.7927" height="10.6196"
-                                                                fill="url(#pattern2)" />
+                                                            <rect x="0.331543" y="0.949219" width="46.7927"
+                                                                height="10.6196" fill="url(#pattern2)" />
                                                             <defs>
                                                                 <pattern id="pattern2"
                                                                     patternContentUnits="objectBoundingBox" width="1"
@@ -208,8 +210,10 @@
                                                             viewBox="0 0 2228.833 2073.333" width="25px" height="25px">
                                                             <path fill="#5059C9"
                                                                 d="M1554.637,777.5h575.713c54.391,0,98.483,44.092,98.483,98.483c0,0,0,0,0,0v524.398 c0,199.901-162.051,361.952-361.952,361.952h0h-1.711c-199.901,0.028-361.975-162-362.004-361.901c0-0.017,0-0.034,0-0.052V828.971 C1503.167,800.544,1526.211,777.5,1554.637,777.5L1554.637,777.5z" />
-                                                            <circle fill="#5059C9" cx="1943.75" cy="440.583" r="233.25" />
-                                                            <circle fill="#7B83EB" cx="1218.083" cy="336.917" r="336.917" />
+                                                            <circle fill="#5059C9" cx="1943.75" cy="440.583"
+                                                                r="233.25" />
+                                                            <circle fill="#7B83EB" cx="1218.083" cy="336.917"
+                                                                r="336.917" />
                                                             <path fill="#7B83EB"
                                                                 d="M1667.323,777.5H717.01c-53.743,1.33-96.257,45.931-95.01,99.676v598.105 c-7.505,322.519,247.657,590.16,570.167,598.053c322.51-7.893,577.671-275.534,570.167-598.053V877.176 C1763.579,823.431,1721.066,778.83,1667.323,777.5z" />
                                                             <path opacity=".1"
@@ -252,7 +256,8 @@
                                                 <div class="d-flex align-items-start justify-content-between">
                                                     <div class="kt-metric-day">
                                                         <!-- <div class="dark-title">21 Thu, January 2024</div> -->
-                                                        <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}}</div>
+                                                        <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}}
+                                                        </div>
                                                         <div class="muted-title">Date</div>
                                                     </div>
                                                     <diV class="kt-metric-duration">
@@ -261,27 +266,30 @@
                                                             {{ formatTime(elapsedTime) }}
                                                         </span>
                                                         <span class="ml-2 l-h-0">
-                                                            <ng-container *ngIf="pause" >
-                                                            <span (click)="resumeMeeting()">
-                                                            
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="11"
-                                                                viewBox="0 0 10 11" fill="none">
-                                                                <path
-                                                                    d="M1.28955 1.12402L8.52955 5.77831L1.28955 10.4326V1.12402Z"
-                                                                    stroke="black" stroke-linecap="round"
-                                                                    stroke-linejoin="round" />
-                                                            </svg>                                                     
-                                                            </span>
-                                                        </ng-container>
+                                                            <ng-container *ngIf="pause">
+                                                                <span (click)="resumeMeeting()">
+
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="10"
+                                                                        height="11" viewBox="0 0 10 11" fill="none">
+                                                                        <path
+                                                                            d="M1.28955 1.12402L8.52955 5.77831L1.28955 10.4326V1.12402Z"
+                                                                            stroke="black" stroke-linecap="round"
+                                                                            stroke-linejoin="round" />
+                                                                    </svg>
+                                                                </span>
+                                                            </ng-container>
                                                             <ng-container *ngIf="play">
-                                                           <span  (click)="pauseMeeting()">
-                                                            
-                                                            <svg ng-if="isPaused" xmlns="http://www.w3.org/2000/svg"    width="10" height="11" viewBox="0 0 10 11" fill="none">
-                                                                <path d="M2 1H4V10H2V1ZM6 1H8V10H6V1Z" fill="black"/>
-                                                            </svg>  
-                                                       
-                                                          </span> 
-                                                        </ng-container>   
+                                                                <span (click)="pauseMeeting()">
+
+                                                                    <svg ng-if="isPaused"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="10"
+                                                                        height="11" viewBox="0 0 10 11" fill="none">
+                                                                        <path d="M2 1H4V10H2V1ZM6 1H8V10H6V1Z"
+                                                                            fill="black" />
+                                                                    </svg>
+
+                                                                </span>
+                                                            </ng-container>
                                                         </span>
                                                     </diV>
                                                 </div>
@@ -298,25 +306,29 @@
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="17"
                                                                     height="18" viewBox="0 0 17 18" fill="none">
                                                                     <g id="Group 1000004424">
-                                                                        <circle id="Ellipse 542" cx="8.4276" cy="9.32115"
-                                                                            r="7.89" fill="white" stroke="#6772FE" />
-                                                                        <circle id="Ellipse 548" cx="8.4274" cy="9.32169"
-                                                                            r="5.02432" fill="#6772FE" />
+                                                                        <circle id="Ellipse 542" cx="8.4276"
+                                                                            cy="9.32115" r="7.89" fill="white"
+                                                                            stroke="#6772FE" />
+                                                                        <circle id="Ellipse 548" cx="8.4274"
+                                                                            cy="9.32169" r="5.02432" fill="#6772FE" />
                                                                     </g>
                                                                 </svg>
                                                             </div>
                                                             <div class="text-center">
-                                                                <div class="timeline-up">35min 58secs  {{ formatTime(elapsedTime) }} </div>
-                                                                <div class="timeline-down">Average attendances time</div>
+                                                                <div class="timeline-up">35min 58secs {{
+                                                                    formatTime(elapsedTime) }} </div>
+                                                                <div class="timeline-down">Average attendances time
+                                                                </div>
                                                             </div>
                                                             <div class="z-index-1 d-flex">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18"
                                                                     height="18" viewBox="0 0 18 18" fill="none">
                                                                     <g id="Group 1000004425">
-                                                                        <circle id="Ellipse 542" cx="8.8607" cy="9.32115"
-                                                                            r="7.89" fill="white" stroke="#FB6C59" />
-                                                                        <circle id="Ellipse 548" cx="8.8605" cy="9.32169"
-                                                                            r="5.02432" fill="#FB6C59" />
+                                                                        <circle id="Ellipse 542" cx="8.8607"
+                                                                            cy="9.32115" r="7.89" fill="white"
+                                                                            stroke="#FB6C59" />
+                                                                        <circle id="Ellipse 548" cx="8.8605"
+                                                                            cy="9.32169" r="5.02432" fill="#FB6C59" />
                                                                     </g>
                                                                 </svg>
                                                             </div>
@@ -400,80 +412,159 @@
 
 
                                 <div class="action-section">
+
                                     <div class="todo-main">
                                         <div class="task-header">
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                             <div class="agenda-input-field p-1">
-                                                <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
-                                                <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda enter value." autofocus="true"
-                                                  [(ngModel)]="agendaInput"   (keyup.enter)=" addAgenda() "
-                                                />
-                                                    <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
+                                            <div class="agenda-input-field p-1">
+                                                <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"
+                                                    version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                        stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path
+                                                            d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z"
+                                                            fill="#c4c4c4"></path>
+                                                        <path
+                                                            d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z"
+                                                            fill="#dedede"></path>
+                                                        <path
+                                                            d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z"
+                                                            fill="#e0e0e0"></path>
+                                                        <path
+                                                            d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z"
+                                                            fill="#e0e0e0"></path>
+                                                    </g>
+                                                </svg>
+                                                <input class="task-input ml-2" id="todo-input" name="text"
+                                                    placeholder="Add Agenda enter value." autofocus="true"
+                                                    [(ngModel)]="agendaInput" (keyup.enter)=" addAgenda() " />
+                                                <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
                                                 <ng-container *ngIf="agendaInput">
-                                                <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-0"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
+                                                <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-agena"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
                                                 </button>
                                             </ng-container>
                                             </div>
                                         </div>
-                                                                                           
+
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12"  >
-                                        <ul class="kt-agenda-list">                                          
-                                            <li *ngFor="let item of Agendas_List;let i = index;" (click)="showAgendaDetails(item,i);GetMeetingnotes_data()">
-                                                <div class="kt-agenda-item " [ngClass]="{'Active':currentAgendaView===i}">
-                                                    <label class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
-                                                        <input type="checkbox" name="Checkboxes15"/>
-                                                        <span></span> 
-                                                    </label>
-                                                    <div class="item-number">{{i+1}}</div>
+                                    <div class="col-12">
+                                        <div class="kt-agenda-scroll flipped">
+                                            <ul class="kt-agenda-content kt-agenda-list">
+                                                <li *ngFor="let item of Agendas_List;let i = index;"
+                                                    (click)="showAgendaDetails(item,i);GetMeetingnotes_data()">
+                                                    <div class="kt-agenda-item "
+                                                        [ngClass]="{'Active':currentAgendaView===i}">
+                                                        <label
+                                                            class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
+                                                            <input type="checkbox" name="Checkboxes15" />
+                                                            <span></span>
+                                                        </label>
+                                                        <div class="item-number">{{i+1}}</div>
+                                                        <div class="item-info">
+                                                            <div class="item-details">
+    
+                                                                <label [id]="'agenda-label-'+i"
+                                                                    class="task-name">{{item.Agenda_Name}}</label>
+                                                                <input [id]="'agenda-text-field-'+i" type="text"
+                                                                    class="task-name-editfield  d-none "
+                                                                    [value]="item.Agenda_Name" />
+    
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <button [id]="'edit-agendaname-btn-'+i"
+                                                                    class="edit-agendaname-btn" (click)="editAgenda(i)">
+                                                                    <svg width="15px" height="15px" viewBox="0 0 24 24"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                                            stroke-linejoin="round"></g>
+                                                                        <g id="SVGRepo_iconCarrier">
+                                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                                d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z">
+                                                                            </path>
+                                                                        </g>
+                                                                    </svg>
+                                                                </button>
+                                                                <button [id]="'remove-agenda-btn-'+i"
+                                                                    class="remove-agenda-btn"
+                                                                    (click)="deleteAgenda(item.AgendaId)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                        aria-hidden="true" role="img" font-size="1.5rem"
+                                                                        width="1em" height="1em" viewBox="0 0 24 24"
+                                                                        class="iconify iconify--mdi">
+                                                                        <path fill="currentColor"
+                                                                            d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </button>
+                                                                <button (click)="cancelAgendaEdit(i)" title="cancel"
+                                                                    [id]="'edit-cancel-'+i" class="editing-cancel d-none">
+                                                                    <svg width="10px" height="12px" viewBox="0 0 24 24"
+                                                                        version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                                            stroke-linejoin="round"></g>
+                                                                        <g id="SVGRepo_iconCarrier">
+                                                                            <title>cancel</title>
+                                                                            <desc>Created with Sketch.</desc>
+                                                                            <g id="icons" stroke-width="1"
+                                                                                fill-rule="evenodd">
+                                                                                <g id="ui-gambling-website-lined-icnos-casinoshunter"
+                                                                                    transform="translate(-2168.000000, -158.000000)"
+                                                                                    fill-rule="nonzero">
+                                                                                    <g id="1"
+                                                                                        transform="translate(1350.000000, 120.000000)">
+                                                                                        <path
+                                                                                            d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z"
+                                                                                            id="cancel"></path>
+                                                                                    </g>
+                                                                                </g>
+                                                                            </g>
+                                                                        </g>
+                                                                    </svg>
+                                                                </button>
+    
+                                                                <button (click)="updateAgenda1(i)" title="save"
+                                                                    [id]="'editing-save-'+i" class="editing-save d-none ">
+                                                                    <svg width="21px" height="25px"
+                                                                        viewBox="0 0 24.00 24.00"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                                            stroke-linejoin="round"></g>
+                                                                        <g id="SVGRepo_iconCarrier">
+                                                                            <path
+                                                                                d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"
+                                                                                stroke-width="2.4" stroke-linecap="round">
+                                                                            </path>
+                                                                        </g>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+    
+                                                <!-- <li class="kt-agenda-item">
+                                                    <div class="item-number">02</div>
                                                     <div class="item-info">
                                                         <div class="item-details">
-                                                            
-                                                            <label [id]="'agenda-label-'+i" class="task-name">{{item.Agenda_Name}}</label> 
-                                                            <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="item.Agenda_Name" />
-                                                        
+                                                            <div class="item-label">Devbox website</div>
+                                                            <div class="item-title">Website development for Static</div>
                                                         </div>
-                                                        <div class="d-flex">
-                                                        <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
-                                                            <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
-                                                        </button>
-                                                        <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(item.AgendaId)">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                                                role="img" font-size="1.5rem" width="1em" height="1em"
-                                                                viewBox="0 0 24 24" class="iconify iconify--mdi">
-                                                                <path fill="currentColor"
-                                                                    d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                        <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
-                                                            <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
-                                                          </button>
-                                         
-                                                          <button (click)="updateAgenda1(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
-                                                             <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
-                                                          </button>   
+                                                        <div class="item-count">03</div>
                                                     </div>
-                                                    </div>
-                                                </div> 
-                                            </li>     
-                                                                             
-                                            <!-- <li class="kt-agenda-item">
-                                                <div class="item-number">02</div>
-                                                <div class="item-info">
-                                                    <div class="item-details">
-                                                        <div class="item-label">Devbox website</div>
-                                                        <div class="item-title">Website development for Static</div>
-                                                    </div>
-                                                    <div class="item-count">03</div>
-                                                </div>
-                                            </li> -->
-                                        </ul>
+                                                </li> -->
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -494,7 +585,7 @@
                                     </a>
                                     <!-- <div class="br-line"></div> -->
 
-                                    <a class="kt-inbox__icon" (click)="AddPortfolio()"   title="Add Portfolio">
+                                    <a class="kt-inbox__icon" (click)="AddPortfolio()" title="Add Portfolio">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998" width="16"
                                             height="16" class="iconify iconify--mdi" version="1.1">
@@ -502,7 +593,7 @@
                                                 d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z" />
                                         </svg>
                                     </a>
-                                    <a class="kt-inbox__icon" title="Favourite">
+                                    <!-- <a class="kt-inbox__icon" title="Favourite">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" viewBox="0 0 1024 1024"
                                             class="star-fill iconify iconify--mdi">
@@ -510,8 +601,8 @@
                                                 d="M776.533333 938.666667c-8.533333 0-12.8 0-21.333333-4.266667l-243.2-128-243.2 128c-12.8 8.533333-29.866667 4.266667-46.933333-4.266667-12.8-8.533333-21.333333-25.6-17.066667-42.666666l46.933333-273.066667L55.466667 426.666667C42.666667 413.866667 38.4 396.8 42.666667 384c4.266667-17.066667 17.066667-25.6 34.133333-29.866667l273.066667-38.4 123.733333-247.466666c12.8-29.866667 64-29.866667 76.8 0l123.733333 247.466666 273.066667 38.4c12.8 0 25.6 12.8 34.133333 29.866667 4.266667 17.066667 0 34.133333-12.8 42.666667l-196.266666 192 46.933333 273.066666c4.266667 17.066667-4.266667 34.133333-17.066667 42.666667-8.533333 4.266667-17.066667 4.266667-25.6 4.266667zM174.933333 426.666667l149.333334 149.333333c12.8 8.533333 17.066667 21.333333 17.066666 34.133333l-34.133333 209.066667 187.733333-98.133333c12.8-8.533333 25.6-8.533333 38.4 0l187.733334 98.133333-38.4-209.066667c-4.266667-12.8 4.266667-29.866667 12.8-38.4l149.333333-149.333333-209.066667-29.866667c-12.8 0-25.6-12.8-34.133333-21.333333L512 183.466667 418.133333 371.2c-4.266667 12.8-17.066667 21.333333-29.866666 21.333333l-213.333334 34.133334z" />
                                         </svg>
 
-                                    </a>
-                                    <a class="kt-inbox__icon" title="Pin">
+                                    </a> -->
+                                    <!-- <a class="kt-inbox__icon" title="Pin">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" viewBox="0 0 1024 1024"
                                             class="bi bi-pin-angle-fill iconify iconify--mdi">
@@ -519,16 +610,16 @@
                                                 d="M316.330667 426.666667l40.789333 40.746666a42.666667 42.666667 0 0 1-60.373333 60.373334L183.168 414.165333C156.288 387.285333 175.317333 341.333333 213.333333 341.333333h238.336L554.666667 238.336V170.666667a42.666667 42.666667 0 0 1 12.501333-30.165334l42.666667-42.666666a42.666667 42.666667 0 0 1 60.330666 0l256 256a42.666667 42.666667 0 0 1 0 60.330666l-42.666666 42.666667A42.666667 42.666667 0 0 1 853.333333 469.333333h-67.669333L682.666667 572.330667V810.666667c0 37.973333-45.952 57.045333-72.832 30.165333L426.666667 657.664l-225.834667 225.834667a42.666667 42.666667 0 1 1-60.330667-60.330667l256-256a42.666667 42.666667 0 0 1 60.330667 0L597.333333 707.669333V554.666667a42.666667 42.666667 0 0 1 12.501334-30.165334l128-128A42.666667 42.666667 0 0 1 768 384h67.669333l-225.834666-225.834667h60.330666l-42.666666 42.666667L640 170.666667v85.333333a42.666667 42.666667 0 0 1-12.501333 30.165333l-128 128A42.666667 42.666667 0 0 1 469.333333 426.666667H316.330667z" />
                                         </svg>
 
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pin-angle-fill iconify iconify--mdi"><path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path></svg> -->
-                                    </a>
+                                      
+                                    </a> -->
 
-                                    <a class="kt-inbox__icon" title="Link">
+                                    <!-- <a class="kt-inbox__icon" title="Link">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" viewBox="0 0 1024 1024" class="iconify iconify--mdi">
                                             <path
                                                 d="M943.616 251.2l-170.112-170.112a54.4 54.4 0 0 0-77.056 0.192L452.352 325.312a54.528 54.528 0 0 0-0.192 77.12l19.776 35.264L537.792 371.84c-10.496-10.56-10.56-22.4 0-32.96l197.632-197.568 148.16 148.16-197.568 197.568c-10.56 10.56-22.4 10.56-32.96 0L587.264 552.96l35.008 19.584a54.592 54.592 0 0 0 77.12-0.192l244.032-244.032a54.592 54.592 0 0 0 0.192-77.12zM554.304 585.856l-49.408 49.408-16.448 16.512c11.072 11.072 11.136 21.76 0 32.896l-197.568 197.632-148.288-148.224 197.632-197.568c11.136-11.136 21.824-11.072 32.896 0l65.856-65.856-35.776-19.328a54.464 54.464 0 0 0-77.056 0.192l-244.096 244.032a54.528 54.528 0 0 0-0.192 77.056l170.112 170.112a54.464 54.464 0 0 0 77.056-0.192l244.096-244.032a54.528 54.528 0 0 0 0.192-77.056l-19.008-35.584z m-197.632 131.712l378.752-378.688-49.408-49.408-378.752 378.688 49.408 49.408z" />
                                         </svg>
-                                    </a>
+                                    </a> -->
 
                                     <!-- <div class="br-line"></div> -->
                                     <a (click)="Attachment_views()" class="kt-inbox__icon " title="Attachments">
@@ -542,7 +633,7 @@
                                         </svg>
                                     </a>
 
-                                    <a class="kt-inbox__icon kt_Comments" title="Comments">
+                                    <!-- <a class="kt-inbox__icon kt_Comments" title="Comments">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16"
                                             height="16" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1">
                                             <path
@@ -554,7 +645,7 @@
                                             <path
                                                 d="M676.096 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z" />
                                         </svg>
-                                    </a>
+                                    </a> -->
 
                                     <a class="kt-inbox__icon ac-activity" title="Activity Log">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1"
@@ -567,14 +658,14 @@
 
 
 
-                                    <a class="kt-inbox__icon" title="timeline">
+                                    <!-- <a class="kt-inbox__icon" title="timeline">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
                                             <path
                                                 d="M271.36 276.48c0-61.44-40.96-113.664-97.28-130.048V38.4C174.08 17.408 156.672 0 135.68 0S97.28 17.408 97.28 38.4v108.032C40.96 162.816 0 215.04 0 276.48c0 61.44 41.472 113.664 97.792 130.048l1.536 209.92C41.984 632.832 0 685.056 0 747.52c0 61.44 40.96 113.664 97.28 130.048V983.04c0 20.992 17.408 38.4 38.4 38.4s38.4-17.408 38.4-38.4v-105.472c56.32-16.384 97.28-68.608 97.28-130.048 0-60.928-39.936-112.128-95.232-129.536l-1.536-211.456C230.4 389.632 271.36 337.92 271.36 276.48z m-194.56 0c0-32.256 26.624-58.88 58.88-58.88S194.56 244.224 194.56 276.48s-26.624 58.88-58.88 58.88S76.8 308.736 76.8 276.48z m117.76 471.04c0 32.256-26.624 58.88-58.88 58.88S76.8 779.776 76.8 747.52s26.624-58.88 58.88-58.88S194.56 715.264 194.56 747.52zM924.16 97.28h-496.64C372.224 97.28 327.68 141.824 327.68 197.12v158.72C327.68 411.136 372.224 455.68 427.52 455.68h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64C414.72 378.88 404.48 368.64 404.48 355.84v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72zM924.16 568.32h-496.64c-55.296 0-99.84 44.544-99.84 99.84v158.72c0 55.296 44.544 99.84 99.84 99.84h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64c-12.8 0-23.04-10.24-23.04-23.04v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72z" />
                                         </svg>
 
-                                    </a>
+                                    </a> -->
 
                                     <!-- <div class="br-line"></div> -->
 
@@ -595,20 +686,27 @@
                                         </svg>
                                     </a> -->
 
-                                       <a class="kt-inbox__icon" title="Previous Meeting Notes"  (click)="Slide_meeting()">
-                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi">
-                                            <path  d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path>
-                                            <rect  x="16.37" y="37.13" width="44.1" height="8"></rect>
-                                            <rect  x="16.37" y="53.09" width="30.8" height="8"></rect>
-                                            <rect  x="16.37" y="22.13" width="44.1" height="8"></rect>
-                                            <path  d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path>
+                                    <a class="kt-inbox__icon" title="Previous Meeting Notes" (click)="Slide_meeting()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                            viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16"
+                                            width="16" class="iconify iconify--mdi">
+                                            <path
+                                                d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z">
+                                            </path>
+                                            <rect x="16.37" y="37.13" width="44.1" height="8"></rect>
+                                            <rect x="16.37" y="53.09" width="30.8" height="8"></rect>
+                                            <rect x="16.37" y="22.13" width="44.1" height="8"></rect>
+                                            <path
+                                                d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z">
+                                            </path>
                                         </svg>
-                                      </a> 
+                                    </a>
 
 
-                                    <a class="kt-inbox__icon" title="Projects"  (click)="AddProjects()" >
-                                        <i _ngcontent-pre-c394="" class="fab-icn fab fa-wpforms " style="font-size: 1.4em;"></i>
-                                    </a>                                 
+                                    <a class="kt-inbox__icon" title="Projects" (click)="AddProjects()">
+                                        <i _ngcontent-pre-c394="" class="fab-icn fab fa-wpforms "
+                                            style="font-size: 1.4em;"></i>
+                                    </a>
                                 </div>
                             </div>
 
@@ -1099,19 +1197,20 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="kt-project-name d-flex align-items-start flex-column">
 
-                                   <!-- <h4> Website Development static</h4> -->
-                               <ng-container *ngIf="currentAgendaView=== undefined ;else Agenda">
-                                <ng-container *ngFor="let data of EventScheduledjson">
-                                   <h4>{{data.Task_Name}}</h4>
-                                   <h6 [innerHTML]="data.Description"></h6>
-                                 </ng-container>
-                                </ng-container>
-                               
-                                      <ng-template #Agenda>
-                                        <h4>{{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}</h4>
-                                      </ng-template>
-                            
-                                      
+                                    <!-- <h4> Website Development static</h4> -->
+                                    <ng-container *ngIf="currentAgendaView=== undefined ;else Agenda">
+                                        <ng-container *ngFor="let data of EventScheduledjson">
+                                            <h4>{{data.Task_Name}}</h4>
+                                            <h6 [innerHTML]="data.Description"></h6>
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <ng-template #Agenda>
+                                        <h4>{{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                                        </h4>
+                                    </ng-template>
+
+
                                     <!-- <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6> -->
                                 </div>
                                 <div class="kt-btn-notes-div">
@@ -1155,68 +1254,8 @@
                             <div class="meeting-notes">
                                 <!-- <angular-editor [config]="config" [(ngModel)]="notesContent"></angular-editor> -->
 
-                                <angular-editor [config]="config" [(ngModel)]="Notes_Type" (keyup)="addBulletPointsOnEnter($event)">
-                                        
-                                </angular-editor >
-                                <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
-                                    <div class="todo-main">
-                                        <div class="task-header">
-                                            <h1 class="task-header-title">Assign Task</h1>
-                                            <div class="task-tools">
-                                                <div class="task-count"></div>
-                                            </div>
-                                            <form class="task-form">
-                                                <input class="task-input" id="todo-input" name="text"
-                                                    [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)"
-                                                    placeholder="Add a new task..." autofocus="true">
-                                                <button class="task-button" (click)="EnterSubmit(_Demotext)"
-                                                    id="btn1">Add Task</button>
-                                            </form>
-                                        </div>
-                                        <div class="todo-list">
-                                            <div class="
-                                            " *ngFor="let item of _TodoList; let i=index;">
-                                                <input class="task-status" type="checkbox">
-                                                <label class="task-name">{{item.Task_Name}}</label>
-                                                <div class="task-actions">
-    
-                                                    <span mat-icon-button [matMenuTriggerFor]="menu"
-                                                        aria-label="Example icon-button with a menu" matTooltip="More"
-                                                        class="cursor-pointer ast-kt-dw">
-                                                        <mat-icon color="primary">more_vert</mat-icon>
-                                                    </span>
-                                                    <mat-menu #menu="matMenu" xPosition="after">
-                                                        <button mat-menu-item mat
-                                                            (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-                                                            <mat-icon class="mr-2" color='primary'>group</mat-icon>
-                                                            <span>Assign Task/Project</span>
-                                                        </button>
-    
-                                                        <button mat-menu-item mat
-                                                            (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
-                                                            <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
-                                                            <span>Add Action To Project</span>
-                                                        </button>
-                                                    </mat-menu>
-                                                </div>
-                                                <button class="task-delete task-btns"
-                                                    (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                                        role="img" font-size="1.5rem" width="1em" height="1em"
-                                                        viewBox="0 0 24 24" class="iconify iconify--mdi">
-                                                        <path fill="currentColor"
-                                                            d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="task-list">
-                                            <div class="task-empty" *ngIf="!text">Not found a task</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <angular-editor [config]="config" [(ngModel)]="Notes_Type"
+                                    (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
 
                                 <!-- <angular-editor  [editor]="Editor" 
                                [(ngModel)]="Notes_Type"
@@ -1225,6 +1264,188 @@
 
 
 
+                            <div class="accordion accordion-attendes-notes d-none" id="accordion_attendes_notes">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <a class="accordion-button" type="button" data-toggle="collapse"
+                                            data-target="#attendes_notes" aria-expanded="false"
+                                            aria-controls="attendes_notes">
+                                            <div class="head-content">
+                                                <span class="accordion-heading">View All Team members notes</span><span
+                                                    class="message-count"> 24 Messages</span>
+                                            </div>
+                                            <div>
+                                                <span class="accordion-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                                        viewBox="0 0 15 9" fill="none">
+                                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </h2>
+                                    <div id="attendes_notes" class="accordion-collapse collapse"
+                                        aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+                                        <div class="accordion-body">
+                                            <ul class="attendees-note-userlist">
+                                                <li class="attendees-note-user">
+                                                    <div class="user-info">
+                                                        <span class="user-icon">
+                                                            <img
+                                                                src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                                        </span>
+                                                        <span>
+                                                            <div class="user-name">Mirza Hussain Baig <span
+                                                                    class="user-time">2 mins</span></div>
+                                                            <div><span class="user-role">Team Leader</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="user-notes">
+                                                        <p>How likely are you to recommend our company to your friends
+                                                            and family ?</p>
+                                                        <p class="mt-3">Not all people can afford to pay for content
+                                                            immediately after creating their website, so that’s not a
+                                                            condition you can demand from your clients. Instead, you can
+                                                            use a dummy text generator.
+                                                    </div>
+
+                                                </li>
+                                                <li class="attendees-note-user">
+                                                    <div class="user-info">
+                                                        <span class="user-icon">
+                                                            <img
+                                                                src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                                        </span>
+                                                        <span>
+                                                            <div class="user-name">Siva Nadendla <span
+                                                                    class="user-time">10 mins</span></div>
+                                                            <div><span class="user-role">UX/UI Designer</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="user-notes">
+                                                        <p>How likely are you to recommend our company to your friends
+                                                            and family ?</p>
+                                                        <p class="mt-3">Not all people can afford to pay for content
+                                                            immediately after creating their website, so that’s not a
+                                                            condition you can demand from your clients. Instead, you can
+                                                            use a dummy text generator.
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
+                                <div class="kt-meeting-title mt-0 mb-2">
+                                    <div class="kt-meeting-title-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17"
+                                            viewBox="0 0 16 17" fill="none">
+                                            <g clip-path="url(#clip0_365_5615)">
+                                                <path
+                                                    d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z"
+                                                    fill="white" fill-opacity="0.65" />
+                                                <path
+                                                    d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z"
+                                                    fill="white" />
+                                                <path
+                                                    d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z"
+                                                    fill="white" />
+                                                <path
+                                                    d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z"
+                                                    fill="white" />
+                                                <path
+                                                    d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z"
+                                                    fill="white" />
+                                                <path
+                                                    d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z"
+                                                    fill="white" />
+                                                <path
+                                                    d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z"
+                                                    fill="white" />
+                                                <path
+                                                    d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z"
+                                                    fill="white" fill-opacity="0.65" />
+                                                <path
+                                                    d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z"
+                                                    fill="white" />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_365_5615">
+                                                    <rect width="15" height="16.1538" fill="white"
+                                                        transform="translate(0.524414 0.422852)" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                    <span class="kt-meeting-title-name">Assign Task</span>
+                                </div>
+                                <div class="todo-main">
+                                    <div class="task-header">
+                                        <form class="task-form">
+                                            <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"
+                                            version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path
+                                                    d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z"
+                                                    fill="#c4c4c4"></path>
+                                                <path
+                                                    d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z"
+                                                    fill="#dedede"></path>
+                                                <path
+                                                    d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z"
+                                                    fill="#e0e0e0"></path>
+                                                <path
+                                                    d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z"
+                                                    fill="#e0e0e0"></path>
+                                            </g>
+                                        </svg>
+                                            <input class="task-input ml-2" id="todo-input" name="text"
+                                                [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)"
+                                                placeholder="Add a new task..." autofocus="true">
+                                            <button class="task-button" (click)="EnterSubmit(_Demotext)" id="btn1">Add
+                                                Task</button>
+                                        </form>
+                                    </div>
+                                    <div class="todo-list">
+                                        <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
+                                            <input class="task-status" type="checkbox">
+                                            <label class="task-name">{{item.Task_Name}}</label>
+                                            <div class="task-actions">
+
+                                                <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                    aria-label="Example icon-button with a menu" matTooltip="More"
+                                                    class="cursor-pointer ast-kt-dw">
+                                                    <mat-icon color="primary">more_vert</mat-icon>
+                                                </span>
+                                                <mat-menu #menu="matMenu" xPosition="after">
+                                                    <button mat-menu-item mat
+                                                        (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                        <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                        <span>Assign Task/Project</span>
+                                                    </button>
+
+                                                    <button mat-menu-item mat
+                                                        (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                        <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                        <span>Add Action To Project</span>
+                                                    </button>
+                                                </mat-menu>
+                                            </div>
 
 
 
@@ -1234,7 +1455,28 @@
 
 
 
-                            
+
+
+
+                                            
+                                            <button class="task-delete task-btns"
+                                                (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                    role="img" font-size="1.5rem" width="1em" height="1em"
+                                                    viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                    <path fill="currentColor"
+                                                        d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="task-list">
+                                        <div class="task-empty" *ngIf="!text">Not found a task</div>
+                                    </div>
+                                </div>
+                            </div>
 
 
 
@@ -1250,38 +1492,49 @@
 
                             <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
                                 <div class="accordion-item">
-                                  <h2 class="accordion-header" id="headingOne">
-                                    <a class="accordion-button" type="button" data-toggle="collapse" data-target="#attendes_notes" aria-expanded="false" aria-controls="attendes_notes">
-                                      <div class="head-content">
-                                        <span class="accordion-heading">View All Team members notes</span><span class="message-count"> 24 Messages</span>
-                                      </div>
-                                      <div>
-                                        <span class="accordion-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none">
-                                                <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </span>
-                                      </div>
-                                    </a>
-                                  </h2>
-                                  <div id="attendes_notes" class="accordion-collapse collapse" aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
-                                    <div class="accordion-body">
-                                        <ul class="attendees-note-userlist">
-                                            <li class="attendees-note-user">
-                                                <div class="user-info">
-                                                    <span class="user-icon">
-                                                        <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                                                    </span>
-                                                    <span>
-                                                        <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
-                                                        <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
-                                                    </span>
-                                                </div>
-                                                <div class="user-notes">    
-                                                    <p [innerHTML]="Notes_Type"></p>
-                                                </div>
-                                            </li>
-                                            <!-- <li class="attendees-note-user">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <a class="accordion-button" type="button" data-toggle="collapse"
+                                            data-target="#attendes_notes" aria-expanded="false"
+                                            aria-controls="attendes_notes">
+                                            <div class="head-content">
+                                                <span class="accordion-heading">View All Team members notes</span><span
+                                                    class="message-count"> 24 Messages</span>
+                                            </div>
+                                            <div>
+                                                <span class="accordion-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                                        viewBox="0 0 15 9" fill="none">
+                                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </h2>
+                                    <div id="attendes_notes" class="accordion-collapse collapse"
+                                        aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+                                        <div class="accordion-body">
+                                            <ul class="attendees-note-userlist">
+                                                <li class="attendees-note-user">
+                                                    <div class="user-info">
+                                                        <span class="user-icon">
+                                                            <img
+                                                                src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                                        </span>
+                                                        <span>
+                                                            <div class="user-name">Mirza Hussain Baig <span
+                                                                    class="user-time">2 mins</span></div>
+                                                            <div><span class="user-role">Team Leader</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="user-notes">
+                                                        <p [innerHTML]="Notes_Type"></p>
+                                                    </div>
+                                                </li>
+                                                <!-- <li class="attendees-note-user">
                                                 <div class="user-info">
                                                     <span class="user-icon">
                                                         <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
@@ -1295,11 +1548,11 @@
                                                     <p>How likely are you to recommend our company to your friends and family ?</p>
                                                     <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
                                             </li> -->
-                                        </ul>
+                                            </ul>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
-                              </div>
+                            </div>
 
 
                         </div>
@@ -1370,35 +1623,45 @@
         <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="kt-chat__messages">
                 <ul class="attendees-note-userlist">
-                    <li class="attendees-note-user">
+                    <li class="attendees-note-user" >
                         <div class="user-info">
                             <span class="user-icon">
-                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                <img
+                                    src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
                             </span>
                             <span>
                                 <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
-                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox
+                                        Software Pvt.ltd.</span></div>
                             </span>
                         </div>
                         <div class="user-notes">
                             <p>How likely are you to recommend our company to your friends and family ?</p>
-                            <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that’s not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+                            <p class="mt-3">Not all people can afford to pay for content immediately after creating
+                                their website, so that’s not a condition you can demand from your clients. Instead, you
+                                can use a dummy text generator.
+                        </div>
 
                     </li>
-                    <li class="attendees-note-user">
+                    <!-- <li class="attendees-note-user">
                         <div class="user-info">
                             <span class="user-icon">
-                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                <img
+                                    src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
                             </span>
                             <span>
                                 <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
-                                <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                                <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox
+                                        Software Pvt.ltd.</span></div>
                             </span>
                         </div>
                         <div class="user-notes">
                             <p>How likely are you to recommend our company to your friends and family ?</p>
-                            <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that’s not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
-                    </li>
+                            <p class="mt-3">Not all people can afford to pay for content immediately after creating
+                                their website, so that’s not a condition you can demand from your clients. Instead, you
+                                can use a dummy text generator.
+                        </div>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -1413,15 +1676,15 @@
     <div id="LinkSideBar-header" class="px-4 pt-4 pb-2">
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
             <h4 class="font-weight-600 m-0 d-flex">
-                <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">           
+                <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">
                     <ng-container *ngIf="_linkedMemos>0">
-                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
-                 </ng-container>
-                    <ng-container  *ngIf="_linkedMemos==0" >
-                    <img width="23px" class="black-white"
-                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
-                    title="Not Linked">
-                 </ng-container>
+                        <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29">
+                    </ng-container>
+                    <ng-container *ngIf="_linkedMemos==0">
+                        <img width="23px" class="black-white"
+                            src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
+                            title="Not Linked">
+                    </ng-container>
                 </a> Link DMS
             </h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -1448,7 +1711,7 @@
         </li>
         <li class="kt-nav__item px-4">
             <div class="matchip-drp-dwn">
-              <mat-form-field class="drp-dwn-field ">
+                <mat-form-field class="drp-dwn-field ">
                     <mat-label>Select DMSs</mat-label>
                     <mat-chip-list #selectedTeamMembers>
                         <mat-chip *ngFor="let data of selectedEmploy_DMS" class="Data_chip_kt"
@@ -1461,34 +1724,32 @@
                     </mat-chip-list>
                     <div class="d-flex">
                         <input #fruitInputs class="flex-1" [matChipInputFor]="selectedTeamMembers"
-                            [matAutocomplete]="TeamMemberDrpDwns"
-                            (input)="filterEmployeesDMs($event.target.value)" #SupportTF 
-                            />
-                        <button *ngIf="isDMSDrpDwnOpen"
-                            class="bg-transparent border-0 "><mat-icon class="close-icon"
+                            [matAutocomplete]="TeamMemberDrpDwns" (input)="filterEmployeesDMs($event.target.value)"
+                            #SupportTF />
+                        <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                                 (click)=" this.isDMSDrpDwnOpen=false;  
                                  closeAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">cancel</mat-icon></button>
-                        <button *ngIf="!isDMSDrpDwnOpen"
-                            class="bg-transparent border-0"><mat-icon class="add-icon"
+                        <button *ngIf="!isDMSDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
                                 (click)="this.isDMSDrpDwnOpen=true;
                                  openAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">add</mat-icon></button>
                     </div>
                     <mat-autocomplete aria-label="supportDrpDwnDMS" #TeamMemberDrpDwns="matAutocomplete"
                         (optionSelected)="selectedChip_DMS($event); SupportTF.value=''; "
-                        (opened)="isDMSDrpDwnOpen=true"
-                        (closed)="isDMSDrpDwnOpen=false;    ">
-                            <mat-option class="mat-font" *ngFor="let item of Memos_List "  [value]="item.MailId">
-                            <mat-checkbox color="primary"  [checked]="selectedEmploy_DMS.indexOf(item)!==-1" (change)="selectedChip_DMS($event)"></mat-checkbox>
+                        (opened)="isDMSDrpDwnOpen=true" (closed)="isDMSDrpDwnOpen=false;">
+                        
+                        <mat-option class="mat-font" *ngFor="let item of Memos_List " [value]="item.MailId">
+                            <mat-checkbox color="primary" [checked]="selectedEmploy_DMS.indexOf(item)!==-1"
+                                (change)="selectedChip_DMS($event)"></mat-checkbox>
                             {{item.Subject}}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                 <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
-                   (click)="AddDMS_meetingreport()" >Link</button>
+                <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
+                    (click)="AddDMS_meetingreport()">Link</button>
             </div>
         </li>
         <li class="kt-nav__item px-4">
-                <div id="DemoList-table" *ngIf="_MemosSubjectList&&_MemosSubjectList ;else noDMSFound">
+            <div id="DemoList-table" *ngIf="_MemosSubjectList;else noDMSFound">
                 <div class="demo" *ngFor="let memo of _MemosSubjectList">
                     <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                     <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
@@ -1503,7 +1764,7 @@
                 </div>
             </ng-template>
         </li>
-        <li class="kt-nav__foot"></li> 
+        <li class="kt-nav__foot"></li>
     </ul>
 </div>
 
@@ -1517,12 +1778,16 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
             <h4 class="font-weight-bold m-0 d-flex">
                 <a class="kt-inbox__icon  pb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998" width="16" height="16"
+                        class="iconify iconify--mdi" version="1.1">
+                        <path
+                            d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z" />
+                    </svg>
                 </a>Link Portfolio
             </h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-            (click)="closeLinkSideBar()"  >
-           
+                (click)="closeLinkSideBar()">
+
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -1549,8 +1814,8 @@
                 <mat-label>Select Portfolios</mat-label>
                 <mat-chip-list #selectedportfolioslist>
                     <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
-                    (removed)="Portfolio_Deselect(prt)" >
-    
+                        (removed)="Portfolio_Deselect(prt)">
+
                         {{prt.Portfolio_Name}} - {{prt.DisplayName}}
                         <button matChipRemove>
                             <mat-icon>cancel</mat-icon>
@@ -1558,39 +1823,38 @@
                     </mat-chip>
                 </mat-chip-list>
                 <div class="d-flex">
-                    <input  #fruitInputportfolio class="border-gray" [placeholder]="'Select Portfolio(s)'"   (input)="filterPortfolio($event.target.value)"
-                        [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
+                    <input #fruitInputportfolio class="border-gray" [placeholder]="'Select Portfolio(s)'"
+                        (input)="filterPortfolio($event.target.value)" [matChipInputFor]="selectedportfolioslist"
+                        [matAutocomplete]="prtDrpDown">
                     <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                        (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
+                            (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
                     <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
-                        (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
+                            (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
                 </div>
                 <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
-                (optionSelected)="onPrtClicked($event)"  (closed)="isPortDrpDwnOpen=false"
-                (opened)="isPortDrpDwnOpen=true"
-                    >
+                    (optionSelected)="onPrtClicked($event)" (closed)="isPortDrpDwnOpen=false"
+                    (opened)="isPortDrpDwnOpen=true">
                     <mat-option *ngFor=" let prt of PortfolioLists" [value]="prt.portfolio_id"
-                    (click)="Portfolio_Select(ngDropdwonPort)" >
+                        (click)="Portfolio_Select(ngDropdwonPort)">
                         <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
-                        {{prt.Portfolio_Name}}  - {{prt.DisplayName}}
+                        {{prt.Portfolio_Name}} - {{prt.DisplayName}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <button class="btn btn-label-primary btn-upper mb-4" 
-            (click)="Addportfolios_meetingreport()">Link</button>
+            <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
         </div>
     </ul>
 
     <div class="kt-inbox mt-0 scrollbar1">
-       <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
+        <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
             <div class="kt-inbox__items flex-grow-1" data-type="inbox">
                 <div class="card brdr-5 shadow-sm" *ngFor="let data of portfolio_Scheduledjson; let i=index">
                     <div class="Replied_border_left_true_primary">
                         <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
-                           <div class="kt-inbox__details">
-                                <div class="kt-inbox__sender"  (click)="OnCardClick(data.numberval)">
+                            <div class="kt-inbox__details">
+                                <div class="kt-inbox__sender" (click)="OnCardClick(data.numberval)">
                                     <span class="kt-inbox__subject">
-                                     {{data.Portfolio_Name}}
+                                        {{data.Portfolio_Name}}
                                     </span>
                                 </div>
                                 <div class="kt-inbox__labels">
@@ -1601,39 +1865,39 @@
                                         </div>
                                     </span>
                                     <span
-                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">                          
+                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
                                         Total {{data.count}} Project(s)
                                     </span>
                                 </div>
                             </div>
-                            <div class="kt-inbox__datetime">                              
+                            <div class="kt-inbox__datetime">
                                 <small>{{data.Created_DT |date:'medium'}}</small>
-                            </div>                          
-                                <div class="delete-btn" >
-                                <i class="fas fa-edit invisible"></i>                          
-                                    <a (click)="DeletePortfolios(data.numberval)">
+                            </div>
+                            <div class="delete-btn">
+                                <i class="fas fa-edit invisible"></i>
+                                <a (click)="DeletePortfolios(data.numberval)">
                                     <i class="fas fa-trash-alt"></i>
-                                </a>                          
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <ng-container *ngIf="portfolio_Scheduledjson==0">
-        <ng-container >
-        
-            <div class="d-flex-center">
-                <div>
-                    <img src="./assets/images/portfolio.png" width="268" height="256" class="portfolioNot_Found" />
-                    <div class="bnk-txt">
-                        <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
+        <ng-container *ngIf="portfolio_Scheduledjson==0">
+            <ng-container>
+
+                <div class="d-flex-center">
+                    <div>
+                        <img src="./assets/images/portfolio.png" width="268" height="256" class="portfolioNot_Found" />
+                        <div class="bnk-txt">
+                            <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
+                        </div>
                     </div>
                 </div>
-            </div>  
-    </ng-container>
-</ng-container>
-</div>
+            </ng-container>
+        </ng-container>
+    </div>
 </div>
 <!-- Link Portfolios  Template  End -->
 
@@ -1644,7 +1908,7 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-                <h4 class="m-0">Meeting Attendees 
+                <h4 class="m-0">Meeting Attendees
                     <span class="head-muted">{{User_Scheduledjson.length}}
                     </span>
                 </h4>
@@ -1663,7 +1927,7 @@
         <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="meeting-search">
                 <div class="input-group mt-2">
-                <mat-form-field class="drp-dwn-field ">
+                    <mat-form-field class="drp-dwn-field ">
                         <mat-label>Add Support team</mat-label>
                         <mat-chip-list #selectedTeamMember>
                             <mat-chip *ngFor="let data of selectedEmployees" class="Data_chip_kt"
@@ -1676,49 +1940,46 @@
                         </mat-chip-list>
                         <div class="d-flex">
                             <input #fruitInput class="flex-1" [matChipInputFor]="selectedTeamMember"
-                                [matAutocomplete]="TeamMemberDrpDwn"
-                                (input)="filterEmployees($event.target.value)" 
-                               />
-                            <button *ngIf="isSupportDrpDwnOpen"
-                                class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                    (click)=" this.isSupportDrpDwnOpen=false;  
+                                [matAutocomplete]="TeamMemberDrpDwn" (input)="filterEmployees($event.target.value)" />
+                            <button *ngIf="isSupportDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
+                                    class="close-icon" (click)=" this.isSupportDrpDwnOpen=false;  
                                      closeAutocompleteDrpDwn_part('supportDrpDwn');">cancel</mat-icon></button>
-                            <button *ngIf="!isSupportDrpDwnOpen"
-                                class="bg-transparent border-0"><mat-icon class="add-icon"
-                                    (click)="this.isSupportDrpDwnOpen=true;
+                            <button *ngIf="!isSupportDrpDwnOpen" class="bg-transparent border-0"><mat-icon
+                                    class="add-icon" (click)="this.isSupportDrpDwnOpen=true;
                                      openAutocompleteDrpDwn_part('supportDrpDwn');">add</mat-icon></button>
                         </div>
                         <mat-autocomplete aria-label="supportDrpDwn" #TeamMemberDrpDwn="matAutocomplete"
-                            (optionSelected)="selectedChip($event);  "
-                            (opened)="isSupportDrpDwnOpen=true"
+                            (optionSelected)="selectedChip($event);  " (opened)="isSupportDrpDwnOpen=true"
                             (closed)="isSupportDrpDwnOpen=false;">
-                              <mat-option class="mat-font" *ngFor="let item of _EmployeeListForDropdown "  [value]="item.Emp_No">
-                                <mat-checkbox color="primary"  [checked]="selectedEmployees.indexOf(item)!==-1" (change)="selectedChip($event)"></mat-checkbox>
+                            <mat-option class="mat-font" *ngFor="let item of _EmployeeListForDropdown "
+                                [value]="item.Emp_No">
+                                <mat-checkbox color="primary" [checked]="selectedEmployees.indexOf(item)!==-1"
+                                    (change)="selectedChip($event)"></mat-checkbox>
                                 {{item.DisplayName}}
                             </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>            
-                  </div>
-                  <div>
+                    </mat-form-field>
+                </div>
+                <div>
                     <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
-                  </div>
+                </div>
             </div>
             <div class="kt-chat__messages">
                 <ul class="meeting-attendees-userlist">
-                    <li class="meeting-attendees-user"   *ngFor="let item of User_Scheduledjson;let i=index">
+                    <li class="meeting-attendees-user" *ngFor="let item of User_Scheduledjson;let i=index">
                         <div class="user-info">
                             <span class="user-icon">
-                                <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                                <img
+                                    src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
                             </span>
                             <span>
                                 <div class="user-name">
-                                    {{item.TM_DisplayName}} 
+                                    {{item.TM_DisplayName}}
                                     <span class="user-time">2 mins</span>
 
                                     <ng-container class="admin-check curser-pointer" *ngIf="item.IsAdmin">
                                         <span aria-hidden="true" class="admin-check-svg ml-2">
-                                            <svg xmlns="https://www.w3.org/2000/svg" width="14"
-                                                height="14">
+                                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                 <path _ngcontent-hko-c392="" fill="#5867dd"
                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
                                                 </path>
@@ -1729,17 +1990,18 @@
                                         <span>Admin</span>
                                     </ng-container>
 
-                                    <ng-container class="admin-check curser-pointer -hide-x" *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false"
-                                    (click)=" Updating_Adminmeeting(item.stringval)">
+                                    <ng-container class="admin-check curser-pointer -hide-x"
+                                        *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false"
+                                        (click)=" Updating_Adminmeeting(item.stringval)">
 
-                                    <span _ngcontent-hko-c392="" aria-hidden="true"
-                                        class="admin-check-svg ml-2">
-                                    </span>
-                                </ng-container>
+                                        <span _ngcontent-hko-c392="" aria-hidden="true" class="admin-check-svg ml-2">
+                                        </span>
+                                    </ng-container>
 
                                 </div>
                                 <div>
-                                    <span class="user-role">{{item.Designation_Name}}</span> <span class="user-company">{{item.Com_Name}}</span>
+                                    <span class="user-role">{{item.Designation_Name}}</span> <span
+                                        class="user-company">{{item.Com_Name}}</span>
                                 </div>
                             </span>
                         </div>
@@ -1747,38 +2009,59 @@
                             <div class="user-status online">
 
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13"
+                                        fill="currentColor">
                                         <g>
-                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                            <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor" />
                                         </g>
-                                      </svg>
+                                    </svg>
                                 </span>
                                 <span>Online</span>
                             </div>
-                            <div class="user-status-action" >
+                            <div class="user-status-action">
                                 <span class="admin-hover">
                                     <span>Mark as admin</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z"/></svg>
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10" fill="none">
-                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357" stroke="#999999" stroke-linecap="round"/>
-                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257" stroke="#999999" stroke-linecap="round"/>
-                                        <path d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z" stroke="#999999"/>
-                                      </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon"
+                                        style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                                        viewBox="0 0 1024 1024" version="1.1">
+                                        <path
+                                            d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z" />
+                                    </svg>
                                 </span>
                                 <span class="d-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
-                                        <path d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z" fill="#999999"/>
-                                        <path d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z" fill="#999999"/>
-                                        <path d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z" fill="#999999"/>
-                                      </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10"
+                                        fill="none">
+                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357"
+                                            stroke="#999999" stroke-linecap="round" />
+                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257"
+                                            stroke="#999999" stroke-linecap="round" />
+                                        <path
+                                            d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z"
+                                            stroke="#999999" />
+                                    </svg>
                                 </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
-                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/>
-                                      </svg>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9"
+                                        fill="none">
+                                        <path
+                                            d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z"
+                                            fill="#999999" />
+                                        <path
+                                            d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z"
+                                            fill="#999999" />
+                                        <path
+                                            d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z"
+                                            fill="#999999" />
+                                    </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9"
+                                        fill="none">
+                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </span>
                             </div>
                         </div>
@@ -1940,9 +2223,10 @@
                     </a>
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-                (click)="closeLinkSideBar()"  >
-               
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    (click)="closeLinkSideBar()">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                        fill="currentColor">
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path
                             d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
@@ -1954,7 +2238,7 @@
         <ul class="kt-nav">
             <li class="kt-nav__head d-block">
                 <p class="text-primary">
-                   Projects</p>
+                    Projects</p>
                 <div class="M_fsize">
                     Linked
                     <div class="badge badge-pill badge-outline-success">
@@ -1964,8 +2248,8 @@
                 <div class="kt-nav__separator"></div>
             </li>
             <div class="d-flex align-items-end p-3" style="column-gap:10px">
-    
-    
+
+
                 <mat-form-field class="drp-dwn-field ">
                     <mat-label>Selects Projects</mat-label>
                     <mat-chip-list #selectedTeamMember_projects>
@@ -1979,44 +2263,41 @@
                     </mat-chip-list>
                     <div class="d-flex">
                         <input #fruitInputpro class="flex-1" [matChipInputFor]="selectedTeamMember_projects"
-                            [matAutocomplete]="ProjectsDrpDwn"
-                            (input)="filterProjects($event.target.value)" #SupportTF 
-                            />
-                        <button *ngIf="isSupportDrpDwnProjects"
-                            class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                (click)=" this.isSupportDrpDwnProjects=false;  
+                            [matAutocomplete]="ProjectsDrpDwn" (input)="filterProjects($event.target.value)"
+                            #SupportTF />
+                        <button *ngIf="isSupportDrpDwnProjects" class="bg-transparent border-0 "><mat-icon
+                                class="close-icon" (click)=" this.isSupportDrpDwnProjects=false;  
                                  closeAutocompleteDrpDwn_Project('supportDrpDwnpro');">cancel</mat-icon></button>
-                        <button *ngIf="!isSupportDrpDwnProjects"
-                            class="bg-transparent border-0"><mat-icon class="add-icon"
-                                (click)="this.isSupportDrpDwnProjects=true;
+                        <button *ngIf="!isSupportDrpDwnProjects" class="bg-transparent border-0"><mat-icon
+                                class="add-icon" (click)="this.isSupportDrpDwnProjects=true;
                                  openAutocompleteDrpDwn_Project('supportDrpDwnpro');">add</mat-icon></button>
                     </div>
                     <mat-autocomplete aria-label="supportDrpDwnpro" #ProjectsDrpDwn="matAutocomplete"
                         (optionSelected)="selectedChip_project($event); SupportTF.value=''; "
-                        (opened)="isSupportDrpDwnProjects=true"
-                        (closed)="isSupportDrpDwnProjects=false;">
-                         <mat-option class="mat-font" *ngFor="let item of ProjectListArray "  [value]="item.Project_Code">
-                            <mat-checkbox color="primary"  [checked]="selectedEmploy_Projects.indexOf(item)!==-1" (change)="selectedChip_project($event)"></mat-checkbox>
+                        (opened)="isSupportDrpDwnProjects=true" (closed)="isSupportDrpDwnProjects=false;">
+                        <mat-option class="mat-font" *ngFor="let item of ProjectListArray " [value]="item.Project_Code">
+                            <mat-checkbox color="primary" [checked]="selectedEmploy_Projects.indexOf(item)!==-1"
+                                (change)="selectedChip_project($event)"></mat-checkbox>
                             {{item.BlockNameProject}}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="btn btn-label-primary mb-4" 
-                (click)="Addproject_meetingreport()">Add Projects</button>
+                <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>
             </div>
         </ul>
-    
+
         <div class="kt-inbox mt-0 scrollbar1">
             <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
                 <div class="kt-inbox__items flex-grow-1" data-type="inbox">
                     <div class="card brdr-5 shadow-sm" *ngFor="let item of Project_code; let i=index">
                         <div class="Replied_border_left_true_primary">
-                            <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
-                             <div class="kt-inbox__details">
+                            <div data-type="inbox"
+                                class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
+                                <div class="kt-inbox__details">
                                     <div class="kt-inbox__sender">
                                         <span class="kt-inbox__subject">
-                                          {{item.Project_Name}}
-                                          </span>
+                                            {{item.Project_Name}}
+                                        </span>
                                     </div>
                                     <div class="kt-inbox__labels">
                                         <span
@@ -2025,15 +2306,15 @@
                                                 Owner: {{item.TM_DisplayName}}
                                             </div>
                                         </span>
-                               </div>
+                                    </div>
                                 </div>
                                 <div class="kt-inbox__datetime">
-                             </div>
-                                 <div class="delete-btn" >
-                                    <i class="fas fa-edit invisible"></i>                                    
-                                            <a (click)="DeleteProject(item.stringval)">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>                          
+                                </div>
+                                <div class="delete-btn">
+                                    <i class="fas fa-edit invisible"></i>
+                                    <a (click)="DeleteProject(item.stringval)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -2042,16 +2323,16 @@
             </div>
         </div>
         <ng-container *ngIf="Project_code&&Project_code.length==0">
-            <ng-container >
+            <ng-container>
                 <div class="d-flex-center project-not-available">
-                    <div >
+                    <div>
                         <img src="./assets/images/portfolio.png" width="268" height="256" />
                         <div class="bnk-txt ">
                             <h2 class="blank-txt text-center">No Results Found</h2>
                         </div>
                     </div>
-                </div>         
-        </ng-container>
+                </div>
+            </ng-container>
         </ng-container>
     </div>
 </div>
@@ -2081,88 +2362,187 @@
                     </div>
                 </div>
             </div>
-
+<!-- 
             <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
-                <!-- <ng-container *ngIf="term.Previous_meeting.length>0"> -->
-                    <ng-container *ngIf="term.Previous_meeting.length>0">
+              
+                    <ng-container *ngIf="term.MeetingDetails.length>0">
                     <div class="kt-meeting-list-view">
                         <a data-toggle="collapse" aria-expanded="false"
                             class="mb-0 titlediv d-flex align-items-baseline justify-content-between collapsed"
                             href="#Note_{{i+1}}">
 
                             <span class="kt-text-wrap"><i class="material-icons fs-2 mr-2">expand_more</i>
-                                {{term.Schedule_date}}</span>
+                                {{term.Schedule_date | date : 'dd-MM-YYYY'}}</span>
                         </a>
                     </div>
 
                     <div class="kt-widget__items mt-2 mr-1 px-2 collapse" id="Note_{{i+1}}">
-                        <div *ngFor="let pre of term.Previous_meeting">
+                        <div *ngFor="let pre of term.MeetingDetails">
               
                             <div class="kt-card N-user-1">
                                 <div class="kt-user-dt">
-                                    <div class="kt-user-2lt kt-clr-1">{{pre.initials}}</div>
-                                    <div class="kt-user-name">{{pre.Emp_Name}}</div>
+                                    <div class="kt-user-2lt kt-clr-1" *ngIf="(!pre.Agenda_name && pre.Meeting_notes)">{{pre.Initials}}</div>
+                                    <div class="kt-user-2lt kt-clr-1" *ngIf="pre.Agenda_name">{{pre.Initials}}</div>
+                                    <div class="kt-user-name" *ngIf="(!pre.Agenda_name && pre.Meeting_notes)"> Meeting Notes | {{pre.Emp_Name}} </div>
+                                    <div class="kt-user-name" *ngIf="pre.Agenda_name"> {{pre.Agenda_name}} | {{pre.Emp_Name}} </div>
                                 </div>
-                                <div class="kt-user-note kt-clr-bg-1">
+                                <div class="kt-user-note kt-clr-bg-1" *ngIf="(!pre.Agenda_name && pre.Meeting_notes)">
+                                    <p [innerHtml]="pre.Meeting_notes"></p>
+                                </div>
+                                <div class="kt-user-note kt-clr-bg-1" *ngIf="pre.Agenda_name">
                                     <p [innerHtml]="pre.Meeting_notes"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </ng-container>
-            </ng-container>
+            </ng-container> -->
+
+
+
+            <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
+            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes" >
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <a class="accordion-button" type="button" data-toggle="collapse"
+                            data-target="#attendes_notes" aria-expanded="false"
+                            aria-controls="attendes_notes">
+                            <div class="head-content">
+                                <span class="accordion-heading">{{term.Schedule_date|date : 'dd-MM-YYYY'}}</span>
+                            </div>
+                            <div>
+                                <span class="accordion-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                        viewBox="0 0 15 9" fill="none">
+                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </a>
+                    </h2>
+                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let item of term.Employees"
+                        aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+                        <div class="accordion-body">
+                            <ul class="attendees-note-userlist">
+                                <li class="attendees-note-user">
+                                    <div class="user-info">
+                                        <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
+                                        <span>
+                                            <div class="user-name">{{item.Emp_Name}}</div>
+                                            <div><span class="user-role">Team Leader</span> <span
+                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="user-notes" >
+     
+                                           <div *ngFor="let data of item.MeetingDetails;let i=index">
+                                            <div>  <span style="font-weight: 500">Agenda {{i+1}}: </span>
+                                                {{data.Agenda_name}}</div>
+                                          
+                                            <span [innerHtml]="data.Meeting_notes"></span>
+                                          </div>
+                                    </div>
+                                </li>                             
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
         </div>
     </div>
 </div>
 <!--  Previous Meeting Notes sidebar End -->
 
-  <!--  Files Attachment Working Area Start-->
-  <div id="Attachment_view" class="attachment-view sideInfobar animate-right bg-slide-br">
+<!--  Files Attachment Working Area Start-->
+<div id="Attachment_view" class="attachment-view sideInfobar animate-right bg-slide-br">
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
-                <h4 id="attach_heading" class="m-0"><span class="svg-icv-hd">                   
-                        <svg _ngcontent-fxg-c172="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path
-                            _ngcontent-fxg-c172="" d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429
+                <h4 id="attach_heading" class="m-0"><span class="svg-icv-hd">
+                        <svg _ngcontent-fxg-c172="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
+                            height="16" fill="currentColor" class="iconify iconify--mdi">
+                            <path _ngcontent-fxg-c172=""
+                                d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429
                              9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337
                              17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374
                              2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287
-                             17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
-                             
-                     </span>
-                     <span class="kt-chat__title"> List of Attachments </span> <span
-                        class="kt-at-count" >{{_TotalAttachment}}</span> </h4>
+                             17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z">
+                            </path>
+                        </svg>
 
-                        <h4 id="upload_heading" class="m-0" style="display: none;">
-                            <span class="kt-chat__title"> Quick Upload </span>
-                        </h4>
+                    </span>
+                    <span class="kt-chat__title"> List of Attachments </span> <span
+                        class="kt-at-count">{{_TotalAttachment}}</span>
+                </h4>
 
-                        <div class="d-flex align-items-center">
-                            <button  id="upload_btn" class="btn-silvr" (click)="upload_btn()">
-                                <span>
-                                    <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path  d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
-                                    </svg>
-                                </span> Quick Upload </button>
+                <h4 id="upload_heading" class="m-0" style="display: none;">
+                    <span class="kt-chat__title"> Quick Upload </span>
+                </h4>
 
-                                <button  id="attach_btn" class="btn-silvr" (click)="attach_btn()" style="display: none;">
-                                    <span  class="atch_back">
-                                        <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                            <path  d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z"></path>
-                                        </svg>
-                                    </span> View Attachments </button>
-                                    
-                                <a href="javascript:void(0)" class="attach-close closebtn btn btn-xs btn-icon btn-hover-info"
-                                (click)="closedarBar()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                        fill="currentColor">
-                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                        <path
-                                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </div>
+                <div class="d-flex align-items-center">
+                    <button id="upload_btn" class="btn-silvr" (click)="upload_btn()">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+                            </svg>
+                        </span> Quick Upload </button>
+
+                    <button id="attach_btn" class="btn-silvr" (click)="attach_btn()" style="display: none;">
+                        <span class="atch_back">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z">
+                                </path>
+                            </svg>
+                        </span> View Attachments </button>
+
+                    <a href="javascript:void(0)" class="attach-close closebtn btn btn-xs btn-icon btn-hover-info"
+                        (click)="closedarBar()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                            fill="currentColor">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="kt-Attachament__body">
@@ -2171,10 +2551,10 @@
                     <div class="d-flex-center">
                         <div class="position-relative w-100">
                             <input type="text" autocomplete="off" name="search" placeholder="Search..."
-                                    [(ngModel)]="filterText"
-                                    class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
-                                <span class="cancl-icon curser-pointer" *ngIf="filterSearch && filterText"
-                                    (click)="filterSearch()">
+                                [(ngModel)]="filterText"
+                                class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
+                            <span class="cancl-icon curser-pointer" *ngIf="filterSearch && filterText"
+                                (click)="filterSearch()">
                                 <svg focusable="false" height="18px" viewBox="0 0 24 24" width="18px"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -2186,31 +2566,30 @@
                         </div>
                     </div>
                 </div>
-                        <div class="attachament-list-view" >     
-                            <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" *ngFor="let item of Attachments_ary  | filter :filterText;let i=index">
-                                <div class="kt-notification__item no-after position-relative ng-star-inserted"  >
-                                    <div data-toggle="modal" class="kt-notification__item-icon" >
-                                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
-                                            class="asseticn corol-icn memo_attachment_img ng-star-inserted">
-                                            <path
-                                                d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z">
-                                            </path>
-                                        </svg>
-                                    </div>                  
-                                    <ng-container >
-                                        <div data-toggle="modal" class="kt-notification__item-details"
-                                           >
-                                            <div class="d-flex-center">
-                                                <div class="kt-notification__item-title fw-bold" 
-                                                   >
-                                                   <a target=”_blank” href="{{item.url}}"> {{item.File_Name}}</a>   
-                                              </div>
-                                            </div>         
-                                     </div>
-                                </ng-container>
-                             </div>
-                     </div>   
-               </div>
+                <div class="attachament-list-view">
+                    <div class="kt-widget__items mt-2 mx-0 px-2  collapse show"
+                        *ngFor="let item of Attachments_ary  | filter :filterText;let i=index">
+                        <div class="kt-notification__item no-after position-relative ng-star-inserted">
+                            <div data-toggle="modal" class="kt-notification__item-icon">
+                                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
+                                    class="asseticn corol-icn memo_attachment_img ng-star-inserted">
+                                    <path
+                                        d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <ng-container>
+                                <div data-toggle="modal" class="kt-notification__item-details">
+                                    <div class="d-flex-center">
+                                        <div class="kt-notification__item-title fw-bold">
+                                            <a target=”_blank” href="{{item.url}}"> {{item.File_Name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="upload_div" style="display: none;">
                 <div class="quick-upload-scroll">
@@ -2220,40 +2599,43 @@
                                 <h3 class="dynamic-message"> Drag & drop any file here </h3>
                                 <span class="or">or</span><br>
                                 <span class="browse-files">
-                                    <span class="browse-files-text">browse file</span> 
+                                    <span class="browse-files-text">browse file</span>
                                     <span> from device</span>
                                 </span>
                             </label>
-                            <input id="uploadFile" type="file"  accept="application/pdf"  (change)="onFileChange($event)" multiple/>
+                            <input id="uploadFile" type="file" accept="application/pdf" (change)="onFileChange($event)"
+                                multiple />
                         </div>
                     </span>
                     <ng-container *ngFor='let url of _lstMultipleFiales'>
-                   <div class="dropzone-item">
+                        <div class="dropzone-item">
                             <div class="dropzone-file">
-                                <div class="dropzone-filename"> 
+                                <div class="dropzone-filename">
                                     <span>{{url.FileName}}</span>
                                     <strong>(<span>{{url.Size}}kb</span>)</strong>
                                     <span (click)="RemoveSelectedFile(url.UniqueId)" class="dropzone-delete">
                                         <i class="flaticon2-cross"></i>
-                                  </span>
+                                    </span>
                                 </div>
                             </div>
-                        </div>          
+                        </div>
                     </ng-container>
-                </div>             
-                <div  class="kt-portlet__foot pt-3 pb-3 px-0 pb-0">
-                    <div  class="kt-chat__input">
-                        <div  class="kt-chat__toolbar mt-0">
-                            <div  class="kt_chat__actions w-100">
-                                <button  class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule();attach_btn()"> Upload </button>
-                                <button  class="btn btn-sm btn-secondary mr-2 w-15" (click)="attach_btn()"> Cancel </button>
+                </div>
+                <div class="kt-portlet__foot pt-3 pb-3 px-0 pb-0">
+                    <div class="kt-chat__input">
+                        <div class="kt-chat__toolbar mt-0">
+                            <div class="kt_chat__actions w-100">
+                                <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule();attach_btn()">
+                                    Upload </button>
+                                <button class="btn btn-sm btn-secondary mr-2 w-15" (click)="attach_btn()"> Cancel
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>       
+                </div>
+            </div>
         </div>
     </div>
 </div>
-</div>
-  <!-- Files Working Area End -->
-  <div id="rightbar-overlay" class="rightbar-overlay"></div>
+<!-- Files Working Area End -->
+<div id="rightbar-overlay" class="rightbar-overlay"></div>

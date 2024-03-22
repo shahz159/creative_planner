@@ -440,8 +440,7 @@
                           <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
                         </td>
                         <td>
-                          <span class="kt-widget__other" *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR
-                            '}}</span>
+                          <span class="kt-widget__other" *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR'}}</span>
                           <span class="kt-widget__other" *ngIf="!item.Project_Cost">SAR 0.00</span>
                           <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
                           <!-- <span class="kt-widget__other" *ngIf="!item.Category">No Category</span> -->
@@ -1653,9 +1652,7 @@
 
                   <div class="mb-2">
                     <span class="label">Accepted Dates</span>
-                    {{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date |
-                    date:'dd-MM-yyyy
-                    '}}-{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date |
+                    {{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date | date:'dd-MM-yyyy'}}-{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date |
                     date:'dd-MM-yyyy'}}
                   </div>
                   <div class="mb-2">
