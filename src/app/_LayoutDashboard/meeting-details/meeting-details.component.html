@@ -6,7 +6,7 @@
                 <div class="card h-100">
                     <div class="card-body p-3">
                         <div class="kt-meeting-main" >
-                            <div class="kt-meeting-main-active p-2" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject();GetMeetingnotes_data()">
+                            <div class="kt-meeting-main-active p-2" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject()">
                                 <div class="kt-meeting-box">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="kt-meeting-title mt-0 mb-2">
@@ -593,7 +593,7 @@
                                                 d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z" />
                                         </svg>
                                     </a>
-                                    <a class="kt-inbox__icon" title="Favourite">
+                                    <!-- <a class="kt-inbox__icon" title="Favourite">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" viewBox="0 0 1024 1024"
                                             class="star-fill iconify iconify--mdi">
@@ -601,8 +601,8 @@
                                                 d="M776.533333 938.666667c-8.533333 0-12.8 0-21.333333-4.266667l-243.2-128-243.2 128c-12.8 8.533333-29.866667 4.266667-46.933333-4.266667-12.8-8.533333-21.333333-25.6-17.066667-42.666666l46.933333-273.066667L55.466667 426.666667C42.666667 413.866667 38.4 396.8 42.666667 384c4.266667-17.066667 17.066667-25.6 34.133333-29.866667l273.066667-38.4 123.733333-247.466666c12.8-29.866667 64-29.866667 76.8 0l123.733333 247.466666 273.066667 38.4c12.8 0 25.6 12.8 34.133333 29.866667 4.266667 17.066667 0 34.133333-12.8 42.666667l-196.266666 192 46.933333 273.066666c4.266667 17.066667-4.266667 34.133333-17.066667 42.666667-8.533333 4.266667-17.066667 4.266667-25.6 4.266667zM174.933333 426.666667l149.333334 149.333333c12.8 8.533333 17.066667 21.333333 17.066666 34.133333l-34.133333 209.066667 187.733333-98.133333c12.8-8.533333 25.6-8.533333 38.4 0l187.733334 98.133333-38.4-209.066667c-4.266667-12.8 4.266667-29.866667 12.8-38.4l149.333333-149.333333-209.066667-29.866667c-12.8 0-25.6-12.8-34.133333-21.333333L512 183.466667 418.133333 371.2c-4.266667 12.8-17.066667 21.333333-29.866666 21.333333l-213.333334 34.133334z" />
                                         </svg>
 
-                                    </a>
-                                    <a class="kt-inbox__icon" title="Pin">
+                                    </a> -->
+                                    <!-- <a class="kt-inbox__icon" title="Pin">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" viewBox="0 0 1024 1024"
                                             class="bi bi-pin-angle-fill iconify iconify--mdi">
@@ -610,16 +610,16 @@
                                                 d="M316.330667 426.666667l40.789333 40.746666a42.666667 42.666667 0 0 1-60.373333 60.373334L183.168 414.165333C156.288 387.285333 175.317333 341.333333 213.333333 341.333333h238.336L554.666667 238.336V170.666667a42.666667 42.666667 0 0 1 12.501333-30.165334l42.666667-42.666666a42.666667 42.666667 0 0 1 60.330666 0l256 256a42.666667 42.666667 0 0 1 0 60.330666l-42.666666 42.666667A42.666667 42.666667 0 0 1 853.333333 469.333333h-67.669333L682.666667 572.330667V810.666667c0 37.973333-45.952 57.045333-72.832 30.165333L426.666667 657.664l-225.834667 225.834667a42.666667 42.666667 0 1 1-60.330667-60.330667l256-256a42.666667 42.666667 0 0 1 60.330667 0L597.333333 707.669333V554.666667a42.666667 42.666667 0 0 1 12.501334-30.165334l128-128A42.666667 42.666667 0 0 1 768 384h67.669333l-225.834666-225.834667h60.330666l-42.666666 42.666667L640 170.666667v85.333333a42.666667 42.666667 0 0 1-12.501333 30.165333l-128 128A42.666667 42.666667 0 0 1 469.333333 426.666667H316.330667z" />
                                         </svg>
 
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pin-angle-fill iconify iconify--mdi"><path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path></svg> -->
-                                    </a>
+                                      
+                                    </a> -->
 
-                                    <a class="kt-inbox__icon" title="Link">
+                                    <!-- <a class="kt-inbox__icon" title="Link">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" viewBox="0 0 1024 1024" class="iconify iconify--mdi">
                                             <path
                                                 d="M943.616 251.2l-170.112-170.112a54.4 54.4 0 0 0-77.056 0.192L452.352 325.312a54.528 54.528 0 0 0-0.192 77.12l19.776 35.264L537.792 371.84c-10.496-10.56-10.56-22.4 0-32.96l197.632-197.568 148.16 148.16-197.568 197.568c-10.56 10.56-22.4 10.56-32.96 0L587.264 552.96l35.008 19.584a54.592 54.592 0 0 0 77.12-0.192l244.032-244.032a54.592 54.592 0 0 0 0.192-77.12zM554.304 585.856l-49.408 49.408-16.448 16.512c11.072 11.072 11.136 21.76 0 32.896l-197.568 197.632-148.288-148.224 197.632-197.568c11.136-11.136 21.824-11.072 32.896 0l65.856-65.856-35.776-19.328a54.464 54.464 0 0 0-77.056 0.192l-244.096 244.032a54.528 54.528 0 0 0-0.192 77.056l170.112 170.112a54.464 54.464 0 0 0 77.056-0.192l244.096-244.032a54.528 54.528 0 0 0 0.192-77.056l-19.008-35.584z m-197.632 131.712l378.752-378.688-49.408-49.408-378.752 378.688 49.408 49.408z" />
                                         </svg>
-                                    </a>
+                                    </a> -->
 
                                     <!-- <div class="br-line"></div> -->
                                     <a (click)="Attachment_views()" class="kt-inbox__icon " title="Attachments">
@@ -633,7 +633,7 @@
                                         </svg>
                                     </a>
 
-                                    <a class="kt-inbox__icon kt_Comments" title="Comments">
+                                    <!-- <a class="kt-inbox__icon kt_Comments" title="Comments">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16"
                                             height="16" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1">
                                             <path
@@ -645,7 +645,7 @@
                                             <path
                                                 d="M676.096 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z" />
                                         </svg>
-                                    </a>
+                                    </a> -->
 
                                     <a class="kt-inbox__icon ac-activity" title="Activity Log">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1"
@@ -658,14 +658,14 @@
 
 
 
-                                    <a class="kt-inbox__icon" title="timeline">
+                                    <!-- <a class="kt-inbox__icon" title="timeline">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
                                             <path
                                                 d="M271.36 276.48c0-61.44-40.96-113.664-97.28-130.048V38.4C174.08 17.408 156.672 0 135.68 0S97.28 17.408 97.28 38.4v108.032C40.96 162.816 0 215.04 0 276.48c0 61.44 41.472 113.664 97.792 130.048l1.536 209.92C41.984 632.832 0 685.056 0 747.52c0 61.44 40.96 113.664 97.28 130.048V983.04c0 20.992 17.408 38.4 38.4 38.4s38.4-17.408 38.4-38.4v-105.472c56.32-16.384 97.28-68.608 97.28-130.048 0-60.928-39.936-112.128-95.232-129.536l-1.536-211.456C230.4 389.632 271.36 337.92 271.36 276.48z m-194.56 0c0-32.256 26.624-58.88 58.88-58.88S194.56 244.224 194.56 276.48s-26.624 58.88-58.88 58.88S76.8 308.736 76.8 276.48z m117.76 471.04c0 32.256-26.624 58.88-58.88 58.88S76.8 779.776 76.8 747.52s26.624-58.88 58.88-58.88S194.56 715.264 194.56 747.52zM924.16 97.28h-496.64C372.224 97.28 327.68 141.824 327.68 197.12v158.72C327.68 411.136 372.224 455.68 427.52 455.68h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64C414.72 378.88 404.48 368.64 404.48 355.84v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72zM924.16 568.32h-496.64c-55.296 0-99.84 44.544-99.84 99.84v158.72c0 55.296 44.544 99.84 99.84 99.84h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64c-12.8 0-23.04-10.24-23.04-23.04v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72z" />
                                         </svg>
 
-                                    </a>
+                                    </a> -->
 
                                     <!-- <div class="br-line"></div> -->
 
@@ -1623,7 +1623,7 @@
         <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="kt-chat__messages">
                 <ul class="attendees-note-userlist">
-                    <li class="attendees-note-user">
+                    <li class="attendees-note-user" >
                         <div class="user-info">
                             <span class="user-icon">
                                 <img
@@ -1643,7 +1643,7 @@
                         </div>
 
                     </li>
-                    <li class="attendees-note-user">
+                    <!-- <li class="attendees-note-user">
                         <div class="user-info">
                             <span class="user-icon">
                                 <img
@@ -1661,7 +1661,7 @@
                                 their website, so that’s not a condition you can demand from your clients. Instead, you
                                 can use a dummy text generator.
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -1735,7 +1735,8 @@
                     </div>
                     <mat-autocomplete aria-label="supportDrpDwnDMS" #TeamMemberDrpDwns="matAutocomplete"
                         (optionSelected)="selectedChip_DMS($event); SupportTF.value=''; "
-                        (opened)="isDMSDrpDwnOpen=true" (closed)="isDMSDrpDwnOpen=false;    ">
+                        (opened)="isDMSDrpDwnOpen=true" (closed)="isDMSDrpDwnOpen=false;">
+                        
                         <mat-option class="mat-font" *ngFor="let item of Memos_List " [value]="item.MailId">
                             <mat-checkbox color="primary" [checked]="selectedEmploy_DMS.indexOf(item)!==-1"
                                 (change)="selectedChip_DMS($event)"></mat-checkbox>
@@ -1748,7 +1749,7 @@
             </div>
         </li>
         <li class="kt-nav__item px-4">
-            <div id="DemoList-table" *ngIf="_MemosSubjectList&&_MemosSubjectList ;else noDMSFound">
+            <div id="DemoList-table" *ngIf="_MemosSubjectList;else noDMSFound">
                 <div class="demo" *ngFor="let memo of _MemosSubjectList">
                     <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                     <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
@@ -2361,9 +2362,9 @@
                     </div>
                 </div>
             </div>
-
+<!-- 
             <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
-                <!-- <ng-container *ngIf="term.Previous_meeting.length>0"> -->
+              
                     <ng-container *ngIf="term.MeetingDetails.length>0">
                     <div class="kt-meeting-list-view">
                         <a data-toggle="collapse" aria-expanded="false"
@@ -2395,7 +2396,94 @@
                         </div>
                     </div>
                 </ng-container>
-            </ng-container>
+            </ng-container> -->
+
+
+
+            <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
+            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes" >
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <a class="accordion-button" type="button" data-toggle="collapse"
+                            data-target="#attendes_notes" aria-expanded="false"
+                            aria-controls="attendes_notes">
+                            <div class="head-content">
+                                <span class="accordion-heading">{{term.Schedule_date|date : 'dd-MM-YYYY'}}</span>
+                            </div>
+                            <div>
+                                <span class="accordion-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                        viewBox="0 0 15 9" fill="none">
+                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </a>
+                    </h2>
+                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let item of term.Employees"
+                        aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+                        <div class="accordion-body">
+                            <ul class="attendees-note-userlist">
+                                <li class="attendees-note-user">
+                                    <div class="user-info">
+                                        <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
+                                        <span>
+                                            <div class="user-name">{{item.Emp_Name}}</div>
+                                            <div><span class="user-role">Team Leader</span> <span
+                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="user-notes" >
+     
+                                           <div *ngFor="let data of item.MeetingDetails;let i=index">
+                                            <div>  <span style="font-weight: 500">Agenda {{i+1}}: </span>
+                                                {{data.Agenda_name}}</div>
+                                          
+                                            <span [innerHtml]="data.Meeting_notes"></span>
+                                          </div>
+                                    </div>
+                                </li>                             
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
         </div>
     </div>
 </div>

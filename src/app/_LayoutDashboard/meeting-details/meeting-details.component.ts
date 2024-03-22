@@ -346,17 +346,21 @@ selectedEmpId: any = [];
 
 
 addNewDMS() {
+
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("meetingdetails").classList.add("position-fixed");
-    this.GetDMSList();
     this.GetMemosByEmployeeId();
+    this.GetDMSList();
+  
   }
 
   GetDMSList(){
+  
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
      if(data!=''&& data!=undefined){
       this._MemosSubjectList = JSON.parse(data['JsonData']);
       console.log(this._MemosSubjectList,'DMS Link')
+
       this._MemosSubjectList.forEach(element => {
        this.checkeddms.push(element.MailId);
        element.isChecked = true;
@@ -371,6 +375,7 @@ addNewDMS() {
   GetMemosByEmployeeId() { 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
+        debugger
         this.Memos_List = JSON.parse(data['JsonData']);    
         this._linkedMemos= this.Memos_List.length
         if(this._MemosSubjectList){
@@ -458,11 +463,18 @@ addNewDMS() {
       this._calenderDto.Dms =this.selectedEmploy_DMS.map(item=>item.MailId).toString()
 
       this.CalenderService.NewinsertDMS_meetingreport(this._calenderDto).subscribe
-        (data => {                                                                                          
+        ((data:any)=> {  
+          if(data.message=='1'){
+            this.notifyService.showSuccess("DMS added successfully", "Success");
+            this.selectedEmploy_DMS=[];
+            this.GetMemosByEmployeeId()
+            this.GetDMSList();
+          }
+                                                                                          
         });
-      this.notifyService.showSuccess("DMS added successfully", "Success");
-      this.meeting_details();    
-      this.selectedEmploy_DMS=[];
+     
+        
+      
 
     }
 
@@ -1032,10 +1044,10 @@ GetPreviousdate_meetingdata() {
 
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
     (data => {
-   
+
       this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
-      console.log(data,'sdcvsdyy') 
-      this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.MeetingDetails.length > 0);
+      console.log(this.Previousdata_meeting,'pre meeting notes') 
+      // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.MeetingDetails.length > 0);
     });
 }
 
@@ -1257,16 +1269,16 @@ GetMeetingnotes_data() {
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
- console.log(this._calenderDto, 'yeysy')
+  
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
 
-       if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
-        this.Notes_Type = ''
-       }else {
         this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
-       }
+      
+        // if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
+        //   this.Notes_Type = ''
+        //  }else { }
       console.log(this.Meetingnotes_time, 'Notes_Type')
     });
 
