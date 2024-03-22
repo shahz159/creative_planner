@@ -1251,7 +1251,7 @@ addBulletPointsOnEnter(event: any) {
       this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
       this._calenderDto.Status_type = "Left";
 
-      console.log(this._calenderDto,' ||||||||||||||||||||  ');
+      console.log(this._calenderDto,' ||||||||||||||||||||');
      this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
           this.GetNotedata()
@@ -1274,12 +1274,14 @@ GetMeetingnotes_data() {
     (data => {
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
 
-        this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
+     
       
-        // if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
-        //   this.Notes_Type = ''
-        //  }else { }
-      console.log(this.Meetingnotes_time, 'Notes_Type')
+        if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
+          this.Notes_Type = ''
+         }else { 
+          this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
+         }
+         console.log(this.Meetingnotes_time, 'Notes_Type')
     });
 
 }
