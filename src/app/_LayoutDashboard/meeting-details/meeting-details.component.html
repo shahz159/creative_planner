@@ -107,9 +107,12 @@
                                                         d="M9.48112 8.66109V3.11989C9.48112 2.98489 9.37192 2.87549 9.23692 2.87549C9.10172 2.87549 8.99252 2.98489 8.99252 3.11989V8.66109C8.57212 8.77029 8.25952 9.14969 8.25952 9.60389C8.25952 9.77549 8.30792 9.93469 8.38592 10.0751L6.25872 12.0955C6.16092 12.1885 6.15673 12.3431 6.24993 12.4409C6.29793 12.4915 6.36232 12.5171 6.42692 12.5171C6.48732 12.5171 6.54792 12.4947 6.59512 12.4499L8.72093 10.4307C8.87113 10.5247 9.04692 10.5815 9.23692 10.5815C9.77592 10.5815 10.2143 10.1429 10.2143 9.60409C10.2141 9.14969 9.90153 8.77029 9.48112 8.66109ZM9.23692 10.0925C8.96752 10.0925 8.74832 9.87329 8.74832 9.60389C8.74832 9.33429 8.96752 9.11529 9.23692 9.11529C9.50632 9.11529 9.72552 9.33449 9.72552 9.60389C9.72552 9.87329 9.50632 10.0925 9.23692 10.0925Z"
                                                         fill="white" />
                                                 </svg>
-                                            </div>
-                                            <span class="kt-meeting-title-name">Meeting Metrics</span>
+                                            </div>                                          
+                                            <span class="kt-meeting-title-name">Meeting Metrics </span>
+
+                                             | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span>
                                         </div>
+                                        
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-9 pr-1">
@@ -256,8 +259,12 @@
                                                 <div class="d-flex align-items-start justify-content-between">
                                                     <div class="kt-metric-day">
                                                         <!-- <div class="dark-title">21 Thu, January 2024</div> -->
-                                                        <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}}
+                                                        <!-- <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}} -->
+                                               
+                                                            <div class="dark-title">{{item.StartDate | date:'d EEE,MMMM YYYY'}}
+                                                          
                                                         </div>
+                                                       
                                                         <div class="muted-title">Date</div>
                                                     </div>
                                                     <diV class="kt-metric-duration">
@@ -1271,8 +1278,8 @@
                                             data-target="#attendes_notes" aria-expanded="false"
                                             aria-controls="attendes_notes">
                                             <div class="head-content">
-                                                <span class="accordion-heading">View All Team members notes</span><span
-                                                    class="message-count"> 24 Messages</span>
+                                                <span class="accordion-heading">View All Team members notes</span>
+                                                <!-- <span  class="message-count"> 24 Messages</span> -->
                                             </div>
                                             <div>
                                                 <span class="accordion-icon">
@@ -1297,10 +1304,12 @@
                                                                 src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
                                                         </span>
                                                         <span>
-                                                            <div class="user-name">Mirza Hussain Baig <span
-                                                                    class="user-time">2 mins</span></div>
-                                                            <div><span class="user-role">Team Leader</span> <span
-                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            <div class="user-name">Mirza Hussain Baig 
+                                                                <!-- <span class="user-time">2 mins</span> -->
+                                                                </div>
+                                                            <div>
+                                                                <!-- <span class="user-role">Team Leader</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span> -->
                                                             </div>
                                                         </span>
                                                     </div>
@@ -1323,8 +1332,9 @@
                                                         <span>
                                                             <div class="user-name">Siva Nadendla <span
                                                                     class="user-time">10 mins</span></div>
-                                                            <div><span class="user-role">UX/UI Designer</span> <span
-                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            <div>
+                                                                <!-- <span class="user-role">UX/UI Designer</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span> -->
                                                             </div>
                                                         </span>
                                                     </div>
@@ -1491,14 +1501,14 @@
 
 
                             <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
-                                <div class="accordion-item">
+                                <div class="accordion-item" >
                                     <h2 class="accordion-header" id="headingOne">
                                         <a class="accordion-button" type="button" data-toggle="collapse"
                                             data-target="#attendes_notes" aria-expanded="false"
                                             aria-controls="attendes_notes">
                                             <div class="head-content">
-                                                <span class="accordion-heading">View All Team members notes</span><span
-                                                    class="message-count"> 24 Messages</span>
+                                                <span class="accordion-heading">View All Team members notes</span>
+                                                <!-- <span class="message-count"> 24 Messages</span> -->
                                             </div>
                                             <div>
                                                 <span class="accordion-icon">
@@ -1512,7 +1522,7 @@
                                             </div>
                                         </a>
                                     </h2>
-                                    <div id="attendes_notes" class="accordion-collapse collapse"
+                                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let data of Employeeslist"
                                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                                         <div class="accordion-body">
                                             <ul class="attendees-note-userlist">
@@ -1523,15 +1533,18 @@
                                                                 src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
                                                         </span>
                                                         <span>
-                                                            <div class="user-name">Mirza Hussain Baig <span
-                                                                    class="user-time">2 mins</span></div>
-                                                            <div><span class="user-role">Team Leader</span> <span
-                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            <div class="user-name">{{data.Emp_Name}}
+                                                                 <!-- <span class="user-time">2 mins</span> -->
+                                                                </div>
+                                                            <div>
+                                                                <!-- <span class="user-role">Team Leader</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span> -->
                                                             </div>
                                                         </span>
                                                     </div>
-                                                    <div class="user-notes">
-                                                        <p [innerHTML]="Notes_Type"></p>
+                                                    <div class="user-notes" *ngFor="let item of data.MeetingDetails;let i=index">
+                                                        <span>Agenda {{i+1}}: </span> <span>{{item.Agenda_name}}</span>
+                                                        <p [innerHTML]="item.Meeting_notes"></p>
                                                     </div>
                                                 </li>
                                                 <!-- <li class="attendees-note-user">
@@ -1553,8 +1566,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -1623,23 +1634,28 @@
         <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="kt-chat__messages">
                 <ul class="attendees-note-userlist">
-                    <li class="attendees-note-user" >
+                    <li class="attendees-note-user"  *ngFor="let item of Employeeslist">
                         <div class="user-info">
-                            <span class="user-icon">
-                                <img
-                                    src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                            </span>
+                           
+                                <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
+                           
                             <span>
-                                <div class="user-name">Mirza Hussain Baig <span class="user-time">2 mins</span></div>
-                                <div><span class="user-role">Team Leader</span> <span class="user-company">Devbox
-                                        Software Pvt.ltd.</span></div>
+                                <div class="user-name">{{item.Emp_Name}}
+                                    <!-- <span class="user-time">2 mins</span> -->
+                                </div>
+                                <div>
+                                    <!-- <span class="user-role">Team Leader</span> <span class="user-company">Devbox
+                                        Software Pvt.ltd.</span> -->
+                                    </div>
                             </span>
                         </div>
-                        <div class="user-notes">
-                            <p>How likely are you to recommend our company to your friends and family ?</p>
-                            <p class="mt-3">Not all people can afford to pay for content immediately after creating
+                        <div class="user-notes" *ngFor="let data of item.MeetingDetails;let i=index">
+                             <span style="font-weight: 500;">Agenda {{i+1}}: </span>  <span>{{data.Agenda_name}}</span>
+                            <p [innerHtml]="data.Meeting_notes"></p>
+
+                            <!-- <p class="mt-3">Not all people can afford to pay for content immediately after creating
                                 their website, so that’s not a condition you can demand from your clients. Instead, you
-                                can use a dummy text generator.
+                                can use a dummy text generator. </p> -->
                         </div>
 
                     </li>
@@ -1749,11 +1765,13 @@
             </div>
         </li>
         <li class="kt-nav__item px-4">
-            <div id="DemoList-table" *ngIf="_MemosSubjectList;else noDMSFound">
+            <div id="DemoList-table" *ngIf="_MemosSubjectList">
+                <ng-container *ngIf="_MemosSubjectList[0].Subject;else noDMSFound">
                 <div class="demo" *ngFor="let memo of _MemosSubjectList">
                     <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                     <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
                 </div>
+            </ng-container>
             </div>
             <ng-template #noDMSFound class="d-none">
                 <div class="no-DMS-found">
@@ -1975,7 +1993,7 @@
                             <span>
                                 <div class="user-name">
                                     {{item.TM_DisplayName}}
-                                    <span class="user-time">2 mins</span>
+                                    <!-- <span class="user-time">2 mins</span> -->
 
                                     <ng-container class="admin-check curser-pointer" *ngIf="item.IsAdmin">
                                         <span aria-hidden="true" class="admin-check-svg ml-2">
@@ -2431,8 +2449,9 @@
                                         <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
                                         <span>
                                             <div class="user-name">{{item.Emp_Name}}</div>
-                                            <div><span class="user-role">Team Leader</span> <span
-                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                            <div>
+                                                <!-- <span class="user-role">Team Leader</span> <span
+                                                    class="user-company">Devbox Software Pvt.ltd.</span> -->
                                             </div>
                                         </span>
                                     </div>

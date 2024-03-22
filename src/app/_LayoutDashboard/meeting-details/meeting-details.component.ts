@@ -135,23 +135,29 @@ export class MeetingDetailsComponent implements OnInit {
   View_Attendees_Notes() {
     document.getElementById("Attendees_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("meetingdetails").classList.add("position-fixed");
+    this.GetAttendeesnotes();
   }
   close_attendeesnotes_sideBar() {
     document.getElementById("Attendees_Notes").classList.remove("kt-quick-active--on");
+    document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
   View_Private_Notes() {
     document.getElementById("Private_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("meetingdetails").classList.add("position-fixed");
   }
   close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("meetingdetails").classList.remove("position-fixed");
   }
   View_Meeting_Attendees() {
     document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
     this.GetProjectAndsubtashDrpforCalender();
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
@@ -159,6 +165,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.selectedEmployees=[];
     document.getElementById("Meeting_Attendees").classList.remove("kt-quick-active--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.fruitInput.nativeElement.value = '';
   }
@@ -218,7 +225,7 @@ meeting_details(){
     
    this.Agendas_List=this.EventScheduledjson[0].Agendas;
    
-   console.log(this.Agendas_List,'agenda list ')
+   console.log(this.EventScheduledjson,'EventScheduledjson ')
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
     this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
    
@@ -359,7 +366,7 @@ addNewDMS() {
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
      if(data!=''&& data!=undefined){
       this._MemosSubjectList = JSON.parse(data['JsonData']);
-      console.log(this._MemosSubjectList,'DMS Link')
+      console.log(this._MemosSubjectList[0].Subject,'DMS Link')
 
       this._MemosSubjectList.forEach(element => {
        this.checkeddms.push(element.MailId);
@@ -375,7 +382,7 @@ addNewDMS() {
   GetMemosByEmployeeId() { 
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
-        debugger
+       
         this.Memos_List = JSON.parse(data['JsonData']);    
         this._linkedMemos= this.Memos_List.length
         if(this._MemosSubjectList){
@@ -1114,7 +1121,7 @@ deleteAgenda(AgendaId: number) {
 
 
   const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
-  debugger
+
   if (AgendasNames) {
     this.AgendasName = AgendasNames.Agenda_Name;
   }
@@ -1264,23 +1271,22 @@ addBulletPointsOnEnter(event: any) {
 
 
 Meetingnotes_time: any = [];
+
 GetMeetingnotes_data() {
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
-  
+
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
-
-     
-      
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
          }else { 
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
          }
+         this.GetAttendeesnotes();
          console.log(this.Meetingnotes_time, 'Notes_Type')
     });
 
@@ -1501,5 +1507,30 @@ EnterSubmit(_Demotext) {
 
   }}
 /////////////////////////////////////////// assign task End //////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// All Attendees Notes sidebar Start //////////////////////////////////////////////////////////////////
+
+Meeting_noteslist:any=[]
+Employeeslist:any
+
+GetAttendeesnotes(){
+  this.Schedule_ID=this.Scheduleid;
+  this._calenderDto.Schedule_ID=this.Schedule_ID;
+  this._calenderDto.Emp_No=this.Current_user_ID
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
+  this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
+  ((data:any)=>{
+    
+    this.Meeting_noteslist=JSON.parse(data['Checkdatetimejson']);
+    this.Employeeslist=this.Meeting_noteslist[0].Employees
+
+    console.log(this.Employeeslist,'Meeting_notes_lists');
+    
+  })
+}
+
+
+/////////////////////////////////////////// All Attendees Notes End //////////////////////////////////////////////////////////////////
 
 }

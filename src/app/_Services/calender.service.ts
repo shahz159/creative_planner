@@ -323,6 +323,7 @@ NewGetMeetingnote_comp(obj: CalenderDTO){
   
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_dataco", this.obj_CalenderDTO);
 
 }
@@ -330,9 +331,10 @@ NewGetMeetingnote_comp(obj: CalenderDTO){
 
 
 NewGetAttendeesMeetingnotes(obj: CalenderDTO){
-  
+  this.obj_CalenderDTO.AgendaId=obj.AgendaId
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+debugger
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetAttendeesMeetingnotes", this.obj_CalenderDTO);
 
 }
@@ -341,7 +343,7 @@ NewinsertDMS_meetingreport(obj: CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Dms=obj.Dms;
-  console.log(this.obj_CalenderDTO,'api')
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewLinkDMSInMeetingDetails", this.obj_CalenderDTO);
 }
 
