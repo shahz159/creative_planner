@@ -1,6 +1,6 @@
 // import { flatten } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { DateAdapter } from '@angular/material/core';
+
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
@@ -13,18 +13,50 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
+
+
 
 @Component({
   selector: 'app-action-to-assign',
   templateUrl: './action-to-assign.component.html',
-  styleUrls: ['./action-to-assign.component.css']
+  styleUrls: ['./action-to-assign.component.css'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  ]
 })
+
 export class ActionToAssignComponent implements OnInit {
   selectedProjectType: string = "";
   ProjectTypelist: any;
   _description: string = "";
   _StartDate: Date = null;
-  _EndDate: Date = null;   
+  _EndDate: Date = null;
   _SelectedEmpNo: string = "";
   selectedProjectCode: string;
   SelectedEmplList: any[];
@@ -175,10 +207,11 @@ export class ActionToAssignComponent implements OnInit {
       }
 
 
-      if (this._StartDate != null && this._EndDate != null) {
-        this.Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
-        this.Difference_In_Days = this.Difference_In_Time / (1000 * 3600 * 24);
-        this._ObjAssigntaskDTO.ProjectDays = (-this.Difference_In_Days);
+      if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
+        // Check if both _StartDate and _EndDate are valid Date objects
+        const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        this._ObjAssigntaskDTO.ProjectDays = -differenceInDays;
       }
       else {
         this._ObjAssigntaskDTO.ProjectDays = 0;

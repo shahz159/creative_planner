@@ -29,7 +29,7 @@ export class ToDoProjectsComponent implements OnInit {
   campaignOne: FormGroup;
   campaignTwo: FormGroup;
   _objDropdownDTO: DropdownDTO;
- 
+
 
 
   constructor(public service: ProjectTypeService,
@@ -67,7 +67,7 @@ export class ToDoProjectsComponent implements OnInit {
     //this._ProjectName = "Project Name"
     this.GetProjectsByUserName();
     // this.applyFilters();
-   
+
     //uploaded file name
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
@@ -99,7 +99,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails).subscribe(data => {
       this._totalProjectsCount = data[0]['ProjectsCount_Json'];
       // console.log(this._totalProjectsCount);
-      this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);      
+      this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
@@ -226,7 +226,7 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   async CallOnSubmitAction() {
-   
+
   let a= await this.GetSubtask_Details();
   let b =await this.GetProjectsByUserName();
   this.router.navigate(["./backend/ToDoProjects/"]);
@@ -295,14 +295,14 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   totalSubtaskHours:number;
- 
-  
+
+
 
  GetSubtask_Details() {
-     
+
    this.service.SubTaskDetailsService_ToDo_Page(this._ProjectCode, this.Comp_No, null).subscribe(
        (data) => {
-        
+
         this._EmployeeListForDropdown = JSON.parse(data[0]['RacisEmployee_Json']);
         if (data[0]['SubtaskDetails_Json'] == ' ') {
           this._subtaskDetails = true;
@@ -313,9 +313,9 @@ export class ToDoProjectsComponent implements OnInit {
           this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.totalSubtaskHours = (data[0]['SubtaskHours']);
           this._subtaskDetails = false;
-          this._projectDetails = true;     
+          this._projectDetails = true;
           // console.log("To Do Completed---->", this.CompletedList);
-          //  console.log("to Incomplete---->", this.Subtask_List);
+           console.log("to Incomplete---->", this.Subtask_List);
         }
         if (data[0]['CompletedTasks_Json'] == ' ') {
           this._CompletedDetails = true;
@@ -325,9 +325,9 @@ export class ToDoProjectsComponent implements OnInit {
           // console.log("To Do Completed---->", this.CompletedList);
           this._CompletedDetails = false;
         }
-       
+
         this._Projecttest=JSON.parse(data[0]["ProjectInfo"]);
-       
+
          this._ProjectCode = this._Projecttest[0].Project_Code;
          this._MasterCode = this._Projecttest[0].Project_Code;
          this._ProjectName = this._Projecttest[0].Project_Name;
@@ -340,7 +340,7 @@ export class ToDoProjectsComponent implements OnInit {
          this.Duration=this._Projecttest[0].Duration;
          this.Resp=this._Projecttest[0].Team_Res;
          this.Client_Name=this._Projecttest[0].Client_Name;
-        
+
         // console.log(this._projectDetails,this._subtaskDetails,this._CompletedDetails,"Testing complete");
         // console.log(this.Subtask_List,this.CompletedList,"Same");
       });
@@ -362,11 +362,11 @@ export class ToDoProjectsComponent implements OnInit {
     this.Sub_EndDT = item.SubProject_DeadLine;
     this.Sub_Autho = item.Subtask_Autho;
     this.Sub_Status = item.SubProject_Status;
-    
+
     document.getElementById("mysideInfobar_Update").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-   this.Clear_Feilds(); 
-    
+   this.Clear_Feilds();
+
     // document
     // this.Block3 = false;
   }
@@ -388,6 +388,23 @@ export class ToDoProjectsComponent implements OnInit {
       this._ProjectDataList = this._ProjectDataList.sort((a, b) => (a.Project_Code > b.Project_Code) ? 1 : -1);
     }
   }
+
+
+  _completed() {
+    this.clicks += 1;
+    if (this.clicks != 1) {
+      this.A2Z = true;
+      this.Z2A = false;
+      this.Subtask_List = this.Subtask_List.sort((a, b) => (a.Project_Code > b.Project_Code) ? -1 : 1);
+      this.clicks = 0;
+    } else {
+      this.A2Z = false;
+      this.Z2A = true;
+      this.Subtask_List = this.Subtask_List.sort((a, b) => (a.Project_Code > b.Project_Code) ? 1 : -1);
+    }
+  }
+
+
 
   AddTask: boolean = false;
   MatInput: boolean = true;
@@ -443,7 +460,7 @@ export class ToDoProjectsComponent implements OnInit {
 
     let FileUrl: string;
     FileUrl = "http://217.145.247.42:81/YRGEP/Uploads/";
-    
+
     if(cloud==false){
       var myWindow = window.open(FileUrl + Resp + "/" + Pcode + "/"  + url);
       myWindow.focus();
@@ -539,10 +556,10 @@ export class ToDoProjectsComponent implements OnInit {
     this.selectedEmpNo = '';
     this.selected_Employee = [];
     $('#uploadFile').val('');
-    $('#_upload').html('Select a file'); 
+    $('#_upload').html('Select a file');
     $('#_pdf').val('');
-    $('#upload').html('Select a file'); 
-    
+    $('#upload').html('Select a file');
+
     }
 
   closeInfoProject() {
@@ -583,7 +600,7 @@ export class ToDoProjectsComponent implements OnInit {
             title: 'Unable To Complete This Project !!',
             text: 'SubTask Status Are In Rejected or Pending ?',
             // icon: 'warning',
-            showCancelButton: true       
+            showCancelButton: true
           });
         }
         else {
@@ -641,7 +658,7 @@ export class ToDoProjectsComponent implements OnInit {
         this.closeInfo();
         this.GetProjectsByUserName();
         this.GetSubtask_Details();
-       
+
         //this.getDropdownsDataFromDB();
         // this.OnProjectClick();
       });
@@ -650,8 +667,8 @@ export class ToDoProjectsComponent implements OnInit {
   // @ViewChild('uploadFile')
   // myInput: ElementRef;
 
-  
-  //Subtask Update 
+
+  //Subtask Update
   OnUpdateSubtask() {
     if (this._remarks == "") {
       this.notifyService.showInfo("Remarks Cannot be Empty", '');
@@ -675,11 +692,11 @@ export class ToDoProjectsComponent implements OnInit {
           // debugger
             this._remarks = "";
           this._inputAttachments = "";
-          
-       
+
+
           //this.CompletedList = JSON.parse(data[0]['CompletedTasks_Json']);
           this.GetSubtask_Details();
-        
+
           document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
           document.getElementById("rightbar-overlay").style.display = "none";
           document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
@@ -690,7 +707,7 @@ export class ToDoProjectsComponent implements OnInit {
         });
         this.notifyService.showInfo("Successfully Updated", '');
     }
-   
+
   }
 
   Btn_NewProjectCreation() {
@@ -745,7 +762,7 @@ export class ToDoProjectsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("Span_DescName_all" + id)).style.display = "none";
     (<HTMLInputElement>document.getElementById("spanTextarea_all" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("textareafocus_all" + id)).focus();
-    
+
   }
 
   onCancel(id) {
@@ -768,16 +785,20 @@ export class ToDoProjectsComponent implements OnInit {
     if (this._modelProjectName != "" && this._modelProjDesc != "") {
       this.service._ProjectRenameService(id, this._modelProjectName, this._modelProjDesc, this.CurrentUser_ID).subscribe(data => {
         this._Message = data['message'];
+
         this.notifyService.showSuccess(this._Message, "");
         this.GetSubtask_Details();
         this.GetProjectsByUserName();
         this.service.SubTaskDetailsService_ToDo_Page(Pcode, this.Comp_No, null).subscribe(
           (data) => {
-            let list: any;
-            list = JSON.parse(data[0]['ProjectInfo']);
-            this._ProjectName = list[0]['Project_Name'];
-            this.Proj_Desc = list[0]['Project_Description'];
-          });
+            if (data && Array.isArray(data) && data.length > 0 && data[0]['ProjectInfo']) {
+              let list: any;
+              list = JSON.parse(data[0]['ProjectInfo']);
+              if (list && Array.isArray(list) && list.length > 0) {
+                this._ProjectName = list[0]['Project_Name'];
+                this.Proj_Desc = list[0]['Project_Description'];
+              }
+            }})
       });
       this.onCancel(id);
     }
@@ -806,7 +827,7 @@ export class ToDoProjectsComponent implements OnInit {
       this.onCancel(id);
     }
     else {
-      this.notifyService.showInfo("Hours cannot be 0 or null", "Please try again with correct value"); 
+      this.notifyService.showInfo("Hours cannot be 0 or null", "Please try again with correct value");
     }
   }
 
@@ -832,7 +853,7 @@ export class ToDoProjectsComponent implements OnInit {
   count_LinkedProjects: number;
   LastPage:number;
   lastPagerecords:number;
-  
+
   getDropdownsDataFromDB() {
     this._objDropdownDTO.EmpNo = this.CurrentUser_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -842,11 +863,11 @@ export class ToDoProjectsComponent implements OnInit {
     // this._objDropdownDTO.PortfolioId = null;
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails)
       .subscribe((data) => {
-        
+
          console.log(this._CurrentpageRecords,this.CurrentPageNo,this._totalProjectsCount,this.LastPage, this.lastPagerecords);
       });
   }
-  
+
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
@@ -997,7 +1018,7 @@ export class ToDoProjectsComponent implements OnInit {
     this.service.GetProjectsByUserName_Service_ForProjectsTODO(this.ObjUserDetails)
       .subscribe(data => {
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
-        this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);       
+        this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         // console.log(this._ProjectDataList);
         // this._totalProjectsCount = data[0]['ProjectsCount_Json'];
         //Emp
@@ -1022,7 +1043,7 @@ export class ToDoProjectsComponent implements OnInit {
           this.StatusCountFilter = this.selectedItem_Status[0];
         }
         this._totalProjectsCount = JSON.parse(data[0]['ProjectsCount_Json']);
-        
+
 
         let _vl = this._totalProjectsCount / 30;
         let _vl1 = _vl % 1;
@@ -1078,7 +1099,7 @@ export class ToDoProjectsComponent implements OnInit {
   }
 
   txtSearch: string;
-  
+
   resetAll() {
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;

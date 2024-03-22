@@ -254,7 +254,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-   
+
 
 
 
@@ -476,18 +476,18 @@ this.prjPIECHART.render();
 
   drawStatisticsNew(){
     if(this.currentActionView===undefined){
- 
+
          // 1. bar chart start.
              this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, '1', this.Current_user_ID).subscribe((res: any) => {
-             
+
                let tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
- 
- 
+
+
                  //standard  graph cal start    may need updation.
                  let x=0;
                  let AL=0;
                  if(['003','008'].includes(this.projectInfo.Project_Block)){
- 
+
                    let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
                    let d2=new Date();                           // TODAY DATE.
                    x=0;
@@ -499,19 +499,19 @@ this.prjPIECHART.render();
                          case 5:{      };break;
                          case 6:{ x=moment(d1).diff(d2,'years');     };break;
                    }
- 
- 
+
+
                    let timestr=this.projectInfo.StandardAllocatedHours;
                    let t=timestr.split(':');
                    let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
                    AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
- 
+
                  }
                  //standard graph cal end
- 
- 
- 
-             
+
+
+
+
                var options = {
                  series: [{
                    data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, tlTotalHrs, ((+this.projectInfo.AllocatedHours) - tlTotalHrs).toFixed(2)]
@@ -553,39 +553,39 @@ this.prjPIECHART.render();
                  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
                        ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
                        ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
- 
+
                };
- 
+
                if (this.prjBARCHART)
                  this.prjBARCHART.destroy();
- 
+
                let bchr=document.querySelector("#Bar-chart");
                if(bchr)
                {
-                 this.prjBARCHART = new ApexCharts(bchr, options); 
+                 this.prjBARCHART = new ApexCharts(bchr, options);
                  this.prjBARCHART.render();
                }
-               
-             
- 
-             
- 
+
+
+
+
+
              });
          //  bar chart end.
- 
+
          // 2. Pie chart start.
- 
+
          if(['001','002'].includes(this.projectInfo.Project_Block)){
              // core, secondary.
              if(Array.isArray(this.projectActionInfo)&&this.projectActionInfo.length>0){
                  // actions are available.
                let peoples=JSON.parse(this.projectActionInfo[0].filteremployee);
- 
+
                let _users=peoples.map(item=>{
                  const obj:any={
                    Emp_Name:item.Responsible,
                  };
- 
+
                  let totalactions=0;
                  this.filterstatus.forEach(st=>{
                    const actns=this.getFilteredPrjActions(st.Status,item.Team_Res);
@@ -596,13 +596,13 @@ this.prjPIECHART.render();
                  });
                  obj.total_actions=totalactions;
                  return obj;
- 
+
                });
- 
- 
- 
- 
- 
+
+
+
+
+
                var options123 = {
                  series: _users.map(item=>item.total_actions),
                  chart: {
@@ -640,21 +640,21 @@ this.prjPIECHART.render();
                      }
                    }
                  }],
- 
+
                  tooltip: {
                    enabled: true,
                    custom: ({ series, seriesIndex,dataPointIndex,w})=>{
- 
-                   let temp:any={};  
+
+                   let temp:any={};
                    Object.assign(temp,_users[seriesIndex])
                    delete temp.Emp_Name;
                    delete temp.total_actions;
- 
+
                    let r=[];
                    for(let k in temp){
                        r.push(k+' : '+temp[k])
                    }
- 
+
                      return `<div style="background-color:#6c78e699; color:white; padding:3px;">
                              <div> <u>${_users[seriesIndex].Emp_Name}</u> </div>
                              <div> Total :  ${series[seriesIndex]} Actions.</div>
@@ -664,22 +664,22 @@ this.prjPIECHART.render();
                            </div>`;
                    }
                  }
- 
-                 
+
+
                };
-               
+
                var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
                chart.render();
-               
+
 
              }
          }
- 
+
          // Pie chart end.
     }
    }
- 
- 
+
+
 
 
 
@@ -914,8 +914,8 @@ this.prjPIECHART.render();
      }
 
 
-     
-    
+
+
      if(this.projectActionInfo){
       this.actionsWith0hrs=[];   // must be empty before calculation.
      this.projectActionInfo.forEach((actn)=>{
@@ -924,7 +924,7 @@ this.prjPIECHART.render();
               if(temp)
                   temp.holdactions+=1;
               else
-              this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });  
+              this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });
             }
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
@@ -1409,17 +1409,17 @@ this.prjPIECHART.render();
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
 
     // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active"); 
+    // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
 
     // document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
 
     $('#kt_tab_pane_2_4').removeClass("show active");
     $('a[href="#kt_tab_pane_2_4"]').removeClass("active");   // ADD SUPPORTS TAB.
-    
+
     $('#kt_tab_pane_user-request_approver').removeClass("show active");
     $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");
-    
+
     // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
 
@@ -2806,7 +2806,7 @@ currentStdAprView:number=0;
   }
 
 
-  onActionDateChanged(){  
+  onActionDateChanged(){
     let start_dt=new Date(this.ActionstartDate);
     let end_dt=new Date(this.ActionendDate);
     let Difference_In_Time = start_dt.getTime() - end_dt.getTime();
@@ -2818,7 +2818,7 @@ currentStdAprView:number=0;
     else{
       this.ActionmaxAllocation = (-Difference_In_Days) * 10 / 1 +10;
     }
-  
+
   }
 
 
@@ -3227,7 +3227,7 @@ check_allocation() {
 
         if(this.currentActionView!==undefined)
         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get action activities update.
-       else  
+       else
         this.GetActivityDetails();     // get project activities update.
 
 
@@ -4139,13 +4139,13 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   openMeetingSidebar() {
-     
-   
+
+
 
     // window.addEventListener('scroll',()=>{
     //   this.autocompletes.forEach((ac)=>{
     //           if(ac.panelOpen)
-    //           ac.updatePosition();      
+    //           ac.updatePosition();
     //   });
     // },true);
 
@@ -4608,7 +4608,7 @@ Task_type(value:number){
       es.addEventListener('scroll',()=>{
             this.autocompletes.forEach((ac)=>{
               if(ac.panelOpen)
-              ac.updatePosition();      
+              ac.updatePosition();
             });
       })
 
@@ -6300,7 +6300,7 @@ removeSelectedDMSMemo(item){
       } else if (response.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
-          'Project not canceled',
+          'Project not cancelled',
           'error'
         )
         this.closePrjCancelSb();
@@ -6388,7 +6388,7 @@ removeSelectedDMSMemo(item){
           this.notifyService.showSuccess(this._Message, 'Success');
         }
         this.closeInfo();
-      
+
       });
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
@@ -6981,6 +6981,7 @@ approveUserRequest(requestNo:number){
     Project_Code1:this.projectInfo.Project_Code,
     Category:this.projectInfo.Category,
     Duration: this.projectInfo.Duration,
+
     DurationTime: "0",
     Project_Owner:this.projectInfo.Owner,
     Team_Res: this.projectInfo.Responsible,
@@ -7009,6 +7010,7 @@ approveUserRequest(requestNo:number){
   this.approvalservice.NewUpdateAcceptApprovalsService([userReqObj]).subscribe(res=>{
          console.log("+>",res);
   });
+
 }
 
 
@@ -7214,7 +7216,7 @@ cancelAction(index) {
     } else if (response.dismiss === Swal.DismissReason.cancel) {
       Swal.fire(
         'Cancelled',
-        'Action not canceled',
+        'Action not cancelled',
         'error'
       )
       this.closePrjCancelSb();

@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -21,17 +21,51 @@ import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import tippy from 'node_modules/tippy.js';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {  MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
+
 //import { empty } from '@angular-devkit/schematics';
 
 @Component({
   selector: 'app-action-to-project',
   templateUrl: './action-to-project.component.html',
-  styleUrls: ['./action-to-project.component.css']
+  styleUrls: ['./action-to-project.component.css'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  ]
 })
+
 
 export class ActionToProjectComponent implements OnInit {
   // extends ProjectUnplannedTaskComponent
   // @ViewChild(ProjectUnplannedTaskComponent ) _projectunplanned !:any ;
+  @ViewChild('fileInput') fileInput: any;
+  fileAttachment: any;
+  file: File | null = null;
   Sub_ProjectName: string = null;
   _Description: string = null;
   _StartDate: Date = null;
@@ -573,7 +607,7 @@ export class ActionToProjectComponent implements OnInit {
 
           this.createproject.getActionsDetails();
           this.createproject.newProjectDetails(this._MasterCode);
-         
+
           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
           this.closeInfo();
         }
@@ -653,7 +687,7 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   closeInfo() {
-   
+
     // alert(this._Urlid);
     if(this._Urlid==2){
       this.router.navigate(["UnplannedTask/"]);
@@ -764,10 +798,23 @@ export class ActionToProjectComponent implements OnInit {
 
 
 
+selectFile() {
+  this.fileInput.nativeElement.click();
+}
 
+onFileChanged(event: any) {
+  const files: File[] = event.target.files;
 
-
-
+  if (files && files.length > 0) {
+    this.file = files[0];
+    this.fileAttachment = this.file;
+  } else {
+    this.file = null;
+    this.fileAttachment = null;
+  }
+  // Reset file input value to allow selecting the same file again
+  this.fileInput.nativeElement.value = '';
+}
 
 
 

@@ -475,7 +475,7 @@ export class DashboardComponent implements OnInit {
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
-    this._labelName = "Schedule Date :";
+    this._labelName = "Schedule Date";
     this.timelineType = this.type1;
     this.selectedSort = 'today';
     this.MinLastNameLength = true;
@@ -1352,7 +1352,7 @@ export class DashboardComponent implements OnInit {
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
           this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
@@ -1360,12 +1360,12 @@ export class DashboardComponent implements OnInit {
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
           document.getElementById("div_endDate").style.display = "block";
           this.selectedrecuvalue = '1';
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
@@ -1388,7 +1388,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("div_endDate").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121").style.display = "block";
-          this._labelName = "Schedule Date :";
+          this._labelName = "Schedule Date";
           this.selectedrecuvalue = '3';
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
@@ -3090,7 +3090,7 @@ debugger
     else {
       this._PopupConfirmedValue = 2;
     }
-    this._labelName = "Start Date :";
+    this._labelName = "Start Date";
     document.getElementById("div_endDate").style.display = "block";
     for (let index = 0; index < this.dayArr.length; index++) {
       this.dayArr[index].checked = false;
@@ -3129,7 +3129,7 @@ debugger
     }
     if (val.value == 0) {
       this.maxDate = moment(this.minDate).format("YYYY-MM-DD").toString()
-      this._labelName = "Schedule Date :";
+      this._labelName = "Schedule Date";
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("div_endDate").style.display = "none";
       this.daysSelectedII = [];

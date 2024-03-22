@@ -1405,7 +1405,12 @@ color:#000;
     padding: 2px 10px;
     border-radius: 3px;
 }
-.in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head {
+.Not-started-head{
+  background-color: #888888!important ;
+  color: white;
+}
+
+.in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head,.Not-started-head{
   position: relative;
 }
 .in-processs:focus::after {
@@ -1433,7 +1438,7 @@ color:#000;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   bottom: -32%;
-  left: 38%;
+  left: 32%;
 }
 .complteed_color:focus::after {
   content: "";
@@ -1489,6 +1494,15 @@ border-right: 10px solid transparent;
 bottom: -32%;
 left: 38%;
 }
+.Not-started-head:focus::after{
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #888888!important;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 32%;
+  }
 /* focus end */
 
 
