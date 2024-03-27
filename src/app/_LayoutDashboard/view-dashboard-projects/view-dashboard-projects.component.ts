@@ -931,6 +931,7 @@ getAssignedActions(type:'BYME'|'TOME'){
 
     this.service._GetCompletedProjects(this._ObjCompletedProj)
       .subscribe((data) => {
+        debugger
         if (JSON.parse(data[0]['JsonData_Json']).length == 0) {    console.log('no list present');
           this.notSelectedAnything_msg = `No Actions found Assigned ${type==='BYME'?'By You':'To You'}`;
           this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";

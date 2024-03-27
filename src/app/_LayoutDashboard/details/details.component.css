@@ -4618,3 +4618,46 @@ background-color: #e2e8f0c9;
   transition-duration: 0.4s;
   transition-timing-function: ease-out;
 }
+
+
+.actvy-list{
+  flex-grow: 1;
+  width: 280px;
+  max-width: 280px;
+  height:500px;
+  overflow-y: auto;
+  padding:10px;
+
+}
+.actvy-item{
+  padding: 0.5em;
+  margin-top: 8px;
+  border-radius: 0 6px 6px 6px;
+  background-color: #f1f1f180;
+  color: #818181;
+}
+
+.actvy-list::-webkit-scrollbar{
+    width:5px;
+}
+
+.actvy-list::-webkit-scrollbar-thumb{
+     background-color:#e7e7e7;
+     border-radius: 15px;
+}
+
+.actvy-list::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+svg > g[class^="raphael-group-fjUjWDEW"] > text{
+  display: none;
+}
+
+.notclickedondot{
+  flex-grow: 1;
+  width: 280px;
+  max-width: 280px;
+  height:500px;
+  
+}

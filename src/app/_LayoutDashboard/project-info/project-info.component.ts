@@ -1332,7 +1332,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
         this.requestDetails = data as [];
         console.log(this.requestDetails, "approval")
-  
+  debugger
         if (this.requestDetails.length > 0) {
           this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
           this.requestType = (this.requestDetails[0]['Request_type']);
@@ -1881,6 +1881,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
 
   LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+    debugger;   type='pdf';
     let FileUrl: string;
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 

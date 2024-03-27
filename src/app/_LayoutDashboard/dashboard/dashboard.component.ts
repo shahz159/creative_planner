@@ -38,6 +38,7 @@ import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
+
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -445,6 +446,7 @@ export class DashboardComponent implements OnInit {
   creation_date: string;
   pending_status: boolean;
   pending: boolean;
+  notProvided:boolean=false;
   constructor(public service: ProjectTypeService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
@@ -1530,6 +1532,22 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  onSubmitBtnClicked(){
+     if(this.Title_Name&&this.Startts&&this.Endtms&&this.MinLastNameLength&&this.allAgendas.length>0){
+          this.OnSubmitSchedule();
+          this.notProvided=false;
+     }
+     else
+      { 
+         if(!this.Title_Name)
+         document.getElementById('dsb-evt-titleName').focus();
+         else if(this.allAgendas.length===0)
+         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+         
+
+        this.notProvided=true;
+      }
+  }
 
   OnSubmitSchedule() {
     debugger
@@ -4721,6 +4739,9 @@ debugger
     this.AllDatesSDandED.push(jsonData);
     this.GetTimeslabfordate();
 
+
+    this.notProvided=false;
+     
   }
 
   clearallfields() {
@@ -4788,6 +4809,7 @@ debugger
     this.AllDatesSDandED.push(jsonData);
     this.GetTimeslabfordate();
 
+    this.notProvided=false;
   }
 
   sweet_pending() {
