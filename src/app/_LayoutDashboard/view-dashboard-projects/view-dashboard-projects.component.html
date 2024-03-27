@@ -524,7 +524,7 @@
                                                             <span class="kt-widget__other">{{item.ReportType}}</span>
                                                         </ng-template>
                                                     </td>
-                                                    <td><span class="kt-widget__other">{{item.TM_DisplayName}}</span>
+                                                    <td><span class="kt-widget__other">{{actionAssignedType==='TOME'?item.TM_DisplayName:item.TeamRes}}</span>
                                                     </td>
                                                     <td><span class="kt-widget__other">
                                                             {{item.DeadLine|date:'dd-MM-yyyy'}}</span>

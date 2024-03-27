@@ -33,7 +33,7 @@
                     </div>
                     <div class="option-section">
                       <div (click)="Scratech_btn(); reset()" >
-                        <div class="op-card Scratech">
+                        <div class="op-card Scratech cursor-pointer">
                           <div class="op-svg-ic">
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
                               <path d="M40.9326 29.9658V51.1851" stroke="#838383" stroke-width="3" stroke-linecap="round"
@@ -76,7 +76,7 @@
                           </div>
                         </div>
                       </ng-container>
-                     
+
                       <ng-container  *ngIf="draft_json&&draft_json.length<=0">
                         <div (click)="notifydraft()">
                           <div class="op-card draft-prjs-option">
@@ -507,7 +507,7 @@
                                             </span>
                                           </div>
                                           <div class="kt-dl-icon"><span class="kt-svg-ic"
-                                              (click)="Scratech_btn();onButtonClick(record,i+1)">
+                                              (click)="Scratech_btn();onButtonClick(record,i+1);Todo()">
                                               <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -559,7 +559,7 @@
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
                                           <div class="kt-dl-icon"><span class="kt-svg-ic"
-                                              (click)="Scratech_btn();getConditional(item)">
+                                              (click)="Scratech_btn();getConditional(item);">
                                               <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1019,7 +1019,7 @@
                                   <div class="kt-project-sts-data ">
                                     <ng-container *ngIf="['001','002','011'].includes(Prjtype);else DuraDiv">
                                             <ng-container *ngIf="projectInfo&&projectInfo.Duration !=''; else days">
-                                              {{projectInfo&&projectInfo.Duration}} days
+                                              {{projectInfo&&projectInfo.Duration +1}} days
                                             </ng-container>
                                             <ng-template #days>
                                               {{durationInDays + 1}} days
@@ -1050,7 +1050,14 @@
                                           {{projectInfo.AllocatedHours+' Hrs'}}
                                      </ng-container>
                                      <ng-template #Hrs1>
-                                             {{  Allocated_Hours?Allocated_Hours+ (['001','002','011'].includes(Prjtype)?' Hrs':''):'0 Hrs' }}
+                                             {{  Allocated_Hours?
+
+                                                  Allocated_Hours+ (['001','002','011'].includes(Prjtype)?
+                                                                   (Allocated_Hours>1?' Hrs':' Hr'):
+                                                                     ''
+                                                                   )
+
+                                                 :'0 Hrs' }}
                                      </ng-template>
 
 
@@ -1397,10 +1404,10 @@
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project name<span class="text-danger">*</span></label>
-                                  <input class="form-control" [ngClass]="{'error-border': !PrjName && notProvided}" type="text"
-                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=(!isValidString(PrjName,3))"   />
+                                  <input class="form-control" type="text"
+                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=isValidString(PrjName,3)"   />
                                   <span style="color:rgb(217,48,37)" class=""
-                                  *ngIf="isPrjNameValid" >please enter atleast 3
+                                  *ngIf="!isPrjNameValid" >please enter atleast 3
                                     words</span>
                                   <span style="color:rgb(217,48,37)" class=""
                                     *ngIf="!PrjName&&notProvided">Please enter project name</span>
@@ -1409,20 +1416,21 @@
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project description<span class="text-danger">*</span></label>
-                                  <textarea class="form-control form-control kt-desc-textarea" [ngClass]="{'error-border': !PrjDes && notProvided}" data-kt-autosize="true"
-                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=(!isValidString(PrjDes,5))"  ></textarea>
-                                  <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid">please enter
-                                    atleast 5 words</span>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description</span>
+                                  <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
+                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
+                                  <span style="color:rgb(217,48,37)"*ngIf="!isPrjDesValid">please enter
+                                    atleast 5 words.  </span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">description is
+                                    required.</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="select type" [ngClass]="{'error-vd': !Prjtype && notProvided}" [(ngModel)]="Prjtype" (change)="changeprojecttype()"
+                                  <ng-select class="kt-form-vd" placeholder="select type" [(ngModel)]="Prjtype" (change)="changeprojecttype(); "
                                     #PrjTYPE="ngModel"  (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
-                                      [value]="item.Typeid"  >{{item.ProjectType}} </ng-option>
+                                      [value]="item.Typeid"  >{{item.ProjectType }} </ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">Please select project type</span>
                                 </div>
@@ -1466,8 +1474,9 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <div *ngIf="Prjtype=='011'" style="color:grey">Todo List not more than 3 Days </div>
-                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">Please select project start date</span>
+                                  <div *ngIf="Prjtype=='011'" style="color:grey">To do List not more than 3 Days </div>
+                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">start date
+                                    required</span>
                                 </div>
 
                                 <div class="col-lg-4 mb-3">
@@ -1494,15 +1503,15 @@
                                     <input id="hour-input" #allocated="ngModel" required class="form-control" placeholder="Enter action duration in hrs"
                                     [ngClass]="{
                                       'error-border': Prjtype == '011' && (
-                                          (!Allocated_Hours && notProvided) || 
-                                          (allocated.touched && allocated.invalid && Allocated_Hours == 0) || 
-                                          !Prjstartdate || 
-                                          !Prjenddate || 
-                                          this.Prjstartdate == null || 
+                                          (!Allocated_Hours && notProvided) ||
+                                          (allocated.touched && allocated.invalid && Allocated_Hours == 0) ||
+                                          !Prjstartdate ||
+                                          !Prjenddate ||
+                                          this.Prjstartdate == null ||
                                           this.Prjenddate == null
                                       )
                                   }"
-                                  
+
                                     [(ngModel)]="Allocated_Hours"      min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
                                     <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
                                       </span>
@@ -1727,7 +1736,7 @@
                             <div style="width: 50%;">
                               <div class="error-notification i-notification  cursor-pointer" [ngClass]="{'your-class': (!PrjName || !PrjDes || !Prjtype || !PrjClient || !PrjCategory|| !Prjstartdate || !Prjenddate) && notProvided}" *ngIf="(!PrjName || !PrjDes || !Prjtype || !PrjClient || !PrjCategory|| !Prjstartdate || !Prjenddate) && notProvided">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
-     
+
                                      <span  class="notif-msg">One of the field is incorrect or invalid. please, follow the examples in order to continue.</span>
                                     </div>
                                   </div>
@@ -1814,7 +1823,7 @@
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <mat-form-field class="drp-dwn-field w-100">
-                                    <mat-label class="text-dark-50 w-75px">Support</mat-label>
+                                    <mat-label class="text-dark-50 w-75px">Support<span style="color:rgb(217,48,37)">*</span></mat-label>
                                     <mat-chip-list #selectedProjSprt>
                                       <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
                                         (removed)="removeSelectedPrjSprt(p); setRACIS();    ">
@@ -2065,7 +2074,7 @@
                                 </div>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Duration </div>
-                                  <div class="kt-info-data-v "> {{projectInfo&&projectInfo.Duration}}
+                                  <div class="kt-info-data-v "> {{projectInfo&&projectInfo.Duration +1}}
                                     days
                                   </div>
                                 </div>
@@ -2745,7 +2754,7 @@
                       <div class="kt-info-lable-v"> Duration</div>
                   <div class="input-icon Sub_In_ed"
                   *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                  <input type="text" class="form-control readonly" value="{{projectInfo.Duration}} days "
+                  <input type="text" class="form-control readonly" value="{{projectInfo.Duration +1}} days "
                       placeholder="Duration..." readonly />
               </div>
               <ng-template #continue>

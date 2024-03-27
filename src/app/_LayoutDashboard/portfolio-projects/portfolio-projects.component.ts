@@ -59,6 +59,7 @@ export class PortfolioProjectsComponent implements OnInit {
   TotalProjects: any;
   CountInprocess: any;
   CountCompleted: any;
+  CountNotStarted:any;
   CountDelay: any;
   CountNewProject: any;
   countnewprojecRejected: any;
@@ -204,6 +205,13 @@ export class PortfolioProjectsComponent implements OnInit {
         if (!this.CountCompleted) {
           this.CountCompleted = 0;
         }
+
+        this.CountNotStarted = rez['Not Started'];
+        if (!this.CountNotStarted) {
+          this.CountNotStarted = 0;
+        }
+
+
         this.CountDelay = rez['Delay'];
         if (!this.CountDelay) {
           this.CountDelay = 0;
@@ -877,6 +885,12 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!this.CountProjectHold) {
                 this.CountProjectHold = 0;
               }
+              this.CountNotStarted = rez[' Not Started '];
+              if (!this.CountNotStarted) {
+                this.CountNotStarted = 0;
+              }
+
+
 
               let ProjectHolded: number = rez['Project Hold'];
               if (!ProjectHolded) {
@@ -963,6 +977,12 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this._PortProjStatus = "Delay";
     this.showDeletedPrjOnly=false;
   }
+
+  labelDraft(){
+    this._PortProjStatus = "Not Started";
+    this.showDeletedPrjOnly=false;
+  }
+
 
   labelCompleted() {
     this._PortProjStatus = 'Completed';

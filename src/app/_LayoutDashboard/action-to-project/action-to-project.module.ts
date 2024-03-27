@@ -14,6 +14,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { DatePipe } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [ActionToProjectComponent],
@@ -34,7 +37,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ActionToProjectComponent
   ],
   providers:[
-    NotificationService
-  ]
+    NotificationService,
+    DatePipe,{provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
+
 })
 export class ActionToProjectModule { }

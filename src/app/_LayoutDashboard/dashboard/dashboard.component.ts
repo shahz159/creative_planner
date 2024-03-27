@@ -38,6 +38,7 @@ import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
+
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -445,6 +446,7 @@ export class DashboardComponent implements OnInit {
   creation_date: string;
   pending_status: boolean;
   pending: boolean;
+  notProvided:boolean=false;
   constructor(public service: ProjectTypeService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
@@ -1530,6 +1532,22 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  onSubmitBtnClicked(){
+     if(this.Title_Name&&this.Startts&&this.Endtms&&this.MinLastNameLength&&this.allAgendas.length>0){
+          this.OnSubmitSchedule();
+          this.notProvided=false;
+     }
+     else
+      { 
+         if(!this.Title_Name)
+         document.getElementById('dsb-evt-titleName').focus();
+         else if(this.allAgendas.length===0)
+         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+         
+
+        this.notProvided=true;
+      }
+  }
 
   OnSubmitSchedule() {
     debugger
@@ -3714,6 +3732,7 @@ debugger
         this.calendarOptions = {
 
           initialView: 'listWeek',
+          
           firstDay: moment().weekday(),
 
           // timeZone: 'local',
@@ -3729,6 +3748,7 @@ debugger
           eventClick: this.GetClickEventJSON_Calender.bind(this),
           events: this.Scheduledjson,
           eventDidMount: this.customizeEvent,
+          
           dayMaxEvents: 4,
           eventTimeFormat: {
             hour: 'numeric',
@@ -3758,8 +3778,7 @@ debugger
 
   TwinEvent=[];
   customizeEvent=(info)=>{
-    
-    debugger
+ 
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -3841,8 +3860,19 @@ debugger
       if (dayLabel && !event.title.includes(dayLabel)) {
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
-        // event.setProp('title', newTitle);
-        info.el.children[2].innerText=newTitle;
+        
+       
+        if(info.view.type==='listWeek'){
+         
+          info.el.children[2].innerText=newTitle;
+        }
+        else{
+           event.setProp('title', event.title);
+           this.TwinEvent=[];
+        }
+        
+      
+      
       }
     }
     
@@ -4709,6 +4739,9 @@ debugger
     this.AllDatesSDandED.push(jsonData);
     this.GetTimeslabfordate();
 
+
+    this.notProvided=false;
+     
   }
 
   clearallfields() {
@@ -4776,6 +4809,7 @@ debugger
     this.AllDatesSDandED.push(jsonData);
     this.GetTimeslabfordate();
 
+    this.notProvided=false;
   }
 
   sweet_pending() {
