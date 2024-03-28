@@ -334,7 +334,6 @@ NewGetAttendeesMeetingnotes(obj: CalenderDTO){
   this.obj_CalenderDTO.AgendaId=obj.AgendaId
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
-debugger
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetAttendeesMeetingnotes", this.obj_CalenderDTO);
 
 }

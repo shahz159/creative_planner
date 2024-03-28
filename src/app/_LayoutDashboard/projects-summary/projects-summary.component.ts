@@ -107,7 +107,7 @@ $(document).ready(function(){
     this.BsService.ProjectCreatedEvent.subscribe(()=>{
       this.GetProjectsByUserName(this.type1);
     })
-  
+
 
 
   }
@@ -519,7 +519,7 @@ $(document).ready(function(){
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-          
+
         }
         else {
           this.StatusCountFilter = this.selectedItem_Status[0];
@@ -611,7 +611,7 @@ $(document).ready(function(){
   isStatusChecked(item) {
     let arr = [];
     this.edited = true;
-    this.canceledit = true;   
+    this.canceledit = true;
     this.StatusCountFilter.forEach(element => {
       if (element.checked == true) {
         arr.push({ Status: element.Name });
@@ -1107,7 +1107,7 @@ $(document).ready(function(){
       });
      // console.log(this._ProjectDataList,'_ProjectDataList')
     }
-    console.log(this._ProjectDataList,'_ProjectDataList')
+    console.log(this._ProjectDataList,'_ProjectDataLists')
   }
 
   moreDetails(pcode) {

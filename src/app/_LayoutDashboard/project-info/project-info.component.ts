@@ -1377,6 +1377,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             this.completedoc = (this.complete_List[0]['Sourcefile']);
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
+            console.log( this.complete_List ,'contenrt')
           }
           if (this.requestType == 'Task Complete') {
             this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']);
@@ -1881,7 +1882,6 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 
 
   LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-    debugger;   type='pdf';
     let FileUrl: string;
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
