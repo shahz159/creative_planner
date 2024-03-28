@@ -1108,8 +1108,16 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
-                        <span class="tool-span" data-toggle="modal" data-target="#delevent">
+                    <div  class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
+                        <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" class="tool-span" data-toggle="modal" data-target="#delevent">
+                            <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
+                                </path>
+                                <path d="M9 8h2v9H9zm4 0h2v9h-2z"></path>
+                            </svg>
+                        </span>
+                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0" class="tool-span" (click)="AllDelete_event(1);AlldeleteSchedule()">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
@@ -1118,6 +1126,8 @@
                             </svg>
                         </span>
                     </div>
+
+                    
 
 
                     <div class="icons-right" data-toggle="tooltip" title="Close">
@@ -3661,9 +3671,9 @@
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                                                                   <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
                 <button *ngIf="draftid==0" type="submit" class="btn btn-info btn-sm" 
-                    (click)="OnSubmitSchedule()">Submit</button>
+                    (click)="onSubmitBtnClicked()">Submit</button>
                 <button *ngIf="draftid!=0" type="submit" class="btn btn-info btn-sm" 
-                    (click)="OnSubmitSchedule()">Update & Release</button>
+                    (click)="onSubmitBtnClicked()">Update & Release</button>
                 <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
                     (click)="Insert_indraft()">Save Draft</button>
                 <button *ngIf="draftid!=0" type="cancel" class="btn btn-sm btn-dull ml-3"
