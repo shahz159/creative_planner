@@ -449,7 +449,7 @@ createSRTProject(){
     }
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
-     //1. creating project
+     //1. creating project  
      this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
 
            console.log("res after project creation:",res);
@@ -1492,7 +1492,7 @@ openTemplate(template:any){
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
    this.prjsubmission=PInfo.SubmissionId;
-
+ 
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
@@ -1500,7 +1500,7 @@ openTemplate(template:any){
    this.PrjAuditor='';
    this.PrjInformer='';
    this.PrjSupport=[];
-   this.Allocated_Hours=null
+   this.Allocated_Hours=null;
    //  this.fileAttachment=new File()
 
 

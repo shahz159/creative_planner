@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
+import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
   selector: 'app-meeting-details',
@@ -99,7 +100,9 @@ export class MeetingDetailsComponent implements OnInit {
     public _LinkService: LinkService,
     public ProjectTypeService: ProjectTypeService,
     private dialog: MatDialog,
+    public signalRService: SignalRService
   ) {
+   
     this._calenderDto=new CalenderDTO;
     this.objPortfolioDto = new PortfolioDTO();
     this._lstMultipleFiales = [];
@@ -122,6 +125,16 @@ export class MeetingDetailsComponent implements OnInit {
       this.meeting_details(); 
       this.addAgenda();
       this.GetMeetingnotes_data();
+
+      this.signalRService.startConnection();
+      this.signalRService.addBroadcastMessageListener((name, message) => {
+      console.log(`Received: ${name}: ${message}`);
+      // Here you can update your view/model with the received message
+    });
+  }
+
+  sendMessage(name: string, message: string) {
+    this.signalRService.send(name, message);
   }
 
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;

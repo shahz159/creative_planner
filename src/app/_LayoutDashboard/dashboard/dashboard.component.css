@@ -1004,6 +1004,7 @@ span.time-slt-md {
     font-size: 14px;
     padding: 0.5rem 1.2rem;
     color: #222;
+    cursor:pointer;
 }
 .drop-cus a.dropdown-item:hover{
 background-color: #f1f3f4;
@@ -3044,3 +3045,9 @@ span.kt-dashboard-delay-cnt {
     position: static !important;
   }
   
+
+  #TaskEvent-Sidebar{
+    scroll-behavior: smooth;
+  }
+
+ 

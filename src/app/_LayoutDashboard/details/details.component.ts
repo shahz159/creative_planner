@@ -152,7 +152,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   comments_list: any;
   new_cost: any;
   ObjSubTaskDTO: SubTaskDTO;
-  Activity_List: any
+  Activity_List: any=[];
   Project_List: any;
   filteredEmployees: any = [];
   Client_List: any;
@@ -930,7 +930,7 @@ this.prjPIECHART.render();
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
     }
 
-
+debugger
 
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
@@ -953,7 +953,7 @@ this.prjPIECHART.render();
           this.showActionDetails(undefined);  // opens the main project.
     })
     if(actionIndex!==undefined){
-      this.showActionDetails(actionIndex)
+      this.showActionDetails(actionIndex);
     }
     this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
     // setTimeout(() => this.drawStatistics(), 5000);
@@ -1035,15 +1035,18 @@ this.prjPIECHART.render();
   }
 
 
-
+  activitiesLoading:boolean=false;
+  activitiesOf:'ACTION-ACTIVITIES'|'PROJECT-ACTIVITIES'='PROJECT-ACTIVITIES';
   firstFiveRecords: any[] = [];
   GetActivityDetails() {
+    this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
-      (data) => {
+      (data) => {   
         if (data !== null && data !== undefined) {
+
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-
+debugger
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                  return {
@@ -1056,14 +1059,17 @@ this.prjPIECHART.render();
           })
 
         }
+        this.activitiesLoading=false;  // end the loading.
       })
   }
 
-  ActionActivity_List:any;
+ 
+  ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
   GetActionActivityDetails(code) {
+    this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
-      (data) => {
+      (data) => {  
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
@@ -1071,13 +1077,14 @@ this.prjPIECHART.render();
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                   return {
                    ...item,
-                   ModifiedDate:d===0?'Today':
+                   ModifiedDate:d===0?'Today': 
                    d===1?'Yesterday':
                    [2,3].includes(d)?d+' days ago':
                    this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                  };
            })
         }
+        this.activitiesLoading=false;   // end the loading.
       })
   }
 
@@ -1340,12 +1347,19 @@ this.prjPIECHART.render();
     this.GetprojectComments()
    }
 
-  View_Activity() {
+  View_Activity(type:"PROJECT-ACTIVITIES"|"ACTION-ACTIVITIES") {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
     this.currentSidebarOpened='ACTIVITY_LOG';
-    this.GetActivityDetails();
+    this.activitiesOf=type;
+    if(this.activitiesOf==='PROJECT-ACTIVITIES'){
+      this.GetActivityDetails();    // get all activities of the project.
+    }
+    else if(this.activitiesOf==='ACTION-ACTIVITIES'){
+      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get all activities of the action selcted.
+    }
+    
   }
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
@@ -1711,6 +1725,7 @@ this.prjPIECHART.render();
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+      debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -2027,7 +2042,7 @@ currentStdAprView:number=0;
             this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
-
+            this.getRejectType();
 
           });
       }
@@ -3619,6 +3634,7 @@ check_allocation() {
                 this.notifyService.showSuccess(this._Message, 'Success');
               }
           }
+          this.GetActivityDetails();
           this.closeInfoProject();
           this.getProjectDetails(this.URL_ProjectCode);
           // this.getapproval_actiondetails();
@@ -6010,14 +6026,14 @@ removeSelectedDMSMemo(item){
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
   onProject_Hold(id, Pcode) {
-    debugger
+  
     this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
     if (this.Holddate != null) {
       this.objProjectDto.Project_holddate = this.Holddate;
       this.objProjectDto.Project_Code = Pcode;
       this.objProjectDto.Remarks = this.hold_remarks;
       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
-        debugger
+       
         this._Message = data['message'];
         if (this._Message == 'Project Hold Updated') {
 
@@ -6026,10 +6042,10 @@ removeSelectedDMSMemo(item){
 
           this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
           this.closePrjHoldSideBar();
-          this.getProjectDetails(this.URL_ProjectCode);
+          this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
           this.getholdate();
           this.getRejectType();
-
+          debugger
           if(this.currentActionView!==undefined){
             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
             }else{
@@ -6061,11 +6077,12 @@ removeSelectedDMSMemo(item){
     if(this.currentActionView===undefined){
           // project release
           if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
+            debugger
             this.approvalObj.Project_Code = this.URL_ProjectCode;
             this.approvalObj.Request_type = 'Project Release';
             this.approvalObj.Emp_no = this.Current_user_ID;
             this.approvalObj.Remarks = this.hold_remarks;
-            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { debugger
               this.closePrjReleaseSideBar();
               this._Message = (data['message']);
               if (this._Message == '1') {
@@ -6103,7 +6120,7 @@ removeSelectedDMSMemo(item){
             this._Message = (data['message']);
             if (this._Message == '1') {
               this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
-              this.getProjectDetails(this.URL_ProjectCode);
+              this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
               this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
             }
             else if (this._Message == '2' || this._Message == '0') {
@@ -6659,6 +6676,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -6838,8 +6856,8 @@ getRejectType() {
 }
 
 releasenewProject(){
-  debugger
-  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+
+  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo||this.Current_user_ID==this.projectInfo.OwnerEmpNo){
     this.approvalObj.Project_Code = this.URL_ProjectCode;
     this.approvalObj.Request_type = 'New Project Reject Release';
     this.approvalObj.Emp_no = this.Current_user_ID;
@@ -6853,6 +6871,17 @@ releasenewProject(){
         this.getProjectDetails(this.URL_ProjectCode);
         this.getRejectType();
         this.getapproval_actiondetails();
+
+
+        if(this.Current_user_ID==this.projectInfo.OwnerEmpNo)
+        { 
+          this.isApprovalSection=true; // back to initial value
+          this.isTextAreaVisible=false;    // back to initial value
+          this.getapprovalStats();
+        }
+
+
+
       }
       else if (this._Message == '2' || this._Message == '0') {
         this.notifyService.showError("Project release failed", "Failed");
@@ -6886,13 +6915,15 @@ displaymessagemain(){
 
 
 formatTimes(time: string): string {
+  
   const [hours, minutes] = time.split(':');
   const date = new Date();
   date.setHours(parseInt(hours, 10));
   date.setMinutes(parseInt(minutes, 10));
 
   const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
-  return date.toLocaleTimeString('en-US', options);
+  const x=date.toLocaleTimeString('en-US', options);
+  return x;
 }
 
 
@@ -7025,6 +7056,24 @@ getActivitiesOfDates(emp,...dates){
   return result;
 }
 
+
+getActivitiesOf(d){
+  let _Activity_List=this.Activity_List;
+  if(this.graphOption!='PROJECT')
+  {
+    _Activity_List=_Activity_List.filter(item=>item.Modifiedby===this.graphOption);
+  }
+     const x=_Activity_List.filter(activity=>activity.ModifiedDate==d);
+     console.log(x);
+     return x;
+}
+
+
+
+activitiesOnthat:any=[];
+selectedactvy:string|undefined;
+
+
 showFullGraph(){
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
@@ -7032,7 +7081,7 @@ showFullGraph(){
   const actvies=this.getActivitiesOfDates(this.graphOption,...alldates);       //[{date:'2023-08-11',total:4},{date:'2024-02-02',total:8} ...]
   console.log("all graph line points :",actvies);
 
-
+  this.loadActivitiesByDate(alldates[alldates.length-1]);    // show recent activity
 
   const dataSource = {
     chart: {
@@ -7059,6 +7108,7 @@ showFullGraph(){
       scrollheight: "4",
       scrollColor: "#f9f9f9",
 
+
     },
     categories: [
       {
@@ -7075,7 +7125,7 @@ showFullGraph(){
     ]
   };
 
-  FusionCharts.ready(function() {
+  FusionCharts.ready(()=> {
     var myChart = new FusionCharts({
       type: "zoomline",
       renderAt: "full-graph",
@@ -7085,17 +7135,31 @@ showFullGraph(){
       dataSource
     }).render();
 
+
+    myChart.addEventListener('dataplotClick',(e)=>{
+       console.log(e.data.categoryLabel,e.data.dataValue);
+       this.loadActivitiesByDate(e.data.categoryLabel);
+    });
+
   });
 
+
+  
 }
 
 onGraphOptionChanged(option:string){
+    this.activitiesOnthat=[];
+    this.selectedactvy=undefined;
     this.graphOption=option;
     this.showFullGraph();
     this.graphOptionChanged=true;
+   
 }
 
-
+loadActivitiesByDate(d){
+  this.activitiesOnthat=this.getActivitiesOf(d);
+  this.selectedactvy=d;
+}
 
 
 //  Full Graph code end
