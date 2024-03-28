@@ -1632,3 +1632,10 @@ left: 38%;
   padding: 2px 10px;
   border-radius: 3px;
 }
+
+.kt-project-name{
+  text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 200px;
+}

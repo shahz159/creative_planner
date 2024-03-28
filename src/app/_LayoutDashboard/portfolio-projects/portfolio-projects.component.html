@@ -225,6 +225,7 @@
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>ProjectName</p></td>
+                                                    <td></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Category</span></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></td>
@@ -299,10 +300,13 @@
                                                         </ng-template>
                                                     </td>
                                                     <td>
-                                                        <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}}
-                                                         <span class="count2">{{item1.Actioncount}}</span>
+                                                        <p class="kt-widget__title mb-0 kt-project-name"> {{item1.Project_Name}}
+                                                         <!-- <span class="count2">{{item1.Actioncount}}</span> -->
                                                         </p>
 
+                                                    </td>
+                                                    <td>
+                                                        <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
                                                     </td>
 
                                                     <td>
@@ -494,13 +498,12 @@
                                                     <ng-template #deletedby>
                                                       <td>
 
-                                                          <span
-
-                                                          class="Delay_color font-weight-400 curser-pointer" > Deleted </span>      <br/>
+                                                          <span class="Delay_color curser-pointer" > Deleted </span>
                                                           <div class="d-flex align-items-center justify-content-start">
 
 
-                                                          <span class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">{{item1.Deleted_by}} | {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}  </span>
+                                                          <span class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
+                                                            {{item1.Deleted_by}} | {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}  </span>
                                                           </div>
 
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->

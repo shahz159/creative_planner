@@ -252,6 +252,7 @@
                                                         </a>
                                                         Project Name
                                                     </th>
+                                                    <th style="width: 0px;"></th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
@@ -337,9 +338,12 @@
                                                     <td>
                                                         <p class="kt-widget__title mb-0">
                                                             {{item.Project_Name}}
-                                                            <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                            
                                                         </p>
                                                         <!-- <p class="kt-widget5__desc">{{item.Project_Description}}</p> -->
+                                                    </td>
+                                                    <td>
+                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
                                                     </td>
                                                     <td>
 
