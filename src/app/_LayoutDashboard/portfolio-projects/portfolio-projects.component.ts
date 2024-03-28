@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef,Renderer2 } from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { EmployeeDTO } from 'src/app/_Models/employee-dto';
@@ -105,6 +105,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   constructor(
     private el: ElementRef,
+    private renderer: Renderer2,
     public service: ProjectTypeService,
     private notifyService: NotificationService,
     private cdr: ChangeDetectorRef, private router: Router,
@@ -128,12 +129,8 @@ export class PortfolioProjectsComponent implements OnInit {
   Url_portfolioId: number;
 
   ngOnInit(): void {
-    setTimeout(() => {
-      const buttonElement = this.el.nativeElement.querySelector('.badge');
-      if (buttonElement) {
-        buttonElement.focus();
-      }
-    }, 0);
+
+
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
@@ -147,6 +144,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
+    this.onButtonClick('tot')
   }
 
   _PortfolioDetailsById: any;
@@ -1060,7 +1058,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     else {
       this.Project_Graph = "Graphs"
       this.ProjectsClick();
-      this.labelAll()
+
       setTimeout(() => {
         const buttonElement = this.el.nativeElement.querySelector('.badge');
         if (buttonElement) {
@@ -1574,7 +1572,35 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       });
   }
 
+  onButtonClick(buttonId: string) {
+    debugger
+    const elements = {
+      'tot': 'active-total-project',
+      'inn': 'active-in-processs',
+      'del': 'active-Delay-head',
+      'draft': 'active-Not-started-head',
+      'underappr': 'active-new-project-head',
+      'pro-hold':'active-Hold_color',
+      'compl' : 'active-complteed_color',
+       'delete':'active-Delete-head',
+       'reject':'active-rejected',
+       'todocomp':'active-todo-completed-head',
+       'todoachi':'active-todo-achieved',
+       'new-pro':'active-new-project-head'
 
+    };
+
+    for (const id in elements) {
+      const element = document.getElementById(id);
+      if (element) {
+        if (buttonId === id) {
+          this.renderer.addClass(element, elements[id]);
+        } else {
+          this.renderer.removeClass(element, elements[id]);
+        }
+      }
+    }
+  }
 
 
 }

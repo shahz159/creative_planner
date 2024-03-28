@@ -1,6 +1,6 @@
 // import { flatten } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit,ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms'
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
@@ -52,6 +52,9 @@ export const MY_DATE_FORMATS = {
 })
 
 export class ActionToAssignComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: any;
+  fileAttachment: any;
+  file: File | null = null;
   selectedProjectType: string = "";
   ProjectTypelist: any;
   _description: string = "";
@@ -366,5 +369,48 @@ export class ActionToAssignComponent implements OnInit {
       return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
     };
   }
+  maxDate:any
+  setMaxDate(){
+    const d=new Date(this._StartDate);
+    d.setDate(d.getDate()+2);
+    this.maxDate=d;
+
+  }
+
+
+  selectFile() {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileChanged(event: any) {
+    const files: File[] = event.target.files;
+
+    if (files && files.length > 0) {
+      this.file = files[0];
+      this.fileAttachment = this.file;
+    } else {
+      this.file = null;
+      this.fileAttachment = null;
+    }
+    // Reset file input value to allow selecting the same file again
+    this.fileInput.nativeElement.value = '';
+  }
+
+
+  isPrjNameValid:boolean=true;
+isPrjDesValid:boolean=true;
+
+  isValidString(inputString: string, maxWords: number): boolean {
+
+    let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
+    const valid=rg.test(inputString);
+    return valid;
+}
+  todo() {
+    if (this.selectedProjectType == '011') {
+      this._EndDate = null
+    }
+  }
+
 
 }

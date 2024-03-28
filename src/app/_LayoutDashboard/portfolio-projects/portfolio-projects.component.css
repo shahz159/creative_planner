@@ -1339,6 +1339,10 @@ color:#000;
   color: #fff;
 
   }
+ .Delete-head{
+  background-color: #EE4137 !important;
+  color: #fff;
+ }
 
   .complteed_color{
     background-color: #62B134 !important;
@@ -1410,10 +1414,10 @@ color:#000;
   color: white;
 }
 
-.in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head,.Not-started-head{
+/* .in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head,.Not-started-head{
   position: relative;
 }
-.in-processs:focus::after {
+.in-processs:active::after {
   content: "";
   position: absolute !important;
   border-top: 10px solid #1b272d;
@@ -1422,7 +1426,7 @@ color:#000;
   bottom: -32%;
   left: 38%;
 }
-.total-project:focus::after {
+.total-project:active::after {
   content: "";
   position: absolute !important;
   border-top: 10px solid #35a79c;
@@ -1502,9 +1506,124 @@ left: 38%;
   border-right: 10px solid transparent;
   bottom: -32%;
   left: 32%;
-  }
-/* focus end */
+  } */
 
+  .in-processs, .total-project, .Delay-head,.Not-started-head,.new-project-head,.Hold_color,.complteed_color,.Delete-head,.rejected,.todo-completed-head,.todo-achieved{
+    position: relative;
+  }
+  .total-project.active-total-project::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #35a79c;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+
+  .in-processs.active-in-processs::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #1b272d;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+  .Delay-head.active-Delay-head::after{
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #ee4137;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 32%;
+  }
+  .Not-started-head.active-Not-started-head::after{
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #888888!important;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 32%;
+  }
+  .new-project-head.active-new-project-head::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #b2d732;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+  .Hold_color.active-Hold_color::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #E2D9BC;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+  .complteed_color.active-complteed_color::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #62b134;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+  .Delete-head.active-Delete-head::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #ee4137;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 32%;
+  }
+  .rejected.active-rejected::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #DFDFDF;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+  .todo-completed-head.active-todo-completed-head::after{
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #62B134;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+    }
+    .todo-achieved.active-todo-achieved::after {
+      content: "";
+      position: absolute !important;
+      border-top: 10px solid #335B1B;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      bottom: -32%;
+      left: 38%;
+    }
+    .new-project-head.active-new-project-head::after {
+      content: "";
+      position: absolute !important;
+      border-top: 10px solid #b2d732;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      bottom: -32%;
+      left: 38%;
+    }
+/* focus end */
+.cursor-pointer {
+  cursor: pointer;
+}
 
 
 .Not-Started{
