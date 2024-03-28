@@ -1989,7 +1989,7 @@
             myUnderApprvActions.length>0|| MeetingCount>0||
             myDelayPrjActions.length>0||
             projectInfo.Status==='Not Started'||
-            ['New Project Rejected','Project Hold'].includes(activity)
+            ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected','Project Hold'].includes(activity)
             ">
 
         <div class="kt-Note-msg  d-flex">
@@ -2154,7 +2154,7 @@
             </span>
         </div>
 
-        <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="activity==='New Project Rejected'">
+        <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)">
             <svg
 
             xmlns="http://www.w3.org/2000/svg"
@@ -2172,7 +2172,7 @@
             </g>
           </svg>
           
-            <span class="notif-msg">New Project Rejected for 
+            <span class="notif-msg">{{activity}} for 
                 "{{lastactivity[0].rejectType}}"
                 by 
                 {{lastactivity[0].Empname}}
@@ -2244,7 +2244,7 @@
       </ng-container>
 
 
-
+ 
          </div>
         </div>
 
@@ -3205,14 +3205,15 @@
                                                             <h6>Recent activity</h6>
                                                         </div>
 
-                                                        <div class="d-flex  align-items-start  gap-1 ">
+                                                        
                                                            <div class="View_graph_act">
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;   " >View Graph</a>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;   " >
+                                                                <svg  width="14px" height="14px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path> </g></svg>
+                                                                View Graph
+                                                            </a>
                                                            </div>
-                                                           <div class="View_more_act" *ngIf="firstFiveRecords.length>4">
-                                                                    <a href="javascript:void(0)" (click)="View_Activity('PROJECT-ACTIVITIES')">View more...</a>
-                                                           </div>
-                                                        </div>
+                                                           
+                                                       
 
 
                                                     </div>
@@ -3292,6 +3293,11 @@
                                                             </div> -->
     
                                                             <!--end::Item-->
+                                                             <div class="d-flex justify-content-end"*ngIf="firstFiveRecords.length>4"  >
+                                                                    <div class="View_more_act">
+                                                                        <a href="javascript:void(0)" (click)="View_Activity('PROJECT-ACTIVITIES')">View more...</a>
+                                                                    </div>
+                                                            </div>
                                                         </div>
                                                         </ng-container>
                                                         <ng-template #NoPrjActivitiesPresent>
@@ -4370,12 +4376,7 @@
                                                                 <h6>Recent activity</h6>
                                                             </div>
 
-                                                            <div class="View_more_act" *ngIf="ActionfirstFiveRecords.length>4">
-                                                                <!-- <ng-container> -->
-                                                                    <a href="javascript:void(0)"
-                                                                        (click)="View_Activity('ACTION-ACTIVITIES')">View more...</a>
-                                                                <!-- </ng-container> -->
-                                                            </div>
+                                                            
 
                                                         </div>
 
@@ -4443,8 +4444,15 @@
                                                             </div>
                                                             <!--end::Text-->
                                                         </div>
-                                                        
-
+                                                       
+                                                    <div *ngIf="ActionfirstFiveRecords.length>4" class="d-flex  justify-content-end " >
+                                                        <div class="View_more_act">
+                                                            <!-- <ng-container> -->
+                                                                <a href="javascript:void(0)"
+                                                                    (click)="View_Activity('ACTION-ACTIVITIES')">View more...</a>
+                                                            <!-- </ng-container> -->
+                                                        </div>
+                                                    </div>
                                                         <!--end::Item-->
                                                     </div>
                                                 </ng-container>
@@ -7625,7 +7633,7 @@
                                                             </div> -->
                                                         </div>
 
-                                                       <div class="kt-met-dtl">
+                                                      <!--<div class="kt-met-dtl">
                                                         <div class="kt-met-label">
                                                           Participant:
                                                         </div>
@@ -7633,8 +7641,8 @@
                                                           <div class="kt-met-info"  let last = last >{{ item.TM_DisplayName  + (last ? ' ' : ', ') }}</div>
                                                         </ng-container>
 
-                                                       </div>
-
+                                                       </div>--> 
+      
 
 
 
@@ -7661,7 +7669,21 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div >
+                                                                            <span *ngIf="meeting.usersjson[0].TM_DisplayName" >{{meeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1">+{{meeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -7805,12 +7827,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of meeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -7832,7 +7854,24 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">      
+                                                                        <div >
+                                                                            <span *ngIf="meeting.usersjson[0].TM_DisplayName">{{meeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="meeting.usersjson.length-1!==0">+{{meeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -7877,7 +7916,7 @@
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{lmeetings.date|
+                                                <span class="date-anc">{{lmeetings.date|
                                                     date:'MMM d y'}} </span>
                                             </div>
                                         </div>
@@ -7975,14 +8014,14 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of lmeeting.usersjson; let last = last" >
                                                             {{ item.TM_DisplayName + (last ? ' ' : ', ') }}
                                                           </div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8004,7 +8043,21 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="lmeeting.usersjson&&lmeeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div >
+                                                                            <span *ngIf="lmeeting.usersjson[0].TM_DisplayName">{{lmeeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="lmeeting.usersjson.length-1!==0">+{{lmeeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -8048,7 +8101,7 @@
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{lmmeetings.date|
+                                                <span class="date-anc">{{lmmeetings.date|
                                                     date:'MMM d y'}} </span>
                                             </div>
                                         </div>
@@ -8146,12 +8199,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of lmmeeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8173,7 +8226,22 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="lmmeeting.usersjson&&lmmeeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div>
+                                                                            <span *ngIf="lmmeeting.usersjson[0].TM_DisplayName">{{lmmeeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="lmmeeting.usersjson.length-1!==0">+{{lmmeeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -8312,12 +8380,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of omeeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8339,7 +8407,22 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="omeeting.usersjson&&omeeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div  >
+                                                                            <span *ngIf="omeeting.usersjson[0].TM_DisplayName">{{omeeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="omeeting.usersjson.length-1!==0">+{{omeeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -8432,12 +8515,12 @@
                                             <div class="date-d">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="dat-icn">
-                                                    <path _ngcontent-efp-c426="" stroke-linecap="round"
+                                                    <path  stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}} </span>
+                                                <span class="date-anc">{{meetings.date| date:'MMM d y'}} </span>
                                             </div>
                                         </div>
 
@@ -8499,12 +8582,12 @@
                                                                 <span>Join In Stream Planner</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of meeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8526,7 +8609,22 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div >
+                                                                            <span *ngIf="meeting.usersjson[0].TM_DisplayName">{{meeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="meeting.usersjson.length-1!==0">+{{meeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -10737,19 +10835,17 @@
 
         </div>
         <div class="modal-body d-flex">
-            <div>
-            
-                
-                <h5 *ngIf="selectedactvy&&graphOption!=='PROJECT'">{{graphOption}} - {{selectedactvy}}</h5>
+            <div class="mr-1">
+ 
+                <h5 *ngIf="selectedactvy&&graphOption!=='PROJECT'"><span class="actvy-done-by-name">{{graphOption}}</span> - {{selectedactvy}}</h5>
                 <h5 *ngIf="selectedactvy&&graphOption=='PROJECT'">{{selectedactvy}}</h5>
                 <div class="actvy-list">
                     <div *ngFor="let ac of activitiesOnthat;let i=index" class="actvy-item">
-                        <ng-container *ngIf="graphOption==='PROJECT'"><span >{{ac.Modifiedby}}</span><br/></ng-container>
-                        <b>{{i+1}}.</b>&nbsp;{{ac.Value}}
+                        <ng-container *ngIf="graphOption==='PROJECT'"><span class="actvy-done-by-name">{{ac.Modifiedby}}</span><br/></ng-container>
+                        <b class="fs-7">{{i+1}}.</b>&nbsp;{{ac.Value}}
                     </div>
                 </div>
-           
-            
+
             </div>
             <div class="full-graph" id="full-graph"> </div>
         </div>

@@ -3832,8 +3832,9 @@ debugger
     //     event.setProp('title', newTitle);
     //   }
     // }
-
-    if (eventIsWithinView && (startMidnight !== endMidnight)) {
+debugger
+let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0);
+    if (eventIsWithinView && (startMidnight !== endMidnight)&&!is12am) {
    
       if(start<viewStart){
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);

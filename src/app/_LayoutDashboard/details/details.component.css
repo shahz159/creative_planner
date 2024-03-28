@@ -3591,9 +3591,18 @@ a.Kt_cmt_user_name {
   /* position: absolute;
   top: -38px;
   right: 0; */
-  background-color: #ecefff;
+  /* background-color: #ecefff;
   padding: 3px 10px;
+  border-radius: 5px; */
+  background-color: transparent;
+  padding: 3px 10px 4px;
   border-radius: 5px;
+  align-self: flex-start;
+
+}
+.View_more_act:hover{
+  background-color: #ecefff87;
+  transition-duration: 0.2s;
 }
 .lable-dv lable {
   font-size: 12px;
@@ -4199,14 +4208,30 @@ span.Kt-m-count {
 
 /*recent activity graph css start*/
 .View_graph_act {
-  /* position: absolute;
-  top: -38px;
-  right: 100px; */
-  background-color: #ecefff;
-  padding: 3px 10px;
-  border-radius: 5px;
+  align-self: flex-start;
+  background-color: transparent;
+  border: 1px solid #527ce2;
+  font-size: 13px !important;
+  padding:0.3em 0.6em 0.3em 0.6em;
+  border-radius: 4px !important;
+  border-width: 1px !important;
+  font-weight: 400;
+  color: #527ce2;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
+.View_graph_act a svg{
+  fill:#527ce2 !important;
+}
+.View_graph_act:hover{
+  background-color: #527ce2;
+  color: #ffffff !important;
+}
+.View_graph_act:hover a{
+  color:#ffffff !important;
+}
+.View_graph_act:hover a svg{
+  fill:#ffffff !important;
+}
 ::ng-deep .modal-backdrop.show {
   z-index: 1;
 }
@@ -4660,4 +4685,11 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   max-width: 280px;
   height:500px;
   
+}
+
+.actvy-done-by-name{
+  background-color: #6388e31c;
+  color: #7493df;
+  padding: 0.1em 0.4em 0.1em 0.4em;
+  border-radius: 2px;
 }
