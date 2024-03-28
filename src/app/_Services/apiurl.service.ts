@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment'
 })
 export class ApiurlService {
   baseUrl = environment.baseUrl;
-  signalUrl = environment.SignalUrl;
+  // signalUrl = environment.SignalUrl;
   constructor() { }
   readonly apiurl = this.baseUrl;
 }
