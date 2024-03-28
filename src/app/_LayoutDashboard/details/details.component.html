@@ -1989,7 +1989,7 @@
             myUnderApprvActions.length>0|| MeetingCount>0||
             myDelayPrjActions.length>0||
             projectInfo.Status==='Not Started'||
-            ['New Project Rejected','Project Hold'].includes(activity)
+            ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected','Project Hold'].includes(activity)
             ">
 
         <div class="kt-Note-msg  d-flex">
@@ -2154,7 +2154,7 @@
             </span>
         </div>
 
-        <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="activity==='New Project Rejected'">
+        <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)">
             <svg
 
             xmlns="http://www.w3.org/2000/svg"
