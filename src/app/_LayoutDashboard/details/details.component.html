@@ -7564,12 +7564,12 @@
                                             <div class="date-d">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="dat-icn">
-                                                    <path _ngcontent-efp-c426="" stroke-linecap="round"
+                                                    <path  stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}}</span>
+                                                <span   class="date-anc">{{meetings.date| date:'MMM d y'}}</span>
                                             </div>
                                         </div>
 
@@ -7734,7 +7734,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="met-card mb-3" *ngFor="let meeting of tmeetings.totalmeetings">
+                                        <div class="met-card mb-3 cursor-pointer" *ngFor="let meeting of tmeetings.totalmeetings"   (click)="beginMeeting()"  >
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-left">
@@ -10841,8 +10841,13 @@
                 <h5 *ngIf="selectedactvy&&graphOption=='PROJECT'">{{selectedactvy}}</h5>
                 <div class="actvy-list">
                     <div *ngFor="let ac of activitiesOnthat;let i=index" class="actvy-item">
+                      <div class="actvy-item-part1"> 
                         <ng-container *ngIf="graphOption==='PROJECT'"><span class="actvy-done-by-name">{{ac.Modifiedby}}</span><br/></ng-container>
                         <b class="fs-7">{{i+1}}.</b>&nbsp;{{ac.Value}}
+                     </div>   
+                     <div class="actvy-item-part2   fs-8">
+                            {{formatTimes(ac.ModifiedTime)}}
+                     </div>
                     </div>
                 </div>
 

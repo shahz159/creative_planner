@@ -4660,7 +4660,19 @@ background-color: #e2e8f0c9;
   border-radius: 0 6px 6px 6px;
   background-color: #f1f1f180;
   color: #818181;
+  display:flex;
+  column-gap:5px;
 }
+.actvy-item .actvy-item-part1{
+   flex-grow:1;
+}
+.actvy-item .actvy-item-part2{
+   text-wrap: nowrap;
+   
+}
+
+
+
 
 .actvy-list::-webkit-scrollbar{
     width:5px;
