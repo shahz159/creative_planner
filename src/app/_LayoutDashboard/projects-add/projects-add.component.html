@@ -220,16 +220,8 @@
                                                                 [disabled]="portfolioName==''">
                                                             </mat-checkbox>
                                                         </mat-list-item> -->
-                                                        <!-- <span class="mat-checkbox-inner-container mat-checkbox-inner-container-no-side-margin"><input type="checkbox"
-                                                          class="mat-checkbox-input cdk-visually-hidden" id="mat-checkbox-11-input" tabindex="0" aria-checked="false"><span
-                                                          matripple="" class="mat-ripple mat-checkbox-ripple mat-focus-indicator"
-                                                          ng-reflect-trigger="[object HTMLLabelElement]" ng-reflect-disabled="false" ng-reflect-radius="20"
-                                                          ng-reflect-centered="true" ng-reflect-animation="[object Object]"><span
-                                                            class="mat-ripple-element mat-checkbox-persistent-ripple"></span></span><span
-                                                          class="mat-checkbox-frame"></span><span class="mat-checkbox-background"><svg version="1.1" focusable="false"
-                                                            viewBox="0 0 24 24" aria-hidden="true" class="mat-checkbox-checkmark">
-                                                            <path fill="none" stroke="white" d="M4.1,12.7 9,17.6 20.3,6.3" class="mat-checkbox-checkmark-path"></path>
-                                                          </svg><span class="mat-checkbox-mixedmark"></span></span></span> -->
+
+                                                          <input class='mat-checkbox-inner-container' id="snocheck" type="checkbox" title="Select All" [(ngModel)]="selectAllCheckbox"  (change)="selectAll($event);" />
                                                     </th>
 
                                                     <th data-order="desc" data-name="id" class="text-center">
@@ -301,7 +293,7 @@
                                                     *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <td tabindex="0" class="sorting_1">
                                                         <mat-list-item>
-                                                            <mat-checkbox checked color="primary"
+                                                            <mat-checkbox [checked]="selectAllCheckbox" color="primary"
                                                                 [(ngModel)]="item.checked"
                                                                 [disabled]="portfolioName==''"
                                                                 (change)="dataTableCheckbox();checkboxclick(item.checked,item.Project_Code)">
@@ -354,7 +346,7 @@
                                                            <path fill="#FFFFFF" d="M6.008,6.756c0.012-0.492,0.296-0.759,0.8-0.754C7.28,6.007,7.594,6.326,7.587,6.79
                                                              C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"/>
                                                          </g>
-                                                         
+
                                                          </svg>
                                                         </a>
                                                     </td>
@@ -376,7 +368,7 @@
                                                     <td>
                                                         <p class="kt-widget__title mb-0">
                                                             {{item.Project_Name}}
-                                                            
+
                                                         </p>
                                                         <!-- <p class="kt-widget5__desc">{{item.Project_Description}}</p> -->
                                                     </td>

@@ -4081,7 +4081,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
           this.Addguest= this.meetingList[0].Addguest
           this.MeetingParticipants= JSON.parse(this.Addguest);
-          console.log('meeting we have:', this.MeetingParticipants);
+          console.log('meeting we have:', this.meetingList);
           this.meeting_arry = this.meetingList;
           if (this.meeting_arry.length > 0)
             this.meetinglength = this.meeting_arry.length;
@@ -7391,10 +7391,13 @@ this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.
 
 // start meeting feature start
 
-beginMeeting(){
-    alert('asdf');
+meetingReport(mtgScheduleId:any) {
+  let name: string = 'Meeting-Report';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${mtgScheduleId}`;
+  var myWindow = window.open(myurl);
+  myWindow.focus();
 }
-
 // start meeting feature end
 
 

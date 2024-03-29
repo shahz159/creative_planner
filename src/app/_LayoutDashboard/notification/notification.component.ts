@@ -769,6 +769,7 @@ export class NotificationComponent implements OnInit {
   selectall(ev){
     if (this.selectAllCheckbox) {
       this.selectedItems = [...this._NotificationActivity];
+
     } else {
       this.selectedItems = this.selectedItems.filter(item => !this._NotificationActivity.includes(item));
     }
