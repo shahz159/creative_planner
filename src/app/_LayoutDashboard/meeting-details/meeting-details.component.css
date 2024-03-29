@@ -3110,3 +3110,7 @@ span.side-icns.kt-org-ic {
     padding: 0px;
     padding-top: 1rem;
 }
+.app-logo svg {
+    width: 90px;
+    height: 25px;
+}

@@ -1405,10 +1405,10 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project name<span class="text-danger">*</span></label>
                                   <input class="form-control" type="text"
-                                    placeholder="enter project name" [(ngModel)]="PrjName" #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=isValidString(PrjName,3)"   />
+                                    placeholder="enter project name" [ngClass]="{'error-border': !PrjName&&notProvided}" [(ngModel)]="PrjName" #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=isValidString(PrjName,3)"   />
                                   <span style="color:rgb(217,48,37)" class=""
                                   *ngIf="!isPrjNameValid" >please enter atleast 3
-                                    words</span>
+                                    words, </span>
                                   <span style="color:rgb(217,48,37)" class=""
                                     *ngIf="!PrjName&&notProvided">Please enter project name</span>
                                 </div>
@@ -1417,18 +1417,17 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project description<span class="text-danger">*</span></label>
                                   <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
-                                    placeholder="add project description" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
+                                    placeholder="add project description" [ngClass]="{'error-border': !PrjDes&&notProvided}" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
                                   <span style="color:rgb(217,48,37)"*ngIf="!isPrjDesValid">please enter
-                                    atleast 5 words.  </span>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">description is
-                                    required.</span>
+                                    atleast 5 words,   </span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project Description.</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
                                   <ng-select class="kt-form-vd" placeholder="select type" [(ngModel)]="Prjtype" (change)="changeprojecttype(); "
-                                    #PrjTYPE="ngModel"  (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
+                                    #PrjTYPE="ngModel"  [ngClass]="{'error-vd': !Prjtype&&notProvided}" (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid"  >{{item.ProjectType }} </ng-option>
                                   </ng-select>
@@ -1475,8 +1474,7 @@
                                     </div>
                                   </div>
                                   <div *ngIf="Prjtype=='011'" style="color:grey">To do List not more than 3 Days </div>
-                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">start date
-                                    required</span>
+                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">Please select project start date</span>
                                 </div>
 
                                 <div class="col-lg-4 mb-3">
@@ -2396,7 +2394,7 @@
                               <label class="m-0 curser-pointer" for="SaveAstempl">Save as Template</label>
                             </div>
                           </div>
-                          <div class="kt-ctv-btn-two mt-1">
+                          <div class="kt-ctv-btn-two">
                             <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button> -->
                             <button type="button" class="btn btn-move-fw my-ct-v-btn btn-info"
                               (click)="sendApproval()">Submit Project</button>
