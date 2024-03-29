@@ -1229,15 +1229,15 @@ a.info-btn {
   align-items: center;
   justify-content: center;
   transition: all 0.25s ease-in;
-  color: #5051F9;
+  color: #8c8c8c;
 }
 a.info-btn:hover {
-  background: #deecf8;
-  color: #0072ff;
+  background: #e6e6ff;
+  color: #7D7EBB;
 }
 a.info-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
 }
 .in-process{
   background-color:  #1B272D ;

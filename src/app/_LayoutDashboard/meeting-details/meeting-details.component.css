@@ -631,7 +631,7 @@ hr.dotted {
 
 .private-notes h4,
 .meeting-attendes h4,
-.attendees-notes h4 {
+.attendees-notes h4, .LinkSideBar1 h4, .LinkSideBar h4 {
     color: #000;
     font-size: 16px;
 }
@@ -650,13 +650,13 @@ hr.dotted {
 
 .private-notes.sideInfobar .kt-portlet__head,
 .meeting-attendes.sideInfobar .kt-portlet__head,
-.attendees-notes.sideInfobar .kt-portlet__head {
+.attendees-notes.sideInfobar .kt-portlet__head, .LinkSideBar.sideInfobar .kt-portlet__head, .LinkSideBar1.sideInfobar .kt-portlet__head {
     background-color: #ffffff;
 }
 
 .private-notes .btn-hover-info:hover,
 .meeting-attendes .btn-hover-info:hover,
-.attendees-notes .btn-hover-info:hover {
+.attendees-notes .btn-hover-info:hover, .LinkSideBar .btn-hover-info:hover,.LinkSideBar1 .btn-hover-info:hover {
     color: #ffffff;
     background-color: #d8dadb;
     border-color: #e7e7e7;
@@ -824,6 +824,11 @@ ul.meeting-attendees-userlist {
     object-fit: cover;
 }
 
+.details-form-control .user-icon img{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+}
 .meeting-attendees-user .user-name {
     color: #000;
     font-size: 13px;
