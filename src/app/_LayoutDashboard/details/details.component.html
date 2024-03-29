@@ -731,7 +731,13 @@
                                             </div>
 
 
+                                            <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
+                                                Project Release
+                                              </button>
 
+                                            <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="openNewPrjReleaseSideBar()">
+                                                New Project Release
+                                             </button>
 
 
                                         </div>
@@ -746,7 +752,7 @@
 
                                                             {{projectInfo.StartDate|date:'dd-MM-YYYY'}}
 
-                                                        </div>
+                                                        </div> 
                                                     </div>
 
                                                     <div class="col text-center"
@@ -755,7 +761,7 @@
                                                             Deadline
                                                         </div>
                                                         <div class="kt-project-sts-data">
-                                                            {{projectInfo.EndDate|date:'dd-MM-YYYY'}}
+                                                            {{projectInfo.EndDate|date:'dd-MM-yyyy'}}
                                                         </div>
                                                     </div>
                                                     <ng-template #submission>
@@ -775,7 +781,7 @@
                                                         </div>
                                                         <div class="kt-project-sts-data"
                                                             *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else continuos">
-                                                            {{projectInfo.Duration}} days
+                                                            {{projectInfo.Duration +1}} days
                                                         </div>
                                                         <ng-template #continuos>
                                                             <div class="kt-project-sts-data"> Continuous</div>
@@ -1774,7 +1780,7 @@
 
                                         </a>
 
-                                        <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity()" title="Activity Log">
+                                        <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity Log">
                                             <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" fill="currentColor"></path></svg>
                                         </a>
 
@@ -1983,7 +1989,7 @@
             myUnderApprvActions.length>0|| MeetingCount>0||
             myDelayPrjActions.length>0||
             projectInfo.Status==='Not Started'||
-            ['New Project Rejected','Project Hold'].includes(activity)
+            ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected','Project Hold'].includes(activity)
             ">
 
         <div class="kt-Note-msg  d-flex">
@@ -2148,8 +2154,9 @@
             </span>
         </div>
 
-        <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="activity==='New Project Rejected'">
+        <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)">
             <svg
+
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 31.576 31.576" 
             width="30px"
@@ -2165,13 +2172,18 @@
             </g>
           </svg>
           
-            <span class="notif-msg">New Project Rejected for 
+            <span class="notif-msg">{{activity}} for 
                 "{{lastactivity[0].rejectType}}"
                 by 
                 {{lastactivity[0].Empname}}
                 on <b>{{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}</b>. <br/>
                 Remark: "{{lastactivity[0].Req_Coments}}"
             </span>
+
+            <!-- <button class="btn-inside-notifi  re-release-prj-shrtcut" (click)="openNewPrjReleaseSideBar()">
+               New Project Release
+            </button> -->
+
         </div>
 
         <div class="notification prjhold-notf" style="cursor:pointer;"  *ngIf="activity==='Project Hold'">
@@ -2202,11 +2214,9 @@
                 Project Hold by {{lastactivity[0].Empname}} on {{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}.
             </span>
 
-            <!-- <button class="Ct-btn release-now-shrtcut ml-2 ">
-                Release now    
-            </button> -->
-            <!-- <button style="background-color: #E2d9bc; color: #333333; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-                Release
+    
+              <!-- <button class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
+                Project Release
               </button> -->
               
         </div>
@@ -2234,7 +2244,7 @@
       </ng-container>
 
 
-
+ 
          </div>
         </div>
 
@@ -2364,7 +2374,7 @@
                                                             </ng-template>
                                                             <button class=" Bt-newprj-release  ml-2"
                                                                 (click)="openNewPrjReleaseSideBar()"
-                                                                *ngIf="projectInfo.Status=='New Project Rejected' && Current_user_ID == projectInfo.ResponsibleEmpNo">New
+                                                                *ngIf="projectInfo.Status=='New Project Rejected' && (Current_user_ID == projectInfo.ResponsibleEmpNo||Current_user_ID==projectInfo.OwnerEmpNo)">New
                                                                 Project Release</button>
                                                             <button class="Ct-btn Bt-cancel ml-2"
                                                                 *ngIf=" projectInfo.Status!='Completed'"
@@ -3013,7 +3023,7 @@
 
                                                 <div class="kt-info-data-v"
                                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continuous1">
-                                                    {{projectInfo&&projectInfo.Duration}} days
+                                                    {{projectInfo&&projectInfo.Duration +1}} days
                                                 </div>
                                                 <ng-template #continuous1>
                                                     <div class="kt-info-data-v">
@@ -3189,74 +3199,116 @@
 
                                             <div class="col-lg-6 "  id="recent-activities-section"    >
                                                 <div class="kt-over-pd-in bd-right-x">
-                                                    <div class="kt-ct-project">
+                                                    <div class="kt-ct-project d-flex  justify-content-between  ">
+                                                       
                                                         <div class="kt-ct-sub-ttl">
                                                             <h6>Recent activity</h6>
                                                         </div>
+
+                                                        
+                                                           <div class="View_graph_act">
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;   " >
+                                                                <svg  width="14px" height="14px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path> </g></svg>
+                                                                View Graph
+                                                            </a>
+                                                           </div>
+                                                           
+                                                       
+
+
                                                     </div>
-                                                    <div class="timeline-label">
-                                                        <!--begin::Item-->
-                                                        <div class="timeline-item"
-                                                            *ngFor="let item of firstFiveRecords">
-                                                            <!--begin::Label-->
-                                                            <div class=" timeline-label fw-bold text-gray-800 fs-7">
-                                                                {{item.ModifiedDate}}
-                                                                <p
-                                                                    class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
-                                                                </p>
-                                                            </div>
-                                                            <!--end::Label-->
-
-                                                            <!--begin::Badge-->
-                                                            <div class="timeline-badge">
-                                                                <i class="fa fa-genderless text-primary fs-1"></i>
-                                                            </div>
-                                                            <!--end::Badge-->
-
-                                                            <!--begin::Text-->
-                                                            <div class="fw-mormal timeline-content text-muted ps-3">
-                                                                <p class="kt-timeline-tl mb-0">
-                                                                    <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
-                                                                    <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
-                                                                    <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
-
-                                                                      <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
-
-                                                                <ng-container *ngIf="item.oldValue !==''">
-                                                                     from "{{item.oldValue}}"
-                                                               </ng-container>
-                                                                <span *ngIf="item.oldValue !==''; else newActivity">
-                                                                    to "{{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): '' }}"
-                                                                    <ng-container *ngIf="item.NewValue.length>60">
-                                                                        <a href="javascript:void(0)"
-                                                                            (click)="View_Activity()">more...
-                                                                        </a>
-                                                                    </ng-container>
-                                                                </span>
-                                                                <ng-template #newActivity>
-                                                                    <!-- {{item.NewValue}}  -->
-                                                                    <p>
-                                                                    {{item.NewValue | slice:0:limit}}{{ isExpanded ?
-                                                                    (item.NewValue | slice:limit): ' ' }}
-                                                                    <ng-container *ngIf="item.NewValue.length>60">
-                                                                        <a href="javascript:void(0)"
-                                                                            (click)="View_Activity()">more...</a>
-                                                                    </ng-container>
-                                                                </p>
-                                                                </ng-template>
-                                                            </div>
-                                                            <!--end::Text-->
-                                                        </div>
-                                                        <div class="View_graph_act">
-                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;" >View Graph</a>
-                                                        </div>
-                                                        <div class="View_more_act" *ngIf="firstFiveRecords.length>4">
-                                                                <a href="javascript:void(0)"
-                                                                    (click)="View_Activity()">View more...</a>
-                                                        </div>
-
-                                                        <!--end::Item-->
+                                                   
+                                                <ng-container *ngIf="activitiesLoading;else prjactivitiesloaded">
+                                                   
+                                                    <div class="d-flex  justify-content-center   align-items-center   " >
+                                                    <div class="spinner-border text-secondary" role="status">
+                                                        <span class="visually-hidden"></span>
+                                                      </div>
                                                     </div>
+                                                </ng-container>
+                                                <ng-template #prjactivitiesloaded>
+                                                    <ng-container *ngIf="Activity_List&&Activity_List.length>0;else NoPrjActivitiesPresent">
+                                                        <div class="timeline-label">
+                                                            <!--begin::Item-->
+                                                            <div class="timeline-item"
+                                                                *ngFor="let item of firstFiveRecords">
+                                                                <!--begin::Label-->
+                                                                <div class=" timeline-label fw-bold text-gray-800 fs-7">
+                                                                    {{item.ModifiedDate}}
+                                                                    <p
+                                                                        class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
+                                                                    </p>
+                                                                </div>
+                                                                <!--end::Label-->
+    
+                                                                <!--begin::Badge-->
+                                                                <div class="timeline-badge">
+                                                                    <i class="fa fa-genderless text-primary fs-1"></i>
+                                                                </div>
+                                                                <!--end::Badge-->
+    
+                                                                <!--begin::Text-->
+                                                                <div class="fw-mormal timeline-content text-muted ps-3">
+                                                                    <p class="kt-timeline-tl mb-0">
+                                                                        <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
+                                                                        <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
+                                                                        <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
+    
+                                                                          <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
+    
+                                                                    <ng-container *ngIf="item.oldValue !==''">
+                                                                         from "{{item.oldValue}}"
+                                                                   </ng-container>
+                                                                    <span *ngIf="item.oldValue !==''; else newActivity">
+                                                                        to "{{item.NewValue | slice:0:limit}}{{ isExpanded ? (item.NewValue | slice:limit): '' }}"
+                                                                        <ng-container *ngIf="item.NewValue.length>60">
+                                                                            <a href="javascript:void(0)"
+                                                                                (click)="View_Activity('PROJECT-ACTIVITIES')">more...
+                                                                            </a>
+                                                                        </ng-container>
+                                                                    </span>
+                                                                    <ng-template #newActivity>
+                                                                        <!-- {{item.NewValue}}  -->
+                                                                        <p>
+                                                                        {{item.NewValue | slice:0:limit}}{{ isExpanded ?
+                                                                        (item.NewValue | slice:limit): ' ' }}
+                                                                        <ng-container *ngIf="item.NewValue.length>60">
+                                                                            <a href="javascript:void(0)"
+                                                                                (click)="View_Activity('PROJECT-ACTIVITIES')">more...</a>
+                                                                        </ng-container>
+                                                                    </p>
+                                                                    </ng-template>
+                                                                </div>
+                                                                <!--end::Text-->
+                                                            </div>
+    
+    
+    
+                                                            <!-- <div class="View_graph_act">
+                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;" >View Graph</a>
+                                                            </div>
+                                                            <div class="View_more_act" *ngIf="firstFiveRecords.length>4">
+                                                                    <a href="javascript:void(0)"
+                                                                        (click)="View_Activity()">View more...</a>
+                                                            </div> -->
+    
+                                                            <!--end::Item-->
+                                                             <div class="d-flex justify-content-end"*ngIf="firstFiveRecords.length>4"  >
+                                                                    <div class="View_more_act">
+                                                                        <a href="javascript:void(0)" (click)="View_Activity('PROJECT-ACTIVITIES')">View more...</a>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        </ng-container>
+                                                        <ng-template #NoPrjActivitiesPresent>
+                                                                <div class="no-prjact-found ">
+                                                                    <img class="no-prjact-found-img"
+                                                                        src="./assets/images/noActionPresent.png" />
+                                                                    <h3 class="blank-txt fs-5 no-prjact-found-label">No Activities Found.</h3>
+                                                                </div>
+                                                        </ng-template>
+                                                </ng-template>
+
 
                                                 </div>
                                             </div>
@@ -3382,13 +3434,15 @@
 
 
 
-
-                                                     <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
+                                                <ng-container *ngIf="projectInfo&&['001','002'].includes(projectInfo.Project_Block)">
+                                                    <button  class="statistics-ctrl-btns" (click)="openFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9991 19L9.83911 14C9.56672 13.7429 9.34974 13.433 9.20142 13.0891C9.0531 12.7452 8.97656 12.3745 8.97656 12C8.97656 11.6255 9.0531 11.2548 9.20142 10.9109C9.34974 10.567 9.56672 10.2571 9.83911 10L14.9991 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
                                                      <button class="statistics-ctrl-btns"  (click)="closeFullGraph()">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
+                                                </ng-container>
+                                                     
 
                                                 </div>
                                                 <!-- <div id="chart-container" class="Chart">
@@ -4208,7 +4262,7 @@
                                                         Duration
                                                     </div>
                                                     <div class="kt-info-data-v">
-                                                        {{projectActionInfo[currentActionView].Duration}} days
+                                                        {{projectActionInfo[currentActionView].Duration +1}} days
                                                     </div>
                                                 </div>
 
@@ -4316,71 +4370,111 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="kt-over-pd-in bd-right-x">
-                                                        <div class="kt-ct-project">
+                                                        <div class="kt-ct-project d-flex align-items-start  justify-content-between  ">
+                                                           
                                                             <div class="kt-ct-sub-ttl">
                                                                 <h6>Recent activity</h6>
                                                             </div>
+
+                                                            
+
                                                         </div>
-                                                        <div class="timeline-label">
-                                                            <!--begin::Item-->
-                                                            <div class="timeline-item"
-                                                                *ngFor="let item of ActionfirstFiveRecords">
-                                                                <!--begin::Label-->
-                                                                <div class=" timeline-label fw-bold text-gray-800 fs-7">
-                                                                    {{item.ModifiedDate}}
-                                                                    <p
-                                                                        class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
-                                                                </div>
-                                                                <!--end::Label-->
 
-                                                                <!--begin::Badge-->
-                                                                <div class="timeline-badge">
-                                                                    <i class="fa fa-genderless text-primary fs-1"></i>
-                                                                </div>
-                                                                <!--end::Badge-->
+                                            <ng-container *ngIf="activitiesLoading; else actionActivitiesLoaded">  
 
-                                                                <!--begin::Text-->
-                                                                <div class="fw-mormal timeline-content text-muted ps-3">
-                                                                    <p class="kt-timeline-tl mb-0">
-                                                                        <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
-                                                                        <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
-                                                                        <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
+                                            <div class="d-flex  justify-content-center  align-items-center  "   style="height:100%;"  >
+                                                <div class="spinner-border text-secondary" role="status">
+                                                    <span class="visually-hidden"></span>
+                                                  </div>
+                                            </div>
 
-                                                                          <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
+                                            </ng-container> 
+                                            <ng-template #actionActivitiesLoaded>
 
-                                                                    <ng-container *ngIf="item.oldValue !==''">
-                                                                         from "{{item.oldValue}}"
+
+                                                <ng-container *ngIf="ActionActivity_List&&ActionActivity_List.length>0;else NoActionActivitiesPresent" >
+                                                    <div class="timeline-label">
+                                                        <!--begin::Item-->
+                                                        <div class="timeline-item"
+                                                            *ngFor="let item of ActionfirstFiveRecords">
+                                                            <!--begin::Label-->
+                                                            <div class=" timeline-label fw-bold text-gray-800 fs-7">
+                                                                {{item.ModifiedDate}}
+                                                                <p
+                                                                    class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}</p>
+                                                            </div>
+                                                            <!--end::Label-->
+
+                                                            <!--begin::Badge-->
+                                                            <div class="timeline-badge">
+                                                                <i class="fa fa-genderless text-primary fs-1"></i>
+                                                            </div>
+                                                            <!--end::Badge-->
+
+                                                            <!--begin::Text-->
+                                                            <div class="fw-mormal timeline-content text-muted ps-3">
+                                                                <p class="kt-timeline-tl mb-0">
+                                                                    <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
+                                                                    <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
+                                                                    <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
+
+                                                                      <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
+
+                                                                <ng-container *ngIf="item.oldValue !==''">
+                                                                     from "{{item.oldValue}}"
+                                                                </ng-container>
+                                                                <span *ngIf="item.oldValue !==''; else newActivity">
+                                                                    to "{{item.NewValue | slice:0:limit}}{{ isExpanded ?(item.NewValue | slice:limit): '' }}"
+                                                                    <ng-container *ngIf="item.NewValue.length>60">
+                                                                        <a href="javascript:void(0)"
+                                                                            (click)="View_Activity('ACTION-ACTIVITIES')">more...</a>
                                                                     </ng-container>
-                                                                    <span *ngIf="item.oldValue !==''; else newActivity">
-                                                                        to "{{item.NewValue | slice:0:limit}}{{ isExpanded ?(item.NewValue | slice:limit): '' }}"
-                                                                        <ng-container *ngIf="item.NewValue.length>60">
-                                                                            <a href="javascript:void(0)"
-                                                                                (click)="View_Activity()">more...</a>
-                                                                        </ng-container>
-                                                                    </span>
-                                                                    <ng-template #newActivity>
-                                                                        <!-- {{item.NewValue}}  -->
-                                                                        <p>
-                                                                        {{item.NewValue | slice:0:limit}}{{ isExpanded ?
-                                                                        (item.NewValue | slice:limit): ' ' }}
-                                                                        <ng-container *ngIf="item.NewValue.length>60">
-                                                                            <a href="javascript:void(0)"
-                                                                                (click)="View_Activity()">more...</a>
-                                                                        </ng-container>
-                                                                    </p>
-                                                                    </ng-template>
-                                                                </div>
-                                                                <!--end::Text-->
+                                                                </span>
+                                                                <ng-template #newActivity>
+                                                                    <!-- {{item.NewValue}}  -->
+                                                                    <p>
+                                                                    {{item.NewValue | slice:0:limit}}{{ isExpanded ?
+                                                                    (item.NewValue | slice:limit): ' ' }}
+                                                                    <ng-container *ngIf="item.NewValue.length>60">
+                                                                        <a href="javascript:void(0)"
+                                                                            (click)="View_Activity('ACTION-ACTIVITIES')">more...</a>
+                                                                    </ng-container>
+                                                                </p>
+                                                                </ng-template>
                                                             </div>
-                                                            <div class="View_more_act" *ngIf="firstFiveRecords.length>4">
-                                                                <!-- <ng-container> -->
-                                                                    <a href="javascript:void(0)"
-                                                                        (click)="View_Activity()">View more...</a>
-                                                                <!-- </ng-container> -->
-                                                            </div>
-
-                                                            <!--end::Item-->
+                                                            <!--end::Text-->
                                                         </div>
+                                                       
+                                                    <div *ngIf="ActionfirstFiveRecords.length>4" class="d-flex  justify-content-end " >
+                                                        <div class="View_more_act">
+                                                            <!-- <ng-container> -->
+                                                                <a href="javascript:void(0)"
+                                                                    (click)="View_Activity('ACTION-ACTIVITIES')">View more...</a>
+                                                            <!-- </ng-container> -->
+                                                        </div>
+                                                    </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </ng-container>
+                                                <ng-template #NoActionActivitiesPresent>
+                                                
+                                                    <div class="no-prjact-found ">
+                                                        <img class="no-prjact-found-img"
+                                                            src="./assets/images/noActionPresent.png" />
+                                                        <h3 class="blank-txt fs-5 no-prjact-found-label">No Activities Found.</h3>
+                                                    </div>
+
+                                                </ng-template>
+
+
+
+
+
+
+                                            </ng-template>
+
+
+
 
                                                     </div>
                                                 </div>
@@ -5345,7 +5439,7 @@
 
             <div class="Activity_Log_vh kt-portlet__body kt-portlet__body_scroll">
                 <div class="kt-chat__messages">
-                    <div class="timeline" *ngFor="let data of Activity_List">
+                    <div class="timeline" *ngFor="let data of activitiesOf==='PROJECT-ACTIVITIES'?Activity_List:ActionActivity_List">
 
                         <!-- <div class="timeline-item">
                             <div class="timeline-line w-40px"></div>
@@ -5466,7 +5560,7 @@
                                                     </path>
                                                 </svg>
                                             </span>
-                                            <span>{{data.ModifiedDate |date:'dd/MM/YYYY'}}</span>
+                                            <span>{{data.ModifiedDate |date:'dd-MM-YYYY'}}</span>
                                             <span class="svg-icns time-icn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18"
                                                     height="18">
@@ -5886,7 +5980,7 @@
                             </div>
 
                             <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
-                                <div class="kt-notification__item no-after position-relative ng-star-inserted"
+                                <div class="kt-notification__item no-after position-relative  curser-pointer"
                                     *ngFor="let file of item.JsonData | filter :filterText;let i=index">
                                     <div data-toggle="modal" class="kt-notification__item-icon"
                                         *ngIf="file.contenttype=='pdf' || file.contenttype=='application/pdf'">
@@ -7539,7 +7633,7 @@
                                                             </div> -->
                                                         </div>
 
-                                                       <div class="kt-met-dtl">
+                                                      <!--<div class="kt-met-dtl">
                                                         <div class="kt-met-label">
                                                           Participant:
                                                         </div>
@@ -7547,8 +7641,8 @@
                                                           <div class="kt-met-info"  let last = last >{{ item.TM_DisplayName  + (last ? ' ' : ', ') }}</div>
                                                         </ng-container>
 
-                                                       </div>
-
+                                                       </div>--> 
+      
 
 
 
@@ -7575,7 +7669,21 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div >
+                                                                            <span *ngIf="meeting.usersjson[0].TM_DisplayName" >{{meeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1">+{{meeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -7719,12 +7827,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of meeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -7746,7 +7854,24 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">      
+                                                                        <div >
+                                                                            <span *ngIf="meeting.usersjson[0].TM_DisplayName">{{meeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="meeting.usersjson.length-1!==0">+{{meeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -7791,7 +7916,7 @@
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{lmeetings.date|
+                                                <span class="date-anc">{{lmeetings.date|
                                                     date:'MMM d y'}} </span>
                                             </div>
                                         </div>
@@ -7889,14 +8014,14 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of lmeeting.usersjson; let last = last" >
                                                             {{ item.TM_DisplayName + (last ? ' ' : ', ') }}
                                                           </div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -7918,7 +8043,21 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="lmeeting.usersjson&&lmeeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div >
+                                                                            <span *ngIf="lmeeting.usersjson[0].TM_DisplayName">{{lmeeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="lmeeting.usersjson.length-1!==0">+{{lmeeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -7962,7 +8101,7 @@
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{lmmeetings.date|
+                                                <span class="date-anc">{{lmmeetings.date|
                                                     date:'MMM d y'}} </span>
                                             </div>
                                         </div>
@@ -8060,12 +8199,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of lmmeeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8087,7 +8226,22 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="lmmeeting.usersjson&&lmmeeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div>
+                                                                            <span *ngIf="lmmeeting.usersjson[0].TM_DisplayName">{{lmmeeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="lmmeeting.usersjson.length-1!==0">+{{lmmeeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -8226,12 +8380,12 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of omeeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8253,7 +8407,22 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="omeeting.usersjson&&omeeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div  >
+                                                                            <span *ngIf="omeeting.usersjson[0].TM_DisplayName">{{omeeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="omeeting.usersjson.length-1!==0">+{{omeeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -8346,12 +8515,12 @@
                                             <div class="date-d">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="dat-icn">
-                                                    <path _ngcontent-efp-c426="" stroke-linecap="round"
+                                                    <path  stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
                                                     </path>
                                                 </svg>
-                                                <span _ngcontent-efp-c426="" class="date-anc">{{meetings.date| date:'MMM d y'}} </span>
+                                                <span class="date-anc">{{meetings.date| date:'MMM d y'}} </span>
                                             </div>
                                         </div>
 
@@ -8413,12 +8582,12 @@
                                                                 <span>Join In Stream Planner</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <!-- <div class="kt-met-dtl">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
                                                           <div class="kt-met-info" *ngFor="let item of meeting.usersjson ; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ', ') }}</div>
-                                                         </div>
+                                                         </div> -->
                                                     </div>
 
                                                     <div class="mt-dtl-right">
@@ -8440,7 +8609,22 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="Organizer-name mt-5">
+
+                                                        <div class="Organizer-name mt-3 mb-3" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                                            <div class="kt-met-dtl">
+                                                                <div class="kt-met-label"> Participant: </div>
+                                                                <div class="kt-met-info">
+                                                                    <div class="org-name">
+                                                                        <div >
+                                                                            <span *ngIf="meeting.usersjson[0].TM_DisplayName">{{meeting.usersjson[0].TM_DisplayName}}</span>
+                                                                            <span class="ml-1" *ngIf="meeting.usersjson.length-1!==0">+{{meeting.usersjson.length-1}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -9793,7 +9977,7 @@
                                 <div class="kt-info-lable-v"> Duration</div>
                                 <div class="input-icon Sub_In_ed"
                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                                    <input type="text" class="form-control readonly" value="{{projectInfo.Duration}} days "
+                                    <input type="text" class="form-control readonly" value="{{projectInfo.Duration +1}} days "
                                         placeholder="Duration..." readonly />
                                 </div>
                                 <ng-template #continue>
@@ -9845,7 +10029,7 @@
                                             <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours">
                                                 <ng-option *ngFor="let item of Week_array">{{item}}</ng-option>
                                             </ng-select>
-                                            <span class="Wd_text_kt"> Max Duration limit is 2hrs only.</span>
+                                            <span class="Wd_text_kt"> Max Duration limit is 2 hrs only.</span>
                                         </div>
                                     </div>
                                     <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="3"> Allocated hours
@@ -10297,7 +10481,7 @@
                                 <div class="kt-info-lable-v"> Duration</div>
                                 <div class="input-icon Sub_In_ed"
                                     *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'));">
-                                    <input type="text" class="form-control readonly" value="{{ActionDuration}} days "
+                                    <input type="text" class="form-control readonly" value="{{ActionDuration +1}} days "
                                         placeholder="Duration..." readonly />
                                 </div>
                             </div>
@@ -10464,15 +10648,15 @@
                     <div class="kt-portlet__head">
                         <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
                             <h4 class="m-0"><span class="svg-icv-hd">
-                                    <svg _ngcontent-vqh-c391="" xmlns="http://www.w3.org/2000/svg" width="17"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="17"
                                         height="17" viewBox="0 0 15 15" fill="none">
-                                        <path _ngcontent-vqh-c391=""
+                                        <path 
                                             d="M1.25684 6.68393C1.25684 5.84386 1.25684 5.42382 1.42033 5.10295C1.56414 4.82071 1.79361 4.59124 2.07585 4.44743C2.39672 4.28394 2.81676 4.28394 3.65684 4.28394H4.65829C5.08905 4.28394 5.30444 4.28394 5.49459 4.34953C5.66274 4.40753 5.8159 4.50219 5.94298 4.62666C6.08668 4.76741 6.18299 4.96006 6.37562 5.34535L6.84368 6.28157C7.03631 6.66687 7.13263 6.85952 7.27633 7.00027C7.4034 7.12474 7.55656 7.2194 7.72471 7.2774C7.91487 7.34299 8.13025 7.34299 8.56102 7.34299H11.8565C12.6966 7.34299 13.1166 7.34299 13.4375 7.50648C13.7198 7.65029 13.9492 7.87976 14.093 8.16201C14.2565 8.48288 14.2565 8.90291 14.2565 9.74299V11.8252C14.2565 12.6653 14.2565 13.0853 14.093 13.4062C13.9492 13.6884 13.7198 13.9179 13.4375 14.0617C13.1166 14.2252 12.6966 14.2252 11.8565 14.2252H3.65684C2.81676 14.2252 2.39672 14.2252 2.07585 14.0617C1.79361 13.9179 1.56414 13.6884 1.42033 13.4062C1.25684 13.0853 1.25684 12.6653 1.25684 11.8252V6.68393Z"
                                             stroke="#a3a3a3"></path>
-                                        <path _ngcontent-vqh-c391=""
+                                        <path 
                                             d="M11.9626 6.96026V4.1819C11.9626 3.93731 11.9626 3.81502 11.935 3.69993C11.9105 3.59789 11.8701 3.50035 11.8152 3.41088C11.7534 3.30996 11.6669 3.22348 11.494 3.05053L10.1372 1.69373C9.96421 1.52078 9.87773 1.4343 9.77681 1.37246C9.68734 1.31763 9.5898 1.27722 9.48776 1.25273C9.37267 1.2251 9.25038 1.2251 9.00579 1.2251H5.95103C5.11095 1.2251 4.69091 1.2251 4.37004 1.38859C4.0878 1.5324 3.85833 1.76187 3.71452 2.04411C3.55103 2.36498 3.55103 2.78502 3.55103 3.6251V4.66619"
                                             stroke="#a3a3a3"></path>
-                                        <path _ngcontent-vqh-c391=""
+                                        <path 
                                             d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
                                             stroke="#a3a3a3"></path>
                                     </svg> </span><span class="kt-chat__title"> New project reject release</span>
@@ -10650,8 +10834,19 @@
           </div>
 
         </div>
-        <div class="modal-body">
+        <div class="modal-body d-flex">
+            <div class="mr-1">
+ 
+                <h5 *ngIf="selectedactvy&&graphOption!=='PROJECT'"><span class="actvy-done-by-name">{{graphOption}}</span> - {{selectedactvy}}</h5>
+                <h5 *ngIf="selectedactvy&&graphOption=='PROJECT'">{{selectedactvy}}</h5>
+                <div class="actvy-list">
+                    <div *ngFor="let ac of activitiesOnthat;let i=index" class="actvy-item">
+                        <ng-container *ngIf="graphOption==='PROJECT'"><span class="actvy-done-by-name">{{ac.Modifiedby}}</span><br/></ng-container>
+                        <b class="fs-7">{{i+1}}.</b>&nbsp;{{ac.Value}}
+                    </div>
+                </div>
 
+            </div>
             <div class="full-graph" id="full-graph"> </div>
         </div>
       </div>

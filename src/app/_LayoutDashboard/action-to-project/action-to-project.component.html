@@ -59,7 +59,7 @@
             (change)="EmployeeOnSelect($event)" placeholder="Select employee"
             [searchable]="true" name="RACIS"
             [(ngModel)]="selectedEmpNo"
-            required 
+            required
             [disabled]="disableAssignedField"
             >
             <!-- <ng-template ng-option-tmp let-item="item">
@@ -94,19 +94,20 @@
 
     </div>
     <div class="d-flex gap-1">
-        <div class="form-group flex-1">
-            <label>Start Date : <span class="text-danger">*</span></label>
-            <div class="d-flex date-border" (click)="startdatechecker()">
-                <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="disablePreviousDate"
-                    [(ngModel)]="_StartDate" placeholder="Start date" class="form-control">
+      <div class="form-group flex-1">
+        <label>Start Date : <span class="text-danger">*</span></label>
+        <div class="d-flex date-border" (click)="startdatechecker()">
+            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="disablePreviousDate"
+                [(ngModel)]="_StartDate" placeholder="Start date" class="form-control">
 
-                <div class="input-group-text p-0">
-                    <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
-                    <mat-datepicker #picker1 ></mat-datepicker>
-                </div>
+            <div class="input-group-text p-0">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
             </div>
-            <span *ngIf ="_sdate == true" style="color:red">Start Date required!</span>
         </div>
+        <div *ngIf="startdate.invalid && (startdate.dirty || startdate.touched)" style="color: red">Start Date is required!</div>
+    </div>
+
         <div class="form-group flex-1" *ngIf="_StartDate!=null">
             <label>End Date :<span class="text-danger">*</span></label>
             <div class="d-flex date-border">
@@ -130,15 +131,15 @@
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 
-    <div class="form-group">                          <!--*ngIf="selectedEmpNo == Current_user_ID"--> 
+    <div class="form-group">                          <!--*ngIf="selectedEmpNo == Current_user_ID"-->
         <label>Allocated Hours<span class="text-danger">*</span></label>
         <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
         <input id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
             (click)="alertMaxAllocation()">
-        <span *ngIf="allocated.touched&&!_allocated" style="color:red">Allocated hours required!&nbsp;</span>
+        <span *ngIf="allocated.touched&&!_allocated" style="color:red">Allocated hours required! Enter non-decimal value&nbsp;</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
         <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value.</span>
@@ -199,11 +200,20 @@
 
 
     <div class="form-group">
-        <div class="custom-file pl-1">
-            <input type="file" class="form-control-file" id="uploadFile"
-                (change)="onFileChange($event)"/>
-        </div>
-    </div>
+      <div class="custom-file pl-1">
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose File</button>
+          <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+          <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+          <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+      </div>
+  </div>
+
+
+
+
+
+
+
     <div class="form-group">
       <div class="d-flex align-items-center"  id="actattach">
         <input type="checkbox" class="mr-2 " [(ngModel)]="completionattachment"/>
@@ -223,8 +233,8 @@
 
     <div class="kt-portlet__foot py-3">
 
-        <div class="form-group mb-0">                                             
-            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()" 
+        <div class="form-group mb-0">
+            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()"
                 [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)">Submit
             </button>
 

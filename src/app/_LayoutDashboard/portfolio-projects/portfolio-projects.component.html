@@ -72,21 +72,10 @@
 
 
 
-                    <a href="javascript:void(0)" (click)="labelAll()" [hidden]="HideStatusDropdown"
-                    class="badge total-project kt-badge--inline mr-2 py-10px btn-sm" tabindex="0" >
-                    <span>{{TotalProjects}}</span> Total Projects
-                </a>
-
-
-
-
-
-                      <ng-container  >
-                      <a  href="javascript:void(0)" *ngIf="CountDeleted>0"  (click)="labeldeletedproject()"        [hidden]="HideStatusDropdown"
-                        class="badge Delay-head kt-badge--inline mr-2 py-10px btn-sm"><span >{{CountDeleted}}</span>
-                        Deleted Projects </a>
-                      </ng-container>
-
+                    <a href="javascript:void(0)" (click)="labelAll(); onButtonClick('tot')"  [hidden]="HideStatusDropdown"
+                      class="badge total-project kt-badge--inline mr-2 py-10px btn-sm active-total-project" id="tot" tabindex="0" >
+                      <span>{{TotalProjects}}</span> Total Projects
+                    </a>
 
 
 
@@ -98,8 +87,8 @@
                             class="kt-inbox__label kt-badge kt-badge--unified-warning kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
                             role="button">
                             {{CountInprocess}} InProcess </a> -->
-                        <a href="javascript:void(0)" (click)="labelInprocess()" [hidden]="HideStatusDropdown"
-                            class="badge in-processs kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
+                        <a href="javascript:void(0)" (click)="labelInprocess();onButtonClick('inn')" [hidden]="HideStatusDropdown"
+                            class="badge in-processs kt-badge--inline mr-2 btn-sm py-10px" id="inn"> {{CountInprocess}}
                             In-Process</a>
 
                     </ng-container>
@@ -109,58 +98,76 @@
                             role="button">
                             {{CountDelay}} Delay
                         </a> -->
-                        <a href="javascript:void(0)" (click)="labelDelay()" [hidden]="HideStatusDropdown"
-                            class="badge Delay-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountDelay}} Delay</a>
+                        <a href="javascript:void(0)" (click)="labelDelay();onButtonClick('del')" [hidden]="HideStatusDropdown"
+                            class="badge Delay-head kt-badge--inline mr-2 btn-sm py-10px" id="del"> {{CountDelay}} Delay</a>
                     </ng-container>
+
+                    <ng-container *ngIf="CountNotStarted > 0">
+                    <a href="javascript:void(0)" (click)="labelDraft();onButtonClick('draft')" [hidden]="HideStatusDropdown"
+                    class="badge Not-started-head kt-badge--inline mr-2 btn-sm py-10px" id="draft"> {{CountNotStarted}} Draft</a>
+            </ng-container>
+
+
+
+
                     <ng-container *ngIf="CountCompleted > 0">
-                        <a href="javascript:void(0)" (click)="labelCompleted()" [hidden]="HideStatusDropdown"
-                            class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px"> {{CountCompleted}}
+                        <a href="javascript:void(0)" (click)="labelCompleted();;onButtonClick('compl')" [hidden]="HideStatusDropdown"
+                            class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px" id="compl"> {{CountCompleted}}
                             Completed</a>
                     </ng-container>
 
                     <ng-container *ngIf="CountNewProject > 0">
-                        <a href="javascript:void(0)" (click)="labelNewProject()" [hidden]="HideStatusDropdown"
+                        <a href="javascript:void(0)" (click)="labelNewProject();onButtonClick('new-pro')" [hidden]="HideStatusDropdown"
                             class="badge New-project kt-badge--inline mr-2 btn-sm  py-10px
-                            ">
+                            " id="new-pro">
                             {{CountNewProject}} New Project</a>
                     </ng-container>
 
                     <ng-container *ngIf="CountAll_UA > 0">
-                        <a href="javascript:void(0)" (click)="labelUA()" [hidden]="HideStatusDropdown"
-                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px"> {{CountAll_UA}} Under
+                        <a href="javascript:void(0)" (click)="labelUA();onButtonClick('underappr')" [hidden]="HideStatusDropdown"
+                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px cursor-pointer" id="underappr"> {{CountAll_UA}} Under
                             Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
-                        <a href="javascript:void(0)" (click)="labelProjectHold()" [hidden]="HideStatusDropdown"
-                            class="badge Hold_color kt-badge--inline mr-2 btn-sm text-white py-10px"
+                        <a href="javascript:void(0)" (click)="labelProjectHold();onButtonClick('pro-hold')" [hidden]="HideStatusDropdown"
+                            class="badge Hold_color kt-badge--inline mr-2 btn-sm text-white py-10px" id="pro-hold"
                             >
                             {{CountProjectHold}} Project Hold</a>
                     </ng-container>
                     <ng-container *ngIf="CountRejecteds > 0">
-                        <a href="javascript:void(0)" (click)="labelRejecteds()" [hidden]="HideStatusDropdown"
-                            class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px">
+                        <a href="javascript:void(0)" (click)="labelRejecteds();onButtonClick('reject')" [hidden]="HideStatusDropdown"
+                            class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px" id="reject">
                             {{CountRejecteds}} Rejected</a>
                     </ng-container>
 
                     <ng-container *ngIf="Count_ToDoCompleted > 0">
-                      <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
-                          class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px">
+                      <a href="javascript:void(0)" (click)="labelToDoCompleted();onButtonClick('todocomp')" [hidden]="HideStatusDropdown"
+                          class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px" id="todocomp">
                           {{Count_ToDoCompleted}} ToDoCompleted</a>
                   </ng-container>
 
 
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
-                        <a href="javascript:void(0)" (click)="labelToDoAchieved()" [hidden]="HideStatusDropdown"
-                            class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px "
+                        <a href="javascript:void(0)" (click)="labelToDoAchieved();onButtonClick('todoachi')" [hidden]="HideStatusDropdown"
+                            class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px " id="todoachi"
                             > {{Count_ToDoAchieved}} ToDo
                             Achieved</a>
                     </ng-container>
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
                         <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
-                            class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px
-                            "> {{Count_ToDoCompleted}} ToDo
+                            class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px " > {{Count_ToDoCompleted}} ToDo
                             Completed</a>
                     </ng-container>
+
+                    <ng-container>
+                      <a href="javascript:void(0)" *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')" [hidden]="HideStatusDropdown"
+                        class="badge Delete-head kt-badge--inline mr-2 py-10px btn-sm" id="delete"><span>{{CountDeleted}}</span>
+                        Deleted Projects </a>
+                    </ng-container>
+
+
+
+
 
                     <!-- </div> -->
                     <!-- <div class="kt-portlet__head-toolbar"> -->
@@ -218,6 +225,7 @@
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>ProjectName</p></td>
+                                                    <td></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Category</span></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></td>
@@ -292,10 +300,14 @@
                                                         </ng-template>
                                                     </td>
                                                     <td>
-                                                        <p class="kt-widget__title mb-0" style="width: 250px;"> {{item1.Project_Name}}
+                                                        <p class="kt-widget__title mb-0 kt-project-name" title="{{item1.Project_Name}}"> {{item1.Project_Name}}
+                                                         <!-- <span class="count2">{{item1.Actioncount}}</span> -->
                                                         </p>
-                                                    </td>
 
+                                                    </td>
+                                                    <td>
+                                                        <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
+                                                    </td>
 
                                                     <td>
                                                         <span class="kt-widget__other">{{item1.Exec_BlockName}}</span>
@@ -486,11 +498,15 @@
                                                     <ng-template #deletedby>
                                                       <td>
 
-                                                          <span
-                                                              class=" font-weight-400 curser-pointer" > {{item1.Deleted_by}} </span>   <br/>
-                                                              <div class="d-flex align-items-center justify-content-start">
-                                                              <span class="kt-widget__other d-block st-line" title="Deleted date"> {{item1.Deleted_DT | date: 'dd-MM-yyyy '}}  </span>
-                                                              </div>
+                                                          <span class="Delay_color curser-pointer" > Deleted </span>
+                                                          <div class="d-flex align-items-center justify-content-start">
+
+
+                                                          <span class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
+                                                            {{item1.Deleted_by}} | {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}  </span>
+                                                          </div>
+
+                                                          <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
                                                       </td>
                                                     </ng-template>

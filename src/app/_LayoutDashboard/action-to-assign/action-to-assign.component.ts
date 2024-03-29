@@ -1,6 +1,6 @@
 // import { flatten } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
-import { DateAdapter } from '@angular/material/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms'
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
@@ -13,18 +13,53 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
+
+
 
 @Component({
   selector: 'app-action-to-assign',
   templateUrl: './action-to-assign.component.html',
-  styleUrls: ['./action-to-assign.component.css']
+  styleUrls: ['./action-to-assign.component.css'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+  ]
 })
+
 export class ActionToAssignComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: any;
+  fileAttachment: any;
+  file: File | null = null;
   selectedProjectType: string = "";
   ProjectTypelist: any;
   _description: string = "";
   _StartDate: Date = null;
-  _EndDate: Date = null;   
+  _EndDate: Date = null;
   _SelectedEmpNo: string = "";
   selectedProjectCode: string;
   SelectedEmplList: any[];
@@ -175,10 +210,11 @@ export class ActionToAssignComponent implements OnInit {
       }
 
 
-      if (this._StartDate != null && this._EndDate != null) {
-        this.Difference_In_Time = this._StartDate.getTime() - this._EndDate.getTime();
-        this.Difference_In_Days = this.Difference_In_Time / (1000 * 3600 * 24);
-        this._ObjAssigntaskDTO.ProjectDays = (-this.Difference_In_Days);
+      if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
+        // Check if both _StartDate and _EndDate are valid Date objects
+        const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        this._ObjAssigntaskDTO.ProjectDays = -differenceInDays;
       }
       else {
         this._ObjAssigntaskDTO.ProjectDays = 0;
@@ -333,5 +369,48 @@ export class ActionToAssignComponent implements OnInit {
       return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
     };
   }
+  maxDate:any
+  setMaxDate(){
+    const d=new Date(this._StartDate);
+    d.setDate(d.getDate()+2);
+    this.maxDate=d;
+
+  }
+
+
+  selectFile() {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileChanged(event: any) {
+    const files: File[] = event.target.files;
+
+    if (files && files.length > 0) {
+      this.file = files[0];
+      this.fileAttachment = this.file;
+    } else {
+      this.file = null;
+      this.fileAttachment = null;
+    }
+    // Reset file input value to allow selecting the same file again
+    this.fileInput.nativeElement.value = '';
+  }
+
+
+  isPrjNameValid:boolean=true;
+isPrjDesValid:boolean=true;
+
+  isValidString(inputString: string, maxWords: number): boolean {
+
+    let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
+    const valid=rg.test(inputString);
+    return valid;
+}
+  todo() {
+    if (this.selectedProjectType == '011') {
+      this._EndDate = null
+    }
+  }
+
 
 }

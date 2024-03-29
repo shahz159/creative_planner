@@ -124,7 +124,7 @@ export class TimelineComponent implements OnInit {
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
     // this.french();
-   this.getPADetails('400186055','ACTION');
+ 
   }
 
 
@@ -332,6 +332,7 @@ resp_empno: any;
 noact_msg: boolean =false;
 
 getTimelineActions(){
+
   this.showAction=false;
   this.project_code=null;
   this.noact_msg=false;
@@ -339,16 +340,24 @@ getTimelineActions(){
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
+   debugger
     this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
     if((this.actionList==null || this.actionList=='' || this.actionList.length==0) && (this.Current_user_ID==this.owner_empno || this.Current_user_ID==this.resp_empno)){
+     // user is either prjowner or prjresp  and he is not having actions in selected prj.
       this.showAction=false;
       console.log(this.actionList,"axtions");
     }
     else if(this.actionList.length==0 && this.Current_user_ID!=this.owner_empno && this.Current_user_ID!=this.resp_empno){
+      // user is support. and he is not having actions in selected prj.
+      if(this.ObjSubTaskDTO.ProjectBlock=='standard') 
+      this.showAction=false;      // when prj is std,routine,todo.
+      else{  
       this.showAction=true;
-      this.noact_msg=true;
+      this.noact_msg=true;    // when prj is core/secondary. tell user to create action first.
+      }
+   
     }
     else{
       this.showAction=true;
@@ -632,6 +641,7 @@ onFileChange(e) {
 p_details:any;
 a_details:any;
 getPADetails(prjcode,of:'PROJECT'|'ACTION'){
+  debugger
     if(prjcode)
     {
       if(of==='PROJECT'){
@@ -643,6 +653,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
       }
   
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
+        debugger
                  console.log("|||=>",res[0].ProjectStates_Json);
                  if(of==='PROJECT'){
                   

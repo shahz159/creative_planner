@@ -995,7 +995,7 @@
                     
 
 
-                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <!-- <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
                             <span class="kt-meeting-status-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1004,7 +1004,7 @@
                                     </g>
                                     </svg>
                             </span>
-                    </div>
+                    </div> -->
 
 
                     <div class="icons-right met-done curser-pointer"
@@ -1108,8 +1108,16 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
-                        <span class="tool-span" data-toggle="modal" data-target="#delevent">
+                    <div  class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
+                        <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" class="tool-span" data-toggle="modal" data-target="#delevent">
+                            <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
+                                </path>
+                                <path d="M9 8h2v9H9zm4 0h2v9h-2z"></path>
+                            </svg>
+                        </span>
+                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0" class="tool-span" (click)="AllDelete_event(1);AlldeleteSchedule()">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
@@ -1118,6 +1126,8 @@
                             </svg>
                         </span>
                     </div>
+
+                    
 
 
                     <div class="icons-right" data-toggle="tooltip" title="Close">
@@ -1213,7 +1223,7 @@
                     </div>
 
 
-              <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
+              <!-- <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
                         <div class="boxcl-div">
                             <div class="kt-meeting-title-icon">
                             <svg stroke="#5f6368" xmlns="http://www.w3.org/2000/svg" width="25" height="19" viewBox="0 0 16 17">
@@ -1265,7 +1275,7 @@
                                 </div>
                             </div>
                         </div>
-             </div>   
+             </div>    -->
 
 
 
@@ -2740,14 +2750,15 @@
                 </div>
                 <div class="form-group">
                     <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
-                    <input class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
+                    <input id="dsb-evt-titleName" #titleNametf="ngModel" class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
                         minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
-                    <span style="color:red" [hidden]="MinLastNameLength"> Min Length 3</span>
+                    <span style="color:red" [hidden]="MinLastNameLength"> Min length 3</span>
+                    <span style="color:red" *ngIf="!Title_Name&&notProvided" >  please enter title name</span>
                 </div>
 
 <!--agenda field start--> 
 
- <div class="form-group" id="agenda-field">
+ <!-- <div class="form-group" id="agenda-field">
     <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
     <span id="agenda-info-icon" class="ml-1">
         <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
@@ -2763,10 +2774,10 @@
                     <input class="task-input ml-2" id="todo-input" name="text" placeholder="Enter Agenda and hit 'Enter'." autofocus="true"
                       [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
                     />
-                    <button class="task-button" id="btn1">Add Task</button>
+                    <button class="task-button " id="btn1">Add Task</button>
                 </div>
             </div>
-       
+            
 
 
             <div class="todo-list">
@@ -2811,11 +2822,9 @@
          
         </div>
     </div>
+    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > please provided atleast one agenda.</span>
 
-
-
-
-</div>   
+</div>    -->
 
 
 
@@ -3095,7 +3104,7 @@
                     <div class="form-group mb-0">
                         <label class="cus-lbl">Attachment </label>
                         <div class="custom-file pl-1">
-                            <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file"
+                            <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file  cursor-pointer    " 
                                 (change)="onFileChange($event)" multiple>
 
                         </div>
@@ -3141,31 +3150,34 @@
                                 <div class="input-group">
                                     <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
                                         (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
-                                        [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control">
+                                        [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control" style="cursor:pointer;">
                                     <div class="input-group-append">
 
                                         <div class="input-group-text p-0">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
                                         </div>
-                                    </div>
+                                    </div>  
                                 </div>
+                                <span *ngIf="!_StartDate&&notProvided" style="color:red">please select schedule date.</span>
                             </div>
-                            <div class="form-group flex-1">
-                                <label class="cus-lbl">Start Time</label>
-                                <ng-select class="kt-input form-control" (open)="onfocus($event)" id="startid"
+                            <div class="form-group flex-1" >
+                                <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                                <ng-select class="kt-input form-control "  (open)="onfocus($event)" 
                                     placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                         {{item}}</ng-option>
                                 </ng-select>
+                                <span *ngIf="!Startts&&notProvided" style="color:red">please select start time.</span>
                             </div>
-                            <div class="form-group flex-1">
-                                <label class="cus-lbl">End Time</label>
-                                <ng-select class="kt-input form-control" (open)="onfocus($event)" placeholder="End Time"
+                            <div class="form-group flex-1 " style="cursor:pointer;">
+                                <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                                <ng-select class="kt-input form-control"  (open)="onfocus($event)" placeholder="End Time"
                                     [(ngModel)]="Endtms">
                                     <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                         {{item1}}</ng-option>
                                 </ng-select>
+                                <span  *ngIf="!Endtms&&notProvided" style="color:red" >please select end time.</span>
                             </div>
 
                             <div class="form-group flex-1" id="Schenddate">
@@ -3657,12 +3669,15 @@
         <div class="kt-portlet__foot py-3">
 
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
-                    (click)="OnSubmitSchedule()">Submit</button>
+                                                                  <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
+                <button *ngIf="draftid==0" type="submit" class="btn btn-info btn-sm" 
+                    (click)="onSubmitBtnClicked()">Submit</button>
+                <button *ngIf="draftid!=0" type="submit" class="btn btn-info btn-sm" 
+                    (click)="onSubmitBtnClicked()">Update & Release</button>
                 <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
                     (click)="Insert_indraft()">Save Draft</button>
                 <button *ngIf="draftid!=0" type="cancel" class="btn btn-sm btn-dull ml-3"
-                    (click)="Insert_indraft()">Update Draft</button> &nbsp;
+                    (click)="Insert_indraft()">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
 
             </div>
@@ -3683,7 +3698,7 @@
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button> 
                 
