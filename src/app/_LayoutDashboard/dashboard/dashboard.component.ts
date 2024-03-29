@@ -1423,7 +1423,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1533,16 +1533,16 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-     if(this.Title_Name&&this.Startts&&this.Endtms&&this.MinLastNameLength){
+     if(this.Title_Name&&this.Startts&&this.Endtms&&this.MinLastNameLength&&this.allAgendas.length>0){
           this.OnSubmitSchedule();
           this.notProvided=false;
      }
      else
       { 
-        //  if(!this.Title_Name)
-        //  document.getElementById('dsb-evt-titleName').focus();&&this.allAgendas.length>0
-        //  else if(this.allAgendas.length===0)
-        //  {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+         if(!this.Title_Name)
+         document.getElementById('dsb-evt-titleName').focus();
+         else if(this.allAgendas.length===0)
+         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
          
 
         this.notProvided=true;
@@ -1708,9 +1708,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
 
-        // var vAgendas = "Meeting_Agendas";
-        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        // element[vAgendas] = mtgAgendas;
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
 
         debugger
       });
@@ -2052,9 +2052,9 @@ debugger
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
         // debugger
-            // var vMeeting_Agendas="Meeting_Agendas";
-            // const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-            // element[vMeeting_Agendas]=updatedAgnds;
+            var vMeeting_Agendas="Meeting_Agendas";
+            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+            element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
