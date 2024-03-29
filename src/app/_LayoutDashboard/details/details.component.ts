@@ -4062,7 +4062,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
           this.Addguest= this.meetingList[0].Addguest
           this.MeetingParticipants= JSON.parse(this.Addguest);
-          console.log('meeting we have:', this.MeetingParticipants);
+          console.log('meeting we have:', this.meetingList);
           this.meeting_arry = this.meetingList;
           if (this.meeting_arry.length > 0)
             this.meetinglength = this.meeting_arry.length;
@@ -6916,7 +6916,7 @@ displaymessagemain(){
 
 formatTimes(time: string): string {
   
-  const [hours, minutes] = time.split(':');
+  const [hours, minutes] = time.split(':'); 
   const date = new Date();
   date.setHours(parseInt(hours, 10));
   date.setMinutes(parseInt(minutes, 10));
@@ -7075,6 +7075,7 @@ selectedactvy:string|undefined;
 
 
 showFullGraph(){
+  debugger
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
 
@@ -7160,6 +7161,42 @@ loadActivitiesByDate(d){
   this.activitiesOnthat=this.getActivitiesOf(d);
   this.selectedactvy=d;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //  Full Graph code end
@@ -7333,7 +7370,16 @@ this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.
 
 
 
+// start meeting feature start
 
+meetingReport(mtgScheduleId:any) {
+  let name: string = 'Meeting-Report';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${mtgScheduleId}`;
+  var myWindow = window.open(myurl);
+  myWindow.focus();
+}
+// start meeting feature end
 
 
 

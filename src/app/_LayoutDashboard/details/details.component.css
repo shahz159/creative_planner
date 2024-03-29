@@ -991,8 +991,7 @@ button.Kt-Approval-btns {
 }
 
 .Add_Action_btn {
-  background-color: transparent;
-  background-color: transparent;
+  background-color: #527ce2;
   border: 1px solid #527ce2;
   font-size: 13px !important;
   /* padding: 3px 5px; */
@@ -1001,11 +1000,11 @@ button.Kt-Approval-btns {
   border-width: 1px !important;
   font-weight: 400;
   font-weight: 400 !important;
-  color: #527ce2;
+  color: #fff;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .Add_Action_btn:hover {
-  background-color: #527ce2;
+  background-color: #446bce;
   color: #ffffff;
 }
 
@@ -2902,7 +2901,7 @@ div#prj-hold-sidebar {
   background-color: white;
   line-height: 1.5em;
   border-radius: 10px;
-  width: 70px;
+  width: 90px;
   overflow: hidden;
   box-shadow: 1px 3px 4px #cccccca3;
 }
@@ -3588,12 +3587,18 @@ a.Kt_cmt_user_name {
 }
 
 .View_more_act {
-  /* position: absolute;
-  top: -38px;
-  right: 0; */
+  position: absolute;
+  bottom: 0px;
+  right: 0;
   background-color: #ecefff;
-  padding: 3px 10px;
+  padding: 1px 10px;
   border-radius: 5px;
+  align-self: flex-start;
+
+}
+.View_more_act:hover{
+  background-color: #ecefff87;
+  transition-duration: 0.2s;
 }
 .lable-dv lable {
   font-size: 12px;
@@ -4199,14 +4204,26 @@ span.Kt-m-count {
 
 /*recent activity graph css start*/
 .View_graph_act {
-  /* position: absolute;
+  position: absolute;
   top: -38px;
-  right: 100px; */
+  right: 0px;
   background-color: #ecefff;
-  padding: 3px 10px;
+  padding: 1px 10px;
   border-radius: 5px;
 }
-
+.View_graph_act a svg{
+  fill:#527ce2 !important;
+}
+.View_graph_act:hover{
+  background-color: #527ce2;
+  color: #ffffff !important;
+}
+.View_graph_act:hover a{
+  color:#ffffff !important;
+}
+.View_graph_act:hover a svg{
+  fill:#ffffff !important;
+}
 ::ng-deep .modal-backdrop.show {
   z-index: 1;
 }
@@ -4587,6 +4604,105 @@ background-color: #e2e8f0c9;
     transition-timing-function: ease-out;
 }
 
+.release-now-shrtcut:hover{
+   background-color: #E2d9bc;
+   color:#000;
+} */
+.kt-inbox__icon.event-active {
+  background-color: #ecf2ff !important;
+  position: relative;
+}
+.kt-inbox__icon.event-active svg{
+  fill: #6388e3;
+}
+.event-active .blink {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #6388e3;
+  border: 1px solid #becef5;
+  width: 10px;
+  height: 10px;
+  font-weight: 500;
+  top: 3px;
+  right: 3px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+      opacity: 0
+  }
+
+  49% {
+      opacity: 0
+  }
+
+  50% {
+      opacity: 1
+  }
+}
+
+.meeting-participant  {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.meeting-participant .symbol-group{
+  margin-left: 30px;
+}
+.meeting-participant .symbol-group .symbol {
+  z-index: auto;
+}
+.meeting-participant .kt-met-info {
+  padding: 0.2rem 1.2rem;
+}
+.meeting-participant .dropdown-menu {
+  box-shadow: 0px 0px 8px #b2b2b3;
+}
+.create-btn{
+  margin: 5px 7px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.create-btn svg{
+  width: 18px;
+  height: 18px;
+}
+.recall-btn{
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-right: 4px;
+  padding: 0.25rem 0.75rem;
+  color: rgb(71, 85, 105);
+  cursor: pointer;
+}
+.recall-btn svg{
+  width: 20px;
+  height: 20px;
+}
+.recall-btn:hover, .create-btn:hover {
+  color: #000;
+}
+#Attachment_view.kt-quick-active--on {
+  width: 50% !important;
+}
+#darsidebar .scroll-auto, #prj-hold-sidebar .scroll-auto, #prj-cancel-sidebar .scroll-auto {
+  height: auto !important;
+  max-height: calc(100vh - 124px);
+  min-height: calc(100vh - 124px);
+  overflow: auto !important;
+}
+.meeting-b{
+  height: 20px;
+    padding: 0px 4px;
+    border-radius: 4px;
+    background-color: #deecf9;
+    color: #3e97ff;
+    font-size: 12px;
+}
 .btn-inside-notifi{
   transform: scale(1.03);
 }
@@ -4635,7 +4751,19 @@ background-color: #e2e8f0c9;
   border-radius: 0 6px 6px 6px;
   background-color: #f1f1f180;
   color: #818181;
+  display:flex;
+  column-gap:5px;
 }
+.actvy-item .actvy-item-part1{
+   flex-grow:1;
+}
+.actvy-item .actvy-item-part2{
+   text-wrap: nowrap;
+   
+}
+
+
+
 
 .actvy-list::-webkit-scrollbar{
     width:5px;
@@ -4660,4 +4788,11 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   max-width: 280px;
   height:500px;
   
+}
+
+.actvy-done-by-name{
+  background-color: #6388e31c;
+  color: #7493df;
+  padding: 0.1em 0.4em 0.1em 0.4em;
+  border-radius: 2px;
 }

@@ -995,7 +995,7 @@
                     
 
 
-                    <!-- <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
                             <span class="kt-meeting-status-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1004,7 +1004,7 @@
                                     </g>
                                     </svg>
                             </span>
-                    </div> -->
+                    </div>
 
 
                     <div class="icons-right met-done curser-pointer"
@@ -1108,8 +1108,16 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
-                        <span class="tool-span" data-toggle="modal" data-target="#delevent">
+                    <div  class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
+                        <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" class="tool-span" data-toggle="modal" data-target="#delevent">
+                            <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
+                                <path
+                                    d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
+                                </path>
+                                <path d="M9 8h2v9H9zm4 0h2v9h-2z"></path>
+                            </svg>
+                        </span>
+                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0" class="tool-span" (click)="AllDelete_event(1);AlldeleteSchedule()">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
@@ -1118,6 +1126,8 @@
                             </svg>
                         </span>
                     </div>
+
+                    
 
 
                     <div class="icons-right" data-toggle="tooltip" title="Close">
@@ -1213,7 +1223,7 @@
                     </div>
 
 
-              <!-- <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
+              <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
                         <div class="boxcl-div">
                             <div class="kt-meeting-title-icon">
                             <svg stroke="#5f6368" xmlns="http://www.w3.org/2000/svg" width="25" height="19" viewBox="0 0 16 17">
@@ -1265,7 +1275,7 @@
                                 </div>
                             </div>
                         </div>
-             </div>    -->
+             </div>   
 
 
 
@@ -2373,8 +2383,8 @@
 
 
                         <div class="d-flex align-items-center justify-content-end gap-1">
-                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" [disabled]="!_remarks">Sumbit</button>
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" >Sumbit</button>
+                            <button class="btn btn-sm btn-secondary btn-pill footbtns" data-toggle="collapse"
                                 href="#secfootr1" (click)="closefooter()"    >Cancel</button>
                         </div>
 
@@ -2748,7 +2758,7 @@
 
 <!--agenda field start--> 
 
- <!-- <div class="form-group" id="agenda-field">
+ <div class="form-group" id="agenda-field">
     <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
     <span id="agenda-info-icon" class="ml-1">
         <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
@@ -2814,7 +2824,7 @@
     </div>
     <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > please provided atleast one agenda.</span>
 
-</div>    -->
+</div>   
 
 
 
@@ -3661,9 +3671,9 @@
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                                                                   <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
                 <button *ngIf="draftid==0" type="submit" class="btn btn-info btn-sm" 
-                    (click)="OnSubmitSchedule()">Submit</button>
+                    (click)="onSubmitBtnClicked()">Submit</button>
                 <button *ngIf="draftid!=0" type="submit" class="btn btn-info btn-sm" 
-                    (click)="OnSubmitSchedule()">Update & Release</button>
+                    (click)="onSubmitBtnClicked()">Update & Release</button>
                 <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
                     (click)="Insert_indraft()">Save Draft</button>
                 <button *ngIf="draftid!=0" type="cancel" class="btn btn-sm btn-dull ml-3"
@@ -3675,18 +3685,18 @@
 
             <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false"
                 class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts " data-toggle="modal"
+                <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
                     data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                 class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                <button type="submit" class="btn btn-info btn-sm" 
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                <button type="submit" class="btn btn-info btn-sm" 
                     (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
                 <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
