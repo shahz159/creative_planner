@@ -182,7 +182,19 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     this.fruitInput.nativeElement.value = '';
   }
-
+  rightbar_overlay(){
+    document.getElementById("Attendees_Notes").classList.remove("kt-quick-active--on");
+    document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
+    document.getElementById("Meeting_Attendees").classList.remove("kt-quick-active--on");
+    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
+    document.getElementById("LinkSideBar2").classList.remove("kt-quick-panel--on");
+    document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
+    document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("rightbar-overlay").style.display = "none";
+  }
   upload_btn() {
     document.getElementById("attach_heading").style.display = "none";
     document.getElementById("attach_div").style.display = "none";
@@ -376,6 +388,7 @@ addNewDMS() {
 
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("meetingdetails").classList.add("position-fixed");
+    document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
     this.GetDMSList();
 
@@ -578,6 +591,7 @@ AddPortfolio(){
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
     document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("rightbar-overlay").style.display = "block";
     this.GetProjectAndsubtashDrpforCalender();
 }
 

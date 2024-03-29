@@ -1220,6 +1220,21 @@ display: inline-block;
   color: white !important;
   padding: 2px 8px;
   border-radius: 3px;
-
-
+}
+a.info-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #8c8c8c;
+}
+a.info-btn:hover {
+  background: #e6e6ff;
+  color: #7D7EBB;
+}
+a.info-btn svg {
+  width: 26px;
+  height: 26px;
 }

@@ -233,12 +233,13 @@
 
     <div class="kt-portlet__foot py-3">
 
-        <div class="form-group mb-0">
-            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()"
-                [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)">Submit
+        <div class="form-group mb-0">                                             
+            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()" 
+                >Submit
             </button>
 
-
+            <!-- [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)" -->
+            
             <!-- <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert()" *ngIf="selectedEmpNo == Current_user_ID"
                 [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)">Submit
             </button>
