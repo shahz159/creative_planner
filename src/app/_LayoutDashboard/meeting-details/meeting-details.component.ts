@@ -1181,9 +1181,6 @@ GetPreviousdate_meetingdata() {
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
     (data => {
       this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
-
-      console.log(this.Previousdata_meeting,'pre meeting notes') 
-      // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.MeetingDetails.length > 0);
     });
 }
 
@@ -1652,7 +1649,7 @@ EnterSubmit(_Demotext) {
 
 /////////////////////////////////////////// All Attendees Notes sidebar Start //////////////////////////////////////////////////////////////////
 
-Meeting_noteslist:any=[]
+AllAttendees_notes:any=[]
 Employeeslist:any
 
 GetAttendeesnotes(){
@@ -1662,14 +1659,17 @@ GetAttendeesnotes(){
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
- 
-    this.Meeting_noteslist=JSON.parse(data['Checkdatetimejson']);
-    console.log(this.Meeting_noteslist,'Meeting_notes_lists1');
-    const objectsWithEmployees  = this.Meeting_noteslist.filter(obj => obj.hasOwnProperty('Employees'));
-    
-    this.Employeeslist=objectsWithEmployees[0].Employees;
+    this.AllAttendees_notes=JSON.parse(data['Checkdatetimejson']);
+    console.log(this.AllAttendees_notes,'AllAttendees_notes');
 
-    console.log(this.Employeeslist,'Meeting_notes_lists2');
+
+
+
+    // const objectsWithEmployees  = this.AllAttendees_notes.filter(obj => obj.hasOwnProperty('Employees'));
+    
+    // this.Employeeslist=objectsWithEmployees[0].Employees;
+
+    // console.log(this.Employeeslist,'Meeting_notes_lists2');
   });
 }
 } 

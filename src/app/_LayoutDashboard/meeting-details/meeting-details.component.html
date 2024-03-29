@@ -1577,16 +1577,13 @@
                                             </div>
                                         </a>
                                     </h2>
-                                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let data of Employeeslist"
+                                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let data of AllAttendees_notes"
                                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                                         <div class="accordion-body">
                                             <ul class="attendees-note-userlist">
                                                 <li class="attendees-note-user">
                                                     <div class="user-info">
-                                                        <span class="user-icon">
-                                                            <img
-                                                                src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                                                        </span>
+                                                        <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
                                                         <span>
                                                             <div class="user-name">{{data.Emp_Name}}
                                                                  <!-- <span class="user-time">2 mins</span> -->
@@ -1597,9 +1594,9 @@
                                                             </div>
                                                         </span>
                                                     </div>
-                                                    <div class="user-notes" *ngFor="let item of data.MeetingDetails;let i=index">
-                                                        <span>Agenda {{i+1}}: </span> <span>{{item.Agenda_name}}</span>
-                                                        <p [innerHTML]="item.Meeting_notes"></p>
+                                                    <div class="user-notes">
+                                                      
+                                                        <p [innerHTML]="data.Meeting_notes"></p>
                                                     </div>
                                                 </li>
                                                 <!-- <li class="attendees-note-user">
@@ -1686,56 +1683,51 @@
                 </a>
             </div>
         </div>
-        <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll" *ngFor="let record of Meeting_noteslist">
-            <div class="kt-chat__messages">
-                <ul class="attendees-note-userlist">
-                    <li class="attendees-note-user"  *ngFor="let item of record.Employees">
-                        <div class="user-info">
-                           
-                                <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
-                           
-                            <span>
-                                <div class="user-name">{{item.Emp_Name}}
-                                    <!-- <span class="user-time">2 mins</span> -->
-                                </div>
-                                <div>
-                                    <!-- <span class="user-role">Team Leader</span> <span class="user-company">Devbox
-                                        Software Pvt.ltd.</span> -->
-                                    </div>
-                            </span>
-                        </div>
-                        <div class="user-notes" *ngFor="let data of item.MeetingDetails;let i=index">
-                             <span style="font-weight: 500;">Agenda {{i+1}}: </span>  <span>{{data.Agenda_name}}</span>
-                            <p [innerHtml]="data.Meeting_notes"></p>
-
-                            <!-- <p class="mt-3">Not all people can afford to pay for content immediately after creating
-                                their website, so that’s not a condition you can demand from your clients. Instead, you
-                                can use a dummy text generator. </p> -->
-                        </div>
-
-                    </li>
-                    <!-- <li class="attendees-note-user">
-                        <div class="user-info">
-                            <span class="user-icon">
-                                <img
-                                    src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                            </span>
-                            <span>
-                                <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
-                                <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox
-                                        Software Pvt.ltd.</span></div>
-                            </span>
-                        </div>
-                        <div class="user-notes">
-                            <p>How likely are you to recommend our company to your friends and family ?</p>
-                            <p class="mt-3">Not all people can afford to pay for content immediately after creating
-                                their website, so that’s not a condition you can demand from your clients. Instead, you
-                                can use a dummy text generator.
-                        </div>
-                    </li> -->
-                </ul>
-            </div>
+        <div class="accordion accordion-attendes-notes mt-1" id="accordion_attendes">
+        <div  *ngFor="let data of AllAttendees_notes"
+        aria-labelledby="headingOne" data-parent="#accordion_attendes">
+        <div class="accor-body">
+            <ul class="attendees-note-userlist">
+                <li class="allAttendees-user">
+                  
+                    <div class="accordion-item">
+                    <h2 class="accordion-header accordion-attendes-notes mt-1" id="headingOne" >
+                        <a class="accordion-button" type="button" data-toggle="collapse"
+                        (click)="toggleAccordion(a)" [attr.aria-expanded]="data.expanded ? 'true' : 'false'"
+                        [attr.data-target]="'#attendes' + data.Emp_no" 
+                        [attr.data-target]="'#attendes' + data.Emp_no">
+                            <div class="head-content">
+                                  <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div>  
+                                <span class="accordion-heading">{{data.Emp_Name}}</span>
+                            </div>
+                            <div>
+                                <span class="accordion-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                        viewBox="0 0 15 9" fill="none">
+                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </a>
+                    </h2>
+                </div>                               
+                         <div id="attendes{{data.Emp_no}}" class="accordion-collapse collapse">
+                          <div class="user-notes" >                                   
+                                <div class="user-notes" > 
+                                    <ul>
+                                        <li> <p [innerHtml]="data.Meeting_notes"></p> </li>
+                                    </ul>                                             
+                                                                                         
+                           </div>
+                       </div>
+                    </div>                                 
+                </li>                             
+            </ul>
         </div>
+    </div>
+     </div>  
     </div>
 </div>
 <!--Attendees Notes End-->
@@ -2695,14 +2687,14 @@
 
 
             <ng-container *ngFor="let meeting of Previousdata_meeting">
-            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes" *ngFor="let term of meeting.AgendaDetails" >
+            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <a class="accordion-button" type="button" data-toggle="collapse"
                                         
-                            (click)="toggleAccordion(pause)" [attr.aria-expandeds]="term.expandeds ? 'true' : 'false'"
-                                        [attr.data-target]="'#attendes_notes' + meeting.Schedule_date+term.AgendaId" 
-                                        [attr.data-target]="'#attendes_notes' + meeting.Schedule_date+term.AgendaId"                           
+                            (click)="toggleAccordion(pause)" [attr.aria-expandeds]="meeting.expandeds ? 'true' : 'false'"
+                                        [attr.data-target]="'#attendes_notes' + meeting.Schedule_date" 
+                                        [attr.data-target]="'#attendes_notes' + meeting.Schedule_date"                           
                             >
                             <div class="head-content">
                                 <span class="accordion-heading">{{meeting.Schedule_date}}</span>
@@ -2719,29 +2711,20 @@
                             </div>
                         </a>
                     </h2>
-                    <div  id="attendes_notes{{meeting.Schedule_date+term.AgendaId}}" class="accordion-collapse collapse" *ngFor="let item of term.Employees;let i=index"
+                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;"
                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                         <div class="accordion-body">
                             <ul class="attendees-note-userlist">
                                 <li class="attendees-note-user">
-                                    <!-- <div class="user-info">
-                                        <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
-                                         <span>
-                                            <div class="user-name">{{item.Emp_Name}}</div>
-                                            <div>
-                                                <span class="user-role">Team Leader</span> <span
-                                                    class="user-company">Devbox Software Pvt.ltd.</span>
-                                            </div>
-                                        </span>
-                                    </div> -->
+                                  
                                     <div class="accordion-item">
                                     <h2 class="accordion-header accordion-attendes-notes" id="headingOne" >
                                         <a class="accordion-button" type="button" data-toggle="collapse"
-                                        (click)="toggleAccordion(a)" [attr.aria-expanded]="item.expanded ? 'true' : 'false'"
-                                        [attr.data-target]="'#attendes_Name_' + term.AgendaId+item.Emp_no" 
-                                        [attr.data-target]="'#attendes_Name_' + term.AgendaId+item.Emp_no">
+                                        (click)="toggleAccordion(a)" [attr.aria-expanded]="Agenda.expanded ? 'true' : 'false'"
+                                        [attr.data-target]="'#attendes_Name_' + Agenda.AgendaId" 
+                                        [attr.data-target]="'#attendes_Name_' + Agenda.AgendaId">
                                             <div class="head-content">
-                                                <span class="accordion-heading">{{term.Agenda_name}}</span>
+                                                <span class="accordion-heading">{{Agenda.Agenda_name}}</span>
                                             </div>
                                             <div>
                                                 <span class="accordion-icon">
@@ -2755,24 +2738,22 @@
                                             </div>
                                         </a>
                                     </h2>
-                                </div>
-                                    <!-- <div class="user-notes" > -->
-     
-                                           <!-- <div *ngFor="let data of item.MeetingDetails;let i=index">
-                                            <div>  <span style="font-weight: 500">Agenda {{i+1}}: </span>
-                                                {{data.Agenda_name}}</div>
-                                          
-                                            <span [innerHtml]="data.Meeting_notes"></span>
-                                          </div> -->
-                                         <div id="attendes_Name_{{term.AgendaId+item.Emp_no}}" class="accordion-collapse collapse">
-                                          <div class="user-notes" >
-                                            <!-- <span style="font-weight: 500;"> </span>  -->
-                                             <span>{{item.Agenda_name}}</span>
-                                           <p [innerHtml]="item.Meeting_notes"></p>
-                                               
+                                </div>                               
+                                         <div id="attendes_Name_{{Agenda.AgendaId}}" class="accordion-collapse collapse">
+                                          <div class="user-notes" *ngFor="let item of Agenda.Employees" >                                   
+                                            <div class="user-info">                          
+                                                <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>  
+                                                <div class="user-name">{{item.Emp_Name}}                                                  
+                                                </div>                                         
+                                         
+                                            
+                                            </div>   
+                                                                                  
+                                            <div class="user-notes" >                                              
+                                                <p [innerHtml]="item.Meeting_notes"></p>                                                           
+                                           </div>
                                        </div>
-                                    </div>
-                                    <!-- </div> -->
+                                    </div>                                 
                                 </li>                             
                             </ul>
                         </div>
