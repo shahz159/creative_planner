@@ -631,7 +631,7 @@ hr.dotted {
 
 .private-notes h4,
 .meeting-attendes h4,
-.attendees-notes h4 {
+.attendees-notes h4, .LinkSideBar1 h4, .LinkSideBar h4 {
     color: #000;
     font-size: 16px;
 }
@@ -650,13 +650,13 @@ hr.dotted {
 
 .private-notes.sideInfobar .kt-portlet__head,
 .meeting-attendes.sideInfobar .kt-portlet__head,
-.attendees-notes.sideInfobar .kt-portlet__head {
+.attendees-notes.sideInfobar .kt-portlet__head, .LinkSideBar.sideInfobar .kt-portlet__head, .LinkSideBar1.sideInfobar .kt-portlet__head {
     background-color: #ffffff;
 }
 
 .private-notes .btn-hover-info:hover,
 .meeting-attendes .btn-hover-info:hover,
-.attendees-notes .btn-hover-info:hover {
+.attendees-notes .btn-hover-info:hover, .LinkSideBar .btn-hover-info:hover,.LinkSideBar1 .btn-hover-info:hover {
     color: #ffffff;
     background-color: #d8dadb;
     border-color: #e7e7e7;
@@ -824,6 +824,11 @@ ul.meeting-attendees-userlist {
     object-fit: cover;
 }
 
+.details-form-control .user-icon img{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+}
 .meeting-attendees-user .user-name {
     color: #000;
     font-size: 13px;
@@ -3002,4 +3007,37 @@ span.admin-check-svg {
     direction: ltr;
     margin-left: 5px;
     margin-right: 5px;
+}
+.btn-save{
+    color: #fff;
+    background-color: #5867dd !important;
+    border-color: #5867dd !important;
+}
+.btn-save:hover {
+    color: #fff;
+    background-color: #384ad7;
+    border-color: #2e40d4;
+}
+.w-45{
+    width: 45%;
+}
+.btn-outline-cancel {
+    color: #696969;
+    border-color: #e1e1ef;
+}
+.btn-outline-cancel:hover {
+    color: #212529;
+    background-color: #e1e1ef;
+    border-color: #e1e1ef;
+}
+.confirmpopup .modal-header{
+    border: 0;
+    padding: 1.25rem;
+    padding-bottom: 0rem;
+}
+.confirmpopup .modal-footer{
+    justify-content: center;
+    border: 0;
+    padding: 0px;
+    padding-top: 1rem;
 }

@@ -2373,8 +2373,8 @@
 
 
                         <div class="d-flex align-items-center justify-content-end gap-1">
-                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" [disabled]="!_remarks">Sumbit</button>
-                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" >Sumbit</button>
+                            <button class="btn btn-sm btn-secondary btn-pill footbtns" data-toggle="collapse"
                                 href="#secfootr1" (click)="closefooter()"    >Cancel</button>
                         </div>
 
@@ -3094,7 +3094,7 @@
                     </div>
                     <div class="form-group mb-0">
                         <label class="cus-lbl">Attachment </label>
-                        <div class="custom-file pl-1">
+                        <div class="custom-file pl-2">
                             <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file"
                                 (change)="onFileChange($event)" multiple>
 
@@ -3657,7 +3657,7 @@
         <div class="kt-portlet__foot py-3">
 
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts || !Title_Name "
+                <button type="submit" class="btn btn-info btn-sm" 
                     (click)="OnSubmitSchedule()">Submit</button>
                 <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
                     (click)="Insert_indraft()">Save Draft</button>
@@ -3670,20 +3670,20 @@
 
             <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false"
                 class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts " data-toggle="modal"
+                <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
                     data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                 class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                <button type="submit" class="btn btn-info btn-sm" 
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                <button type="submit" class="btn btn-info btn-sm" 
                     (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
-                <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                <button type="submit" class="btn btn-info btn-sm" 
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button> 
                 

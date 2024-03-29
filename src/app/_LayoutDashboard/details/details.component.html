@@ -1769,8 +1769,9 @@
 
                                           </a>
 
-                                        <a class="kt-inbox__icon" (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS'}"                    title="meetings">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
+                                        <a class="kt-inbox__icon event-active" (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS'}"                    title="meetings">
+                                            <span class="blink"></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1" fill="currentColor"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
 
                                         </a>
 
@@ -2630,13 +2631,11 @@
                                                             <div class="row mt-3">
                                                                 <div class="col-lg-12 p-0">
                                                                     <div class="kt-info-pg-btns text-end">
-                                                                        <button type="button" data-to="#pills-3-tab"
-                                                                            (click)="removeCommit();Close_Comments()"
-                                                                            class="btn btn-project-stv mr-3 Bt-Close">Close</button>
+                                                                        
                                                                         <!--commit by 69 <button type="button" data-to="#pills-3-tab"  (click)="close_info_Slide()"
-                                                                class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
+                                                                class="btn btn-project-stv mr-3 ">Close</button> -->
 
-                                                                        <!-- <button type="button" data-to="#pills-3-tab"  class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
+                                                                        <!-- <button type="button" data-to="#pills-3-tab"  class="btn btn-project-stv mr-3 ">Close</button> -->
                                                                         <!-- <span>
                                                                         <button (click)="submitApproval()" type="button"
                                                                             *ngIf="Accept_active" data-to="#pills-3-tab"
@@ -2664,9 +2663,13 @@
                                                                                 *ngIf="Conditional_Active || Reject_active"
                                                                                 data-to="#pills-3-tab"
                                                                                 (click)="submitApproval();Close_Approval()"
-                                                                                [disabled]="!comments || !selectedType "
+                                                                               
                                                                                 primary="true">Submit </button>
+                                                                                <!-- [disabled]="!comments || !selectedType " -->
                                                                         </span>
+                                                                        <button type="button" data-to="#pills-3-tab"
+                                                                            (click)="removeCommit();Close_Comments()"
+                                                                            class="btn btn-project-stv mr-3 ">Close</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3923,11 +3926,11 @@
                                                             <div class="kt-info-pg-footer">
                                                                 <div class="row mt-3">
                                                                     <div class="col-lg-12 p-0">
-                                                                        <div class="kt-info-pg-btns text-end">
+                                                                        <div class="kt-info-pg-btns">
                                                                             <button type="button" data-to="#pills-3-tab"
                                                                                 (click)="removeCommit()"
                                                                                 (click)="Close_Comments()"
-                                                                                class="btn btn-project-stv mr-3 Bt-Close">Close</button>
+                                                                                class="btn btn-project-stv mr-3 ">Close</button>
                                                                             <span>
                                                                                 <button (click)="submitApproval()"
                                                                                     type="button" *ngIf="Accept_active"
@@ -3940,9 +3943,14 @@
                                                                                     *ngIf="Conditional_Active || Reject_active"
                                                                                     data-to="#pills-3-tab"
                                                                                     (click)="submitApproval()"
-                                                                                    [disabled]="!comments || !selectedType"
+                                                                                    
                                                                                     primary="true">Submit</button>
+                                                                                    <!-- [disabled]="!comments || !selectedType" -->
                                                                             </span>
+                                                                            <button type="button" data-to="#pills-3-tab"
+                                                                                (click)="removeCommit()"
+                                                                                (click)="Close_Comments()"
+                                                                                class="btn btn-project-stv mr-3 ">Close</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -4477,10 +4485,11 @@
           <div class="text-end mb-1 mt-4">
               <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
                   Clear</a>
-              <button (click)="sendRequest(); closeRequestDialog()"  class="btn btn-sm btn-info mr-2" [disabled]="!Usercomment"
+              <button (click)="sendRequest(); closeRequestDialog()"  class="btn btn-sm btn-info mr-2" 
                   data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
                   Send Request
               </button>
+              <!-- [disabled]="!Usercomment" -->
           </div>
       </div>
   </div>
@@ -4889,7 +4898,7 @@
                 </a>
             </div>
         </div>
-        <div class="kt-portlet__body">
+        <div class="kt-portlet__body scroll-auto">
 
             <div>
 
@@ -5027,13 +5036,22 @@
                 <button type="reset" class="btn btn-secondary ml-2"        >Reset</button>
                 <button type="submit" class="btn btn-secondary ml-2"       >Cancel</button>
             </div> -->
-                <div class="col-lg-12 mt-3">
-                    <div class="form-group text-end">
-                        <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
-                            (click)="closedarBar()">Cancel</button>
-                        <button type="reset" class="btn w-110 btn-secondary Bt-Close ml-2"
-                            (click)="starttime=null; endtime=null; workdes=''; actionCode=null; bothActTlSubm=false; _remarks=''; _inputAttachments=''; selectedFile=null; ">Reset</button>
-                        <button type="submit" class="btn w-110 Bt-Submit ml-2" (click)="submitDar()">Submit</button>
+
+
+            </div>
+        </div>
+        <div class="kt-footer-edit">
+            <div class="kt-portlet__foot">
+                <div class="row pt-2 pb-2">
+                    <div class="col-lg-12">
+                        <div class="form-group mb-0">
+                            
+                                <button type="submit" class="btn w-110 btn-info ml-2" (click)="submitDar()">Submit</button>
+                            <button type="reset" class="btn w-110 btn-secondary  ml-2"
+                                (click)="starttime=null; endtime=null; workdes=''; actionCode=null; bothActTlSubm=false; _remarks=''; _inputAttachments=''; selectedFile=null; ">Reset</button>
+                                <button type="submit" class="btn w-110 btn-secondary  ml-2"
+                                (click)="closedarBar()">Cancel</button>
+                        </div>
                     </div>
                 </div>
 
@@ -6723,12 +6741,13 @@
             <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
             <div class="form-group">
               <button type="submit" *ngIf="proState==true"
-                          class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)" (click)="actionCompleted()">Submit</button>
+                          class="btn btn-info"  (click)="actionCompleted()">Submit</button>
+                          <!-- [disabled]="(_remarks=='')||(selectedFile==null)"  -->
 
-            <button type="submit" *ngIf="proState==false" class="btn btn-primary" [disabled]="(_remarks=='')"
+            <button type="submit" *ngIf="proState==false" class="btn btn-info" 
               (click)="actionCompleted()">Submit
             </button>
-
+            <!-- [disabled]="(_remarks=='')" -->
           </div>
 
 
@@ -6757,7 +6776,7 @@
                     </a>
                 </div>
             </div>
-            <div class="kt-portlet__body py-3">
+            <div class="kt-portlet__body scroll-auto">
                 <div class="content-subm" id="subtrnfer"
                     *ngIf="(projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type!='Routine Tasks' )">
                     <div class="">
@@ -6817,12 +6836,14 @@
 
                     <div class="form-group mb-1">
                         <button type="submit" *ngIf="projectInfo.Project_Type!='To do List' && isAction==false"
-                            class="btn btn-primary" [disabled]="(_remarks=='')||(selectedFile==null)"
+                            class="btn btn-info" 
                             (click)="updateMainProject()">Submit
                         </button>
+                        <!-- [disabled]="(_remarks=='')||(selectedFile==null)" -->
                         <button type="submit" *ngIf="projectInfo.Project_Type=='To do List' || isAction==true"
-                            class="btn btn-primary" [disabled]="(_remarks=='')" (click)="updateMainProject()">Submit
+                            class="btn btn-info"  (click)="updateMainProject()">Submit
                         </button>
+                        <!-- [disabled]="(_remarks=='')" -->
                     </div>
                 </div>
 
@@ -6896,9 +6917,9 @@
                                 </div>
 
                                 <div class="form-group mb-1">
-                                    <button type="submit" class="btn btn-primary"
-                                        [disabled]="(_remarks=='')||(selectedFile==null)"
+                                    <button type="submit" class="btn btn-info"
                                         (click)="achieveStandard()">Submit</button>
+                                        <!-- [disabled]="(_remarks=='')||(selectedFile==null)" -->
                                 </div>
                             </div>
                         </div>
@@ -6912,9 +6933,10 @@
                                     <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
                                 </div>
 
-                                <div class="form-group mb-1">
-                                    <button type="submit" class="btn btn-primary" [disabled]="(_remarks=='')"
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="btn btn-info" 
                                         (click)="notachieveStandard()">Submit</button>
+                                        <!-- [disabled]="(_remarks=='')" -->
                                 </div>
                             </div>
                         </div>
@@ -6922,6 +6944,15 @@
 
                 </div>
             </div>
+            <!-- <div class="kt-footer-edit">
+                <div class="kt-portlet__foot">
+                    <div class="row pt-2 pb-2">
+                        <div class="col-md-12">
+
+                        </div>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
     <!-- For Update Project sidebar  ends here-->
@@ -6962,7 +6993,7 @@
                 </div>
             </div>
 
-            <div class="kt-Attachament__body">
+            <div class="kt-Attachament__body kt-portlet__body scroll-auto">
 
                 <div class="card mt-4">
                     <div class="card-body p-3">
@@ -7004,17 +7035,7 @@
                                             </div>
                                             <li class="kt-nav__separator"></li>
                                         </ul>
-                                        <div class="col-lg-12 mt-3 p-0">
-                                            <div class="form-group text-end">
 
-                                                <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
-                                                    (click)="closePrjHoldSideBar()">Cancel</button>
-                                                <button type="submit" [disabled]="!Holddate || !hold_remarks"
-                                                    class="btn w-110 Bt-Submit ml-2"
-                                                    (click)="onProject_Hold(Pid,currentActionView===undefined?_MasterCode:projectActionInfo[currentActionView].Project_Code)">Submit</button>
-
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -7030,6 +7051,24 @@
 
 
 
+            </div>
+            <div class="kt-footer-edit">
+                <div class="kt-portlet__foot">
+                    <div class="row pt-2 pb-2">
+                        <div class="col-lg-12">
+                            <div class="form-group mb-0">
+                                <button type="submit" 
+                                class="btn btn-info w-110  ml-2"
+                                (click)="onProject_Hold(Pid,currentActionView===undefined?_MasterCode:projectActionInfo[currentActionView].Project_Code)">Submit</button>
+                                <!-- [disabled]="!Holddate || !hold_remarks" -->
+                                <button type="submit" class="btn w-110 btn-secondary  ml-2"
+                                    (click)="closePrjHoldSideBar()">Cancel</button>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -7132,13 +7171,14 @@
 
 
                                             <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-
-                                                    <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
+                                                <div class="form-group">
+                                                    <button type="submit" 
+                                                    class="btn btn-info w-110 ml-2"
+                                                    (click)="holdreleaseProject()">Submit</button>
+                                                    <!-- [disabled]="!hold_remarks" -->
+                                                    <button type="submit" class="btn w-110 btn-secondary  ml-2"
                                                         (click)="closePrjReleaseSideBar()">Cancel</button>
-                                                    <button type="submit" [disabled]="!hold_remarks"
-                                                        class="btn w-110 Bt-Submit ml-2"
-                                                        (click)="holdreleaseProject()">Submit</button>
+                                                    
                                                 </div>
                                             </div>
 
@@ -7183,13 +7223,14 @@
                                             </ul>
 
                                             <div class="col-lg-12 mt-3 p-0">
-                                                <div class="form-group text-end">
-
+                                                <div class="form-group">
+                                                    <button type="submit" 
+                                                    class="btn btn-info w-110 ml-2"
+                                                    (click)="updateReleaseDate()">Submit</button>
+                                                    <!-- [disabled]="!hold_remarks" -->
                                                     <button type="submit"
-                                                        class="btn w-110 btn-secondary Bt-Close ml-2">Cancel</button>
-                                                    <button type="submit" [disabled]="!hold_remarks"
-                                                        class="btn w-110 Bt-Submit ml-2"
-                                                        (click)="updateReleaseDate()">Submit</button>
+                                                        class="btn w-110 btn-secondary  ml-2">Cancel</button>
+                                                    
 
                                                 </div>
                                             </div>
@@ -7249,7 +7290,7 @@
                 </div>
             </div>
             <!-- <div class="spacer--body" *ngIf="editcancel==true"> -->
-            <div class="kt-portlet__body spacer--body">
+            <div class="kt-portlet__body spacer--body scroll-auto">
                 <div class="">
                     <ul class="kt-nav pb-0">
 
@@ -7266,22 +7307,23 @@
                         </div>
                         <li class="kt-nav__separator"></li>
                     </ul>
-
-
-                    <div class="col-lg-12 mt-3 p-0">
-                        <div class="form-group text-end">
-
-                            <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2"
-                                (click)="closePrjCancelSb()">Cancel</button>
-                            <button type="submit" [disabled]="!hold_remarks" class="btn w-110 Bt-Submit ml-2"
+                </div>
+            </div>
+            <div class="kt-footer-edit">
+                <div class="kt-portlet__foot">
+                    <div class="row pt-2 pb-2">
+                        <div class="col-lg-12">
+                            <div class="form-group mb-0">
+                                <button type="submit"  class="btn btn-info w-110 ml-2"
                                 (click)="updateProjectCancel()">Submit</button>
-
+                                <!-- [disabled]="!hold_remarks" -->
+                                <button type="submit" class="btn w-110 btn-secondary  ml-2"
+                                    (click)="closePrjCancelSb()">Cancel</button>
+                                
+    
+                            </div>
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
 
@@ -7342,7 +7384,7 @@
             <div class="kt-portlet__body flex-row" *ngIf="meetingsViewOn; else mysideInfobar_schd">
                 <div class="w-100">
 
-                    <div class="d-flex justify-content-between m-2 tabs-iconic">
+                    <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
                         <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                             <li class="nav-item">
                                 <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
@@ -7409,21 +7451,22 @@
 
                                                     </div>
 
-                                                    <div class="form-group  mb-0 text-end ml-3">
-
+                                                    <div class="form-group  mb-0 ml-3">
+                                                        <button
+                                                        type="submit" class="btn btn-info w-110 ml-2"
+                                                        (click)="getMeetingsInRange()">
+                                                        <div *ngIf="mLdng"
+                                                            class="spinner-border p-0 m-0 mr-1 dropdown-toggle"
+                                                            role="status" style="height:15px; width:15px;">
+                                                            <span class="visually-hidden"></span>
+                                                        </div>
+                                                        GET
+                                                    </button>
+                                                    <!-- [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" -->
                                                         <button type="submit"
-                                                            class="btn w-110 btn-secondary Bt-Close ml-2"
+                                                            class="btn w-110 btn-secondary  ml-2"
                                                             (click)="  mtgFromD=''; mtgUptoD='';  ">RESET</button>
-                                                        <button [disabled]="mLdng||mtgFromD===''||mtgUptoD===''"
-                                                            type="submit" class="btn w-110 Bt-Submit ml-2"
-                                                            (click)="getMeetingsInRange()">
-                                                            <div *ngIf="mLdng"
-                                                                class="spinner-border p-0 m-0 mr-1 dropdown-toggle"
-                                                                role="status" style="height:15px; width:15px;">
-                                                                <span class="visually-hidden"></span>
-                                                            </div>
-                                                            GET
-                                                        </button>
+                                                        
 
                                                     </div>
                                                 </div>
@@ -7434,7 +7477,18 @@
                                 </div>
                             </li>
                         </ul>
-                        <div class="dropdown no-after btm-btn ml-2 nav-item"
+                        <div class="d-flex align-items-center">
+                            <div class="recall-btn" title="Meeting Recall">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
+                                    <g id="surface1">
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 0.800781 12.5 C 2.199219 12.5 3.601562 12.5 4.898438 12.5 C 5 12.5 5 12.5 5 12.601562 C 5 13 5 13.398438 5 13.699219 C 5 13.800781 5 13.898438 4.800781 13.898438 C 4.300781 13.898438 3.800781 13.898438 3.199219 13.898438 C 3.199219 14 3.199219 14 3.300781 14.101562 C 4.601562 16.101562 6.398438 17.300781 8.699219 17.601562 C 12.5 18.199219 16 16 17.199219 12.300781 C 17.398438 11.601562 17.601562 10.898438 17.601562 10.101562 C 17.601562 10 17.601562 9.898438 17.800781 9.898438 C 18.199219 9.898438 18.5 9.898438 18.898438 9.898438 C 19 9.898438 19.101562 9.898438 19.101562 10.101562 C 19.101562 11.898438 18.601562 13.601562 17.5 15 C 16 17.101562 14 18.398438 11.5 18.898438 C 11.199219 19 10.800781 19 10.5 19 L 10.398438 19 C 10.300781 19 10.199219 19 10.101562 19 C 10 19 9.898438 19 9.699219 19 C 9.601562 19 9.5 19 9.300781 19 C 9 19 8.601562 19 8.300781 18.898438 C 6.699219 18.601562 5.199219 17.898438 3.898438 16.898438 C 3.199219 16.300781 2.800781 15.800781 2.101562 14.898438 C 2.101562 15.199219 2.101562 15.398438 2.101562 15.601562 C 2.101562 15.898438 2.101562 16.199219 2.101562 16.5 C 2.101562 16.601562 2.101562 16.699219 1.898438 16.699219 C 1.5 16.699219 1.101562 16.699219 0.699219 16.699219 L 0.601562 16.699219 C 0.800781 15.398438 0.800781 14 0.800781 12.5 Z M 0.800781 12.5 "/>
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 19 3.398438 L 19 7.5 C 19 7.601562 19 7.601562 18.898438 7.601562 L 14.898438 7.601562 C 14.800781 7.601562 14.800781 7.601562 14.800781 7.5 L 14.800781 6.300781 C 14.800781 6.199219 14.800781 6.199219 14.898438 6.199219 L 16.398438 6.199219 C 16.398438 6.101562 16.300781 6.101562 16.300781 6 C 15 4 13.199219 2.800781 10.898438 2.5 C 7.101562 1.800781 3.5 4.300781 2.5 8.101562 C 2.398438 8.699219 2.300781 9.300781 2.300781 9.898438 C 2.300781 10 2.300781 10 2.199219 10 L 0.898438 10 C 0.898438 10 0.898438 9.699219 0.898438 9.300781 C 0.898438 9 0.898438 8.699219 0.898438 8.5 C 1 8.300781 1 8.101562 1 8 C 1.699219 4.699219 4.601562 1.800781 8 1.101562 C 11.800781 0.398438 15.398438 1.898438 17.5 5.101562 C 17.5 5.101562 17.5 5.199219 17.601562 5.199219 L 17.601562 3.601562 C 17.601562 3.300781 17.601562 3.300781 17.898438 3.300781 L 18.898438 3.300781 C 19 3.300781 19 3.300781 19 3.398438 Z M 19 3.398438 "/>
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(99.607843%,99.607843%,99.607843%);fill-opacity:1;" d="M 0.800781 16.800781 C 1.199219 16.800781 1.601562 16.800781 2.101562 16.800781 C 2.199219 16.800781 2.300781 16.800781 2.300781 16.601562 C 2.300781 16.101562 6.5 18.800781 8.699219 19.101562 C 8.898438 19.101562 9.199219 19.199219 9.398438 19.199219 L 9.5 19.199219 C 6.699219 19.199219 3.800781 19.199219 1 19.199219 C 0.898438 19.199219 0.800781 19.199219 0.800781 19 C 0.800781 18.300781 0.800781 17.5 0.800781 16.800781 Z M 0.800781 16.800781 "/>
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 13.199219 7.699219 L 12 7.699219 C 11.898438 7.699219 11.898438 7.699219 11.800781 7.699219 L 11.800781 7.300781 C 11.699219 6.800781 11.300781 6.300781 10.800781 6.199219 L 9.699219 6.199219 C 9 6.300781 8.601562 6.800781 8.601562 7.5 L 8.601562 7.800781 L 7.101562 7.800781 C 6.5 7.898438 6.199219 8.398438 6.199219 9 L 6.199219 12.199219 C 6.199219 12.199219 6.199219 12.300781 6.199219 12.300781 C 6.199219 12.699219 6.398438 13.5 7.398438 13.699219 L 13 13.699219 C 13.699219 13.699219 14.199219 13.199219 14.199219 12.5 L 14.199219 8.800781 C 14.199219 8.199219 13.800781 7.800781 13.199219 7.699219 Z M 9.398438 7.300781 C 9.5 7.101562 9.601562 7 9.898438 7 L 10.699219 7 C 10.699219 7 10.898438 7 11 7.101562 C 11.199219 7.300781 11.101562 7.5 11.101562 7.699219 L 9.398438 7.699219 Z M 13.398438 10.800781 L 13.398438 12.5 C 13.398438 12.800781 13.300781 13 12.898438 13 L 7.5 13 C 7.199219 13 7 12.898438 7 12.5 L 7 10.800781 C 7 10.699219 7 10.699219 7 10.601562 L 8.199219 10.601562 L 8.199219 11.101562 C 8.199219 11.300781 8.398438 11.398438 8.601562 11.398438 C 8.800781 11.398438 9 11.300781 9 11.101562 L 9 10.601562 L 11.398438 10.601562 L 11.398438 11.101562 C 11.398438 11.300781 11.601562 11.398438 11.800781 11.398438 C 12 11.398438 12.199219 11.300781 12.199219 11.101562 L 12.199219 10.601562 L 13.398438 10.601562 C 13.398438 10.699219 13.398438 10.699219 13.398438 10.800781 Z M 13.398438 9.800781 L 7 9.800781 L 7 8.898438 C 7.101562 8.699219 7.199219 8.601562 7.5 8.601562 L 12.898438 8.601562 C 13.199219 8.601562 13.398438 8.699219 13.398438 9.101562 Z M 13.398438 9.800781 "/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="dropdown no-after btm-btn ml-2 nav-item create-btn"
                             *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
                             <a type="button" class="btn icon-btn icn-hvr fav-btn" data-toggle="dropdown"
                                 aria-expanded="false">
@@ -7453,6 +7507,7 @@
                                 <a class="dropdown-item" (click)="Task_type(1)">Task</a>
                                 <a class="dropdown-item" (click)="Task_type(2)">Event</a>
                             </div>
+                        </div>
                         </div>
                     </div>
 
@@ -7574,7 +7629,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div class="Organizer-name mt-5">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
@@ -8060,7 +8114,24 @@
                                                                     </svg></span> <span>Join In Teams</span>
                                                             </div> -->
                                                         </div>
-                                                        <div class="kt-met-dtl">
+                                                        <div class="d-flex align-items-center" style=" gap: 5px;flex-wrap: wrap;">
+                                                            <div class="meeting-b">
+                                                                Total Actions: 40
+                                                            </div>
+                                                            <div class="meeting-b">
+                                                                Total Projects: 1
+                                                            </div>
+                                                            <div class="meeting-b">
+                                                                Total Members: 40
+                                                            </div>
+                                                            <div class="meeting-b">
+                                                                Total Days: 365
+                                                            </div>
+                                                            <div class="meeting-b">
+                                                                Total Hours: 440
+                                                            </div>
+                                                        </div>
+                                                        <div class="kt-met-dtl d-none">
                                                           <div class="kt-met-label">
                                                             Participant:
                                                           </div>
@@ -8086,8 +8157,41 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="Organizer-name meeting-participant">
+                                                            <div class="kt-met-label">
+                                                                Participant:
+                                                            </div>
+                                                            <div  class="kt-support-view">
+                                                                <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
+                                                                  <div  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden" data-kt-initialized="1"
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                      class="symbol-label bg-warning text-inverse-warning fw-bold"
+                                                                      title="Shaik Mohammad Rafi (Team Lead/Creative Solutions)"> S </span>
+                                                                  </div>
+                                                                  <div  data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood" data-kt-initialized="1"
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                      class="symbol-label bg-primary text-inverse-primary fw-bold"
+                                                                      title="Md Waseem Akram (Dot Net Developer/Devbox Software Pvt Ltd)"> M </span>
+                                                                  </div>
+                                                                  <div  data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew" data-kt-initialized="1"
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                      class="symbol-label bg-danger text-inverse-danger fw-bold"
+                                                                      title="Aquib Shahbaz (Team Lead/Devbox Software Pvt Ltd)"> A </span>
+                                                                  </div>
+                                                                  <span class="dropdown">
+                                                                    <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                      class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+6</span>
+                                                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
+                                                                        <div class="kt-met-info" *ngFor="let item of lmmeeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
+                                                                      </div>
+                                                                    </a>
+                                                                  </span>
+                                                                </div>
+                                                              </div>
+                                                        </div>
 
-                                                        <div class="Organizer-name mt-5">
+                                                        <div class="Organizer-name">
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label">
                                                                     Attendees:
@@ -8328,8 +8432,8 @@
                                 <div class="col-lg-12 mt-5 p-0">
                                     <div class="form-group text-end">
 
-                                        <button type="submit" class="btn w-110 btn-secondary Bt-Close ml-2" (click)="  mtgFromD=''; mtgUptoD='';  "  >RESET</button>
-                                        <button  [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" type="submit" class="btn w-110 Bt-Submit ml-2"  (click)="getMeetingsInRange()">
+                                        <button type="submit" class="btn w-110 btn-secondary  ml-2" (click)="  mtgFromD=''; mtgUptoD='';  "  >RESET</button>
+                                        <button  [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" type="submit" class="btn btn-info w-110 ml-2"  (click)="getMeetingsInRange()">
                                               <div *ngIf="mLdng"   class="spinner-border p-0 m-0 mr-1" role="status" style="height:15px; width:15px;">
                                                 <span class="visually-hidden"></span>
                                               </div>
@@ -9391,9 +9495,10 @@
 
                     <div class="kt-portlet__foot py-3">
                         <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
-                            <button type="submit" class="btn w-110 Bt-Submit ml-2"
-                                [disabled]="!Endtms ||!Startts || !Title_Name "
+                            <button type="submit" class="btn btn-info w-110 ml-2"
                                 (click)="OnSubmitSchedule()">Submit</button>
+                                <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
+                                
                         </div>
                     </div>
 
@@ -9923,17 +10028,18 @@
             <div class="kt-portlet__foot">
                 <div class="row pt-2 pb-2">
                     <div class="col-lg-12">
-                        <div class="form-group text-end mb-0">
-                            <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
-                                (click)="closeInfo()">Cancel</button>
-                            <button type="submit" class="btn w-110 Bt-Submit ml-2"
+                        <div class="form-group mb-0">
+                            
+                            <button type="submit" class="btn btn-info w-110 ml-2"
                                 (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval')">
                                 Update</button>
                             <ng-container *ngIf="(projectInfo&&projectInfo.Status==='Under Approval') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
-                                <button type="submit" class="btn w-110 Bt-Submit ml-2"
+                                <button type="submit" class="btn btn-info w-110 ml-2"
                                     (click)="onAction_updateProject(1)">
                                     Update & Approve</button>
                             </ng-container>
+                            <button type="Cancel" class="btn w-110 btn-secondary  ml-2"
+                                (click)="closeInfo()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -10338,10 +10444,12 @@
             <div class="kt-portlet__foot">
             <div class="row pt-2 pb-2">
                 <div class="col-lg-12">
-                    <div class="form-group text-end mb-0">
-                        <button type="Cancel" class="btn w-110 btn-secondary Bt-Close ml-2"
-                            (click)="closeInfo()">Cancel</button>
-                        <button  [disabled]="
+                    <div class="form-group mb-0">
+                        
+                        <button  
+                         type="submit" class="btn btn-info w-110 ml-2" (click)="onAction_update()">
+                            Update</button>
+                            <!-- [disabled]="
                                     !(
                                         ActionName&&ActionDescription&&
                                         ActionOwner&&ActionResponsible&&
@@ -10349,9 +10457,9 @@
                                         ActionstartDate&&ActionendDate&&
                                         editAllocatedhours&&editAllocatedhours<=ActionmaxAllocation
                                     )
-                                    "
-                         type="submit" class="btn w-110 Bt-Submit ml-2" (click)="onAction_update()">
-                            Update</button>
+                                    " -->
+                            <button type="Cancel" class="btn w-110 btn-secondary  ml-2"
+                            (click)="closeInfo()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -10533,14 +10641,16 @@
                                                     <li class="kt-nav__separator"></li>
                                                 </ul>
                                                 <div class="col-lg-12 mt-3 p-0">
-                                                    <div class="form-group text-end">
-
+                                                    <div class="form-group">
+                                                        <button type="submit" 
+                                                        class="btn btn-info w-110 ml-2"
+                                                        (click)="releasenewProject()">Submit</button>
+                                                        <!-- [disabled]="!hold_remarks" -->
+                                                        
                                                         <button type="submit"
-                                                            class="btn w-110 btn-secondary Bt-Close ml-2"
+                                                            class="btn w-110 btn-secondary  ml-2"
                                                             (click)="closePrjHoldSideBar()">Cancel</button>
-                                                        <button type="submit" [disabled]="!hold_remarks"
-                                                            class="btn w-110 Bt-Submit ml-2"
-                                                            (click)="releasenewProject()">Submit</button>
+                                                        
 
                                                     </div>
                                                 </div>
