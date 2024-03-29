@@ -194,7 +194,7 @@ export class ProjectsAddComponent implements OnInit {
     }
   }
   checkboxclick(item, Pcode) {
-
+debugger
     if (item == true) {
       for (let value of Object.values(this._ProjectDataList)) {
         if (value['checked'] == true && value['Project_Code'] == Pcode) {

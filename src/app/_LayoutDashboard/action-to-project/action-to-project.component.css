@@ -19,3 +19,11 @@ input[type=number] {
   height: 15px;
 
 }
+.selected-file {
+  margin-left: 10px; }
+
+.delete-icon {
+  cursor: pointer;
+  margin-left: 15px;
+
+}

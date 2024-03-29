@@ -920,7 +920,7 @@ ul.attendees-note-userlist {
     padding: 0px;
 }
 
-.attendees-note-user {
+/* .attendees-note-user {
     display: flex;
     align-items: flex-start;
     justify-content: left;
@@ -929,7 +929,16 @@ ul.attendees-note-userlist {
     padding: 5px 0px;
     margin-bottom: 10px;
     gap: 10px;
+} */
+
+.attendees-note-user {
+   
+    border-radius: 5px;
+    padding: 5px 0px;
+    margin-bottom: 10px;
+   
 }
+
 
 .attendees-note-user .user-info {
     display: flex;
@@ -2965,7 +2974,39 @@ span.admin-check-svg {
 .checkbox.checkbox-outline>input:checked~span:after {
     border-color: #6993FF;
 }
-
+.task-button {
+    display: none;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .ast-kt-dw {
+    position: relative;
+    top: 4px;
+  }
+  .task-delete {
+    margin-left: 8px;
+  }
+  .task-delete svg{
+    color: #dc4771;
+}
+.task-btns {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  .task-btns svg {
+    border-radius: 4px;
+    color: #737373;
+    display: inline-block;
+    width: 20px;
+    height: 24px;
+    max-width: 24px;
+    vertical-align: middle;
+  }
 .flipped {
     direction: rtl;
 }
@@ -3008,6 +3049,34 @@ span.admin-check-svg {
     margin-left: 5px;
     margin-right: 5px;
 }
+.kt-chat__messages{
+    overflow: auto;
+}
+.kt-chat__messages::-webkit-scrollbar{
+    width: 5px;
+}
+.kt-chat__messages::-webkit-scrollbar-track{
+    background-color: #e9e9e9;
+}
+.kt-chat__messages::-webkit-scrollbar-thumb{
+    background-color: #ccc;
+}
+
+span.side-icns.kt-org-ic {
+    width: 45px;
+}
+.svg-icn{
+    fill: #5f6368;
+}
+.center-data svg.svg-icn {
+    width: 30px;
+    height: 30px;
+}
+
+
+
+
+
 .btn-save{
     color: #fff;
     background-color: #5867dd !important;

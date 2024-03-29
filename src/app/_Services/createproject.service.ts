@@ -51,7 +51,7 @@ export class CreateprojectService {
 
 
   GetCPProjectCost(prjDTO:ProjectDetailsDTO){ 
-      return this.http.post('http://217.145.247.42:81/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',prjDTO);
+      return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',prjDTO);
   }
 
 

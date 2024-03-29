@@ -10,9 +10,9 @@
             <label>Project Type : </label>
             <!-- <span class="text-danger">*</span> -->
             <mat-select [(ngModel)]="selectedProjectType" placeholder="Select project type" class="form-control">
-                <mat-option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo">
+                <mat-option *ngFor="let item of ProjectTypelist" [value]="item.Exec_BlockNo"  (click)="todo()">
                     {{item.Exec_BlockName}}
-                </mat-option>   
+                </mat-option>
             </mat-select>
         </div>
         <div class="form-group" [hidden]="selectedProjectType!='003' && selectedProjectType!='008' ">
@@ -31,13 +31,18 @@
             <label> Task/Project Name : </label>
             <!-- <span class="text-danger">*</span> -->
             <input type="text" class="form-control" placeholder="Enter task name" aria-describedby="basic-addon1"
-                [(ngModel)]="_taskName" >
+                [(ngModel)]="_taskName" (ngModelChange)="isPrjNameValid=isValidString(_taskName,3)" >
+                <span style="color:rgb(217, 48, 37)" class=""
+                *ngIf="!isPrjNameValid" >please enter atleast 3
+                  words</span>
         </div>
         <div class="form-group">
             <label>Description : </label>
             <!-- <span class="text-danger">*</span> -->
-            <textarea class="form-control" aria-describedby="basic-addon1" placeholder="Enter task description" [(ngModel)]="_description"
+            <textarea class="form-control" aria-describedby="basic-addon1" placeholder="Enter task description" [(ngModel)]="_description" (ngModelChange)="isPrjDesValid=isValidString(_description,5)"
                 style="height: 100px"></textarea>
+                <span style="color:rgb(217, 48, 37)"*ngIf="!isPrjDesValid">please enter
+                  atleast 5 words.  </span>
         </div>
         <!-- <div class="form-group">
             <label>Assign To : <strong></strong> <span class="text-danger">*</span> </label>
@@ -65,26 +70,37 @@
             </ng-select>
         </div>
 
-        <div class="d-flex gap-1">
+<ng-container *ngIf="selectedProjectType !=='003' && selectedProjectType!=='008'" >
+        <div class="d-flex gap-1 ">
             <div class="form-group flex-1">
                 <label>Start Date : </label>
                 <!-- <span class="text-danger">*</span> -->
                 <div class="input-group" (click)="startdatechecker()">
-                    <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" [(ngModel)]="_StartDate"
+                    <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" (dateChange)="setMaxDate()" [(ngModel)]="_StartDate"
                         placeholder="Start date" class="form-control">
                     <div class="input-group-text p-0">
-                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker-toggle matSuffix  (click)="startdatechecker()" [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </div>
                 </div>
+                <div *ngIf="selectedProjectType=='011'" style="color:grey">To do List not more than 3 Days </div>
                 <span *ngIf ="noStartDate==true" style="color:red">Start Date required!</span>
             </div>
+
+
+
+
+
+
+
+
+
 
             <div class="form-group flex-1" *ngIf="_StartDate!=null">
                 <label>End Date :</label>
                 <!-- <span class="text-danger">*</span> -->
                 <div class="input-group" (click)="datesCheck()">
-                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
+                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjectType==='011'?maxDate:''" [(ngModel)]="_EndDate"
                         placeholder="End date" class="form-control">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -98,7 +114,7 @@
                 <!-- <span class="text-danger">*</span> -->
                 <div class="input-group" (click)="enddateChecker()">
                     <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
-                        (click)="picker2.open()" 
+                        (click)="picker2.open()"
                         placeholder="End Date" class="form-control">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -107,22 +123,25 @@
                 </div>
             </div>
         </div>
+      </ng-container>
 
-        
+
         <div class="form-group">
             <label for="exampleFormControlFile1">Remarks</label>
-            <textarea class="form-control" aria-label="With textarea" placeholder="Enter task rearks if any" [(ngModel)]="_remarks"
+            <textarea class="form-control" aria-label="With textarea" placeholder="Enter task remarks if any" [(ngModel)]="_remarks"
                 style="height: 111px;"></textarea>
         </div>
+
+
         <div class="form-group">
-            <div class="custom-file pl-1">
-                <label for="exampleFormControlFile1">Reference</label>
-                <!-- <input type="file" class="form-control-file" id="uploadFile" accept="application/pdf"
-                    [(ngModel)]="_inputAttachments"> -->
-                <input type="file" class="form-control-file" id="uploadFile" value="hello" 
-                    (change)="onFileChangeATP($event)">
-            </div>
-        </div>
+          <div class="custom-file pl-1">
+              <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose File</button>
+              <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+              <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+              <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+          </div>
+      </div>
+
 
         <div class="form-group mb-1">
             <button type="submit" class="btn btn-info"

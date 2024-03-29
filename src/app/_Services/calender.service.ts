@@ -49,7 +49,7 @@ export class CalenderService {
   }
   NewClickEventJSON(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-  
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);
   }
   NewGetSearchResults(obj:CalenderDTO){
@@ -68,6 +68,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.User_list = obj.User_list.toString();
+    // this.obj_CalenderDTO.flagid=obj.flagid;
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertuser_meetingreportco", this.obj_CalenderDTO);
   }
 
@@ -87,8 +88,7 @@ export class CalenderService {
   NewGet_previousMeetingNotes(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-    // this.obj_CalenderDTO.AgendaId=null;
-    debugger
+    
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_previousMeetingNotes", this.obj_CalenderDTO);
   }
 
@@ -146,22 +146,33 @@ export class CalenderService {
 
 
   NewAddAgendas(obj:CalenderDTO){
+  
     this.obj_CalenderDTO.json = obj.json;
     this.obj_CalenderDTO.flagid=obj.flagid;
     this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+    this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID
+ 
     return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
   }
 
   NewEditsAgendas(obj:CalenderDTO){
+   
     this.obj_CalenderDTO.json = obj.json;
     this.obj_CalenderDTO.flagid=obj.flagid;
+    this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+    this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID
+   
     return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
   }
 
 
   NewDeleteAgendas(obj:CalenderDTO){
+   
     this.obj_CalenderDTO.flagid = obj.flagid;
     this.obj_CalenderDTO.json = obj.json;
+    this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+    this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID
+ 
     return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
   }
 
@@ -299,7 +310,7 @@ NewGetMeetingdata_notes(obj: CalenderDTO){
 }
 
 
-GetAgendaMeetingnotes_data(obj: CalenderDTO){
+  GetAgendaMeetingnotes_data(obj: CalenderDTO){
   
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
@@ -313,16 +324,27 @@ NewGetMeetingnote_comp(obj: CalenderDTO){
   
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_dataco", this.obj_CalenderDTO);
 
 }
 
 
+
+NewGetAttendeesMeetingnotes(obj: CalenderDTO){
+  this.obj_CalenderDTO.AgendaId=obj.AgendaId
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewGetAttendeesMeetingnotes", this.obj_CalenderDTO);
+
+}
+
 NewinsertDMS_meetingreport(obj: CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Dms=obj.Dms;
-  console.log(this.obj_CalenderDTO,'api')
+  this.obj_CalenderDTO.flagid=obj.flagid;
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewLinkDMSInMeetingDetails", this.obj_CalenderDTO);
 }
 
@@ -332,6 +354,7 @@ Newinsertportfolio_meetingreport(obj: CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Portfolio=obj.Portfolio;
+  this.obj_CalenderDTO.flagid=obj.flagid ;
   return this.http.post(this.rootUrl + "CalenderAPI/NewLinkPortfolioInMeetingDetails", this.obj_CalenderDTO);
 }
 
@@ -342,7 +365,7 @@ Newinsertproject_meetingreport(obj: CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Project_Code=obj.Project_Code;
-
+  this.obj_CalenderDTO.flagid=obj.flagid;
   return this.http.post(this.rootUrl + "CalenderAPI/NewLinkProjectInMeetingDetails", this.obj_CalenderDTO);
 }
 
@@ -350,6 +373,9 @@ DeletePortfoliosOfMeeting(obj: CalenderDTO) {
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Portfolio=obj.Portfolio;
+  this.obj_CalenderDTO.Dms=null;
+  this.obj_CalenderDTO.Project_Code=null;
+  this.obj_CalenderDTO.flagid=obj.flagid;
   return this.http.post(this.rootUrl + "CalenderAPI/NewUnLinkInMeetingDetails", this.obj_CalenderDTO)
 }
 
@@ -357,6 +383,10 @@ DeleteDMSOfMeeting(obj: CalenderDTO) {
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Dms=obj.Dms;
+  this.obj_CalenderDTO.flagid=obj.flagid;
+  this.obj_CalenderDTO.Project_Code=null;
+  this.obj_CalenderDTO.Portfolio=null;
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewUnLinkInMeetingDetails", this.obj_CalenderDTO)
 }
 
@@ -366,6 +396,9 @@ DeleteProjectsOfMeeting(obj: CalenderDTO) {
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Project_Code=obj.Project_Code;
+  this.obj_CalenderDTO.flagid=obj.flagid;
+  this.obj_CalenderDTO.Dms=null;
+  this.obj_CalenderDTO.Portfolio=null;
   return this.http.post(this.rootUrl + "CalenderAPI/NewUnLinkInMeetingDetails", this.obj_CalenderDTO)
 }
 }

@@ -1013,6 +1013,7 @@ span.time-slt-md {
     font-size: 14px;
     padding: 0.5rem 1.2rem;
     color: #222;
+    cursor:pointer;
 }
 
 .drop-cus a.dropdown-item:hover {
@@ -3319,3 +3320,11 @@ mat-icon.mat-icon.notranslate.curser-pointer {
 .dropdown-panel {
     position: static !important;
 }
+  
+  
+
+  #TaskEvent-Sidebar{
+    scroll-behavior: smooth;
+  }
+
+ 
