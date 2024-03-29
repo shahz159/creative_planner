@@ -110,7 +110,62 @@
                                             </div>                                          
                                             <span class="kt-meeting-title-name">Meeting Metrics </span>
 
-                                             | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span>
+                                             <!-- | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span> -->
+
+
+
+
+
+
+
+
+                                             <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
+                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                             {{item.Schedule_Type}}  
+                                         </span>
+                                         <span
+                                             *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
+                                             style="height: 18px;"
+                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
+                                             {{item.Recurrence}}
+                                         </span>
+                                         <span *ngIf="Meeting_status==true" style="height: 18px;"
+                                             class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                             {{item.Schedule_Type}}
+                                         </span>
+                                         <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true"
+                                             style="height: 18px;"
+                                             class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1">
+                                             {{item.Recurrence}}
+                                         </span>
+                                         <span *ngIf="Status1 =='Rejected'" style="height: 18px;"
+                                             class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                             {{item.Schedule_Type}}
+                                         </span>
+                                         <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'"
+                                             style="height: 18px;"
+                                             class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1">
+                                             {{item.Recurrence}}
+                                         </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         </div>
                                         
                                     </div>
@@ -261,7 +316,7 @@
                                                         <!-- <div class="dark-title">21 Thu, January 2024</div> -->
                                                         <!-- <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}} -->
                                                
-                                                            <div class="dark-title">{{item.StartDate | date:'d EEE,MMMM YYYY'}}
+                                                            <div class="dark-title">{{item.Schedule_date | date:'d EEE,MMMM YYYY'}}
                                                           
                                                         </div>
                                                        
@@ -1631,10 +1686,10 @@
                 </a>
             </div>
         </div>
-        <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll">
+        <div class="attendees_note_vh kt-portlet__body kt-portlet__body_scroll" *ngFor="let record of Meeting_noteslist">
             <div class="kt-chat__messages">
                 <ul class="attendees-note-userlist">
-                    <li class="attendees-note-user"  *ngFor="let item of Employeeslist">
+                    <li class="attendees-note-user"  *ngFor="let item of record.Employees">
                         <div class="user-info">
                            
                                 <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
@@ -1760,27 +1815,52 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
-                    (click)="AddDMS_meetingreport()">Link</button>
+    
+                    <ng-container *ngFor="let item of EventScheduledjson">
+            
+                     <ng-container *ngIf="item.Recurrence==='Do not repeat'">                      
+                     <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
+                      (click)="AddDMS_meetingreport()">Link</button>
+                     </ng-container>
+                     <ng-container *ngIf="selectedEmploy_DMS!=''">
+                     <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                     <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"  data-target="#confirmpopup" data-toggle="modal" 
+                     >Link</button>
+                    </ng-container>
+                    </ng-container>             
+                       <ng-container *ngIf="(selectedEmploy_DMS=='' && item.Recurrence!=='Do not repeat')">      
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text     drp-dwn-submitbtn mb-3"
+                         (click)="AddDMS_meetingreport()">Link</button>
+                       </ng-container>
+                     </ng-container>
             </div>
         </li>
         <li class="kt-nav__item px-4">
-            <div id="DemoList-table" *ngIf="_MemosSubjectList">
-                <ng-container *ngIf="_MemosSubjectList[0].Subject;else noDMSFound">
+            <div id="DemoList-table">
+                <ng-container *ngIf="_MemosSubjectList" >
                 <div class="demo" *ngFor="let memo of _MemosSubjectList">
                     <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
-                    <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
+                    <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
+
+                    <ng-container *ngFor="let item of EventScheduledjson">         
+                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                            <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>                   
+                     </ng-container>                         
+                     <ng-container *ngIf="item.Recurrence!=='Do not repeat'">              
+                      <i class="fas fa-trash-alt p-2" (click)="DmsDeleteEvent(memo.MailId)"   data-target="#confirmpopup" data-toggle="modal" ></i> 
+                       </ng-container>                 
+                     </ng-container>                  
                 </div>
             </ng-container>
             </div>
-            <ng-template #noDMSFound class="d-none">
+            <!-- <ng-template #noDMSFound class="d-none">
                 <div class="no-DMS-found">
                     <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
                     <div class="bnk-txt mt-2 d-flex justify-content-center">
                         <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
                     </div>
                 </div>
-            </ng-template>
+            </ng-template> -->
         </li>
         <li class="kt-nav__foot"></li>
     </ul>
@@ -1859,7 +1939,25 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
+
+         <ng-container *ngFor="let item of EventScheduledjson">
+            
+            <ng-container *ngIf="item.Recurrence==='Do not repeat'">
             <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
+         </ng-container>
+
+         <ng-container *ngIf="ngDropdwonPort!=''">
+         <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+            <button class="btn btn-label-primary btn-upper mb-4" data-target="#confirmpopup" data-toggle="modal" >Link</button>
+           </ng-container>
+        </ng-container>
+
+           <ng-container *ngIf="(ngDropdwonPort=='' && item.Recurrence!=='Do not repeat')">      
+               <button class="btn btn-label-primary btn-upper mb-4"  (click)="Addportfolios_meetingreport()">Link</button>             
+           </ng-container>
+
+         </ng-container>
+   
         </div>
     </ul>
 
@@ -1892,10 +1990,27 @@
                                 <small>{{data.Created_DT |date:'medium'}}</small>
                             </div>
                             <div class="delete-btn">
-                                <i class="fas fa-edit invisible"></i>
+                                <!-- <i class="fas fa-edit invisible"></i>
                                 <a (click)="DeletePortfolios(data.numberval)">
                                     <i class="fas fa-trash-alt"></i>
-                                </a>
+                                </a> -->
+                                <ng-container *ngFor="let item of EventScheduledjson">         
+                                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                    
+                                    <i class="fas fa-edit invisible"></i>
+                                    <a (click)="DeletePortfolios(data.numberval)">
+                                    <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                 </ng-container>                         
+                                 <ng-container *ngIf="item.Recurrence!=='Do not repeat'">              
+        
+                                  <i class="fas fa-edit invisible"></i>
+                                  <a (click)="portFolioDeletedEvent(data.numberval)" data-target="#confirmpopup" data-toggle="modal">
+                                  <i class="fas fa-trash-alt"></i>
+                                  </a>
+                                  
+                                   </ng-container>                 
+                                 </ng-container> 
                             </div>
                         </div>
                     </div>
@@ -1980,9 +2095,95 @@
                 </div>
                 <div>
                     <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
+
+                    <!-- <ng-container *ngFor="let item of EventScheduledjson">
+            
+                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                        <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
+                     </ng-container>
+            
+                     <ng-container *ngIf="selectedEmployees!=''">
+                     <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                        <button class="meeting-button mb-2" data-target="#confirmpopup" data-toggle="modal">invite</button>
+                       </ng-container>
+                    </ng-container>
+                       <ng-container *ngIf="(selectedEmployees=='' && item.Recurrence!=='Do not repeat')">        
+                        <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
+                       </ng-container>
+            
+                     </ng-container>                   -->
                 </div>
             </div>
             <div class="kt-chat__messages">
+
+                <div class="w-100 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="side-icns kt-org-ic" aria-hidden="true">
+                            <svg width="20" height="20" class="svg-icn"
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                                y="0px" viewBox="0 0 128 160"
+                                style="enable-background:new 0 0 128 128;" xml:space="preserve">
+                                <path
+                                    d="M0.0106888,117.5239029c0,0,0,2.3451996,0,5.2378006c0,2.8930969-0.4179,5.2382965,3.9990997,5.2382965h31.9960976  c4.4179001,0,3.9863014-2.3457031,3.9804001-5.2388c-0.0057983-2.6191025-0.009697-5.2372971-0.009697-5.2372971  c0-7.2632065-5.9395027-12.9751053-13.0547009-14.858902C29.6972885,100.5653992,31.5,97.2465973,31.5,93.5009995  c0-6.3506012-5.1543121-11.5019989-11.5-11.5019989c-6.3477116,0-11.5,5.1513977-11.5,11.5019989  c0,3.7435989,1.8007889,7.0615005,4.5741882,9.1611023C5.9550886,104.5425034,0.0106888,110.2563019,0.0106888,117.5239029z   M12.5,93.5009995c0-4.1366959,3.3642883-7.5019989,7.5-7.5019989c4.1356888,0,7.5,3.365303,7.5,7.5019989  c0,4.1343002-3.3643112,7.4980011-7.5,7.4980011C15.8642883,100.9990005,12.5,97.6352997,12.5,93.5009995z M18.1034889,106  h3.7735119c6.6688881,0,14.0995884,4.7329025,14.0995884,11.5298004l0.009697,5.2397003  c0.0010033,0.2554016,0.0039024,0.5074005,0.0078011,0.7538986c0.0019989,0.1484985,0.0039139,0.3125,0.0049133,0.4766006H4.0097885  c-0.0029998,0-0.0058999,0-0.0087886,0c0-0.171402,0.0018888-0.3432999,0.0038886-0.4980011  c0.0029001-0.2421951,0.0058002-0.489296,0.0058002-0.7402954v-5.2378006C4.0106888,110.7329025,11.4374886,106,18.1034889,106z" />
+                                <path
+                                    d="M127.9862823,122.7612c-0.0057983-2.6191025-0.009697-5.2372971-0.009697-5.2372971  c0-7.2632065-5.9394989-12.9751053-13.0547028-14.858902C117.6972885,100.5653992,119.5,97.2465973,119.5,93.5009995  c0-6.3506012-5.1543121-11.5019989-11.5-11.5019989c-6.3477173,0-11.5,5.1513977-11.5,11.5019989  c0,3.7435989,1.8007889,7.0615005,4.5741882,9.1611023c-7.1191025,1.8804016-13.0634995,7.5942001-13.0634995,14.8618011  c0,0,0,2.3451996,0,5.2378006c0,2.8930969-0.4179001,5.2382965,3.9990997,5.2382965h31.9960938  C128.4237823,128,127.9921875,125.6542969,127.9862823,122.7612z M100.5,93.5009995c0-4.1366959,3.3642883-7.5019989,7.5-7.5019989  c4.1356888,0,7.5,3.365303,7.5,7.5019989c0,4.1343002-3.3643112,7.4980011-7.5,7.4980011  C103.8642883,100.9990005,100.5,97.6352997,100.5,93.5009995z M92.0097885,124c-0.0029984,0-0.0059052,0-0.0087891,0  c0-0.171402,0.0018845-0.3432999,0.0038834-0.4980011c0.0029068-0.2421951,0.005806-0.489296,0.005806-0.7402954v-5.2378006  c0-6.7910004,7.426796-11.5239029,14.0927963-11.5239029h3.7735138c6.6688843,0,14.0995865,4.7329025,14.0995865,11.5298004  l0.009697,5.2397003c0.0010071,0.2554016,0.0039063,0.5074005,0.0078049,0.7538986  C123.9960861,123.6718979,123.9980011,123.8358994,124,124H92.0097885z" />
+                                <path
+                                    d="M44.0106888,117.5239029c0,0,0,2.3451996,0,5.2378006c0,2.8930969-0.4179001,5.2382965,3.9990997,5.2382965h31.9961014  c4.4179001,0,3.9862976-2.3457031,3.9804001-5.2388c-0.005806-2.6191025-0.0097046-5.2372971-0.0097046-5.2372971  c0-7.2632065-5.9394989-12.9751053-13.0546951-14.858902C73.6972885,100.5653992,75.5,97.2465973,75.5,93.5009995  c0-6.3506012-5.1543121-11.5019989-11.5-11.5019989c-6.3477135,0-11.5,5.1513977-11.5,11.5019989  c0,3.7435989,1.8007889,7.0615005,4.5741882,9.1611023C49.9550858,104.5425034,44.0106888,110.2563019,44.0106888,117.5239029z   M56.5,93.5009995c0-4.1366959,3.3642883-7.5019989,7.5-7.5019989c4.1356888,0,7.5,3.365303,7.5,7.5019989  c0,4.1343002-3.3643112,7.4980011-7.5,7.4980011C59.8642883,100.9990005,56.5,97.6352997,56.5,93.5009995z M62.1034889,106h3.77351  c6.6688843,0,14.0995865,4.7329025,14.0995865,11.5298004l0.0097046,5.2397003  c0.0009995,0.2554016,0.0038986,0.5074005,0.0077972,0.7538986C79.9960861,123.6718979,79.9980011,123.8358994,80,124H48.0097885  c-0.0030022,0-0.0059013,0-0.0087891,0c0-0.171402,0.0018883-0.3432999,0.0038872-0.4980011  c0.0028992-0.2421951,0.0058022-0.489296,0.0058022-0.7402954v-5.2378006C48.0106888,110.7329025,55.4374886,106,62.1034889,106z" />
+                                <path
+                                    d="M36.2597885,42.8852997c-8.5410004,6.1063995-14.9854012,14.9906998-17.9169998,25.4798965l-0.4941998-1.1966934  c-0.4218006-1.0201035-1.5897999-1.5064011-2.6123009-1.0849991c-1.0204992,0.4218979-1.5067997,1.5912933-1.0848999,2.6122971  l3.3320007,8.0679016c0.2714996,0.6576996,0.8729992,1.1215973,1.5781002,1.2176971  C19.1513882,77.9941025,19.2421875,78,19.3320007,78c0.6103878,0,1.1943874-0.2798004,1.5761871-0.7686005l5.3866997-6.8919983  c0.6797009-0.8702011,0.5254002-2.1269989-0.3446999-2.8071976c-0.8690987-0.680603-2.1259995-0.5263062-2.8076,0.3442993  l-0.8114986,1.0380936C24.7606888,60.6348,29.6063881,53.4813995,36,48.142601c0,2.8964996,0,7.8368988,0,8.9540977  C36,58.7001991,37.7938881,60,40.0067863,60H62v7.9462967l-0.2324142-0.4389954  c-0.5155869-0.9756012-1.7275848-1.3476028-2.7030983-0.8320007c-0.9766006,0.5166016-1.3487015,1.7269974-0.8320999,2.7031021  l4,7.5570984C62.5790863,77.5903015,63.2587891,78,64,78c0.741188,0,1.4208908-0.4096985,1.7675858-1.0644989l4-7.5570984  c0.5166016-0.9761047,0.1445007-2.1865005-0.8320999-2.7031021c-0.9754868-0.5170975-2.1864853-0.1436005-2.7031021,0.8320007  L66,67.9462967V60h21.9960861C90.2089996,60,92.0028839,58.7001991,92,57.0971985  c-0.0019989-1.1576996-0.0049133-6.0356979-0.0059128-8.9228973c6.3593979,5.320797,11.1856003,12.4370003,13.6182022,20.6684952  l-0.7549057-0.9662933c-0.6805954-0.8706055-1.9393845-1.0240021-2.8075943-0.3442993  c-0.8701019,0.6801987-1.0244064,1.9369965-0.3447037,2.8071976l5.3867035,6.8919983  C107.4745865,77.7201996,108.0575867,78,108.6679993,78c0.0897903,0,0.1805878-0.0058975,0.2704849-0.0186005  c0.705101-0.0960999,1.3066025-0.5599976,1.5781021-1.2176971l3.3320007-8.0679016  c0.4218979-1.0210037-0.0643997-2.1903992-1.0848999-2.6122971c-1.0243988-0.421402-2.1913986,0.0648956-2.6123047,1.0849991  l-0.5156937,1.2479935c-2.919899-10.490696-9.3603058-19.3827972-17.8973999-25.4994965  c-1.1768036-7.0639992-6.3144989-12.8144989-12.9208984-16.0522995c-0.905304,1.1280003-1.9365005,2.1455994-3.0713043,3.0415993  c6.7539139,2.849102,12.2471008,8.6875,12.2471008,16.099102c0,0,0.0028992,6.982399,0.0058136,9.9945984  c-0.0009995,0-0.001915,0-0.0029144,0H82v-6c0-1.1044998-0.8955154-2-2-2c-1.1045151,0-2,0.8955002-2,2v6H50v-6  c0-1.1044998-0.8955116-2-2-2c-1.1045113,0-2,0.8955002-2,2v6h-5.9932137C40.0048866,56,40.0019989,56,40,56v-9.9961014  C40,38.5898018,45.4950867,32.75,52.25,29.9022999c-1.1348114-0.8964005-2.1660004-1.9139996-3.0703125-3.0419006  C42.5820007,30.0923004,37.4472885,35.8325005,36.2597885,42.8852997z" />
+                                <path
+                                    d="M79,15.0029001C79,6.7188001,72.2763901,0,64.0009995,0C55.7196884,0,49,6.7188001,49,15.0029001  C49,21.8701,53.6298866,27.6508999,59.9335861,29.4263l-2.8280983,12.7128983  c-0.3203011,1.1933022,0.1240005,3.4506035,1.5195122,4.4643021l2.9638863,2.6156998l0.2793007,0.2066002  c0.6230011,0.3812981,1.3876991,0.5718002,2.1512985,0.5718002c0.7637024,0,1.5274048-0.1905022,2.1514053-0.5713005  l3.2519989-2.8282013c1.2910004-0.9554977,1.839798-3.1317978,1.4501114-4.4735985l-3.284111-12.5757008  C74.1317902,27.9370003,79,22.0419998,79,15.0029001z M66.9062881,43.4838982l-2.8535995,2.517601  c-0.0214005,0.0018997-0.0419998,0.0039024-0.0595016,0.0053024l-2.8740997-2.5371017  c-0.0536995-0.1195984-0.1054001-0.3125-0.1170883-0.4350014l2.7490005-12.3495979l3.2470016,12.4330978  C66.9882889,43.2230988,66.9481888,43.3799019,66.9062881,43.4838982z M64.0009995,26C57.9345856,26,53,21.0669003,53,15.0029001  C53,8.9359999,57.9345856,4,64.0009995,4C70.0653839,4,75,8.9359999,75,15.0029001C75,21.0669003,70.0653839,26,64.0009995,26z" />
+                            </svg>
+                        </span>
+                        <div class="kt-org-v" name="user">
+                            <span>organizer</span>
+                            <p>{{Createdby}}</p>
+                        </div>
+                    </div>          
+                    <div class="admin-check curser-pointer"
+                        *ngIf="Isadmin==true && status=='Owner'">
+                        <span aria-hidden="true" class="admin-check-svg">
+                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                <path fill="#5867dd"
+                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                </path>
+                                <path fill="none" stroke="#fff" stroke-width="1.5"
+                                    d="M3.5 6.5L6 9l5-5"></path>
+                            </svg>
+                        </span>
+                        <span>Admin</span>
+                    </div>
+                    <div class="admin-check curser-pointer"
+                        *ngIf="Isadmin==false && status!='Owner' && sched_admin==true">
+                        <span aria-hidden="true" class="admin-check-svg">
+                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                <path fill="#5867dd"
+                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                </path>
+                                <path fill="none" stroke="#fff" stroke-width="1.5"
+                                    d="M3.5 6.5L6 9l5-5"></path>
+                            </svg>
+                        </span>
+                        <span>Admin</span>
+                    </div>
+                    <div class="admin-check curser-pointer"
+                        *ngIf="Isadmin==true && sched_admin==false && isCheckboxDisabled==false"
+                        (click)=" Updating_Adminmeeting(Emp_No)">
+                         <span aria-hidden="true" class="admin-check-svg">
+                          </span>
+                          <span>Mark as admin</span>
+                         </div>
+                    <div class="admin-check curser-pointer"
+                        *ngIf="sched_admin == false && Isadmin==false"
+                        (click)=" Updating_Adminmeeting(Emp_No)">
+                        <span aria-hidden="true" class="admin-check-svg">
+                        </span>
+                        <span>Back to admin</span>
+                    </div>
+                </div>
+
+  
                 <ul class="meeting-attendees-userlist">
                     <li class="meeting-attendees-user" *ngFor="let item of User_Scheduledjson;let i=index">
                         <div class="user-info">
@@ -1994,28 +2195,6 @@
                                 <div class="user-name">
                                     {{item.TM_DisplayName}}
                                     <!-- <span class="user-time">2 mins</span> -->
-
-                                    <ng-container class="admin-check curser-pointer" *ngIf="item.IsAdmin">
-                                        <span aria-hidden="true" class="admin-check-svg ml-2">
-                                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
-                                                <path _ngcontent-hko-c392="" fill="#5867dd"
-                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
-                                                </path>
-                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
-                                                    stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
-                                            </svg>
-                                        </span>
-                                        <span>Admin</span>
-                                    </ng-container>
-
-                                    <ng-container class="admin-check curser-pointer -hide-x"
-                                        *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false"
-                                        (click)=" Updating_Adminmeeting(item.stringval)">
-
-                                        <span _ngcontent-hko-c392="" aria-hidden="true" class="admin-check-svg ml-2">
-                                        </span>
-                                    </ng-container>
-
                                 </div>
                                 <div>
                                     <span class="user-role">{{item.Designation_Name}}</span> <span
@@ -2036,8 +2215,9 @@
                                 </span>
                                 <span>Online</span>
                             </div>
-                            <div class="user-status-action">
-                                <span class="admin-hover">
+                            <ng-container   *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false" >
+                            <div class="user-status-action"  (click)=" Updating_Adminmeeting(item.stringval)">
+                                <span class="admin-hover" >
                                     <span>Mark as admin</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon"
                                         style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
@@ -2082,6 +2262,65 @@
                                     </svg>
                                 </span>
                             </div>
+                        </ng-container>
+
+                        <ng-container  *ngIf="item.IsAdmin">
+                            <div class="user-status-action">
+                                <span class="admin-hover" >
+                                    <span aria-hidden="true" class="admin-check-svg ml-2">
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                            <path _ngcontent-hko-c392="" fill="#5867dd"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                            </path>
+                                            <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
+                                        </svg>
+                                    </span>
+                                    <span>admin</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon"
+                                        style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                                        viewBox="0 0 1024 1024" version="1.1">
+                                        <path
+                                            d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z" />
+                                    </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10"
+                                        fill="none">
+                                        <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357"
+                                            stroke="#999999" stroke-linecap="round" />
+                                        <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257"
+                                            stroke="#999999" stroke-linecap="round" />
+                                        <path
+                                            d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z"
+                                            stroke="#999999" />
+                                    </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9"
+                                        fill="none">
+                                        <path
+                                            d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z"
+                                            fill="#999999" />
+                                        <path
+                                            d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z"
+                                            fill="#999999" />
+                                        <path
+                                            d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z"
+                                            fill="#999999" />
+                                    </svg>
+                                </span>
+                                <span class="d-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9"
+                                        fill="none">
+                                        <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </ng-container>
                         </div>
                     </li>
                     <!-- <li class="meeting-attendees-user">
@@ -2300,7 +2539,23 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>
+                <!-- <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button> -->
+
+                   <ng-container *ngFor="let item of EventScheduledjson">
+            
+                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">       
+                      <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedEmploy_Projects!=''">
+                    <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                      <button class="btn btn-label-primary mb-4" data-target="#confirmpopup" data-toggle="modal">Add Projects</button>
+                   </ng-container>
+                   </ng-container>             
+                   <ng-container *ngIf="(selectedEmploy_Projects=='' && item.Recurrence!=='Do not repeat')">  
+                        <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>              
+                    </ng-container>
+           
+                    </ng-container>
             </div>
         </ul>
 
@@ -2329,10 +2584,31 @@
                                 <div class="kt-inbox__datetime">
                                 </div>
                                 <div class="delete-btn">
-                                    <i class="fas fa-edit invisible"></i>
+                                    <!-- <i class="fas fa-edit invisible"></i>
                                     <a (click)="DeleteProject(item.stringval)">
                                         <i class="fas fa-trash-alt"></i>
+                                    </a> -->
+
+                                    <ng-container *ngFor="let data of EventScheduledjson">         
+                                        <ng-container *ngIf="data.Recurrence==='Do not repeat'">
+                                        
+                                        <i class="fas fa-edit invisible"></i>
+                                        <a (click)="DeleteProject(item.stringval)">
+                                        <i class="fas fa-trash-alt"></i>
+                                        </a>
+
+                                     </ng-container>                         
+                                     <ng-container *ngIf="data.Recurrence!=='Do not repeat'">              
+            
+                                    <i class="fas fa-edit invisible"></i>
+                                    <a (click)="ProjectsDeletedEvent(item.stringval)"      data-target="#confirmpopup" data-toggle="modal">
+                                     <i class="fas fa-trash-alt"></i>
                                     </a>
+                                      
+                                       </ng-container>                 
+                                     </ng-container>
+
+
                                 </div>
                             </div>
                         </div>
@@ -2418,15 +2694,18 @@
 
 
 
-            <ng-container *ngFor="let term of Previousdata_meeting; let i=index">
-            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes" >
+            <ng-container *ngFor="let meeting of Previousdata_meeting">
+            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes" *ngFor="let term of meeting.AgendaDetails" >
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <a class="accordion-button" type="button" data-toggle="collapse"
-                            data-target="#attendes_notes" aria-expanded="false"
-                            aria-controls="attendes_notes">
+                                        
+                            (click)="toggleAccordion(pause)" [attr.aria-expandeds]="term.expandeds ? 'true' : 'false'"
+                                        [attr.data-target]="'#attendes_notes' + meeting.Schedule_date+term.AgendaId" 
+                                        [attr.data-target]="'#attendes_notes' + meeting.Schedule_date+term.AgendaId"                           
+                            >
                             <div class="head-content">
-                                <span class="accordion-heading">{{term.Schedule_date|date : 'dd-MM-YYYY'}}</span>
+                                <span class="accordion-heading">{{meeting.Schedule_date}}</span>
                             </div>
                             <div>
                                 <span class="accordion-icon">
@@ -2440,69 +2719,67 @@
                             </div>
                         </a>
                     </h2>
-                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let item of term.Employees"
+                    <div  id="attendes_notes{{meeting.Schedule_date+term.AgendaId}}" class="accordion-collapse collapse" *ngFor="let item of term.Employees;let i=index"
                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                         <div class="accordion-body">
                             <ul class="attendees-note-userlist">
                                 <li class="attendees-note-user">
-                                    <div class="user-info">
+                                    <!-- <div class="user-info">
                                         <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>
-                                        <span>
+                                         <span>
                                             <div class="user-name">{{item.Emp_Name}}</div>
                                             <div>
-                                                <!-- <span class="user-role">Team Leader</span> <span
-                                                    class="user-company">Devbox Software Pvt.ltd.</span> -->
+                                                <span class="user-role">Team Leader</span> <span
+                                                    class="user-company">Devbox Software Pvt.ltd.</span>
                                             </div>
                                         </span>
-                                    </div>
-                                    <div class="user-notes" >
+                                    </div> -->
+                                    <div class="accordion-item">
+                                    <h2 class="accordion-header accordion-attendes-notes" id="headingOne" >
+                                        <a class="accordion-button" type="button" data-toggle="collapse"
+                                        (click)="toggleAccordion(a)" [attr.aria-expanded]="item.expanded ? 'true' : 'false'"
+                                        [attr.data-target]="'#attendes_Name_' + term.AgendaId+item.Emp_no" 
+                                        [attr.data-target]="'#attendes_Name_' + term.AgendaId+item.Emp_no">
+                                            <div class="head-content">
+                                                <span class="accordion-heading">{{term.Agenda_name}}</span>
+                                            </div>
+                                            <div>
+                                                <span class="accordion-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                                        viewBox="0 0 15 9" fill="none">
+                                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </h2>
+                                </div>
+                                    <!-- <div class="user-notes" > -->
      
-                                           <div *ngFor="let data of item.MeetingDetails;let i=index">
+                                           <!-- <div *ngFor="let data of item.MeetingDetails;let i=index">
                                             <div>  <span style="font-weight: 500">Agenda {{i+1}}: </span>
                                                 {{data.Agenda_name}}</div>
                                           
                                             <span [innerHtml]="data.Meeting_notes"></span>
-                                          </div>
+                                          </div> -->
+                                         <div id="attendes_Name_{{term.AgendaId+item.Emp_no}}" class="accordion-collapse collapse">
+                                          <div class="user-notes" >
+                                            <!-- <span style="font-weight: 500;"> </span>  -->
+                                             <span>{{item.Agenda_name}}</span>
+                                           <p [innerHtml]="item.Meeting_notes"></p>
+                                               
+                                       </div>
                                     </div>
+                                    <!-- </div> -->
                                 </li>                             
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-         </ng-container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
+         </ng-container>         
         </div>
     </div>
 </div>
@@ -2622,8 +2899,7 @@
                                     <span> from device</span>
                                 </span>
                             </label>
-                            <input id="uploadFile" type="file" accept="application/pdf" (change)="onFileChange($event)"
-                                multiple />
+                            <input id="uploadFile" type="file" accept="application/pdf" (change)="onFileChange($event)" [(ngModel)]="SelectedAttachmentFile" multiple />
                         </div>
                     </span>
                     <ng-container *ngFor='let url of _lstMultipleFiales'>
@@ -2644,8 +2920,36 @@
                     <div class="kt-chat__input">
                         <div class="kt-chat__toolbar mt-0">
                             <div class="kt_chat__actions w-100">
-                                <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule();attach_btn()">
+                                <ng-container *ngIf="SelectedAttachmentFile==undefined">
+                                <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule()">
                                     Upload </button>
+                                </ng-container>
+
+                                <ng-container *ngIf="SelectedAttachmentFile!=undefined">
+                                    <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule();attach_btn()">
+                                        Upload </button>
+                                    </ng-container>
+
+
+                                    <!-- <ng-container *ngFor="let item of EventScheduledjson">
+            
+                                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                        <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
+                                     </ng-container>
+                            
+                                     <ng-container *ngIf="selectedEmployees!=''">
+                                     <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                                        <button class="meeting-button mb-2" data-target="#confirmpopup" data-toggle="modal">invite</button>
+                                       </ng-container>
+                                    </ng-container>
+                                       <ng-container *ngIf="(selectedEmployees=='' && item.Recurrence!=='Do not repeat')">        
+                                        <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
+                                       </ng-container>
+                            
+                                     </ng-container>     -->
+
+
+
                                 <button class="btn btn-sm btn-secondary mr-2 w-15" (click)="attach_btn()"> Cancel
                                 </button>
                             </div>
@@ -2658,3 +2962,45 @@
 </div>
 <!-- Files Working Area End -->
 <div id="rightbar-overlay" class="rightbar-overlay"></div>
+
+
+<!-- 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmpopup">
+    popup
+  </button> -->
+
+  <div class="modal fade confirmpopup" id="confirmpopup" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirmpopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmpopupLabel">Select below option</h5>
+              </div>
+            <div class="modal-body">
+                <div class="rescontent" style="color: #3c4043;">
+                    <div id="div_thisevent" class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" id="r1" [(ngModel)]="selectedValue" [value]="1"  name="optradio"><span class="ml-2">This
+                                Event
+                                Only</span>
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" id="r2" [(ngModel)]="selectedValue" [value]="2"  name="optradio"><span class="ml-2">This
+                                and Following Events</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-outline-cancel mr-3 w-45" data-dismiss="modal">Close</a>
+                    <a type="button" class="btn btn-save w-45"  data-dismiss="modal" (click)="getAllEvents()">
+                        Save changes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

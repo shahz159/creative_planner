@@ -915,7 +915,7 @@ ul.attendees-note-userlist {
     padding: 0px;
 }
 
-.attendees-note-user {
+/* .attendees-note-user {
     display: flex;
     align-items: flex-start;
     justify-content: left;
@@ -924,7 +924,16 @@ ul.attendees-note-userlist {
     padding: 5px 0px;
     margin-bottom: 10px;
     gap: 10px;
+} */
+
+.attendees-note-user {
+   
+    border-radius: 5px;
+    padding: 5px 0px;
+    margin-bottom: 10px;
+   
 }
+
 
 .attendees-note-user .user-info {
     display: flex;
@@ -3046,4 +3055,53 @@ span.admin-check-svg {
 }
 .kt-chat__messages::-webkit-scrollbar-thumb{
     background-color: #ccc;
+}
+
+span.side-icns.kt-org-ic {
+    width: 45px;
+}
+.svg-icn{
+    fill: #5f6368;
+}
+.center-data svg.svg-icn {
+    width: 30px;
+    height: 30px;
+}
+
+
+
+
+
+.btn-save{
+    color: #fff;
+    background-color: #5867dd !important;
+    border-color: #5867dd !important;
+}
+.btn-save:hover {
+    color: #fff;
+    background-color: #384ad7;
+    border-color: #2e40d4;
+}
+.w-45{
+    width: 45%;
+}
+.btn-outline-cancel {
+    color: #696969;
+    border-color: #e1e1ef;
+}
+.btn-outline-cancel:hover {
+    color: #212529;
+    background-color: #e1e1ef;
+    border-color: #e1e1ef;
+}
+.confirmpopup .modal-header{
+    border: 0;
+    padding: 1.25rem;
+    padding-bottom: 0rem;
+}
+.confirmpopup .modal-footer{
+    justify-content: center;
+    border: 0;
+    padding: 0px;
+    padding-top: 1rem;
 }
