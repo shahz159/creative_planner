@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   //localServer
-  // baseUrl:'http://localhost:1221/api/'
+  baseUrl:'http://localhost:1221/api/'
   // SignalUrl: 'http://localhost:1221/signalr' 
   // baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
-  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
+  // baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
 //DMS Live Server
 //baseUrl:'http://localhost:1221/api/'
   //MyMachine Local IIS Server
