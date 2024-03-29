@@ -220,16 +220,8 @@
                                                                 [disabled]="portfolioName==''">
                                                             </mat-checkbox>
                                                         </mat-list-item> -->
-                                                        <span class="mat-checkbox-inner-container mat-checkbox-inner-container-no-side-margin"><input type="checkbox"
-                                                          class="mat-checkbox-input cdk-visually-hidden" id="mat-checkbox-11-input" tabindex="0" aria-checked="false"><span
-                                                          matripple="" class="mat-ripple mat-checkbox-ripple mat-focus-indicator"
-                                                          ng-reflect-trigger="[object HTMLLabelElement]" ng-reflect-disabled="false" ng-reflect-radius="20"
-                                                          ng-reflect-centered="true" ng-reflect-animation="[object Object]"><span
-                                                            class="mat-ripple-element mat-checkbox-persistent-ripple"></span></span><span
-                                                          class="mat-checkbox-frame"></span><span class="mat-checkbox-background"><svg version="1.1" focusable="false"
-                                                            viewBox="0 0 24 24" aria-hidden="true" class="mat-checkbox-checkmark">
-                                                            <path fill="none" stroke="white" d="M4.1,12.7 9,17.6 20.3,6.3" class="mat-checkbox-checkmark-path"></path>
-                                                          </svg><span class="mat-checkbox-mixedmark"></span></span></span>
+
+                                                          <input class='mat-checkbox-inner-container' id="snocheck" type="checkbox" title="Select All" [(ngModel)]="selectAllCheckbox"  (change)="selectAll($event);" />
                                                     </th>
 
                                                     <th data-order="desc" data-name="id" class="text-center">
@@ -300,7 +292,7 @@
                                                     *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <td tabindex="0" class="sorting_1">
                                                         <mat-list-item>
-                                                            <mat-checkbox checked color="primary"
+                                                            <mat-checkbox [checked]="selectAllCheckbox" color="primary"
                                                                 [(ngModel)]="item.checked"
                                                                 [disabled]="portfolioName==''"
                                                                 (change)="dataTableCheckbox();checkboxclick(item.checked,item.Project_Code)">

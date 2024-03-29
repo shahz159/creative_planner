@@ -136,7 +136,7 @@ export class ProjectsAddComponent implements OnInit {
         this._CurrentpageRecords = this._ProjectDataList.length;
         // this._totalProjectsCount = this._ProjectDataList.length;
         console.log("ProjectList----------->", this._ProjectDataList.length);
-        //console.log("ProjectList----------->", this._ProjectDataList);
+        console.log("ProjectListssssssssss----------->", this._ProjectDataList);
       }
     });
     this.getDropdownsDataFromDB();
@@ -346,7 +346,7 @@ export class ProjectsAddComponent implements OnInit {
     else{
       this.ObjUserDetails.PortfolioId = parseInt(this._portfolioId);
     }
-    
+
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetProjectsByUserName_Service(this.ObjUserDetails)
       .subscribe(data => {
@@ -386,7 +386,7 @@ export class ProjectsAddComponent implements OnInit {
   openInfo(pcode, pName) {
     this._portfolioId = this.activatedRoute.snapshot.params.portfolioId;
     this.router.navigate(["../AddProjectsToPortfolio/" + this._portfolioId + "/projectinfo", pcode,"4"]);
-    
+
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -573,7 +573,7 @@ export class ProjectsAddComponent implements OnInit {
           this._MemosNotFound = "No memos linked";
         }
       });
-    //Displaying Right Side Bar... 
+    //Displaying Right Side Bar...
     //document.getElementById("MemosSideBar").style.width = "350px";
   }
   _raciDetails: boolean = true;
@@ -594,7 +594,7 @@ export class ProjectsAddComponent implements OnInit {
       this.Z2A = true;
     }
   }
-  
+
   moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
@@ -775,4 +775,18 @@ export class ProjectsAddComponent implements OnInit {
         }
       });
   }
+
+   selectAllCheckbox: boolean = false;
+
+
+
+  selectAll(event: any) {
+    const isChecked = event.target.checked;
+    this.selectAllCheckbox = isChecked;
+    this._ProjectDataList.forEach(item => {
+      item.checked = isChecked;
+    });
+  }
+
+
 }
