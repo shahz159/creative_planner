@@ -3327,6 +3327,3 @@ mat-icon.mat-icon.notranslate.curser-pointer {
     scroll-behavior: smooth;
   }
 
-  input#uploadFile::before{
-    background-color: green;
-  }

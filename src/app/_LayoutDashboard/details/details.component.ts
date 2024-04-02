@@ -1289,7 +1289,25 @@ debugger
     this.initializeSelectedValues()
 
   }
-
+  ApprovalSideBar() {
+    document.getElementById("Approval_view").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+  }
+  
+  closeApprovalSideBar(){
+    document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
+  }
+  hide_main_approval(){
+    document.getElementById("main-approval").style.display = "none";
+    document.getElementById("main-reject").style.display = "block";
+  }
+  backmainapproval(){
+    document.getElementById("main-approval").style.display = "block";
+    document.getElementById("main-reject").style.display = "none";
+  }
   closeInfo() {
     this._remarks = ''
     this.selectedFile=null;
@@ -1309,6 +1327,7 @@ debugger
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
+    document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");

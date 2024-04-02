@@ -4839,4 +4839,129 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
        opacity: 1.0;
        transform:translateX(0%);
    }
+  }
+
+  
+.kt-total-approval{
+  background-color: #cbe8ff !important;
+  color: #2196f3 !important;
+  border: 1px solid #cbe8ff !important;
+  width: 100%;
+  padding: 3px 5px;
+  min-width: 110px;
+  margin: 0px 0px;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+}
+.Btn_view_all {
+  background-color: #e3e3e3!important;
+  color: #777171!important;
+  border: 1px solid #e3e3e3!important;
+}
+.Btn_view_all:hover {
+  background-color: #777171!important;
+  color: #fff!important;
+}
+#Approval_view.kt-quick-active--on {
+  width: 50% !important;
+}
+.approval-view .accordion-header a {
+  background: #F3F8FF;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 4px;
+}
+.approval-view .accordion-card{
+  border: 1px solid #d9e8fd;
+  border-radius: 4px;
+}
+.approval-view .diff-div{
+  background: #fff;
+}
+.approval-view .head-content {
+  display: flex;
+  align-items: center;
+  color: #757575;
+  font-size: 14px;
+}
+.approval-view span.accordion-icon {
+  display: flex;
+}
+.approval-view .accordion-header a[aria-expanded="false"] .accordion-icon svg {
+  transform: rotate(0deg);
+}
+.approval-view .accordion-header a[aria-expanded="true"] .accordion-icon svg {
+  transform: rotate(180deg);
+}
+.approval-view .accordion-icon svg {
+  Width: 14px;
+  Height: 14px;
+  color: #6F6F6F;
+  transition: all 0.25s ease-in-out;
+}
+.approval-view .brb-1 {
+  border-bottom: 1px solid #ebedf2;
+}
+.approval-view .card-car {
+  color: #595d6e;
+}
+.approval-view .cus-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.approval-view .meetdt {
+  padding: 0.8rem 1.25rem;
+  border-bottom: 1px solid #ddd;
+}
+.approval-view .event-main {
+  flex: 1 1 auto;
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+.approval-view .event-color--info {
+  background-color: #4d87ff;
+}
+
+.approval-view .event-color {
+  margin-right: 10px;
+  flex: 0 0 auto;
+  border-radius: 40px;
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+}
+.approval-view .event-title {
+  color: #555;
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+.approval-view .event-title a {
+  color: #007bff;
+  color: #555;
+}
+.approval-view .btm-des {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.approval-view .status-d h6 {
+  margin-bottom: 0;
+}
+.approval-view .kt-portlet__body_scroll {
+  height: calc(100vh - 106px);
+  overflow-y: hidden;
 }

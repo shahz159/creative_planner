@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -50,6 +50,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   constructor(public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
+    private renderer: Renderer2,
     public router: Router,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
@@ -935,5 +936,26 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     }
   }
+// onbuttonclick(buttonId:string){
+//   debugger
+//   const elements={
+//  'ActionToProjects':'active-action-to-project',
+//  'taskdd':'active-task',
+
+//   };
+
+// for (const id in elements){
+//       const elements= document.getElementById(id)
+//       if (elements) {
+//         if (buttonId === id) {
+//           this.renderer.addClass(elements, elements[id]);
+//         } else {
+//           this.renderer.removeClass(elements, elements[id]);
+//         }
+//       }
+//     }
+// }
 
 }
+
+
