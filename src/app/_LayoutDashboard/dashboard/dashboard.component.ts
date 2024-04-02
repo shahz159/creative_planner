@@ -1027,6 +1027,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  onSingleEventDelete(){
+    Swal.fire({
+      title:'Delete Event',
+      text:'Are you sure you want to delete this event? This action cannot be undone.',
+      showConfirmButton:true,
+      showCancelButton:true
+    }).then(choice=>{
+       if(choice.isConfirmed){
+        this.AllDelete_event(1);
+        this.AlldeleteSchedule()
+       }
+    });
+ 
+  }
 
   // Customize() {
 
@@ -4535,7 +4549,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
-  Insert_indraft() {
+  Insert_indraft() { debugger
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -4567,7 +4581,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-      (data => {
+      (data => {   debugger
         if (data['message'] == '1') {
           this.Getdraft_datalistmeeting();
           this.closeschd();
