@@ -885,6 +885,7 @@ this.prjPIECHART.render();
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
+      this.Title_Name=this.projectInfo.Project_Name;
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -5452,7 +5453,7 @@ getChangeSubtaskDetais(Project_Code) {
     this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
-    this.Title_Name = null;
+    this.Title_Name = this.projectInfo.Project_Name;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
     this.SelectDms = [];
@@ -5792,7 +5793,7 @@ getChangeSubtaskDetais(Project_Code) {
 
 
           this.GetScheduledJson();
-          this.Title_Name = null;
+          this.Title_Name = this.projectInfo.Project_Name;
           this.ngEmployeeDropdown = [];
           this.Description_Type = null;
           this.MasterCode = [];
@@ -7159,11 +7160,22 @@ showFullGraph(){
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
-    });
+    });  
+   
+    // this is for remove fusion chart watermark label from the graph.
+    myChart.addEventListener('rendered',()=>{
+      setTimeout(()=>{
+        const x:any=document.querySelectorAll('#full-graph .fusioncharts-container svg>g[class^="raphael"]');
+        x[1].style.display='none';
+      },10);
+    });   
+   // this is for remove fusion chart watermark label from the graph.
+
+
 
   });
 
-
+ 
   
 }
 
@@ -7178,7 +7190,8 @@ onGraphOptionChanged(option:string){
 
 loadActivitiesByDate(d){
   this.activitiesOnthat=this.getActivitiesOf(d);
-  this.selectedactvy=d;
+  const currentDt=new Date();
+  this.selectedactvy=d==currentDt?'TODAY':d;
 }
 
 
@@ -7399,6 +7412,75 @@ meetingReport(mtgScheduleId:any) {
   myWindow.focus();
 }
 // start meeting feature end
+
+
+
+
+
+//  save meeting as draft start.
+Insert_indraft() { debugger
+  if (this.draftid != 0) {
+    this._calenderDto.draftid = this.draftid;
+  }
+  else {
+    this._calenderDto.draftid = 0;
+  }
+  this._calenderDto.Task_Name = this.Title_Name;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  if (this.SelectDms == null) {
+    this.SelectDms = [];
+  }
+  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  if (this.Portfolio == null) {
+    this.Portfolio = [];
+  }
+  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+  this._calenderDto.location = this.Location_Type;
+  this._calenderDto.loc_status = this._onlinelink;
+  this._calenderDto.Note = this.Description_Type;
+  this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+  //  alert( this.ScheduleType);
+  if (this.ngEmployeeDropdown == null) {
+    this.ngEmployeeDropdown = [];
+  }
+  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  if (this.MasterCode == null) {
+    this.MasterCode = [];
+  }
+  this._calenderDto.Project_Code = this.MasterCode.toString();
+
+  this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+    (data => { debugger
+      if (data['message'] == '1') {
+        // this.Getdraft_datalistmeeting();
+        this.closeschd();
+        this.meetingsViewOn=true;
+        this.notifyService.showSuccess("Draft saved", "Success");
+      }
+      // if (data['message'] == '2') {
+      //   // this.Getdraft_datalistmeeting();
+      //   this.closeschd();
+      //   this.notifyService.showSuccess("Draft updated", "Success");
+      // }
+    });
+
+
+}
+
+
+// save meeting as draft end.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

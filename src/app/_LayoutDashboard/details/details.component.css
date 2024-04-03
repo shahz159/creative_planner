@@ -3587,11 +3587,8 @@ a.Kt_cmt_user_name {
 }
 
 .View_more_act {
-  position: absolute;
-  bottom: 0px;
-  right: 0;
-  background-color: #ecefff;
-  padding: 1px 10px;
+  background-color: transparent;
+  padding: 3px 10px 4px;
   border-radius: 5px;
   align-self: flex-start;
 
@@ -4204,12 +4201,16 @@ span.Kt-m-count {
 
 /*recent activity graph css start*/
 .View_graph_act {
-  position: absolute;
-  top: 0px;
-  right: 10px;
-  background-color: #ecefff;
-  padding: 1px 10px;
-  border-radius: 5px;
+  align-self: flex-start;
+  background-color: transparent;
+  border: 1px solid #527ce2;
+  font-size: 13px !important;
+  padding:0.3em 0.6em 0.3em 0.6em;
+  border-radius: 4px !important;
+  border-width: 1px !important;
+  font-weight: 400;
+  color: #527ce2;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .View_graph_act a svg{
   fill:#527ce2 !important;
@@ -4655,7 +4656,8 @@ background-color: #e2e8f0c9;
   z-index: auto;
 }
 .meeting-participant .kt-met-info {
-  padding: 0.2rem 1.2rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e7e7e7;
 }
 .meeting-participant .dropdown-menu {
   box-shadow: 0px 0px 8px #b2b2b3;
@@ -4752,7 +4754,13 @@ background-color: #e2e8f0c9;
   background-color: #f1f1f180;
   color: #818181;
   display:flex;
+  opacity: 0.0;
   column-gap:5px;
+  animation-name:fromLeftToRight-anim;
+  animation-duration:0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 .actvy-item .actvy-item-part1{
    flex-grow:1;
@@ -4796,6 +4804,44 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   padding: 0.1em 0.4em 0.1em 0.4em;
   border-radius: 2px;
 }
+
+/*meeting report click btn*/
+.icons-right {
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+  text-align: center;
+  padding: 3px;
+}
+
+.icons-right:hover {
+  background-color: #dddddd8f;
+  /* box-shadow: 3px 3px 3px #e3e1e1; */
+}
+.tool-span {
+  cursor: pointer;
+}
+/*meeting report click btn*/
+
+.btn-dull {
+  background-color: #6C757D;
+  border-color: #6C757D;
+  color: #FFFFFF !important;
+} 
+
+@keyframes fromLeftToRight-anim{
+   0%{ 
+        opacity: 0.0;
+        transform:translateX(-100%);
+   }
+   100%{
+       opacity: 1.0;
+       transform:translateX(0%);
+   }
+  }
+
+  
 .kt-total-approval{
   background-color: #cbe8ff !important;
   color: #2196f3 !important;
