@@ -10,6 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DatePipe } from '@angular/common';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
@@ -22,6 +26,10 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatChipsModule,
+    MatIconModule,
+    Ng2SearchPipeModule,
+    MatAutocompleteModule,
     NgSelectModule
   ],
   providers:[DatePipe,{provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]

@@ -61,14 +61,47 @@
             </ng-select>
             <span *ngIf="assign.touched && !SelectedEmplList" style="color:red">Assign To required!</span>
         </div>
-        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-            <label>Link Portfolio : <strong></strong></label>
-            <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select portfolio">
-                <ng-option [value]="item.Portfolio_ID" *ngFor="let item of PortfolioList">
-                    {{item.Portfolio_Name}}
-                </ng-option>
-            </ng-select>
-        </div>
+
+<!-- <div class="form-group">
+        <mat-form-field class="drp-dwn-field w-100"  *ngIf="PortfolioList">
+          <mat-label>Link Portfolio</mat-label>
+          <mat-chip-list #selectedPortfolios>
+            <mat-chip *ngFor="let prtid of PortfolioList" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtid)">
+              {{getObjOf(PortfolioList,prtid,'Portfolio_ID')?.Portfolio_Name}}-{{getObjOf(PortfolioList,prtid,'Portfolio_ID')?.TM_DisplayName}}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+
+          </mat-chip-list>
+          <div class="d-flex">
+            <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
+
+            <button *ngIf="isPortfolioDrpDwnOpen"
+                class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
+                <mat-icon class="close-icon">cancel</mat-icon></button>
+
+                <button *ngIf="!isPortfolioDrpDwnOpen"
+                class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
+                <mat-icon class="add-icon"
+                    >add</mat-icon></button>        </div>
+
+
+        <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
+        (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
+        (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
+
+        <mat-option *ngFor="let prt of (PortfolioList|filter:PortfolioTF.value).slice(0,1000)" [value]="prt.Portfolio_ID">
+          <mat-checkbox color="primary"
+              [checked]="Portfolio!=null&&Portfolio.indexOf(prt.Portfolio_ID)!==-1"></mat-checkbox>
+              {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
+      </mat-option>      </mat-autocomplete>
+    </mat-form-field>
+
+
+</div> -->
+
 
         <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
           <label>Informer : <strong></strong></label>
@@ -88,6 +121,16 @@
             </ng-option>
         </ng-select>
     </div> -->
+
+
+  <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+    <label>Link Portfolio : <strong></strong></label>
+    <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select portfolio">
+        <ng-option [value]="item.Portfolio_ID" *ngFor="let item of PortfolioList">
+            {{item.Portfolio_Name}}
+        </ng-option>
+    </ng-select>
+</div>
 
 <ng-container *ngIf="selectedProjectType !=='003' && selectedProjectType!=='008'" >
         <div class="d-flex gap-1 ">
@@ -173,5 +216,6 @@
             </button>
             <!-- [disabled]="!SelectedEmplList" -->
         </div>
-    </div>
+
+
     <!--   -->

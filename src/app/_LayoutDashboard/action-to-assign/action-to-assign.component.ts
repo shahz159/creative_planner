@@ -1,5 +1,5 @@
 // import { flatten } from '@angular/compiler';
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild,ViewChildren,QueryList } from '@angular/core';
 import { FormControl } from '@angular/forms'
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete'
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -413,4 +414,60 @@ isPrjDesValid:boolean=true;
   }
 
 
+ // mat-autocomplete dropdowns code start.
+ @ViewChildren(MatAutocompleteTrigger) autocompletes: QueryList<MatAutocompleteTrigger>;
+ openAutocompleteDrpDwn(Acomp: string) {
+   const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+   requestAnimationFrame(() => autoCompleteDrpDwn.openPanel());
+ }
+
+ closeAutocompleteDrpDwn(Acomp: string) {
+   const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+   requestAnimationFrame(() => autoCompleteDrpDwn.closePanel());
+ }
+
+
+  Portfolio: any = [];
+  isPortfolioDrpDwnOpen: boolean = false;
+  onPortfolioSelected(e: any) {
+    const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
+    console.log(portfolioChoosed);
+    if (portfolioChoosed) {
+      if (!this.Portfolio)   // if Portfolio is null,undefined,''
+        this.Portfolio = [];
+      const index = this.Portfolio.indexOf(portfolioChoosed.Portfolio_ID);
+      if (index === -1) {
+        // if not present then add it
+        this.Portfolio.push(portfolioChoosed.Portfolio_ID);
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.Portfolio.splice(index, 1);
+      }
+    }
+    this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+  }
+
+
+  removeSelectedPortfolio(item) {
+    const index = this.Portfolio.indexOf(item);
+    if (index !== -1) {
+      this.Portfolio.splice(index, 1);
+    }
+  }
+
+
+  getObjOf(arr, id, idName) {
+    const obj = arr.find(item => item[idName] == id);
+    return obj;
+  }
+
+
+
+
+
 }
+
+
+
+
+
