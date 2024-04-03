@@ -1334,7 +1334,7 @@ span.count2 {
   height: 20px;
   line-height: 20px;
   background: #deecf8;
-  color: #2786fb !important;
+  color: #2786fb;
   border-radius: 50%;
   font-size: 0.9rem;
   display: inline-flex;

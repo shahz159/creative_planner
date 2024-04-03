@@ -41,7 +41,8 @@
                             "node_modules/@fullcalendar/common/main.css",
                             "node_modules/@fullcalendar/daygrid/main.css",
                             "node_modules/@fullcalendar/timegrid/main.css",
-                            "node_modules/@fullcalendar/list/main.css"
+                            "node_modules/@fullcalendar/list/main.css",
+                            "node_modules/summernote/dist/summernote-lite.css"
                         ],
                         "scripts": [
                             "src/assets/plugins/global/plugins.bundle.js"

@@ -13,6 +13,10 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
 import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
+
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 // import { FormsModule } from '@angular/forms';
 
 
@@ -29,7 +33,9 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
     AngularEditorModule,
     MaterialModule,
     FormsModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+
+    ReactiveFormsModule
     // FormsModule
   ],
   providers: [ 

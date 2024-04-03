@@ -222,7 +222,6 @@
 
 .kt-ctv-btn-two {
   margin-top: 3rem;
-  text-align: end;
 }
 
 .my-ct-v-btn-back {
@@ -1079,8 +1078,7 @@ label.checkbox.kt-fnt-vd {
 }
 
 .Add_Action_btn {
-  background-color: transparent;
-  background-color: transparent;
+  background-color: #2786fb;
   border: 1px solid #2786fb;
   font-size: 13px !important;
   padding: 3px 5px;
@@ -1088,7 +1086,7 @@ label.checkbox.kt-fnt-vd {
   border-width: 1px !important;
   font-weight: 400;
   font-weight: 400 !important;
-  color: #2786fb;
+  color: #fff;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 

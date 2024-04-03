@@ -250,7 +250,9 @@
                                                     <td ><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </td>
+                                                    <!-- <td><span class="kt-widget__other"  *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>Other Section</span> </td> -->
                                                     <td>
+                                                         <!-- <td><span class="kt-widget__other"  *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>Other Section</span> </td> -->
                                                       <div class="mx-2 p-1"> <span class="kt-widget__other " *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>  Deleted by</span></div>
                                                      <span class="kt-widget__other tb-w-45" *ngIf="!showDeletedPrjOnly"> Actions</span>
                                                     </td>
@@ -327,7 +329,7 @@
                                                            <path fill="#FFFFFF" d="M6.008,6.756c0.012-0.492,0.296-0.759,0.8-0.754C7.28,6.007,7.594,6.326,7.587,6.79
                                                              C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"/>
                                                          </g>
-                                                         
+
                                                          </svg>
                                                         </a>
                                                         <span *ngIf="item1.Link_Status==1;else not_Linked">
@@ -351,7 +353,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
+                                                        <span class="count2" *ngIf="item1.Actioncount>0 ">{{item1.CompletedActioncount}}/{{item1.Actioncount}}</span>
                                                     </td>
 
                                                     <td>
@@ -527,6 +529,14 @@
                                                         </div>
                                                     </td>
 
+
+                                                    <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
+
+
+
+                                                    </ng-template> -->
+                                                    <!-- <ng-template #deletedbys ><td>deleting</td>  </ng-template> -->
+
                                                     <ng-container *ngIf="!showDeletedPrjOnly;else deletedby">
                                                     <td *ngIf="viewpreference != 'View Only'">
                                                       <div class="tb-w-45">
@@ -539,6 +549,7 @@
 
                                                     </td>
                                                   </ng-container>
+
 
                                                     <ng-template #deletedby>
                                                       <td>
@@ -555,6 +566,7 @@
 
                                                       </td>
                                                     </ng-template>
+
 
 
 
