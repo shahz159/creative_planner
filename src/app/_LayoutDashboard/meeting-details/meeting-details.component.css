@@ -3214,6 +3214,12 @@ span.side-icns.kt-org-ic {
     padding: 0px;
     padding-top: 1rem;
 }
+.accordion-all-agenda-notes{
+    margin: 10px 0px 10px 14px;
+}
+.blank-txt{
+    color: #9b9999 !important;
+}
 .app-logo svg {
     width: 90px;
     height: 25px;
