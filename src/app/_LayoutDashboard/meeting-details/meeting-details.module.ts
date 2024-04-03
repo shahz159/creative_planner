@@ -6,6 +6,10 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MeetingDetailsComponent } from './meeting-details.component';
 import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxSummernoteModule } from 'ngx-summernote';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 // import { FormsModule } from '@angular/forms';
 
 
@@ -22,7 +26,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     AngularEditorModule,
     MaterialModule,
     FormsModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgxSummernoteModule,
+    ReactiveFormsModule
     // FormsModule
   ]
 })
