@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { forEach } from '@angular-devkit/schematics';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 //import { LoadingBarService } from '@ngx-loading-bar/core';
@@ -21,6 +22,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
   styleUrls: ['./projects-add.component.css']
 })
 export class ProjectsAddComponent implements OnInit {
+  @ViewChild('selectAllCheckbox') selectAllCheckbox: any;
   btn_CreatePortfolio: boolean;
   hidetotalProjects: boolean;
   selectedItemsList: any;
@@ -204,6 +206,7 @@ debugger
       }
     }
     if (item == false) {
+      debugger
       console.log(this._ProjectDataList)
       this._ProjectDataList.forEach(element => {
         if (element.checked == false && element.Project_Code == Pcode) {
@@ -418,17 +421,20 @@ debugger
   _objStatusDTO: StatusDTO;
   //Save Portfolio
   OnSave() {
+    debugger
     this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
     let LengthOfSelectedItems: any;
     LengthOfSelectedItems = JSON.stringify(this.selectedItemsList.length);
     this.Obj_Portfolio_DTO.SelectedProjects = this.selectedItemsList;
     this.service.SavePortfolio(this.Obj_Portfolio_DTO)
       .subscribe(data => {
+        debugger
         this._portfolioId = data['Portfolio_ID'];
         this._objStatusDTO.Emp_No = this.Current_user_ID;
         //console.log("Return value--------->", this._portfolioId);
         this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
           (data) => {
+            debugger
             this._ListProjStat = data as StatusDTO[];
             //console.log("ListForStatus", this._ListProjStat);
             //Owners Portfolios
@@ -776,17 +782,94 @@ debugger
       });
   }
 
-   selectAllCheckbox: boolean = false;
 
 
 
-  selectAll(event: any) {
-    const isChecked = event.target.checked;
-    this.selectAllCheckbox = isChecked;
-    this._ProjectDataList.forEach(item => {
-      item.checked = isChecked;
-    });
+  //  approve all selected projects start.
+
+ isAllPrjSelected:boolean=false;
+ selectUnSelectAllPrj(evt){
+      this.isAllPrjSelected=evt.target.checked;
+      this._ProjectDataList.forEach((prj)=>{
+             prj.checked=this.isAllPrjSelected;
+      });
+
+ }
+
+
+
+
+
+  OnAllSelectedPrjSave() {
+    debugger
+    this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
+
+
+    const selectedPrjs=this._ProjectDataList.filter(item=>item.checked);
+    let LengthOfSelectedItems = JSON.stringify(selectedPrjs.length);
+
+
+    this.Obj_Portfolio_DTO.SelectedProjects = selectedPrjs;
+    this.service.SavePortfolio(this.Obj_Portfolio_DTO)
+      .subscribe(data => {
+        debugger
+        this._portfolioId = data['Portfolio_ID'];
+        if(this._portfolioId!==''){
+          this.isAllPrjSelected=false;
+          this.notifyService.showInfo("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
+        }
+
+
+
+
+
+
+
+
+
+
+
+        // this._ProjectDataList = this._ProjectDataList.filter(item => !item.checked);
+        // this.selectAllCheckbox.nativeElement.checked = false;
+
+        // this._portfolioId = data['Portfolio_ID'];
+        // this._objStatusDTO.Emp_No = this.Current_user_ID;
+        // //console.log("Return value--------->", this._portfolioId);
+        // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+        //   (data) => {
+        //     debugger
+        //     this._ListProjStat = data as StatusDTO[];
+        //     //console.log("ListForStatus", this._ListProjStat);
+        //     //Owners Portfolios
+        //     let Listown: any = this._ListProjStat.filter(i => (i.CreatedName));
+        //     this.countOwners = Listown.length;
+        //     this.countAll = this._ListProjStat.length;
+        //     if (this._ListProjStat.length == 0) {
+        //       this.messageForEmpty = false;//"No Portfolio's has created";
+        //     }
+        //     else {
+        //       this.messageForEmpty = true;
+        //     }
+        //   });
+      });
+
+    // if (this._portfolioId == 0 || this._portfolioId == null || this._portfolioId == '') {
+    //   this.notifyService.showSuccess("Portfolio Created " + ' ' + ' Added ' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
+    // }
+    // if (this._portfolioId != '') {
+    //   this.notifyService.showInfo("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
+    // }
   }
+
+
+
+
+
+
+
+  //  approve all selected prject end.
+
+
 
 
 }

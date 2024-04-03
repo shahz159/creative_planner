@@ -663,9 +663,9 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="kt-project-type">
 
-                                                      
-                                                 
-                                                        
+
+
+
                                                         <div *ngIf="projectInfo" class="Kt-Pd-Status" style="width:fit-content" [ngClass]="{
                                                                     'new-project-under':projectInfo.Status==='Under Approval',
                                                                     'Not_Started': projectInfo.Status==='Not Started',
@@ -690,13 +690,13 @@
                                                              'In-Process' : projectInfo.Status==='Not Started'?
                                                              'Draft' : projectInfo.Status)
                                                             }}
-                                                            
+
                                                         </div>
-                                                     
 
-                                                     
 
-                                                         
+
+
+
                                                         <div class="Requested_user_info"
                                                             *ngIf="requestType&&projectInfo.ApproverName">
                                                             <span class="svg-Rq-icon"><svg
@@ -752,7 +752,7 @@
 
                                                             {{projectInfo.StartDate|date:'dd-MM-YYYY'}}
 
-                                                        </div> 
+                                                        </div>
                                                     </div>
 
                                                     <div class="col text-center"
@@ -2159,7 +2159,7 @@
             <svg
 
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 31.576 31.576" 
+            viewBox="0 0 31.576 31.576"
             width="30px"
             height="30px"
           >
@@ -2172,10 +2172,10 @@
               <path d="M26.065,24.332l1.483-1.646l1.728-1.914c0.813-0.904,0.744-2.301-0.161-3.115c-0.908-0.816-2.3-0.743-3.117,0.16 l-1.42,1.576l-1.484,1.646l-2.906-3.223c-0.814-0.902-2.209-0.978-3.117-0.16c-0.905,0.815-0.976,2.211-0.16,3.115l3.211,3.561 l-1.482,1.646l-1.729,1.912c-0.815,0.905-0.744,2.301,0.161,3.116c0.423,0.381,0.95,0.567,1.476,0.567 c0.604,0,1.203-0.245,1.641-0.729l1.42-1.572l1.484-1.646l2.906,3.221c0.438,0.482,1.037,0.729,1.641,0.729 c0.525,0,1.055-0.188,1.479-0.566c0.904-0.814,0.977-2.211,0.16-3.115L26.065,24.332z" fill="#797979"></path>
             </g>
           </svg>
-          
-            <span class="notif-msg">{{activity}} for 
+
+            <span class="notif-msg">{{activity}} for
                 "{{lastactivity[0].rejectType}}"
-                by 
+                by
                 {{lastactivity[0].Empname}}
                 on <b>{{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}</b>. <br/>
                 Remark: "{{lastactivity[0].Req_Coments}}"
@@ -2190,38 +2190,38 @@
         <div class="notification prjhold-notf" style="cursor:pointer;"  *ngIf="activity==='Project Hold'">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" width="27px" height="27px"   >
                 <g  id="SVGRepo_iconCarrier">
-                    <path 
+                    <path
                         d="M16.779,23.888H6.215c-1.079,0-1.968-0.844-1.968-1.923V4.446c0-1.079,0.889-1.928,1.968-1.928h13.677 c1.08,0,1.984,0.849,1.984,1.928v11.917l1.231,1.383l1.257-1.407c0.016-0.017,0.03-0.031,0.03-0.048V2.57 c0-1.419-1.14-2.57-2.56-2.57H4.169C2.807,0,1.73,1.104,1.73,2.466v21.44c0,1.42,1.123,2.574,2.543,2.574H15.22 c0.018,0,0.036-0.054,0.055-0.074l1.879-2.092L16.779,23.888z">
                     </path>
-                    <path 
+                    <path
                         d="M18.838,5.8H7.498c-0.697,0-1.26,0.563-1.26,1.26c0,0.696,0.563,1.258,1.26,1.258h11.34c0.699,0,1.264-0.563,1.264-1.258 C20.102,6.362,19.537,5.8,18.838,5.8z">
                     </path>
-                    <path 
+                    <path
                         d="M18.838,9.997H7.498c-0.697,0-1.26,0.524-1.26,1.221c0,0.693,0.563,1.221,1.26,1.221h11.34 c0.699,0,1.264-0.528,1.264-1.221C20.102,10.522,19.537,9.997,18.838,9.997z">
                     </path>
-                    <path 
+                    <path
                         d="M15.594,16.017c1.259-1.137,2.992-1.426,4.482-0.878c-0.113-0.578-0.623-1.02-1.238-1.02H7.498 c-0.697,0-1.26,0.564-1.26,1.259c0,0.694,0.563,1.259,1.26,1.259h7.527C15.191,16.406,15.381,16.209,15.594,16.017z">
                     </path>
-                    <path 
+                    <path
                         d="M7.498,18.164c-0.697,0-1.26,0.562-1.26,1.259s0.563,1.259,1.26,1.259h6.864c-0.268-0.84-0.294-1.679-0.083-2.519 L7.498,18.164L7.498,18.164z">
                     </path>
                     <rect  x="17" y="15" width="5" height="14" fill="#747474" stroke="none"></rect>
                     <rect  x="25" y="15" width="5" height="14" fill="#747474" stroke="none"></rect>
                 </g>
             </svg>
-              
-        
+
+
             <span class="notif-msg">
                 Project Hold by {{lastactivity[0].Empname}} on {{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}.
             </span>
 
-    
+
               <!-- <button class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
                 Project Release
               </button> -->
-              
+
         </div>
- 
+
 
 
       <ng-container *ngIf="projectInfo&&projectInfo.Status=='Not Started'">
@@ -2245,7 +2245,7 @@
       </ng-container>
 
 
- 
+
          </div>
         </div>
 
@@ -2641,7 +2641,7 @@
                                                             <div class="row mt-3">
                                                                 <div class="col-lg-12 p-0">
                                                                     <div class="kt-info-pg-btns text-end">
-                                                                        
+
                                                                         <!--commit by 69 <button type="button" data-to="#pills-3-tab"  (click)="close_info_Slide()"
                                                                 class="btn btn-project-stv mr-3 ">Close</button> -->
 
@@ -2673,7 +2673,7 @@
                                                                                 *ngIf="Conditional_Active || Reject_active"
                                                                                 data-to="#pills-3-tab"
                                                                                 (click)="submitApproval();Close_Approval()"
-                                                                               
+
                                                                                 primary="true">Submit </button>
                                                                                 <!-- [disabled]="!comments || !selectedType " -->
                                                                         </span>
@@ -3203,26 +3203,26 @@
                                             <div class="col-lg-6 "  id="recent-activities-section"    >
                                                 <div class="kt-over-pd-in bd-right-x">
                                                     <div class="kt-ct-project d-flex  justify-content-between  ">
-                                                       
+
                                                         <div class="kt-ct-sub-ttl">
                                                             <h6>Recent activity</h6>
                                                         </div>
 
-                                                        
+
                                                            <div class="View_graph_act">
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;   " >
                                                                 <svg  width="14px" height="14px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path> </g></svg>
                                                                 View Graph
                                                             </a>
                                                            </div>
-                                                           
-                                                       
+
+
 
 
                                                     </div>
-                                                   
+
                                                 <ng-container *ngIf="activitiesLoading;else prjactivitiesloaded">
-                                                   
+
                                                     <div class="d-flex  justify-content-center   align-items-center   " >
                                                     <div class="spinner-border text-secondary" role="status">
                                                         <span class="visually-hidden"></span>
@@ -3243,22 +3243,22 @@
                                                                     </p>
                                                                 </div>
                                                                 <!--end::Label-->
-    
+
                                                                 <!--begin::Badge-->
                                                                 <div class="timeline-badge">
                                                                     <i class="fa fa-genderless text-primary fs-1"></i>
                                                                 </div>
                                                                 <!--end::Badge-->
-    
+
                                                                 <!--begin::Text-->
                                                                 <div class="fw-mormal timeline-content text-muted ps-3">
                                                                     <p class="kt-timeline-tl mb-0">
                                                                         <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
                                                                         <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
                                                                         <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
-    
+
                                                                           <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
-    
+
                                                                     <ng-container *ngIf="item.oldValue !==''">
                                                                          from "{{item.oldValue}}"
                                                                    </ng-container>
@@ -3284,9 +3284,9 @@
                                                                 </div>
                                                                 <!--end::Text-->
                                                             </div>
-    
-    
-    
+
+
+
                                                             <!-- <div class="View_graph_act">
                                                              <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;" >View Graph</a>
                                                             </div>
@@ -3294,7 +3294,7 @@
                                                                     <a href="javascript:void(0)"
                                                                         (click)="View_Activity()">View more...</a>
                                                             </div> -->
-    
+
                                                             <!--end::Item-->
                                                              <div class="d-flex justify-content-end"*ngIf="firstFiveRecords.length>4"  >
                                                                     <div class="View_more_act">
@@ -3445,7 +3445,7 @@
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                      </button>
                                                 </ng-container>
-                                                     
+
 
                                                 </div>
                                                 <!-- <div id="chart-container" class="Chart">
@@ -3997,7 +3997,7 @@
                                                                                     *ngIf="Conditional_Active || Reject_active"
                                                                                     data-to="#pills-3-tab"
                                                                                     (click)="submitApproval()"
-                                                                                    
+
                                                                                     primary="true">Submit</button>
                                                                                     <!-- [disabled]="!comments || !selectedType" -->
                                                                             </span>
@@ -4379,16 +4379,16 @@
                                                 <div class="col-lg-6">
                                                     <div class="kt-over-pd-in bd-right-x">
                                                         <div class="kt-ct-project d-flex align-items-start  justify-content-between  ">
-                                                           
+
                                                             <div class="kt-ct-sub-ttl">
                                                                 <h6>Recent activity</h6>
                                                             </div>
 
-                                                            
+
 
                                                         </div>
 
-                                            <ng-container *ngIf="activitiesLoading; else actionActivitiesLoaded">  
+                                            <ng-container *ngIf="activitiesLoading; else actionActivitiesLoaded">
 
                                             <div class="d-flex  justify-content-center  align-items-center  "   style="height:100%;"  >
                                                 <div class="spinner-border text-secondary" role="status">
@@ -4396,7 +4396,7 @@
                                                   </div>
                                             </div>
 
-                                            </ng-container> 
+                                            </ng-container>
                                             <ng-template #actionActivitiesLoaded>
 
 
@@ -4452,7 +4452,7 @@
                                                             </div>
                                                             <!--end::Text-->
                                                         </div>
-                                                       
+
                                                     <div *ngIf="ActionfirstFiveRecords.length>4" class="d-flex  justify-content-end " >
                                                         <div class="View_more_act">
                                                             <!-- <ng-container> -->
@@ -4465,7 +4465,7 @@
                                                     </div>
                                                 </ng-container>
                                                 <ng-template #NoActionActivitiesPresent>
-                                                
+
                                                     <div class="no-prjact-found ">
                                                         <img class="no-prjact-found-img"
                                                             src="./assets/images/noActionPresent.png" />
@@ -4551,7 +4551,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div   class="container">
             <div class="d-flex align-items-md-center flex-column">
 
 
@@ -4560,7 +4560,8 @@
                     <h5 class="acc-desc  user-not-found-msg  hide-content">
                         Unfortunately, we did not find you in this Project.
                     </h5>
-                    <div  class="mt-4"><button
+                    <div *ngIf="!['Under Approval', 'Completion Under Approval', 'Deadline Extend Under Approval', 'Cancellation Under Approval', 'Enactive Under Approval', 'Forward Under Approval'].includes(projectInfo.Status)"
+                    class="mt-4"><button
                         class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request Access</button>
                        </div>
 
@@ -4579,7 +4580,7 @@
           <div class="text-end mb-1 mt-4">
               <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
                   Clear</a>
-              <button (click)="sendRequest(); closeRequestDialog()"  class="btn btn-sm btn-info mr-2" 
+              <button (click)="sendRequest(); closeRequestDialog()"  class="btn btn-sm btn-info mr-2"
                   data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
                   Send Request
               </button>
@@ -5139,7 +5140,7 @@
                 <div class="row pt-2 pb-2">
                     <div class="col-lg-12">
                         <div class="form-group mb-0">
-                            
+
                                 <button type="submit" class="btn w-110 btn-info ml-2" (click)="submitDar()">Submit</button>
                             <button type="reset" class="btn w-110 btn-secondary  ml-2"
                                 (click)="starttime=null; endtime=null; workdes=''; actionCode=null; bothActTlSubm=false; _remarks=''; _inputAttachments=''; selectedFile=null; ">Reset</button>
@@ -6838,7 +6839,7 @@
                           class="btn btn-info"  (click)="actionCompleted()">Submit</button>
                           <!-- [disabled]="(_remarks=='')||(selectedFile==null)"  -->
 
-            <button type="submit" *ngIf="proState==false" class="btn btn-info" 
+            <button type="submit" *ngIf="proState==false" class="btn btn-info"
               (click)="actionCompleted()">Submit
             </button>
             <!-- [disabled]="(_remarks=='')" -->
@@ -6930,7 +6931,7 @@
 
                     <div class="form-group mb-1">
                         <button type="submit" *ngIf="projectInfo.Project_Type!='To do List' && isAction==false"
-                            class="btn btn-info" 
+                            class="btn btn-info"
                             (click)="updateMainProject()">Submit
                         </button>
                         <!-- [disabled]="(_remarks=='')||(selectedFile==null)" -->
@@ -7028,7 +7029,7 @@
                                 </div>
 
                                 <div class="form-group mb-0">
-                                    <button type="submit" class="btn btn-info" 
+                                    <button type="submit" class="btn btn-info"
                                         (click)="notachieveStandard()">Submit</button>
                                         <!-- [disabled]="(_remarks=='')" -->
                                 </div>
@@ -7151,13 +7152,13 @@
                     <div class="row pt-2 pb-2">
                         <div class="col-lg-12">
                             <div class="form-group mb-0">
-                                <button type="submit" 
+                                <button type="submit"
                                 class="btn btn-info w-110  ml-2"
                                 (click)="onProject_Hold(Pid,currentActionView===undefined?_MasterCode:projectActionInfo[currentActionView].Project_Code)">Submit</button>
                                 <!-- [disabled]="!Holddate || !hold_remarks" -->
                                 <button type="submit" class="btn w-110 btn-secondary  ml-2"
                                     (click)="closePrjHoldSideBar()">Cancel</button>
-                                
+
 
                             </div>
                         </div>
@@ -7266,13 +7267,13 @@
 
                                             <div class="col-lg-12 mt-3 p-0">
                                                 <div class="form-group">
-                                                    <button type="submit" 
+                                                    <button type="submit"
                                                     class="btn btn-info w-110 ml-2"
                                                     (click)="holdreleaseProject()">Submit</button>
                                                     <!-- [disabled]="!hold_remarks" -->
                                                     <button type="submit" class="btn w-110 btn-secondary  ml-2"
                                                         (click)="closePrjReleaseSideBar()">Cancel</button>
-                                                    
+
                                                 </div>
                                             </div>
 
@@ -7318,13 +7319,13 @@
 
                                             <div class="col-lg-12 mt-3 p-0">
                                                 <div class="form-group">
-                                                    <button type="submit" 
+                                                    <button type="submit"
                                                     class="btn btn-info w-110 ml-2"
                                                     (click)="updateReleaseDate()">Submit</button>
                                                     <!-- [disabled]="!hold_remarks" -->
                                                     <button type="submit"
                                                         class="btn w-110 btn-secondary  ml-2">Cancel</button>
-                                                    
+
 
                                                 </div>
                                             </div>
@@ -7413,8 +7414,8 @@
                                 <!-- [disabled]="!hold_remarks" -->
                                 <button type="submit" class="btn w-110 btn-secondary  ml-2"
                                     (click)="closePrjCancelSb()">Cancel</button>
-                                
-    
+
+
                             </div>
                         </div>
                     </div>
@@ -7560,7 +7561,7 @@
                                                         <button type="submit"
                                                             class="btn w-110 btn-secondary  ml-2"
                                                             (click)="  mtgFromD=''; mtgUptoD='';  ">RESET</button>
-                                                        
+
 
                                                     </div>
                                                 </div>
@@ -7696,8 +7697,8 @@
                                                           <div class="kt-met-info"  let last = last >{{ item.TM_DisplayName  + (last ? ' ' : ', ') }}</div>
                                                         </ng-container>
 
-                                                       </div>--> 
-      
+                                                       </div>-->
+
 
 
 
@@ -7898,7 +7899,7 @@
                                                             <div class="kt-met-dtl">
                                                                 <div class="kt-met-label"> Participant: </div>
                                                                 <div class="kt-met-info">
-                                                                    <div class="org-name">      
+                                                                    <div class="org-name">
                                                                         <div >
                                                                             <span *ngIf="meeting.usersjson[0].TM_DisplayName">{{meeting.usersjson[0].TM_DisplayName}}</span>
                                                                             <span class="ml-1" *ngIf="meeting.usersjson.length-1!==0">+{{meeting.usersjson.length-1}}</span>
@@ -8289,23 +8290,23 @@
                                                             <div  class="kt-support-view">
                                                                 <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
                                                                   <div  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden" data-kt-initialized="1"
-                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span
                                                                       class="symbol-label bg-warning text-inverse-warning fw-bold"
                                                                       title="Shaik Mohammad Rafi (Team Lead/Creative Solutions)"> S </span>
                                                                   </div>
                                                                   <div  data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood" data-kt-initialized="1"
-                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span
                                                                       class="symbol-label bg-primary text-inverse-primary fw-bold"
                                                                       title="Md Waseem Akram (Dot Net Developer/Devbox Software Pvt Ltd)"> M </span>
                                                                   </div>
                                                                   <div  data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew" data-kt-initialized="1"
-                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span
                                                                       class="symbol-label bg-danger text-inverse-danger fw-bold"
                                                                       title="Aquib Shahbaz (Team Lead/Devbox Software Pvt Ltd)"> A </span>
                                                                   </div>
                                                                   <span class="dropdown">
                                                                     <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span 
+                                                                    class="symbol symbol-35px symbol-circle ng-star-inserted"><span
                                                                       class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+6</span>
                                                                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
                                                                         <div class="kt-met-info" *ngFor="let item of lmmeeting.usersjson; let last = last" >{{ item.TM_DisplayName + (last ? ' ' : ',') }}</div>
@@ -9653,7 +9654,7 @@
                             <button type="submit" class="btn btn-info w-110 ml-2"
                                 (click)="OnSubmitSchedule()">Submit</button>
                                 <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
-                                
+
                         </div>
                     </div>
 
@@ -10184,7 +10185,7 @@
                 <div class="row pt-2 pb-2">
                     <div class="col-lg-12">
                         <div class="form-group mb-0">
-                            
+
                             <button type="submit" class="btn btn-info w-110 ml-2"
                                 (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval')">
                                 Update</button>
@@ -10600,8 +10601,8 @@
             <div class="row pt-2 pb-2">
                 <div class="col-lg-12">
                     <div class="form-group mb-0">
-                        
-                        <button  
+
+                        <button
                          type="submit" class="btn btn-info w-110 ml-2" (click)="onAction_update()">
                             Update</button>
                             <!-- [disabled]="
@@ -10729,13 +10730,13 @@
                             <h4 class="m-0"><span class="svg-icv-hd">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="17"
                                         height="17" viewBox="0 0 15 15" fill="none">
-                                        <path 
+                                        <path
                                             d="M1.25684 6.68393C1.25684 5.84386 1.25684 5.42382 1.42033 5.10295C1.56414 4.82071 1.79361 4.59124 2.07585 4.44743C2.39672 4.28394 2.81676 4.28394 3.65684 4.28394H4.65829C5.08905 4.28394 5.30444 4.28394 5.49459 4.34953C5.66274 4.40753 5.8159 4.50219 5.94298 4.62666C6.08668 4.76741 6.18299 4.96006 6.37562 5.34535L6.84368 6.28157C7.03631 6.66687 7.13263 6.85952 7.27633 7.00027C7.4034 7.12474 7.55656 7.2194 7.72471 7.2774C7.91487 7.34299 8.13025 7.34299 8.56102 7.34299H11.8565C12.6966 7.34299 13.1166 7.34299 13.4375 7.50648C13.7198 7.65029 13.9492 7.87976 14.093 8.16201C14.2565 8.48288 14.2565 8.90291 14.2565 9.74299V11.8252C14.2565 12.6653 14.2565 13.0853 14.093 13.4062C13.9492 13.6884 13.7198 13.9179 13.4375 14.0617C13.1166 14.2252 12.6966 14.2252 11.8565 14.2252H3.65684C2.81676 14.2252 2.39672 14.2252 2.07585 14.0617C1.79361 13.9179 1.56414 13.6884 1.42033 13.4062C1.25684 13.0853 1.25684 12.6653 1.25684 11.8252V6.68393Z"
                                             stroke="#a3a3a3"></path>
-                                        <path 
+                                        <path
                                             d="M11.9626 6.96026V4.1819C11.9626 3.93731 11.9626 3.81502 11.935 3.69993C11.9105 3.59789 11.8701 3.50035 11.8152 3.41088C11.7534 3.30996 11.6669 3.22348 11.494 3.05053L10.1372 1.69373C9.96421 1.52078 9.87773 1.4343 9.77681 1.37246C9.68734 1.31763 9.5898 1.27722 9.48776 1.25273C9.37267 1.2251 9.25038 1.2251 9.00579 1.2251H5.95103C5.11095 1.2251 4.69091 1.2251 4.37004 1.38859C4.0878 1.5324 3.85833 1.76187 3.71452 2.04411C3.55103 2.36498 3.55103 2.78502 3.55103 3.6251V4.66619"
                                             stroke="#a3a3a3"></path>
-                                        <path 
+                                        <path
                                             d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
                                             stroke="#a3a3a3"></path>
                                     </svg> </span><span class="kt-chat__title"> New project reject release</span>
@@ -10797,15 +10798,15 @@
                                                 </ul>
                                                 <div class="col-lg-12 mt-3 p-0">
                                                     <div class="form-group">
-                                                        <button type="submit" 
+                                                        <button type="submit"
                                                         class="btn btn-info w-110 ml-2"
                                                         (click)="releasenewProject()">Submit</button>
                                                         <!-- [disabled]="!hold_remarks" -->
-                                                        
+
                                                         <button type="submit"
                                                             class="btn w-110 btn-secondary  ml-2"
                                                             (click)="closePrjHoldSideBar()">Cancel</button>
-                                                        
+
 
                                                     </div>
                                                 </div>
@@ -10917,15 +10918,15 @@
         </div>
         <div class="modal-body d-flex">
             <div class="mr-1">
- 
+
                 <h5 *ngIf="selectedactvy&&graphOption!=='PROJECT'"><span class="actvy-done-by-name">{{graphOption}}</span> - {{selectedactvy}}</h5>
                 <h5 *ngIf="selectedactvy&&graphOption=='PROJECT'">{{selectedactvy}}</h5>
                 <div class="actvy-list">
                     <div *ngFor="let ac of activitiesOnthat;let i=index" class="actvy-item">
-                      <div class="actvy-item-part1"> 
+                      <div class="actvy-item-part1">
                         <ng-container *ngIf="graphOption==='PROJECT'"><span class="actvy-done-by-name">{{ac.Modifiedby}}</span><br/></ng-container>
                         <b class="fs-7">{{i+1}}.</b>&nbsp;{{ac.Value}}
-                     </div>   
+                     </div>
                      <div class="actvy-item-part2   fs-8">
                             {{formatTimes(ac.ModifiedTime)}}
                      </div>
