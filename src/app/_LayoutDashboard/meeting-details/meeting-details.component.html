@@ -473,7 +473,7 @@
 
 
 
-                                <div class="action-section">
+                                <div class="action-section" *ngIf="Isadmin==true">
 
                                     <div class="todo-main">
                                         <div class="task-header">
@@ -525,8 +525,11 @@
                                                         <label
                                                             class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                                             <input type="checkbox" name="Checkboxes15" />
+                                                            
+                                                            
                                                             <span></span>
                                                         </label>
+
                                                         <div class="item-number">{{i+1}}</div>
                                                         <div class="item-info">
                                                             <div class="item-details">
@@ -539,7 +542,7 @@
     
                                                             </div>
                                                             <div class="d-flex">
-                                                                <button [id]="'edit-agendaname-btn-'+i"
+                                                                <button *ngIf="Isadmin==true" [id]="'edit-agendaname-btn-'+i"
                                                                     class="edit-agendaname-btn" (click)="editAgenda(i)">
                                                                     <svg width="15px" height="15px" viewBox="0 0 24 24"
                                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -553,7 +556,7 @@
                                                                         </g>
                                                                     </svg>
                                                                 </button>
-                                                                <button [id]="'remove-agenda-btn-'+i"
+                                                                <button *ngIf="Isadmin==true"  [id]="'remove-agenda-btn-'+i"
                                                                     class="remove-agenda-btn"
                                                                     (click)="deleteAgenda(item.AgendaId)">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -1275,8 +1278,8 @@
 
                                     <!-- <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6> -->
                                 </div>
-                                <div class="kt-btn-notes-div">
-                                    <div class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
+                                <div class="kt-btn-notes-div" >
+                                    <div *ngIf="currentAgendaView+1>0" class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
                                         <span class="title">Attendees Notes</span>
                                         <span class="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
@@ -1290,7 +1293,7 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="kt-project-notes" (click)="View_Private_Notes()">
+                                    <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
                                         <span class="title">Private Notes</span>
                                         <span class="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
@@ -1333,7 +1336,7 @@
                                             data-target="#attendes_notes" aria-expanded="false"
                                             aria-controls="attendes_notes">
                                             <div class="head-content">
-                                                <span class="accordion-heading">View All Team members notes</span>
+                                                <span class="accordion-heading" >View All Team members notes</span>
                                                 <!-- <span  class="message-count"> 24 Messages</span> -->
                                             </div>
                                             <div>
@@ -1504,11 +1507,11 @@
                                                         <span>Assign Task/Project</span>
                                                     </button>
 
-                                                    <button mat-menu-item mat
+                                                    <!-- <button mat-menu-item mat
                                                         (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
                                                         <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
                                                         <span>Add Action To Project</span>
-                                                    </button>
+                                                    </button> -->
                                                 </mat-menu>
                                             </div>
 
@@ -1555,7 +1558,7 @@
 
 
 
-                            <div class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+                            <div *ngIf="currentAgendaView+1>0" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
                                 <div class="accordion-item" >
                                     <h2 class="accordion-header" id="headingOne">
                                         <a class="accordion-button" type="button" data-toggle="collapse"
@@ -1577,22 +1580,24 @@
                                             </div>
                                         </a>
                                     </h2>
-                                    <div id="attendes_notes" class="accordion-collapse collapse" *ngFor="let data of AllAttendees_notes"
+                                                                                        
+                                    <div id="attendes_notes" class="accordion-collapse collapse" 
                                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                                         <div class="accordion-body">
-                                            <ul class="attendees-note-userlist">
+                                            <div *ngIf="currentAgendaView+1">                                       
+                                                <h5>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                                               </h5>                                 
+                                              </div>
+                                            <ul class="attendees-note-userlist" *ngFor="let data of AllAttendees_notes">
                                                 <li class="attendees-note-user">
                                                     <div class="user-info">
                                                         <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
                                                         <span>
                                                             <div class="user-name">{{data.Emp_Name}}
-                                                                 <!-- <span class="user-time">2 mins</span> -->
+                                                               
                                                                 </div>
-                                                            <div>
-                                                                <!-- <span class="user-role">Team Leader</span> <span
-                                                                    class="user-company">Devbox Software Pvt.ltd.</span> -->
-                                                            </div>
-                                                        </span>
+                                                            </span>
+                                                     
                                                     </div>
                                                     <div class="user-notes">
                                                       
@@ -1684,6 +1689,13 @@
             </div>
         </div>
         <div class="accordion accordion-attendes-notes mt-1" id="accordion_attendes">
+
+       <div class="accordion-all-agenda-notes" *ngIf="currentAgendaView+1">  
+         <h4>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+        </h4>
+       </div>
+
+
         <div  *ngFor="let data of AllAttendees_notes"
         aria-labelledby="headingOne" data-parent="#accordion_attendes">
         <div class="accor-body">
@@ -1766,13 +1778,20 @@
 
             <div class="M_fsize">
                 Linked
+                <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined" >
                 <div class="badge badge-pill badge-outline-success">
                     {{_MemosSubjectList&&_MemosSubjectList.length}}
                 </div>
+            </ng-container>
+                <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined" >
+                    <div class="badge badge-pill badge-outline-success">
+                        0
+                    </div>
+                </ng-container>
             </div>
             <div class="kt-nav__separator"></div>
         </li>
-        <li class="kt-nav__item px-4">
+        <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
             <div class="matchip-drp-dwn">
                 <mat-form-field class="drp-dwn-field ">
                     <mat-label>Select DMSs</mat-label>
@@ -1828,12 +1847,14 @@
             </div>
         </li>
         <li class="kt-nav__item px-4">
+           
             <div id="DemoList-table">
-                <ng-container *ngIf="_MemosSubjectList" >
+                <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound" >
                 <div class="demo" *ngFor="let memo of _MemosSubjectList">
+                   
                     <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                     <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
-
+                    <ng-container *ngIf="Isadmin==true">
                     <ng-container *ngFor="let item of EventScheduledjson">         
                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                             <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>                   
@@ -1841,18 +1862,19 @@
                      <ng-container *ngIf="item.Recurrence!=='Do not repeat'">              
                       <i class="fas fa-trash-alt p-2" (click)="DmsDeleteEvent(memo.MailId)"   data-target="#confirmpopup" data-toggle="modal" ></i> 
                        </ng-container>                 
-                     </ng-container>                  
+                     </ng-container>    
+                    </ng-container>                      
                 </div>
             </ng-container>
-            </div>
-            <!-- <ng-template #noDMSFound class="d-none">
+            </div>  
+            <ng-template #DMsNotFound >
                 <div class="no-DMS-found">
                     <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
                     <div class="bnk-txt mt-2 d-flex justify-content-center">
                         <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
                     </div>
                 </div>
-            </ng-template> -->
+            </ng-template>
         </li>
         <li class="kt-nav__foot"></li>
     </ul>
@@ -1899,7 +1921,7 @@
             </div>
             <div class="kt-nav__separator"></div>
         </li>
-        <div class="d-flex align-items-end p-3" style="column-gap:10px">
+        <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
             <mat-form-field class="drp-dwn-field w-100">
                 <mat-label>Select Portfolios</mat-label>
                 <mat-chip-list #selectedportfolioslist>
@@ -1985,7 +2007,8 @@
                                 <!-- <i class="fas fa-edit invisible"></i>
                                 <a (click)="DeletePortfolios(data.numberval)">
                                     <i class="fas fa-trash-alt"></i>
-                                </a> -->
+                                </a> -->        
+                                 <ng-container *ngIf="Isadmin==true">
                                 <ng-container *ngFor="let item of EventScheduledjson">         
                                     <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                                     
@@ -2003,6 +2026,7 @@
                                   
                                    </ng-container>                 
                                  </ng-container> 
+                                </ng-container>
                             </div>
                         </div>
                     </div>
@@ -2050,7 +2074,7 @@
         </div>
 
         <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
-            <div class="meeting-search">
+            <div *ngIf="Isadmin==true" class="meeting-search">
                 <div class="input-group mt-2">
                     <mat-form-field class="drp-dwn-field ">
                         <mat-label>Add Support team</mat-label>
@@ -2178,15 +2202,12 @@
   
                 <ul class="meeting-attendees-userlist">
                     <li class="meeting-attendees-user" *ngFor="let item of User_Scheduledjson;let i=index">
-                        <div class="user-info">
-                            <span class="user-icon">
-                                <img
-                                    src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                            </span>
+                        <div class="user-info">                        
+                            <div class="kt-user-2lt kt-clr-1" > {{getInitials(item.TM_DisplayName)}}</div> 
                             <span>
                                 <div class="user-name">
                                     {{item.TM_DisplayName}}
-                                    <!-- <span class="user-time">2 mins</span> -->
+                                
                                 </div>
                                 <div>
                                     <span class="user-role">{{item.Designation_Name}}</span> <span
@@ -2496,7 +2517,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <div class="d-flex align-items-end p-3" style="column-gap:10px">
+            <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
 
 
                 <mat-form-field class="drp-dwn-field ">
@@ -2545,8 +2566,7 @@
                    </ng-container>             
                    <ng-container *ngIf="(selectedEmploy_Projects=='' && item.Recurrence!=='Do not repeat')">  
                         <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>              
-                    </ng-container>
-           
+                    </ng-container>           
                     </ng-container>
             </div>
         </ul>
@@ -2556,8 +2576,11 @@
                 <div class="kt-inbox__items flex-grow-1" data-type="inbox">
                     <div class="card brdr-5 shadow-sm" *ngFor="let item of Project_code; let i=index">
                         <div class="Replied_border_left_true_primary">
+                            <a href="javascript:void(0)"
+                            (click)="moreDetails(item.stringval)">
                             <div data-type="inbox"
                                 class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
+                                                                                  
                                 <div class="kt-inbox__details">
                                     <div class="kt-inbox__sender">
                                         <span class="kt-inbox__subject">
@@ -2573,6 +2596,7 @@
                                         </span>
                                     </div>
                                 </div>
+                          
                                 <div class="kt-inbox__datetime">
                                 </div>
                                 <div class="delete-btn">
@@ -2580,7 +2604,7 @@
                                     <a (click)="DeleteProject(item.stringval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> -->
-
+                                    <ng-container *ngIf="Isadmin==true">
                                     <ng-container *ngFor="let data of EventScheduledjson">         
                                         <ng-container *ngIf="data.Recurrence==='Do not repeat'">
                                         
@@ -2595,14 +2619,13 @@
                                     <i class="fas fa-edit invisible"></i>
                                     <a (click)="ProjectsDeletedEvent(item.stringval)"      data-target="#confirmpopup" data-toggle="modal">
                                      <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                      
+                                    </a>                                     
                                        </ng-container>                 
                                      </ng-container>
-
-
+                                    </ng-container>
                                 </div>
                             </div>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -2697,7 +2720,7 @@
                                         [attr.data-target]="'#attendes_notes' + meeting.Schedule_date"                           
                             >
                             <div class="head-content">
-                                <span class="accordion-heading">{{meeting.Schedule_date}}</span>
+                                <span class="accordion-heading">{{meeting.Schedule_date | date: 'dd-MM-YYYY'}}</span>
                             </div>
                             <div>
                                 <span class="accordion-icon">
@@ -2793,7 +2816,7 @@
                 </h4>
 
                 <div class="d-flex align-items-center">
-                    <button id="upload_btn" class="btn-silvr" (click)="upload_btn()">
+                    <button  *ngIf="Isadmin==true" id="upload_btn" class="btn-silvr" (click)="upload_btn()">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
@@ -2866,6 +2889,14 @@
                             </ng-container>
                         </div>
                     </div>
+                    <ng-container *ngIf="_TotalAttachment===0">
+                        <div class="text-center">
+                            <img src="./assets/images/No Attachment.png" width="268" height="256">
+                            <div class="bnk-txt mt-3">
+                                <h3 class="blank-txt pfl-img">No Attachment Found</h3>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
             <div id="upload_div" style="display: none;">
@@ -2982,6 +3013,10 @@
     </div>
 </div>
 
+<!-- <div id="rightbar-overlay" (click)="closeInfo()"></div> -->
 
+<div id="mysideInfobar3" class="sideInfobar animate-right">
+    <router-outlet></router-outlet>
+</div>
 
 

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
@@ -14,12 +14,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
-  styleUrls: ['./meeting-details.component.css']
+  styleUrls: ['./meeting-details.component.css'],
+
 })
 export class MeetingDetailsComponent implements OnInit {
   _ObjAssigntaskDTO: AssigntaskDTO;
@@ -99,7 +102,9 @@ export class MeetingDetailsComponent implements OnInit {
     public notifyService: NotificationService,
     public _LinkService: LinkService,
     public ProjectTypeService: ProjectTypeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public router: Router,
+    public BsService: BsServiceService
     // public signalRService: SignalRService
   ) {
 
@@ -107,6 +112,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.objPortfolioDto = new PortfolioDTO();
     this._lstMultipleFiales = [];
     this._ObjAssigntaskDTO = new AssigntaskDTO();
+    // this._ObjCompletedProj = new CompletedProjectsDTO();
   }
 
   ngOnInit(): void {
@@ -125,7 +131,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.meeting_details();
       this.addAgenda();
       this.GetMeetingnotes_data();
-
+      this.getDetailsScheduleId()
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -133,6 +139,9 @@ export class MeetingDetailsComponent implements OnInit {
     // });
   }
 
+  getDetailsScheduleId() {
+    this.router.navigate(["Meeting-Details/" + this.Schedule_ID]);
+  }
   // sendMessage(name: string, message: string) {
   //   this.signalRService.send(name, message);
   // }
@@ -242,6 +251,7 @@ export class MeetingDetailsComponent implements OnInit {
   Meeting_status: boolean;
 
 
+
 meeting_details(){
     this.Schedule_ID=this.Scheduleid;
     this._calenderDto.Schedule_ID=this.Schedule_ID;
@@ -249,24 +259,33 @@ meeting_details(){
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
 
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-    
+  
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
+    
+    var x =this.Agendas_List.length
+
+    console.log(x,'EventScheduledjson ')
+
     this.Createdby=this.EventScheduledjson[0].Created_by;
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
 
    
-    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
-    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
+    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
 
-    console.log(this.EventScheduledjson,'EventScheduledjson ')
+    // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
+    
+    // console.log('meeting_details--->',x)
+    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
+    
+    
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
     this._TotalAttachment=this.Attachments_ary.length
 
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
     this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code)
-    console.log('meeting_details--->',this.Project_code)
+  
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
     this. Meeting_status=this.EventScheduledjson[0]. Meeting_status;
@@ -297,6 +316,12 @@ meeting_details(){
       this.GetDMSList();
     }
    })
+}
+
+ getInitials(name) {
+  var initials = name.match(/\b\w/g) || [];
+  initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+  return initials;
 }
 
   startMeeting() {
@@ -565,6 +590,11 @@ addNewDMS() {
     }
 
 
+    openUrl(memo_Url) {
+      const Url = memo_Url;
+      window.open(Url);
+    }
+
 
 /////////////////////////////////////////// DMS Side-Bar End /////////////////////////////////////////////////////////
 
@@ -601,13 +631,21 @@ closeLinkSideBar(){
   this.selectedEmploy_DMS=[];
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("LinkSideBar2").classList.remove("kt-quick-panel--on");
-    this.fruitInputpro.nativeElement.value = '';
+    if(this.fruitInputpro && this.fruitInputpro.nativeElement.value != undefined){
+      this.fruitInputpro.nativeElement.value = '';
+    }
+ 
     document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    this.fruitInputportfolio.nativeElement.value = '';
-    this.fruitInputs.nativeElement.value='';
+    if(this.fruitInputportfolio && this.fruitInputportfolio.nativeElement.value != undefined){
+      this.fruitInputportfolio.nativeElement.value = '';
+    }
+    if(this.fruitInputs && this.fruitInputs.nativeElement.value != undefined){
+      this.fruitInputs.nativeElement.value='';
+    }
+   
 }
 
 AddProjects(){
@@ -1112,7 +1150,7 @@ Addproject_meetingreport() {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.Project_Code = this.selectedEmploy_Projects.map(item=>item.Project_Code).join(',');
   this._calenderDto.flagid = this.currentEventId==undefined?1:this.currentEventId;
- debugger
+
  if( this._calenderDto.Project_Code){
   this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe
   (data => {
@@ -1165,7 +1203,13 @@ DeleteProject(Project_Code: number) {
   });
 }
 
-
+moreDetails(ProjectCode) {
+  let name: string = 'MoreDetails';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${ProjectCode}`;
+  var myWindow = window.open(myurl, ProjectCode);
+  myWindow.focus();
+}
 
 /////////////////////////////////////////// Project Side-Bar End /////////////////////////////////////////////////////////
 /////////////////////////////////////////// Previous Meeting Notes Side-Bar start /////////////////////////////////////////////////////////
@@ -1313,6 +1357,7 @@ deleteAgenda(AgendaId: number) {
 
 AgendaId:any
 showAgendaDetails(item,index){
+  debugger
   this.AgendaId=item.AgendaId
   this.currentAgendaView=index
   // this.Notes_Type=''
@@ -1658,6 +1703,73 @@ EnterSubmit(_Demotext) {
       });
 
   }}
+
+  _taskName: any;
+  task_id: any;
+
+  GetProjectTypeList(taskName, id) {
+
+    this._taskName = taskName;
+    this.task_id = id;
+    debugger
+    this.router.navigate(["Meeting-Details/" + this.Scheduleid + "/ActionToAssign/3"]);
+    this.BsService.SetNewAssignId(this.task_id);
+    this.BsService.SetNewAssignedName(this._taskName);
+    let typeoftask: any = "IFRT";
+    this.BsService.setNewTypeofTask(typeoftask);
+
+    // this._ObjCompletedProj.PageNumber = 1;
+    // this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    // this._ObjCompletedProj.Mode = 'AssignedTask';
+    // this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+    //   (data) => {
+
+    //     this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
+    //   });
+    //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
+
+    alert('452')
+    document.getElementById("mysideInfobar3").classList.add("kt-action-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $("#mysideInfobar").scrollTop(0);
+  }
+
+
+
+
+
+
+
+
+
+
+  // GetAssigned_SubtaskProjectsDatails() {
+
+  //   this._ObjCompletedProj.PageNumber = 1;
+  //   this._ObjCompletedProj.Emp_No = this.Current_user_ID;
+  //   this._ObjCompletedProj.CategoryId = 2411;
+  //   this._ObjCompletedProj.Mode = 'Todo';
+  //   this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
+
+  //   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+  //     (data) => {
+     
+  //       // console.log("Data---->", data);
+  //       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+  //       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+
+  //       // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+  //        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+  //       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+
+  //       this.assigncount = this.ActionedAssigned_Josn.length;
+  //       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+  //       console.log("the sss", this._TodoList)
+  //     });
+
+  // }
 /////////////////////////////////////////// assign task End //////////////////////////////////////////////////////////////////
 
 

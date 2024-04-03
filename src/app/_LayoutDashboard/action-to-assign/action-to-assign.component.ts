@@ -19,6 +19,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -48,6 +49,7 @@ export const MY_DATE_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+   
   ]
 })
 
@@ -93,7 +95,9 @@ export class ActionToAssignComponent implements OnInit {
     public router: Router,
     public BsService: BsServiceService,
     public _projectunplanned: ProjectUnplannedTaskComponent,
-    public _meetingreport: MeetingReportComponent) {
+    public _meetingreport: MeetingReportComponent,
+    public _meetingDetails:MeetingDetailsComponent
+    ) {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
@@ -129,6 +133,7 @@ export class ActionToAssignComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
 
   getProjectTypeList() {
+   
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
@@ -168,6 +173,7 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   OnAssignTask_Submit() {
+   
     // debugger
     if (this._StartDate == null && this._EndDate != null) {
       this.noStartDate = true;
@@ -293,6 +299,16 @@ export class ActionToAssignComponent implements OnInit {
             this.closeInfo();
             this._inputAttachments = [];
           }
+          else if(this._Urlid == 3){
+            this._meetingDetails.getDetailsScheduleId();
+            // this._meetingDetails.GetAssigned_SubtaskProjects();
+            let message: string = data['Message'];
+            this.notifyService.showSuccess("Task sent to assign projects", message);
+
+            this.clearFeilds();
+            this.closeInfo();
+            this._inputAttachments = [];
+          }
 
         });
     }
@@ -312,6 +328,10 @@ export class ActionToAssignComponent implements OnInit {
       this._meetingreport.getScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
 
+    }
+    else if(this._Urlid==3){
+      this._meetingDetails.getDetailsScheduleId();
+    document.getElementById("mysideInfobar3").classList.remove("kt-action-panel--on");
     }
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
