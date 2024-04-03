@@ -34,8 +34,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meeting-details.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-
-
+import { NgxSummernoteModule } from 'ngx-summernote';
 
 // import { ProjectCreationComponent } from './_LayoutDashboard/project-creation/project-creation.component';
 // import { ProjectAssignTaskComponent } from './_LayoutDashboard/project-assign-task/project-assign-task.component';
@@ -88,7 +87,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatAutocompleteModule,
     MatInputModule,
     MatFormFieldModule,
-    ScrollingModule
+    ScrollingModule,
+    NgxSummernoteModule
   ],
   providers:
     [AuthGuard

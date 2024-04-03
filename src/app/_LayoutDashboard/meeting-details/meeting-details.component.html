@@ -1316,13 +1316,83 @@
                             <div class="meeting-notes">
                                 <!-- <angular-editor [config]="config" [(ngModel)]="notesContent"></angular-editor> -->
 
-                                <angular-editor [config]="config" [(ngModel)]="Notes_Type"
-                                    (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
+                                <angular-editor [config]="config" [(ngModel)]="Notes_Type" 
+                                    (click)="onEditorFocus()"
+                                    (focus)="onEditorFocus()" 
+                                    (copy)="onCopy($event)"
+                                    (keyup)="addBulletPointsOnEnter($event)">
+                                
+                                </angular-editor>
+                                
+                                <div class="d-flex mt-1">
+                                    <!-- <div>
+                                        <button (click)="makeLineATask()">to do task</button>
+                                    </div> -->
+                                    <div class="" (click)="makeLineATask()">
+                                            <button class="btn btn-info btn-sm ">
+                                                 To-do task
+                                              </button>
+                                    </div>
+                                    <div class="ml-2" (click)="makeLineAProject()">
+                                            <button class="btn btn-info btn-sm ">
+                                                 Assign project/task
+                                              </button>
+                                    </div>
+                                    <div class="ml-2" (click)="makeLineAAction()">
+                                            <button class="btn btn-info btn-sm ">
+                                                 Action to project
+                                              </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="todo-list">
+                                    <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
+                                        <input class="task-status" type="checkbox">
+                                        <label class="task-name">{{item.Task_Name}}</label>
+                                        <div class="task-actions">
 
+                                            <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                aria-label="Example icon-button with a menu" matTooltip="More"
+                                                class="cursor-pointer ast-kt-dw">
+                                                <mat-icon color="primary">more_vert</mat-icon>
+                                            </span>
+                                            <mat-menu #menu="matMenu" xPosition="after">
+                                                <button mat-menu-item mat
+                                                    (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                    <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                    <span>Assign Task/Project</span>
+                                                </button>
+
+                                                <button mat-menu-item mat
+                                                    (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                    <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                    <span>Add Action To Project</span>
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                        <button class="task-delete task-btns"
+                                            (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                role="img" font-size="1.5rem" width="1em" height="1em"
+                                                viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                <path fill="currentColor"
+                                                    d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                    <!-- <ngx-summernote [(ngModel)]="Notes_Type"></ngx-summernote> -->
+
+
+                                
                                 <!-- <angular-editor  [editor]="Editor" 
                                [(ngModel)]="Notes_Type"
                                (keyup)="addBulletPointsOnEnter($event)"></angular-editor > -->
                             </div>
+
+                            
 
 
 
@@ -1412,7 +1482,7 @@
 
 
 
-                            <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
+                            <!-- <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
                                 <div class="kt-meeting-title mt-0 mb-2">
                                     <div class="kt-meeting-title-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17"
@@ -1541,7 +1611,7 @@
                                         <div class="task-empty" *ngIf="!text">Not found a task</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
 
 

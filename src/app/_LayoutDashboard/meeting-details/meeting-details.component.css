@@ -3218,3 +3218,12 @@ span.side-icns.kt-org-ic {
     width: 90px;
     height: 25px;
 }
+.task {
+    /* Style your task however you like */
+    background-color: #e0e0e0;
+    border-left: 3px solid #2196f3;
+    padding-left: 5px;
+    margin: 5px 0;
+  }
+
+  
