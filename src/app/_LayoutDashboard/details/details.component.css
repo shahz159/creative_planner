@@ -4011,6 +4011,38 @@ span.Rq_date_V {
 
 
 
+
+
+
+
+
+
+
+
+.stdtask-aprv-btn{
+  background-color: #2782df;
+  color: white;
+}
+.stdtask-aprv-btn:hover{
+  background-color: #1969b9;
+}
+
+
+.stdtask-underapproval-notification{
+  background-color: #d8efff;
+}
+
+.stdtask-underapproval-notification .notif-img{
+  align-self: center;
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+}
+
+
+
+
 .overutilization-notification{
   background-color: #fdbc4a38;
 

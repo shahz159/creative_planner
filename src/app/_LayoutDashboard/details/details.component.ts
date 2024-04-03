@@ -1797,6 +1797,7 @@ debugger
 
         }
         if (this.requestType == 'Task Complete') {
+          this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
@@ -1829,17 +1830,19 @@ debugger
 
 standardjson:any;
 currentStdAprView:number=0;
-  getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+  getstandardapprovalStats(){  
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); console.log('standardjson values:',this.standardjson);
-      if(this.standardjson.length>0){
-          this.isApprovalSection=true;
-          this.isTextAreaVisible=false;
-          this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
-      }
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); 
+      
+
+      // if(this.standardjson.length>0){
+      //     this.isApprovalSection=true;
+      //     this.isTextAreaVisible=false;
+      //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
+      // }
 
     });
   }
