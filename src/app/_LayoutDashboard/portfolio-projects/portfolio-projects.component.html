@@ -256,7 +256,7 @@
                                                       <div class="mx-2 p-1"> <span class="kt-widget__other " *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>  Deleted by</span></div>
                                                      <span class="kt-widget__other tb-w-45" *ngIf="!showDeletedPrjOnly"> Actions</span>
                                                     </td>
-
+                                            <td *ngIf="showDeletedPrjOnly" > <i class="fas fa-sort"></i> References</td>
                                                 </thead>
 
 
@@ -353,7 +353,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <span class="count2" *ngIf="item1.Actioncount>0 ">{{item1.CompletedActioncount}}/{{item1.Actioncount}}</span>
+                                                        <span class="count2" title="Completed By All" *ngIf="item1.Actioncount>0 ">{{item1.CompletedActioncount}}/{{item1.Actioncount}}</span>
                                                     </td>
 
                                                     <td>
@@ -565,6 +565,29 @@
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
                                                       </td>
+
+
+
+<td>
+
+                                                     <a  id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                     class="symbol symbol-35px symbol-circle">
+                                                     <span    class="symbol-label bg-success text-gray-300 fs-8 fw-bold">View</span>
+
+                                                       <div   class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant" style="cursor: pointer;">
+
+                                                        <div *ngFor="let availablePort of item1.availableports" (click)="OnCardClick(availablePort.Portfolio_ID, availablePort.Portfolio_Name, item1.CreatedName, item1.Created_DT)"  style="margin-bottom: 5px;padding-left: 5px;">
+                                                          {{ availablePort.Portfolio_Name }}
+                                                        </div>
+                                                        <!-- </ng-container> -->
+
+
+                                                       </div>
+                                                     </a>
+
+                                                    </td>
+
+
                                                     </ng-template>
 
 

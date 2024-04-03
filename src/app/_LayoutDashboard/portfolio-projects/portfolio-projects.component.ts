@@ -152,6 +152,7 @@ export class PortfolioProjectsComponent implements OnInit {
   createdBy:any;
   lastProject:any;
   Deletedproject:any
+  availablereport:any
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -187,6 +188,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject=JSON.parse(data[0]['PortfolioDeletedProjects']);
         console.log(" this.Deletedproject", this.Deletedproject)
+        //  this.availablereport=this.Deletedproject.availablereport
+        // console.log(this.availablereport,'eeeeeeeeeeeeeeeeeeeeeeeeeeeee')
         this.CountDeleted=this.Deletedproject.length
         // this.LoadingBar_state.stop();
         this.TotalProjects = this._ProjectsListBy_Pid.length;
@@ -1573,7 +1576,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   onButtonClick(buttonId: string) {
-    debugger
+
     const elements = {
       'tot': 'active-total-project',
       'inn': 'active-in-processs',
@@ -1601,7 +1604,20 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       }
     }
   }
-
+  OnCardClick(P_id: any, P_Name: string, CreatedName: string) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    //sessionStorage.setItem('portfolioCDT', P_CDT);
+    //this.router.navigate(['/portfolioprojects/', P_id]);
+    // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+    // window.open(Url);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 }
 /// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">

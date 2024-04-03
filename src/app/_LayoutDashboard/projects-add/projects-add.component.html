@@ -221,8 +221,8 @@
                                                             </mat-checkbox>
                                                         </mat-list-item> -->
 
-                                                          <input class='mat-checkbox-inner-container' [(ngModel)]="isAllPrjSelected"  type="checkbox" title="Select All" (change)="selectUnSelectAllPrj($event)" />
-                                                          <button class="btn btn-primary btn-sm" (click)="OnAllSelectedPrjSave()">Add</button>
+                                                          <input class='mat-checkbox-inner-container' [(ngModel)]="isAllPrjSelected"  type="checkbox" title="Select All" (click)="OnAllSelectedPrjSave()" (change)="selectUnSelectAllPrj($event)" />
+
 
                                                     </th>
 
