@@ -885,6 +885,7 @@ this.prjPIECHART.render();
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
+      this.Title_Name=this.projectInfo.Project_Name;
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1288,7 +1289,25 @@ debugger
     this.initializeSelectedValues()
 
   }
-
+  ApprovalSideBar() {
+    document.getElementById("Approval_view").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+  }
+  
+  closeApprovalSideBar(){
+    document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
+  }
+  hide_main_approval(){
+    document.getElementById("main-approval").style.display = "none";
+    document.getElementById("main-reject").style.display = "block";
+  }
+  backmainapproval(){
+    document.getElementById("main-approval").style.display = "block";
+    document.getElementById("main-reject").style.display = "none";
+  }
   closeInfo() {
     this._remarks = ''
     this.selectedFile=null;
@@ -1308,6 +1327,7 @@ debugger
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
+    document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
@@ -1777,6 +1797,7 @@ debugger
 
         }
         if (this.requestType == 'Task Complete') {
+          this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
@@ -1809,17 +1830,19 @@ debugger
 
 standardjson:any;
 currentStdAprView:number=0;
-  getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+  getstandardapprovalStats(){  
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); console.log('standardjson values:',this.standardjson);
-      if(this.standardjson.length>0){
-          this.isApprovalSection=true;
-          this.isTextAreaVisible=false;
-          this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
-      }
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); 
+      
+
+      // if(this.standardjson.length>0){
+      //     this.isApprovalSection=true;
+      //     this.isTextAreaVisible=false;
+      //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
+      // }
 
     });
   }
@@ -5433,7 +5456,7 @@ getChangeSubtaskDetais(Project_Code) {
     this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
-    this.Title_Name = null;
+    this.Title_Name = this.projectInfo.Project_Name;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
     this.SelectDms = [];
@@ -5773,7 +5796,7 @@ getChangeSubtaskDetais(Project_Code) {
 
 
           this.GetScheduledJson();
-          this.Title_Name = null;
+          this.Title_Name = this.projectInfo.Project_Name;
           this.ngEmployeeDropdown = [];
           this.Description_Type = null;
           this.MasterCode = [];
@@ -7140,11 +7163,22 @@ showFullGraph(){
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
-    });
+    });  
+   
+    // this is for remove fusion chart watermark label from the graph.
+    myChart.addEventListener('rendered',()=>{
+      setTimeout(()=>{
+        const x:any=document.querySelectorAll('#full-graph .fusioncharts-container svg>g[class^="raphael"]');
+        x[1].style.display='none';
+      },10);
+    });   
+   // this is for remove fusion chart watermark label from the graph.
+
+
 
   });
 
-
+ 
   
 }
 
@@ -7159,7 +7193,8 @@ onGraphOptionChanged(option:string){
 
 loadActivitiesByDate(d){
   this.activitiesOnthat=this.getActivitiesOf(d);
-  this.selectedactvy=d;
+  const currentDt=new Date();
+  this.selectedactvy=d==currentDt?'TODAY':d;
 }
 
 
@@ -7380,6 +7415,75 @@ meetingReport(mtgScheduleId:any) {
   myWindow.focus();
 }
 // start meeting feature end
+
+
+
+
+
+//  save meeting as draft start.
+Insert_indraft() { debugger
+  if (this.draftid != 0) {
+    this._calenderDto.draftid = this.draftid;
+  }
+  else {
+    this._calenderDto.draftid = 0;
+  }
+  this._calenderDto.Task_Name = this.Title_Name;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  if (this.SelectDms == null) {
+    this.SelectDms = [];
+  }
+  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  if (this.Portfolio == null) {
+    this.Portfolio = [];
+  }
+  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+  this._calenderDto.location = this.Location_Type;
+  this._calenderDto.loc_status = this._onlinelink;
+  this._calenderDto.Note = this.Description_Type;
+  this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+  //  alert( this.ScheduleType);
+  if (this.ngEmployeeDropdown == null) {
+    this.ngEmployeeDropdown = [];
+  }
+  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  if (this.MasterCode == null) {
+    this.MasterCode = [];
+  }
+  this._calenderDto.Project_Code = this.MasterCode.toString();
+
+  this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+    (data => { debugger
+      if (data['message'] == '1') {
+        // this.Getdraft_datalistmeeting();
+        this.closeschd();
+        this.meetingsViewOn=true;
+        this.notifyService.showSuccess("Draft saved", "Success");
+      }
+      // if (data['message'] == '2') {
+      //   // this.Getdraft_datalistmeeting();
+      //   this.closeschd();
+      //   this.notifyService.showSuccess("Draft updated", "Success");
+      // }
+    });
+
+
+}
+
+
+// save meeting as draft end.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

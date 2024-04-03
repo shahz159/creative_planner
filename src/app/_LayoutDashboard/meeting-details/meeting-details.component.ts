@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
+import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
@@ -35,6 +36,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
   notesContent: any;
+  _ObjCompletedProj: CompletedProjectsDTO;
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -107,6 +109,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.objPortfolioDto = new PortfolioDTO();
     this._lstMultipleFiales = [];
     this._ObjAssigntaskDTO = new AssigntaskDTO();
+    this._ObjCompletedProj = new CompletedProjectsDTO();
   }
 
   ngOnInit(): void {
@@ -125,12 +128,126 @@ export class MeetingDetailsComponent implements OnInit {
       this.meeting_details();
       this.addAgenda();
       this.GetMeetingnotes_data();
-
+      this.GetAssigned_SubtaskProjects();
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
     //   // Here you can update your view/model with the received message
     // });
+  }
+
+  @HostListener('copy', ['$event'])
+  editorFocused: boolean = false;
+
+  onEditorFocus(): void {
+    this.editorFocused = true;
+    // alert(this.editorFocused)
+  }
+
+  onEditorBlur(): void {
+    this.editorFocused = false;
+  }
+
+  selectedText:any;
+
+  makeLineATask(): void {
+    debugger
+    // alert(this.editorFocused)
+    const editorContent = this.Notes_Type;
+    if (this.editorFocused===true) {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) {
+      alert('Nothing is selected');
+    } 
+    
+
+    // const range = selection.getRangeAt(0);
+    // const selectedText = range.toString();
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString().trim();
+    const containerEl = range.commonAncestorContainer;
+
+    // We assume `containerEl` is where the Angular Editor's content is
+    // Now we need to convert it to a proper HTML element if it's not already
+    const editorEl = containerEl.nodeType === 3 ? containerEl.parentNode : containerEl;
+
+    // Get all the text content split by line breaks
+    const lines = editorEl.textContent.split('\n');
+
+    // Find which line has the selected text
+    const currentLineIndex = lines.findIndex(line => line.includes(selectedText));
+    if (currentLineIndex === -1) return; // Selected text not part of the lines, exit
+
+    // Replace the current line with the task HTML
+    lines[currentLineIndex] = `<div class="task">${lines[currentLineIndex]}</div>`;
+
+    // Update the Notes_Type model with the new content
+    // alert(lines.join('\n'));
+    let stringWithoutHtml = this.stripHtml(lines);
+    console.log(stringWithoutHtml, "todo");
+
+    // this.checkIfCopiedCorrectly(stringWithoutHtml);
+    if(stringWithoutHtml==''){
+      alert("Please select & copy some text from editor or place cursor on the line you want to select");
+    }
+    else{
+      if(this.selectedText!="" && stringWithoutHtml.includes(this.selectedText)){
+        this.EnterSubmit(this.selectedText);
+      }
+      else{
+        this.EnterSubmit(stringWithoutHtml);
+      }
+    }
+    }
+    else{
+      alert('This action is only for the angular editor')
+    }
+    this.editorFocused=false;
+  }
+
+  makeLineAProject(){
+
+  }
+
+  makeLineAAction(){
+
+  }
+  
+  onCopy(event: ClipboardEvent) {
+    // Using Clipboard API
+    const copiedText = event.clipboardData?.getData('text/plain');
+    
+    // If Clipboard API is not available, use window.getSelection()
+    if (!copiedText && window.getSelection) {
+      const selectedText = window.getSelection().toString();
+      console.log('Copied with window.getSelection:', selectedText);
+      this.selectedText=selectedText;
+    } else {
+      console.log('Copied with Clipboard API:', copiedText);
+      this.selectedText=copiedText;
+      // Now you can do something with the copied text
+      // ...
+    }
+
+    // Optional: prevent the default copy action
+    // event.preventDefault();
+  }
+
+  stripHtml(html: any): string {
+    // Check if html is an array and has at least one element.
+    if (Array.isArray(html) && html.length > 0) {
+      // Assume the first element is the string to be stripped of HTML.
+      const string = html[0];
+      if (typeof string === 'string') {
+        return string.replace(/<[^>]*>/g, '');
+      } else {
+        console.error('Expected a string in the array but got:', string);
+        return ''; // or some default string representation
+      }
+    } else {
+      console.error('Expected an array with at least one item but got:', html);
+      return ''; // or some default string representation
+    }
   }
 
   // sendMessage(name: string, message: string) {
@@ -1195,9 +1312,6 @@ GetPreviousdate_meetingdata() {
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
     (data => {
       this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
-
-      console.log(this.Previousdata_meeting,'pre meeting notes') 
-      // this.Previousdata_meeting = this.Previousdata_meeting.filter((item) => item.MeetingDetails.length > 0);
     });
 }
 
@@ -1631,6 +1745,9 @@ GetcompletedMeeting_data() {
     });
 }
 
+ActionedAssigned_Josn: any = [];
+ActionedSubtask_Json: any=[];
+assigncount: number;
 
 
 
@@ -1640,11 +1757,11 @@ EnterSubmit(_Demotext) {
     this._ObjAssigntaskDTO.CategoryId = 2411;
     this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
     this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
-    this._ObjAssigntaskDTO.TaskName = this._Demotext;
+    this._ObjAssigntaskDTO.TaskName = _Demotext;
     this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
 
-    this.text.push(this._Demotext);
-    this._Demotext = "";
+    // this.text.push(this._Demotext);
+    // this._Demotext = "";
     this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
       (data) => {
         //console.log("Data---->", data);
@@ -1654,19 +1771,81 @@ EnterSubmit(_Demotext) {
 
         let message: string = data['Message'];
         console.log("Data---->", this._TodoList);
-        this._Demotext = ""
+        this._Demotext = "";
+        this.selectedText="";
+        this.editorFocused=false;
         //this.GetAssignTask();
         this.notifyService.showSuccess("Successfully", "Added");
         // this.closeInfo();
       });
 
-  }}
+  }
+  
+}
+
+GetAssigned_SubtaskProjects() {
+
+  this._ObjCompletedProj.PageNumber = 1;
+  this._ObjCompletedProj.Emp_No = this.Current_user_ID;
+  this._ObjCompletedProj.CategoryId = 2411;
+  this._ObjCompletedProj.Mode = 'Todo';
+  this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
+
+  this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+    (data) => {
+   
+      // console.log("Data---->", data);
+      // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+      this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+
+      // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+      this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+      this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+
+      this.assigncount = this.ActionedAssigned_Josn.length;
+      this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+      console.log("the sss", this._TodoList)
+    });
+
+}
+
+_Deletetask(id, name) {
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'Todo_Delete',
+      title1: 'Confirmation ',
+      taskName: name
+      //message1: "proj_Name"
+    }
+  });
+  confirmDialog.afterClosed().subscribe(result => {
+    if (result === true) {
+      this._ObjAssigntaskDTO.TypeOfTask = "Delete";
+      this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+      this._ObjAssigntaskDTO.AssignId = id;
+      this._ObjAssigntaskDTO.CategoryId = 2411;
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
+          // this._CompletedList = JSON.parse(data['CompletedList']);
+
+          let message: string = data['Message'];
+          this._Demotext = "";
+          this.notifyService.showInfo("Successfully", message);
+          this.GetAssigned_SubtaskProjects();
+        });
+    }
+    else {
+      //this.notifyService.showInfo("Cancelled", "Delete");
+    }
+  });
+}
 /////////////////////////////////////////// assign task End //////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////// All Attendees Notes sidebar Start //////////////////////////////////////////////////////////////////
 
-Meeting_noteslist:any=[]
+AllAttendees_notes:any=[]
 Employeeslist:any
 
 GetAttendeesnotes(){
@@ -1676,14 +1855,17 @@ GetAttendeesnotes(){
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
- 
-    this.Meeting_noteslist=JSON.parse(data['Checkdatetimejson']);
-    console.log(this.Meeting_noteslist,'Meeting_notes_lists1');
-    const objectsWithEmployees  = this.Meeting_noteslist.filter(obj => obj.hasOwnProperty('Employees'));
-    
-    this.Employeeslist=objectsWithEmployees[0].Employees;
+    this.AllAttendees_notes=JSON.parse(data['Checkdatetimejson']);
+    console.log(this.AllAttendees_notes,'AllAttendees_notes');
 
-    console.log(this.Employeeslist,'Meeting_notes_lists2');
+
+
+
+    // const objectsWithEmployees  = this.AllAttendees_notes.filter(obj => obj.hasOwnProperty('Employees'));
+    
+    // this.Employeeslist=objectsWithEmployees[0].Employees;
+
+    // console.log(this.Employeeslist,'Meeting_notes_lists2');
   });
 }
 } 
