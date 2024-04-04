@@ -1276,7 +1276,6 @@ export class MeetingReportComponent implements OnInit {
   task_id: any;
 
   GetProjectTypeList(taskName, id) {
-
     this._taskName = taskName;
     this.task_id = id;
     this.router.navigate(["Meeting-Report/" + this.Schedule_ID + "/ActionToAssign/2"]);
