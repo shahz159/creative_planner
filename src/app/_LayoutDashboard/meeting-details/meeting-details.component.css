@@ -255,6 +255,75 @@
     border: 2px solid #527CE2;
 }
 
+
+
+.kt-agenda-items {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background: #F3F8FF;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.kt-agenda-items.active {
+    border-radius: 5px  !important;
+    border: 2px solid #3CB371 !important;
+}
+
+
+.kt-agenda-items.Active {
+    border: 2px solid #3CB371 !important;
+}
+
+.kt-agenda-items.Active {
+    position: relative;
+    border: 2px solid #3CB371 !important;
+    border-radius: 4px;
+}
+
+.kt-agenda-items.Active:after,
+.kt-agenda-item.Active:before {
+    border: solid transparent;
+    content: " ";
+    display: block;
+    height: 0;
+    position: absolute;
+    pointer-events: none;
+    width: 0;
+    left: 100%;
+}
+
+.kt-agenda-items.Active:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-left-color: #f3f8ff;
+    top: 50%;
+    margin-top: -10px;
+    border-width: 10px;
+}
+
+.kt-agenda-items.Active:before {
+    border-color: rgb(255 255 255 / 0%);
+    border: 2px solid #3CB371 !important;
+    top: 50%;
+    margin-top: -13px;
+    border-width: 13px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .item-number {
     color: #2B85BF;
     font-size: 19px;
@@ -3214,7 +3283,93 @@ span.side-icns.kt-org-ic {
     padding: 0px;
     padding-top: 1rem;
 }
+.accordion-all-agenda-notes{
+    margin: 10px 0px 10px 14px;
+}
+.blank-txt{
+    color: #9b9999 !important;
+}
 .app-logo svg {
     width: 90px;
     height: 25px;
 }
+.task {
+    /* Style your task however you like */
+    background-color: #e0e0e0;
+    border-left: 3px solid #2196f3;
+    padding-left: 5px;
+    margin: 5px 0;
+  }
+
+
+
+
+.meet-card{
+    border-radius: 10px;
+}
+.meet-card .card-header:first-child {
+    border-radius: 10px 10px 0 0;
+}
+h5.card-ttle{
+    font-size: 16px;
+    font-weight: 400;
+    color: #3c4043;
+}
+/* .header2 {
+    padding: 40px;
+    padding-bottom: 20px;
+    background-color: #f7f8fa;
+    border-bottom: 1px solid #ebedf2;
+   
+} */
+.card-body2{
+    background-color: #f1f5f9;
+}
+.card-mid .eve-area:not(:first-child){
+    border-top: 1px solid #ebedf2;
+}
+.card-mid .eve-area{
+    padding: 7px 20px;
+}
+.cards-main {
+    display: flex;
+}
+.card-side{
+    width: 30%;
+    display: none;
+}
+.cards-main .card-side{
+    display: flex;
+}
+.meet-card {
+    height: 97vh;
+  }
+
+  .Replied_border_left_true_warning {
+    border-left: 5px solid #ffb822;
+  }
+
+  .mat-icon.mat-primary {
+    color: #3699ff;
+  }
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .input-group-text>.mat-icon-button {
+    line-height: 35px !important;
+  }
+
+  .kt-badge.kt-badge--inline {
+    height: auto;
+    width: auto;
+    padding: 0.15rem 0.75rem;
+    border-radius: 2px;
+    margin-left: 4px;
+  }

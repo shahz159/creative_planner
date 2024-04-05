@@ -1,5 +1,5 @@
 // import { flatten } from '@angular/compiler';
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild,ViewChildren,QueryList } from '@angular/core';
 import { FormControl } from '@angular/forms'
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete'
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -19,6 +20,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -48,6 +50,7 @@ export const MY_DATE_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
+
   ]
 })
 
@@ -93,7 +96,9 @@ export class ActionToAssignComponent implements OnInit {
     public router: Router,
     public BsService: BsServiceService,
     public _projectunplanned: ProjectUnplannedTaskComponent,
-    public _meetingreport: MeetingReportComponent) {
+    public _meetingreport: MeetingReportComponent,
+    public _meetingDetails:MeetingDetailsComponent
+    ) {
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
@@ -129,6 +134,7 @@ export class ActionToAssignComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
 
   getProjectTypeList() {
+
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
@@ -168,6 +174,7 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   OnAssignTask_Submit() {
+
     // debugger
     if (this._StartDate == null && this._EndDate != null) {
       this.noStartDate = true;
@@ -275,7 +282,6 @@ export class ActionToAssignComponent implements OnInit {
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
             this.router.navigate(["UnplannedTask/"]);
-
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -284,8 +290,20 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 2){
+         
             this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
+            let message: string = data['Message'];
+            this.notifyService.showSuccess("Task sent to assign projects", message);
+
+            this.clearFeilds();
+            this.closeInfo();
+            this._inputAttachments = [];
+          }
+          else if(this._Urlid == 3){
+          
+            this._meetingDetails.getDetailsScheduleId();
+            this._meetingDetails.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -312,6 +330,11 @@ export class ActionToAssignComponent implements OnInit {
       this._meetingreport.getScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
 
+    }
+    else if(this._Urlid==3){
+   
+      this._meetingDetails.getDetailsScheduleId();
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -413,4 +436,62 @@ isPrjDesValid:boolean=true;
   }
 
 
+ // mat-autocomplete dropdowns code start.
+ @ViewChildren(MatAutocompleteTrigger) autocompletes: QueryList<MatAutocompleteTrigger>;
+ openAutocompleteDrpDwn(Acomp: string) {
+   const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+   requestAnimationFrame(() => autoCompleteDrpDwn.openPanel());
+ }
+
+ closeAutocompleteDrpDwn(Acomp: string) {
+   const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+   requestAnimationFrame(() => autoCompleteDrpDwn.closePanel());
+ }
+
+
+  Portfolio: any = [];
+  isPortfolioDrpDwnOpen: boolean = false;
+  onPortfolioSelected(e: any) {
+    debugger
+    const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
+    console.log(portfolioChoosed);
+    if (portfolioChoosed) {
+      if (!this.Portfolio)   // if Portfolio is null,undefined,''
+        this.Portfolio = [];
+      const index = this.Portfolio.indexOf(portfolioChoosed.Portfolio_ID);
+      if (index === -1) {
+        // if not present then add it
+        this.Portfolio.push(portfolioChoosed.Portfolio_ID);
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.Portfolio.splice(index, 1);
+      }
+    }
+    this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+  }
+
+
+  removeSelectedPortfolio(item) {
+    const index = this.Portfolio.indexOf(item);
+    if (index !== -1) {
+      this.Portfolio.splice(index, 1);
+    }
+  }
+
+
+  getObjOf(arr, id, idName) {
+    debugger
+    const obj = arr.find(item => item[idName] == id);
+    return obj;
+  }
+
+
+
+
+
 }
+
+
+
+
+

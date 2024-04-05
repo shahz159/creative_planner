@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
@@ -14,12 +14,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
-  styleUrls: ['./meeting-details.component.css']
+  styleUrls: ['./meeting-details.component.css'],
+
 })
 export class MeetingDetailsComponent implements OnInit {
   _ObjAssigntaskDTO: AssigntaskDTO;
@@ -35,6 +38,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
   notesContent: any;
+  _ObjCompletedProj: CompletedProjectsDTO;
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -99,7 +103,9 @@ export class MeetingDetailsComponent implements OnInit {
     public notifyService: NotificationService,
     public _LinkService: LinkService,
     public ProjectTypeService: ProjectTypeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public router: Router,
+    public BsService: BsServiceService
     // public signalRService: SignalRService
   ) {
 
@@ -107,6 +113,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.objPortfolioDto = new PortfolioDTO();
     this._lstMultipleFiales = [];
     this._ObjAssigntaskDTO = new AssigntaskDTO();
+    this._ObjCompletedProj = new CompletedProjectsDTO();
   }
 
   ngOnInit(): void {
@@ -115,6 +122,7 @@ export class MeetingDetailsComponent implements OnInit {
         var scode = params.get('scheduleid');
         this.Scheduleid = scode;
       });
+      this.Schedule_ID=this.Scheduleid;
 
       this.route.paramMap.subscribe(params => {
         var pcode = params.get('scheduleid');
@@ -124,13 +132,132 @@ export class MeetingDetailsComponent implements OnInit {
       this.Current_user_ID = localStorage.getItem('EmpNo');
       this.meeting_details();
       this.addAgenda();
-      this.GetMeetingnotes_data();
-
+      // this.GetMeetingnotes_data();
+      this.getDetailsScheduleId()
+      this.GetAssigned_SubtaskProjects();
+      
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
     //   // Here you can update your view/model with the received message
     // });
+  }
+
+  getDetailsScheduleId() {
+    this.router.navigate(["Meeting-Details/" + this.Schedule_ID]);
+  }
+  @HostListener('copy', ['$event'])
+  editorFocused: boolean = false;
+
+  onEditorFocus(): void {
+    this.editorFocused = true;
+    // alert(this.editorFocused)
+  }
+
+  onEditorBlur(): void {
+    this.editorFocused = false;
+  }
+
+  selectedText:any;
+
+  makeLineATask(): void {
+
+    // alert(this.editorFocused)
+    const editorContent = this.Notes_Type;
+    if (this.editorFocused===true) {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) {
+      alert('Nothing is selected');
+    } 
+    
+
+    // const range = selection.getRangeAt(0);
+    // const selectedText = range.toString();
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString().trim();
+    const containerEl = range.commonAncestorContainer;
+
+    // We assume `containerEl` is where the Angular Editor's content is
+    // Now we need to convert it to a proper HTML element if it's not already
+    const editorEl = containerEl.nodeType === 3 ? containerEl.parentNode : containerEl;
+
+    // Get all the text content split by line breaks
+    const lines = editorEl.textContent.split('\n');
+
+    // Find which line has the selected text
+    const currentLineIndex = lines.findIndex(line => line.includes(selectedText));
+    if (currentLineIndex === -1) return; // Selected text not part of the lines, exit
+
+    // Replace the current line with the task HTML
+    lines[currentLineIndex] = `<div class="task">${lines[currentLineIndex]}</div>`;
+
+    // Update the Notes_Type model with the new content
+    // alert(lines.join('\n'));
+    let stringWithoutHtml = this.stripHtml(lines);
+    console.log(stringWithoutHtml, "todo");
+
+    // this.checkIfCopiedCorrectly(stringWithoutHtml);
+    if(stringWithoutHtml==''){
+      alert("Please select & copy some text from editor or place cursor on the line you want to select");
+    }
+    else{
+      if(this.selectedText!="" && stringWithoutHtml.includes(this.selectedText)){
+        this.EnterSubmit(this.selectedText);
+      }
+      else{
+        this.EnterSubmit(stringWithoutHtml);
+      }
+    }
+    }
+    else{
+      alert('This action is only for the angular editor')
+    }
+    this.editorFocused=false;
+  }
+
+  makeLineAProject(){
+
+  }
+
+  makeLineAAction(){
+
+  }
+  
+  onCopy(event: ClipboardEvent) {
+    // Using Clipboard API
+    const copiedText = event.clipboardData?.getData('text/plain');
+    
+    // If Clipboard API is not available, use window.getSelection()
+    if (!copiedText && window.getSelection) {
+      const selectedText = window.getSelection().toString();
+      console.log('Copied with window.getSelection:', selectedText);
+      this.selectedText=selectedText;
+    } else {
+      console.log('Copied with Clipboard API:', copiedText);
+      this.selectedText=copiedText;
+      // Now you can do something with the copied text
+      // ...
+    }
+
+    // Optional: prevent the default copy action
+    // event.preventDefault();
+  }
+
+  stripHtml(html: any): string {
+    // Check if html is an array and has at least one element.
+    if (Array.isArray(html) && html.length > 0) {
+      // Assume the first element is the string to be stripped of HTML.
+      const string = html[0];
+      if (typeof string === 'string') {
+        return string.replace(/<[^>]*>/g, '');
+      } else {
+        console.error('Expected a string in the array but got:', string);
+        return ''; // or some default string representation
+      }
+    } else {
+      console.error('Expected an array with at least one item but got:', html);
+      return ''; // or some default string representation
+    }
   }
 
   // sendMessage(name: string, message: string) {
@@ -242,34 +369,42 @@ export class MeetingDetailsComponent implements OnInit {
   Meeting_status: boolean;
 
 
-meeting_details(){
-    this.Schedule_ID=this.Scheduleid;
+
+meeting_details(){ 
     this._calenderDto.Schedule_ID=this.Schedule_ID;
    
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
-
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-    
+  
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
+    
+    var x =this.Agendas_List.length
+
+    
+
     this.Createdby=this.EventScheduledjson[0].Created_by;
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
 
-   
-    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests)
-    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
-
     console.log(this.EventScheduledjson,'EventScheduledjson ')
+    this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
+
+    // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
+    
+    // console.log('meeting_details--->',x)
+    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
+    
+    
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
     this._TotalAttachment=this.Attachments_ary.length
 
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
     this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code)
-    console.log('meeting_details--->',this.Project_code)
+  
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
-    this. Meeting_status=this.EventScheduledjson[0]. Meeting_status;
+    this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
     
 
 
@@ -297,6 +432,12 @@ meeting_details(){
       this.GetDMSList();
     }
    })
+}
+
+ getInitials(name) {
+  var initials = name.match(/\b\w/g) || [];
+  initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+  return initials;
 }
 
   startMeeting() {
@@ -534,7 +675,9 @@ addNewDMS() {
     deleteMemos(MailId: number) {
 
       this._MemosSubjectList.forEach(element => {
+        if (MailId == element.MailId)
           this.DMSName = element.Subject
+  
       });
       //if (createdBy == this.Current_user_ID) {
       let String_Text = 'Delete';
@@ -564,6 +707,11 @@ addNewDMS() {
       });
     }
 
+
+    openUrl(memo_Url) {
+      const Url = memo_Url;
+      window.open(Url);
+    }
 
 
 /////////////////////////////////////////// DMS Side-Bar End /////////////////////////////////////////////////////////
@@ -601,13 +749,21 @@ closeLinkSideBar(){
   this.selectedEmploy_DMS=[];
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("LinkSideBar2").classList.remove("kt-quick-panel--on");
-    this.fruitInputpro.nativeElement.value = '';
+    if(this.fruitInputpro && this.fruitInputpro.nativeElement.value != undefined){
+      this.fruitInputpro.nativeElement.value = '';
+    }
+ 
     document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    this.fruitInputportfolio.nativeElement.value = '';
-    this.fruitInputs.nativeElement.value='';
+    if(this.fruitInputportfolio && this.fruitInputportfolio.nativeElement.value != undefined){
+      this.fruitInputportfolio.nativeElement.value = '';
+    }
+    if(this.fruitInputs && this.fruitInputs.nativeElement.value != undefined){
+      this.fruitInputs.nativeElement.value='';
+    }
+   
 }
 
 AddProjects(){
@@ -860,7 +1016,9 @@ GetProjectAndsubtashDrpforCalender() {
   DeletePortfolios(port_id: number) {
 
     this.portfolio_Scheduledjson.forEach(element => {
+      if (port_id == element.numberval)
         this.portfolioName = element.Portfolio_Name
+
     });
     //if (createdBy == this.Current_user_ID) {
     let String_Text = 'Delete';
@@ -1112,7 +1270,7 @@ Addproject_meetingreport() {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.Project_Code = this.selectedEmploy_Projects.map(item=>item.Project_Code).join(',');
   this._calenderDto.flagid = this.currentEventId==undefined?1:this.currentEventId;
- debugger
+
  if( this._calenderDto.Project_Code){
   this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe
   (data => {
@@ -1130,13 +1288,15 @@ Addproject_meetingreport() {
 
 
 
-ProjectsName: string;
+ProjectsName: any;
 
-DeleteProject(Project_Code: number) {
+DeleteProject(ProjectCode: number) {
 
   this.Project_code.forEach(element => {
+    if (ProjectCode == element.stringval)
       this.ProjectsName = element.Project_Name
   });
+
   //if (createdBy == this.Current_user_ID) {
   let String_Text = 'Delete';
   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -1151,7 +1311,7 @@ DeleteProject(Project_Code: number) {
 
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Project_Code = Project_Code.toString();
+    this._calenderDto.Project_Code = ProjectCode.toString();
     this._calenderDto.flagid=1;
     if (result === true) {
       this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
@@ -1165,7 +1325,13 @@ DeleteProject(Project_Code: number) {
   });
 }
 
-
+moreDetails(ProjectCode) {
+  let name: string = 'MoreDetails';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${ProjectCode}`;
+  var myWindow = window.open(myurl, ProjectCode);
+  myWindow.focus();
+}
 
 /////////////////////////////////////////// Project Side-Bar End /////////////////////////////////////////////////////////
 /////////////////////////////////////////// Previous Meeting Notes Side-Bar start /////////////////////////////////////////////////////////
@@ -1261,12 +1427,11 @@ updateAgenda1(index:number){
 }
 
 AgendasName: string;
+AgendaListRedirect:any = 1
 
 deleteAgenda(AgendaId: number) {
 
-
   const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
-
   if (AgendasNames) {
     this.AgendasName = AgendasNames.Agenda_Name;
   }
@@ -1301,7 +1466,8 @@ deleteAgenda(AgendaId: number) {
 
       this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
        this.meeting_details()
-        this.notifyService.showSuccess("Deleted successfully ", '');
+       this.notifyService.showSuccess("Deleted successfully ", '');
+       
       });
     }
     else{
@@ -1312,7 +1478,10 @@ deleteAgenda(AgendaId: number) {
 
 
 AgendaId:any
+
+
 showAgendaDetails(item,index){
+  debugger
   this.AgendaId=item.AgendaId
   this.currentAgendaView=index
   // this.Notes_Type=''
@@ -1349,6 +1518,27 @@ cancelAgendaEdit(index:number){
 }
 
 
+
+completeAgenda(){
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
+
+  this.CalenderService.NewUpdateCompleteAgenda(this._calenderDto).subscribe((data)=>{ 
+    this.meeting_details() 
+    this.notifyService.showSuccess("Agenda completed", "Success"); 
+  })
+
+}
+
+UndoCompleteAgenda(){
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
+
+  this.CalenderService.NewUpdateUndoCompleteAgenda(this._calenderDto).subscribe((data)=>{
+    this.meeting_details();
+    this.notifyService.showSuccess("Removed from complete", "Success"); 
+  })
+}
 
 /////////////////////////////////////////// Agenda End /////////////////////////////////////////////////////////
 
@@ -1628,20 +1818,22 @@ GetcompletedMeeting_data() {
     });
 }
 
+ActionedAssigned_Josn: any = [];
+ActionedSubtask_Json: any=[];
+assigncount: number;
 
 
 
 EnterSubmit(_Demotext) {
-
   if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
     this._ObjAssigntaskDTO.CategoryId = 2411;
     this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
     this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
-    this._ObjAssigntaskDTO.TaskName = this._Demotext;
+    this._ObjAssigntaskDTO.TaskName = _Demotext;
     this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
 
-    this.text.push(this._Demotext);
-    this._Demotext = "";
+    // this.text.push(this._Demotext);
+    // this._Demotext = "";
     this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
       (data) => {
         //console.log("Data---->", data);
@@ -1651,13 +1843,156 @@ EnterSubmit(_Demotext) {
 
         let message: string = data['Message'];
         console.log("Data---->", this._TodoList);
-        this._Demotext = ""
+        this._Demotext = "";
+        this.selectedText="";
+        this.editorFocused=false;
         //this.GetAssignTask();
         this.notifyService.showSuccess("Successfully", "Added");
         // this.closeInfo();
       });
 
   }}
+
+  _taskName: any;
+  task_id: any;
+
+  GetProjectTypeList(taskName, id) {
+   
+    this._taskName = taskName;
+    this.task_id = id;
+
+    this.router.navigate(["Meeting-Details/" + this.Scheduleid + "/ActionToAssign/3"]);
+    this.BsService.SetNewAssignId(this.task_id);
+    this.BsService.SetNewAssignedName(this._taskName);
+    let typeoftask: any = "IFRT";
+    this.BsService.setNewTypeofTask(typeoftask);
+
+    // this._ObjCompletedProj.PageNumber = 1;
+    // this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    // this._ObjCompletedProj.Mode = 'AssignedTask';
+    // this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+    //   (data) => {
+
+    //     this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
+    //   });
+    //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
+
+
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $("#mysideInfobar").scrollTop(0);
+  }
+
+
+
+  _AssignId: any;
+  ActionToProject_Click(taskName, Assignid) {
+ 
+    this._taskName = taskName;
+    this._AssignId = Assignid;
+    this.router.navigate(["Meeting-Details/" + this.Schedule_ID + "/ActionToProject/7"]);
+    this.BsService.SetNewAssignId(this._AssignId);
+    this.BsService.SetNewAssignedName(this._taskName);
+
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $("#mysideInfobar").scrollTop(0);
+
+    //this.GetProjectsByUserName();
+  }
+
+
+
+
+
+  // GetAssigned_SubtaskProjectsDatails() {
+
+  //   this._ObjCompletedProj.PageNumber = 1;
+  //   this._ObjCompletedProj.Emp_No = this.Current_user_ID;
+  //   this._ObjCompletedProj.CategoryId = 2411;
+  //   this._ObjCompletedProj.Mode = 'Todo';
+  //   this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
+
+  //   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+  //     (data) => {
+     
+  //       // console.log("Data---->", data);
+  //       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+  //       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+
+  //       // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+  //        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+  //       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+
+  //       this.assigncount = this.ActionedAssigned_Josn.length;
+  //       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+  //       console.log("the sss", this._TodoList)
+  //     });
+
+  // }
+  
+
+GetAssigned_SubtaskProjects() {
+
+  this._ObjCompletedProj.PageNumber = 1;
+  this._ObjCompletedProj.Emp_No = this.Current_user_ID;
+  this._ObjCompletedProj.CategoryId = 2411;
+  this._ObjCompletedProj.Mode = 'Todo';
+  this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
+
+  this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+    (data) => {
+   
+      // console.log("Data---->", data);
+      // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+      this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+
+      // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+      this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+      this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+
+      this.assigncount = this.ActionedAssigned_Josn.length;
+      this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+      // console.log("the sss", this._TodoList)
+    });
+
+}
+
+_Deletetask(id, name) {
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'Todo_Delete',
+      title1: 'Confirmation ',
+      taskName: name
+      //message1: "proj_Name"
+    }
+  });
+  confirmDialog.afterClosed().subscribe(result => {
+    if (result === true) {
+      this._ObjAssigntaskDTO.TypeOfTask = "Delete";
+      this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+      this._ObjAssigntaskDTO.AssignId = id;
+      this._ObjAssigntaskDTO.CategoryId = 2411;
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
+          // this._CompletedList = JSON.parse(data['CompletedList']);
+
+          let message: string = data['Message'];
+          this._Demotext = "";
+          this.notifyService.showInfo("Successfully", message);
+          this.GetAssigned_SubtaskProjects();
+        });
+    }
+    else {
+      //this.notifyService.showInfo("Cancelled", "Delete");
+    }
+  });
+}
 /////////////////////////////////////////// assign task End //////////////////////////////////////////////////////////////////
 
 

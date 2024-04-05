@@ -36,7 +36,6 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 
-
 // import { ProjectCreationComponent } from './_LayoutDashboard/project-creation/project-creation.component';
 // import { ProjectAssignTaskComponent } from './_LayoutDashboard/project-assign-task/project-assign-task.component';
 //  import { ProjectUnplannedTaskComponent } from './_LayoutDashboard/project-unplanned-task/project-unplanned-task.component';
@@ -88,7 +87,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatAutocompleteModule,
     MatInputModule,
     MatFormFieldModule,
-    ScrollingModule
+    ScrollingModule,
+   
   ],
   providers:
     [AuthGuard

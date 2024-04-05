@@ -245,16 +245,18 @@
                                                         </a>ProjectName</p></td>
                                                     <td></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></td>
-                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Category</span></td>
+                                                    <td><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></td>
                                                     <td ><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></td>
-                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </td>
+                                                    <td><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Last Update </span> </td>
                                                     <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </td>
+
                                                     <td>
+
                                                       <div class="mx-2 p-1"> <span class="kt-widget__other " *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>  Deleted by</span></div>
                                                      <span class="kt-widget__other tb-w-45" *ngIf="!showDeletedPrjOnly"> Actions</span>
                                                     </td>
-
+                                            <td *ngIf="showDeletedPrjOnly" > <i class="fas fa-sort"></i> References</td>
                                                 </thead>
 
 
@@ -281,7 +283,7 @@
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
                                                     'NewTodo':item1.Status=='New Todo'}">
 
-                                                    <td class="icond d-flex align-items-center">
+                                                    <td class="icond">
                                                         <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
                                                             placement="right" data-trigger="focus" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -327,7 +329,7 @@
                                                            <path fill="#FFFFFF" d="M6.008,6.756c0.012-0.492,0.296-0.759,0.8-0.754C7.28,6.007,7.594,6.326,7.587,6.79
                                                              C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"/>
                                                          </g>
-                                                         
+
                                                          </svg>
                                                         </a>
                                                         <span *ngIf="item1.Link_Status==1;else not_Linked">
@@ -351,24 +353,39 @@
 
                                                     </td>
                                                     <td>
-                                                        <span class="count2" *ngIf="item1.Actioncount>0">{{item1.Actioncount}}</span>
+                                                        <span class="count2" title="Completed/All" *ngIf="item1.Actioncount>0 ">{{item1.CompletedActioncount}}/{{item1.Actioncount}}</span>
                                                     </td>
 
                                                     <td>
-                                                        <span class="kt-widget__other">{{item1.Exec_BlockName}}</span>
-                                                    </td>
-                                                    <td>
-                                                        <div *ngIf="item1.ReportType==null;else ReportType">
-                                                            <span class="kt-widget__other">Developemt</span>
-                                                        </div>
-                                                        <ng-template #ReportType>
-                                                            <span
-                                                                class="kt-widget__other">{{item1.ReportType}}</span>
-                                                        </ng-template>
-                                                    </td>
+                                                        <div class="kt-widget__other"><span >{{item1.Exec_BlockName}}</span></div>
+                                                          <ng-container *ngIf="showDeletedPrjOnly">
+                                                          <div *ngIf="item1.ReportType==null;else ReportType">
+                                                              <p class="kt-widget__other" title="Category">Developemt</p>
+                                                          </div>
+                                                          <ng-template #ReportType>
+                                                              <p
+                                                                  class="kt-widget__other"  title="Category" >{{item1.ReportType}}</p>
+                                                          </ng-template>
+                                                          </ng-container>
+                                                      </td>
+
+
+                                                      <ng-container *ngIf="!showDeletedPrjOnly">
+                                                      <td> <div *ngIf="item1.ReportType==null;else ReportType">
+                                                        <p class="kt-widget__other" >Developemt</p>
+                                                    </div>
+                                                    <ng-template #ReportType>
+                                                        <p
+                                                            class="kt-widget__other"  >{{item1.ReportType}}</p>
+                                                    </ng-template></td>
+                                                  </ng-container>
+
+
+<td *ngIf="showDeletedPrjOnly" ></td>
                                                     <td>
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
                                                     </td>
+<ng-container *ngIf="!showDeletedPrjOnly">
                                                     <td>
                                                         <span class="kt-widget__other text-nowrap ng-star-inserted">
                                                             <div
@@ -376,203 +393,399 @@
                                                                 <span
                                                                     class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
                                                             </div>
+                                                          </span>
+
                                                             <ng-template #Projecttype>
-                                                                <span class="kt-widget__other text-nowrap">
-                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
+                                                              <td>
+                                                                <p class="kt-widget__other text-nowrap font">
+                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
+
+                                                                    <p data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
+
+                                                                    </td>
                                                             </ng-template>
-                                                            <!-- <div *ngIf="item1.Project_Block =='003'">
-                                                                <span class="kt-widget__other text-nowrap">
-                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
-                                                            </div>
-                                                            <div *ngIf="item1.Project_Block !='003'">
-                                                                <span class="kt-widget__other text-nowrap">
-                                                                    {{item1.DeadLine|date:'dd-MM-yyyy'}}</span>
-                                                            </div> -->
-                                                        </span>
-                                                    </td>
-                                                    <td data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
-                                                        <span class="kt-widget__other">
-                                                            <!-- |dateAgo -->
-                                                            {{item1.Project_StartDate|dateAgo}}
-                                                        </span>
-                                                    </td>
                                                     <td>
-                                                        <div *ngIf="item1.Status=='Delay'">
-                                                            <span
-                                                                class="Delay_color font-weight-400">{{item1.Status}}
-
-                                                            <span *ngIf="item1.Delaydays>0"
-                                                                class=" delayDays">
-                                                                <strong>{{item1.Delaydays}}
-                                                                    days</strong>
-                                                                  </span>
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Completed'">
-                                                            <span
-                                                                class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
-                                                                <div class="d-flex align-items-center justify-content-start">
-                                                                  <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
-
-                                                                <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                                </div>
-
-                                                                <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
-
-
-
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='InProcess'">
-                                                            <span
-                                                                class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
-                                                            <br>
-                                                            <!-- <span *ngIf="item1.Delaydays<0"
-                                                                class="text-info delayDays">
-                                                                <strong>{{item1.Delaydays}} Days Left </strong>
-                                                            </span> -->
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Project Complete Rejected'">
-                                                            <span
-                                                                class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
-                                                        </div>
-
-                                                        <div *ngIf="item1.Status=='Project Hold'">
-                                                            <span
-                                                                class="Hold font-weight-400">Hold</span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Project Holded'">
-                                                            <span class="Hold_color font-weight-400"
-                                                              >Hold</span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Under Approval'">
-                                                            <span
-                                                                class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
-                                                            <br>
-                                                        </div>
-
-                                                        <div *ngIf="item1.Status=='Not Started'">
-                                                          <span
-                                                              class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
-                                                          <br>
-                                                      </div>
-
-
-
-
-                                                        <div *ngIf="item1.Status=='New Todo'">
-                                                            <span
-                                                                class="New_Todo_color font-weight-400">{{item1.Status}}
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Completion Under Approval'">
-                                                            <!-- <h2>Mubeen</h2> -->
-                                                            <span
-                                                                class="font-weight-400 completion-under-approval">{{item1.Status}}
-                                                            </span>
-
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Cancellation Under Approval'">
-                                                            <span
-                                                                class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status}}
-                                                            </span>
-
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Cancelled'">
-                                                            <span
-                                                                class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
-                                                            </span>
-
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Forward Under Approval'">
-                                                            <span
-                                                                class="font-weight-400 Forward_Under_Approval_color">{{item1.Status}}
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='New Project'">
-                                                            <span class="New-project font-weight-400"
-                                                                >{{item1.Status}}</span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='New Project Rejected'">
-                                                            <span
-                                                                class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
-                                                            </span>
-                                                        </div>
-                                                        <div
-                                                            *ngIf="item1.Status=='Deadline Extend Under Approval'">
-                                                            <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
-                                                               >{{item1.Status}}
-
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='Enactive Under Approval'">
-                                                            <span class="font-weight-400 Enactive_Under_Approval_color"
-                                                           >{{item1.Status}}
-                                                            </span>
-                                                        </div>
-                                                        <div
-                                                            *ngIf="item1.Status=='Project Hold Under Approval'">
-                                                            <span class="font-weight-400"
-                                                                style="color: #a85098;">{{item1.Status}}
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='ToDo Achieved'">
-                                                            <span class="todoachieved font-weight-400
-                                                            ">{{item1.Status}}
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item1.Status=='ToDo Completed'">
-                                                            <span class="todos-completed font-weight-400"
-                                                                >{{item1.Status}}
-                                                            </span>
-                                                        </div>
+                                                      <p class="kt-widget__other">
+                                                        <!-- |dateAgo -->
+                                                        {{item1.Project_StartDate|dateAgo}}
+                                                    </p>
                                                     </td>
 
-                                                    <ng-container *ngIf="!showDeletedPrjOnly;else deletedby">
-                                                    <td *ngIf="viewpreference != 'View Only'">
-                                                      <div class="tb-w-45">
-                                                        <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
-                                                        (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
-                                                        <i class="fas fa-trash-alt mr-0"
-                                                            aria-hidden="true"></i>
-                                                     </a>
-                                                      </div>
-
-                                                    </td>
                                                   </ng-container>
 
-                                                    <ng-template #deletedby>
-                                                      <td>
+<ng-containter  *ngIf="showDeletedPrjOnly">
+                                                    <td>
+                                                      <span class="kt-widget__other text-nowrap ng-star-inserted">
+                                                          <div
+                                                              *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
+                                                              <span
+                                                                  class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
+                                                          </div>
+                                                        </span>
 
-                                                          <span class="Delay_color curser-pointer" > Deleted </span>
+                                                          <ng-template #Projecttype>
+                                                            <td>
+                                                              <p class="kt-widget__other text-nowrap font">
+                                                                  {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
+
+                                                                  <p data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
+                                                                    <p class="kt-widget__other" title="Last Update">
+                                                                      <!-- |dateAgo -->
+                                                                      {{item1.Project_StartDate|dateAgo}}
+                                                                  </p>
+                                                                  </td>
+                                                          </ng-template>
+
+                                                </ng-containter>
+
+
+
+
+
+
+
+
+
+
+<ng-container *ngIf="!showDeletedPrjOnly">
+<td>
+                                                    <span class="kt-widget__other text-nowrap ng-star-inserted">
+                                                    <div *ngIf="item1.Status=='Delay'">
+                                                      <span
+                                                          class="Delay_color font-weight-400">{{item1.Status}}
+
+                                                      <span *ngIf="item1.Delaydays>0"
+                                                          class=" delayDays">
+                                                          <strong>{{item1.Delaydays}}
+                                                              days</strong>
+                                                            </span>
+                                                      </span>
+                                                  </div>
+                                                    </span>
+                                                  <div *ngIf="item1.Status=='Completed'">
+                                                      <span
+                                                          class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
                                                           <div class="d-flex align-items-center justify-content-start">
+                                                            <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
 
-
-                                                          <span class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
-                                                            {{item1.Deleted_by}} | {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}  </span>
+                                                          <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
                                                           </div>
 
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
+
+
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='InProcess'">
+                                                      <span
+                                                          class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
+                                                      <br>
+                                                      <!-- <span *ngIf="item1.Delaydays<0"
+                                                          class="text-info delayDays">
+                                                          <strong>{{item1.Delaydays}} Days Left </strong>
+                                                      </span> -->
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Project Complete Rejected'">
+                                                      <span
+                                                          class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Project Hold'">
+                                                      <span
+                                                          class="Hold font-weight-400">Hold</span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Project Holded'">
+                                                      <span class="Hold_color font-weight-400"
+                                                        >Hold</span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Under Approval'">
+                                                      <span
+                                                          class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
+                                                      <br>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Not Started'">
+                                                    <span
+                                                        class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
+                                                    <br>
+                                                </div>
+                                                  <div *ngIf="item1.Status=='New Todo'">
+                                                      <span
+                                                          class="New_Todo_color font-weight-400">{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Completion Under Approval'">
+                                                      <!-- <h2>Mubeen</h2> -->
+                                                      <span
+                                                          class="font-weight-400 completion-under-approval">{{item1.Status}}
+                                                      </span>
+
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Cancellation Under Approval'">
+                                                      <span
+                                                          class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status}}
+                                                      </span>
+
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Cancelled'">
+                                                      <span
+                                                          class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
+                                                      </span>
+
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Forward Under Approval'">
+                                                      <span
+                                                          class="font-weight-400 Forward_Under_Approval_color">{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='New Project'">
+                                                      <span class="New-project font-weight-400"
+                                                          >{{item1.Status}}</span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='New Project Rejected'">
+                                                      <span
+                                                          class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                  <div
+                                                      *ngIf="item1.Status=='Deadline Extend Under Approval'">
+                                                      <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
+                                                         >{{item1.Status}}
+
+                                                      </span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='Enactive Under Approval'">
+                                                      <span class="font-weight-400 Enactive_Under_Approval_color"
+                                                     >{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                  <div
+                                                      *ngIf="item1.Status=='Project Hold Under Approval'">
+                                                      <span class="font-weight-400"
+                                                          style="color: #a85098;">{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='ToDo Achieved'">
+                                                      <span class="todoachieved font-weight-400
+                                                      ">{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                  <div *ngIf="item1.Status=='ToDo Completed'">
+                                                      <span class="todos-completed font-weight-400"
+                                                          >{{item1.Status}}
+                                                      </span>
+                                                  </div>
+                                                </td>
+                                              </ng-container>
+                                             <td>
+
+                                                    <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
+                                                    </ng-template> -->
+                                                    <!-- <ng-template #deletedbys ><td>deleting</td>  </ng-template> -->
+
+                                                    <ng-container *ngIf="!showDeletedPrjOnly;else deletedby">
+                                                      <td *ngIf="viewpreference != 'View Only'">
+                                                        <div class="tb-w-45">
+                                                          <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
+                                                          (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
+                                                          <i class="fas fa-trash-alt mr-0"
+                                                              aria-hidden="true"></i>
+                                                       </a>
+                                                        </div>
+
                                                       </td>
-                                                    </ng-template>
+                                                    </ng-container>
 
 
 
 
-                                                  <!-- <div class="mx-2 p-1" style="flex: 0;" *ngIf="showDeletedPrjOnly ==='DeleteProject' ">
-                                                      <div class="tb-w-45">
-                                                        <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
-                                                        (click)="labeldeletedproject()"  >
-                                                        action
-                                                    </a>
-                                                      </div>
-
-                                                    </div> -->
+                                             </td>
 
 
 
 
 
+
+<ng-container *ngIf="showDeletedPrjOnly">
+                                             <td>
+                                              <span class="kt-widget__other text-nowrap ng-star-inserted">
+                                              <div *ngIf="item1.Status=='Delay'">
+                                                <span
+                                                    class="Delay_color font-weight-400">{{item1.Status}}
+
+                                                <span *ngIf="item1.Delaydays>0"
+                                                    class=" delayDays">
+                                                    <strong>{{item1.Delaydays}}
+                                                        days</strong>
+                                                      </span>
+                                                </span>
+                                            </div>
+                                              </span>
+                                            <div *ngIf="item1.Status=='Completed'">
+                                                <span
+                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
+                                                    <div class="d-flex align-items-center justify-content-start">
+                                                      <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
+
+                                                    <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
+                                                    </div>
+
+                                                    <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
+
+
+
+                                            </div>
+                                            <div *ngIf="item1.Status=='InProcess'">
+                                                <span
+                                                    class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
+                                                <br>
+                                                <!-- <span *ngIf="item1.Delaydays<0"
+                                                    class="text-info delayDays">
+                                                    <strong>{{item1.Delaydays}} Days Left </strong>
+                                                </span> -->
+                                            </div>
+                                            <div *ngIf="item1.Status=='Project Complete Rejected'">
+                                                <span
+                                                    class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='Project Hold'">
+                                                <span
+                                                    class="Hold font-weight-400">Hold</span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='Project Holded'">
+                                                <span class="Hold_color font-weight-400"
+                                                  >Hold</span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='Under Approval'">
+                                                <span
+                                                    class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
+                                                <br>
+                                            </div>
+                                            <div *ngIf="item1.Status=='Not Started'">
+                                              <span
+                                                  class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
+                                              <br>
+                                          </div>
+                                            <div *ngIf="item1.Status=='New Todo'">
+                                                <span
+                                                    class="New_Todo_color font-weight-400">{{item1.Status}}
+                                                </span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='Completion Under Approval'">
+                                                <!-- <h2>Mubeen</h2> -->
+                                                <span
+                                                    class="font-weight-400 completion-under-approval">{{item1.Status}}
+                                                </span>
+
+                                            </div>
+                                            <div *ngIf="item1.Status=='Cancellation Under Approval'">
+                                                <span
+                                                    class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status}}
+                                                </span>
+
+                                            </div>
+                                            <div *ngIf="item1.Status=='Cancelled'">
+                                                <span
+                                                    class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
+                                                </span>
+
+                                            </div>
+                                            <div *ngIf="item1.Status=='Forward Under Approval'">
+                                                <span
+                                                    class="font-weight-400 Forward_Under_Approval_color">{{item1.Status}}
+                                                </span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='New Project'">
+                                                <span class="New-project font-weight-400"
+                                                    >{{item1.Status}}</span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='New Project Rejected'">
+                                                <span
+                                                    class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
+                                                </span>
+                                            </div>
+                                            <div
+                                                *ngIf="item1.Status=='Deadline Extend Under Approval'">
+                                                <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
+                                                   >{{item1.Status}}
+
+                                                </span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='Enactive Under Approval'">
+                                                <span class="font-weight-400 Enactive_Under_Approval_color"
+                                               >{{item1.Status}}
+                                                </span>
+                                            </div>
+                                            <div
+                                                *ngIf="item1.Status=='Project Hold Under Approval'">
+                                                <span class="font-weight-400"
+                                                    style="color: #a85098;">{{item1.Status}}
+                                                </span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='ToDo Achieved'">
+                                                <span class="todoachieved font-weight-400
+                                                ">{{item1.Status}}
+                                                </span>
+                                            </div>
+                                            <div *ngIf="item1.Status=='ToDo Completed'">
+                                                <span class="todos-completed font-weight-400"
+                                                    >{{item1.Status}}
+                                                </span>
+                                            </div>
+                                          </td>
+
+
+
+                                        </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <td *ngIf="showDeletedPrjOnly">    <span class="Delay_color curser-pointer" > Deleted </span>
+                         <div class="d-flex align-items-center justify-content-start">
+
+                     <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
+                        {{item1.Deleted_by}} | {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}  </p>
+                                   </div>
+                                 </td>
+
+
+
+
+
+
+
+
+
+
+                                 <td *ngIf="showDeletedPrjOnly">
+                                  <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                     class="symbol symbol-35px symbol-circle">
+                                      <ng-container *ngIf="item1.availableports && item1.availableports.length > 0; else noReference">
+                                          <span class="symbol-label view text-gray-300 fs-8 fw-bold cursor-pointer">View</span>
+                                      </ng-container>
+
+                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant" style="cursor: pointer;" *ngIf="item1.availableports && item1.availableports.length > 0">
+                                          <div *ngFor="let availablePort of item1.availableports"
+                                               (click)="OnCardClick(availablePort.Portfolio_ID, availablePort.Portfolio_Name, item1.CreatedName, item1.Created_DT)"
+                                               class="dropdown-item">
+                                              {{ availablePort.Portfolio_Name }}
+                                          </div>
+                                      </div>
+                                  </a>
+
+                                  <ng-template #noReference>
+                                      <span class="kt-widget__other">No reference</span>
+                                  </ng-template>
+                              </td>
 
 
 

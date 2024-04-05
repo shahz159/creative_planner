@@ -221,7 +221,9 @@
                                                             </mat-checkbox>
                                                         </mat-list-item> -->
 
-                                                          <input class='mat-checkbox-inner-container' id="snocheck" type="checkbox" title="Select All" [(ngModel)]="selectAllCheckbox"  (change)="selectAll($event);" />
+                                                          <input class='mat-checkbox-inner-container' [(ngModel)]="isAllPrjSelected"  type="checkbox" title="Select All" (click)="OnAllSelectedPrjSave()" (change)="selectUnSelectAllPrj($event)" />
+
+
                                                     </th>
 
                                                     <th data-order="desc" data-name="id" class="text-center">
@@ -293,11 +295,16 @@
                                                     *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
                                                     <td tabindex="0" class="sorting_1">
                                                         <mat-list-item>
-                                                            <mat-checkbox [checked]="selectAllCheckbox" color="primary"
+                                                            <mat-checkbox *ngIf="isAllPrjSelected===false" color="primary"
                                                                 [(ngModel)]="item.checked"
                                                                 [disabled]="portfolioName==''"
                                                                 (change)="dataTableCheckbox();checkboxclick(item.checked,item.Project_Code)">
                                                             </mat-checkbox>
+                                                            <mat-checkbox *ngIf="isAllPrjSelected===true" color="primary"
+                                                            [(ngModel)]="item.checked"
+                                                            [disabled]="portfolioName==''"
+                                                            >
+                                                        </mat-checkbox>
                                                         </mat-list-item>
                                                     </td>
                                                     <!-- Information Icon -->

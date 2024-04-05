@@ -49,7 +49,6 @@ export class CalenderService {
   }
   NewClickEventJSON(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
-
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetClickEventJSON", this.obj_CalenderDTO);
   }
   NewGetSearchResults(obj:CalenderDTO){
@@ -60,7 +59,7 @@ export class CalenderService {
   NewGetcompleted_meeting(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-   
+ 
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetcomplte_meeting", this.obj_CalenderDTO);
   }
 
@@ -400,5 +399,19 @@ DeleteProjectsOfMeeting(obj: CalenderDTO) {
   this.obj_CalenderDTO.Dms=null;
   this.obj_CalenderDTO.Portfolio=null;
   return this.http.post(this.rootUrl + "CalenderAPI/NewUnLinkInMeetingDetails", this.obj_CalenderDTO)
+}
+NewUpdateCompleteAgenda(obj:CalenderDTO){
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No,
+  this.obj_CalenderDTO.AgendaId=obj.AgendaId
+debugger
+  return this.http.post(this.rootUrl + "CalenderAPI/NewUpdateCompleteAgenda",this.obj_CalenderDTO)
+}
+
+
+NewUpdateUndoCompleteAgenda(obj:CalenderDTO){
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No,
+  this.obj_CalenderDTO.AgendaId=obj.AgendaId
+debugger
+  return this.http.post(this.rootUrl+"CalenderAPI/NewUpdateUndoCompleteAgenda",this.obj_CalenderDTO)
 }
 }

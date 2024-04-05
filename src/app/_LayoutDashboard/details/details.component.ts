@@ -885,6 +885,7 @@ this.prjPIECHART.render();
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
+      this.Title_Name=this.projectInfo.Project_Name;
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1300,12 +1301,12 @@ debugger
     document.getElementById("newdetails").classList.remove("position-fixed");
   }
   hide_main_approval(){
-    document.getElementById("main-approval").style.display = "none";
-    document.getElementById("main-reject").style.display = "block";
+    document.getElementById("main-approval").classList.add("d-none");
+    document.getElementById("main-reject").classList.remove("d-none");
   }
   backmainapproval(){
-    document.getElementById("main-approval").style.display = "block";
-    document.getElementById("main-reject").style.display = "none";
+    document.getElementById("main-approval").classList.remove("d-none");
+    document.getElementById("main-reject").classList.add("d-none");
   }
   closeInfo() {
     this._remarks = ''
@@ -1795,7 +1796,9 @@ debugger
           }
 
         }
+        debugger
         if (this.requestType == 'Task Complete') {
+          this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
           this.completedoc = (this.complete_List[0]['Proofdoc']);
@@ -1806,7 +1809,7 @@ debugger
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
          this.getstandardapprovalStats();
-
+         
         }
 
       }
@@ -1818,6 +1821,7 @@ debugger
         // if there are no std task aprv request
          this.standardjson=[];
          this.currentStdAprView=undefined;
+         this.closeApprovalSideBar();
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -1827,23 +1831,25 @@ debugger
   }
 
 standardjson:any;
-currentStdAprView:number=0;
-  getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+currentStdAprView:number|undefined;
+  getstandardapprovalStats(){  
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); console.log('standardjson values:',this.standardjson);
-      if(this.standardjson.length>0){
-          this.isApprovalSection=true;
-          this.isTextAreaVisible=false;
-          this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
-      }
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); 
+      
+
+      // if(this.standardjson.length>0){
+      //     this.isApprovalSection=true;
+      //     this.isTextAreaVisible=false;
+      //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
+      // }
 
     });
   }
 
-  approvalClick(actionType) {
+  approvalClick(actionType) {  debugger
     this.comments = ""
     switch (actionType) {
       case 'ACCEPT': {
@@ -1869,10 +1875,19 @@ currentStdAprView:number=0;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
-      };
-        break;
+      };break;
+      case 'NOTSELECTED':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = undefined;
+        this.rejectType = undefined;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.isTextAreaVisible = false;
+      }
       default: { }
     }
+    if(actionType!=='NOTSELECTED')
     this.isTextAreaVisible = true;
   }
 
@@ -1929,7 +1944,7 @@ currentStdAprView:number=0;
       }
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
         console.log('++>', JSON.parse(data[0]['reject_CommentsList']));
-        this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+        this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);  
         this.rejectlength = this.rejectcommentsList.length;
       });
     }
@@ -1972,16 +1987,36 @@ currentStdAprView:number=0;
      this.currentStdAprView=undefined;
   }
 
-
+  allStdAprSelected:boolean=false;
+  selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
-    this.approvalservice.NewUpdateAcceptApprovalsService(this.standardjson).subscribe(data =>{
+    const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
+    const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
+    this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
       console.log(data,"accept-data");
-       this.notifyService.showSuccess("All tasks requests Approved.",'Success');
-      this.getapprovalStats();
+       if(x===0)
+        this.closeApprovalSideBar(); 
+
+       this.notifyService.showSuccess("tasks requests Approved.",'Success');
+       this.getapprovalStats();
+       this.allStdAprSelected=false;
+      
     });
   }
 
-
+  onStdAprvSelected(e,aprvls){
+   
+    aprvls.forEach(aprv=>{
+          if(e.target.checked){
+                if(!this.selectedStdAprvs.includes(aprv.SNo))
+                this.selectedStdAprvs.push(aprv.SNo);
+          }else{
+                const x=this.selectedStdAprvs.indexOf(aprv.SNo);
+                this.selectedStdAprvs.splice(x,1);
+          }
+    });
+      
+  }
 
 
 
@@ -1998,7 +2033,7 @@ currentStdAprView:number=0;
 
 
 
-  submitApproval() {
+  submitApproval() {     debugger
     if (this.selectedType == '1') {
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2070,6 +2105,7 @@ currentStdAprView:number=0;
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
     this.close_info_Slide();
+
   }
 
 
@@ -5452,7 +5488,7 @@ getChangeSubtaskDetais(Project_Code) {
     this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
-    this.Title_Name = null;
+    this.Title_Name = this.projectInfo.Project_Name;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
     this.SelectDms = [];
@@ -5792,7 +5828,7 @@ getChangeSubtaskDetais(Project_Code) {
 
 
           this.GetScheduledJson();
-          this.Title_Name = null;
+          this.Title_Name = this.projectInfo.Project_Name;
           this.ngEmployeeDropdown = [];
           this.Description_Type = null;
           this.MasterCode = [];
@@ -7159,11 +7195,22 @@ showFullGraph(){
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
-    });
+    });  
+   
+    // this is for remove fusion chart watermark label from the graph.
+    myChart.addEventListener('rendered',()=>{
+      setTimeout(()=>{
+        const x:any=document.querySelectorAll('#full-graph .fusioncharts-container svg>g[class^="raphael"]');
+        x[1].style.display='none';
+      },10);
+    });   
+   // this is for remove fusion chart watermark label from the graph.
+
+
 
   });
 
-
+ 
   
 }
 
@@ -7178,7 +7225,8 @@ onGraphOptionChanged(option:string){
 
 loadActivitiesByDate(d){
   this.activitiesOnthat=this.getActivitiesOf(d);
-  this.selectedactvy=d;
+  const currentDt=new Date();
+  this.selectedactvy=d==currentDt?'TODAY':d;
 }
 
 
@@ -7411,6 +7459,113 @@ NewAddUserCountFeature() {
       document.getElementById("feature-modal-backdrop").classList.remove("show");
 }
 
+
+
+//  save meeting as draft start.
+Insert_indraft() { debugger
+  if (this.draftid != 0) {
+    this._calenderDto.draftid = this.draftid;
+  }
+  else {
+    this._calenderDto.draftid = 0;
+  }
+  this._calenderDto.Task_Name = this.Title_Name;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  if (this.SelectDms == null) {
+    this.SelectDms = [];
+  }
+  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  if (this.Portfolio == null) {
+    this.Portfolio = [];
+  }
+  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+  this._calenderDto.location = this.Location_Type;
+  this._calenderDto.loc_status = this._onlinelink;
+  this._calenderDto.Note = this.Description_Type;
+  this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+  //  alert( this.ScheduleType);
+  if (this.ngEmployeeDropdown == null) {
+    this.ngEmployeeDropdown = [];
+  }
+  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  if (this.MasterCode == null) {
+    this.MasterCode = [];
+  }
+  this._calenderDto.Project_Code = this.MasterCode.toString();
+
+  this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+    (data => { debugger
+      if (data['message'] == '1') {
+        // this.Getdraft_datalistmeeting();
+        this.closeschd();
+        this.meetingsViewOn=true;
+        this.notifyService.showSuccess("Draft saved", "Success");
+      }
+      // if (data['message'] == '2') {
+      //   // this.Getdraft_datalistmeeting();
+      //   this.closeschd();
+      //   this.notifyService.showSuccess("Draft updated", "Success");
+      // }
+    });
+
+
+}
+
+
+// save meeting as draft end.
+
+
+
+
+
+
+
+// std task apr and reject code new start.
+
+
+rejectAllStdTaskAprvs(){   
+  if (this.selectedType == '3') {
+    if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+      this.noRejectType = true;
+      this.notifyService.showError("Please select Reject Type", "Failed");
+      return false;
+    }
+    else {
+
+    let selectedStdApprovals=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
+    selectedStdApprovals=selectedStdApprovals.map(item=>({
+              SNo: item.SNo,
+              Type: item.Type,
+              ReportType: item.ReportType,
+              RejectType: item.RejectType,
+              sendFrom: item.sendFrom,
+              Project_Code: item.Project_Code,
+              Remarks: item.Remarks,
+              Rec_Date: item.Rec_Date
+    }));
+      selectedStdApprovals.forEach(element => {
+        element.Remarks = this.comments;
+        element.RejectType = this.rejectType;
+      });
+
+      this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedStdApprovals).
+        subscribe((data) => {  
+          this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
+          this.getapprovalStats();
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.getRejectType();
+
+        });
+
+
+
+
+    }
+  }
+}
+
+
+// std task apr and reject code new end.
 
 
 

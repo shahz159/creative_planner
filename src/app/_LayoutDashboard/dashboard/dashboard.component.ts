@@ -1027,6 +1027,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  onSingleEventDelete(){
+    Swal.fire({
+      title:'Delete Event',
+      text:'Are you sure you want to delete this event? This action cannot be undone.',
+      showConfirmButton:true,
+      showCancelButton:true
+    }).then(choice=>{
+       if(choice.isConfirmed){
+        this.AllDelete_event(1);
+        this.AlldeleteSchedule()
+       }
+    });
+
+  }
 
   // Customize() {
 
@@ -1538,12 +1552,12 @@ export class DashboardComponent implements OnInit {
           this.notProvided=false;
      }
      else
-      { 
+      {
          if(!this.Title_Name)
          document.getElementById('dsb-evt-titleName').focus();
          else if(this.allAgendas.length===0)
          {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
-         
+
 
         this.notProvided=true;
       }
@@ -2427,7 +2441,7 @@ debugger
 
       this._calenderDto.Project_Code = MasterCode;
       this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-        ((data) => { 
+        ((data) => {
           // console.log(data);
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
         });
@@ -3261,7 +3275,7 @@ debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-        console.log(this.EventScheduledjson, "Testing1"); 
+        console.log(this.EventScheduledjson, "Testing1");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -3728,11 +3742,11 @@ debugger
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
- 
+
         this.calendarOptions = {
 
           initialView: 'listWeek',
-          
+
           firstDay: moment().weekday(),
 
           // timeZone: 'local',
@@ -3748,7 +3762,7 @@ debugger
           eventClick: this.GetClickEventJSON_Calender.bind(this),
           events: this.Scheduledjson,
           eventDidMount: this.customizeEvent,
-          
+
           dayMaxEvents: 4,
           eventTimeFormat: {
             hour: 'numeric',
@@ -3778,7 +3792,7 @@ debugger
 
   TwinEvent=[];
   customizeEvent=(info)=>{
- 
+
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -3814,10 +3828,10 @@ debugger
     const eventIsWithinView = startMidnight <= viewEndMidnight && endMidnight >= viewStartMidnight;
 
     // Only process events that are within the view and span more than one day
- 
+
     // if (eventIsWithinView && (startMidnight !== endMidnight)) {
     //   let dayLabel = '';
-     
+
     //   if (startMidnight >= viewStartMidnight && startMidnight <= viewEndMidnight) {
     //     dayLabel = 'Day (2/2)';
     //   }
@@ -3835,48 +3849,48 @@ debugger
 debugger
 let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0);
     if (eventIsWithinView && (startMidnight !== endMidnight)&&!is12am) {
-   
+
       if(start<viewStart){
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
       }
       const r=this.TwinEvent.includes(event._def.extendedProps.Schedule_ID);
 
       let dayLabel = '';
-     
+
       if (r) {
         dayLabel = 'Day (2/2)';
         const index=this.TwinEvent.indexOf(event._def.extendedProps.Schedule_ID);
         this.TwinEvent.splice(index,1);
-       
+
       }
       else{
         dayLabel = 'Day (1/2)';
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
       }
-   
-     
-      
+
+
+
 
     //   // Check if the label should be applied
       if (dayLabel && !event.title.includes(dayLabel)) {
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
-        
-       
+
+
         if(info.view.type==='listWeek'){
-         
+
           info.el.children[2].innerText=newTitle;
         }
         else{
            event.setProp('title', event.title);
            this.TwinEvent=[];
         }
-        
-      
-      
+
+
+
       }
     }
-    
+
 
 
 
@@ -4535,7 +4549,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
-  Insert_indraft() {
+  Insert_indraft() { debugger
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -4567,7 +4581,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-      (data => {
+      (data => {   debugger
         if (data['message'] == '1') {
           this.Getdraft_datalistmeeting();
           this.closeschd();
@@ -4742,7 +4756,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
 
 
     this.notProvided=false;
-     
+
   }
 
   clearallfields() {
@@ -5120,7 +5134,7 @@ drawBarGraph(){
     ],
   }
   };
-  
+
   var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
   chart.render();
 }
@@ -5226,7 +5240,7 @@ drawBarGraph(){
   onDMSMemoSelected(e) {
     const memoChoosed = this.Memos_List.find((c) => c.MailId === e.option.value);
     if (memoChoosed) {
-      if (!this.SelectDms)   // if SelectDms is null,undefined,''    
+      if (!this.SelectDms)   // if SelectDms is null,undefined,''
         this.SelectDms = [];
 
       const index = this.SelectDms.indexOf(memoChoosed.MailId);
@@ -5251,7 +5265,7 @@ drawBarGraph(){
   onParticipantSelected(e: any) {
     const participantChoosed = this._EmployeeListForDropdown.find((c) => c.Emp_No === e.option.value);
     if (participantChoosed) {
-      if (!this.ngEmployeeDropdown)   // if ngEmployeeDropdown is null,undefined,''    
+      if (!this.ngEmployeeDropdown)   // if ngEmployeeDropdown is null,undefined,''
         this.ngEmployeeDropdown = [];
 
       const index = this.ngEmployeeDropdown.indexOf(participantChoosed.Emp_No);
@@ -5276,10 +5290,11 @@ drawBarGraph(){
 
   isPortfolioDrpDwnOpen: boolean = false;
   onPortfolioSelected(e: any) {
+    debugger
     const portfolioChoosed: any = this.Portfoliolist_1.find((p: any) => p.portfolio_id === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
-      if (!this.Portfolio)   // if Portfolio is null,undefined,''    
+      if (!this.Portfolio)   // if Portfolio is null,undefined,''
         this.Portfolio = [];
       const index = this.Portfolio.indexOf(portfolioChoosed.portfolio_id);
       if (index === -1) {
@@ -5304,6 +5319,7 @@ drawBarGraph(){
 
 
   getObjOf(arr, id, idName) {
+    debugger
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }
@@ -5321,7 +5337,7 @@ drawBarGraph(){
   onProjectSelected(e: any) {
     const prjChoosed = this.ProjectListArray.find((p: any) => p.Project_Code === e.option.value);
     if (prjChoosed) {
-      if (!this.MasterCode)   // if Portfolio is null,undefined,''    
+      if (!this.MasterCode)   // if Portfolio is null,undefined,''
         this.MasterCode = [];
       const index = this.MasterCode.indexOf(prjChoosed.Project_Code);
       if (index === -1) {

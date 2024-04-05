@@ -992,7 +992,7 @@
 
                         </div>
                     </div> -->
-                    
+
 
 
                     <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
@@ -1015,7 +1015,7 @@
                             (click)="sweet_end()">
                             <span></span><small>End now</small>
                         </div> -->
-                    
+
                     <div class="icons-right curser-pointer" *ngIf="Meeting_status==false && Schedule_type1=='Event'"
                         data-toggle="tooltip" title="Start meeting" (click)="meetingReport()">
                         <span></span>
@@ -1117,7 +1117,7 @@
                                 <path d="M9 8h2v9H9zm4 0h2v9h-2z"></path>
                             </svg>
                         </span>
-                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0" class="tool-span" (click)="AllDelete_event(1);AlldeleteSchedule()">
+                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0" class="tool-span" (click)="onSingleEventDelete()">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13z">
@@ -1127,7 +1127,7 @@
                         </span>
                     </div>
 
-                    
+
 
 
                     <div class="icons-right" data-toggle="tooltip" title="Close">
@@ -1174,7 +1174,7 @@
                                 <div class="">
                                     <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                        {{item.Schedule_Type}}  
+                                        {{item.Schedule_Type}}
                                     </span>
                                     <span
                                         *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
@@ -1204,7 +1204,7 @@
                                 <div class="d-flex">
                                     <div class="title-day">{{item.Schedule_date| date:'EEEE, MMMM d'}}
                                         <span>,</span>
-                                        <span>{{item.NewSt_Time }} 
+                                        <span>{{item.NewSt_Time }}
 
                                         </span>
                                     </div>-
@@ -1275,7 +1275,7 @@
                                 </div>
                             </div>
                         </div>
-             </div>   
+             </div>
 
 
 
@@ -2057,7 +2057,7 @@
                                 class="btn btn-sm btn-light-primary btn-pill footbtns"
                                 (click)="Action_event(1);Event_acceptandReject()">Yes
                             </button>
-                            <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" 
+                            <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"
                                 class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
                                 data-target="#responsemodal1">No</button>
                             <button *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"
@@ -2460,6 +2460,14 @@
     </div>
 </div>
 
+
+
+
+
+
+
+
+
 <div class="modal fade" id="confirmpopup">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -2756,7 +2764,7 @@
                     <span style="color:red" *ngIf="!Title_Name&&notProvided" >  please enter title name</span>
                 </div>
 
-<!--agenda field start--> 
+<!--agenda field start-->
 
  <div class="form-group" id="agenda-field">
     <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
@@ -2777,18 +2785,18 @@
                     <button class="task-button " id="btn1">Add Task</button>
                 </div>
             </div>
-            
+
 
 
             <div class="todo-list">
                 <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">
                     <span class="agenda-index">{{i+1}}.</span>
-                    <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label> 
+                    <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label>
                     <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
 
                 <div class="agenda-ctrl-btns">
-                   
-                   
+
+
                     <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
                         <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
                     </button>
@@ -2819,12 +2827,12 @@
 
                 </div>
             </div>
-         
+
         </div>
     </div>
-    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > please provided atleast one agenda.</span>
+    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > please provide atleast one agenda.</span>
 
-</div>   
+</div>
 
 
 
@@ -2866,36 +2874,36 @@
                 <ng-container *ngIf="ScheduleType=='Event'">
                      <mat-form-field class="drp-dwn-field w-100"  *ngIf="ProjectListArray">
                         <mat-label>Select Project</mat-label>
-                        
+
                         <mat-chip-list #selectedProjects>
-                                                              
+
                                     <mat-chip *ngFor="let prjcode of MasterCode"  class="Data_chip_kt" (removed)="removeSelectedProject(prjcode)">
                                         {{getProjectName(prjcode)}}
                                         <button matChipRemove>
                                             <mat-icon>cancel</mat-icon>
                                         </button>
-                                    </mat-chip> 
-                              
+                                    </mat-chip>
+
                         </mat-chip-list>
 
                         <div class="d-flex">
                             <input class="flex-1" [matChipInputFor]="selectedProjects"
                                 [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
-                         
+
                             <button *ngIf="isProjectsDrpDwnOpen"
                                 class="bg-transparent border-0 "  (click)="this.isProjectsDrpDwnOpen=false; closeAutocompleteDrpDwn('ProjectsDrpDwn');">
                                 <mat-icon class="close-icon">cancel</mat-icon></button>
-                              
+
                             <button *ngIf="!isProjectsDrpDwnOpen"
                                 class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn');">
                                 <mat-icon class="add-icon"
                                     >add</mat-icon></button>
                         </div>
-                       
+
                         <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
                         (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
                         (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
-                            
+
                             <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value).slice(0,1000)" [value]="prj.Project_Code">
                                 <mat-checkbox color="primary"
                                     [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
@@ -2903,7 +2911,7 @@
                             </mat-option>
 
                         </mat-autocomplete>
-                    </mat-form-field>   
+                    </mat-form-field>
                 </ng-container>
 
                 </div>
@@ -2928,7 +2936,7 @@
                         </div>
                     </div>
                     <div class="form-group" id="core_viw222" style="display:none">
-                     <!-- <label class="cus-lbl">Add Portfolio </label> 
+                     <!-- <label class="cus-lbl">Add Portfolio </label>
                         <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio"
                             [(ngModel)]="Portfolio">
                             <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
@@ -2937,38 +2945,35 @@
 
 
 
-
-
-
-
                          <mat-form-field class="drp-dwn-field w-100"  *ngIf="Portfoliolist_1">
                             <mat-label>Add Portfolio</mat-label>
-                            <mat-chip-list #selectedPortfolios>                                           
+                            <mat-chip-list #selectedPortfolios>
                                 <mat-chip *ngFor="let prtid of Portfolio" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtid)">
                                          {{getObjOf(Portfoliolist_1,prtid,'portfolio_id').Portfolio_Name}}-{{getObjOf(Portfoliolist_1,prtid,'portfolio_id').DisplayName}}
                                     <button matChipRemove>
                                         <mat-icon>cancel</mat-icon>
                                     </button>
                                 </mat-chip>
+
                             </mat-chip-list>
                             <div class="d-flex">
                                 <input class="flex-1" [matChipInputFor]="selectedPortfolios"
                                     [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
-                             
+
                                 <button *ngIf="isPortfolioDrpDwnOpen"
                                     class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
                                     <mat-icon class="close-icon">cancel</mat-icon></button>
-                                  
+
                                 <button *ngIf="!isPortfolioDrpDwnOpen"
                                     class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
                                     <mat-icon class="add-icon"
                                         >add</mat-icon></button>
                             </div>
-                           
+
                             <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
                             (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
                             (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
-                                
+
                                 <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value).slice(0,1000)" [value]="prt.portfolio_id">
                                     <mat-checkbox color="primary"
                                         [checked]="Portfolio!=null&&Portfolio.indexOf(prt.portfolio_id)!==-1"></mat-checkbox>
@@ -2976,7 +2981,7 @@
                                 </mat-option>
 
                             </mat-autocomplete>
-                        </mat-form-field>   
+                        </mat-form-field>
 
 
                     </div>
@@ -2987,11 +2992,11 @@
                             <ng-option *ngFor="let item of  Memos_List" [value]="item.MailId">
                                 {{item.Subject}} - {{item.DisplayName}}</ng-option>
                         </ng-select>    -->
-                       
-             
+
+
                        <mat-form-field class="drp-dwn-field w-100"  *ngIf="Memos_List">
                             <mat-label>Add DMS</mat-label>
-                            <mat-chip-list #selectedDmsMemoDrpDwn>                                           
+                            <mat-chip-list #selectedDmsMemoDrpDwn>
                                 <mat-chip *ngFor="let d of SelectDms" class="Data_chip_kt" (removed)="removeSelectedDMSMemo(d)">
                                     {{getObjOf(Memos_List,d,'MailId').Subject}} - {{getObjOf(Memos_List,d,'MailId').DisplayName}}
                                     <button matChipRemove>
@@ -3002,22 +3007,22 @@
                             <div class="d-flex">
                                 <input class="flex-1" [matChipInputFor]="selectedDmsMemoDrpDwn"
                                     [matAutocomplete]="MemoDrpDwn" #dmsMemoTF />
-                             
+
                                 <button *ngIf="isDMSMemoDrpDwnOpen"
                                     class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
                                     <mat-icon class="close-icon">cancel</mat-icon></button>
-                                  
+
                                 <button *ngIf="!isDMSMemoDrpDwnOpen"
                                     class="bg-transparent border-0" (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">
-                                     
+
                                     <mat-icon class="add-icon"
                                         >add</mat-icon></button>
                             </div>
-                           
+
                             <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
                             (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
                             (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
-                                
+
                                 <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
                                     [value]="m.MailId">
                                     <mat-checkbox color="primary"
@@ -3026,11 +3031,11 @@
                                 </mat-option>
 
                             </mat-autocomplete>
-                        </mat-form-field>   
+                        </mat-form-field>
 
                     </div>
                     <div class="form-group" id="Guest_Name" style="display:none">
-                         <!-- <label class="cus-lbl">Add Participants </label> 
+                         <!-- <label class="cus-lbl">Add Participants </label>
                         <ng-select [multiple]="true" class="kt-input form-control" name="ngEmployeeDropdown"
                             placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
                             <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
@@ -3040,7 +3045,7 @@
 
                         <mat-form-field class="drp-dwn-field w-100"  *ngIf="_EmployeeListForDropdown">
                             <mat-label>Add Participants</mat-label>
-                            <mat-chip-list #selectedParticipants>                                           
+                            <mat-chip-list #selectedParticipants>
                                 <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt" (removed)="removeSelectedParticipant(p)">
                                     {{getObjOf(_EmployeeListForDropdown,p,'Emp_No').DisplayName}}
                                     <button matChipRemove>
@@ -3051,21 +3056,21 @@
                             <div class="d-flex">
                                 <input class="flex-1" [matChipInputFor]="selectedParticipants"
                                     [matAutocomplete]="ParticipantsDrpDwn" #ParticipantsTF />
-                             
+
                                 <button *ngIf="isParticipantsDrpDwnOpen"
                                     class="bg-transparent border-0 "  (click)="this.isParticipantsDrpDwnOpen=false; closeAutocompleteDrpDwn('ParticipantsDrpDwn');">
                                     <mat-icon class="close-icon">cancel</mat-icon></button>
-                                  
+
                                 <button *ngIf="!isParticipantsDrpDwnOpen"
                                     class="bg-transparent border-0" (click)="this.isParticipantsDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantsDrpDwn');">
                                     <mat-icon class="add-icon"
                                         >add</mat-icon></button>
                             </div>
-                           
+
                             <mat-autocomplete aria-label="ParticipantsDrpDwn" #ParticipantsDrpDwn="matAutocomplete"
                             (optionSelected)="onParticipantSelected($event); ParticipantsTF.value=''; "
                             (opened)="isParticipantsDrpDwnOpen=true" (closed)="isParticipantsDrpDwnOpen=false; ">
-                                
+
                                 <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value).slice(0,1000)"
                                     [value]="p.Emp_No">
                                     <mat-checkbox color="primary"
@@ -3074,7 +3079,7 @@
                                 </mat-option>
 
                             </mat-autocomplete>
-                        </mat-form-field>  
+                        </mat-form-field>
 
 
                     </div>
@@ -3103,11 +3108,21 @@
                     </div>
                     <div class="form-group mb-0">
                         <label class="cus-lbl">Attachment </label>
-                        <div class="custom-file pl-1">
-                            <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file  cursor-pointer    " 
+                        <!-- <div class="custom-file pl-1">
+                            <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file  curser-pointer "
                                 (change)="onFileChange($event)" multiple>
 
-                        </div>
+                        </div> -->
+
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Default file input example</label>
+                            <input class="form-control" type="file" id="formFile">
+                          </div>
+
+
+
+
+
                     </div>
 
 
@@ -3157,22 +3172,22 @@
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                                 <span *ngIf="!_StartDate&&notProvided" style="color:red">please select schedule date.</span>
                             </div>
                             <div class="form-group flex-1" >
                                 <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                <ng-select class="kt-input form-control "  (open)="onfocus($event)" 
+                                <ng-select  class="kt-input form-control"  (open)="onfocus($event)"
                                     placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                         {{item}}</ng-option>
                                 </ng-select>
                                 <span *ngIf="!Startts&&notProvided" style="color:red">please select start time.</span>
                             </div>
-                            <div class="form-group flex-1 " style="cursor:pointer;">
+                            <div class="form-group flex-1 " >
                                 <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
-                                <ng-select class="kt-input form-control"  (open)="onfocus($event)" placeholder="End Time"
+                                <ng-select class="kt-input form-control" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
                                     [(ngModel)]="Endtms">
                                     <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                         {{item1}}</ng-option>
@@ -3670,9 +3685,9 @@
 
             <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                                                                   <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
-                <button *ngIf="draftid==0" type="submit" class="btn btn-info btn-sm" 
+                <button *ngIf="draftid==0" type="submit" class="btn btn-info btn-sm"
                     (click)="onSubmitBtnClicked()">Submit</button>
-                <button *ngIf="draftid!=0" type="submit" class="btn btn-info btn-sm" 
+                <button *ngIf="draftid!=0" type="submit" class="btn btn-info btn-sm"
                     (click)="onSubmitBtnClicked()">Update & Release</button>
                 <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
                     (click)="Insert_indraft()">Save Draft</button>
@@ -3691,17 +3706,17 @@
             </div>
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                 class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" 
+                <button type="submit" class="btn btn-info btn-sm"
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm" 
+                <button type="submit" class="btn btn-info btn-sm"
                     (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
                 <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button> 
-                
+                <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+
             </div>
         </div>
     </div>

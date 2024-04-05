@@ -761,7 +761,7 @@
                                                            <path fill="#FFFFFF" d="M6.008,6.756c0.012-0.492,0.296-0.759,0.8-0.754C7.28,6.007,7.594,6.326,7.587,6.79
                                                              C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"/>
                                                          </g>
-                                                         
+
                                                          </svg>
                                                         </a>
                                                         </div>
@@ -789,7 +789,9 @@
                                                         </p>
                                                     </td>
                                                     <td>
-                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                      <span class="count2" title="Completed/All" *ngIf="item.CompletedActioncount&&item.Actioncount > 0">
+                                                  {{item.CompletedActioncount}}/{{ item.Actioncount }}
+                                                      </span>
                                                     </td>
                                                     <td>
                                                         <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
