@@ -383,6 +383,7 @@ clear(){
   this.selectedFile=null;
   this._inputAttachments='';
   this.bothActTlSubm=false;
+  this.fieldRequired=false;
 }
 
 
@@ -563,7 +564,7 @@ submitDar() {
     this.clear();
   }
 
-  closedarBar() {
+  closedarBar() { 
     document.getElementById("timepage").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
@@ -571,7 +572,7 @@ submitDar() {
     this.clear();
   }
   
-  closeInfo(){    
+  closeInfo(){   
     document.getElementById("timepage").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
@@ -688,8 +689,45 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 
 
 
-
-
 // timeline new code end.
+
+
+// form validation new start.
+fieldRequired:boolean=false;
+onTLSubmitBtnClick(){ 
+       if(
+           this.master_code&&
+           (this.showAction?this.project_code:true)&&
+           this.workdes&&
+           this.starttime&&
+           this.endtime&&
+           (this.starttime<this.endtime)&&
+           ((this.showAction&&this.bothActTlSubm)?this._remarks:true)
+         ){
+      // when all mandatory fields are provided.
+         this.submitDar();
+         }
+         else{
+        // when some mandatory fields are not provided.
+        this.fieldRequired=true;
+      }
+}
+
+
+
+
+
+// form validation new end.
+
+
+
+
+
+
+
+
+
+
+
 
 }

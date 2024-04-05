@@ -15,29 +15,29 @@
     </div>
     <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
 
-    <div class="form-group" [hidden]="ProjectsDropdownBoolean">
+    <div class="form-group" [hidden]="ProjectsDropdownBoolean"> 
         <label>Select Project :<span class="text-danger">*</span></label>
         <!-- <ng-multiselect-dropdown required [placeholder]="'Select Project'" [settings]="dropdownSettings_Projects"
             [data]="_ProjectDataList" [(ngModel)]="selectedProjectCodelist" (onSelect)="ProjectOnSelect($event)"
             (onDeSelect)="ProjectOnDeselect($event)" > -->
             <!-- (onFilterChange)="onFilterChange($event)"> -->
         <!-- </ng-multiselect-dropdown> -->
-        <ng-select reuired #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" placeholder="Select project" >
+        <ng-select required #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" (ngModelChange)="_projcode == !selectedProjectCodelist"    placeholder="Select project" >
             <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList">
-                {{item.Project_Name }}
+                {{item.Project_Name }} 
             </ng-option>
         </ng-select>
-        <span *ngIf ="_projcode == true" style="color:red">Project required!</span>
+        <span *ngIf ="_projcode == true||(action.touched&&!selectedProjectCodelist)" style="color:red">Project required!</span>
     </div>
     <div class="form-group">
         <label> Action Name <span class="text-danger">*</span></label>
-        <input #name="ngModel" required type="text" class="form-control" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName" required />
-        <span *ngIf ="_subname == true" style="color:red">Action Name required!</span>
+        <input #name="ngModel" required type="text" class="form-control" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName" required  (ngModelChange)="_subname=!Sub_ProjectName" />
+        <span *ngIf ="_subname == true||(name.touched&&!Sub_ProjectName)" style="color:red">Action Name required!</span>
     </div>
     <div class="form-group">
         <label>Description :<span class="text-danger">*</span></label>
-        <textarea #description="ngModel" required class="form-control" placeholder="Enter action description" [(ngModel)]="_Description" style="height: 100px"></textarea>
-        <span *ngIf ="_desbool == true" style="color:red">Description required!</span>
+        <textarea #description="ngModel" required class="form-control" placeholder="Enter action description" [(ngModel)]="_Description" (ngModelChange)="_desbool=!_Description" style="height: 100px"></textarea>
+        <span *ngIf ="_desbool == true||(description.touched&&!_Description)" style="color:red">Description required!</span>
     </div>
     <!-- <div class="form-group">
         <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
@@ -47,7 +47,7 @@
 
         </ng-multiselect-dropdown>
     </div> -->
-    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"   id="AssignedToEmp"     >
+    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"   id="AssignedToEmp" >
         <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
         <!-- <ng-select reuired #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo" placeholder="Select employee" >
             <ng-option [value]="item.Emp_No" [disabled]="item.Emp_No==Owner_Empno" *ngFor="let item of _EmployeeListForDropdown">
@@ -61,6 +61,7 @@
             [(ngModel)]="selectedEmpNo"
             required
             [disabled]="disableAssignedField"
+            #assignedToEmpf="ngModel"
             >
             <!-- <ng-template ng-option-tmp let-item="item">
                 <ng-container *ngIf="item.Emp_No === Owner_Empno">
@@ -79,7 +80,7 @@
                 </span>
               </ng-template>
         </ng-select>
-        <span *ngIf ="_selectemp == true" style="color:red">Assign To required!</span>
+        <span *ngIf ="_selectemp == true||assignedToEmpf.touched&&!selectedEmpNo" style="color:red">Assign To required!</span>
     </div>
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label>Action Owner : <strong >
@@ -105,21 +106,21 @@
                 <mat-datepicker #picker1></mat-datepicker>
             </div>
         </div>
-        <div *ngIf="startdate.invalid && (startdate.dirty || startdate.touched)" style="color: red">Start Date is required!</div>
+        <div *ngIf="_sdate == true||(startdate.touched&&!_StartDate)" style="color: red">Start Date is required!</div>
     </div>
 
         <div class="form-group flex-1" *ngIf="_StartDate!=null">
             <label>End Date :<span class="text-danger">*</span></label>
             <div class="d-flex date-border">
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control">
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control" (dateChange)="_edate=!_EndDate" (input)="_edate=!_EndDate" >
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
             <span *ngIf ="_edate == true" style="color:red">End Date required!</span>
-        </div>
+        </div>  <!--when start date is provided-->
         <div class="form-group flex-1" *ngIf="_StartDate==null">
             <label>End Date :<span class="text-danger">*</span></label>
             <div class="d-flex date-border" (click)="enddateChecker()">
@@ -131,19 +132,21 @@
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
-        </div>
+            <span *ngIf ="_edate == true" style="color:red">End Date required!</span>
+        </div>  <!--when start date is not provided-->
     </div>
 
     <div class="form-group">                          <!--*ngIf="selectedEmpNo == Current_user_ID"-->
         <label>Allocated Hours<span class="text-danger">*</span></label>
         <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
         <input id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
-            (click)="alertMaxAllocation()">
-        <span *ngIf="allocated.touched&&!_allocated" style="color:red">Allocated hours required! Enter non-decimal value&nbsp;</span>
+            (click)="alertMaxAllocation()"  (ngModelChange)="_alchr=!_allocated" >
+        <!-- <span *ngIf="allocated.touched&&!_allocated" style="color:red">Allocated hours required! Enter non-decimal value&nbsp;</span> -->
         <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
         <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value.</span>
         <span *ngIf="this._StartDate == null || this._EndDate == null" style="color:red">{{_message}}</span>
+        <span *ngIf="this._alchr==true||(allocated.touched&&!_allocated)" style="color:red">Allocated hours required.</span>
     </div>
 
     <div class="form-group">
