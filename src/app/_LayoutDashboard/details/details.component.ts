@@ -7400,7 +7400,16 @@ meetingReport(mtgScheduleId:any) {
 }
 // start meeting feature end
 
-
+featuremodel() {
+  document.getElementById("newfeatures").style.display = "block";
+  document.getElementById("newfeatures").style.overflow = "auto";
+  document.getElementById("feature-modal-backdrop").classList.add("show");
+}
+NewAddUserCountFeature() {
+      document.getElementById("newfeatures").style.display = "none";
+      document.getElementById("newfeatures").style.overflow = "hidden";
+      document.getElementById("feature-modal-backdrop").classList.remove("show");
+}
 
 
 

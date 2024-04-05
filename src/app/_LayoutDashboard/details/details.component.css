@@ -4919,3 +4919,212 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   height: calc(100vh - 106px);
   overflow-y: hidden;
 }
+
+  /*--new features--*/
+  .feature-icon{
+    width: 1.5em; 
+    height: 1.5em;
+    vertical-align: middle;
+    color: #64748b;
+    overflow: hidden;
+  }
+  .kt-header__topbar-icon:hover .feature-icon{
+    transition: all 0.3s;
+    color: #5867dd;
+  }
+
+  .feature-content-hero{
+    height: 100%;
+    padding: 96px 0;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+    border-radius: 4px;
+}
+.feature-bg-img{
+    background-image: url('../../../assets/features/f-bg-4.png');
+    background-position: center;
+    background-size: cover;
+    border-radius: 4px 4px 0px 0px;
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%, -51%);
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 1;
+}
+.feature-headline-parent{
+    padding: 0 72px;
+    margin: auto;
+    max-width: 1440px;
+    z-index: 2;
+    position: relative;
+    text-align: center;
+}
+.feature-headline{
+    font-size: 3.5rem;
+    line-height: 4.5rem;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    margin-top: 24px;
+    z-index: 2;
+    color: #062e6f;
+    margin: 0 auto;
+    max-width: 840px;
+}
+.feature-headline-p{
+    font-weight: 400;
+    padding: 0 20px;
+    font-size: 1.25rem;
+    line-height: 2rem;
+    color: #1f1f1f;
+}
+.feature-hero-card{
+    top: 0%;
+    position: absolute;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+.feature-hero-card .heading{
+    background-color: #f8fafd;
+    align-items: center;
+    border-radius: 0 0 12px 12px;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding: 8px 12px;
+    box-shadow: 0px 0px 2px 0px #c2daff;
+}
+.feature-hero-card p{
+    font-size: .875rem;
+    line-height: 1.75rem;
+    color: #1f1f1f;
+    margin-bottom: 0px;
+}
+.feature-hero-icon-img{
+    width: 40px;
+    z-index: 1;
+}
+.feature-hero-icon{
+    bottom: -10%;
+    display: flex;
+    height: 64px;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+.feature-hero-icon-circle{
+    border-radius: 50%;
+    height: 64px;
+    position: absolute;
+    width: 64px;
+    background-color: #f8fafd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 4px 0px #c2daff;
+    border: 1px solid #dfecff;
+}
+.feature-content{
+    padding: 64px 72px;
+}
+.feature-content .feature-grid {
+    padding: 64px 0px;
+}
+.feature-heading{
+    font-weight: 500;
+    margin: 8px 0 16px;
+    font-size: 2rem;
+    line-height: 2.75rem;
+    color: #1f1f1f;
+}
+.feature-lead{
+    font-size: 1rem;
+    line-height: 1.75rem;
+    color: #474747;
+    margin-bottom: 0px;
+}
+.feature-image img{
+    height: auto;
+    width: 100%;
+    border-radius: 24px;
+}
+.feature-ol{
+    margin: 5px 0 0;
+    -webkit-padding-start: 17px;
+    padding-inline-start: 17px;
+}
+.feature-li{
+    font-size: 1rem;
+    line-height: 1.75rem;
+    color: #474747;
+    list-style-type: decimal;
+}
+.feature-close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 9;
+    background: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+    font-size: 18px;
+    text-align: center;
+    line-height: 1;
+}
+.feature-grid {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(12, 1fr);
+    -webkit-box-align: center;
+    align-items: center;
+}
+.feature-grid:nth-of-type(2n) .feature-info {
+    grid-column: 7 / -1;
+    padding-left: 14px;
+    padding-right: 0px;
+}
+.feature-info {
+    position: relative;
+    grid-area: 1 / 1 / -1 / 7;
+    padding-right: 14px;
+}
+.feature-image {
+    grid-area: 1 / 7 / -1 / -1;
+    position: relative;
+    z-index: 1;
+}
+.feature-grid:nth-of-type(2n) .feature-image {
+    grid-column: 1 / 7;
+}
+.feature-modal-backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+}
+.feature-modal-backdrop.fade {
+    transition: opacity 0.15s linear;
+    opacity: 0;
+    display: none;
+}
+.feature-modal-backdrop.show {
+    opacity: 0.5;
+    display: block;
+}
