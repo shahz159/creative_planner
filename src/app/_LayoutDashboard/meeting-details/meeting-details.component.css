@@ -3301,4 +3301,75 @@ span.side-icns.kt-org-ic {
     margin: 5px 0;
   }
 
+
+
+
+.meet-card{
+    border-radius: 10px;
+}
+.meet-card .card-header:first-child {
+    border-radius: 10px 10px 0 0;
+}
+h5.card-ttle{
+    font-size: 16px;
+    font-weight: 400;
+    color: #3c4043;
+}
+/* .header2 {
+    padding: 40px;
+    padding-bottom: 20px;
+    background-color: #f7f8fa;
+    border-bottom: 1px solid #ebedf2;
+   
+} */
+.card-body2{
+    background-color: #f1f5f9;
+}
+.card-mid .eve-area:not(:first-child){
+    border-top: 1px solid #ebedf2;
+}
+.card-mid .eve-area{
+    padding: 7px 20px;
+}
+.cards-main {
+    display: flex;
+}
+.card-side{
+    width: 30%;
+    display: none;
+}
+.cards-main .card-side{
+    display: flex;
+}
+.meet-card {
+    height: 97vh;
+  }
+
+  .Replied_border_left_true_warning {
+    border-left: 5px solid #ffb822;
+  }
+
+  .mat-icon.mat-primary {
+    color: #3699ff;
+  }
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
   
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .input-group-text>.mat-icon-button {
+    line-height: 35px !important;
+  }
+
+  .kt-badge.kt-badge--inline {
+    height: auto;
+    width: auto;
+    padding: 0.15rem 0.75rem;
+    border-radius: 2px;
+    margin-left: 4px;
+  }

@@ -1688,11 +1688,13 @@
                                           </a>
                                       <div class="br-line"></div>
 
-                                      <a class="kt-inbox__icon" (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  title="Add Portfolio">
 
-                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
-                                      </a>
-
+                                   
+                                     
+                                      <a class="kt-inbox__icon " (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  title="Add Portfolio">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
+                                    </a>
+                               
                                       <!-- <a class="kt-inbox__icon">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
                                               viewBox="0 0 16 16" fill="none">
@@ -7627,7 +7629,7 @@
                       </li>
                   </ul>
                   <div class="d-flex align-items-center">
-                      <div class="recall-btn" title="Meeting Recall">
+                      <!-- <div class="recall-btn" title="Meeting Recall">
                           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                               <g id="surface1">
                               <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 0.800781 12.5 C 2.199219 12.5 3.601562 12.5 4.898438 12.5 C 5 12.5 5 12.5 5 12.601562 C 5 13 5 13.398438 5 13.699219 C 5 13.800781 5 13.898438 4.800781 13.898438 C 4.300781 13.898438 3.800781 13.898438 3.199219 13.898438 C 3.199219 14 3.199219 14 3.300781 14.101562 C 4.601562 16.101562 6.398438 17.300781 8.699219 17.601562 C 12.5 18.199219 16 16 17.199219 12.300781 C 17.398438 11.601562 17.601562 10.898438 17.601562 10.101562 C 17.601562 10 17.601562 9.898438 17.800781 9.898438 C 18.199219 9.898438 18.5 9.898438 18.898438 9.898438 C 19 9.898438 19.101562 9.898438 19.101562 10.101562 C 19.101562 11.898438 18.601562 13.601562 17.5 15 C 16 17.101562 14 18.398438 11.5 18.898438 C 11.199219 19 10.800781 19 10.5 19 L 10.398438 19 C 10.300781 19 10.199219 19 10.101562 19 C 10 19 9.898438 19 9.699219 19 C 9.601562 19 9.5 19 9.300781 19 C 9 19 8.601562 19 8.300781 18.898438 C 6.699219 18.601562 5.199219 17.898438 3.898438 16.898438 C 3.199219 16.300781 2.800781 15.800781 2.101562 14.898438 C 2.101562 15.199219 2.101562 15.398438 2.101562 15.601562 C 2.101562 15.898438 2.101562 16.199219 2.101562 16.5 C 2.101562 16.601562 2.101562 16.699219 1.898438 16.699219 C 1.5 16.699219 1.101562 16.699219 0.699219 16.699219 L 0.601562 16.699219 C 0.800781 15.398438 0.800781 14 0.800781 12.5 Z M 0.800781 12.5 "/>
@@ -7636,7 +7638,7 @@
                               <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 13.199219 7.699219 L 12 7.699219 C 11.898438 7.699219 11.898438 7.699219 11.800781 7.699219 L 11.800781 7.300781 C 11.699219 6.800781 11.300781 6.300781 10.800781 6.199219 L 9.699219 6.199219 C 9 6.300781 8.601562 6.800781 8.601562 7.5 L 8.601562 7.800781 L 7.101562 7.800781 C 6.5 7.898438 6.199219 8.398438 6.199219 9 L 6.199219 12.199219 C 6.199219 12.199219 6.199219 12.300781 6.199219 12.300781 C 6.199219 12.699219 6.398438 13.5 7.398438 13.699219 L 13 13.699219 C 13.699219 13.699219 14.199219 13.199219 14.199219 12.5 L 14.199219 8.800781 C 14.199219 8.199219 13.800781 7.800781 13.199219 7.699219 Z M 9.398438 7.300781 C 9.5 7.101562 9.601562 7 9.898438 7 L 10.699219 7 C 10.699219 7 10.898438 7 11 7.101562 C 11.199219 7.300781 11.101562 7.5 11.101562 7.699219 L 9.398438 7.699219 Z M 13.398438 10.800781 L 13.398438 12.5 C 13.398438 12.800781 13.300781 13 12.898438 13 L 7.5 13 C 7.199219 13 7 12.898438 7 12.5 L 7 10.800781 C 7 10.699219 7 10.699219 7 10.601562 L 8.199219 10.601562 L 8.199219 11.101562 C 8.199219 11.300781 8.398438 11.398438 8.601562 11.398438 C 8.800781 11.398438 9 11.300781 9 11.101562 L 9 10.601562 L 11.398438 10.601562 L 11.398438 11.101562 C 11.398438 11.300781 11.601562 11.398438 11.800781 11.398438 C 12 11.398438 12.199219 11.300781 12.199219 11.101562 L 12.199219 10.601562 L 13.398438 10.601562 C 13.398438 10.699219 13.398438 10.699219 13.398438 10.800781 Z M 13.398438 9.800781 L 7 9.800781 L 7 8.898438 C 7.101562 8.699219 7.199219 8.601562 7.5 8.601562 L 12.898438 8.601562 C 13.199219 8.601562 13.398438 8.699219 13.398438 9.101562 Z M 13.398438 9.800781 "/>
                               </g>
                           </svg>
-                      </div>
+                      </div> -->
                       <div class="dropdown no-after btm-btn ml-2 nav-item create-btn"
                       *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
                       <a type="button" class="btn icon-btn icn-hvr fav-btn" data-toggle="dropdown"
@@ -7782,13 +7784,13 @@
                                               </div>
 
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant  *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                        <div class="kt-met-info">
 
 
-                                                     <div  class="kt-support-view org-name">
+                                                     <div  class="kt-support-view ml-2">
                                                           <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -7999,13 +8001,13 @@
                                                   </div>
                                               </div>
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                        <div class="kt-met-info">
 
 
-                                                     <div  class="kt-support-view org-name">
+                                                     <div  class="kt-support-view ml-2">
                                                           <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -8218,12 +8220,12 @@
                                                   </div>
                                               </div>
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="lmeeting.usersjson&&lmeeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="lmeeting.usersjson&&lmeeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                       <div class="kt-met-info">
 
-                                                          <div  class="kt-support-view org-name">
+                                                          <div  class="kt-support-view ml-2">
                                                               <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -8449,11 +8451,11 @@
                                                       </div>
                                                   </div>
                                               </div>
-                                              <div class="Organizer-name meeting-participant">
+                                              <div class="Organizer-name meeting-participant ">
                                                   <div class="kt-met-label">
                                                       Participant:
                                                   </div>
-                                                  <div  class="kt-support-view org-name">
+                                                  <div  class="kt-support-view ml-4">
                                                       <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -8659,12 +8661,12 @@
                                                   </div>
                                               </div>
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="omeeting.usersjson&&omeeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="omeeting.usersjson&&omeeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                       <div class="kt-met-info">
 
-                                                          <div  class="kt-support-view org-name">
+                                                          <div  class="kt-support-view ml-2">
                                                               <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
                                                                 <div *ngFor="let user of omeeting.usersjson.slice(0,3);let i=index" data-bs-toggle="tooltip" data-bs-original-title={{user.TM_DisplayName}} data-kt-initialized="1"
@@ -8893,12 +8895,12 @@
                                               </div>
 
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                       <div class="kt-met-info">
 
-                                                          <div  class="kt-support-view org-name">
+                                                          <div  class="kt-support-view ml-2">
                                                               <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
                                                                 <div *ngFor="let user of meeting.usersjson.slice(0,3);let i=index" data-bs-toggle="tooltip" data-bs-original-title={{user.TM_DisplayName}} data-kt-initialized="1"

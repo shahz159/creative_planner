@@ -27,6 +27,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import {  MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -132,7 +133,8 @@ export class ActionToProjectComponent implements OnInit {
     public _projectunplanned: ProjectUnplannedTaskComponent,
     public _Todoproject: ToDoProjectsComponent,
     public _MoreDetails: MoreDetailsComponent,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public _meetingDetails:MeetingDetailsComponent
   ) {
 
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
@@ -573,6 +575,9 @@ export class ActionToProjectComponent implements OnInit {
           else if(this._Message=='3'){
             this.notifyService.showError("Something went wrong", "Action not created");
           }
+          else if(this._Message=='7'){
+            this.notifyService.showError("Something went wrong", "Action not created");
+          }
           else{
             this.notifyService.showError("Something went wrong", "Action not created");
           }
@@ -591,6 +596,13 @@ export class ActionToProjectComponent implements OnInit {
           this._inputAttachments = [];
         }
         else if(this._Urlid == 3){
+          this._meetingreport.getScheduleId();
+            this._meetingreport.GetAssigned_SubtaskProjects();
+          this.Clear_Feilds();
+          this.closeInfo();
+          this._inputAttachments = [];
+        }
+        else if(this._Urlid == 7){
           this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
           this.Clear_Feilds();
@@ -688,8 +700,9 @@ export class ActionToProjectComponent implements OnInit {
 
   closeInfo() {
 
-    // alert(this._Urlid);
+    alert(this._Urlid);
     if(this._Urlid==2){
+      debugger
       this.router.navigate(["UnplannedTask/"]);
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
@@ -704,6 +717,11 @@ export class ActionToProjectComponent implements OnInit {
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
 
     }
+    else if(this._Urlid==7){
+    this._meetingDetails.getDetailsScheduleId();
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+    }
+   
     else if(this._Urlid==4){
 
       this.router.navigate(["./Details", this.selectedProjectCode]);
