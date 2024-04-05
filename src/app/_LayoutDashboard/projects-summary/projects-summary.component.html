@@ -789,8 +789,8 @@
                                                         </p>
                                                     </td>
                                                     <td>
-                                                      <span class="count2" *ngIf="item.Actioncount > 0">
-                                                   {{ item.Actioncount }}
+                                                      <span class="count2" title="Completed/All" *ngIf="item.CompletedActioncount&&item.Actioncount > 0">
+                                                  {{item.CompletedActioncount}}/{{ item.Actioncount }}
                                                       </span>
                                                     </td>
                                                     <td>
