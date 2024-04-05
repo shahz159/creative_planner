@@ -918,7 +918,6 @@ acceptSelectedValues() {
 
   rejectpros() {
     this.approvalObj.Project_Code = null;
-
     this.approvalservice.GetGlobalRejectList(this.approvalObj).subscribe((data) => {
       this.reject_list = JSON.parse(data[0]['reject_list']);
     });
@@ -952,7 +951,7 @@ acceptSelectedValues() {
     this.rejectType=null;
   }
 
-  submitReject(){
+  submitReject(){    
     console.log(this.selectedItems,"reject");
     this.selectedItems.forEach(element => {
       element.RejectType=this.rejectType;

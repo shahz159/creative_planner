@@ -131,9 +131,10 @@ export class MeetingDetailsComponent implements OnInit {
       this.Current_user_ID = localStorage.getItem('EmpNo');
       this.meeting_details();
       this.addAgenda();
-      this.GetMeetingnotes_data();
+      // this.GetMeetingnotes_data();
       this.getDetailsScheduleId()
       this.GetAssigned_SubtaskProjects();
+      
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -159,7 +160,7 @@ export class MeetingDetailsComponent implements OnInit {
   selectedText:any;
 
   makeLineATask(): void {
-    debugger
+
     // alert(this.editorFocused)
     const editorContent = this.Notes_Type;
     if (this.editorFocused===true) {
@@ -380,7 +381,7 @@ meeting_details(){
     
     var x =this.Agendas_List.length
 
-    console.log(x,'EventScheduledjson ')
+    console.log(this.Agendas_List,'EventScheduledjson ')
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
     this.status=this.EventScheduledjson[0].Status;
@@ -1421,12 +1422,11 @@ updateAgenda1(index:number){
 }
 
 AgendasName: string;
+AgendaListRedirect:any = 1
 
 deleteAgenda(AgendaId: number) {
 
-
   const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
-
   if (AgendasNames) {
     this.AgendasName = AgendasNames.Agenda_Name;
   }
@@ -1461,7 +1461,8 @@ deleteAgenda(AgendaId: number) {
 
       this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
        this.meeting_details()
-        this.notifyService.showSuccess("Deleted successfully ", '');
+       this.notifyService.showSuccess("Deleted successfully ", '');
+       
       });
     }
     else{
@@ -1472,6 +1473,8 @@ deleteAgenda(AgendaId: number) {
 
 
 AgendaId:any
+
+
 showAgendaDetails(item,index){
   debugger
   this.AgendaId=item.AgendaId
@@ -1510,6 +1513,27 @@ cancelAgendaEdit(index:number){
 }
 
 
+
+completeAgenda(){
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
+
+  this.CalenderService.NewUpdateCompleteAgenda(this._calenderDto).subscribe((data)=>{ 
+    this.meeting_details() 
+    this.notifyService.showSuccess("Agenda completed", "Success"); 
+  })
+
+}
+
+UndoCompleteAgenda(){
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
+
+  this.CalenderService.NewUpdateUndoCompleteAgenda(this._calenderDto).subscribe((data)=>{
+    this.meeting_details();
+    this.notifyService.showSuccess("Removed from complete", "Success"); 
+  })
+}
 
 /////////////////////////////////////////// Agenda End /////////////////////////////////////////////////////////
 
@@ -1832,7 +1856,7 @@ EnterSubmit(_Demotext) {
 
     this._taskName = taskName;
     this.task_id = id;
-    debugger
+
     this.router.navigate(["Meeting-Details/" + this.Scheduleid + "/ActionToAssign/3"]);
     this.BsService.SetNewAssignId(this.task_id);
     this.BsService.SetNewAssignedName(this._taskName);
@@ -1849,21 +1873,13 @@ EnterSubmit(_Demotext) {
     //   });
     //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
-    alert('452')
+
     document.getElementById("mysideInfobar3").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
   }
-
-
-
-
-
-
-
-
 
 
   // GetAssigned_SubtaskProjectsDatails() {
