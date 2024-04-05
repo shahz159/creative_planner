@@ -1301,12 +1301,12 @@ debugger
     document.getElementById("newdetails").classList.remove("position-fixed");
   }
   hide_main_approval(){
-    document.getElementById("main-approval").style.display = "none";
-    document.getElementById("main-reject").style.display = "block";
+    document.getElementById("main-approval").classList.add("d-none");
+    document.getElementById("main-reject").classList.remove("d-none");
   }
   backmainapproval(){
-    document.getElementById("main-approval").style.display = "block";
-    document.getElementById("main-reject").style.display = "none";
+    document.getElementById("main-approval").classList.remove("d-none");
+    document.getElementById("main-reject").classList.add("d-none");
   }
   closeInfo() {
     this._remarks = ''
@@ -1796,6 +1796,7 @@ debugger
           }
 
         }
+        debugger
         if (this.requestType == 'Task Complete') {
           this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
@@ -1808,7 +1809,7 @@ debugger
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
          this.getstandardapprovalStats();
-
+         
         }
 
       }
@@ -1820,6 +1821,7 @@ debugger
         // if there are no std task aprv request
          this.standardjson=[];
          this.currentStdAprView=undefined;
+         this.closeApprovalSideBar();
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -1829,7 +1831,7 @@ debugger
   }
 
 standardjson:any;
-currentStdAprView:number=0;
+currentStdAprView:number|undefined;
   getstandardapprovalStats(){  
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
@@ -1847,7 +1849,7 @@ currentStdAprView:number=0;
     });
   }
 
-  approvalClick(actionType) {
+  approvalClick(actionType) {  debugger
     this.comments = ""
     switch (actionType) {
       case 'ACCEPT': {
@@ -1873,10 +1875,19 @@ currentStdAprView:number=0;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
-      };
-        break;
+      };break;
+      case 'NOTSELECTED':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = undefined;
+        this.rejectType = undefined;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.isTextAreaVisible = false;
+      }
       default: { }
     }
+    if(actionType!=='NOTSELECTED')
     this.isTextAreaVisible = true;
   }
 
@@ -1933,7 +1944,7 @@ currentStdAprView:number=0;
       }
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
         console.log('++>', JSON.parse(data[0]['reject_CommentsList']));
-        this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+        this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);  
         this.rejectlength = this.rejectcommentsList.length;
       });
     }
@@ -1976,16 +1987,36 @@ currentStdAprView:number=0;
      this.currentStdAprView=undefined;
   }
 
-
+  allStdAprSelected:boolean=false;
+  selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
-    this.approvalservice.NewUpdateAcceptApprovalsService(this.standardjson).subscribe(data =>{
+    const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
+    const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
+    this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
       console.log(data,"accept-data");
-       this.notifyService.showSuccess("All tasks requests Approved.",'Success');
-      this.getapprovalStats();
+       if(x===0)
+        this.closeApprovalSideBar(); 
+
+       this.notifyService.showSuccess("tasks requests Approved.",'Success');
+       this.getapprovalStats();
+       this.allStdAprSelected=false;
+      
     });
   }
 
-
+  onStdAprvSelected(e,aprvls){
+   
+    aprvls.forEach(aprv=>{
+          if(e.target.checked){
+                if(!this.selectedStdAprvs.includes(aprv.SNo))
+                this.selectedStdAprvs.push(aprv.SNo);
+          }else{
+                const x=this.selectedStdAprvs.indexOf(aprv.SNo);
+                this.selectedStdAprvs.splice(x,1);
+          }
+    });
+      
+  }
 
 
 
@@ -2002,7 +2033,7 @@ currentStdAprView:number=0;
 
 
 
-  submitApproval() {
+  submitApproval() {     debugger
     if (this.selectedType == '1') {
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2074,6 +2105,7 @@ currentStdAprView:number=0;
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
     this.close_info_Slide();
+
   }
 
 
@@ -7479,14 +7511,52 @@ Insert_indraft() { debugger
 
 
 
+// std task apr and reject code new start.
+
+
+rejectAllStdTaskAprvs(){   
+  if (this.selectedType == '3') {
+    if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+      this.noRejectType = true;
+      this.notifyService.showError("Please select Reject Type", "Failed");
+      return false;
+    }
+    else {
+
+    let selectedStdApprovals=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
+    selectedStdApprovals=selectedStdApprovals.map(item=>({
+              SNo: item.SNo,
+              Type: item.Type,
+              ReportType: item.ReportType,
+              RejectType: item.RejectType,
+              sendFrom: item.sendFrom,
+              Project_Code: item.Project_Code,
+              Remarks: item.Remarks,
+              Rec_Date: item.Rec_Date
+    }));
+      selectedStdApprovals.forEach(element => {
+        element.Remarks = this.comments;
+        element.RejectType = this.rejectType;
+      });
+
+      this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedStdApprovals).
+        subscribe((data) => {  
+          this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
+          this.getapprovalStats();
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.getRejectType();
+
+        });
 
 
 
 
+    }
+  }
+}
 
 
-
-
+// std task apr and reject code new end.
 
 
 

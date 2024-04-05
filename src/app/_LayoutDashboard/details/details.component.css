@@ -4012,13 +4012,6 @@ span.Rq_date_V {
 
 
 
-
-
-
-
-
-
-
 .stdtask-aprv-btn{
   background-color: #2782df;
   color: white;
@@ -4904,8 +4897,14 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  column-gap:2%;
   padding: 10px;
   border-radius: 4px;
+}
+.heading-AprvReq{
+  display:flex;
+  background-color: #F3F8FF;
+
 }
 .approval-view .accordion-card{
   border: 1px solid #d9e8fd;
@@ -4995,4 +4994,11 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 .approval-view .kt-portlet__body_scroll {
   height: calc(100vh - 106px);
   overflow-y: hidden;
+}
+
+.approval-view #main-reject .kt-portlet__body_scroll{
+  overflow-y: hidden;
+}
+.approval-view #main-reject .kt-portlet__body_scroll:hover{
+    overflow-y: auto;
 }

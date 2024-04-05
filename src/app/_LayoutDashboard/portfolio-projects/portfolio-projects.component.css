@@ -1639,3 +1639,11 @@ left: 38%;
     white-space: nowrap;
     width: 200px;
 }
+
+.view{
+  background-color: #5867dd !important;
+  color: white !important;
+}
+.font {
+  font-size: 14px; /* Adjust the font size as per your requirement */
+}

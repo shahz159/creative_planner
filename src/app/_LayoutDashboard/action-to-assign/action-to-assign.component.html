@@ -62,7 +62,9 @@
             <span *ngIf="assign.touched && !SelectedEmplList" style="color:red">Assign To required!</span>
         </div>
 
-<!-- <div class="form-group">
+
+<!--
+        <div class="form-group">
         <mat-form-field class="drp-dwn-field w-100"  *ngIf="PortfolioList">
           <mat-label>Link Portfolio</mat-label>
           <mat-chip-list #selectedPortfolios>
@@ -85,7 +87,8 @@
                 <button *ngIf="!isPortfolioDrpDwnOpen"
                 class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
                 <mat-icon class="add-icon"
-                    >add</mat-icon></button>        </div>
+                    >add</mat-icon></button>
+            </div>
 
 
         <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
@@ -96,7 +99,8 @@
           <mat-checkbox color="primary"
               [checked]="Portfolio!=null&&Portfolio.indexOf(prt.Portfolio_ID)!==-1"></mat-checkbox>
               {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
-      </mat-option>      </mat-autocomplete>
+      </mat-option>
+     </mat-autocomplete>
     </mat-form-field>
 
 

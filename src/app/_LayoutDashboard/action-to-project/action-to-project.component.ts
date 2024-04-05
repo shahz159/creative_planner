@@ -102,6 +102,7 @@ export class ActionToProjectComponent implements OnInit {
   _sdate: boolean;
   _edate: boolean;
   _selectemp: boolean;
+  _alchr:boolean;
   _Urlid: any;
   public cat_id: any;
   cat_name: any = "";
@@ -155,6 +156,7 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
+    this._alchr=false;
 
   }
 
@@ -166,7 +168,7 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
-
+    this._alchr=false;
 
     this._Urlid = this.route.snapshot.params['id'];
     this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
@@ -440,36 +442,59 @@ export class ActionToProjectComponent implements OnInit {
   }
 
 
-
   ownerNo:string;
 
-  OnSubmit() {
 
+
+
+  OnSubmit() {
+debugger
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
-      return false;
+      // return false;
     }
+
+    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
+      this._subname = true;
+      // return false;
+    }else this._subname=false;
 
     if (this._Description == "" || this._Description == null || this._Description == undefined) {
       this._desbool = true;
-      return false;
-    }
-    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
-      this._subname = true;
-      return false;
-    }
-    if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
-      this._sdate = true;
-      return false;
-    }
-    if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
-      this._edate = true;
-      return false;
-    }
+      // return false;
+    }else this._desbool = false;
+
     if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
       this._selectemp = true;
-      return false;
-    }
+      // return false;
+    }else this._selectemp = false;
+
+    if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+      this._sdate = true;
+      // return false;
+    }else this._sdate = false;
+
+    if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+      this._edate = true;
+      // return false;
+    }else this._edate = false;
+    
+    if(this._allocated==null||this._allocated==undefined||this._allocated==0){
+      this._alchr=true;
+      // return false;
+    }else  this._alchr=false;
+
+
+
+   const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._alchr].some(item=>item);
+   if(fieldsRequired)    
+   return false;        // please provide all mandatory fields value.
+
+
+
+
+
+
     if(this.owner==null || this.owner==undefined || this.owner==''){
       this.owner=this.Owner_Empno;
     }

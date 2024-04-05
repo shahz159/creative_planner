@@ -50,7 +50,7 @@ export const MY_DATE_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
-   
+
   ]
 })
 
@@ -134,7 +134,7 @@ export class ActionToAssignComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
 
   getProjectTypeList() {
-   
+
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
@@ -174,7 +174,7 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   OnAssignTask_Submit() {
-   
+
     // debugger
     if (this._StartDate == null && this._EndDate != null) {
       this.noStartDate = true;
@@ -452,6 +452,7 @@ isPrjDesValid:boolean=true;
   Portfolio: any = [];
   isPortfolioDrpDwnOpen: boolean = false;
   onPortfolioSelected(e: any) {
+    debugger
     const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
@@ -479,6 +480,7 @@ isPrjDesValid:boolean=true;
 
 
   getObjOf(arr, id, idName) {
+    debugger
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }
