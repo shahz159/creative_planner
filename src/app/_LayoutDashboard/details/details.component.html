@@ -6269,7 +6269,7 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item" *ngIf="projectInfo&&(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)">
+                                <li class="nav-item" *ngIf="projectInfo && (Current_user_ID == projectInfo.OwnerEmpNo ||isHierarchy == true ) ||(this.Current_user_ID == this.projectInfo.ResponsibleEmpNo)">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                         <span class="svg-icv-hd">
                                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"

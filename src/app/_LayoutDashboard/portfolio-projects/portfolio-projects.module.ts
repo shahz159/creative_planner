@@ -12,12 +12,13 @@ import { PortfolioProjectsComponent } from './portfolio-projects.component';
 import { SortDirective } from './sort.directive';
 import { DateFormatPipePipe } from 'src/app/Shared/date-format-pipe.pipe';
 
+
 @NgModule({
   declarations: [
     PortfolioProjectsComponent,
     SortDirective,
     DateFormatPipePipe,
-  
+
   ],
   imports: [
     CommonModule,
@@ -31,6 +32,6 @@ import { DateFormatPipePipe } from 'src/app/Shared/date-format-pipe.pipe';
     Ng2SearchPipeModule,
     NgxPaginationModule
   ],
- 
+
 })
 export class PortfolioProjectsModule { }
