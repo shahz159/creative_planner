@@ -50,7 +50,7 @@ export const MY_DATE_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
-   
+
   ]
 })
 
@@ -134,7 +134,7 @@ export class ActionToAssignComponent implements OnInit {
   _ObjCompletedProj: CompletedProjectsDTO;
 
   getProjectTypeList() {
-   
+
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
@@ -174,7 +174,7 @@ export class ActionToAssignComponent implements OnInit {
   }
 
   OnAssignTask_Submit() {
-   
+
     // debugger
     if (this._StartDate == null && this._EndDate != null) {
       this.noStartDate = true;
@@ -282,7 +282,6 @@ export class ActionToAssignComponent implements OnInit {
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
             this.router.navigate(["UnplannedTask/"]);
-
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -291,6 +290,7 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 2){
+         
             this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
@@ -301,8 +301,9 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 3){
+          
             this._meetingDetails.getDetailsScheduleId();
-            // this._meetingDetails.GetAssigned_SubtaskProjects();
+            this._meetingDetails.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -331,8 +332,9 @@ export class ActionToAssignComponent implements OnInit {
 
     }
     else if(this._Urlid==3){
+   
       this._meetingDetails.getDetailsScheduleId();
-    document.getElementById("mysideInfobar3").classList.remove("kt-action-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -450,6 +452,7 @@ isPrjDesValid:boolean=true;
   Portfolio: any = [];
   isPortfolioDrpDwnOpen: boolean = false;
   onPortfolioSelected(e: any) {
+    debugger
     const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
@@ -477,6 +480,7 @@ isPrjDesValid:boolean=true;
 
 
   getObjOf(arr, id, idName) {
+    debugger
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }

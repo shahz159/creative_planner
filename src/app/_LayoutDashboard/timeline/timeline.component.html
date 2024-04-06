@@ -397,6 +397,7 @@
                     <ng-option value="core">Core/Secondary tasks</ng-option>
                     <ng-option value="standard">Standard/Routine/ToDo tasks</ng-option>
                 </ng-select>
+                <span style="color:red" *ngIf="(fieldRequired&&!project_type)">please select project type.</span>
             </div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showProject==true">
                 <label>Project <span class="text-danger">*</span></label>
@@ -421,8 +422,7 @@
                             Remaining Hours :&nbsp;<span *ngIf="p_details.remainingHours!==null&&p_details.remainingHours!==undefined"  [ngStyle]="{'color':p_details.remainingHours>0?'darkgray':'red'}"  >{{p_details.remainingHours>0?p_details.remainingHours:0}}</span></span>
                         
                     </div>
-
-
+                    <span style="color:red" *ngIf="(fieldRequired&&!master_code)" >please select a project.</span>
 
             </div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showAction==true && project_type=='core'">
@@ -447,12 +447,13 @@
                         Remaining Hours :&nbsp;<span *ngIf="a_details.remainingHours!==null&&a_details.remainingHours!==undefined" [ngStyle]="{'color':a_details.remainingHours>0?'darkgray':'red'}">{{a_details.remainingHours>0?a_details.remainingHours:0}}</span></span>
                     
                 </div>
-                
+                <span style="color:red" *ngIf="(fieldRequired&&!project_code)"   >please select an action.</span>
                 <span style="color:red" *ngIf="(noact_msg==true && project_type=='core')">You do not have any action assigned, Please create atleast one action to submit timeline</span>
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>
-                <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
+                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
+                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >work description required.</span>
             </div>
             <div class="form-group">
                 <label>Date<span class="text-danger">*</span></label>
@@ -460,23 +461,25 @@
                     <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
                         [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
                         [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control"
-                        name="date">
+                        name="date" >
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </div>
                 </div>
+                <!-- <span style="color:red"  *ngIf="(fieldRequired&&!dateF.value)" >date required.</span> -->
             </div>
             <div class="d-flex gap-1">
                 <div class="form-group w-100">
                     <label>Start Time<span class="text-danger">*</span></label>
-                    <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                    <ng-select #TLStrtTime="ngModel"  name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
                         [(ngModel)]="starttime">
                         <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
                             [disabled]="item!=lastEndtime && bol==false">
                             <a>{{item}}</a>
                         </ng-option>
                     </ng-select>
+                    <span style="color:red" *ngIf="(fieldRequired&&!starttime)">start time required.</span>
                 </div>
                 <div class="form-group w-100">
                     <label>End Time<span class="text-danger">*</span></label>
@@ -487,6 +490,7 @@
                             <a>{{item}}</a>
                         </ng-option>
                     </ng-select>
+                    <span style="color:red" *ngIf="(fieldRequired&&!endtime)"  >end time required.</span>
                     <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
                         time!!</span>
                 </div>
@@ -526,9 +530,9 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
+                    <textarea #TLremarksf="ngModel"  class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
                     [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea> 
-                     <span style="color:red" *ngIf="_remarks===''">Please Provided Remarks.</span> 
+                     <span style="color:red" *ngIf="(fieldRequired&&!_remarks)" >remarks required.</span> 
                 </div>
              </ng-container>
 
@@ -547,12 +551,15 @@
 
     
     <div class="kt-portlet__foot py-3">
-        <button type="submit" class="btn btn-sm btn-info" (click)="submitDar()" *ngIf="showAction==true"
+        <!-- <button type="submit" class="btn btn-sm btn-info" (click)="submitDar()" *ngIf="showAction==true"
             [disabled]="!master_code || !project_code || !workdes || !starttime || !endtime || endtime < starttime||(bothActTlSubm&&!_remarks)">
             Submit</button>
         <button type="submit" class="btn btn-info btn-sm" (click)="submitDar()" *ngIf="showAction==false"
             [disabled]=" !master_code ||  !workdes  || !starttime || !endtime || endtime < starttime">
-            Submit</button>
+            Submit</button> -->
+
+            <button type="submit" class="btn btn-sm btn-info" (click)="onTLSubmitBtnClick()">Submit</button>
+
         <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button>
         <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="closedarBar()">Cancel</button>
     </div>

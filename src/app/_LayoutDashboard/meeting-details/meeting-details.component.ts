@@ -122,6 +122,7 @@ export class MeetingDetailsComponent implements OnInit {
         var scode = params.get('scheduleid');
         this.Scheduleid = scode;
       });
+      this.Schedule_ID=this.Scheduleid;
 
       this.route.paramMap.subscribe(params => {
         var pcode = params.get('scheduleid');
@@ -369,25 +370,23 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-meeting_details(){
-    this.Schedule_ID=this.Scheduleid;
+meeting_details(){ 
     this._calenderDto.Schedule_ID=this.Schedule_ID;
    
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
-
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
   
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
     
     var x =this.Agendas_List.length
 
-    console.log(this.Agendas_List,'EventScheduledjson ')
+    
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
 
-   
+    console.log(this.EventScheduledjson,'EventScheduledjson ')
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
 
     // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
@@ -405,7 +404,7 @@ meeting_details(){
   
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
-    this. Meeting_status=this.EventScheduledjson[0]. Meeting_status;
+    this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
     
 
 
@@ -676,7 +675,9 @@ addNewDMS() {
     deleteMemos(MailId: number) {
 
       this._MemosSubjectList.forEach(element => {
+        if (MailId == element.MailId)
           this.DMSName = element.Subject
+  
       });
       //if (createdBy == this.Current_user_ID) {
       let String_Text = 'Delete';
@@ -1015,7 +1016,9 @@ GetProjectAndsubtashDrpforCalender() {
   DeletePortfolios(port_id: number) {
 
     this.portfolio_Scheduledjson.forEach(element => {
+      if (port_id == element.numberval)
         this.portfolioName = element.Portfolio_Name
+
     });
     //if (createdBy == this.Current_user_ID) {
     let String_Text = 'Delete';
@@ -1285,13 +1288,15 @@ Addproject_meetingreport() {
 
 
 
-ProjectsName: string;
+ProjectsName: any;
 
-DeleteProject(Project_Code: number) {
+DeleteProject(ProjectCode: number) {
 
   this.Project_code.forEach(element => {
+    if (ProjectCode == element.stringval)
       this.ProjectsName = element.Project_Name
   });
+
   //if (createdBy == this.Current_user_ID) {
   let String_Text = 'Delete';
   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -1306,7 +1311,7 @@ DeleteProject(Project_Code: number) {
 
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Project_Code = Project_Code.toString();
+    this._calenderDto.Project_Code = ProjectCode.toString();
     this._calenderDto.flagid=1;
     if (result === true) {
       this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
@@ -1820,7 +1825,6 @@ assigncount: number;
 
 
 EnterSubmit(_Demotext) {
-
   if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
     this._ObjAssigntaskDTO.CategoryId = 2411;
     this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
@@ -1853,7 +1857,7 @@ EnterSubmit(_Demotext) {
   task_id: any;
 
   GetProjectTypeList(taskName, id) {
-
+   
     this._taskName = taskName;
     this.task_id = id;
 
@@ -1874,12 +1878,35 @@ EnterSubmit(_Demotext) {
     //document.getElementById("mysideInfobar_AssignTask").classList.add("kt-quick-panel--on");
 
 
-    document.getElementById("mysideInfobar3").classList.add("kt-action-panel--on");
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
   }
+
+
+
+  _AssignId: any;
+  ActionToProject_Click(taskName, Assignid) {
+ 
+    this._taskName = taskName;
+    this._AssignId = Assignid;
+    this.router.navigate(["Meeting-Details/" + this.Schedule_ID + "/ActionToProject/7"]);
+    this.BsService.SetNewAssignId(this._AssignId);
+    this.BsService.SetNewAssignedName(this._taskName);
+
+    document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+    $("#mysideInfobar").scrollTop(0);
+
+    //this.GetProjectsByUserName();
+  }
+
+
+
 
 
   // GetAssigned_SubtaskProjectsDatails() {
@@ -1930,7 +1957,7 @@ GetAssigned_SubtaskProjects() {
 
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-      console.log("the sss", this._TodoList)
+      // console.log("the sss", this._TodoList)
     });
 
 }

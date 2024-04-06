@@ -307,6 +307,12 @@
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
         <div class="kt-header__topbar-item">
+            <span 
+                class="kt-header__topbar-icon kt-header__topbar-icon--success mr-2"  title="New Features" (click)="featuremodel()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="feature-icon"  viewBox="0 0 1024 1024" version="1.1"><path d="M720.254425 63.276941c-5.7935-0.058703-11.099316 3.133818-13.664171 8.238692l-65.559571 130.79402-146.799524 20.909432c-12.295947 1.794946-17.249548 16.72574-8.277073 25.269234l113.524152 101.73395-28.439176 143.643128c-2.099749 12.131128 10.83967 21.347445 21.850932 15.617162l127.22219-67.848974 127.885982 67.876068c11.045129 5.669321 23.867143-3.513128 21.826096-15.585554l-28.089218-143.643127 112.474278-101.763302c8.974732-8.545751 4.082092-23.505896-8.274816-25.271491l-146.686634-20.909433-65.645367-130.791762c-2.506152-4.987467-7.665211-8.211598-13.34808-8.268043z m-0.142241 48.219712l55.593668 110.80351c2.153936 4.418503 6.443745 7.466526 11.336385 8.152895l124.363822 17.757552-96.303956 86.3087c-3.553768 3.339278-5.127451 8.238691-4.312387 13.0207l24.244195 121.839608-107.870635-57.551175a15.391383 15.391383 0 0 0-14.043481 0l-107.114274 57.524082 24.564801-121.841867a14.555999 14.555999 0 0 0-4.341738-13.079402l-97.319963-86.306442 124.30512-17.730458a15.066261 15.066261 0 0 0 11.365736-8.137091l55.532707-110.760612z m-164.107774 489.309168c-24.533192 0-44.756255 20.238868-44.756255 44.79238V914.361512c0 24.558028 20.223063 44.794638 44.756255 44.794637h268.537531c24.53545 0 44.756255-20.23661 44.756255-44.794637V645.595943c0-24.553512-20.220805-44.79238-44.756255-44.79238H556.00441z m0 29.861587h268.537531c8.53672 0 14.917247 6.385042 14.917247 14.928535V914.361512c0 8.545751-6.380527 14.930793-14.917247 14.930793H556.00441c-8.53672 0-14.914989-6.385042-14.914989-14.930793V645.595943c-0.002258-8.543493 6.378269-14.928536 14.914989-14.928535zM108.437342 152.866217c-24.519645 0-44.756255 20.252414-44.756255 44.79238v268.765568c0 24.539966 20.23661 44.79238 44.756255 44.79238h268.537531c24.53545 0 44.758513-20.252414 44.758513-44.79238V197.658597c0-24.542223-20.225321-44.79238-44.758513-44.79238H108.437342z m0 29.861587h268.537531c8.538978 0 14.919504 6.3873 14.919505 14.930793v268.765568c0 8.543493-6.382784 14.928536-14.919505 14.928536H108.437342c-8.538978 0-14.919504-6.385042-14.919505-14.928536V197.658597c0-8.543493 6.382784-14.930793 14.919505-14.930793z m0 418.078017c-24.519645 0-44.756255 20.238868-44.756255 44.79238V914.361512c0 24.558028 20.23661 44.794638 44.756255 44.794637h268.537531c24.53545 0 44.758513-20.23661 44.758513-44.794637V645.595943c0-24.553512-20.225321-44.79238-44.758513-44.79238H108.437342z m0 29.861587h268.537531c8.538978 0 14.919504 6.385042 14.919505 14.928535V914.361512c0 8.545751-6.382784 14.930793-14.919505 14.930793H108.437342c-8.538978 0-14.919504-6.385042-14.919505-14.930793V645.595943c0-8.543493 6.382784-14.928536 14.919505-14.928535z" fill="currentColor"/></svg>
+            </span>
+        </div>
+        <div class="kt-header__topbar-item">
             <span (click)="actyside();timelineLog(timelineType)"
                 class="kt-header__topbar-icon kt-header__topbar-icon--success mr-2">
                 <i class="flaticon2-calendar-5" id="timelinelog"></i>
@@ -838,4 +844,51 @@
 
 
 
+<!-- Feature Modal Start -->
+<div id="feature-modal-backdrop" class="feature-modal-backdrop fade"></div>
+<div class="modal fade show" id="newfeatures" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newfeaturesLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content">
+            <a type="button" class="feature-close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" (click)="NewAddUserCountFeature()">×</span>
+            </a>
+            <div class="feature-content-hero">
+                <div class="feature-bg-img"></div>
+                <div class="feature-headline-parent">
+                    <h1 class="feature-headline">What’s New</h1>
+                    <p class="feature-headline-p">Creative Planner</p>
+                </div>
+                <div class="feature-hero-card">
+                    <div class="heading">
+                        <p>Creative Planner New Features</p>
+                    </div>
+                </div>
+                <div class="feature-hero-icon">
+                    <div class="feature-hero-icon-circle">
+                        <img src="assets/icons/Artboard Copy.png" class="feature-hero-icon-img" role="img" alt="DMS logo.">
+                    </div>
+                </div>
+            </div>
+            <div class="feature-content">
+                <div class="feature-grid">
+                    <div class="feature-info">
+                        <h2 class="feature-heading">Create Project</h2>
+                        <p class="feature-lead">Effortlessly start new projects by filling in essential details and specifications.</p>
+                        <ol class="feature-ol">
+                            <li class="feature-li">Click on the "New Project" button in the sidebar to initiate project creation.</li>
+                            <li class="feature-li">Fill in the required information</li>
+                            <li class="feature-li">Review the entered details and confirm to create the project.</li>
+                        </ol>
+                    </div>
+                    <div class="feature-image">
+                        <img src="assets/features/create-project.png" role="img" alt="Add User">
 
+                    </div>
+                </div> 
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feature Modal End -->

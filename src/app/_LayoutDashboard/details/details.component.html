@@ -1673,7 +1673,7 @@
                   <div class="card info-card-body scroller h-100">
                       <div class="card-header p-0">
                           <div class="kt-info-box">
-                              <div class="kt-project-tool-bar">
+                              <div class="kt-project-tool-bar d-flex">
                                   <div class="d-flex flex-grow-1 align-items-center gap_ic">
                                       <a id="dmsasfa" class="kt-inbox__icon curser-pointer " (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                          <ng-container *ngIf="isDMS>0">
@@ -1688,11 +1688,13 @@
                                           </a>
                                       <div class="br-line"></div>
 
-                                      <a class="kt-inbox__icon" (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  title="Add Portfolio">
 
-                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
-                                      </a>
-
+                                   
+                                     
+                                      <a class="kt-inbox__icon " (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  title="Add Portfolio">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
+                                    </a>
+                               
                                       <!-- <a class="kt-inbox__icon">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
                                               viewBox="0 0 16 16" fill="none">
@@ -1789,6 +1791,12 @@
                                           <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
                                       </a>
                                   </div>
+                                  <a class="kt-inbox__icon">
+                                    <span 
+                                        class=""  title="New Features" (click)="featuremodel()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="feature-icon"  viewBox="0 0 1024 1024" version="1.1"><path d="M720.254425 63.276941c-5.7935-0.058703-11.099316 3.133818-13.664171 8.238692l-65.559571 130.79402-146.799524 20.909432c-12.295947 1.794946-17.249548 16.72574-8.277073 25.269234l113.524152 101.73395-28.439176 143.643128c-2.099749 12.131128 10.83967 21.347445 21.850932 15.617162l127.22219-67.848974 127.885982 67.876068c11.045129 5.669321 23.867143-3.513128 21.826096-15.585554l-28.089218-143.643127 112.474278-101.763302c8.974732-8.545751 4.082092-23.505896-8.274816-25.271491l-146.686634-20.909433-65.645367-130.791762c-2.506152-4.987467-7.665211-8.211598-13.34808-8.268043z m-0.142241 48.219712l55.593668 110.80351c2.153936 4.418503 6.443745 7.466526 11.336385 8.152895l124.363822 17.757552-96.303956 86.3087c-3.553768 3.339278-5.127451 8.238691-4.312387 13.0207l24.244195 121.839608-107.870635-57.551175a15.391383 15.391383 0 0 0-14.043481 0l-107.114274 57.524082 24.564801-121.841867a14.555999 14.555999 0 0 0-4.341738-13.079402l-97.319963-86.306442 124.30512-17.730458a15.066261 15.066261 0 0 0 11.365736-8.137091l55.532707-110.760612z m-164.107774 489.309168c-24.533192 0-44.756255 20.238868-44.756255 44.79238V914.361512c0 24.558028 20.223063 44.794638 44.756255 44.794637h268.537531c24.53545 0 44.756255-20.23661 44.756255-44.794637V645.595943c0-24.553512-20.220805-44.79238-44.756255-44.79238H556.00441z m0 29.861587h268.537531c8.53672 0 14.917247 6.385042 14.917247 14.928535V914.361512c0 8.545751-6.380527 14.930793-14.917247 14.930793H556.00441c-8.53672 0-14.914989-6.385042-14.914989-14.930793V645.595943c-0.002258-8.543493 6.378269-14.928536 14.914989-14.928535zM108.437342 152.866217c-24.519645 0-44.756255 20.252414-44.756255 44.79238v268.765568c0 24.539966 20.23661 44.79238 44.756255 44.79238h268.537531c24.53545 0 44.758513-20.252414 44.758513-44.79238V197.658597c0-24.542223-20.225321-44.79238-44.758513-44.79238H108.437342z m0 29.861587h268.537531c8.538978 0 14.919504 6.3873 14.919505 14.930793v268.765568c0 8.543493-6.382784 14.928536-14.919505 14.928536H108.437342c-8.538978 0-14.919504-6.385042-14.919505-14.928536V197.658597c0-8.543493 6.382784-14.930793 14.919505-14.930793z m0 418.078017c-24.519645 0-44.756255 20.238868-44.756255 44.79238V914.361512c0 24.558028 20.23661 44.794638 44.756255 44.794637h268.537531c24.53545 0 44.758513-20.23661 44.758513-44.794637V645.595943c0-24.553512-20.225321-44.79238-44.758513-44.79238H108.437342z m0 29.861587h268.537531c8.538978 0 14.919504 6.385042 14.919505 14.928535V914.361512c0 8.545751-6.382784 14.930793-14.919505 14.930793H108.437342c-8.538978 0-14.919504-6.385042-14.919505-14.930793V645.595943c0-8.543493 6.382784-14.928536 14.919505-14.928535z" fill="currentColor"/></svg>
+                                    </span>
+                                </a>
                               </div>
 
 
@@ -6269,7 +6277,7 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item" *ngIf="projectInfo&&(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)">
+                                <li class="nav-item" *ngIf="projectInfo && (Current_user_ID == projectInfo.OwnerEmpNo ||isHierarchy == true ) ||(this.Current_user_ID == this.projectInfo.ResponsibleEmpNo)">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                         <span class="svg-icv-hd">
                                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -7627,7 +7635,7 @@
                       </li>
                   </ul>
                   <div class="d-flex align-items-center">
-                      <div class="recall-btn" title="Meeting Recall">
+                      <!-- <div class="recall-btn" title="Meeting Recall">
                           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                               <g id="surface1">
                               <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 0.800781 12.5 C 2.199219 12.5 3.601562 12.5 4.898438 12.5 C 5 12.5 5 12.5 5 12.601562 C 5 13 5 13.398438 5 13.699219 C 5 13.800781 5 13.898438 4.800781 13.898438 C 4.300781 13.898438 3.800781 13.898438 3.199219 13.898438 C 3.199219 14 3.199219 14 3.300781 14.101562 C 4.601562 16.101562 6.398438 17.300781 8.699219 17.601562 C 12.5 18.199219 16 16 17.199219 12.300781 C 17.398438 11.601562 17.601562 10.898438 17.601562 10.101562 C 17.601562 10 17.601562 9.898438 17.800781 9.898438 C 18.199219 9.898438 18.5 9.898438 18.898438 9.898438 C 19 9.898438 19.101562 9.898438 19.101562 10.101562 C 19.101562 11.898438 18.601562 13.601562 17.5 15 C 16 17.101562 14 18.398438 11.5 18.898438 C 11.199219 19 10.800781 19 10.5 19 L 10.398438 19 C 10.300781 19 10.199219 19 10.101562 19 C 10 19 9.898438 19 9.699219 19 C 9.601562 19 9.5 19 9.300781 19 C 9 19 8.601562 19 8.300781 18.898438 C 6.699219 18.601562 5.199219 17.898438 3.898438 16.898438 C 3.199219 16.300781 2.800781 15.800781 2.101562 14.898438 C 2.101562 15.199219 2.101562 15.398438 2.101562 15.601562 C 2.101562 15.898438 2.101562 16.199219 2.101562 16.5 C 2.101562 16.601562 2.101562 16.699219 1.898438 16.699219 C 1.5 16.699219 1.101562 16.699219 0.699219 16.699219 L 0.601562 16.699219 C 0.800781 15.398438 0.800781 14 0.800781 12.5 Z M 0.800781 12.5 "/>
@@ -7636,7 +7644,7 @@
                               <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 13.199219 7.699219 L 12 7.699219 C 11.898438 7.699219 11.898438 7.699219 11.800781 7.699219 L 11.800781 7.300781 C 11.699219 6.800781 11.300781 6.300781 10.800781 6.199219 L 9.699219 6.199219 C 9 6.300781 8.601562 6.800781 8.601562 7.5 L 8.601562 7.800781 L 7.101562 7.800781 C 6.5 7.898438 6.199219 8.398438 6.199219 9 L 6.199219 12.199219 C 6.199219 12.199219 6.199219 12.300781 6.199219 12.300781 C 6.199219 12.699219 6.398438 13.5 7.398438 13.699219 L 13 13.699219 C 13.699219 13.699219 14.199219 13.199219 14.199219 12.5 L 14.199219 8.800781 C 14.199219 8.199219 13.800781 7.800781 13.199219 7.699219 Z M 9.398438 7.300781 C 9.5 7.101562 9.601562 7 9.898438 7 L 10.699219 7 C 10.699219 7 10.898438 7 11 7.101562 C 11.199219 7.300781 11.101562 7.5 11.101562 7.699219 L 9.398438 7.699219 Z M 13.398438 10.800781 L 13.398438 12.5 C 13.398438 12.800781 13.300781 13 12.898438 13 L 7.5 13 C 7.199219 13 7 12.898438 7 12.5 L 7 10.800781 C 7 10.699219 7 10.699219 7 10.601562 L 8.199219 10.601562 L 8.199219 11.101562 C 8.199219 11.300781 8.398438 11.398438 8.601562 11.398438 C 8.800781 11.398438 9 11.300781 9 11.101562 L 9 10.601562 L 11.398438 10.601562 L 11.398438 11.101562 C 11.398438 11.300781 11.601562 11.398438 11.800781 11.398438 C 12 11.398438 12.199219 11.300781 12.199219 11.101562 L 12.199219 10.601562 L 13.398438 10.601562 C 13.398438 10.699219 13.398438 10.699219 13.398438 10.800781 Z M 13.398438 9.800781 L 7 9.800781 L 7 8.898438 C 7.101562 8.699219 7.199219 8.601562 7.5 8.601562 L 12.898438 8.601562 C 13.199219 8.601562 13.398438 8.699219 13.398438 9.101562 Z M 13.398438 9.800781 "/>
                               </g>
                           </svg>
-                      </div>
+                      </div> -->
                       <div class="dropdown no-after btm-btn ml-2 nav-item create-btn"
                       *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
                       <a type="button" class="btn icon-btn icn-hvr fav-btn" data-toggle="dropdown"
@@ -7782,13 +7790,13 @@
                                               </div>
 
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant  *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                        <div class="kt-met-info">
 
 
-                                                     <div  class="kt-support-view org-name">
+                                                     <div  class="kt-support-view ml-2">
                                                           <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -7999,13 +8007,13 @@
                                                   </div>
                                               </div>
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                        <div class="kt-met-info">
 
 
-                                                     <div  class="kt-support-view org-name">
+                                                     <div  class="kt-support-view ml-2">
                                                           <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -8218,12 +8226,12 @@
                                                   </div>
                                               </div>
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="lmeeting.usersjson&&lmeeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="lmeeting.usersjson&&lmeeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                       <div class="kt-met-info">
 
-                                                          <div  class="kt-support-view org-name">
+                                                          <div  class="kt-support-view ml-2">
                                                               <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -8449,11 +8457,11 @@
                                                       </div>
                                                   </div>
                                               </div>
-                                              <div class="Organizer-name meeting-participant">
+                                              <div class="Organizer-name meeting-participant ">
                                                   <div class="kt-met-label">
                                                       Participant:
                                                   </div>
-                                                  <div  class="kt-support-view org-name">
+                                                  <div  class="kt-support-view ml-4">
                                                       <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
 
@@ -8659,12 +8667,12 @@
                                                   </div>
                                               </div>
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="omeeting.usersjson&&omeeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="omeeting.usersjson&&omeeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                       <div class="kt-met-info">
 
-                                                          <div  class="kt-support-view org-name">
+                                                          <div  class="kt-support-view ml-2">
                                                               <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
                                                                 <div *ngFor="let user of omeeting.usersjson.slice(0,3);let i=index" data-bs-toggle="tooltip" data-bs-original-title={{user.TM_DisplayName}} data-kt-initialized="1"
@@ -8893,12 +8901,12 @@
                                               </div>
 
 
-                                              <div class="Organizer-name meeting-participant" *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant " *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                       <div class="kt-met-info">
 
-                                                          <div  class="kt-support-view org-name">
+                                                          <div  class="kt-support-view ml-2">
                                                               <div  class="symbol-group symbol-hover flex-nowrap justify-content-center">
 
                                                                 <div *ngFor="let user of meeting.usersjson.slice(0,3);let i=index" data-bs-toggle="tooltip" data-bs-original-title={{user.TM_DisplayName}} data-kt-initialized="1"
@@ -11741,3 +11749,51 @@
 </div>
 <!--Recent activity Graph Modal End -->
 
+<!-- Feature Modal Start -->
+<div id="feature-modal-backdrop" class="feature-modal-backdrop fade"></div>
+<div class="modal fade show" id="newfeatures" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newfeaturesLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content">
+            <a type="button" class="feature-close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" (click)="NewAddUserCountFeature()">×</span>
+            </a>
+            <div class="feature-content-hero">
+                <div class="feature-bg-img"></div>
+                <div class="feature-headline-parent">
+                    <h1 class="feature-headline">What’s New</h1>
+                    <p class="feature-headline-p">Creative Planner</p>
+                </div>
+                <div class="feature-hero-card">
+                    <div class="heading">
+                        <p>Creative Planner New Features</p>
+                    </div>
+                </div>
+                <div class="feature-hero-icon">
+                    <div class="feature-hero-icon-circle">
+                        <img src="assets/icons/Artboard Copy.png" class="feature-hero-icon-img" role="img" alt="DMS logo.">
+                    </div>
+                </div>
+            </div>
+            <div class="feature-content">
+                <div class="feature-grid">
+                    <div class="feature-info">
+                        <h2 class="feature-heading">Create Project</h2>
+                        <p class="feature-lead">Effortlessly start new projects by filling in essential details and specifications.</p>
+                        <ol class="feature-ol">
+                            <li class="feature-li">Click on the "New Project" button in the sidebar to initiate project creation.</li>
+                            <li class="feature-li">Fill in the required information</li>
+                            <li class="feature-li">Review the entered details and confirm to create the project.</li>
+                        </ol>
+                    </div>
+                    <div class="feature-image">
+                        <img src="assets/features/create-project.png" role="img" alt="Create Project">
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feature Modal End -->
