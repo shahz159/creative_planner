@@ -131,6 +131,9 @@ export class ActionToAssignComponent implements OnInit {
     )
   }
 
+
+
+
   _ObjCompletedProj: CompletedProjectsDTO;
 
   getProjectTypeList() {
@@ -268,7 +271,7 @@ export class ActionToAssignComponent implements OnInit {
       if (this.task_id != null) {
         fd.append("AssignId", this.task_id.toString());
       }
-      fd.append("AssignedBy", this.CurrentUser_ID);
+      fd.append("AssignedBy", this.CurrentUser_ID); debugger
       if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
         this.port_id=this.port_id;
       }
@@ -447,22 +450,22 @@ isPrjDesValid:boolean=true;
  }
 
 
-  Portfolio: any = [];
+  // Portfolio: any = [];
   isPortfolioDrpDwnOpen: boolean = false;
   onPortfolioSelected(e: any) {
     debugger
     const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
-      if (!this.Portfolio)   // if Portfolio is null,undefined,''
-        this.Portfolio = [];
-      const index = this.Portfolio.indexOf(portfolioChoosed.Portfolio_ID);
+      if (!this.port_id)   // if Portfolio is null,undefined,''
+        this.port_id = [];
+      const index = this.port_id.indexOf(portfolioChoosed.Portfolio_ID);
       if (index === -1) {
         // if not present then add it
-        this.Portfolio.push(portfolioChoosed.Portfolio_ID);
+        this.port_id.push(portfolioChoosed.Portfolio_ID);
       }
       else { //  if item choosed is already selected then remove it.
-        this.Portfolio.splice(index, 1);
+        this.port_id.splice(index, 1);
       }
     }
     this.openAutocompleteDrpDwn('PortfolioDrpDwn');
@@ -470,9 +473,9 @@ isPrjDesValid:boolean=true;
 
 
   removeSelectedPortfolio(item) {
-    const index = this.Portfolio.indexOf(item);
+    const index = this.port_id.indexOf(item);
     if (index !== -1) {
-      this.Portfolio.splice(index, 1);
+      this.port_id.splice(index, 1);
     }
   }
 

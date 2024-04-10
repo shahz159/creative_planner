@@ -14,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     MatIconModule,
     Ng2SearchPipeModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
     NgSelectModule
   ],
   providers:[DatePipe,{provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
