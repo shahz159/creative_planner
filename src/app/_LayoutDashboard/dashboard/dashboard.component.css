@@ -2990,10 +2990,10 @@ span.kt-dashboard-delay-cnt {
 
 
 
-.task-button {
-    display: none;
+/* .task-button {
+  
 }
-
+ */
 
 
 
@@ -3024,7 +3024,7 @@ span.kt-dashboard-delay-cnt {
 }
 
 .task-input:focus {
-    box-shadow: 0 -1px 0 #bdcdd6 inset;
+    /* box-shadow: 0 -1px 0 #bdcdd6 inset; */
     outline: none;
 }
 
