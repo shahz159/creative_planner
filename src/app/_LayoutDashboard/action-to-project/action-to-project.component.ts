@@ -725,7 +725,7 @@ debugger
 
   closeInfo() {
 
-    alert(this._Urlid);
+    // alert(this._Urlid);
     if(this._Urlid==2){
       debugger
       this.router.navigate(["UnplannedTask/"]);
