@@ -2205,3 +2205,7 @@ span.count {
   bottom: -32%;
   left: 28%;
 }
+::ng-deep .mat-icon-button {
+    width: 35px!important;
+    height: 35px!important;
+}

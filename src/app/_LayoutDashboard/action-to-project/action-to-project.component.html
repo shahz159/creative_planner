@@ -94,6 +94,44 @@
 
 
     </div>
+    <div class="d-flex gap-1 ">
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+            <label> Inform </label>
+            <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
+                <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
+                    <span>{{item.RACIS}} </span>
+                </ng-option>
+            </ng-select>
+
+        </div>
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+            <label> Coordinate </label>
+            <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
+                <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
+                    <span>{{item.RACIS}} </span>
+                </ng-option>
+            </ng-select>
+
+        </div>
+    </div>
+    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+        <label> RACIS </label>
+        <div  class="kt-project-sts-data">
+            <div  class="kt-support-view">
+              <div  class="symbol-group symbol-hover flex-nowrap justify-content-start">
+                <div  class="symbol symbol-35px symbol-circle">
+                  <span  class="symbol-label text-inverse-warning fw-bold bg-primary" title="Aquib Shahbaz (Team Lead/Devbox Software Pvt Ltd)" ng-reflect-ng-class="[object Object]"> A </span>
+                </div>
+                <div  class="symbol symbol-35px symbol-circle">
+                  <span  class="symbol-label text-inverse-warning fw-bold bg-danger" title="Md Waseem Akram (Dot Net Developer/Devbox Software Pvt Ltd)" ng-reflect-ng-class="[object Object]"> M </span>
+                </div>
+                <div  class="symbol symbol-35px symbol-circle">
+                  <span  class="symbol-label text-inverse-warning fw-bold bg-warning" title="Mohammed Mateen (Jr. Dot Net Developer/Devbox Software Pvt Ltd)" ng-reflect-ng-class="[object Object]"> M </span>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
     <div class="d-flex gap-1">
       <div class="form-group flex-1">
         <label>Start Date : <span class="text-danger">*</span></label>
@@ -135,6 +173,7 @@
             <span *ngIf ="_edate == true" style="color:red">End Date required!</span>
         </div>  <!--when start date is not provided-->
     </div>
+
 
     <div class="form-group">                          <!--*ngIf="selectedEmpNo == Current_user_ID"-->
         <label>Allocated Hours<span class="text-danger">*</span></label>
