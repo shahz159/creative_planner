@@ -285,7 +285,6 @@ export class ActionToAssignComponent implements OnInit {
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
             this.router.navigate(["UnplannedTask/"]);
-
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -294,6 +293,7 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 2){
+         
             this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
@@ -304,8 +304,9 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 3){
+          
             this._meetingDetails.getDetailsScheduleId();
-            // this._meetingDetails.GetAssigned_SubtaskProjects();
+            this._meetingDetails.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
@@ -334,8 +335,9 @@ export class ActionToAssignComponent implements OnInit {
 
     }
     else if(this._Urlid==3){
+   
       this._meetingDetails.getDetailsScheduleId();
-    document.getElementById("mysideInfobar3").classList.remove("kt-action-panel--on");
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";

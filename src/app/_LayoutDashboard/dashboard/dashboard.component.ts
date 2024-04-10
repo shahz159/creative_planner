@@ -1028,9 +1028,10 @@ export class DashboardComponent implements OnInit {
   }
 
   onSingleEventDelete(){
+    console.log("=>+>:",);
     Swal.fire({
-      title:'Delete Event',
-      text:'Are you sure you want to delete this event? This action cannot be undone.',
+      title:`Delete ${this.Schedule_type1}`,
+      text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
       showConfirmButton:true,
       showCancelButton:true
     }).then(choice=>{
@@ -1547,7 +1548,14 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-     if(this.Title_Name&&this.Startts&&this.Endtms&&this.MinLastNameLength&&this.allAgendas.length>0){
+    debugger
+     if(
+      this.Title_Name&&
+      this.Startts&&
+      this.Endtms&&
+      this.MinLastNameLength&&
+      (this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+    ){
           this.OnSubmitSchedule();
           this.notProvided=false;
      }
@@ -1555,7 +1563,7 @@ export class DashboardComponent implements OnInit {
       {
          if(!this.Title_Name)
          document.getElementById('dsb-evt-titleName').focus();
-         else if(this.allAgendas.length===0)
+         else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
          {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
 
 
@@ -2612,7 +2620,6 @@ debugger
   };
 
   select(event: any) {
-
     //Tue Dec 20 2022 00:00:00 GMT+0530 (India Standard Time)
     this.preventSingleClick = false;
     const delay = 200;
@@ -3265,7 +3272,7 @@ debugger
   AdminMeeting_Status: string;
   Isadmin: boolean;
 
-  GetClickEventJSON_Calender(arg) {
+  GetClickEventJSON_Calender(arg) { 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');

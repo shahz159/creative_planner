@@ -27,6 +27,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import {  MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
+import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -101,6 +102,7 @@ export class ActionToProjectComponent implements OnInit {
   _sdate: boolean;
   _edate: boolean;
   _selectemp: boolean;
+  _alchr:boolean;
   _Urlid: any;
   public cat_id: any;
   cat_name: any = "";
@@ -132,7 +134,8 @@ export class ActionToProjectComponent implements OnInit {
     public _projectunplanned: ProjectUnplannedTaskComponent,
     public _Todoproject: ToDoProjectsComponent,
     public _MoreDetails: MoreDetailsComponent,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public _meetingDetails:MeetingDetailsComponent
   ) {
 
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
@@ -153,6 +156,7 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
+    this._alchr=false;
 
   }
 
@@ -164,7 +168,7 @@ export class ActionToProjectComponent implements OnInit {
     this._sdate = false;
     this._edate = false;
     this._selectemp = false;
-
+    this._alchr=false;
 
     this._Urlid = this.route.snapshot.params['id'];
     this.BsService.bs_catId.subscribe(c =>{this.cat_id = c} );
@@ -438,36 +442,61 @@ export class ActionToProjectComponent implements OnInit {
   }
 
 
-
   ownerNo:string;
+  test(){ debugger
+    const x=(this._projcode == true||(false&&!this.selectedProjectCodelist))
+  }
+
+
 
   OnSubmit() {
-
+debugger
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
-      return false;
+      // return false;
     }
+
+    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
+      this._subname = true;
+      // return false;
+    }else this._subname=false;
 
     if (this._Description == "" || this._Description == null || this._Description == undefined) {
       this._desbool = true;
-      return false;
-    }
-    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
-      this._subname = true;
-      return false;
-    }
-    if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
-      this._sdate = true;
-      return false;
-    }
-    if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
-      this._edate = true;
-      return false;
-    }
+      // return false;
+    }else this._desbool = false;
+
     if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
       this._selectemp = true;
-      return false;
-    }
+      // return false;
+    }else this._selectemp = false;
+
+    if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+      this._sdate = true;
+      // return false;
+    }else this._sdate = false;
+
+    if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+      this._edate = true;
+      // return false;
+    }else this._edate = false;
+
+    if(this._allocated==null||this._allocated==undefined||this._allocated==0){
+      this._alchr=true;
+      // return false;
+    }else  this._alchr=false;
+
+
+
+   const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._alchr].some(item=>item);
+   if(fieldsRequired)
+   return false;        // please provide all mandatory fields value.
+
+
+
+
+
+
     if(this.owner==null || this.owner==undefined || this.owner==''){
       this.owner=this.Owner_Empno;
     }
@@ -573,6 +602,9 @@ export class ActionToProjectComponent implements OnInit {
           else if(this._Message=='3'){
             this.notifyService.showError("Something went wrong", "Action not created");
           }
+          else if(this._Message=='7'){
+            this.notifyService.showError("Something went wrong", "Action not created");
+          }
           else{
             this.notifyService.showError("Something went wrong", "Action not created");
           }
@@ -591,6 +623,13 @@ export class ActionToProjectComponent implements OnInit {
           this._inputAttachments = [];
         }
         else if(this._Urlid == 3){
+          this._meetingreport.getScheduleId();
+            this._meetingreport.GetAssigned_SubtaskProjects();
+          this.Clear_Feilds();
+          this.closeInfo();
+          this._inputAttachments = [];
+        }
+        else if(this._Urlid == 7){
           this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
           this.Clear_Feilds();
@@ -690,6 +729,7 @@ export class ActionToProjectComponent implements OnInit {
 
     // alert(this._Urlid);
     if(this._Urlid==2){
+      debugger
       this.router.navigate(["UnplannedTask/"]);
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
@@ -704,6 +744,11 @@ export class ActionToProjectComponent implements OnInit {
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
 
     }
+    else if(this._Urlid==7){
+    this._meetingDetails.getDetailsScheduleId();
+    document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
+    }
+
     else if(this._Urlid==4){
 
       this.router.navigate(["./Details", this.selectedProjectCode]);

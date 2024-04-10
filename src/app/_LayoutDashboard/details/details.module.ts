@@ -27,6 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 
  
 
@@ -60,7 +61,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
    
     ],
   providers: [ 
-    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent, MeetingReportComponent, CreateProjectComponent
+    ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent,
+     MeetingDetailsComponent,MeetingReportComponent, CreateProjectComponent
    ],
    schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
