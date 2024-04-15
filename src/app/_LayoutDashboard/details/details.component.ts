@@ -980,7 +980,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+           
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
 

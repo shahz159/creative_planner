@@ -5020,24 +5020,6 @@
       <div class="kt-portlet__head">
           <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
               <h4 class="m-0">
-                  <svg _ngcontent-tuv-c391="" width="17" height="17" tittle="timeline" viewBox="0 0 24 24"
-                      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                      fill="#a3a3a3" stroke="#a3a3a3">
-                      <g _ngcontent-tuv-c391="" id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g _ngcontent-tuv-c391="" id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                          stroke-linejoin="round"></g>
-                      <g _ngcontent-tuv-c391="" id="SVGRepo_iconCarrier">
-                          <g _ngcontent-tuv-c391="" id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none"
-                              fill-rule="evenodd">
-                              <g _ngcontent-tuv-c391="" id="ic_fluent_timeline_24_regular" fill="#a3a3a3"
-                                  fill-rule="nonzero">
-                                  <path _ngcontent-tuv-c391=""
-                                      d="M15.2496718,13 C16.2161701,13 16.9996718,13.7835017 16.9996718,14.75 L16.9996718,19.25 C16.9996718,20.2164983 16.2161701,21 15.2496718,21 L3.74967178,21 C2.78317347,21 1.99967178,20.2164983 1.99967178,19.25 L1.99967178,14.75 C1.99967178,13.7835017 2.78317347,13 3.74967178,13 L15.2496718,13 Z M20.9999472,14.8988691 L20.9996863,20.25 C20.9996863,20.6642136 20.6638999,21 20.2496863,21 C19.8699905,21 19.5561953,20.7178461 19.5065329,20.3517706 L19.4996863,20.25 L19.499308,14.9117103 C19.7315928,14.9693895 19.9745687,15 20.2246942,15 C20.4927784,15 20.7526497,14.9648361 20.9999472,14.8988691 Z M15.2496718,14.5 L3.74967178,14.5 C3.6116006,14.5 3.49967178,14.6119288 3.49967178,14.75 L3.49967178,19.25 C3.49967178,19.3880712 3.6116006,19.5 3.74967178,19.5 L15.2496718,19.5 C15.387743,19.5 15.4996718,19.3880712 15.4996718,19.25 L15.4996718,14.75 C15.4996718,14.6119288 15.387743,14.5 15.2496718,14.5 Z M20.2494639,10.0919271 C21.3032635,10.0919271 22.1575368,10.9462004 22.1575368,12 C22.1575368,13.0537996 21.3032635,13.9080729 20.2494639,13.9080729 C19.1956643,13.9080729 18.341391,13.0537996 18.341391,12 C18.341391,10.9462004 19.1956643,10.0919271 20.2494639,10.0919271 Z M15.2452829,3 C16.2117813,3 16.9952829,3.78350169 16.9952829,4.75 L16.9952829,9.25 C16.9952829,10.2164983 16.2117813,11 15.2452829,11 L3.74528294,11 C2.77878463,11 1.99528294,10.2164983 1.99528294,9.25 L1.99528294,4.75 C1.99528294,3.8318266 2.70239322,3.07880766 3.60175573,3.0058012 L3.74528294,3 L15.2452829,3 Z M15.2452829,4.5 L3.74528294,4.5 L3.68796024,4.50660268 C3.57751636,4.53251318 3.49528294,4.63165327 3.49528294,4.75 L3.49528294,9.25 C3.49528294,9.38807119 3.60721176,9.5 3.74528294,9.5 L15.2452829,9.5 C15.3833541,9.5 15.4952829,9.38807119 15.4952829,9.25 L15.4952829,4.75 C15.4952829,4.61192881 15.3833541,4.5 15.2452829,4.5 Z M20.2496863,3 C20.6293821,3 20.9431773,3.28215388 20.9928397,3.64822944 L20.9996863,3.75 L20.9999472,9.10113095 C20.7526497,9.0351639 20.4927784,9 20.2246942,9 C19.9745687,9 19.7315928,9.03061049 19.499308,9.0882897 L19.4996863,3.75 C19.4996863,3.33578644 19.8354727,3 20.2496863,3 Z"
-                                      id="🎨Color"></path>
-                              </g>
-                          </g>
-                      </g>
-                  </svg>
                   Timeline Submission
               </h4>
               <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -5061,6 +5043,8 @@
                *ngIf="(['001','002'].includes(projectInfo.Project_Block)&& showaction)">
                   <label>Action <span class="text-danger">*</span></label>
                   <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
+                  [ngClass]="{'error-vd': (!actionCode)&&notProvided}"
+                  [ngClass]="{'error-vd': (noact_msg==true)}"
                       [(ngModel)]="actionCode" (change)="onActionChanged($event)">
                       <ng-option [value]="item.Project_Code" *ngFor="let item of darArr">
                           {{item.Project_Name}}
@@ -5076,15 +5060,15 @@
 
               <div class="form-group">
                   <label>Work Description<span class="text-danger">*</span></label>
-                  <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"
+                  <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" [ngClass]="{'error-border': workdes===''&&notProvided}"
                       placeholder="Define your achievement here."></textarea>
-                  <span style="color:red" *ngIf="workdes===''&&notProvided" >please provide description.</span>
+                  <span style="color:red" *ngIf="workdes===''&&notProvided" >Please provide description.</span>
               </div>
 
               <div class="form-group">
                   <label>Date<span class="text-danger">*</span></label>
 
-                  <div class="input-group">
+                  <div class="input-group details-date">
                       <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
                           [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
                           [min]="disablePreviousDate" [max]="todayDate" placeholder="Select Date" class="form-control"
@@ -5099,7 +5083,7 @@
               <div class="d-flex gap-1">
                   <div class="form-group w-100">
                       <label>Start Time<span class="text-danger">*</span></label>
-                      <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                      <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"  [ngClass]="{'error-vd': starttime===null&&notProvided}"
                           [(ngModel)]="starttime">
                           <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
                               [disabled]="item!=lastEndtime && bol==false">
@@ -5107,12 +5091,13 @@
                               <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
                           </ng-option>
                       </ng-select>
-                      <span style="color:red" *ngIf="starttime===null&&notProvided">please provide start time.</span>
+                      <span style="color:red" *ngIf="starttime===null&&notProvided">Please provide start time</span>
                   </div>
 
                   <div class="form-group w-100">
                       <label>End Time<span class="text-danger">*</span></label>
-                      <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
+                      <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"  [ngClass]="{'error-vd': endtime===null&&notProvided}"
+                      [ngClass]="{'error-vd': (endtime < starttime)}"
                           (click)="getDarTime()" [(ngModel)]="endtime">
                           <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
                               [disabled]="item<=lastEndtime">
@@ -5120,10 +5105,10 @@
                               <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
                           </ng-option>
                       </ng-select>
-                      <span style="color:red" *ngIf="endtime===null&&notProvided">please provide end time.</span>
-                      <span style="color:red" id="err1" *ngIf="(endtime < starttime)">end time cannot be less than
+                      <span style="color:red" *ngIf="endtime===null&&notProvided">Please provide end time</span>
+                      <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than
                           start
-                          time!!</span>
+                          time</span>
                   </div>
               </div>
 
@@ -5164,9 +5149,9 @@
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-                      <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
+                      <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here." [ngClass]="{'error-vd': _remarks===''&&notProvided}"
                           [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
-                      <span style="color:red" *ngIf="_remarks===''&&notProvided">Please Provided Remarks.</span>
+                      <span style="color:red" *ngIf="_remarks===''&&notProvided">Please provide remarks</span>
                   </div>
                </ng-container>
 
@@ -6970,7 +6955,7 @@
 
 
 
-                  <div class="input-group mb-3">
+                  <div class="input-group mb-3" [ngClass]="{'error-date': !selectedFile&&formFieldsRequired}">
                       <div class="input-group-prepend">
                           <span class="input-group-text">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -6994,16 +6979,16 @@
                       </div>   
                   </div>
                   <div class="d-flex flex-column">
-                  <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">please provide attachment.</span>
+                  <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment</span>
                   <span class="text-info"> *Accept only pdf files </span>
                   </div>
               </div>
               <div class="form-group">
                   <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
-                  <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+                  <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks" [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
                       placeholder="Define your exact reason here." style="height: 160px; margin: 0px;"></textarea>
                   <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
-                  <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">remarks are required.</span>
+                  <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
               </div>
 
               <div class="form-group mb-1">
@@ -7056,7 +7041,7 @@
                       <div class="mt-3">
                           <div class="form-group">
                               <label>Attachments</label><span class="text-danger">*</span>
-                              <div class="input-group mb-3">
+                              <div class="input-group mb-3"  [ngClass]="{'error-date': !selectedFile&&formFieldsRequired}">
                                   <div class="input-group-prepend">
                                       <span class="input-group-text">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -7079,7 +7064,7 @@
                                   </div>
                               </div>
                               <div class="d-flex flex-column">
-                                    <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">please provide the attachment.</span>
+                                    <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide the attachment.</span>
                                     <span class="text-info"> *Accept only pdf files </span>
                               </div>
                           </div>
@@ -7087,9 +7072,9 @@
                           <div class="form-group">
                               <label for="exampleFormControlFile1"> Remarks <span
                                       class="text-danger">*</span></label>
-                              <textarea class="form-control" aria-label="With textarea" style="height: 160px;"
+                              <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
                                   [(ngModel)]="_remarks" placeholder="Define your exact reason here."></textarea>
-                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">remarks are required.</span>
+                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
                               <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
                           </div>
 
@@ -7105,10 +7090,10 @@
                           <div class="form-group">
                               <label for="exampleFormControlFile1"> Remarks <span
                                       class="text-danger">*</span></label>
-                              <textarea class="form-control" aria-label="With textarea" style="height: 160px;"
+                              <textarea class="form-control" aria-label="With textarea" style="height: 160px;"  [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
                                   [(ngModel)]="_remarks" placeholder="Define your exact reason here."></textarea>
                               <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
-                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">remarks are required.</span>
+                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
                           </div>
 
                           <div class="form-group mb-0">
@@ -7187,29 +7172,28 @@
                                               <div class="form-group input-group" id="select-hold-date" >
                                                   <label>Select hold date<span
                                                           class="text-danger">*</span></label>
-                                                  <div class="input-group">
+                                                  <div class="input-group details-date"  [ngClass]="{'error-date': !Holddate&&formFieldsRequired}">
                                                       <input matInput [matDatepicker]="picker3"
                                                           id="Holdtext_{{Pid}}" (click)="picker3.open();"
                                                           [min]="minhold" [max]="maxhold" [(ngModel)]="Holddate"
                                                           placeholder="Select Date" class="form-control"
                                                           name="date" />
-                                                      <div class="input-group-append">
-                                                          <mat-datepicker-toggle matSuffix [for]="picker3"
-                                                              class="btn-secondary">
+                                                      <div class="input-group-text p-0">
+                                                          <mat-datepicker-toggle matSuffix [for]="picker3">
                                                           </mat-datepicker-toggle>
-                                                          <mat-datepicker class="form-group"
+                                                          <mat-datepicker 
                                                               #picker3></mat-datepicker>
                                                       </div>
                                                   </div>
-                                                  <span *ngIf="!Holddate&&formFieldsRequired" style="color:red">hold date is required.</span>
+                                                  <span *ngIf="!Holddate&&formFieldsRequired" style="color:red">Please select hold date</span>
                                               </div>
                                               <div class="form-group mb-1">
                                                   <label>Remarks<span class="text-danger">*</span></label>
-                                                  <textarea class="form-control" placeholder="" rows="2" cols="20"
+                                                  <textarea class="form-control" placeholder="" rows="2" cols="20" [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                                                       style="height:90px;"
                                                       placeholder="Define your exact hold reason here. e.g: Waiting for store license"
                                                       [(ngModel)]="hold_remarks"></textarea>
-                                                      <span *ngIf="!hold_remarks&&formFieldsRequired"  style="color:red">remarks are required.</span>
+                                                      <span *ngIf="!hold_remarks&&formFieldsRequired"  style="color:red">Please provide remarks</span>
                                               </div>
                                           </div>
                                       </div>
@@ -7338,6 +7322,7 @@
                                                   <div class="form-group mb-1">
                                                       <label>Remarks<span class="text-danger">*</span></label>
                                                       <textarea class="form-control" rows="2" cols="20"
+                                                      [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                                                           [(ngModel)]="hold_remarks"
                                                           placeholder="Define your exact reason to release the hold project."
                                                           style="height:170px;">
@@ -7374,18 +7359,17 @@
                                                   <div class="form-group input-group">
                                                       <label>Set new release date:<span
                                                               class="text-danger">*</span></label>
-                                                      <div class="input-group">
+                                                      <div class="input-group"  [ngClass]="{'error-date': !newRelDate.value&&formFieldsRequired}">
                                                           <input class="form-control" name="date" matInput
                                                               [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
                                                               (click)="picker7.open();"
                                                               (dateChange)="orgValueChange1($event)"
                                                               [value]="dateR.value" [min]="minhold"
                                                               [max]="maxhold" placeholder="Select Date"  #newRelDate   />
-                                                          <div class="input-group-append">
-                                                              <mat-datepicker-toggle matSuffix [for]="picker7"
-                                                                  class="btn-secondary">
+                                                          <div class="input-group-text p-0">
+                                                              <mat-datepicker-toggle matSuffix [for]="picker7">
                                                               </mat-datepicker-toggle>
-                                                              <mat-datepicker class="form-group"
+                                                              <mat-datepicker 
                                                                   #picker7></mat-datepicker>
                                                           </div>
                                                       </div>
@@ -7394,6 +7378,7 @@
                                                   <div class="form-group mb-1">
                                                       <label>Remarks<span class="text-danger">*</span></label>
                                                       <textarea class="form-control" rows="2" cols="20"
+                                                      [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                                                           [(ngModel)]="hold_remarks"
                                                           placeholder="Define your exact reason to edit release date."
                                                           style="height:100px;">
@@ -7481,10 +7466,10 @@
                       </div>
                       <div class="form-group mb-1">
                           <label>Remarks<span class="text-danger">*</span></label>
-                          <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20"
+                          <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20" [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                               placeholder="Define your exact reason to cancel the project."
                               style="height:150px;"></textarea>
-                          <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">remarks are required.</span>    
+                          <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>    
                       </div>
                   </div>
                   <!-- <li class="kt-nav__separator"></li> -->
@@ -7660,16 +7645,19 @@
                       </li>
                   </ul>
                   <div class="d-flex align-items-center">
-                       <div class="recall-btn" title="Meeting Recall">
-                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
-                              <g id="surface1">
-                              <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 0.800781 12.5 C 2.199219 12.5 3.601562 12.5 4.898438 12.5 C 5 12.5 5 12.5 5 12.601562 C 5 13 5 13.398438 5 13.699219 C 5 13.800781 5 13.898438 4.800781 13.898438 C 4.300781 13.898438 3.800781 13.898438 3.199219 13.898438 C 3.199219 14 3.199219 14 3.300781 14.101562 C 4.601562 16.101562 6.398438 17.300781 8.699219 17.601562 C 12.5 18.199219 16 16 17.199219 12.300781 C 17.398438 11.601562 17.601562 10.898438 17.601562 10.101562 C 17.601562 10 17.601562 9.898438 17.800781 9.898438 C 18.199219 9.898438 18.5 9.898438 18.898438 9.898438 C 19 9.898438 19.101562 9.898438 19.101562 10.101562 C 19.101562 11.898438 18.601562 13.601562 17.5 15 C 16 17.101562 14 18.398438 11.5 18.898438 C 11.199219 19 10.800781 19 10.5 19 L 10.398438 19 C 10.300781 19 10.199219 19 10.101562 19 C 10 19 9.898438 19 9.699219 19 C 9.601562 19 9.5 19 9.300781 19 C 9 19 8.601562 19 8.300781 18.898438 C 6.699219 18.601562 5.199219 17.898438 3.898438 16.898438 C 3.199219 16.300781 2.800781 15.800781 2.101562 14.898438 C 2.101562 15.199219 2.101562 15.398438 2.101562 15.601562 C 2.101562 15.898438 2.101562 16.199219 2.101562 16.5 C 2.101562 16.601562 2.101562 16.699219 1.898438 16.699219 C 1.5 16.699219 1.101562 16.699219 0.699219 16.699219 L 0.601562 16.699219 C 0.800781 15.398438 0.800781 14 0.800781 12.5 Z M 0.800781 12.5 "/>
-                              <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 19 3.398438 L 19 7.5 C 19 7.601562 19 7.601562 18.898438 7.601562 L 14.898438 7.601562 C 14.800781 7.601562 14.800781 7.601562 14.800781 7.5 L 14.800781 6.300781 C 14.800781 6.199219 14.800781 6.199219 14.898438 6.199219 L 16.398438 6.199219 C 16.398438 6.101562 16.300781 6.101562 16.300781 6 C 15 4 13.199219 2.800781 10.898438 2.5 C 7.101562 1.800781 3.5 4.300781 2.5 8.101562 C 2.398438 8.699219 2.300781 9.300781 2.300781 9.898438 C 2.300781 10 2.300781 10 2.199219 10 L 0.898438 10 C 0.898438 10 0.898438 9.699219 0.898438 9.300781 C 0.898438 9 0.898438 8.699219 0.898438 8.5 C 1 8.300781 1 8.101562 1 8 C 1.699219 4.699219 4.601562 1.800781 8 1.101562 C 11.800781 0.398438 15.398438 1.898438 17.5 5.101562 C 17.5 5.101562 17.5 5.199219 17.601562 5.199219 L 17.601562 3.601562 C 17.601562 3.300781 17.601562 3.300781 17.898438 3.300781 L 18.898438 3.300781 C 19 3.300781 19 3.300781 19 3.398438 Z M 19 3.398438 "/>
-                              <path style=" stroke:none;fill-rule:nonzero;fill:rgb(99.607843%,99.607843%,99.607843%);fill-opacity:1;" d="M 0.800781 16.800781 C 1.199219 16.800781 1.601562 16.800781 2.101562 16.800781 C 2.199219 16.800781 2.300781 16.800781 2.300781 16.601562 C 2.300781 16.101562 6.5 18.800781 8.699219 19.101562 C 8.898438 19.101562 9.199219 19.199219 9.398438 19.199219 L 9.5 19.199219 C 6.699219 19.199219 3.800781 19.199219 1 19.199219 C 0.898438 19.199219 0.800781 19.199219 0.800781 19 C 0.800781 18.300781 0.800781 17.5 0.800781 16.800781 Z M 0.800781 16.800781 "/>
-                              <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 13.199219 7.699219 L 12 7.699219 C 11.898438 7.699219 11.898438 7.699219 11.800781 7.699219 L 11.800781 7.300781 C 11.699219 6.800781 11.300781 6.300781 10.800781 6.199219 L 9.699219 6.199219 C 9 6.300781 8.601562 6.800781 8.601562 7.5 L 8.601562 7.800781 L 7.101562 7.800781 C 6.5 7.898438 6.199219 8.398438 6.199219 9 L 6.199219 12.199219 C 6.199219 12.199219 6.199219 12.300781 6.199219 12.300781 C 6.199219 12.699219 6.398438 13.5 7.398438 13.699219 L 13 13.699219 C 13.699219 13.699219 14.199219 13.199219 14.199219 12.5 L 14.199219 8.800781 C 14.199219 8.199219 13.800781 7.800781 13.199219 7.699219 Z M 9.398438 7.300781 C 9.5 7.101562 9.601562 7 9.898438 7 L 10.699219 7 C 10.699219 7 10.898438 7 11 7.101562 C 11.199219 7.300781 11.101562 7.5 11.101562 7.699219 L 9.398438 7.699219 Z M 13.398438 10.800781 L 13.398438 12.5 C 13.398438 12.800781 13.300781 13 12.898438 13 L 7.5 13 C 7.199219 13 7 12.898438 7 12.5 L 7 10.800781 C 7 10.699219 7 10.699219 7 10.601562 L 8.199219 10.601562 L 8.199219 11.101562 C 8.199219 11.300781 8.398438 11.398438 8.601562 11.398438 C 8.800781 11.398438 9 11.300781 9 11.101562 L 9 10.601562 L 11.398438 10.601562 L 11.398438 11.101562 C 11.398438 11.300781 11.601562 11.398438 11.800781 11.398438 C 12 11.398438 12.199219 11.300781 12.199219 11.101562 L 12.199219 10.601562 L 13.398438 10.601562 C 13.398438 10.699219 13.398438 10.699219 13.398438 10.800781 Z M 13.398438 9.800781 L 7 9.800781 L 7 8.898438 C 7.101562 8.699219 7.199219 8.601562 7.5 8.601562 L 12.898438 8.601562 C 13.199219 8.601562 13.398438 8.699219 13.398438 9.101562 Z M 13.398438 9.800781 "/>
-                              </g>
-                          </svg>
-                      </div> 
+                      <a type="button" class="btn icon-btn icn-hvr fav-btn recall-btn" title="Meeting Recall">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
+                                <g id="surface1">
+                                <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 0.800781 12.5 C 2.199219 12.5 3.601562 12.5 4.898438 12.5 C 5 12.5 5 12.5 5 12.601562 C 5 13 5 13.398438 5 13.699219 C 5 13.800781 5 13.898438 4.800781 13.898438 C 4.300781 13.898438 3.800781 13.898438 3.199219 13.898438 C 3.199219 14 3.199219 14 3.300781 14.101562 C 4.601562 16.101562 6.398438 17.300781 8.699219 17.601562 C 12.5 18.199219 16 16 17.199219 12.300781 C 17.398438 11.601562 17.601562 10.898438 17.601562 10.101562 C 17.601562 10 17.601562 9.898438 17.800781 9.898438 C 18.199219 9.898438 18.5 9.898438 18.898438 9.898438 C 19 9.898438 19.101562 9.898438 19.101562 10.101562 C 19.101562 11.898438 18.601562 13.601562 17.5 15 C 16 17.101562 14 18.398438 11.5 18.898438 C 11.199219 19 10.800781 19 10.5 19 L 10.398438 19 C 10.300781 19 10.199219 19 10.101562 19 C 10 19 9.898438 19 9.699219 19 C 9.601562 19 9.5 19 9.300781 19 C 9 19 8.601562 19 8.300781 18.898438 C 6.699219 18.601562 5.199219 17.898438 3.898438 16.898438 C 3.199219 16.300781 2.800781 15.800781 2.101562 14.898438 C 2.101562 15.199219 2.101562 15.398438 2.101562 15.601562 C 2.101562 15.898438 2.101562 16.199219 2.101562 16.5 C 2.101562 16.601562 2.101562 16.699219 1.898438 16.699219 C 1.5 16.699219 1.101562 16.699219 0.699219 16.699219 L 0.601562 16.699219 C 0.800781 15.398438 0.800781 14 0.800781 12.5 Z M 0.800781 12.5 "/>
+                                <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 19 3.398438 L 19 7.5 C 19 7.601562 19 7.601562 18.898438 7.601562 L 14.898438 7.601562 C 14.800781 7.601562 14.800781 7.601562 14.800781 7.5 L 14.800781 6.300781 C 14.800781 6.199219 14.800781 6.199219 14.898438 6.199219 L 16.398438 6.199219 C 16.398438 6.101562 16.300781 6.101562 16.300781 6 C 15 4 13.199219 2.800781 10.898438 2.5 C 7.101562 1.800781 3.5 4.300781 2.5 8.101562 C 2.398438 8.699219 2.300781 9.300781 2.300781 9.898438 C 2.300781 10 2.300781 10 2.199219 10 L 0.898438 10 C 0.898438 10 0.898438 9.699219 0.898438 9.300781 C 0.898438 9 0.898438 8.699219 0.898438 8.5 C 1 8.300781 1 8.101562 1 8 C 1.699219 4.699219 4.601562 1.800781 8 1.101562 C 11.800781 0.398438 15.398438 1.898438 17.5 5.101562 C 17.5 5.101562 17.5 5.199219 17.601562 5.199219 L 17.601562 3.601562 C 17.601562 3.300781 17.601562 3.300781 17.898438 3.300781 L 18.898438 3.300781 C 19 3.300781 19 3.300781 19 3.398438 Z M 19 3.398438 "/>
+                                <path style=" stroke:none;fill-rule:nonzero;fill:rgb(99.607843%,99.607843%,99.607843%);fill-opacity:1;" d="M 0.800781 16.800781 C 1.199219 16.800781 1.601562 16.800781 2.101562 16.800781 C 2.199219 16.800781 2.300781 16.800781 2.300781 16.601562 C 2.300781 16.101562 6.5 18.800781 8.699219 19.101562 C 8.898438 19.101562 9.199219 19.199219 9.398438 19.199219 L 9.5 19.199219 C 6.699219 19.199219 3.800781 19.199219 1 19.199219 C 0.898438 19.199219 0.800781 19.199219 0.800781 19 C 0.800781 18.300781 0.800781 17.5 0.800781 16.800781 Z M 0.800781 16.800781 "/>
+                                <path style=" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;" d="M 13.199219 7.699219 L 12 7.699219 C 11.898438 7.699219 11.898438 7.699219 11.800781 7.699219 L 11.800781 7.300781 C 11.699219 6.800781 11.300781 6.300781 10.800781 6.199219 L 9.699219 6.199219 C 9 6.300781 8.601562 6.800781 8.601562 7.5 L 8.601562 7.800781 L 7.101562 7.800781 C 6.5 7.898438 6.199219 8.398438 6.199219 9 L 6.199219 12.199219 C 6.199219 12.199219 6.199219 12.300781 6.199219 12.300781 C 6.199219 12.699219 6.398438 13.5 7.398438 13.699219 L 13 13.699219 C 13.699219 13.699219 14.199219 13.199219 14.199219 12.5 L 14.199219 8.800781 C 14.199219 8.199219 13.800781 7.800781 13.199219 7.699219 Z M 9.398438 7.300781 C 9.5 7.101562 9.601562 7 9.898438 7 L 10.699219 7 C 10.699219 7 10.898438 7 11 7.101562 C 11.199219 7.300781 11.101562 7.5 11.101562 7.699219 L 9.398438 7.699219 Z M 13.398438 10.800781 L 13.398438 12.5 C 13.398438 12.800781 13.300781 13 12.898438 13 L 7.5 13 C 7.199219 13 7 12.898438 7 12.5 L 7 10.800781 C 7 10.699219 7 10.699219 7 10.601562 L 8.199219 10.601562 L 8.199219 11.101562 C 8.199219 11.300781 8.398438 11.398438 8.601562 11.398438 C 8.800781 11.398438 9 11.300781 9 11.101562 L 9 10.601562 L 11.398438 10.601562 L 11.398438 11.101562 C 11.398438 11.300781 11.601562 11.398438 11.800781 11.398438 C 12 11.398438 12.199219 11.300781 12.199219 11.101562 L 12.199219 10.601562 L 13.398438 10.601562 C 13.398438 10.699219 13.398438 10.699219 13.398438 10.800781 Z M 13.398438 9.800781 L 7 9.800781 L 7 8.898438 C 7.101562 8.699219 7.199219 8.601562 7.5 8.601562 L 12.898438 8.601562 C 13.199219 8.601562 13.398438 8.699219 13.398438 9.101562 Z M 13.398438 9.800781 "/>
+                                </g>
+                            </svg>
+                        </span>
+                          <span class="tsk">Recall</span>
+                      </a>
                       <div class="dropdown no-after btm-btn ml-2 nav-item create-btn"
                       *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
                       <a type="button" class="btn icon-btn icn-hvr fav-btn" data-toggle="dropdown"
@@ -7693,7 +7681,7 @@
                   </div>
               </div>
 
-              <div class="mt-2 p-3">
+              <div class="mt-2 p-3 meeting-scroll-y">
                   <div class="tab-content" id="myTabContent">
 
 
@@ -8777,7 +8765,7 @@
 
                                                 </div>
 
-                                                <div class="mtg-side-btns">
+                                                <!-- <div class="mtg-side-btns">
                                                    
                                                     <button (click)="linkMeetingToProject(omeeting.Schedule_ID)"  title="link meeting to project." class="mtg-side-btn">
                                                       <svg fill="#000000" width="25px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"></path></g></svg>
@@ -8787,7 +8775,7 @@
                                                     <svg width="30px" height="20px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"> <g id="icon"  transform="translate(85.333333, 64.000000)"> <path d="M128,63.999444 L128,106.666444 L42.6666667,106.666667 L42.6666667,320 L256,320 L256,234.666444 L298.666,234.666444 L298.666667,362.666667 L4.26325641e-14,362.666667 L4.26325641e-14,64 L128,63.999444 Z M362.666667,1.42108547e-14 L362.666667,170.666667 L320,170.666667 L320,72.835 L143.084945,249.751611 L112.915055,219.581722 L289.83,42.666 L192,42.6666667 L192,1.42108547e-14 L362.666667,1.42108547e-14 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
                                                     </button>
                    
-                                                </div>
+                                                </div> -->
 
 
                                             </div>
@@ -10960,7 +10948,7 @@
               </a>
           </div>
       </div>
-      <div class="kt-portlet__body flex-row">
+      <div class="kt-portlet__body flex-row  sidehf_scroll scroll-y">
           <ng-container *ngFor="let item of _CommentsList">
               <div *ngIf="(item.Send_From == 'WS') then even;">
               </div>

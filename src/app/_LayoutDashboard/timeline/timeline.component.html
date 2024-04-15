@@ -378,7 +378,7 @@
 
     <div class="kt-portlet__head">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="m-0"><i class="fa fa-link mr-1"></i>Timeline Submission</h4>
+            <h4 class="m-0">Timeline Submission</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closedarBar()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
@@ -392,17 +392,17 @@
         <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
                 <label>Project Type<span class="text-danger">*</span></label>
-                <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType"
+                <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType" [ngClass]="{'error-vd': (fieldRequired&&!project_type)}"
                     [(ngModel)]="project_type" (change)="getTimelineProjects()">
                     <ng-option value="core">Core/Secondary tasks</ng-option>
                     <ng-option value="standard">Standard/Routine/ToDo tasks</ng-option>
                 </ng-select>
-                <span style="color:red" *ngIf="(fieldRequired&&!project_type)">please select project type.</span>
+                <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select project type.</span>
             </div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showProject==true">
                 <label>Project <span class="text-danger">*</span></label>
                 
-                <ng-select required #project="ngModel" name="project" placeholder="Select Project" id="projName"
+                <ng-select required #project="ngModel" name="project" placeholder="Select Project" id="projName" [ngClass]="{'error-vd': (fieldRequired&&!master_code)}"
                     [(ngModel)]="master_code" (change)="getTimelineActions(); getPADetails(master_code,'PROJECT'); ">
                     <ng-option [value]="item.Project_Code" *ngFor="let item of projectList">
                         {{item.Project_Name }}
@@ -422,12 +422,13 @@
                             Remaining Hours :&nbsp;<span *ngIf="p_details.remainingHours!==null&&p_details.remainingHours!==undefined"  [ngStyle]="{'color':p_details.remainingHours>0?'darkgray':'red'}"  >{{p_details.remainingHours>0?p_details.remainingHours:0}}</span></span>
                         
                     </div>
-                    <span style="color:red" *ngIf="(fieldRequired&&!master_code)" >please select a project.</span>
+                    <span style="color:red" *ngIf="(fieldRequired&&!master_code)" >Please select a project.</span>
 
             </div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" *ngIf="showAction==true && project_type=='core'">
                 <label>Action <span class="text-danger">*</span></label>
-                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
+                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName" [ngClass]="{'error-vd': (fieldRequired&&!project_code)}"
+                [ngClass]="{'error-vd': (noact_msg==true && project_type=='core')}"
                     [(ngModel)]="project_code"  (change)="getPADetails(project_code,'ACTION'); ">
                     <ng-option [value]="item.Project_Code" *ngFor="let item of actionList">
                         {{item.Project_Name }}
@@ -447,15 +448,15 @@
                         Remaining Hours :&nbsp;<span *ngIf="a_details.remainingHours!==null&&a_details.remainingHours!==undefined" [ngStyle]="{'color':a_details.remainingHours>0?'darkgray':'red'}">{{a_details.remainingHours>0?a_details.remainingHours:0}}</span></span>
                     
                 </div>
-                <span style="color:red" *ngIf="(fieldRequired&&!project_code)"   >please select an action.</span>
+                <span style="color:red" *ngIf="(fieldRequired&&!project_code)"   >Please select an action.</span>
                 <span style="color:red" *ngIf="(noact_msg==true && project_type=='core')">You do not have any action assigned, Please create atleast one action to submit timeline</span>
             </div>
             <div class="form-group">
                 <label>Work Description<span class="text-danger">*</span></label>
-                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
-                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >work description required.</span>
+                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [ngClass]="{'error-border': (fieldRequired&&!workdes)}" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
+                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >Work description is required.</span>
             </div>
-            <div class="form-group">
+            <div class="form-group timeline-date">
                 <label>Date<span class="text-danger">*</span></label>
                 <div class="input-group">
                     <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
@@ -472,25 +473,26 @@
             <div class="d-flex gap-1">
                 <div class="form-group w-100">
                     <label>Start Time<span class="text-danger">*</span></label>
-                    <ng-select #TLStrtTime="ngModel"  name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
+                    <ng-select #TLStrtTime="ngModel"  name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()" [ngClass]="{'error-vd': (fieldRequired&&!starttime)}"
                         [(ngModel)]="starttime">
                         <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
                             [disabled]="item!=lastEndtime && bol==false">
                             <a>{{item}}</a>
                         </ng-option>
                     </ng-select>
-                    <span style="color:red" *ngIf="(fieldRequired&&!starttime)">start time required.</span>
+                    <span style="color:red" *ngIf="(fieldRequired&&!starttime)">Start time is required.</span>
                 </div>
                 <div class="form-group w-100">
                     <label>End Time<span class="text-danger">*</span></label>
-                    <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
+                    <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" [ngClass]="{'error-vd': (fieldRequired&&!endtime)}"
+                    [ngClass]="{'error-vd': (endtime < starttime)}"
                         (click)="getDarTime()" [(ngModel)]="endtime">
                         <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
                             [disabled]="item<=lastEndtime">
                             <a>{{item}}</a>
                         </ng-option>
                     </ng-select>
-                    <span style="color:red" *ngIf="(fieldRequired&&!endtime)"  >end time required.</span>
+                    <span style="color:red" *ngIf="(fieldRequired&&!endtime)"  >End time is required.</span>
                     <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than Start
                         time!!</span>
                 </div>
@@ -530,7 +532,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-                    <textarea #TLremarksf="ngModel"  class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
+                    <textarea #TLremarksf="ngModel"  class="form-control" [ngClass]="{'error-border': (fieldRequired&&!_remarks)}" aria-label="With textarea" placeholder="Define your exact reason here." 
                     [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea> 
                      <span style="color:red" *ngIf="(fieldRequired&&!_remarks)" >remarks required.</span> 
                 </div>

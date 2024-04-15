@@ -186,7 +186,7 @@ export class CreateProjectComponent implements OnInit {
     this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
       console.log("NewGetProjectCreationDetails:",res);
       if(res)
-      {
+      {   
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
@@ -204,9 +204,9 @@ export class CreateProjectComponent implements OnInit {
           this.SubmissionType=JSON.parse(res[0].SubmissionType);  console.log('submission type values:',this.SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
-          })
+          }) 
           this.PrjSupport=defaultvalue?[defaultvalue]:[];
-
+          
           // this.Prjtype=this.ProjectType_json[0].Typeid;// by default prj type core is selected.
           this.Project_Type=this.ProjectType_json[0].ProjectType;
           this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
@@ -304,11 +304,12 @@ export class CreateProjectComponent implements OnInit {
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+       
        this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
 
        this.getPrjCost(this.projectInfo.AllocatedHours);
-debugger
+
       console.log(this.projectInfo, "projectInfo");
   })
 
@@ -318,14 +319,28 @@ debugger
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
     });
 
-    this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
+  this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         console.log(this.Client_List, "CategoryDropdown");
-      });
+    });
 
+    this.service.NewProjectService(this.PrjCode).subscribe(
+        (data) => {
+              
+          if (data != null && data != undefined) {
+              this.PrjSupport=JSON.parse(data[0]['RacisList']);
+              console.log("draft support:",this.PrjSupport)
+              this.PrjSupport=this.PrjSupport.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
+              this.setRACIS();
+          }
+       
+  
+    });    // for geeting the support members.
+        
 
+  
 
 }
 
@@ -449,7 +464,7 @@ createSRTProject(){
     }
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
-     //1. creating project
+     //1. creating project  
      this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
 
            console.log("res after project creation:",res);
@@ -503,6 +518,7 @@ createSRTProject(){
     }
     else{
       // please provide all mandatory fields to create project.
+      this.notProvided=true;
       this.notification.showError('please fill in all mandatory fields.','Required Information');
     }
  }
@@ -716,6 +732,7 @@ this.isPrjDesValid=this.isValidString(this.PrjDes,5);
           if(['003','008'].includes(this.Prjtype))
           this.Prjstartdate=new Date();
           this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+          this.notProvided=false;
   }
   else{
      // when some mandatory fields are missing.
@@ -1265,7 +1282,7 @@ projectEdit(val) {
 RACIS:any=[];
 
 
-setRACIS(){
+setRACIS(){ debugger
     this.RACIS=[];
 
      this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
@@ -1492,7 +1509,7 @@ openTemplate(template:any){
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
    this.prjsubmission=PInfo.SubmissionId;
-
+ 
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
@@ -1717,21 +1734,14 @@ isPrjNameValid:boolean=true;
 isPrjDesValid:boolean=true;
 
 
-// isValidString(inputString: string, maxWords: number): boolean {
+isValidString(inputString: string, maxWords: number): boolean {
 
-//     let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
-//     const valid=rg.test(inputString);
-//     return valid;
-// }
-isValidString(inputString: string, minWords: number): boolean {
-  // Split the input string by spaces and special characters, but treat parentheses and their contents as single words
-  const words = inputString.trim().split(/\s+|(?<=\([^)]*)(?<!\()\s+(?=[^)]*\))/);
-  console.log(words); // Log the words array to see what it contains
-  // Count the number of words
-  const wordCount = words.filter(word => word.length > 0).length;
-  // Check if the word count is at least minWords
-  return wordCount >= minWords;
+    let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
+    const valid=rg.test(inputString);
+    return valid;
 }
+
+
 
 
 
@@ -1792,7 +1802,6 @@ debugger
 
 
   }
-
 
 
 
