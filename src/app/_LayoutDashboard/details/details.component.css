@@ -4641,7 +4641,7 @@ background-color: #e2e8f0c9;
 .kt-inbox__icon.event-active svg{
   fill: #6388e3;
 }
-.event-active .blink {
+/* .event-active .blink {
   position: absolute;
   border-radius: 50%;
   background-color: #6388e3;
@@ -4666,7 +4666,7 @@ background-color: #e2e8f0c9;
   50% {
       opacity: 1
   }
-}
+} */
 
 .meeting-participant  {
   display: flex;
@@ -5210,3 +5210,33 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 .approval-view #main-reject .kt-portlet__body_scroll:hover{
     overflow-y: auto;
 }
+
+
+
+/*dummy design temporary for mtg recall start */
+
+.mtg-side-btns{
+  display: flex;                                   
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  right: -1%;
+}
+
+.mtg-side-btns button.mtg-side-btn{
+  border: 0;
+  padding: 8px 0px 8px 0px;
+}
+
+.mtg-side-btns button.mtg-side-btn:hover{
+  fill: #527ce2;
+  stroke: #608fff;
+  stroke-width: 1px;
+}
+
+
+.met-card:hover .mtg-side-btns{
+  
+}
+
+/*dummy design temporary for mtg recall end */

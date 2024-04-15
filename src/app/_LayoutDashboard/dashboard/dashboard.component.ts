@@ -696,13 +696,20 @@ export class DashboardComponent implements OnInit {
           Files: event.target.files[index]
         }];
       }
-    }
-    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+    } 
+    debugger
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.value=null;
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
   }
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
     this._lstMultipleFiales.splice(removeIndex, 1);
+
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
+  
   }
 
   RemoveExistingFile(_id) {
@@ -1028,7 +1035,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onSingleEventDelete(){
-    console.log("=>+>:",);
+
     Swal.fire({
       title:`Delete ${this.Schedule_type1}`,
       text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
@@ -2110,7 +2117,7 @@ debugger
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
-
+debugger
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());

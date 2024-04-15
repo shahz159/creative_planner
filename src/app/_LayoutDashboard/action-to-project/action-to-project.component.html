@@ -22,7 +22,7 @@
             (onDeSelect)="ProjectOnDeselect($event)" > -->
             <!-- (onFilterChange)="onFilterChange($event)"> -->
         <!-- </ng-multiselect-dropdown> -->
-        <ng-select required #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" (ngModelChange)="_projcode == !selectedProjectCodelist;   test()"    placeholder="Select project" >
+        <ng-select required #action="ngModel" (change)="ProjectOnSelect(); _projcode=!selectedProjectCodelist; " [(ngModel)]="selectedProjectCodelist"    placeholder="Select project" >
             <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList">
                 {{item.Project_Name }}
             </ng-option>
