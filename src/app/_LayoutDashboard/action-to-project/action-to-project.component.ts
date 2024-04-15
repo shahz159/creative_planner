@@ -443,9 +443,6 @@ export class ActionToProjectComponent implements OnInit {
 
 
   ownerNo:string;
-  test(){ debugger
-    const x=(this._projcode == true||(false&&!this.selectedProjectCodelist))
-  }
 
 
 

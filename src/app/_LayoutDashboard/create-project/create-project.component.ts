@@ -1717,21 +1717,22 @@ isPrjNameValid:boolean=true;
 isPrjDesValid:boolean=true;
 
 
-// isValidString(inputString: string, maxWords: number): boolean {
+isValidString(inputString: string, maxWords: number): boolean {
 
-//     let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
-//     const valid=rg.test(inputString);
-//     return valid;
-// }
-isValidString(inputString: string, minWords: number): boolean {
-  // Split the input string by spaces and special characters, but treat parentheses and their contents as single words
-  const words = inputString.trim().split(/\s+|(?<=\([^)]*)(?<!\()\s+(?=[^)]*\))/);
-  console.log(words); // Log the words array to see what it contains
-  // Count the number of words
-  const wordCount = words.filter(word => word.length > 0).length;
-  // Check if the word count is at least minWords
-  return wordCount >= minWords;
+  let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
+
+    const valid=rg.test(inputString);
+    return valid;
 }
+// isValidString(inputString: string, minWords: number): boolean {
+//   // Split the input string by spaces and special characters, but treat parentheses and their contents as single words
+//   const words = inputString.trim().split(/\s+|(?<=\([^)]*)(?<!\()\s+(?=[^)]*\))/);
+//   console.log(words); // Log the words array to see what it contains
+//   // Count the number of words
+//   const wordCount = words.filter(word => word.length > 0).length;
+//   // Check if the word count is at least minWords
+//   return wordCount >= minWords;
+// }
 
 
 

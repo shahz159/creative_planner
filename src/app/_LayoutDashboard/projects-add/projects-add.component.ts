@@ -16,14 +16,18 @@ import * as _ from 'underscore';
 import { LinkService } from 'src/app/_Services/link.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+
+
 @Component({
   selector: 'app-projects-add',
   templateUrl: './projects-add.component.html',
   styleUrls: ['./projects-add.component.css']
 })
 export class ProjectsAddComponent implements OnInit {
+
   @ViewChild('selectAllCheckbox') selectAllCheckbox: any;
   btn_CreatePortfolio: boolean;
+
   hidetotalProjects: boolean;
   selectedItemsList: any;
   btnGetRecords: boolean;
@@ -813,22 +817,27 @@ DeleteProjects(projInfo:any){
 
   //  approve all selected projects start.
 
-
+  selectedCheckboxes: boolean[] = [];
 isAllPrjSelected:boolean=false;
 addRemovePrjofPortfolio(evt){
   this.isAllPrjSelected=evt.target.checked;
   this._ProjectDataList.forEach((prj)=>prj.checked=this.isAllPrjSelected);
-  if(this.isAllPrjSelected){
-      // add all projects into the portfolio.
-      this.addPrjsToPortflio();
-  }
-  else{
-      this.removePrjsOfPortflio();
-      // remove all projects from the portfolio.
-    }
+
+  // if(this.isAllPrjSelected){
+  //     // add all projects into the portfolio.
+  //     // this.addPrjsToPortflio();
+  // }
+  // else{
+  //     // this.removePrjsOfPortflio();
+  //     // remove all projects from the portfolio.
+  //   }
 
 }
-
+// item1:any
+// chooose(item) {
+//   if (this.item && this.item1.Project_Code) {
+//     this.selectedCheckboxes.push(this.item.Project_Code);
+//   }}
 
 addPrjsToPortflio() {
   this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
@@ -928,6 +937,15 @@ removePrjsOfPortflio(){
   //  approve all selected prject end.
 
 
-
+  project(){
+    if(this.isAllPrjSelected){
+          // add all projects into the portfolio.
+          this.addPrjsToPortflio();
+      }
+      // else{
+      //     this.removePrjsOfPortflio();
+      //     // remove all projects from the portfolio.
+      //   }
+  }
 
 }

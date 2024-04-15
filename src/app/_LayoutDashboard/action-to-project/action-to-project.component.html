@@ -22,7 +22,7 @@
             (onDeSelect)="ProjectOnDeselect($event)" > -->
             <!-- (onFilterChange)="onFilterChange($event)"> -->
         <!-- </ng-multiselect-dropdown> -->
-        <ng-select required #action="ngModel" (change)="ProjectOnSelect()" [(ngModel)]="selectedProjectCodelist" (ngModelChange)="_projcode == !selectedProjectCodelist;   test()"    placeholder="Select project" >
+        <ng-select required #action="ngModel" (change)="ProjectOnSelect(); _projcode == !selectedProjectCodelist;       " [(ngModel)]="selectedProjectCodelist"     placeholder="Select project" >
             <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList">
                 {{item.Project_Name }}
             </ng-option>
@@ -94,7 +94,7 @@
 
 
     </div>
-    <div class="d-flex gap-1 ">
+    <!-- <div class="d-flex gap-1 ">
         <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
             <label> Inform </label>
             <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
@@ -131,7 +131,7 @@
               </div>
             </div>
           </div>
-    </div>
+    </div>-->
     <div class="d-flex gap-1">
       <div class="form-group flex-1">
         <label>Start Date : <span class="text-danger">*</span></label>

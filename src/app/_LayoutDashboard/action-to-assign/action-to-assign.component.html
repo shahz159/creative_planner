@@ -11,7 +11,7 @@
         </svg>
         </a>
     </div>
-    <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+    <div id="Action2Assign-body" class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
         <div class="form-group">
             <label>Project Type : </label>
             <!-- <span class="text-danger">*</span> -->
@@ -71,7 +71,7 @@
 
 
         <div class="form-group">
-        <mat-form-field class="drp-dwn-field w-100"  *ngIf="PortfolioList">
+        <mat-form-field class="drp-dwn-field w-100"   *ngIf="PortfolioList">
           <mat-label>Link Portfolio</mat-label>
            <mat-chip-list #selectedPortfolios>
             <mat-chip *ngFor="let prtfolioId of port_id" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtfolioId)">
@@ -113,39 +113,10 @@
 </div>
 
 
-        <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-          <label>Informer : <strong></strong></label>
-          <ng-select  placeholder="Select Informer">
-              <ng-option  *ngFor="">
-
-              </ng-option>
-          </ng-select>
-      </div> -->
-
-
-      <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-        <label>Co-ordinator : <strong></strong></label>
-        <ng-select   placeholder="Select Co-ordinator">
-            <ng-option >
-
-            </ng-option>
-        </ng-select>
-    </div> -->
-
-<!--
-  <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-    <label>Link Portfolio : <strong></strong></label>
-    <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select portfolio">
-        <ng-option [value]="item.Portfolio_ID" *ngFor="let item of PortfolioList">
-            {{item.Portfolio_Name}}
-        </ng-option>
-    </ng-select>
-    </div> -->
-<!-- </div> -->
 <div class="d-flex gap-1 ">
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label> Inform </label>
-        <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select employee" >
+        <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedinformlList" placeholder="Select Informer" >
             <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
                 {{item.DisplayName}}
             </ng-option>
@@ -153,8 +124,8 @@
 
     </div>
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-        <label> Coordinate </label>
-        <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select employee" >
+        <label> Coordinator </label>
+        <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedcordlList" placeholder="Select Coordinator" >
             <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
                 {{item.DisplayName}}
             </ng-option>
@@ -162,7 +133,58 @@
 
     </div>
 </div>
-<div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+
+
+
+
+<div class="form-group">
+  <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
+    <mat-form-field class="drp-dwn-field w-100">
+      <mat-label class="text-dark-50 w-75px">Support<span style="color:rgb(217,48,37)">*</span></mat-label>
+      <mat-chip-list #selectedProjSprt>
+        <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
+          (removed)="removeSelectedPrjSprt(p);  ">
+          {{ p.DisplayName}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+      </mat-chip-list>
+      <div class="d-flex">
+        <input class="border-gray" [matChipInputFor]="selectedProjSprt"
+          [matAutocomplete]="ProjSprtDrpDwn" #PrjSprtSelectTF />
+        <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
+            color="primary" class="close-icon"
+            (click)=" this.isPrjSprtDrpDwnOpen=false;  PrjSprtSelectTF.value='';  closeAutocompleteDrpDwn('PrjSprtDrpDwn');">cancel</mat-icon></button>
+        <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0"><mat-icon
+            class="add-icon"
+            (click)="this.isPrjSprtDrpDwnOpen=true; openAutocompleteDrpDwn('PrjSprtDrpDwn');">add</mat-icon></button>
+      </div>
+
+      <mat-autocomplete aria-label="PrjSprtDrpDwn" #ProjSprtDrpDwn="matAutocomplete"
+        (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value='';   "
+        (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
+        <ng-container *ngIf="PrjResp;else PrjRespIsUndefined">
+          <ng-container *ngFor="let p of EmployeeList|filter:PrjSprtSelectTF.value">
+              <mat-option *ngIf="p.Emp_No!=PrjResp.trim()" [value]="p.Emp_No">
+              <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+              {{p.DisplayName}}
+              </mat-option>
+         </ng-container>
+        </ng-container>
+        <ng-template #PrjRespIsUndefined>
+          <mat-option  *ngFor="let p of EmployeeList|filter:PrjSprtSelectTF.value"  [value]="p.Emp_No">
+            <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+            {{p.DisplayName}}
+            </mat-option>
+        </ng-template>
+      </mat-autocomplete>
+    </mat-form-field>
+    <!-- <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">please select support.</span> -->
+  </div>
+</div>
+
+<!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
     <label> RACIS </label>
     <div  class="kt-project-sts-data">
         <div  class="kt-support-view">
@@ -179,7 +201,8 @@
           </div>
         </div>
       </div>
-</div>
+</div> -->
+
 <ng-container *ngIf="selectedProjectType !=='003' && selectedProjectType!=='008'" >
         <div class="d-flex gap-1 ">
             <div class="form-group flex-1">
@@ -210,7 +233,7 @@
                 <label>End Date :</label>
                 <!-- <span class="text-danger">*</span> -->
                 <div class="input-group" (click)="datesCheck()">
-                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjectType==='011'?maxDate:''" [(ngModel)]="_EndDate"
+                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjectType==='011'?maxDate:''" [(ngModel)]="_EndDate" (dateChange)="_EndDate=_StartDate<_EndDate?(selectedProjectType!=='011'?_EndDate:( _EndDate<=maxDate?_EndDate:null) ):null"
                         placeholder="End date" class="form-control">
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -225,7 +248,7 @@
                 <div class="input-group" (click)="enddateChecker()">
                     <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
                         (click)="picker2.open()"
-                        placeholder="End Date" class="form-control">
+                        placeholder="End Date" class="form-control" >
                     <div class="input-group-text p-0">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
