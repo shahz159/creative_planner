@@ -449,7 +449,7 @@ createSRTProject(){
     }
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
-     //1. creating project  
+     //1. creating project
      this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
 
            console.log("res after project creation:",res);
@@ -1492,7 +1492,7 @@ openTemplate(template:any){
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
    this.prjsubmission=PInfo.SubmissionId;
- 
+
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
@@ -1717,14 +1717,21 @@ isPrjNameValid:boolean=true;
 isPrjDesValid:boolean=true;
 
 
-isValidString(inputString: string, maxWords: number): boolean {
+// isValidString(inputString: string, maxWords: number): boolean {
 
-    let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
-    const valid=rg.test(inputString);
-    return valid;
+//     let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
+//     const valid=rg.test(inputString);
+//     return valid;
+// }
+isValidString(inputString: string, minWords: number): boolean {
+  // Split the input string by spaces and special characters, but treat parentheses and their contents as single words
+  const words = inputString.trim().split(/\s+|(?<=\([^)]*)(?<!\()\s+(?=[^)]*\))/);
+  console.log(words); // Log the words array to see what it contains
+  // Count the number of words
+  const wordCount = words.filter(word => word.length > 0).length;
+  // Check if the word count is at least minWords
+  return wordCount >= minWords;
 }
-
-
 
 
 

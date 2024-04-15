@@ -443,7 +443,9 @@ export class ActionToProjectComponent implements OnInit {
 
 
   ownerNo:string;
-
+  test(){ debugger
+    const x=(this._projcode == true||(false&&!this.selectedProjectCodelist))
+  }
 
 
 
@@ -478,7 +480,7 @@ debugger
       this._edate = true;
       // return false;
     }else this._edate = false;
-    
+
     if(this._allocated==null||this._allocated==undefined||this._allocated==0){
       this._alchr=true;
       // return false;
@@ -487,7 +489,7 @@ debugger
 
 
    const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._alchr].some(item=>item);
-   if(fieldsRequired)    
+   if(fieldsRequired)
    return false;        // please provide all mandatory fields value.
 
 
@@ -746,7 +748,7 @@ debugger
     this._meetingDetails.getDetailsScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
-   
+
     else if(this._Urlid==4){
 
       this.router.navigate(["./Details", this.selectedProjectCode]);
