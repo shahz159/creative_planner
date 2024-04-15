@@ -304,11 +304,12 @@ export class CreateProjectComponent implements OnInit {
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+
        this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
 
        this.getPrjCost(this.projectInfo.AllocatedHours);
-debugger
+
       console.log(this.projectInfo, "projectInfo");
   })
 
@@ -318,12 +319,26 @@ debugger
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
     });
 
-    this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
+  this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         console.log(this.Client_List, "CategoryDropdown");
-      });
+    });
+
+    this.service.NewProjectService(this.PrjCode).subscribe(
+        (data) => {
+
+          if (data != null && data != undefined) {
+              this.PrjSupport=JSON.parse(data[0]['RacisList']);
+              console.log("draft support:",this.PrjSupport)
+              this.PrjSupport=this.PrjSupport.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
+              this.setRACIS();
+          }
+
+
+    });    // for geeting the support members.
+
 
 
 
@@ -503,6 +518,7 @@ createSRTProject(){
     }
     else{
       // please provide all mandatory fields to create project.
+      this.notProvided=true;
       this.notification.showError('please fill in all mandatory fields.','Required Information');
     }
  }
@@ -716,6 +732,7 @@ this.isPrjDesValid=this.isValidString(this.PrjDes,5);
           if(['003','008'].includes(this.Prjtype))
           this.Prjstartdate=new Date();
           this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
+          this.notProvided=false;
   }
   else{
      // when some mandatory fields are missing.
@@ -1265,7 +1282,7 @@ projectEdit(val) {
 RACIS:any=[];
 
 
-setRACIS(){
+setRACIS(){ debugger
     this.RACIS=[];
 
      this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
@@ -1718,9 +1735,8 @@ isPrjDesValid:boolean=true;
 
 
 isValidString(inputString: string, maxWords: number): boolean {
-
+  // let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
   let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
-
     const valid=rg.test(inputString);
     return valid;
 }
@@ -1733,6 +1749,8 @@ isValidString(inputString: string, maxWords: number): boolean {
 //   // Check if the word count is at least minWords
 //   return wordCount >= minWords;
 // }
+
+
 
 
 
@@ -1793,7 +1811,6 @@ debugger
 
 
   }
-
 
 
 

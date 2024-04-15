@@ -446,12 +446,13 @@ export class ActionToProjectComponent implements OnInit {
 
 
 
+
   OnSubmit() {
 debugger
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
       // return false;
-    }
+    }else this._projcode=false;
 
     if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
       this._subname = true;
