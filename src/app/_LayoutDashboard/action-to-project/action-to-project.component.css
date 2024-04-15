@@ -137,3 +137,22 @@ input[type=number] {
   width: 35px;
   height: 35px;
 }
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+::ng-deep .mat-icon-button {
+  width: 38px;
+  height: 36px;
+  line-height: 30px;
+}
+.details-date .form-control {
+  border-radius: 4px 0px 0px 4px;
+}
+.details-date .input-group-text {
+  border-radius: 0px 4px 4px 0px;
+  height: calc(1.5em + 1.3rem + 2px);
+  margin-left: -1px;
+}

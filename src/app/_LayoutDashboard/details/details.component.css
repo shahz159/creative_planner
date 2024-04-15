@@ -4701,13 +4701,15 @@ background-color: #e2e8f0c9;
   border-radius: 5px;
   background-color: #fff;
   margin-right: 4px;
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 0.75rem;
   color: rgb(71, 85, 105);
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 .recall-btn svg{
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 .recall-btn:hover, .create-btn:hover {
   color: #000;
@@ -5209,4 +5211,44 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 }
 .approval-view #main-reject .kt-portlet__body_scroll:hover{
     overflow-y: auto;
+}
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+.error-date .custom-file-label {
+  border: 1px solid #F44336 !important;
+}
+
+::ng-deep .mat-icon-button {
+  width: 38px;
+  height: 36px;
+  line-height: 30px;
+}
+.details-date .form-control {
+  border-radius: 4px 0px 0px 4px;
+}
+.details-date .input-group-text {
+  border-radius: 0px 4px 4px 0px;
+  height: calc(1.5em + 1.3rem + 2px);
+  margin-left: -1px;
+}
+.meeting-scroll-y{
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 160px);
+}
+.meeting-scroll-y::-webkit-scrollbar{
+  width:5px;
+}
+
+.meeting-scroll-y::-webkit-scrollbar-thumb{
+   background-color:#e7e7e7;
+   border-radius: 15px;
+}
+
+.meeting-scroll-y::-webkit-scrollbar-track{
+  background-color: transparent;
 }
