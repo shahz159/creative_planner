@@ -3500,4 +3500,57 @@ mat-icon {
     opacity: 1;
     z-index: 1;
   }
+
+  .badge-img {
+    width: 16px;
+    padding: 2px 0;
+    margin-right: 4px;
+  }
+
+  .open_sidebar {
+    width: 50%;
+}
+
+@media Screen and (max-width: 1600px) {
+
+    .table-time {
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .open_sidebar {
+        width: 55%;
+    }
+}
+
+@media Screen and (max-width: 1400px) {
+
+    .table-time {
+        max-height: 350px;
+        overflow: auto;
+    }
+
+    .open_sidebar {
+        width: 60%;
+    }
+}
+
+@media Screen and (max-width: 1024px) {
+
+    .open_sidebar {
+        width: 75%;
+    }
+}
+
+@media Screen and (max-width: 768px) {
+
+    .open_sidebar {
+        width: 100%;
+    }
+}
+
+.open_sidebar .cls-float {
+    display: inline-flex;
+}
+
 /* } */
