@@ -753,7 +753,10 @@
                          <div class="d-flex align-items-center justify-content-start">
 
                      <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
-                        {{item1.Deleted_by}} | {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}  </p>
+                      <ng-container *ngIf="item1.Deleted_by">
+                        {{ item1.Deleted_by }} |
+                      </ng-container>
+                      {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
                                    </div>
                                  </td>
 

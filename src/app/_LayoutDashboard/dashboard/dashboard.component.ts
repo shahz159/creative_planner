@@ -696,13 +696,20 @@ export class DashboardComponent implements OnInit {
           Files: event.target.files[index]
         }];
       }
-    }
-    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+    } 
+    debugger
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.value=null;
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
   }
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
     this._lstMultipleFiales.splice(removeIndex, 1);
+
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
+  
   }
 
   RemoveExistingFile(_id) {
@@ -1028,9 +1035,10 @@ export class DashboardComponent implements OnInit {
   }
 
   onSingleEventDelete(){
+
     Swal.fire({
-      title:'Delete Event',
-      text:'Are you sure you want to delete this event? This action cannot be undone.',
+      title:`Delete ${this.Schedule_type1}`,
+      text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
       showConfirmButton:true,
       showCancelButton:true
     }).then(choice=>{
@@ -1555,7 +1563,14 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-     if(this.Title_Name&&this.Startts&&this.Endtms&&this.MinLastNameLength&&this.allAgendas.length>0){
+    debugger
+     if(
+      this.Title_Name&&
+      this.Startts&&
+      this.Endtms&&
+      this.MinLastNameLength&&
+      (this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+    ){
           this.OnSubmitSchedule();
           this.notProvided=false;
      }
@@ -1563,7 +1578,7 @@ export class DashboardComponent implements OnInit {
       {
          if(!this.Title_Name)
          document.getElementById('dsb-evt-titleName').focus();
-         else if(this.allAgendas.length===0)
+         else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
          {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
 
 
@@ -2110,7 +2125,7 @@ debugger
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
-
+debugger
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -2620,7 +2635,6 @@ debugger
   };
 
   select(event: any) {
-
     //Tue Dec 20 2022 00:00:00 GMT+0530 (India Standard Time)
     this.preventSingleClick = false;
     const delay = 200;
@@ -3273,7 +3287,7 @@ debugger
   AdminMeeting_Status: string;
   Isadmin: boolean;
 
-  GetClickEventJSON_Calender(arg) {
+  GetClickEventJSON_Calender(arg) { 
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');

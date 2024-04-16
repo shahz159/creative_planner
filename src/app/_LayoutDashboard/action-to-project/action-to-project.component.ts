@@ -452,7 +452,7 @@ debugger
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
       // return false;
-    }
+    }else this._projcode=false;
 
     if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
       this._subname = true;
@@ -478,7 +478,7 @@ debugger
       this._edate = true;
       // return false;
     }else this._edate = false;
-    
+
     if(this._allocated==null||this._allocated==undefined||this._allocated==0){
       this._alchr=true;
       // return false;
@@ -487,7 +487,7 @@ debugger
 
 
    const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._alchr].some(item=>item);
-   if(fieldsRequired)    
+   if(fieldsRequired)
    return false;        // please provide all mandatory fields value.
 
 
@@ -725,7 +725,7 @@ debugger
 
   closeInfo() {
 
-    alert(this._Urlid);
+    // alert(this._Urlid);
     if(this._Urlid==2){
       debugger
       this.router.navigate(["UnplannedTask/"]);
@@ -746,7 +746,7 @@ debugger
     this._meetingDetails.getDetailsScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
-   
+
     else if(this._Urlid==4){
 
       this.router.navigate(["./Details", this.selectedProjectCode]);

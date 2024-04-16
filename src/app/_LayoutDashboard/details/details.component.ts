@@ -166,6 +166,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   currentSidebarOpened:"LINK_DMS"|"LINK_PORTFOLIO"|"LIST_OF_ATTACHMENTS"|"COMMENTS"|"ACTIVITY_LOG"|"TIMELINE_VIEW"|"PEOPLES"|"MEETINGS"|"NOT_OPENED"='NOT_OPENED';
   bothActTlSubm:boolean=false;
   ProjDto:ProjectDetailsDTO|undefined;
+  formFieldsRequired:boolean=false;
+
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -978,7 +980,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+           
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
 
@@ -1301,17 +1303,24 @@ debugger
     document.getElementById("newdetails").classList.remove("position-fixed");
   }
   hide_main_approval(){
+    if(this.selectedStdAprvs&&this.selectedStdAprvs.length>0){
+      // atleast one selection required.
     document.getElementById("main-approval").classList.add("d-none");
     document.getElementById("main-reject").classList.remove("d-none");
+    }
+    else{
+      this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
+    }
   }
   backmainapproval(){
     document.getElementById("main-approval").classList.remove("d-none");
     document.getElementById("main-reject").classList.add("d-none");
   }
-  closeInfo() {
+  closeInfo() {  
     this._remarks = ''
     this.selectedFile=null;
     this._inputAttachments='';
+    this.formFieldsRequired=false;
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1354,7 +1363,7 @@ debugger
     // this.getProjectDetails(this.URL_ProjectCode);
     this.closeLinkSideBar();
     this.closeMeetingSidebar();
-
+    this.closePrjReleaseSideBar();
   }
 
 
@@ -1800,14 +1809,19 @@ debugger
         if (this.requestType == 'Task Complete') {
           this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
+        try{
           this.complete_List = JSON.parse(this.requestDetails[0]['standardDoc']); console.log("=>complete_list:",this.complete_List);
-          this.completedoc = (this.complete_List[0]['Proofdoc']);
+         this.completedoc = (this.complete_List[0]['Proofdoc']);
          this.sidno = (this.complete_List[0]['StandardId']);
          this.emp = (this.complete_List[0]['Emp_No']);
          this.repdate = (this.complete_List[0]['Reportdate']);
          this.submitby = (this.complete_List[0]['SubmittedBy']);
          this.contenttype = (this.complete_List[0]['contenttype']);
          this.iscloud = (this.complete_List[0]['IsCloud']);
+        }catch(e){
+          console.log(e.message);
+        }
+
          this.getstandardapprovalStats();
          
         }
@@ -1990,6 +2004,14 @@ currentStdAprView:number|undefined;
   allStdAprSelected:boolean=false;
   selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
+     debugger
+    if(this.selectedStdAprvs.length===0){
+      this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
+      return;
+    }
+     
+
+
     const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
     const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
     this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
@@ -1998,6 +2020,7 @@ currentStdAprView:number|undefined;
         this.closeApprovalSideBar(); 
 
        this.notifyService.showSuccess("tasks requests Approved.",'Success');
+       this.selectedStdAprvs=[];
        this.getapprovalStats();
        this.allStdAprSelected=false;
       
@@ -2228,6 +2251,7 @@ currentStdAprView:number|undefined;
   onFileChange(e) {
       this._inputAttachments = e.target.files[0].name;
       this.selectedFile = <File>e.target.files[0];
+      e.target.files=null;
   }
 
 
@@ -2255,6 +2279,7 @@ currentStdAprView:number|undefined;
     this.selectedFile = null;
     this._inputAttachments = '';
     this._remarks = '';
+    this.formFieldsRequired=false;
     $('#project-action-Checkbox').prop('checked', false);
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -2265,8 +2290,12 @@ currentStdAprView:number|undefined;
 
   proState:boolean=false
   actionCompleted() {
-    if (this._remarks === "") { // when the user not provided the remark then .
-      this.notifyService.showInfo("Remarks Cannot be Empty", '');
+
+   const fieldsprvided:boolean=this._remarks&&(this.proState?this.selectedFile:true);
+
+    if (!fieldsprvided) { // when the user not provided the required fields then .
+      this.formFieldsRequired=true;
+      this.notifyService.showInfo("Please fill in the mandatory fields.", '');
     }
     else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
       Swal.fire({
@@ -3478,6 +3507,13 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
+    debugger
+    if(this._SelectedPorts==' '||this._SelectedPorts==null){
+      this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
+      return;
+    }
+
+
 
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
@@ -3490,6 +3526,7 @@ check_allocation() {
           this._Message = (data['message']);
           if (this._Message == 'Updated Successfully') {
             this.getPortfoliosDetails();
+            this._SelectedPorts=null;
             this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
           } else {
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
@@ -3631,11 +3668,12 @@ check_allocation() {
     // For sidebar overlay background removing the slide on 'X' button
     document.getElementById("rightbar-overlay").style.display = "none";
     // For page top div removing fixed
-    document.getElementById("newdetails").classList.remove("position-fixed");
-    $('#mainPrjCheckbox').prop('checked', false);
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    // $('#mainPrjCheckbox').prop('checked', false);
     this._inputAttachments = '';
     this._remarks = '';
     this.selectedFile = null;
+    this.formFieldsRequired=false;
     // $('#_file1').val('');
     // $('#upload').html('Select a file');
     // this.OnClickCheckboxProjectUpdate();
@@ -3648,6 +3686,22 @@ check_allocation() {
 
   updateMainProject() {
     debugger
+// for checking whether mandatory fields are provided or not.
+   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks&&!this.selectedFile)){
+      this.formFieldsRequired=true;
+      return;
+   }
+
+
+  if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!this._remarks)){
+     this.formFieldsRequired=true;
+     return;
+  }
+// for checking whether mandatory fields are provided or not.
+
+
+
+    
     if (this.projectInfo.Project_Type == 'To do List') {
       this.selectedFile = null;
     }
@@ -6079,43 +6133,44 @@ removeSelectedDMSMemo(item){
   maxhold: any = new Date();
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
-
+  
   onProject_Hold(id, Pcode) {
   
-    this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
-    if (this.Holddate != null) {
-      this.objProjectDto.Project_holddate = this.Holddate;
-      this.objProjectDto.Project_Code = Pcode;
-      this.objProjectDto.Remarks = this.hold_remarks;
-      this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
-       
-        this._Message = data['message'];
-        if (this._Message == 'Project Hold Updated') {
+  if(this.Holddate&&this.hold_remarks){
+       // if holddate and remarks are provided.
+       this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
+       this.objProjectDto.Project_holddate = this.Holddate;
+       this.objProjectDto.Project_Code = Pcode;
+       this.objProjectDto.Remarks = this.hold_remarks;
+       this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
+        
+         this._Message = data['message'];
+         if (this._Message == 'Project Hold Updated') {
+ 
+           if(this.currentActionView!==undefined)
+           this._Message=this._Message.replace('Project','Action')
+ 
+           this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
+           this.closePrjHoldSideBar();
+           this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+           this.getholdate();
+           this.getRejectType();
+           debugger
+           if(this.currentActionView!==undefined){
+             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+             }else{
+               this.GetActivityDetails();
+ 
+             }
+ 
+ 
+ 
+         }
+       });
+  }
+  else 
+   this.formFieldsRequired=true;   
 
-          if(this.currentActionView!==undefined)
-          this._Message=this._Message.replace('Project','Action')
-
-          this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
-          this.closePrjHoldSideBar();
-          this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-          this.getholdate();
-          this.getRejectType();
-          debugger
-          if(this.currentActionView!==undefined){
-            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-            }else{
-              this.GetActivityDetails();
-
-            }
-
-
-
-        }
-      });
-    }
-    else {
-      this.notifyService.showInfo("Project Hold date cannot be empty", "Please select a date.");
-    }
   }
 
 
@@ -6129,96 +6184,106 @@ removeSelectedDMSMemo(item){
 // Project / Action release.
   holdreleaseProject() {
 
-    if(this.currentActionView===undefined){
-          // project release
-          if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-            debugger
-            this.approvalObj.Project_Code = this.URL_ProjectCode;
-            this.approvalObj.Request_type = 'Project Release';
-            this.approvalObj.Emp_no = this.Current_user_ID;
-            this.approvalObj.Remarks = this.hold_remarks;
-            this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { debugger
-              this.closePrjReleaseSideBar();
-              this._Message = (data['message']);
-              if (this._Message == '1') {
-                this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.getRejectType();
-              }
-              else if (this._Message == '2' || this._Message == '0') {
-                this.notifyService.showError("Project release failed", "Failed");
-              }
-            });
-            console.log(this.approvalObj, "cancel")
-          }
-          else {
-            this.closePrjReleaseSideBar();
-            this.notifyService.showError("Access denied", "Failed")
-          }
-
-
-    }
-    else{
-        // action release
-
-        if ([
-          this.projectInfo.OwnerEmpNo,
-          this.projectActionInfo[this.currentActionView].Team_Res,this.projectActionInfo[this.currentActionView].Project_Owner
-        ].includes(this.Current_user_ID)){
-          this.approvalObj.Project_Code = this.projectActionInfo[this.currentActionView].Project_Code;
+    if(this.hold_remarks){
+      // if remarks are provided.
+      if(this.currentActionView===undefined){
+        // project release
+        if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
+          debugger
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = 'Project Release';
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
-          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { debugger
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
-              this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
-              this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+              this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.getRejectType();
             }
             else if (this._Message == '2' || this._Message == '0') {
-              this.notifyService.showError("Action release failed", "Failed");
+              this.notifyService.showError("Project release failed", "Failed");
             }
           });
+          console.log(this.approvalObj, "cancel")
         }
         else {
           this.closePrjReleaseSideBar();
           this.notifyService.showError("Access denied", "Failed")
         }
+
+
+       }
+      else{
+      // action release
+
+      if ([
+        this.projectInfo.OwnerEmpNo,
+        this.projectActionInfo[this.currentActionView].Team_Res,this.projectActionInfo[this.currentActionView].Project_Owner
+      ].includes(this.Current_user_ID)){
+        this.approvalObj.Project_Code = this.projectActionInfo[this.currentActionView].Project_Code;
+        this.approvalObj.Request_type = 'Project Release';
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+        this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+
+          this.closePrjReleaseSideBar();
+          this._Message = (data['message']);
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
+            this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+            this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Action release failed", "Failed");
+          }
+        });
+      }
+      else {
+        this.closePrjReleaseSideBar();
+        this.notifyService.showError("Access denied", "Failed")
+      }
+       }
     }
-
-
+    else 
+     this.formFieldsRequired=true;
 
   }
 
   updateReleaseDate() {
-    if (this.release_date == null || this.release_date == 'Invalid date') {
-      this.notifyService.showError("Please enter valid date", "Failed");
-      return false;
+
+    if(this.release_date&&this.hold_remarks){
+     // if release date and remarks both are provided 
+      if (this.release_date == null || this.release_date == 'Invalid date') {
+        this.notifyService.showError("Please enter valid date", "Failed");
+        return false;
+      }
+      else {
+        this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
+        this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
+        this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code;
+        this.approvalObj.hold_date = this.release_date;
+        this.approvalObj.Emp_no = this.Current_user_ID;
+        this.approvalObj.Remarks = this.hold_remarks;
+        this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
+          this._Message = (data['message']);
+          if (this._Message == '1') {
+            this.notifyService.showSuccess("Project release date updated", "Success");
+            this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            this.getProjectDetails(this.projectInfo.Project_Code);
+            this.getholdate();
+            this.closePrjReleaseSideBar();
+          }
+          else if (this._Message == '2' || this._Message == '0') {
+            this.notifyService.showError("Project release date not updated", "Failed");
+          }
+        });
+      }
+
     }
-    else {
-      this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
-      this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
-      this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code;
-      this.approvalObj.hold_date = this.release_date;
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Remarks = this.hold_remarks;
-      this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
-        this._Message = (data['message']);
-        if (this._Message == '1') {
-          this.notifyService.showSuccess("Project release date updated", "Success");
-          this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
-          this.getProjectDetails(this.projectInfo.Project_Code);
-          this.getholdate();
-          this.closePrjReleaseSideBar();
-        }
-        else if (this._Message == '2' || this._Message == '0') {
-          this.notifyService.showError("Project release date not updated", "Failed");
-        }
-      });
-    }
+    else 
+    this.formFieldsRequired=true;
 
   }
 
@@ -6232,6 +6297,7 @@ removeSelectedDMSMemo(item){
   closePrjHoldSideBar() {
     this.hold_remarks = '';
     this.Holddate = null;
+    this.formFieldsRequired=false;
     document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -6239,7 +6305,7 @@ removeSelectedDMSMemo(item){
 
 
 
-  openPrjReleaseSideBar() {
+  openPrjReleaseSideBar() {  
     document.getElementById("prj-release-sidebar").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -6248,6 +6314,7 @@ removeSelectedDMSMemo(item){
   closePrjReleaseSideBar() {
     this.hold_remarks = '';
     this.Holddate = null;
+    this.formFieldsRequired=false;
     document.getElementById("prj-release-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
@@ -6277,6 +6344,7 @@ removeSelectedDMSMemo(item){
     $('#upload').html('Select a file');
     this.selectedFile = null;
     this._remarks = "";
+    this.formFieldsRequired=false;
   }
 
 
@@ -6290,6 +6358,7 @@ removeSelectedDMSMemo(item){
 
   closePrjCancelSb() {
     this.hold_remarks = '';
+    this.formFieldsRequired=false;
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
@@ -6297,6 +6366,8 @@ removeSelectedDMSMemo(item){
 
 
   updateProjectCancel() {
+
+  if(this.hold_remarks){
 
     Swal.fire({
       title: 'Project Cancel',
@@ -6363,6 +6434,9 @@ removeSelectedDMSMemo(item){
       }
     });
 
+  }
+  else 
+   this.formFieldsRequired=true;
 
   }
 
@@ -6370,6 +6444,14 @@ removeSelectedDMSMemo(item){
 
 
   achieveStandard() {
+    if(this._remarks==''||this.selectedFile==null){
+        this.formFieldsRequired=true;
+        return;
+    }
+     
+
+
+
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.Authority);
@@ -6422,6 +6504,12 @@ removeSelectedDMSMemo(item){
   }
 
   notachieveStandard() {
+    if(this._remarks==''){
+      this.formFieldsRequired=true;  
+      return;
+    }
+
+
     this.selectedFile = null;
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
@@ -6525,10 +6613,10 @@ closePanel(){
 
 
   onProject_updateSupport() {
-    debugger
+  
     const commaSeparatedString = this.selectedEmpIds.join(', ');
 
-    if (this.selectedEmployees != null) {
+    if (this.selectedEmployees != null&&this.selectedEmployees.length>0) {
       this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, commaSeparatedString, null).subscribe(data => {
         this._Message = data['message'];
 
@@ -6885,7 +6973,7 @@ send_from: any;
 rejectactivity: any;
 
 
-openNewPrjReleaseSideBar() {
+openNewPrjReleaseSideBar() { debugger
   document.getElementById("new-prj-release-sidebar").classList.add("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementById("newdetails").classList.add("position-fixed");
@@ -7181,6 +7269,7 @@ showFullGraph(){
     ]
   };
 
+  
   FusionCharts.ready(()=> {
     var myChart = new FusionCharts({
       type: "zoomline",
@@ -7224,7 +7313,7 @@ onGraphOptionChanged(option:string){
 }
 
 loadActivitiesByDate(d){
-  this.activitiesOnthat=this.getActivitiesOf(d);
+  this.activitiesOnthat=this.getActivitiesOf(d);   console.log("activities on that: ",this.activitiesOnthat);
   const currentDt=new Date();
   this.selectedactvy=d==currentDt?'TODAY':d;
 }
@@ -7448,7 +7537,16 @@ meetingReport(mtgScheduleId:any) {
 }
 // start meeting feature end
 
-
+featuremodel() {
+  document.getElementById("newfeatures").style.display = "block";
+  document.getElementById("newfeatures").style.overflow = "auto";
+  document.getElementById("feature-modal-backdrop").classList.add("show");
+}
+NewAddUserCountFeature() {
+      document.getElementById("newfeatures").style.display = "none";
+      document.getElementById("newfeatures").style.overflow = "hidden";
+      document.getElementById("feature-modal-backdrop").classList.remove("show");
+}
 
 
 
@@ -7522,6 +7620,8 @@ rejectAllStdTaskAprvs(){
       return false;
     }
     else {
+    
+    
 
     let selectedStdApprovals=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
     selectedStdApprovals=selectedStdApprovals.map(item=>({
@@ -7542,9 +7642,17 @@ rejectAllStdTaskAprvs(){
       this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedStdApprovals).
         subscribe((data) => {  
           this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
+
+          if(this.standardjson.length-this.selectedStdAprvs.length!==0){
+              this.backmainapproval();
+          }  // back to approvals list.
+          
+          
           this.getapprovalStats();
           this.getProjectDetails(this.URL_ProjectCode);
           this.getRejectType();
+          
+
 
         });
 
@@ -7558,6 +7666,41 @@ rejectAllStdTaskAprvs(){
 
 // std task apr and reject code new end.
 
+
+// meeting recall start
+
+linkMeetingToProject(mtgScheduleid:any){
+
+  
+  // this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  // this.obj_CalenderDTO.Project_Code=obj.Project_Code;
+  // this.obj_CalenderDTO.flagid=obj.flagid;
+
+
+
+
+
+  this._calenderDto = new CalenderDTO;
+
+  this._calenderDto.Schedule_ID=mtgScheduleid;
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.flagid=1;
+  this._calenderDto.Project_Code=this.URL_ProjectCode;
+     this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe(res=>{
+        console.log("after linking:",res);
+     });
+}
+
+
+
+
+
+
+
+
+
+
+// meeting recall end
 
 
 }

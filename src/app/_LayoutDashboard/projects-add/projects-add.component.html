@@ -56,8 +56,8 @@
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
-                            [disabled]="_CurrentpageRecords<30">
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.isAllPrjSelected=false"
+                            [disabled]="_CurrentpageRecords<30"  >
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <!-- Filters -->
                         <div class="stores-sec mr-1">
@@ -178,9 +178,13 @@
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
                         <button class="btn btn-primary btn-upper btn-sm btn-bold mr-1"
-                            style="background-color: #384ad7;" (click)="BackBttn()">
+                            style="background-color: #384ad7;" (click)="project()">
                             <!-- <i class="fas fa-trash mr-0"></i> -->Done
                         </button>
+                        <button class="btn btn-primary btn-upper btn-sm btn-bold mr-1"
+                        style="background-color: #384ad7;" (click)="BackBttn()">
+                  Back To Portfolio
+                    </button>
                     </div>
                 </div>
             </div>
@@ -221,7 +225,7 @@
                                                             </mat-checkbox>
                                                         </mat-list-item> -->
 
-                                                          <input class='mat-checkbox-inner-container' [(ngModel)]="isAllPrjSelected"  type="checkbox" title="Select All" (click)="OnAllSelectedPrjSave()" (change)="selectUnSelectAllPrj($event)" />
+                                                          <input class="mat-checkbox-inner-container mat-checkbox-inner-container-no-side-margin" [(ngModel)]="isAllPrjSelected"  type="checkbox" title="Select All" (change)="addRemovePrjofPortfolio($event)" />
 
 
                                                     </th>
@@ -380,7 +384,7 @@
                                                         <!-- <p class="kt-widget5__desc">{{item.Project_Description}}</p> -->
                                                     </td>
                                                     <td>
-                                                        <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span>
+                                                        <span class="count2" title="Completed/All" *ngIf="item.Actioncount>0">{{item.CompletedActioncount}}/{{item.Actioncount}}</span>
                                                     </td>
                                                     <td>
 

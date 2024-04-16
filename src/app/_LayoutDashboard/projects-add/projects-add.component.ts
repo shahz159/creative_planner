@@ -16,14 +16,18 @@ import * as _ from 'underscore';
 import { LinkService } from 'src/app/_Services/link.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+
+
 @Component({
   selector: 'app-projects-add',
   templateUrl: './projects-add.component.html',
   styleUrls: ['./projects-add.component.css']
 })
 export class ProjectsAddComponent implements OnInit {
+
   @ViewChild('selectAllCheckbox') selectAllCheckbox: any;
   btn_CreatePortfolio: boolean;
+
   hidetotalProjects: boolean;
   selectedItemsList: any;
   btnGetRecords: boolean;
@@ -454,7 +458,7 @@ debugger
     //   this.notifyService.showSuccess("Portfolio Created " + ' ' + ' Added ' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
     // }
     if (this._portfolioId != '') {
-      this.notifyService.showInfo("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
+      this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
     }
   }
 
@@ -530,7 +534,7 @@ debugger
               //console.log("Retrun After Delete :" + data);
               this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
               this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
-              this.notifyService.showSuccess("Project removed successfully ", '');
+              this.notifyService.showInfo("Project removed successfully ", '');
             });
           this._objStatusDTO.Emp_No = this.Current_user_ID;
           this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
@@ -550,6 +554,32 @@ debugger
       }
     });
   }
+
+DeleteProjects(projInfo:any){
+
+  this.service.DeleteProject(projInfo.Proj_id,projInfo.port_id,projInfo.Pcode,projInfo.proj_Name,projInfo.createdBy,this.deletedBy).subscribe((data) => {
+
+    // this.service.GetProjectsBy_portfolioId(this._Pid)
+    //   .subscribe((data) => {
+    //     // //console.log("Retrun After Delete :" + data);
+    //     // this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+    //     // this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
+    //     this.notifyService.showSuccess("Project removed successfully ", '');
+    //   });
+    // // this._objStatusDTO.Emp_No = this.Current_user_ID;
+    // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+    //   (data) => {
+    //     this._ListProjStat = data as StatusDTO[];
+    //   });
+
+
+
+  })
+}
+
+
+
+
 
   _JsonString: any;
   _totalMemos: number;
@@ -787,79 +817,116 @@ debugger
 
   //  approve all selected projects start.
 
- isAllPrjSelected:boolean=false;
- selectUnSelectAllPrj(evt){
-      this.isAllPrjSelected=evt.target.checked;
-      this._ProjectDataList.forEach((prj)=>{
-             prj.checked=this.isAllPrjSelected;
-      });
+  selectedCheckboxes: boolean[] = [];
+isAllPrjSelected:boolean=false;
+addRemovePrjofPortfolio(evt){
+  this.isAllPrjSelected=evt.target.checked;
+  this._ProjectDataList.forEach((prj)=>prj.checked=this.isAllPrjSelected);
 
- }
+  // if(this.isAllPrjSelected){
+  //     // add all projects into the portfolio.
+  //     // this.addPrjsToPortflio();
+  // }
+  // else{
+  //     // this.removePrjsOfPortflio();
+  //     // remove all projects from the portfolio.
+  //   }
 
+}
+// item1:any
+// chooose(item) {
+//   if (this.item && this.item1.Project_Code) {
+//     this.selectedCheckboxes.push(this.item.Project_Code);
+//   }}
 
+addPrjsToPortflio() {
+  this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
+  const selectedPrjs=this._ProjectDataList.filter(item=>item.checked);
+  let LengthOfSelectedItems = JSON.stringify(selectedPrjs.length);
+  this.Obj_Portfolio_DTO.SelectedProjects = selectedPrjs;
+  this.service.SavePortfolio(this.Obj_Portfolio_DTO)
+    .subscribe(data => {
+      debugger
+      this._portfolioId = data['Portfolio_ID'];
+      if(this._portfolioId!==''){
+        this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
+      }
+    });
+}
 
-
-
-  OnAllSelectedPrjSave() {
-    debugger
-    this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
-
-
-    const selectedPrjs=this._ProjectDataList.filter(item=>item.checked);
-    let LengthOfSelectedItems = JSON.stringify(selectedPrjs.length);
-
-
-    this.Obj_Portfolio_DTO.SelectedProjects = selectedPrjs;
-    this.service.SavePortfolio(this.Obj_Portfolio_DTO)
-      .subscribe(data => {
-        debugger
-        this._portfolioId = data['Portfolio_ID'];
-        if(this._portfolioId!==''){
-          this.isAllPrjSelected=false;
-          this.notifyService.showInfo("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
-        }
-
-
-
-
-
-
-
-
-
-
-
-        // this._ProjectDataList = this._ProjectDataList.filter(item => !item.checked);
-        // this.selectAllCheckbox.nativeElement.checked = false;
-
-        // this._portfolioId = data['Portfolio_ID'];
-        // this._objStatusDTO.Emp_No = this.Current_user_ID;
-        // //console.log("Return value--------->", this._portfolioId);
+removePrjsOfPortflio(){
+  let removedCount:number=0;
+  this._ProjectDataList.forEach(element => {
+    if (element.checked == false) {
+      let prid = element.id;
+      let poid = this._portfolioId;
+      let Projname = element.Project_Name;
+      let pCode = element.Project_Code;
+      let Createdby = element.Emp_No;
+      try{
+      this.service.DeleteProject(prid,poid,pCode,Projname,Createdby,this.deletedBy).subscribe((data) => {
+             removedCount+=1;
+             if(removedCount==this._ProjectDataList.length)
+             { this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');   }
+        // this.service.GetProjectsBy_portfolioId(this._Pid)
+        //   .subscribe((data) => {
+        //     // //console.log("Retrun After Delete :" + data);
+        //     // this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+        //     // this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
+        //     this.notifyService.showSuccess("Project removed successfully ", '');
+        //   });
+        // // this._objStatusDTO.Emp_No = this.Current_user_ID;
         // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
         //   (data) => {
-        //     debugger
         //     this._ListProjStat = data as StatusDTO[];
-        //     //console.log("ListForStatus", this._ListProjStat);
-        //     //Owners Portfolios
-        //     let Listown: any = this._ListProjStat.filter(i => (i.CreatedName));
-        //     this.countOwners = Listown.length;
-        //     this.countAll = this._ListProjStat.length;
-        //     if (this._ListProjStat.length == 0) {
-        //       this.messageForEmpty = false;//"No Portfolio's has created";
-        //     }
-        //     else {
-        //       this.messageForEmpty = true;
-        //     }
         //   });
-      });
 
-    // if (this._portfolioId == 0 || this._portfolioId == null || this._portfolioId == '') {
-    //   this.notifyService.showSuccess("Portfolio Created " + ' ' + ' Added ' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
-    // }
-    // if (this._portfolioId != '') {
-    //   this.notifyService.showInfo("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
-    // }
-  }
+
+
+      });
+    }catch(e){
+        this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');
+        console.log(e);
+    }
+    }
+  });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  selectUnSelectAllPrj(evt){
+//       this.isAllPrjSelected=evt.target.checked;
+//       this._ProjectDataList.forEach((prj)=>{
+//              prj.checked=this.isAllPrjSelected;
+//       });
+//       this.OnAllSelectedPrjSave();
+//  }
+
+
+
+
+
 
 
 
@@ -870,6 +937,15 @@ debugger
   //  approve all selected prject end.
 
 
-
+  project(){
+    if(this.isAllPrjSelected){
+          // add all projects into the portfolio.
+          this.addPrjsToPortflio();
+      }
+      // else{
+      //     this.removePrjsOfPortflio();
+      //     // remove all projects from the portfolio.
+      //   }
+  }
 
 }
