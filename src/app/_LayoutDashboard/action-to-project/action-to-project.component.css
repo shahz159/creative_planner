@@ -27,3 +27,132 @@ input[type=number] {
   margin-left: 15px;
 
 }
+.symbol-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.symbol {
+  display: inline-block;
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 0.475rem;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+
+.symbol-group.symbol-hover .symbol {
+  cursor: pointer;
+}
+
+.symbol-group .symbol {
+  position: relative;
+  z-index: 0;
+  margin-left: -10px;
+  transition: all .3s ease;
+}
+
+.symbol.symbol-circle,
+.symbol.symbol-circle .symbol-label,
+.symbol.symbol-circle>img {
+  border-radius: 50%;
+}
+
+.symbol .symbol-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #252f4a;
+  background-color: #f9f9f9;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 0.475rem;
+}
+
+.text-inverse-warning {
+  color: #ffffff !important;
+}
+
+.bg-warning {
+  --bs-bg-rgb-color: rgba(255, 199, 0);
+  background-color: #ffc700 !important;
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+.symbol .symbol-label {
+  width: 50px;
+  height: 50px;
+}
+
+.symbol-group .symbol-label {
+  position: relative;
+}
+
+.symbol.symbol-35px .symbol-label {
+  width: 35px;
+  height: 35px;
+}
+
+.symbol-group.symbol-hover .symbol {
+  cursor: pointer;
+}
+
+.symbol .symbol-label:after {
+  border-radius: 0.475rem;
+}
+
+.symbol-group .symbol-label:after {
+  display: block;
+  content: " ";
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  border: 2px solid #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+
+.bg-primary {
+  --bs-bg-rgb-color: rgba(62, 151, 255);
+  background-color: #3e97ff !important;
+}
+
+.text-inverse-primary {
+  color: #ffffff !important;
+}
+
+.symbol.symbol-35px>img {
+  width: 35px;
+  height: 35px;
+}
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+::ng-deep .mat-icon-button {
+  width: 38px;
+  height: 36px;
+  line-height: 30px;
+}
+.details-date .form-control {
+  border-radius: 4px 0px 0px 4px;
+}
+.details-date .input-group-text {
+  border-radius: 0px 4px 4px 0px;
+  height: calc(1.5em + 1.3rem + 2px);
+  margin-left: -1px;
+}

@@ -66,6 +66,8 @@ export class ActionToAssignComponent implements OnInit {
   _SelectedEmpNo: string = "";
   selectedProjectCode: string;
   SelectedEmplList: any[];
+  SelectedinformlList:any[]
+  SelectedcordlList:any[]
   port_id:any;
   selectedProjectCodelist: any[];
   public EmployeeList: any;
@@ -129,7 +131,22 @@ export class ActionToAssignComponent implements OnInit {
         console.log(this.PortfolioList,"portfolios");
       }
     )
+
+
+const TEsb: HTMLElement = document.getElementById('Action2Assign-body') as HTMLElement;
+TEsb.addEventListener('scroll', (ac:any) => {
+  this.autocompletes.forEach((ac: any) => {
+    if (ac.panelOpen)
+      ac.updatePosition();
+  });
+});
+
+
+
   }
+
+
+
 
   _ObjCompletedProj: CompletedProjectsDTO;
 
@@ -268,7 +285,7 @@ export class ActionToAssignComponent implements OnInit {
       if (this.task_id != null) {
         fd.append("AssignId", this.task_id.toString());
       }
-      fd.append("AssignedBy", this.CurrentUser_ID);
+      fd.append("AssignedBy", this.CurrentUser_ID); debugger
       if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
         this.port_id=this.port_id;
       }
@@ -290,7 +307,7 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 2){
-         
+
             this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
@@ -301,7 +318,7 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 3){
-          
+
             this._meetingDetails.getDetailsScheduleId();
             this._meetingDetails.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
@@ -332,7 +349,7 @@ export class ActionToAssignComponent implements OnInit {
 
     }
     else if(this._Urlid==3){
-   
+
       this._meetingDetails.getDetailsScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
@@ -366,7 +383,7 @@ export class ActionToAssignComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
-        //console.log(this.EmployeeList);
+        console.log(this.EmployeeList);
         this.dropdownSettings_Employee = {
           singleSelection: true,
           idField: 'Emp_No',
@@ -449,22 +466,22 @@ isPrjDesValid:boolean=true;
  }
 
 
-  Portfolio: any = [];
+  // Portfolio: any = [];
   isPortfolioDrpDwnOpen: boolean = false;
   onPortfolioSelected(e: any) {
     debugger
     const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
-      if (!this.Portfolio)   // if Portfolio is null,undefined,''
-        this.Portfolio = [];
-      const index = this.Portfolio.indexOf(portfolioChoosed.Portfolio_ID);
+      if (!this.port_id)   // if Portfolio is null,undefined,''
+        this.port_id = [];
+      const index = this.port_id.indexOf(portfolioChoosed.Portfolio_ID);
       if (index === -1) {
         // if not present then add it
-        this.Portfolio.push(portfolioChoosed.Portfolio_ID);
+        this.port_id.push(portfolioChoosed.Portfolio_ID);
       }
       else { //  if item choosed is already selected then remove it.
-        this.Portfolio.splice(index, 1);
+        this.port_id.splice(index, 1);
       }
     }
     this.openAutocompleteDrpDwn('PortfolioDrpDwn');
@@ -472,9 +489,9 @@ isPrjDesValid:boolean=true;
 
 
   removeSelectedPortfolio(item) {
-    const index = this.Portfolio.indexOf(item);
+    const index = this.port_id.indexOf(item);
     if (index !== -1) {
-      this.Portfolio.splice(index, 1);
+      this.port_id.splice(index, 1);
     }
   }
 
@@ -489,7 +506,43 @@ isPrjDesValid:boolean=true;
 
 
 
+
+
+
+
+  PrjSupport:{DisplayName:string,Emp_No:string}[]=[];
+  isPrjSprtDrpDwnOpen:boolean=false;
+  PrjResp:string;
+
+
+
+  onPrjSprtSelected(e:any){
+    const sprtChoosed=this.EmployeeList.find((p:any)=>p.Emp_No===e.option.value);
+    if(sprtChoosed){
+         const index=this.PrjSupport.indexOf(sprtChoosed);
+         if(index===-1){
+            // if not present then add it
+            this.PrjSupport.push(sprtChoosed);
+         }
+         else{ //  if item choosed is already selected then remove it.
+          this.PrjSupport.splice(index,1);
+         }
+    }
+    this.openAutocompleteDrpDwn('PrjSprtDrpDwn');
+  }
+
+  removeSelectedPrjSprt(sprt:{Emp_No:string,DisplayName:string}){
+    const index=this.PrjSupport.indexOf(sprt);
+    if(index!==-1){
+      this.PrjSupport.splice(index,1);
+    }
+  }
+
+
+
+
 }
+
 
 
 

@@ -2758,31 +2758,36 @@
                 </div>
                 <div class="form-group">
                     <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
-                    <input id="dsb-evt-titleName" #titleNametf="ngModel" class="form-control" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
+                    <input id="dsb-evt-titleName" #titleNametf="ngModel" class="form-control" [ngClass]="{'error-border': !Title_Name&&notProvided}" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
                         minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                     <span style="color:red" [hidden]="MinLastNameLength"> Min length 3</span>
-                    <span style="color:red" *ngIf="!Title_Name&&notProvided" >  please enter title name</span>
+                    <span style="color:red" *ngIf="!Title_Name&&notProvided" >  Please enter title name</span>
+                </div>
+
+                <div class="form-group" id="Descrip_Name">
+                    <label class="cus-lbl">Description </label>
+                    <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
                 </div>
 
 <!--agenda field start-->
 
- <div class="form-group" id="agenda-field">
+ <div [ngClass]="{'d-none':ScheduleType==='Task'}" class="form-group" id="agenda-field">
     <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
     <span id="agenda-info-icon" class="ml-1">
         <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
     </span>
     <div class="action-section">
-        <div class="todo-main">
+        <div class="todo-main" [ngClass]="{'error-border': allAgendas.length===0&&notProvided}">
             <div class="task-header">
                 <div class="task-tools">
                     <div class="task-count"></div>
                 </div>
-                 <div class="agenda-input-field p-1">
-                    <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
-                    <input class="task-input ml-2" id="todo-input" name="text" placeholder="Enter Agenda and hit 'Enter'." autofocus="true"
+                 <div class="agenda-input-field">
+                    <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
+                    <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
                       [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
                     />
-                    <button class="task-button " id="btn1">Add Task</button>
+                  <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                 </div>
             </div>
 
@@ -2830,7 +2835,7 @@
 
         </div>
     </div>
-    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > please provide atleast one agenda.</span>
+    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > Please provide atleast one agenda.</span>
 
 </div>
 
@@ -2844,7 +2849,7 @@
                     <label class="cus-lbl">Select Project <span class="text-danger"
                             *ngIf="ScheduleType=='Task'">*</span>
                     </label>
-                    <ng-select placeholder="Select Project" [(ngModel)]="MasterCode"
+                    <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [ngClass]="{'error-vd': _subname == true}"
                         (change)="GetSubtasklistfromProject($event)">
                         <ng-option [value]="car.Project_Code"
                             *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
@@ -3099,20 +3104,17 @@
                     </div>
                     <div class="form-group section-1" id="Location_Name" style="display:none">
                         <label class="cus-lbl">Location</label>
-                        <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="Location_Type"
+                        <input ngx-google-places-autocomplete class="form-control curser-pointer" [(ngModel)]="Location_Type"
                             (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
                     </div>
-                    <div class="form-group" id="Descrip_Name">
-                        <label class="cus-lbl">Description </label>
-                        <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
-                    </div>
+                  
                     <div class="form-group mb-0">
                         <label class="cus-lbl">Attachment </label>
-                        <!-- <div class="custom-file pl-1">
+                         <div class="custom-file pl-1">
                             <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file  curser-pointer "
                                 (change)="onFileChange($event)" multiple>
 
-                        </div> -->
+                        </div> 
 
                         <div class="mb-3 curser-pointer">
                             <!-- <label for="formFile" class="form-label">Default file input example</label> -->
@@ -3162,10 +3164,10 @@
                         <div class="d-flex gap-1">
                             <div class="form-group flex-1">
                                 <label>{{_labelName}}<span class="text-danger">*</span></label>
-                                <div class="input-group">
+                                <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
                                     <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
                                         (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
-                                        [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control" style="cursor:pointer;">
+                                        [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;">
                                     <div class="input-group-append">
 
                                         <div class="input-group-text p-0">
@@ -3174,25 +3176,26 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span *ngIf="!_StartDate&&notProvided" style="color:red">please select schedule date.</span>
+                                <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
                             </div>
                             <div class="form-group flex-1" >
                                 <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)"
+                                <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
+                                <ng-select  class="kt-input form-control" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
                                     placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                         {{item}}</ng-option>
                                 </ng-select>
-                                <span *ngIf="!Startts&&notProvided" style="color:red">please select start time.</span>
+                                <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
                             </div>
                             <div class="form-group flex-1 " >
                                 <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
-                                <ng-select class="kt-input form-control" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                <ng-select class="kt-input form-control" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
                                     [(ngModel)]="Endtms">
                                     <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                         {{item1}}</ng-option>
                                 </ng-select>
-                                <span  *ngIf="!Endtms&&notProvided" style="color:red" >please select end time.</span>
+                                <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
                             </div>
 
                             <div class="form-group flex-1" id="Schenddate">

@@ -1484,7 +1484,7 @@
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjenddate && notProvided}">
                                       <input class="form-control ng-pristine" [(ngModel)]="Prjenddate"  id="end-date"
                                         placeholder="select end date" [matDatepicker]="picker3" (click)="picker3.open()"
-                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel" />
+                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null"/>
                                       <div class="input-group-text p-0">
                                         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                         <mat-datepicker #picker3></mat-datepicker>
@@ -1756,7 +1756,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Owner<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjOwner" (change)="onProjectOwnerChanged();    setRACIS(); ">
+                                  <ng-select class="kt-form-vd" [ngClass]="{'error-border':!PrjOwner&&notProvided}"   placeholder="Select Type.." [(ngModel)]="PrjOwner" (change)="onProjectOwnerChanged();    setRACIS(); ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">please select owner.</span>
@@ -1765,7 +1765,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Responsible<span class="text-danger">*</span></label>
-                                  <ng-select *ngIf="Responsible_json" class="kt-form-vd" placeholder="Select Type.."
+                                  <ng-select *ngIf="Responsible_json"  [ngClass]="{'error-border':!PrjResp&&notProvided}"     class="kt-form-vd" placeholder="Select Type.."
                                     [(ngModel)]="PrjResp" (change)="onResponsibleChanged();  setRACIS();   ">
                                     <ng-option
                                       [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
@@ -1778,7 +1778,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Authority<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth"
+                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth"  [ngClass]="{'error-border':!PrjAuth&&notProvided}" 
                                     *ngIf="Responsible_json" (change)="setRACIS(); ">
                                     <ng-option
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
@@ -1790,7 +1790,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Coordinator<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjCrdtr"
+                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjCrdtr"  [ngClass]="{'error-border':!PrjCrdtr&&notProvided}"
                                     (change)="setRACIS(); ">
                                     <ng-option *ngFor="let p of allUser_json"
                                       [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
@@ -1801,7 +1801,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Inform<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer"
+                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer" [ngClass]="{'error-border':!PrjInformer&&notProvided}"
                                     (change)="setRACIS() ">
                                     <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name
                                       }}</ng-option>
@@ -1821,7 +1821,7 @@
                               </div>
                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
-                                  <mat-form-field class="drp-dwn-field w-100">
+                                  <mat-form-field class="drp-dwn-field w-100"  >
                                     <mat-label class="text-dark-50 w-75px">Support<span style="color:rgb(217,48,37)">*</span></mat-label>
                                     <mat-chip-list #selectedProjSprt>
                                       <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
@@ -2087,7 +2087,7 @@
                                   <div class="kt-info-lable-v"> RACIS </div>
                                   <div class="kt-project-sts-data step-third d-flex justify-content-center">
                                     <div class="kt-support-view d-flex justify-content-center align-items-center">
-                                      <div class="symbol-group symbol-hover flex-nowrap" *ngFor="let item of RACIS;let i = index ">
+                                      <div class="symbol-group symbol-hover flex-nowrap" *ngFor="let item of RACIS.slice(0,3);let i = index ">
                                          <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
                                           data-bs-original-title="Michael Eberon" data-kt-initialized="1"
                                           class="symbol symbol-35px symbol-circle">
@@ -2109,11 +2109,30 @@
                                             src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-12.jpg">
                                         </div> -->
                                       </div>
-                                      <div class="symbol-group symbol-hover flex-nowrap">
+                                      <div class="symbol-group symbol-hover flex-nowrap" *ngIf="RACIS.length>3">
                                         <a data-bs-toggle="modal" data-bs-target="#kt_modal_view_users"
                                       class="symbol symbol-35px symbol-circle"><span
-                                        class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span></a>
+                                        class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+{{RACIS.length-3}}</span></a>
                                       </div>
+
+
+
+
+                                                                <!-- <span *ngIf="RACIS.length>3" class="dropdown">
+                                                                    <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                                    class="symbol symbol-35px symbol-circle">
+                                                                    <span  class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+{{RACIS.length-3}}</span>
+
+                                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
+                                                                        <div class="kt-met-info" *ngFor="let item of RACIS.slice(3);" >{{ item}}</div>
+                                                                    </div>
+                                                                    </a>
+                                                                </span> -->
+                                  
+
+
+
+
                                     </div>
                                   </div>
                                 </div>
@@ -3879,7 +3898,7 @@
                     <p >You can re use previous projects structure for new projects</p>
                   </div>
                 </div>
-              </div>
+              </div> 
             </div>
           </div>
         </div>

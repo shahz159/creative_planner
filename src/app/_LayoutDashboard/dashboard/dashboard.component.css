@@ -1018,7 +1018,7 @@ span.time-slt-md {
     font-size: 14px;
     padding: 0.5rem 1.2rem;
     color: #222;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .drop-cus a.dropdown-item:hover {
@@ -2995,10 +2995,10 @@ span.kt-dashboard-delay-cnt {
 
 
 
-.task-button {
-    display: none;
+/* .task-button {
+  
 }
-
+ */
 
 
 
@@ -3029,7 +3029,7 @@ span.kt-dashboard-delay-cnt {
 }
 
 .task-input:focus {
-    box-shadow: 0 -1px 0 #bdcdd6 inset;
+    /* box-shadow: 0 -1px 0 #bdcdd6 inset; */
     outline: none;
 }
 
@@ -3325,10 +3325,21 @@ mat-icon.mat-icon.notranslate.curser-pointer {
 .dropdown-panel {
     position: static !important;
 }
-  
-  
 
-  #TaskEvent-Sidebar{
+
+
+#TaskEvent-Sidebar {
     scroll-behavior: smooth;
-  }
+}
 
+.add-agenda-btn{
+    border-radius: 0rem 0.25rem 0.25rem 0rem;
+}
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+ 

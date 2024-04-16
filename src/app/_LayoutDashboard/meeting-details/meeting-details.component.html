@@ -44,7 +44,7 @@
                                             <ng-container *ngIf="meetingInProgress">
                                                 <span (click)="leaveMeeting()">Leave Meeting</span>
                                             </ng-container>
-                                            <span class="text-white">|</span>
+
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
 
                                                 <span>{{startTime |date: 'h:mm'}}</span>
@@ -66,7 +66,7 @@
                                                 </svg>
                                             </span>
                                             <span class="kt-meeting-status-title">Hold</span>
-                                            <span class="text-white">|</span>
+
                                             <span class="kt-meeting-status-time">12:45</span>
                                         </div>
                                         <div class="kt-meeting-status completed d-none mt-0 mb-2">
@@ -81,7 +81,6 @@
                                                 </svg>
                                             </span>
                                             <span class="kt-meeting-status-title">Completed</span>
-                                            <span class="text-white">|</span>
                                             <span class="kt-meeting-status-time">12:45</span>
                                         </div>
                                     </div>
@@ -1539,8 +1538,8 @@
                             <div id="Assign_notes" class="accordion-collapse collapse"
                                 aria-labelledby="AssignOne" data-parent="#Assign_List">
                                 <div class="accordion-body"*ngIf="ActionedAssigned_Josn.length>0" >
-                                    <ul class="attendees-note-userlist" *ngFor="let item of ActionedAssigned_Josn">
-                                        <li class="attendees-note-user">
+                                    <ul class="attendees-note-userlist">
+                                        <li class="attendees-note-user"  *ngFor="let item of ActionedAssigned_Josn">
 
 
 
@@ -2048,8 +2047,8 @@
                                                 <h5>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
                                                </h5>                                 
                                               </div>
-                                            <ul class="attendees-note-userlist" *ngFor="let data of AllAttendees_notes">
-                                                <li class="attendees-note-user">
+                                            <ul class="attendees-note-userlist">
+                                                <li class="attendees-note-user"  *ngFor="let data of AllAttendees_notes">
                                                     <div class="user-info">
                                                         <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
                                                         <span>
@@ -2345,168 +2344,167 @@
 
 <!-- Link Portfolios  Template  Start-->
 
-<div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right">
-    <div class="px-4 pt-4 pb-1" id="LinkSideBar-header">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-            <h4 class="font-weight-bold m-0 d-flex">
-                <a class="kt-inbox__icon  pb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998" width="16" height="16"
-                        class="iconify iconify--mdi" version="1.1">
-                        <path
-                            d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z" />
+<div id="LinkSideBar1" class="LinkSideBar1 sideInfobar shadow-0 animate-right">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <h4 class="font-weight-bold m-0 d-flex">
+                    <a class="">
+                       
+                    </a>Link Portfolio
+                </h4>
+                <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                    (click)="closeLinkSideBar()">
+    
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                        <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                            stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                </a>Link Portfolio
-            </h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-                (click)="closeLinkSideBar()">
-
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                    </path>
-                </svg>
-            </a>
-        </div>
-    </div>
-    <ul class="kt-nav">
-        <li class="kt-nav__head d-block">
-            <p class="text-primary">
-                Portfolios</p>
-            <div class="M_fsize">
-                Linked
-                <div class="badge badge-pill badge-outline-success">
-                    {{portfolio_Scheduledjson.length}}
-                </div>
-            </div>
-            <div class="kt-nav__separator"></div>
-        </li>
-        <div *ngIf="Isadmin==true || status=='Owner'" class="d-flex align-items-end p-3" style="column-gap:10px">
-            <mat-form-field class="drp-dwn-field w-100">
-                <mat-label>Select Portfolios</mat-label>
-                <mat-chip-list #selectedportfolioslist>
-                    <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
-                        (removed)="Portfolio_Deselect(prt)">
-
-                        {{prt.Portfolio_Name}} - {{prt.DisplayName}}
-                        <button matChipRemove>
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </mat-chip>
-                </mat-chip-list>
-                <div class="d-flex">
-                    <input #fruitInputportfolio class="border-gray" [placeholder]="'Select Portfolio(s)'"
-                        (input)="filterPortfolio($event.target.value)" [matChipInputFor]="selectedportfolioslist"
-                        [matAutocomplete]="prtDrpDown">
-                    <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                            (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
-                    <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
-                            (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
-                </div>
-                <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
-                    (optionSelected)="onPrtClicked($event)" (closed)="isPortDrpDwnOpen=false"
-                    (opened)="isPortDrpDwnOpen=true">
-                    <mat-option *ngFor=" let prt of PortfolioLists" [value]="prt.portfolio_id"
-                        (click)="Portfolio_Select(ngDropdwonPort)">
-                        <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
-                        {{prt.Portfolio_Name}} - {{prt.DisplayName}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-         <ng-container *ngFor="let item of EventScheduledjson">
-            
-            <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-            <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
-         </ng-container>
-
-         <ng-container *ngIf="ngDropdwonPort!=''">
-         <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
-            <button class="btn btn-label-primary btn-upper mb-4" data-target="#confirmpopup" data-toggle="modal" >Link</button>
-           </ng-container>
-        </ng-container>
-
-           <ng-container *ngIf="(ngDropdwonPort=='' && item.Recurrence!=='Do not repeat')">      
-               <button class="btn btn-label-primary btn-upper mb-4"  (click)="Addportfolios_meetingreport()">Link</button>             
-           </ng-container>
-
-         </ng-container>
-   
-        </div>
-    </ul>
-
-    <div class="kt-inbox mt-0 scrollbar1">
-        <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
-            <div class="kt-inbox__items flex-grow-1" data-type="inbox">
-                <div class="card brdr-5 shadow-sm" *ngFor="let data of portfolio_Scheduledjson; let i=index">
-                    <div class="Replied_border_left_true_primary">
-                        <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
-                            <div class="kt-inbox__details">
-                                <div class="kt-inbox__sender" (click)="OnCardClick(data.numberval)">
-                                    <span class="kt-inbox__subject">
-                                        {{data.Portfolio_Name}}
-                                    </span>
-                                </div>
-                                <div class="kt-inbox__labels">
-                                    <span
-                                        class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge.kt-badge-light-bold kt-badge--inline">
-                                        <div>
-                                            Owner: {{data.Portfolio_owner}}
-                                        </div>
-                                    </span>
-                                    <span
-                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
-                                        Total {{data.count}} Project(s)
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="kt-inbox__datetime">
-                                <small>{{data.Created_DT |date:'medium'}}</small>
-                            </div>
-                            <div class="delete-btn">
-                                <!-- <i class="fas fa-edit invisible"></i>
-                                <a (click)="DeletePortfolios(data.numberval)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a> -->        
-                                 <ng-container *ngIf="Isadmin==true || status=='Owner'">
-                                <ng-container *ngFor="let item of EventScheduledjson">         
-                                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                                    
-                                    <i class="fas fa-edit invisible"></i>
-                                    <a (click)="DeletePortfolios(data.numberval)">
-                                    <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                 </ng-container>                         
-                                 <ng-container *ngIf="item.Recurrence!=='Do not repeat'">              
-        
-                                  <i class="fas fa-edit invisible"></i>
-                                  <a (click)="portFolioDeletedEvent(data.numberval)" data-target="#confirmpopup" data-toggle="modal">
-                                  <i class="fas fa-trash-alt"></i>
-                                  </a>
-                                  
-                                   </ng-container>                 
-                                 </ng-container> 
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
-        <ng-container *ngIf="portfolio_Scheduledjson==0">
-            <ng-container>
-
-                <div class="d-flex-center">
-                    <div>
-                        <img src="./assets/images/portfolio.png" width="268" height="256" class="portfolioNot_Found" />
-                        <div class="bnk-txt">
-                            <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
-                        </div>
+        <ul class="kt-nav">
+            <li class="kt-nav__head d-block">
+                <p class="text-primary">
+                    Portfolios</p>
+                <div class="M_fsize">
+                    Linked
+                    <div class="badge badge-pill badge-outline-success">
+                        {{portfolio_Scheduledjson.length}}
                     </div>
                 </div>
+                <div class="kt-nav__separator"></div>
+            </li>
+            <div *ngIf="Isadmin==true || status=='Owner'" class="d-flex align-items-end p-3" style="column-gap:10px">
+                <mat-form-field class="drp-dwn-field w-100">
+                    <mat-label>Select Portfolios</mat-label>
+                    <mat-chip-list #selectedportfolioslist>
+                        <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
+                            (removed)="Portfolio_Deselect(prt)">
+    
+                            {{prt.Portfolio_Name}} - {{prt.DisplayName}}
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div class="d-flex">
+                        <input #fruitInputportfolio class="border-gray" [placeholder]="'Select Portfolio(s)'"
+                            (input)="filterPortfolio($event.target.value)" [matChipInputFor]="selectedportfolioslist"
+                            [matAutocomplete]="prtDrpDown">
+                        <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
+                                (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
+                        <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
+                                (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
+                    </div>
+                    <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
+                        (optionSelected)="onPrtClicked($event)" (closed)="isPortDrpDwnOpen=false"
+                        (opened)="isPortDrpDwnOpen=true">
+                        <mat-option *ngFor=" let prt of PortfolioLists" [value]="prt.portfolio_id"
+                            (click)="Portfolio_Select(ngDropdwonPort)">
+                            <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
+                            {{prt.Portfolio_Name}} - {{prt.DisplayName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+    
+             <ng-container *ngFor="let item of EventScheduledjson">
+                
+                <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
+             </ng-container>
+    
+             <ng-container *ngIf="ngDropdwonPort!=''">
+             <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                <button class="btn btn-label-primary btn-upper mb-4" data-target="#confirmpopup" data-toggle="modal" >Link</button>
+               </ng-container>
             </ng-container>
-        </ng-container>
+    
+               <ng-container *ngIf="(ngDropdwonPort=='' && item.Recurrence!=='Do not repeat')">      
+                   <button class="btn btn-label-primary btn-upper mb-4"  (click)="Addportfolios_meetingreport()">Link</button>             
+               </ng-container>
+    
+             </ng-container>
+       
+            </div>
+        </ul>
+    
+        <div class="kt-inbox mt-0 scrollbar1">
+            <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
+                <div class="kt-inbox__items flex-grow-1" data-type="inbox">
+                    <div class="card brdr-5 shadow-sm" *ngFor="let data of portfolio_Scheduledjson; let i=index">
+                        <div class="Replied_border_left_true_primary">
+                            <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">
+                                <div class="kt-inbox__details">
+                                    <div class="kt-inbox__sender" (click)="OnCardClick(data.numberval)">
+                                        <span class="kt-inbox__subject">
+                                            {{data.Portfolio_Name}}
+                                        </span>
+                                    </div>
+                                    <div class="kt-inbox__labels">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            <div>
+                                                Owner: {{data.Portfolio_owner}}
+                                            </div>
+                                        </span>
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">
+                                            Total {{data.count}} Project(s)
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-inbox__datetime">
+                                    <small>{{data.Created_DT |date:'medium'}}</small>
+                                </div>
+                                <div class="delete-btn">
+                                    <!-- <i class="fas fa-edit invisible"></i>
+                                    <a (click)="DeletePortfolios(data.numberval)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a> -->        
+                                     <ng-container *ngIf="Isadmin==true || status=='Owner'">
+                                    <ng-container *ngFor="let item of EventScheduledjson">         
+                                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                        
+                                        <i class="fas fa-edit invisible"></i>
+                                        <a (click)="DeletePortfolios(data.numberval)">
+                                        <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                     </ng-container>                         
+                                     <ng-container *ngIf="item.Recurrence!=='Do not repeat'">              
+            
+                                      <i class="fas fa-edit invisible"></i>
+                                      <a (click)="portFolioDeletedEvent(data.numberval)" data-target="#confirmpopup" data-toggle="modal">
+                                      <i class="fas fa-trash-alt"></i>
+                                      </a>
+                                      
+                                       </ng-container>                 
+                                     </ng-container> 
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="portfolio_Scheduledjson==0">
+                <ng-container>
+    
+                    <div class="d-flex-center">
+                        <div>
+                            <img src="./assets/images/portfolio.png" width="268" height="256" class="portfolioNot_Found" />
+                            <div class="bnk-txt">
+                                <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
     </div>
+
 </div>
 <!-- </div> -->
 <!-- Link Portfolios  Template  End -->
@@ -2943,25 +2941,23 @@
 
 <!-- Projects  Template  Start-->
 
-<div id="LinkSideBar2" class="sideInfobar shadow-0 animate-right">
+<div id="LinkSideBar2" class="LinkSideBar2 sideInfobar shadow-0 animate-right">
     <div class="kt-portlet">
-        <div class="kt-portlet__head" id="LinkSideBar-header">
+        <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
                 <h4 class="mb-0">
                     <a class="">
-                        <i _ngcontent-pre-c394="" class="fab-icn fab fa-wpforms"></i>
                         <span class="kt-chat__title"> Projects </span>
                     </a>
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="closeLinkSideBar()">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                        fill="currentColor">
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path
-                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                        </path>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                        <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                            stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </a>
             </div>
@@ -3108,17 +3104,17 @@
 <!-- Projects  Template  End -->
 
 <!--  Previous Meeting Notes  sidebar  start -->
-<div id="Previous_sidebar" class="sideInfobar animate-right">
+<div id="Previous_sidebar" class="Previous_sidebar sideInfobar animate-right">
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
                 <h4 class="mb-0"> Previous Meeting Notes</h4>
                 <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeInfo()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                        fill="currentColor">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                        <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                            stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </a>
             </div>
@@ -3197,8 +3193,6 @@
                     <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;"
                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                         <div class="accordion-body">
-                            <ul class="attendees-note-userlist">
-                                <li class="attendees-note-user">
                                   
                                     <div class="accordion-item">
                                     <h2 class="accordion-header accordion-attendes-notes" id="headingOne" >
@@ -3223,7 +3217,7 @@
                                     </h2>
                                 </div>                               
                                          <div id="attendes_Name_{{Agenda.AgendaId}}" class="accordion-collapse collapse">
-                                          <div class="user-notes" *ngFor="let item of Agenda.Employees" >                                   
+                                          <div class="attendees-note-user" *ngFor="let item of Agenda.Employees" >                                   
                                             <div class="user-info">                          
                                                 <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>  
                                                 <div class="user-name">{{item.Emp_Name}}                                                  
@@ -3237,8 +3231,7 @@
                                            </div>
                                        </div>
                                     </div>                                 
-                                </li>                             
-                            </ul>
+
                         </div>
                     </div>
                 </div>
@@ -3254,19 +3247,7 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
-                <h4 id="attach_heading" class="m-0"><span class="svg-icv-hd">
-                        <svg _ngcontent-fxg-c172="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
-                            height="16" fill="currentColor" class="iconify iconify--mdi">
-                            <path _ngcontent-fxg-c172=""
-                                d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429
-                             9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337
-                             17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374
-                             2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287
-                             17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z">
-                            </path>
-                        </svg>
-
-                    </span>
+                <h4 id="attach_heading" class="m-0">
                     <span class="kt-chat__title"> List of Attachments </span> <span
                         class="kt-at-count">{{_TotalAttachment}}</span>
                 </h4>
@@ -3294,12 +3275,11 @@
 
                     <a href="javascript:void(0)" class="attach-close closebtn btn btn-xs btn-icon btn-hover-info"
                         (click)="closedarBar()">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                            fill="currentColor">
-                            <path fill="none" d="M0 0h24v24H0z"></path>
-                            <path
-                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                            </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                            <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
                 </div>
