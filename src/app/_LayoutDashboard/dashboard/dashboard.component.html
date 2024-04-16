@@ -3114,9 +3114,9 @@
 
                         </div> -->
 
-                        <div class="mb-3">
-                            <label for="formFile" class="form-label">Default file input example</label>
-                            <input class="form-control" type="file" id="formFile">
+                        <div class="mb-3 curser-pointer">
+                            <!-- <label for="formFile" class="form-label">Default file input example</label> -->
+                            <input class="form-control curser-pointer" type="file" id="formFile">
                           </div>
 
 
@@ -3178,7 +3178,7 @@
                             </div>
                             <div class="form-group flex-1" >
                                 <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                <ng-select  class="kt-input form-control"  (open)="onfocus($event)"
+                                <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)"
                                     placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                         {{item}}</ng-option>

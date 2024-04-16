@@ -1992,8 +1992,7 @@
 
 <!--new With condition notification start-->
 <ng-container *ngIf="projectInfo">
-      <ng-container *ngIf="
-          +ProjectPercentage>100||
+      <ng-container *ngIf="+ProjectPercentage>100||
           (([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0)||
           myUnderApprvActions.length>0|| MeetingCount>0||
           myDelayPrjActions.length>0||
@@ -2734,8 +2733,8 @@
                                                                               data-to="#pills-3-tab"
                                                                               (click)="submitApproval();Close_Approval()"
 
-                                                                              primary="true">Submit </button>
-                                                                              <!-- [disabled]="!comments || !selectedType " -->
+                                                                              primary="true"  [disabled]="!comments || !selectedType " >Submit </button>
+                                                                              <!---->
                                                                       </span>
                                                                       <button type="button" data-to="#pills-3-tab"
                                                                           (click)="removeCommit();Close_Comments()"
@@ -4058,8 +4057,8 @@
                                                                                   data-to="#pills-3-tab"
                                                                                   (click)="submitApproval()"
 
-                                                                                  primary="true">Submit</button>
-                                                                                  <!-- [disabled]="!comments || !selectedType" -->
+                                                                                  primary="true" [disabled]="!comments || !selectedType"Z>Submit</button>
+                                                                                  <!--  -->
                                                                           </span>
                                                                           <button type="button" data-to="#pills-3-tab"
                                                                               (click)="removeCommit()"
@@ -4639,11 +4638,11 @@
         <div class="text-end mb-1 mt-4">
             <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
                 Clear</a>
-            <button (click)="sendRequest(); closeRequestDialog()"  class="btn btn-sm btn-info mr-2"
+            <button (click)="sendRequest(); closeRequestDialog()" [disabled]="!Usercomment"  class="btn btn-sm btn-info mr-2"
                 data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
                 Send Request
             </button>
-            <!-- [disabled]="!Usercomment" -->
+            <!--  -->
         </div>
     </div>
 </div>
@@ -6899,13 +6898,13 @@
           <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
           <div class="form-group">
             <button type="submit" *ngIf="proState==true"
-                        class="btn btn-info"  (click)="actionCompleted()">Submit</button>
-                        <!-- [disabled]="(_remarks=='')||(selectedFile==null)"  -->
+                        class="btn btn-info"  [disabled]="(_remarks=='')||(selectedFile==null)"  (click)="actionCompleted()">Submit</button>
+                        <!--  -->
 
           <button type="submit" *ngIf="proState==false" class="btn btn-info"
-            (click)="actionCompleted()">Submit
+            (click)="actionCompleted()" [disabled]="(_remarks=='')" >Submit
           </button>
-          <!-- [disabled]="(_remarks=='')" -->
+          <!-- -->
         </div>
 
 
@@ -6996,13 +6995,13 @@
               <div class="form-group mb-1">
                   <button type="submit" *ngIf="projectInfo.Project_Type!='To do List' && isAction==false"
                       class="btn btn-info"
-                      (click)="updateMainProject()">Submit
+                      (click)="updateMainProject()" [disabled]="(_remarks=='')||(selectedFile==null)" >Submit
                   </button>
-                  <!-- [disabled]="(_remarks=='')||(selectedFile==null)" -->
+                  <!-- -->
                   <button type="submit" *ngIf="projectInfo.Project_Type=='To do List' || isAction==true"
-                      class="btn btn-info"  (click)="updateMainProject()">Submit
+                      class="btn btn-info" [disabled]="(_remarks=='')" (click)="updateMainProject()">Submit
                   </button>
-                  <!-- [disabled]="(_remarks=='')" -->
+                  <!--  -->
               </div>
           </div>
 
@@ -7077,8 +7076,8 @@
 
                           <div class="form-group mb-1">
                               <button type="submit" class="btn btn-info"
-                                  (click)="achieveStandard()">Submit</button>
-                                  <!-- [disabled]="(_remarks=='')||(selectedFile==null)" -->
+                                  (click)="achieveStandard()"  [disabled]="(_remarks=='')||(selectedFile==null)">Submit</button>
+                                  <!-- -->
                           </div>
                       </div>
                   </div>
@@ -7094,8 +7093,8 @@
 
                           <div class="form-group mb-0">
                               <button type="submit" class="btn btn-info"
-                                  (click)="notachieveStandard()">Submit</button>
-                                  <!-- [disabled]="(_remarks=='')" -->
+                                  (click)="notachieveStandard()" [disabled]="(_remarks=='')" >Submit</button>
+                                  <!-- -->
                           </div>
                       </div>
                   </div>
@@ -7216,10 +7215,10 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12">
                       <div class="form-group mb-0">
-                          <button type="submit"
+                          <button type="submit" [disabled]="!Holddate || !hold_remarks" 
                           class="btn btn-info w-110  ml-2"
                           (click)="onProject_Hold(Pid,currentActionView===undefined?_MasterCode:projectActionInfo[currentActionView].Project_Code)">Submit</button>
-                          <!-- [disabled]="!Holddate || !hold_remarks" -->
+                          <!-- -->
                           <button type="submit" class="btn w-110 btn-secondary  ml-2"
                               (click)="closePrjHoldSideBar()">Cancel</button>
 
@@ -7331,10 +7330,10 @@
 
                                       <div class="col-lg-12 mt-3 p-0">
                                           <div class="form-group">
-                                              <button type="submit"
+                                              <button type="submit" [disabled]="!hold_remarks"
                                               class="btn btn-info w-110 ml-2"
                                               (click)="holdreleaseProject()">Submit</button>
-                                              <!-- [disabled]="!hold_remarks" -->
+                                              <!--  -->
                                               <button type="submit" class="btn w-110 btn-secondary  ml-2"
                                                   (click)="closePrjReleaseSideBar()">Cancel</button>
 
@@ -7385,8 +7384,8 @@
                                           <div class="form-group">
                                               <button type="submit"
                                               class="btn btn-info w-110 ml-2"
-                                              (click)="updateReleaseDate()">Submit</button>
-                                              <!-- [disabled]="!hold_remarks" -->
+                                              (click)="updateReleaseDate()" [disabled]="!hold_remarks">Submit</button>
+                                              <!--  -->
                                               <button type="submit"
                                                   class="btn w-110 btn-secondary  ml-2">Cancel</button>
 
@@ -7471,9 +7470,9 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12">
                       <div class="form-group mb-0">
-                          <button type="submit"  class="btn btn-info w-110 ml-2"
+                          <button type="submit"  [disabled]="!hold_remarks" class="btn btn-info w-110 ml-2"
                           (click)="updateProjectCancel()">Submit</button>
-                          <!-- [disabled]="!hold_remarks" -->
+                          <!-- -->
                           <button type="submit" class="btn w-110 btn-secondary  ml-2"
                               (click)="closePrjCancelSb()">Cancel</button>
 
@@ -7609,7 +7608,7 @@
                                               </div>
 
                                               <div class="form-group  mb-0 ml-3">
-                                                  <button
+                                                  <button [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" 
                                                   type="submit" class="btn btn-info w-110 ml-2"
                                                   (click)="getMeetingsInRange()">
                                                   <div *ngIf="mLdng"
@@ -7619,7 +7618,7 @@
                                                   </div>
                                                    GET
                                               </button>
-                                              <!-- [disabled]="mLdng||mtgFromD===''||mtgUptoD===''" -->
+                                              <!-- -->
                                                   <button type="submit"
                                                       class="btn w-110 btn-secondary  ml-2"
                                                       (click)="  mtgFromD=''; mtgUptoD='';  ">RESET</button>
@@ -9894,9 +9893,9 @@
 
               <div class="kt-portlet__foot py-3">
                   <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
-                      <button type="submit" class="btn btn-info w-110 ml-2"
+                      <button type="submit" class="btn btn-info w-110 ml-2" [disabled]="!Endtms ||!Startts || !Title_Name " 
                           (click)="OnSubmitSchedule()">Submit</button>
-                          <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
+                          <!-- -->
 
                       <button *ngIf="draftid==0" (click)="Insert_indraft()"  type="cancel" class="btn btn-dull ml-3"
                           >Save Draft</button>
@@ -11045,10 +11044,10 @@
                                   </ul>
                                   <div class="col-lg-12 mt-3 p-0">
                                       <div class="form-group">
-                                          <button type="submit"
+                                          <button type="submit"  [disabled]="!hold_remarks" 
                                           class="btn btn-info w-110 ml-2"
                                           (click)="releasenewProject()">Submit</button>
-                                          <!-- [disabled]="!hold_remarks" -->
+                                          <!---->
 
                                           <button type="submit"
                                               class="btn w-110 btn-secondary  ml-2"
@@ -11315,11 +11314,11 @@
                                                           <button type="submit"
                                                               class="btn btn-project-stv Bt-Submit pt-2 pb-2 "
                                                               *ngIf="Conditional_Active || Reject_active"
-                                                              data-to="#pills-3-tab"
+                                                              data-to="#pills-3-tab" [disabled]="!comments || !selectedType "
                                                               (click)="submitApproval();Close_Approval()"
 
                                                               primary="true">Submit </button>
-                                                              <!-- [disabled]="!comments || !selectedType " -->
+                                                              <!--  -->
                                                       </span>
                                                       <button type="button" data-to="#pills-3-tab"
                                                           (click)="removeCommit();Close_Comments()"
@@ -11760,12 +11759,12 @@
             <div class="feature-content-hero">
                 <div class="feature-bg-img"></div>
                 <div class="feature-headline-parent">
-                    <h1 class="feature-headline">What’s New</h1>
-                    <p class="feature-headline-p">Creative Planner</p>
+                    <h1 class="feature-headline">What’s New in</h1>
+                    <p class="feature-headline-p">Stream Planner</p>
                 </div>
                 <div class="feature-hero-card">
                     <div class="heading">
-                        <p>Creative Planner New Features</p>
+                        <p>Stream Planner New Features</p>
                     </div>
                 </div>
                 <div class="feature-hero-icon">
@@ -11777,7 +11776,26 @@
             <div class="feature-content">
                 <div class="feature-grid">
                     <div class="feature-info">
-                        <h2 class="feature-heading">Create Project</h2>
+                        <h2 class="feature-heading">Create New Project</h2>
+                        <p class="feature-lead">Effortlessly start new projects by filling in essential details and specifications.</p>
+                        <ol class="feature-ol">
+                            <li class="feature-li">Click on the "New Project" button in the sidebar to initiate project creation.</li>
+                            <li class="feature-li">Fill in the required information</li>
+                            <li class="feature-li">Review the entered details and confirm to create the project.</li>
+                        </ol>
+                    </div>
+                    <div class="feature-image">
+                        <img src="assets/features/create-project.png" role="img" alt="Create Project">
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="feature-content">
+                <div class="feature-grid">
+                    <div class="feature-info">
+                        <h2 class="feature-heading">Create New Project</h2>
                         <p class="feature-lead">Effortlessly start new projects by filling in essential details and specifications.</p>
                         <ol class="feature-ol">
                             <li class="feature-li">Click on the "New Project" button in the sidebar to initiate project creation.</li>

@@ -545,7 +545,12 @@
 ::ng-deep ng-select {
     border-bottom: none !important;
     padding: 0 !important;
+    cursor: pointer !important;
 }
+
+input[type="file"] {
+    cursor: pointer;
+  }
 
 /* width */
 

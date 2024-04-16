@@ -1991,17 +1991,23 @@ currentStdAprView:number|undefined;
   selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
     const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
-    const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
-    this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
-      console.log(data,"accept-data");
-       if(x===0)
-        this.closeApprovalSideBar(); 
-
-       this.notifyService.showSuccess("tasks requests Approved.",'Success');
-       this.getapprovalStats();
-       this.allStdAprSelected=false;
-      
-    });
+    if(stdtasktoApprove.length==0){
+      this.notifyService.showInfo("Please select atleast one task to approve","Note:");
+    }
+    else{
+      const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
+      this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
+        console.log(data,"accept-data");
+         if(x===0)
+          this.closeApprovalSideBar(); 
+  
+         this.notifyService.showSuccess("tasks requests Approved.",'Success');
+         this.getapprovalStats();
+         this.allStdAprSelected=false;
+        
+      });
+    }
+    
   }
 
   onStdAprvSelected(e,aprvls){
