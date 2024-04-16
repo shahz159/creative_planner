@@ -1275,7 +1275,8 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
-    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    debugger
+  
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
@@ -1492,6 +1493,13 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
+
+
+
+
+
+
+
 
 
   hasWhiteSpace(s: string) {
