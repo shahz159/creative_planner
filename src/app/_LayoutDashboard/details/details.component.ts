@@ -2013,8 +2013,12 @@ currentStdAprView:number|undefined;
 
 
     const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
-    const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
-    this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
+    if(stdtasktoApprove.length==0){
+      this.notifyService.showInfo("Please select atleast one task to approve","Note:");
+    }
+    else{
+      const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
+      this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
       console.log(data,"accept-data");
        if(x===0)
         this.closeApprovalSideBar(); 
@@ -2023,8 +2027,10 @@ currentStdAprView:number|undefined;
        this.selectedStdAprvs=[];
        this.getapprovalStats();
        this.allStdAprSelected=false;
-      
-    });
+        
+      });
+    }
+    
   }
 
   onStdAprvSelected(e,aprvls){
@@ -7690,9 +7696,6 @@ linkMeetingToProject(mtgScheduleid:any){
         console.log("after linking:",res);
      });
 }
-
-
-
 
 
 

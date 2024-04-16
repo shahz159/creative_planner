@@ -5212,6 +5212,12 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 .approval-view #main-reject .kt-portlet__body_scroll:hover{
     overflow-y: auto;
 }
+.btn-project-stv:disabled {
+  cursor: not-allowed;
+}
+.btn-info:disabled {
+  cursor: not-allowed;
+}
 
 
 
