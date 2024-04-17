@@ -846,7 +846,6 @@ DeleteProjects(projInfo:any){
 //   }}
 
 
-
 removePrjsOfPortflio(){
   let removedCount:number=0;
   this._ProjectDataList.forEach(element => {

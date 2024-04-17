@@ -1029,6 +1029,7 @@ export class DashboardComponent implements OnInit {
       this.notifyService.showSuccess("Deleted Successfully", "Success");
       this.closeevearea();
       this.GetScheduledJson();
+      this.GetPending_Request();
     })
 
 
@@ -1297,12 +1298,13 @@ export class DashboardComponent implements OnInit {
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
-        if (this._OldRecurranceId == '0') {
+        // alert(this._OldRecurranceId)
+        // if (this._OldRecurranceId == '0') {
           this._PopupConfirmedValue = 1;
-        }
-        else {
-          this._PopupConfirmedValue = 2;
-        }
+        // }
+        // else {
+          // this._PopupConfirmedValue = 2;
+        // }
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
@@ -1563,7 +1565,7 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-    debugger
+   
      if(
       this.Title_Name&&
       this.Startts&&
