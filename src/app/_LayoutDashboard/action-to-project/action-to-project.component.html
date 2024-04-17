@@ -95,26 +95,80 @@
 
 
     </div>
-     <!-- <div class="d-flex gap-1 ">
-        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+     <!-- <div class="row">
+        <div class="form-group text-dark-50 w-75px col-md-6 brdng-0">
             <label> Inform </label>
-            <ng-select reuired #ownerno="ngModel" [(ngModel)]="" placeholder="Select owner" >
+            <ng-select reuired #ownerno="ngModel" [(ngModel)]="informer" placeholder="Select owner" >
                 <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
                     <span>{{item.RACIS}} </span>
                 </ng-option>
             </ng-select>
 
         </div>
-        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-            <label> Coordinate </label>
-            <ng-select reuired #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
+        <div class="form-group text-dark-50 w-75px col-md-6 brdng-0">
+            <label> Coordinator </label>
+            <ng-select reuired #ownerno="ngModel" [(ngModel)]="coordinator" placeholder="Select owner" >
                 <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
                     <span>{{item.RACIS}} </span>
                 </ng-option>
             </ng-select>
 
         </div>
-    </div> -->
+    </div>
+ -->
+
+
+
+    <!-- <div class="form-group">
+      <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
+        <mat-form-field class="drp-dwn-field w-100">
+          <mat-label class="text-dark-50 w-75px">Support<span style="color:rgb(217,48,37)">*</span></mat-label>
+          <mat-chip-list #selectedProjSprt>
+            <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
+              (removed)="removeSelectedPrjSprt(p);  ">
+              {{ p.RACIS}}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+          </mat-chip-list>
+          <div class="d-flex">
+            <input class="border-gray" [matChipInputFor]="selectedProjSprt"
+              [matAutocomplete]="ProjSprtDrpDwn" #PrjSprtSelectTF />
+            <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
+                color="primary" class="close-icon"
+                (click)=" this.isPrjSprtDrpDwnOpen=false;  PrjSprtSelectTF.value='';  closeAutocompleteDrpDwn('PrjSprtDrpDwn');">cancel</mat-icon></button>
+            <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0"><mat-icon
+                class="add-icon"
+                (click)="this.isPrjSprtDrpDwnOpen=true; openAutocompleteDrpDwn('PrjSprtDrpDwn');">add</mat-icon></button>
+          </div>
+
+          <mat-autocomplete aria-label="PrjSprtDrpDwn" #ProjSprtDrpDwn="matAutocomplete"
+            (optionSelected)="onPrjSprtSelected($event); PrjSprtSelectTF.value='';   "
+            (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
+            <ng-container *ngIf="PrjResp;else PrjRespIsUndefined">
+              <ng-container *ngFor="let p of _ProjectDataList|filter:PrjSprtSelectTF.value">
+                  <mat-option *ngIf="p.Emp_No!=PrjResp.trim()" [value]="p.Emp_No">
+                  <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+                  {{p.RACIS}}
+                  </mat-option>
+             </ng-container>
+            </ng-container>
+            <ng-template #PrjRespIsUndefined>
+              <mat-option  *ngFor="let p of _ProjectDataList|filter:PrjSprtSelectTF.value"  [value]="p.Emp_No">
+                <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
+                {{p.RACIS}}
+                </mat-option>
+            </ng-template>
+          </mat-autocomplete>
+        </mat-form-field>
+        </div>
+    </div>
+
+
+ -->
+
+
    <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label> RACIS </label>
         <div  class="kt-project-sts-data">
