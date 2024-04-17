@@ -1570,8 +1570,8 @@ export class DashboardComponent implements OnInit {
       this.Title_Name&&
       this.Startts&&
       this.Endtms&&
-      this.MinLastNameLength&&
-      (this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+      this.MinLastNameLength
+      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
     ){
           this.OnSubmitSchedule();
           this.notProvided=false;
