@@ -1565,7 +1565,7 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-    debugger
+   
      if(
       this.Title_Name&&
       this.Startts&&
