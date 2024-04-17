@@ -891,8 +891,8 @@
                                 <div class="kt-project-option">
                                     <div class="options event">Event</div>
                                     <div class="options monthly">Monthly</div>
-                                    <div class="v-line"></div>
-                                    <div class="edit">
+                                    <!-- <div class="v-line"></div> -->
+                                    <div class="PA_title PA_Edit_btn" (click)="ReshudingTaskandEvent()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 18 18" fill="none">
                                             <path
@@ -904,6 +904,7 @@
                                                 stroke="#8D8D8D" stroke-width="1.5" stroke-linecap="round"
                                                 stroke-linejoin="round" />
                                         </svg>
+                                        <span class="lbl-hdn">Edit</span>
                                     </div>
                                 </div>
                             </div>
@@ -1732,7 +1733,7 @@
                                                                     <span data-toggle="tooltip" title="Created Date!"
                                                                         class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                         <div>
-                                                                            <img src="../creativeplanner/assets/icons/create2.png"
+                                                                            <img src="../assets/icons/create2.png"
                                                                                 class="badge-img">
                                                                         </div>
                                                                         <div> {{item.Creation_Date|date}}</div>
@@ -3634,7 +3635,7 @@
     </div>
 </div>
 <!-- Files Working Area End -->
-<div id="rightbar-overlay" class="rightbar-overlay"></div>
+<!-- <div id="rightbar-overlay" class="rightbar-overlay"></div> -->
 
 
 <!-- 
@@ -3733,884 +3734,1021 @@
        <!-- Meeting Edit Functionality Start  -->
 
 
-<div id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
-    <div class="kt-portlet mb-0">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
-           >
-            <h4 class="m-0">Schedule </h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                    </path>
-                </svg>
-            </a>
-        </div>
-        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
-            >
-            <h4 class="m-0">Edit </h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                    </path>
-                </svg>
-            </a>
-        </div>
-        <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
-            >
-            <h4 class="m-0">Copy </h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
-                    </path>
-                </svg>
-            </a>
-        </div>
-
-
-
-        <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="TaskEvent-Sidebar">
-            <div class="">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <div class="">
-                            <div class="d-none align-items-start form-cusom-check">
-                                <label class="form-check-label mr-2" for="customSwitch1">Task</label>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch1">
-                                    <label class="form-check-label" for="customSwitch1">Event</label>
+       <div id="mysideInfobar_schd_new" class="sideInfobar animate-right offcanvas">
+        <div class="kt-portlet mb-0">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
+                *ngIf="editTask==true &&  copyTask==false">
+                <h4 class="m-0">Edit {{ScheduleType}}</h4>
+                <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path
+                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
+                *ngIf="copyTask==true ">
+                <h4 class="m-0">Copy {{ScheduleType}}</h4>
+                <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path
+                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+    
+    
+    
+            <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="TaskEvent-Sidebar">
+                <div class="">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="">
+                                <div class="d-none align-items-start form-cusom-check">
+                                    <label class="form-check-label mr-2" for="customSwitch1">Task</label>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input" id="customSwitch1">
+                                        <label class="form-check-label" for="customSwitch1">Event</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
-                    <input id="dsb-evt-titleName" class="form-control" placeholder="Enter Title" type="text" 
-                        minlength="3" maxlength="250" >
-                    <span style="color:red" > Min length 3</span>
-                    <span style="color:red"  >  please enter title name</span>
-                </div>
-
-             <!--agenda field start-->
-
-      <!-- check Agenda fuctionality :-  <div class="form-group" id="agenda-field">
-    <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
-    <span id="agenda-info-icon" class="ml-1">
-        <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
-    </span>
-    <div class="action-section">
-        <div class="todo-main">
-            <div class="task-header">
-                <div class="task-tools">
-                    <div class="task-count"></div>
-                </div>
-                 <div class="agenda-input-field p-1">
-                    <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
-                    <input class="task-input ml-2" id="todo-input" name="text" placeholder="Enter Agenda and hit 'Enter'." autofocus="true"
-                      [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
-                    />
-                    <button class="task-button " id="btn1">Add Task</button>
-                </div>
-            </div>
-
-            <div class="todo-list">
-                <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">
-                    <span class="agenda-index">{{i+1}}.</span>
-                    <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label>
-                    <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
-
-                <div class="agenda-ctrl-btns">
-
-
-                    <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
-                        <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
-                    </button>
-
-                    <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(i)">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                            role="img" font-size="1.5rem" width="1em" height="1em"
-                            viewBox="0 0 24 24" class="iconify iconify--mdi">
-                            <path fill="currentColor"
-                                d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
-                            </path>
-                        </svg>
-                    </button>
-
-                 <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
-                   <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
-                 </button>
-
-
-                 <button (click)="updateAgenda(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
-                    <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
-                 </button>
-
-
-
-                </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > please provide atleast one agenda.</span>
-
-      </div> -->
-
-
-              <!--agenda field end-->
-                <!--this is for Schedule task start-->
-                <div class="form-group" id="core_viw123">
-                    <label class="cus-lbl">Select Project <span class="text-danger"
-                           >*</span>
-                    </label>
-                    <ng-select placeholder="Select Project" 
-                       >
-                        <ng-option 
-                           ></ng-option>
-                    </ng-select>
-                    <div class="txtm-cus mt-1 ml-1">
-                        <span class="d-inline-flex align-items-center"><i
-                                class="fas fa-calendar-alt mr-2"></i></span>
-                        <span class="d-inline-flex align-items-center ml-2"><i
-                                class="fas fa-calendar-alt mr-2"></i></span>
-                        <span class="d-inline-flex align-items-center ml-2"><i
-                                class="fas fa-clock mr-2"></i></span>
-                        <span class="d-inline-flex align-items-center ml-2"><i
-                                class="fas fa-star mr-2"></i></span>
+                    <div class="form-group">
+                        <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
+                        <input id="dsb-evt-titleName" #titleNametf="ngModel" class="form-control" [ngClass]="{'error-border': !Title_Name&&notProvided}" placeholder="Enter Title" type="text" [(ngModel)]="Title_Name"
+                            minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
+                        <span style="color:red" [hidden]="MinLastNameLength"> Min length 3</span>
+                        <span style="color:red" *ngIf="!Title_Name&&notProvided" >  Please enter title name</span>
                     </div>
-                    <span  style="color:red">Please select project!</span>
+    
+                    <div class="form-group" id="Descrip_Name">
+                        <label class="cus-lbl">Description </label>
+                        <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
+                    </div>
+    
+    <!--agenda field start-->
+    
+     <div [ngClass]="{'d-none':ScheduleType==='Task'}" class="form-group" id="agenda-field">
+        <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
+        <span id="agenda-info-icon" class="ml-1">
+            <svg  width="20px" height="20px" viewBox="0 0 24 24" id="magicoon-Regular" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#ababab;}</style> </defs> <title>info-circle</title> <g id="info-circle-Regular"> <path id="info-circle-Regular-2" data-name="info-circle-Regular" class="cls-1" d="M12,2.25A9.75,9.75,0,1,0,21.75,12,9.761,9.761,0,0,0,12,2.25Zm0,18A8.25,8.25,0,1,1,20.25,12,8.259,8.259,0,0,1,12,20.25ZM13,8a1,1,0,1,1-1-1A1,1,0,0,1,13,8Zm-.25,4v4a.75.75,0,0,1-1.5,0V12a.75.75,0,0,1,1.5,0Z"></path> </g> </g></svg>
+        </span>
+        <div class="action-section">
+            <div class="todo-main" [ngClass]="{'error-border': allAgendas.length===0&&notProvided}">
+                <div class="task-header">
+                    <div class="task-tools">
+                        <div class="task-count"></div>
+                    </div>
+                     <div class="agenda-input-field">
+                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
+                        <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                          [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
+                        />
+                      <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                    </div>
                 </div>
-              
-                <div class="form-group" id="core_viw121" style="display:none">
-            
-                <ng-container >
-                     <mat-form-field class="drp-dwn-field w-100"  >
-                        <mat-label>Select Project</mat-label>
-
-                        <mat-chip-list>
-
-                                    <mat-chip   class="Data_chip_kt" >
-                                        
-                                        <button >
+    
+    
+    
+                <div class="todo-list">
+                    <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">
+                        <span class="agenda-index">{{i+1}}.</span>
+                        <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label>
+                        <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
+    
+                    <div class="agenda-ctrl-btns">
+    
+    
+                        <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
+                            <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
+                        </button>
+    
+                        <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(i)">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                role="img" font-size="1.5rem" width="1em" height="1em"
+                                viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                <path fill="currentColor"
+                                    d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                </path>
+                            </svg>
+                        </button>
+    
+                     <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
+                       <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
+                     </button>
+    
+    
+                     <button (click)="updateAgenda(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
+                        <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
+                     </button>
+    
+    
+    
+                    </div>
+    
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+        <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > Please provide atleast one agenda.</span>
+    
+    </div>
+    
+    
+    
+    
+    
+    <!--agenda field end-->
+                    <!--this is for Schedule task start-->
+                    <div class="form-group" id="core_viw123">
+                        <label class="cus-lbl">Select Project <span class="text-danger"
+                                *ngIf="ScheduleType=='Task'">*</span>
+                        </label>
+                        <ng-select placeholder="Select Project" [(ngModel)]="MasterCode" [ngClass]="{'error-vd': _subname == true}"
+                            (change)="GetSubtasklistfromProject($event)">
+                            <ng-option [value]="car.Project_Code"
+                                *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
+                        </ng-select>
+                        <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
+                            <span class="d-inline-flex align-items-center"><i
+                                    class="fas fa-calendar-alt mr-2"></i>{{Projectstartdate | date:'dd-MM-yyyy'}}</span>
+                            <span class="d-inline-flex align-items-center ml-2"><i
+                                    class="fas fa-calendar-alt mr-2"></i>{{projectEnddate | date:'dd-MM-yyyy'}}</span>
+                            <span class="d-inline-flex align-items-center ml-2"><i
+                                    class="fas fa-clock mr-2"></i>{{AllocatedHours}}</span>
+                            <span class="d-inline-flex align-items-center ml-2"><i
+                                    class="fas fa-star mr-2"></i>{{Status_project}}</span>
+                        </div>
+                        <span *ngIf="_subname == true" style="color:red">Please select project!</span>
+                    </div>
+                    <!--this is for Schedule task end-->
+                    <!--this is for Schedule event start-->
+                    <div class="form-group" id="core_viw121" style="display:none">
+                        <!-- <label class="cus-lbl">Select Project</label>
+                        <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Project"
+                            [(ngModel)]="MasterCode">
+                            <ng-option *ngFor="let item of  ProjectListArray" [value]="item.Project_Code">
+                                {{item.BlockNameProject}}</ng-option>
+                        </ng-select>    -->
+    
+                    <ng-container *ngIf="ScheduleType=='Event'">
+                         <mat-form-field class="drp-dwn-field w-100"  *ngIf="ProjectListArray">
+                            <mat-label>Select Project</mat-label>
+    
+                            <mat-chip-list #selectedProjects>
+    
+                                        <mat-chip *ngFor="let prjcode of MasterCode"  class="Data_chip_kt" (removed)="removeSelectedProject(prjcode)">
+                                            {{getProjectName(prjcode)}}
+                                            <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+    
+                            </mat-chip-list>
+    
+                            <div class="d-flex">
+                                <input class="flex-1" [matChipInputFor]="selectedProjects"
+                                    [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
+    
+                                <button *ngIf="isProjectsDrpDwnOpen"
+                                    class="bg-transparent border-0 "  (click)="this.isProjectsDrpDwnOpen=false; closeAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+    
+                                <button *ngIf="!isProjectsDrpDwnOpen"
+                                    class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                    <mat-icon class="add-icon"
+                                        >add</mat-icon></button>
+                            </div>
+    
+                            <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
+                            (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
+                            (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
+    
+                                <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value).slice(0,1000)" [value]="prj.Project_Code">
+                                    <mat-checkbox color="primary"
+                                        [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
+                                       {{prj.BlockNameProject}}
+                                </mat-option>
+    
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </ng-container>
+    
+                    </div>
+                    <!--this is for Schedule event end-->
+                    <div class="content-main show pt-0" id="core_viw">
+                        <div class="form-group" id="subtaskid">
+                            <label class="cus-lbl">Select Action</label>
+                            <ng-select class="kt-input form-control" placeholder="Select Action" [(ngModel)]="Subtask"
+                                (change)="getChangeSubtaskDetais($event)">
+                                <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">
+                                    {{item.Project_Name}}</ng-option>
+                            </ng-select>
+                            <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">
+                                <span class="d-inline-flex align-items-center"><i class="fas fa-calendar-alt mr-2"></i>
+                                    {{St_date | date:'dd-MM-yyyy'}}</span>
+                                <span class="d-inline-flex align-items-center ml-2"><i
+                                        class="fas fa-calendar-alt mr-2"></i>{{Ed_date | date:'dd-MM-yyyy'}}</span>
+                                <span class="d-inline-flex align-items-center ml-2"><i
+                                        class="fas fa-clock mr-2"></i>{{Allocated_subtask}}</span>
+                                <span class="d-inline-flex align-items-center ml-2"><i
+                                        class="fas fa-star mr-2"></i>{{_status}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="core_viw222" style="display:none">
+                         <!-- <label class="cus-lbl">Add Portfolio </label>
+                            <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select Portfolio"
+                                [(ngModel)]="Portfolio">
+                                <ng-option *ngFor="let item of  Portfoliolist_1" [value]="item.portfolio_id">
+                                    {{item.Portfolio_Name}} - {{item.DisplayName}}</ng-option>
+                            </ng-select>    -->
+    
+    
+    
+                             <mat-form-field class="drp-dwn-field w-100"  *ngIf="Portfoliolist_1">
+                                <mat-label>Add Portfolio</mat-label>
+                                <mat-chip-list #selectedPortfolios>
+                                    <mat-chip *ngFor="let prtid of Portfolio" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtid)">
+                                             {{getObjOf(Portfoliolist_1,prtid,'portfolio_id').Portfolio_Name}}-{{getObjOf(Portfoliolist_1,prtid,'portfolio_id').DisplayName}}
+                                        <button matChipRemove>
                                             <mat-icon>cancel</mat-icon>
                                         </button>
                                     </mat-chip>
-
-                        </mat-chip-list>
-
-                        <div class="d-flex">
-                            <input class="flex-1" 
-                               />
-
-                            <button 
-                                class="bg-transparent border-0 "  >
-                                <mat-icon class="close-icon">cancel</mat-icon></button>
-
-                            <button 
-                                class="bg-transparent border-0" >
-                                <mat-icon class="add-icon"
-                                    >add</mat-icon></button>
+    
+                                </mat-chip-list>
+                                <div class="d-flex">
+                                    <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                                        [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
+    
+                                    <button *ngIf="isPortfolioDrpDwnOpen"
+                                        class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
+                                        <mat-icon class="close-icon">cancel</mat-icon></button>
+    
+                                    <button *ngIf="!isPortfolioDrpDwnOpen"
+                                        class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
+                                        <mat-icon class="add-icon"
+                                            >add</mat-icon></button>
+                                </div>
+    
+                                <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
+                                (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
+                                (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
+    
+                                    <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value).slice(0,1000)" [value]="prt.portfolio_id">
+                                        <mat-checkbox color="primary"
+                                            [checked]="Portfolio!=null&&Portfolio.indexOf(prt.portfolio_id)!==-1"></mat-checkbox>
+                                            {{prt.Portfolio_Name}} - {{prt.DisplayName}}
+                                    </mat-option>
+    
+                                </mat-autocomplete>
+                            </mat-form-field>
+    
+    
                         </div>
-
-                        <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
-                       >
-
-                            <mat-option >
-                                <mat-checkbox color="primary"
-                                   ></mat-checkbox>
-                                  
-                            </mat-option>
-
-                        </mat-autocomplete>
-                    </mat-form-field>
-                </ng-container>
-
-                </div>
-                <!--this is for Schedule event end-->
-                <div class="content-main show pt-0" id="core_viw">
-                    <div class="form-group" id="subtaskid">
-                        <label class="cus-lbl">Select Action</label>
-                        <ng-select class="kt-input form-control" placeholder="Select Action" >
-                            <ng-option>
-                               </ng-option>
-                        </ng-select>
-                        <div class="txtm-cus mt-1 ml-1" >
-                            <span class="d-inline-flex align-items-center"><i class="fas fa-calendar-alt mr-2"></i>
-                               </span>
-                            <span class="d-inline-flex align-items-center ml-2"><i
-                                    class="fas fa-calendar-alt mr-2"></i></span>
-                            <span class="d-inline-flex align-items-center ml-2"><i
-                                    class="fas fa-clock mr-2"></i></span>
-                            <span class="d-inline-flex align-items-center ml-2"><i
-                                    class="fas fa-star mr-2"></i></span>
+                        <div class="form-group" id="core_Dms" style="display:none">
+                               <!-- <label class="cus-lbl">Add DMS </label>
+                            <ng-select [multiple]="true" class="kt-input form-control" placeholder="Select DMS"
+                                [(ngModel)]="SelectDms">
+                                <ng-option *ngFor="let item of  Memos_List" [value]="item.MailId">
+                                    {{item.Subject}} - {{item.DisplayName}}</ng-option>
+                            </ng-select>    -->
+    
+    
+                           <mat-form-field class="drp-dwn-field w-100"  *ngIf="Memos_List">
+                                <mat-label>Add DMS</mat-label>
+                                <mat-chip-list #selectedDmsMemoDrpDwn>
+                                    <mat-chip *ngFor="let d of SelectDms" class="Data_chip_kt" (removed)="removeSelectedDMSMemo(d)">
+                                        {{getObjOf(Memos_List,d,'MailId').Subject}} - {{getObjOf(Memos_List,d,'MailId').DisplayName}}
+                                        <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip>
+                                </mat-chip-list>
+                                <div class="d-flex">
+                                    <input class="flex-1" [matChipInputFor]="selectedDmsMemoDrpDwn"
+                                        [matAutocomplete]="MemoDrpDwn" #dmsMemoTF />
+    
+                                    <button *ngIf="isDMSMemoDrpDwnOpen"
+                                        class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
+                                        <mat-icon class="close-icon">cancel</mat-icon></button>
+    
+                                    <button *ngIf="!isDMSMemoDrpDwnOpen"
+                                        class="bg-transparent border-0" (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">
+    
+                                        <mat-icon class="add-icon"
+                                            >add</mat-icon></button>
+                                </div>
+    
+                                <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
+                                (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
+                                (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
+    
+                                    <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
+                                        [value]="m.MailId">
+                                        <mat-checkbox color="primary"
+                                            [checked]="SelectDms!=null&&SelectDms.indexOf(m.MailId)!==-1"></mat-checkbox>
+                                        {{m.Subject}} - {{m.DisplayName}}
+                                    </mat-option>
+    
+                                </mat-autocomplete>
+                            </mat-form-field>
+    
                         </div>
-                    </div>
-                    <div class="form-group" id="core_viw222" style="display:none">
-                    
-
-
-                         <mat-form-field class="drp-dwn-field w-100"  >
-                            <mat-label>Add Portfolio</mat-label>
-                            <mat-chip-list >
-                                <mat-chip >
-                                         
-                                    <button >
-                                        <mat-icon>cancel</mat-icon>
-                                    </button>
-                                </mat-chip>
-
-                            </mat-chip-list>
-                            <div class="d-flex">
-                                <input class="flex-1"  />
-
-                                <button 
-                                    class="bg-transparent border-0 "  >
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
-
-                                <button >
-                                    <mat-icon class="add-icon"
-                                        >add</mat-icon></button>
+                        <div class="form-group" id="Guest_Name" style="display:none">
+                             <!-- <label class="cus-lbl">Add Participants </label>
+                            <ng-select [multiple]="true" class="kt-input form-control" name="ngEmployeeDropdown"
+                                placeholder="Select Participants " [(ngModel)]="ngEmployeeDropdown">
+                                <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
+                                    {{item.DisplayName}} </ng-option>
+                            </ng-select>    -->
+    
+    
+                            <mat-form-field class="drp-dwn-field w-100"  *ngIf="_EmployeeListForDropdown">
+                                <mat-label>Add Participants</mat-label>
+                                <mat-chip-list #selectedParticipants>
+                                    <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt" (removed)="removeSelectedParticipant(p)">
+                                        {{getObjOf(_EmployeeListForDropdown,p,'Emp_No').DisplayName}}
+                                        <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip>
+                                </mat-chip-list>
+                                <div class="d-flex">
+                                    <input class="flex-1" [matChipInputFor]="selectedParticipants"
+                                        [matAutocomplete]="ParticipantsDrpDwn" #ParticipantsTF />
+    
+                                    <button *ngIf="isParticipantsDrpDwnOpen"
+                                        class="bg-transparent border-0 "  (click)="this.isParticipantsDrpDwnOpen=false; closeAutocompleteDrpDwn('ParticipantsDrpDwn');">
+                                        <mat-icon class="close-icon">cancel</mat-icon></button>
+    
+                                    <button *ngIf="!isParticipantsDrpDwnOpen"
+                                        class="bg-transparent border-0" (click)="this.isParticipantsDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantsDrpDwn');">
+                                        <mat-icon class="add-icon"
+                                            >add</mat-icon></button>
+                                </div>
+    
+                                <mat-autocomplete aria-label="ParticipantsDrpDwn" #ParticipantsDrpDwn="matAutocomplete"
+                                (optionSelected)="onParticipantSelected($event); ParticipantsTF.value=''; "
+                                (opened)="isParticipantsDrpDwnOpen=true" (closed)="isParticipantsDrpDwnOpen=false; ">
+    
+                                    <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value).slice(0,1000)"
+                                        [value]="p.Emp_No">
+                                        <mat-checkbox color="primary"
+                                            [checked]="ngEmployeeDropdown!=null&&ngEmployeeDropdown.indexOf(p.Emp_No)!==-1"></mat-checkbox>
+                                        {{p.DisplayName}}
+                                    </mat-option>
+    
+                                </mat-autocomplete>
+                            </mat-form-field>
+    
+    
+                        </div>
+                        <div>
+                            <div class="form-group" id="online-add">
+                                <div class="form-check form-check-custom form-check-solid pl-4">
+                                    <input class="form-check-input" [(ngModel)]="_onlinelink"
+                                        (click)="Online_method($event)" type="checkbox" value="" id="flexCheckChecked">
+                                    <label class="form-check-label" for="flexCheckChecked">Online </label>
+                                </div>
                             </div>
-
-                            <mat-autocomplete aria-label="PortfolioDrpDwn" >
-
-                                <mat-option>
-                                    <mat-checkbox color="primary"
-                                       ></mat-checkbox>
-                                       
-                                </mat-option>
-
-                            </mat-autocomplete>
-                        </mat-form-field>
-
-
-                    </div>
-                    <div class="form-group" id="core_Dms" style="display:none">
-                    
-
-
-                       <mat-form-field class="drp-dwn-field w-100"  >
-                            <mat-label>Add DMS</mat-label>
-                            <mat-chip-list>
-                                <mat-chip  class="Data_chip_kt" >
-                                    
-                                    <button >
-                                        <mat-icon>cancel</mat-icon>
-                                    </button>
-                                </mat-chip>
-                            </mat-chip-list>
-                            <div class="d-flex">
-                                <input class="flex-1"  />
-
-                                <button 
-                                    class="bg-transparent border-0 " >
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
-
-                                <button 
-                                    class="bg-transparent border-0" >
-
-                                    <mat-icon class="add-icon"
-                                        >add</mat-icon></button>
-                            </div>
-
-                            <mat-autocomplete aria-label="MemoDrpDwn" >
-
-                                <mat-option >
-                                    <mat-checkbox color="primary"
-                                       ></mat-checkbox>
-                                   
-                                </mat-option>
-
-                            </mat-autocomplete>
-                        </mat-form-field>
-
-                    </div>
-                    <div class="form-group" id="Guest_Name" style="display:none">
-                       
-
-                        <mat-form-field class="drp-dwn-field w-100"  >
-                            <mat-label>Add Participants</mat-label>
-                            <mat-chip-list >
-                                <mat-chip >
-                                    
-                                    <button >
-                                        <mat-icon>cancel</mat-icon>
-                                    </button>
-                                </mat-chip>
-                            </mat-chip-list>
-                            <div class="d-flex">
-                                <input class="flex-1" />
-
-                                <button 
-                                    class="bg-transparent border-0 "  >
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
-
-                                <button 
-                                    class="bg-transparent border-0" >
-                                    <mat-icon class="add-icon"
-                                        >add</mat-icon></button>
-                            </div>
-
-                            <mat-autocomplete aria-label="ParticipantsDrpDwn">
-
-                                <mat-option >
-                                    <mat-checkbox color="primary"
-                                      ></mat-checkbox>
-                                   
-                                </mat-option>
-
-                            </mat-autocomplete>
-                        </mat-form-field>
-
-
-                    </div>
-                    <div>
-                        <div class="form-group" id="online-add">
-                            <div class="form-check form-check-custom form-check-solid pl-4">
-                                <input class="form-check-input" 
-                                    type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">Online </label>
+                            <div class="form-group" id="Descrip_Name12" style="display:none">
+                                <label class="cus-lbl">Link Description </label>
+                                <!-- <textarea class="form-control" [(ngModel)]="Link_Details" height="40px"></textarea> -->
+                                <angular-editor [(ngModel)]="Link_Details" [config]="config"></angular-editor>
                             </div>
                         </div>
-                        <div class="form-group" id="Descrip_Name12" style="display:none">
-                            <label class="cus-lbl">Link Description </label>
-                          
-                            <angular-editor  [config]="config"></angular-editor>
+                        <div class="form-group section-1" id="Location_Name" style="display:none">
+                            <label class="cus-lbl">Location</label>
+                            <input ngx-google-places-autocomplete class="form-control curser-pointer" [(ngModel)]="Location_Type"
+                                (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
                         </div>
-                    </div>
-                    <div class="form-group section-1" id="Location_Name" style="display:none">
-                        <label class="cus-lbl">Location</label>
-                        <input ngx-google-places-autocomplete class="form-control" />
-                    </div>
-                    <div class="form-group" id="Descrip_Name">
-                        <label class="cus-lbl">Description </label>
-                        <angular-editor  [config]="config"></angular-editor>
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="cus-lbl">Attachment </label>
-                       
-                        <div class="mb-3">
-                            <label for="formFile" class="form-label">Default file input example</label>
-                            <input class="form-control" type="file" id="formFile">
-                          </div>
-                    </div>
-
-                    <div class="dropzone dropzone-multi form-group" id="">
-                        <div id="div_exixtingfiles" class="dropzone-items">
-                            <div >
-                                <div class="dropzone-item p-3 m-0 border br-0">
-                                    <div class="dropzone-file">
-                                        <div class="dropzone-filename">
-                                            <span></span>
-                                            <strong>(<span></span>)</strong>
-                                            <span  class="dropzone-delete">
-                                                <i class="flaticon2-cross"></i>
-                                            </span>
+                      
+                        <div class="form-group mb-0">
+                            <label class="cus-lbl">Attachment </label>
+                             <div class="custom-file pl-1">
+                                <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file  curser-pointer "
+                                    (change)="onFileChange($event)" multiple>
+    
+                            </div> 
+    
+                            <!-- <div class="mb-3 curser-pointer">
+                                <label for="formFile" class="form-label">Default file input example</label>
+                                <input class="form-control curser-pointer" type="file" id="formFile">
+                              </div> -->
+    
+    
+    
+    
+    
+                        </div>
+    
+    
+                        <div class="dropzone dropzone-multi form-group" id="">
+                            <div id="div_exixtingfiles" class="dropzone-items">
+                                <div *ngFor='let url of _lstMultipleFiales'>
+                                    <div class="dropzone-item p-3 m-0 border br-0">
+                                        <div class="dropzone-file">
+                                            <div class="dropzone-filename">
+                                                <span>{{url.FileName}}</span>
+                                                <strong>(<span>{{url.Size}}kb</span>)</strong>
+                                                <span (click)="RemoveSelectedFile(url.UniqueId)" class="dropzone-delete">
+                                                    <i class="flaticon2-cross"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div >
-                                <div class="dropzone-item p-3 m-0 border br-0">
-                                    <div  class="dropzone-file">
-                                        <div class="dropzone-filename">
-                                            <span></span>
-
-                                            <span  class="dropzone-delete">
-                                                <i class="flaticon2-cross"></i>
-                                            </span>
+    
+                                <div *ngFor='let url of Attachment12_ary'>
+                                    <div class="dropzone-item p-3 m-0 border br-0">
+                                        <div id="url_{{url.file_id}}" class="dropzone-file">
+                                            <div class="dropzone-filename">
+                                                <span>{{url.File_Name}}</span>
+    
+                                                <span (click)="RemoveExistingFile(url.file_id)" class="dropzone-delete">
+                                                    <i class="flaticon2-cross"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-group mb-0">
-                        <div class="d-flex gap-1">
-                            <div class="form-group flex-1">
-                                <label><span class="text-danger">*</span></label>
+    
+                        <div class="form-group mb-0">
+                            <div class="d-flex gap-1">
+                                <div class="form-group flex-1">
+                                    <label>{{_labelName}}<span class="text-danger">*</span></label>
+                                    <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
+                                        <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
+                                            (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                            [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;">
+                                        <div class="input-group-append">
+    
+                                            <div class="input-group-text p-0">
+                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker1></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
+                                </div>
+                                <div class="form-group flex-1" >
+                                    <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                                    <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
+                                    <ng-select  class="kt-input form-control" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                        placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                        <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                            {{item}}</ng-option>
+                                    </ng-select>
+                                    <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                                </div>
+                                <div class="form-group flex-1 " >
+                                    <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                                    <ng-select class="kt-input form-control" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                        [(ngModel)]="Endtms">
+                                        <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                            {{item1}}</ng-option>
+                                    </ng-select>
+                                    <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                                </div>
+    
+                                <div class="form-group flex-1" id="Schenddate">
+                                    <label>Schedule End Date<span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input matInput [matDatepicker]="picker6" (click)="picker6.open()"
+                                            [min]="_StartDate" [(ngModel)]="_SEndDate" placeholder="End Date"
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text p-0">
+                                                <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker6></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
+                                Note:Selected Project is Expired,Please Extend your Project Deadline date
+                            </div>
+    
+                            <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
+                                <div class="wc-cus">
+    
+                                    <div class="form-group d-none" id="Recurrence_hide">
+    
+                                        <div class="card text-dark shadow-sm">
+                                            <div class="card-header bg-white">
+                                                <div class="card-title mb-0">Recurrence Details</div>
+                                            </div>
+                                            <div class="card-body p-3">
+                                                <div class="" *ngFor="let test of EventScheduledjson">
+                                                    <h5>{{test.Recurrence}}</h5>
+                                                    <div class="d-flex">
+                                                        <div class="repeat-day">{{test.Recurrence_values}}</div>
+    
+                                                    </div>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+                                <div class="d-flex gap-1 flex-1">
+                                    <div class="wc-cus">
+                                        <div class="form-group flex-1" id="div_recurrence">
+                                            <label class="">Repeat</label>
+                                            <mat-select name="Select Type" placeholder="Do not repeat"
+                                                [(value)]="selectedrecuvalue" class="form-control"
+                                                (selectionChange)="SelectDropDown($event)">
+                                                <mat-option value="0">Do not repeat</mat-option>
+                                                <mat-option value="1">Daily</mat-option>
+                                                <mat-option value="2">Weekly</mat-option>
+                                                <!-- <mat-option value="4">Bi-Weekly</mat-option> -->
+                                                <mat-option value="3">Monthly</mat-option>
+                                            </mat-select>
+                                        </div>
+                                    </div>
+    
+    
+    
+                                </div>
+    
+                                <div class="wc-cus">
+                                    <!-- <div class="form-group flex-1">
+                                        <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                                            (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
+                                            aria-controls="collapse_repeat">Custom recurrence</button>
+                                    </div> -->
+    
+    
+                                    <div>
+    
+                                        <div class="ml-0 form-group" style="display: none;" id="weekly_121">
+                                            <label class="">Days</label>
+                                            <div class="pt-1">
+                                                <div class="d-flex">
+                                                    <ng-container *ngFor="let item of dayArr">
+                                                        <div
+                                                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                            <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                                type="checkbox" name="DaysChk" value="{{item.value}}"
+                                                                class="rep-chk" />
+                                                            {{item.Day}}
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ml-0 form-group" style="display: none;" id="Monthly_121">
+                                            <label class="">Day</label>
+                                            <div class="pt-1">
+                                                <div class="d-flex flex-wrap">
+                                                    <ng-container *ngFor="let item of MonthArr">
+                                                        <div
+                                                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                            <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                                                type="checkbox" name="monthChk" value="{{item.value}}"
+                                                                class="rep-chk" />
+                                                            {{item.Day}}
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+    
+                                </div>
+                            </div>
+                            <div class="form-group flex-1" id="div_endDate">
+                                <label>End till <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input  placeholder="Start Date" class="form-control" style="cursor:pointer;">
-                                    <div class="input-group-append">
-
-                                        <div class="input-group-text p-0">
-                                            <mat-datepicker-toggle ></mat-datepicker-toggle>
-                                            <mat-datepicker ></mat-datepicker>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span  style="color:red">please select schedule date.</span>
-                            </div>
-                            <div class="form-group flex-1" >
-                                <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                <ng-select  class="kt-input form-control"  
-                                    placeholder="Start Time" >
-                                    <ng-option >
-                                        </ng-option>
-                                </ng-select>
-                                <span  style="color:red">please select start time.</span>
-                            </div>
-                            <div class="form-group flex-1 " >
-                                <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
-                                <ng-select class="kt-input form-control" style="cursor: pointer;"   placeholder="End Time"
-                                   >
-                                    <ng-option >
-                                       </ng-option>
-                                </ng-select>
-                                <span   >please select end time.</span>
-                            </div>
-
-                            <div class="form-group flex-1" id="Schenddate">
-                                <label>Schedule End Date<span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input  placeholder="End Date"
+                                    <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate"
+                                        [(ngModel)]="_EndDate" (dateChange)="selectEndDate($event)" placeholder="End Date"
                                         class="form-control">
                                     <div class="input-group-append">
                                         <div class="input-group-text p-0">
-                                            <mat-datepicker-toggle ></mat-datepicker-toggle>
-                                            <mat-datepicker ></mat-datepicker>
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div  style="color: red;">
-                            Note:Selected Project is Expired,Please Extend your Project Deadline date
-                        </div>
-
-                        <div class="input-group flex-column dropdown mr-2 mt-3 gap-1">
-                            <div class="wc-cus">
-
-                                <div class="form-group d-none" id="Recurrence_hide">
-
-                                    <div class="card text-dark shadow-sm">
-                                        <div class="card-header bg-white">
-                                            <div class="card-title mb-0">Recurrence Details</div>
+    
+                            <div class="d-flex align-items-start gap-1 flex-nowrap">
+                                <div class="wc-cus" style="display:none" id="calender_1">
+                                    <mat-card class="demo-inline-calendar-card ">
+                                        <div>
+                                            <mat-calendar (dblclick)="Doubleclick($event)" (selectedChange)="select($event)"
+                                                [dateClass]="isSelected" [minDate]="minDate" [maxDate]="maxDate">
+                                            </mat-calendar>
                                         </div>
-                                        <div class="card-body p-3">
-                                            <div class="" >
-                                                <h5></h5>
-                                                <div class="d-flex">
-                                                    <div class="repeat-day"></div>
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    </mat-card>
                                 </div>
-                            </div>
-
-
-                            <div class="d-flex gap-1 flex-1">
-                                <div class="wc-cus">
-                                    <div class="form-group flex-1" id="div_recurrence">
-                                        <label class="">Repeat</label>
-                                        <mat-select name="Select Type" placeholder="Do not repeat"
-                                           class="form-control"
-                                            >
-                                            <mat-option value="0">Do not repeat</mat-option>
-                                            <mat-option value="1">Daily</mat-option>
-                                            <mat-option value="2">Weekly</mat-option>
-                                            <!-- <mat-option value="4">Bi-Weekly</mat-option> -->
-                                            <mat-option value="3">Monthly</mat-option>
-                                        </mat-select>
+                                <div *ngIf="preventSingleClick==true"
+                                    class="d-none align-items-center flex-wrap pl-3 pt-3 width-cus border">
+                                    <input type="hidden" id="hdnSelectedId" value="{{this._selectedId}}">
+                                    <input type="hidden" id="hdnSecondSelectedId" value="{{this._SecondSelectedId}}">
+                                    <input type="hidden" id="hdntotal" value="{{this._total}}">
+                                    <div class="d-flex align-items-center justify-content-between w-100 px-3 mb-2">
+                                        <span class="badge badge-light-primary">{{doubleclickdate}}</span>
+                                        <select (change)="getavltime($event)" class="form-control w-maxc">
+                                            <option>select</option>
+                                            <option [id]="time.count" [value]="time.count"
+                                                *ngFor="let time of Avaliabletime">
+                                                {{time.StartTime}} - {{time.EndTime}}
+                                            </option>
+                                        </select>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="wc-cus">
-                             
-                                <div>
-
-                                    <div class="ml-0 form-group" style="display: none;" id="weekly_121">
-                                        <label class="">Days</label>
-                                        <div class="pt-1">
-                                            <div class="d-flex">
-                                                <ng-container>
-                                                    <div
-                                                       >
-                                                        <input
-                                                            type="checkbox" name="DaysChk" 
-                                                            class="rep-chk" />
-                                                       
-                                                    </div>
-                                                </ng-container>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="ml-0 form-group" style="display: none;" id="Monthly_121">
-                                        <label class="">Day</label>
-                                        <div class="pt-1">
-                                            <div class="d-flex flex-wrap">
-                                                <ng-container >
-                                                    <div
-                                                       >
-                                                        <input 
-                                                            type="checkbox" name="monthChk" 
-                                                            class="rep-chk" />
-                                                       
-                                                    </div>
-                                                </ng-container>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group flex-1" id="div_endDate">
-                            <label>End till <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input placeholder="End Date"
-                                    class="form-control">
-                                <div class="input-group-append">
-                                    <div class="input-group-text p-0">
-                                        <mat-datepicker-toggle ></mat-datepicker-toggle>
-                                        <mat-datepicker ></mat-datepicker>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start gap-1 flex-nowrap">
-                            <div class="wc-cus" style="display:none" id="calender_1">
-                                <mat-card class="demo-inline-calendar-card ">
-                                    <div>
-                                        <mat-calendar >
-                                        </mat-calendar>
-                                    </div>
-                                </mat-card>
-                            </div>
-                            <div 
-                                class="d-none align-items-center flex-wrap pl-3 pt-3 width-cus border">
-                                <input type="hidden" id="hdnSelectedId">
-                                <input type="hidden" id="hdnSecondSelectedId" >
-                                <input type="hidden" id="hdntotal" >
-                                <div class="d-flex align-items-center justify-content-between w-100 px-3 mb-2">
-                                    <span class="badge badge-light-primary"></span>
-                                    <select  class="form-control w-maxc">
-                                        <option>select</option>
-                                        <option >
-                                            
-                                        </option>
-                                    </select>
-                                </div>
-                                <ng-container >
-                                    <div class="table-time">
-                                        <table id="tbl_times" class="">
-                                            <tr class="d-flex flex-wrap justify-content-between">
-                                                <td >
-                                                    <div  class="wp-100">
-                                                        <div class="time-slt-card">
-                                                            <p class="time-slt-time"></p>
+                                    <ng-container *ngFor="let sin of timeslotsavl;">
+                                        <div class="table-time">
+                                            <table id="tbl_times" class="">
+                                                <tr class="d-flex flex-wrap justify-content-between">
+                                                    <td *ngFor="let sick of sin.SlotsJson; let i = index" [id]="i+1"
+                                                        (click)="TimeClick(i+1,sick.SlotTime)">
+                                                        <div id="div_{{i+1}}" class="wp-100">
+                                                            <div class="time-slt-card">
+                                                                <p class="time-slt-time">{{sick.SlotTime}}</p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-                    <div >
-                        <div class="form-group align-items-start  mb-3 d-none">
-                            <div class="calendar-wrap mr-3">
-                                <h5 class="month-year">January 2020</h5>
-                                <table class="calendar">
-                                    <thead>
-                                        <tr>
-                                            <th class="day-title" scope="col">S</th>
-                                            <th class="day-title" scope="col">M</th>
-                                            <th class="day-title" scope="col">T</th>
-                                            <th class="day-title" scope="col">W</th>
-                                            <th class="day-title" scope="col">T</th>
-                                            <th class="day-title" scope="col">F</th>
-                                            <th class="day-title" scope="col">S</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="week">
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
-                                            </td>
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
-                                            </td>
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
-                                            </td>
-                                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">2</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <a class="resetbtn">Clear date-range</a>
-                            </div>
-                            <div class="calendar-wrap mr-3">
-                                <h5 class="month-year">January 2020</h5>
-
-                                <table class="calendar">
-                                    <thead>
-                                        <tr>
-                                            <th class="day-title" scope="col">S</th>
-                                            <th class="day-title" scope="col">M</th>
-                                            <th class="day-title" scope="col">T</th>
-                                            <th class="day-title" scope="col">W</th>
-                                            <th class="day-title" scope="col">T</th>
-                                            <th class="day-title" scope="col">F</th>
-                                            <th class="day-title" scope="col">S</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="week">
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
-                                            </td>
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
-                                            </td>
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
-                                            </td>
-                                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">2</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <a class="resetbtn">Clear date-range</a>
-                            </div>
-                            <div class="calendar-wrap">
-                                <h5 class="month-year">January 2020</h5>
-
-                                <table class="calendar">
-                                    <thead>
-                                        <tr>
-                                            <th class="day-title" scope="col">S</th>
-                                            <th class="day-title" scope="col">M</th>
-                                            <th class="day-title" scope="col">T</th>
-                                            <th class="day-title" scope="col">W</th>
-                                            <th class="day-title" scope="col">T</th>
-                                            <th class="day-title" scope="col">F</th>
-                                            <th class="day-title" scope="col">S</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="week">
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
-                                            </td>
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
-                                            </td>
-                                            <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
-                                            </td>
-                                            <td class="day" tabindex="0"><span class="day-number">1</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">2</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">3</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">4</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">5</span></td>
-                                            <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">7</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">8</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">9</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">10</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">11</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">12</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">13</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">14</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">15</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">16</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">17</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">18</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">19</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">20</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">21</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">22</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">23</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">24</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">25</span></td>
-                                        </tr>
-                                        <tr class="week">
-                                            <td class="day" tabindex="0"><span class="day-number">26</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">27</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">28</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">29</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">30</span></td>
-                                            <td class="day" tabindex="0"><span class="day-number">31</span></td>
-                                            <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <a class="resetbtn">Clear date-range</a>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h2> </h2>
-                        </div>
-
-
-                        <div class="form-group" id="dayrep">
-                            <label class="">Repeat on</label>
-                            <div class="pt-1">
-                                <div class="">
-                                    <div class="repeat-month" >
-                                       
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="form-group "
-                            *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Monthly'">
-                            <div class="dropfocus dropdown w-200 ml-0">
-                                <input class="kt-input form-control" type="text" placeholder="Select Repeat Weekday"
-                                    data-toggle="dropdown">
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <ng-container *ngFor="let item of weeklyarr"><a class="dropdown-item">{{item}}</a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </ng-container>
-
                                 </div>
                             </div>
+                        </div>
+                        <div *ngIf="isChecked == '1'">
+                            <div class="form-group align-items-start  mb-3 d-none">
+                                <div class="calendar-wrap mr-3">
+                                    <h5 class="month-year">January 2020</h5>
+                                    <table class="calendar">
+                                        <thead>
+                                            <tr>
+                                                <th class="day-title" scope="col">S</th>
+                                                <th class="day-title" scope="col">M</th>
+                                                <th class="day-title" scope="col">T</th>
+                                                <th class="day-title" scope="col">W</th>
+                                                <th class="day-title" scope="col">T</th>
+                                                <th class="day-title" scope="col">F</th>
+                                                <th class="day-title" scope="col">S</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="week">
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                </td>
+                                                <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+    
+                                    <a class="resetbtn">Clear date-range</a>
+                                </div>
+                                <div class="calendar-wrap mr-3">
+                                    <h5 class="month-year">January 2020</h5>
+    
+                                    <table class="calendar">
+                                        <thead>
+                                            <tr>
+                                                <th class="day-title" scope="col">S</th>
+                                                <th class="day-title" scope="col">M</th>
+                                                <th class="day-title" scope="col">T</th>
+                                                <th class="day-title" scope="col">W</th>
+                                                <th class="day-title" scope="col">T</th>
+                                                <th class="day-title" scope="col">F</th>
+                                                <th class="day-title" scope="col">S</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="week">
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                </td>
+                                                <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+    
+                                    <a class="resetbtn">Clear date-range</a>
+                                </div>
+                                <div class="calendar-wrap">
+                                    <h5 class="month-year">January 2020</h5>
+    
+                                    <table class="calendar">
+                                        <thead>
+                                            <tr>
+                                                <th class="day-title" scope="col">S</th>
+                                                <th class="day-title" scope="col">M</th>
+                                                <th class="day-title" scope="col">T</th>
+                                                <th class="day-title" scope="col">W</th>
+                                                <th class="day-title" scope="col">T</th>
+                                                <th class="day-title" scope="col">F</th>
+                                                <th class="day-title" scope="col">S</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="week">
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">29</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">30</span>
+                                                </td>
+                                                <td class="day prev-mon" tabindex="0"><span class="day-number">31</span>
+                                                </td>
+                                                <td class="day" tabindex="0"><span class="day-number">1</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">2</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">3</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">4</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">5</span></td>
+                                                <td class="day active-a" tabindex="0"><span class="day-number">6</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">7</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">8</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">9</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">10</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">11</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">12</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">13</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">14</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">15</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">16</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">17</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">18</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">19</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">20</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">21</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">22</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">23</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">24</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">25</span></td>
+                                            </tr>
+                                            <tr class="week">
+                                                <td class="day" tabindex="0"><span class="day-number">26</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">27</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">28</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">29</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">30</span></td>
+                                                <td class="day" tabindex="0"><span class="day-number">31</span></td>
+                                                <td class="day next-mon" tabindex="0"><span class="day-number">1</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+    
+                                    <a class="resetbtn">Clear date-range</a>
+                                </div>
+                            </div>
+    
+                            <div>
+                                <h2>{{SubmissionName}} </h2>
+                            </div>
+    
+    
+                            <!-- <div class="form-group " >
+                                <label class="">Repeat on</label>
+                                <div class="dropfocus dropdown w-200 ml-0">
+                                    <input class="kt-input form-control" type="text" placeholder="Do not repeat"  data-toggle="dropdown"  >
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item">Day</a>
+                                        <a class="dropdown-item">Week</a>
+                                        <a class="dropdown-item">Month</a>
+                                        <a class="dropdown-item">Year</a>
+                                        <a class="dropdown-item">Do not repeat</a>
+                                        <a class="dropdown-item">Custom</a>
+                                    </div>
+                                </div>
+                            </div> -->
+    
+                            <!-- *ngIf="_Exec_BlockName == 'Standard Tasks' && (SubmissionName== 'Quarterly'  ||  SubmissionName== 'Half Yearly'  || SubmissionName== 'Annually')" -->
+                            <div class="form-group" id="dayrep">
+                                <label class="">Repeat on</label>
+                                <div class="pt-1">
+                                    <div class="">
+                                        <div class="repeat-month" *ngFor="let item of MonthArr">
+                                            {{item}}
+                                        </div>
+                                        <!-- <div class="repeat-month">
+                                            Feb
+                                        </div>
+                                        <div class="repeat-month">
+                                            Mar
+                                        </div>
+                                        <div class="repeat-month active">
+                                            Apr
+                                        </div>
+                                        <div class="repeat-month">
+                                            May
+                                        </div>
+                                        <div class="repeat-month">
+                                            Jun
+                                        </div>
+                                        <div class="repeat-month">
+                                            Jul
+                                        </div>
+                                        <div class="repeat-month">
+                                            Aug
+                                        </div>
+                                        <div class="repeat-month">
+                                            Sep
+                                        </div>
+                                        <div class="repeat-month">
+                                            Oct
+                                        </div>
+                                        <div class="repeat-month">
+                                            Nov
+                                        </div>
+                                        <div class="repeat-month">
+                                            Dec
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group "
+                                *ngIf="_Exec_BlockName == 'Standard Tasks' && SubmissionName== 'Monthly'">
+                                <div class="dropfocus dropdown w-200 ml-0">
+                                    <input class="kt-input form-control" type="text" placeholder="Select Repeat Weekday"
+                                        data-toggle="dropdown">
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <ng-container *ngFor="let item of weeklyarr"><a class="dropdown-item">{{item}}</a>
+                                        </ng-container>
+    
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+    
+    
+                        <!-- <div class="form-group mb-1" >
+                            <button type="cancel" class="btn btn-info btn-sm"
+                            (click)="closeschd()"    >Close</button>
                         </div> -->
-
+    
+                        <!-- <div class="form-group mb-1" *ngIf="editTask==true">
+                            <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts "
+                                (click)="OnSubmitReSchedule()">Submit</button>
+                        </div> -->
+                        <!-- <div class="form-group mb-1" *ngIf="ScheduleType=='Event' && editTask==false">
+                            <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts"
+                                (click)="OnSubmitSchedule()">Submit</button>
+                        </div> -->
+                        <!-- <div class="form-group mb-1" *ngIf="ScheduleType=='Event' && editTask==true">
+                            <button type="submit" class="btn btn-info btn-sm" [disabled]="!Endtms ||!Startts"
+                                (click)="OnSubmitReSchedule()">Submit</button>
+                        </div> -->
+    
+    
+    
                     </div>
+    
+    
                 </div>
-
-
             </div>
-        </div>
-        <div class="kt-portlet__foot py-3">
-
-            <div class="form-group mb-0">
-                                                                  <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
-                <button  type="submit" class="btn btn-info btn-sm"
-                   >Submit</button>
-                <button  type="submit" class="btn btn-info btn-sm"
-                    >Update & Release</button>
-                <button  type="cancel" class="btn btn-sm btn-dull ml-3"
-                    >Save Draft</button>
-                <button  type="cancel" class="btn btn-sm btn-dull ml-3"
-                   >Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-
-            </div>
-
-
-            <div 
-                class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
-                    data-target="#confirmpopup">Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-            </div>
-            <div 
-                class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm"
-                  >Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-            </div>
-            <div  class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm"
-                    >Update & Release</button>&nbsp;
-                <button type="submit" class="btn btn-dull btn-sm" 
-                  >Update</button> &nbsp;
-                <button type="cancel" class="btn btn-secondary btn-sm" >Close</button>
-
+            <div class="kt-portlet__foot py-3">
+    
+                <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
+                                                                      <!-- [disabled]="!Endtms ||!Startts || !Title_Name " -->
+                    <button *ngIf="draftid==0" type="submit" class="btn btn-info btn-sm"
+                        (click)="onSubmitBtnClicked()">Submit</button>
+                    <button *ngIf="draftid!=0" type="submit" class="btn btn-info btn-sm"
+                        (click)="onSubmitBtnClicked()">Update & Release</button>
+                    <button *ngIf="draftid==0" type="cancel" class="btn btn-sm btn-dull ml-3"
+                        (click)="Insert_indraft()">Save Draft</button>
+                    <button *ngIf="draftid!=0" type="cancel" class="btn btn-sm btn-dull ml-3"
+                        (click)="Insert_indraft()">Update</button> &nbsp;
+                    <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+    
+                </div>
+    
+    
+                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false"
+                    class="form-group mb-0">
+                    <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
+                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
+                    <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+                </div>
+                <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
+                    class="form-group mb-0">
+                    <button type="submit" class="btn btn-info btn-sm"
+                        (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                    <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                         (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
+                    <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+                </div>
+                <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
+                    <button type="submit" class="btn btn-info btn-sm"
+                        (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
+                    <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
+                        (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                    
+                    <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+    
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 
 
 
