@@ -4768,10 +4768,27 @@
 
 
                  <ng-container *ngIf="memosOptions">
-                  <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value).slice(0,1000)" [value]="memo.MailId">
+                  <mat-option  *ngFor="let memo of (memosOptions|filter:dmsSelectTF.value.trim()).slice(0,1000)" [value]="memo.MailId">
                       <mat-checkbox color="primary" [checked]="(selectedMemos.indexOf(memo)!==-1)"></mat-checkbox>
                       {{memo.Subject}}
                   </mat-option>
+
+
+                  <mat-option *ngIf="(memosOptions|filter:dmsSelectTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                        </g>
+                    </svg>
+                    <span style="color:#757575" class="ml-2">No results found.</span>
+                </mat-option> 
+
+
+
+
+
                   </ng-container>
 
               </mat-autocomplete>
@@ -4875,7 +4892,7 @@
               </mat-chip-list>
               <div class="d-flex">
                   <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
-                    (input)="filterportfolio($event.target.value)"  [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
+                    (input)="filterportfolio($event.target.value.trim())"  [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
                   <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
                           (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
                   <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
@@ -4889,6 +4906,23 @@
                       <mat-checkbox color="primary" [checked]="(ngDropdwonPort.indexOf(prt)!==-1)"> </mat-checkbox>
                       {{prt.Portfolio_Name}}  - {{prt.TM_DisplayName}}
                   </mat-option>
+
+
+                  <mat-option *ngIf="_portfoliosList&&_portfoliosList.length===0" style="pointer-events:none;"  >
+                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                        </g>
+                    </svg>
+                    <span style="color:#757575" class="ml-2">No results found.</span>
+                </mat-option> 
+
+
+
+
+
               </mat-autocomplete>
           </mat-form-field>
           <button class="btn btn-label-primary btn-upper mb-4" 
@@ -6538,7 +6572,7 @@
                                       <div class="d-flex">
                                           <input #fruitInput class="flex-1" [matChipInputFor]="selectedTeamMember"
                                               [matAutocomplete]="TeamMemberDrpDwn"
-                                              (input)="filterEmployees($event.target.value)" #SupportTF />
+                                              (input)="filterEmployees($event.target.value.trim())" #SupportTF />
                                           <button *ngIf="isSupportDrpDwnOpen"
                                               class="bg-transparent border-0 "><mat-icon class="close-icon"
                                                   (click)=" this.isSupportDrpDwnOpen=false;   closeAutocompleteDrpDwn('supportDrpDwn');">cancel</mat-icon></button>
@@ -6549,15 +6583,33 @@
                                       <mat-autocomplete aria-label="supportDrpDwn" #TeamMemberDrpDwn="matAutocomplete"
                                           (optionSelected)="selectedChip($event); SupportTF.value=''; "
                                           (opened)="isSupportDrpDwnOpen=true"
-                                          (closed)="isSupportDrpDwnOpen=false;    ">
+                                          (closed)="isSupportDrpDwnOpen=false; ">
                                           <mat-option class="mat-font"
-                                              *ngFor="let e of filteredEmployees|filter:SupportTF.value"
+                                              *ngFor="let e of filteredEmployees"
                                               [value]="e.Emp_No">
                                               <mat-checkbox color="primary"
                                                   [checked]="selectedEmployees.indexOf(e)!==-1"
                                                   (change)="selectedChip($event)"></mat-checkbox>
                                               {{e.NonRACIS}}
                                           </mat-option>
+
+                                          <mat-option *ngIf="filteredEmployees&&filteredEmployees.length===0" style="pointer-events:none;"  >
+                                            <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                                </g>
+                                            </svg>
+                                            <span style="color:#757575" class="ml-2">No results found.</span>
+                                        </mat-option> 
+
+
+
+
+
+
+                                          
                                       </mat-autocomplete>
                                   </mat-form-field>
                                   <button
@@ -9151,12 +9203,26 @@
                               <mat-autocomplete aria-label="ProjectDrpDwn" #ProjectDrpDwn="matAutocomplete"
                                   (optionSelected)="onPrjSelected($event); projectTF.value=''; "
                                   (opened)="isProjectDrpDwnOpen=true" (closed)="isProjectDrpDwnOpen=false; ">
-                                  <mat-option *ngFor="let pr of (ProjectListArray|filter:projectTF.value).slice(0,1000)"
+                                 
+                                  <mat-option *ngFor="let pr of (ProjectListArray|filter:projectTF.value.trim()).slice(0,1000)"
                                       [value]="pr.Project_Code">
                                       <mat-checkbox color="primary"
                                           [checked]="MasterCode.indexOf(pr.Project_Code)!==-1"></mat-checkbox>
                                       {{pr.BlockNameProject}}
                                   </mat-option>
+
+                                  <mat-option *ngIf="(ProjectListArray|filter:(projectTF.value.trim())).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
+
+
                               </mat-autocomplete>
                           </mat-form-field>
 
@@ -9186,7 +9252,7 @@
 
                           <div class="form-group" id="core_viw222" style="display:none">
 
-                              <mat-form-field class="drp-dwn-field w-100">
+                              <mat-form-field class="drp-dwn-field w-100"  *ngIf="Portfoliolist_1">
                                   <mat-label>Select Portfolio</mat-label>
                                   <mat-chip-list #selectedPortfolioDrpDwn>
                                       <mat-chip *ngFor="let pt of Portfolio" class="Data_chip_kt"
@@ -9212,12 +9278,31 @@
                                       (optionSelected)="onPortfolioSelected($event); portfolioTF.value=''; "
                                       (opened)="isPortfolioDrpDwnOpen=true"
                                       (closed)="isPortfolioDrpDwnOpen=false; ">
-                                      <mat-option *ngFor="let pt of Portfoliolist_1|filter:portfolioTF.value"
+                                      <mat-option *ngFor="let pt of Portfoliolist_1|filter:portfolioTF.value.trim()"
                                           [value]="pt.portfolio_id">
                                           <mat-checkbox color="primary"
                                               [checked]="Portfolio.indexOf(pt)!==-1"></mat-checkbox>
                                           {{pt.Portfolio_Name}} - {{pt.DisplayName}}
                                       </mat-option>
+
+
+                                      <mat-option *ngIf="(Portfoliolist_1|filter:portfolioTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                            </g>
+                                        </svg>
+                                        <span style="color:#757575" class="ml-2">No results found.</span>
+                                    </mat-option> 
+
+
+
+
+
+
+
                                   </mat-autocomplete>
                               </mat-form-field>
 
@@ -9255,12 +9340,29 @@
                                   <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
                                       (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
                                       (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
-                                      <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
+                                      <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value.trim()).slice(0,1000)"
                                           [value]="m.MailId">
                                           <mat-checkbox color="primary"
                                               [checked]="SelectDms.indexOf(m)!==-1"></mat-checkbox>
                                           {{m.Subject}} - {{m.DisplayName}}
                                       </mat-option>
+
+
+                                      <mat-option *ngIf="(Memos_List|filter:dmsMemoTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                            </g>
+                                        </svg>
+                                        <span style="color:#757575" class="ml-2">No results found.</span>
+                                    </mat-option> 
+
+
+
+
+
                                   </mat-autocomplete>
                               </mat-form-field>
 
@@ -9295,12 +9397,31 @@
                                           (opened)="isParticipantDrpDwnOpen=true"
                                           (closed)="isParticipantDrpDwnOpen=false;    ">
                                           <mat-option
-                                              *ngFor="let p of _EmployeeListForDropdown|filter:ParticipantTF.value"
+                                              *ngFor="let p of _EmployeeListForDropdown|filter:(ParticipantTF.value.trim())"
                                               [value]="p.Emp_No">
                                               <mat-checkbox color="primary"
                                                   [checked]="ngEmployeeDropdown.indexOf(p)!==-1"></mat-checkbox>
                                               {{p.DisplayName}}
                                           </mat-option>
+
+
+                                          <mat-option *ngIf="(_EmployeeListForDropdown|filter:ParticipantTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                            <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                                </g>
+                                            </svg>
+                                            <span style="color:#757575" class="ml-2">No results found.</span>
+                                        </mat-option> 
+
+
+
+
+
+
+
                                       </mat-autocomplete>
                                   </mat-form-field>
                               </div>

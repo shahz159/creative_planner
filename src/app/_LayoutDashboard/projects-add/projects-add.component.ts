@@ -839,7 +839,7 @@ addRemovePrjofPortfolio(evt){
 //     this.selectedCheckboxes.push(this.item.Project_Code);
 //   }}
 
-addPrjsToPortflio() {
+addPrjsToPortflio() { debugger
   this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
   const selectedPrjs=this._ProjectDataList.filter(item=>item.checked);
   let LengthOfSelectedItems = JSON.stringify(selectedPrjs.length);

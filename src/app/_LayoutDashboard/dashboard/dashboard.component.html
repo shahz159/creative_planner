@@ -2909,11 +2909,27 @@
                         (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
                         (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
 
-                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value).slice(0,1000)" [value]="prj.Project_Code">
+                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000)" [value]="prj.Project_Code">
                                 <mat-checkbox color="primary"
                                     [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
                                    {{prj.BlockNameProject}}
                             </mat-option>
+
+
+                            <mat-option *ngIf="(ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </mat-option> 
+
+
+
+
 
                         </mat-autocomplete>
                     </mat-form-field>
@@ -2979,11 +2995,26 @@
                             (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
                             (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
 
-                                <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value).slice(0,1000)" [value]="prt.portfolio_id">
+                                <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value.trim()).slice(0,1000)" [value]="prt.portfolio_id">
                                     <mat-checkbox color="primary"
                                         [checked]="Portfolio!=null&&Portfolio.indexOf(prt.portfolio_id)!==-1"></mat-checkbox>
                                         {{prt.Portfolio_Name}} - {{prt.DisplayName}}
                                 </mat-option>
+
+                                <mat-option *ngIf="(Portfoliolist_1|filter:PortfolioTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
+
+
+
+
 
                             </mat-autocomplete>
                         </mat-form-field>
@@ -3011,7 +3042,7 @@
                             </mat-chip-list>
                             <div class="d-flex">
                                 <input class="flex-1" [matChipInputFor]="selectedDmsMemoDrpDwn"
-                                    [matAutocomplete]="MemoDrpDwn" #dmsMemoTF />
+                                    [matAutocomplete]="MemoDrpDwn" #dmsMemoTF  />
 
                                 <button *ngIf="isDMSMemoDrpDwnOpen"
                                     class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
@@ -3028,12 +3059,23 @@
                             (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
                             (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
 
-                                <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
+                                <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value.trim()).slice(0,1000)"
                                     [value]="m.MailId">
                                     <mat-checkbox color="primary"
                                         [checked]="SelectDms!=null&&SelectDms.indexOf(m.MailId)!==-1"></mat-checkbox>
                                     {{m.Subject}} - {{m.DisplayName}}
                                 </mat-option>
+
+                                <mat-option *ngIf="(Memos_List|filter:dmsMemoTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
 
                             </mat-autocomplete>
                         </mat-form-field>
@@ -3076,12 +3118,26 @@
                             (optionSelected)="onParticipantSelected($event); ParticipantsTF.value=''; "
                             (opened)="isParticipantsDrpDwnOpen=true" (closed)="isParticipantsDrpDwnOpen=false; ">
 
-                                <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value).slice(0,1000)"
+                                <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value.trim()).slice(0,1000)"
                                     [value]="p.Emp_No">
                                     <mat-checkbox color="primary"
                                         [checked]="ngEmployeeDropdown!=null&&ngEmployeeDropdown.indexOf(p.Emp_No)!==-1"></mat-checkbox>
                                     {{p.DisplayName}}
                                 </mat-option>
+
+
+                                <mat-option *ngIf="(_EmployeeListForDropdown|filter:ParticipantsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
+
+
 
                             </mat-autocomplete>
                         </mat-form-field>
@@ -3116,10 +3172,10 @@
 
                         </div> 
 
-                        <div class="mb-3 curser-pointer">
-                            <!-- <label for="formFile" class="form-label">Default file input example</label> -->
+                        <!-- <div class="mb-3 curser-pointer">
+                            <label for="formFile" class="form-label">Default file input example</label> 
                             <input class="form-control curser-pointer" type="file" id="formFile">
-                          </div>
+                          </div> -->
 
 
 
