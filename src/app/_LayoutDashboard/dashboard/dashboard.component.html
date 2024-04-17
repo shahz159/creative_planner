@@ -504,6 +504,9 @@
                                     <div class="fc-event-title ml-2"> {{item.Task_Name}}</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                                <div class="delete-btn" title="Delete pending" (click)="onSingleEventDelete()">
+                                    <a><i class="fas fa-trash-alt"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -995,7 +998,7 @@
 
 
 
-                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <div class="icons-right  curser-pointer" title="Start new meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'" (click)="newMeetingReport()">
                             <span class="kt-meeting-status-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1007,7 +1010,7 @@
                     </div>
 
 
-                    <div class="icons-right met-done curser-pointer"
+                    <div class="met-done curser-pointer"
                         *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="meetingReport()">
                         <span></span><small>Completed</small>
                     </div>
@@ -2909,11 +2912,27 @@
                         (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
                         (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
 
-                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value).slice(0,1000)" [value]="prj.Project_Code">
+                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000)" [value]="prj.Project_Code">
                                 <mat-checkbox color="primary"
                                     [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
                                    {{prj.BlockNameProject}}
                             </mat-option>
+
+
+                            <mat-option *ngIf="(ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </mat-option> 
+
+
+
+
 
                         </mat-autocomplete>
                     </mat-form-field>
@@ -2979,11 +2998,26 @@
                             (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
                             (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
 
-                                <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value).slice(0,1000)" [value]="prt.portfolio_id">
+                                <mat-option *ngFor="let prt of (Portfoliolist_1|filter:PortfolioTF.value.trim()).slice(0,1000)" [value]="prt.portfolio_id">
                                     <mat-checkbox color="primary"
                                         [checked]="Portfolio!=null&&Portfolio.indexOf(prt.portfolio_id)!==-1"></mat-checkbox>
                                         {{prt.Portfolio_Name}} - {{prt.DisplayName}}
                                 </mat-option>
+
+                                <mat-option *ngIf="(Portfoliolist_1|filter:PortfolioTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
+
+
+
+
 
                             </mat-autocomplete>
                         </mat-form-field>
@@ -3011,7 +3045,7 @@
                             </mat-chip-list>
                             <div class="d-flex">
                                 <input class="flex-1" [matChipInputFor]="selectedDmsMemoDrpDwn"
-                                    [matAutocomplete]="MemoDrpDwn" #dmsMemoTF />
+                                    [matAutocomplete]="MemoDrpDwn" #dmsMemoTF  />
 
                                 <button *ngIf="isDMSMemoDrpDwnOpen"
                                     class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
@@ -3028,12 +3062,23 @@
                             (optionSelected)="onDMSMemoSelected($event); dmsMemoTF.value=''; "
                             (opened)="isDMSMemoDrpDwnOpen=true" (closed)="isDMSMemoDrpDwnOpen=false; ">
 
-                                <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value).slice(0,1000)"
+                                <mat-option *ngFor="let m of (Memos_List|filter:dmsMemoTF.value.trim()).slice(0,1000)"
                                     [value]="m.MailId">
                                     <mat-checkbox color="primary"
                                         [checked]="SelectDms!=null&&SelectDms.indexOf(m.MailId)!==-1"></mat-checkbox>
                                     {{m.Subject}} - {{m.DisplayName}}
                                 </mat-option>
+
+                                <mat-option *ngIf="(Memos_List|filter:dmsMemoTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
 
                             </mat-autocomplete>
                         </mat-form-field>
@@ -3076,12 +3121,26 @@
                             (optionSelected)="onParticipantSelected($event); ParticipantsTF.value=''; "
                             (opened)="isParticipantsDrpDwnOpen=true" (closed)="isParticipantsDrpDwnOpen=false; ">
 
-                                <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value).slice(0,1000)"
+                                <mat-option *ngFor="let p of (_EmployeeListForDropdown|filter:ParticipantsTF.value.trim()).slice(0,1000)"
                                     [value]="p.Emp_No">
                                     <mat-checkbox color="primary"
                                         [checked]="ngEmployeeDropdown!=null&&ngEmployeeDropdown.indexOf(p.Emp_No)!==-1"></mat-checkbox>
                                     {{p.DisplayName}}
                                 </mat-option>
+
+
+                                <mat-option *ngIf="(_EmployeeListForDropdown|filter:ParticipantsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                        </g>
+                                    </svg>
+                                    <span style="color:#757575" class="ml-2">No results found.</span>
+                                </mat-option> 
+
+
 
                             </mat-autocomplete>
                         </mat-form-field>
@@ -3104,22 +3163,22 @@
                     </div>
                     <div class="form-group section-1" id="Location_Name" style="display:none">
                         <label class="cus-lbl">Location</label>
-                        <input ngx-google-places-autocomplete class="form-control" [(ngModel)]="Location_Type"
+                        <input ngx-google-places-autocomplete class="form-control curser-pointer" [(ngModel)]="Location_Type"
                             (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
                     </div>
                   
                     <div class="form-group mb-0">
                         <label class="cus-lbl">Attachment </label>
-                        <!-- <div class="custom-file pl-1">
+                         <div class="custom-file pl-1">
                             <input type="file" id="uploadFile" accept="application/pdf" class="form-control-file  curser-pointer "
                                 (change)="onFileChange($event)" multiple>
 
-                        </div> -->
+                        </div> 
 
-                        <div class="mb-3">
+                        <!-- <div class="mb-3 curser-pointer">
                             <label for="formFile" class="form-label">Default file input example</label>
-                            <input class="form-control" type="file" id="formFile">
-                          </div>
+                            <input class="form-control curser-pointer" type="file" id="formFile">
+                          </div> -->
 
 
 
@@ -3180,6 +3239,7 @@
                             </div>
                             <div class="form-group flex-1" >
                                 <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                                <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
                                 <ng-select  class="kt-input form-control" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
                                     placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                     <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
@@ -3305,8 +3365,8 @@
                                     </div>
                                 </div>
 
-
-
+  
+ 
                             </div>
                         </div>
                         <div class="form-group flex-1" id="div_endDate">
@@ -3704,12 +3764,16 @@
                 class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
                     data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
+                <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                     (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                 class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm"
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                     (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
@@ -3717,6 +3781,7 @@
                     (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
                 <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
 
             </div>

@@ -696,13 +696,20 @@ export class DashboardComponent implements OnInit {
           Files: event.target.files[index]
         }];
       }
-    }
-    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+    } 
+    debugger
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.value=null;
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
   }
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
     this._lstMultipleFiales.splice(removeIndex, 1);
+
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
+  
   }
 
   RemoveExistingFile(_id) {
@@ -1022,13 +1029,14 @@ export class DashboardComponent implements OnInit {
       this.notifyService.showSuccess("Deleted Successfully", "Success");
       this.closeevearea();
       this.GetScheduledJson();
+      this.GetPending_Request();
     })
 
 
   }
 
   onSingleEventDelete(){
-    console.log("=>+>:",);
+
     Swal.fire({
       title:`Delete ${this.Schedule_type1}`,
       text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
@@ -1268,7 +1276,8 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
-    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    debugger
+  
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
@@ -1289,12 +1298,13 @@ export class DashboardComponent implements OnInit {
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
-        if (this._OldRecurranceId == '0') {
+        // alert(this._OldRecurranceId)
+        // if (this._OldRecurranceId == '0') {
           this._PopupConfirmedValue = 1;
-        }
-        else {
-          this._PopupConfirmedValue = 2;
-        }
+        // }
+        // else {
+          // this._PopupConfirmedValue = 2;
+        // }
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
@@ -1485,6 +1495,13 @@ export class DashboardComponent implements OnInit {
       });
     this.closeevearea();
   }
+
+
+
+
+
+
+
 
 
   hasWhiteSpace(s: string) {
@@ -2110,7 +2127,7 @@ debugger
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
-
+debugger
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());

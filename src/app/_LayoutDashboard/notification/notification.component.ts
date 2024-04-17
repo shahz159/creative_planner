@@ -778,54 +778,79 @@ export class NotificationComponent implements OnInit {
 
 
 
-  select(ev,item){
+//   select(ev,item){
 
-    if(ev.target.checked==false){
-      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+//     if(ev.target.checked==false){
+//       // const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+//       // checkbox.checked = false;
+//     }
+//     else if(ev.target.checked==true){
 
-      checkbox.checked = false;
-    }
 
-    else if(ev.target.checked==true){
-      // Assuming you have checkboxes with a common class name 'checkbox'
-      const checkboxes = document.querySelectorAll('.form-check-input');
-      const selectAllCheckbox = document.getElementById('snocheck') as HTMLInputElement;
 
-      // Add event listeners to each checkbox
-      checkboxes.forEach((checkbox: HTMLInputElement) => {
-        checkbox.addEventListener('change', updateSelectAllCheckbox);
-      });
+//     //   // Assuming you have checkboxes with a common class name 'checkbox'
+//     //   const checkboxes = document.querySelectorAll('.form-check-input');   // this includes both subcheckboxes + maincheckbox.
+//     //   const selectAllCheckbox = document.getElementById('snocheck') as HTMLInputElement;  // maincheckbox
 
-      // Function to update the "Select All" checkbox state
-      function updateSelectAllCheckbox() {
-        const allChecked = Array.from(checkboxes).every((checkbox: HTMLInputElement) => checkbox.checked);
-        selectAllCheckbox.checked = allChecked;
+//     //   // Add event listeners to each checkbox
+//     //   checkboxes.forEach((checkbox: HTMLInputElement) => {
+//     //     checkbox.addEventListener('change', updateSelectAllCheckbox);
+//     //   });
+
+//     //   // Function to update the "Select All" checkbox state
+//     //   function updateSelectAllCheckbox() {
+//     //     const allChecked = Array.from(checkboxes).every((checkbox: HTMLInputElement) => checkbox.checked);
+//     //     selectAllCheckbox.checked = allChecked;
+//     //   }
+
+//     //   // Add event listener to the "Select All" checkbox
+//     //   selectAllCheckbox.addEventListener('change', toggleAllCheckboxes);
+
+//     //   // Function to toggle the state of all checkboxes based on the "Select All" checkbox
+//     //   function toggleAllCheckboxes() {
+//     //     const isChecked = selectAllCheckbox.checked;
+//     //     checkboxes.forEach((checkbox: HTMLInputElement) => {
+//     //       checkbox.checked = isChecked;
+//     //     });
+//     // }
+//     }
+
+//   const checkbox = ev.target as HTMLInputElement;
+//   if (checkbox.checked) {
+//     this.selectedItems.push(item);
+//   } else {
+//     const index = this.selectedItems.findIndex((selectedItem) => selectedItem === item);
+//     if (index > -1) {
+//       this.selectedItems.splice(index, 1);
+//     }
+//   }
+//   console.log(this.selectedItems,"single");
+// }
+
+
+select(ev,item){
+   if(ev.target.checked)
+   {  // select
+      this.selectedItems.push(item);
+      if(this.selectedItems.length==this._NotificationActivity.length){
+        this.selectAllCheckbox=true;
       }
-
-      // Add event listener to the "Select All" checkbox
-      selectAllCheckbox.addEventListener('change', toggleAllCheckboxes);
-
-      // Function to toggle the state of all checkboxes based on the "Select All" checkbox
-      function toggleAllCheckboxes() {
-        const isChecked = selectAllCheckbox.checked;
-        checkboxes.forEach((checkbox: HTMLInputElement) => {
-          checkbox.checked = isChecked;
-        });
-    }
-  }
-
-  const checkbox = ev.target as HTMLInputElement;
-
-  if (checkbox.checked) {
-    this.selectedItems.push(item);
-  } else {
+      else 
+      this.selectAllCheckbox=false;
+   }
+   else
+   {   // unselect
     const index = this.selectedItems.findIndex((selectedItem) => selectedItem === item);
     if (index > -1) {
       this.selectedItems.splice(index, 1);
     }
-  }
-  console.log(this.selectedItems,"single");
+    this.selectAllCheckbox=false;
+   }
+
+   console.log("selected projects:",this.selectedItems);
 }
+
+
 
 isSelected(item: any): boolean {
   return this.selectedItems.includes(item);
@@ -839,13 +864,12 @@ acceptSelectedValues() {
 
   if( this.selectedItems.length > 0){
     debugger
-    this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
+     this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
-
       this.applyFilters();
     });
     const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-      checkbox.checked = false;
+    checkbox.checked = false;
     this.selectedItems=[];
     this.notifyService.showSuccess("Project(s) approved successfully",'Success');
   }

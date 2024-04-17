@@ -20,6 +20,7 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
 import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
 import tippy from 'node_modules/tippy.js';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -443,9 +444,7 @@ export class ActionToProjectComponent implements OnInit {
 
 
   ownerNo:string;
-  test(){ debugger
-    const x=(this._projcode == true||(false&&!this.selectedProjectCodelist))
-  }
+
 
 
 
@@ -454,7 +453,7 @@ debugger
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
       // return false;
-    }
+    }else this._projcode=false;
 
     if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
       this._subname = true;

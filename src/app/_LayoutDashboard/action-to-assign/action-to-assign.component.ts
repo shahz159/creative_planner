@@ -66,6 +66,8 @@ export class ActionToAssignComponent implements OnInit {
   _SelectedEmpNo: string = "";
   selectedProjectCode: string;
   SelectedEmplList: any[];
+  SelectedinformlList:any[]
+  SelectedcordlList:any[]
   port_id:any;
   selectedProjectCodelist: any[];
   public EmployeeList: any;
@@ -129,6 +131,18 @@ export class ActionToAssignComponent implements OnInit {
         console.log(this.PortfolioList,"portfolios");
       }
     )
+
+
+const TEsb: HTMLElement = document.getElementById('Action2Assign-body') as HTMLElement;
+TEsb.addEventListener('scroll', (ac:any) => {
+  this.autocompletes.forEach((ac: any) => {
+    if (ac.panelOpen)
+      ac.updatePosition();
+  });
+});
+
+
+
   }
 
 
@@ -293,7 +307,7 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 2){
-         
+
             this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
@@ -304,7 +318,7 @@ export class ActionToAssignComponent implements OnInit {
             this._inputAttachments = [];
           }
           else if(this._Urlid == 3){
-          
+
             this._meetingDetails.getDetailsScheduleId();
             this._meetingDetails.GetAssigned_SubtaskProjects();
             let message: string = data['Message'];
@@ -335,7 +349,7 @@ export class ActionToAssignComponent implements OnInit {
 
     }
     else if(this._Urlid==3){
-   
+
       this._meetingDetails.getDetailsScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
@@ -369,7 +383,7 @@ export class ActionToAssignComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
-        //console.log(this.EmployeeList);
+        console.log(this.EmployeeList);
         this.dropdownSettings_Employee = {
           singleSelection: true,
           idField: 'Emp_No',
@@ -492,7 +506,43 @@ isPrjDesValid:boolean=true;
 
 
 
+
+
+
+
+  PrjSupport:{DisplayName:string,Emp_No:string}[]=[];
+  isPrjSprtDrpDwnOpen:boolean=false;
+  PrjResp:string;
+
+
+
+  onPrjSprtSelected(e:any){
+    const sprtChoosed=this.EmployeeList.find((p:any)=>p.Emp_No===e.option.value);
+    if(sprtChoosed){
+         const index=this.PrjSupport.indexOf(sprtChoosed);
+         if(index===-1){
+            // if not present then add it
+            this.PrjSupport.push(sprtChoosed);
+         }
+         else{ //  if item choosed is already selected then remove it.
+          this.PrjSupport.splice(index,1);
+         }
+    }
+    this.openAutocompleteDrpDwn('PrjSprtDrpDwn');
+  }
+
+  removeSelectedPrjSprt(sprt:{Emp_No:string,DisplayName:string}){
+    const index=this.PrjSupport.indexOf(sprt);
+    if(index!==-1){
+      this.PrjSupport.splice(index,1);
+    }
+  }
+
+
+
+
 }
+
 
 
 

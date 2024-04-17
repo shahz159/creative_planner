@@ -545,7 +545,12 @@
 ::ng-deep ng-select {
     border-bottom: none !important;
     padding: 0 !important;
+    cursor: pointer !important;
 }
+
+input[type="file"] {
+    cursor: pointer;
+  }
 
 /* width */
 
@@ -2534,15 +2539,20 @@ svg.toolicns.kt-p-ic-top {
 }
 
 .met-done {
-    border-right: 1px solid #ccc !important;
-    padding-right: 7px;
+    border: 1px solid #1dc942 !important;
+    border-radius: 4px;
+    padding: 0px 4px;
+    display: flex;
+    align-items: center;
+    line-height: 1;
 }
-
+.met-done.curser-pointer:hover {
+    box-shadow: 3px 3px 4px #cafbd5;
+}
 .met-done span {
     width: 10px;
     height: 10px;
     position: relative;
-    top: 2px;
     display: inline-block;
     background-color: #1dc942;
     border-radius: 50px;
@@ -3337,3 +3347,4 @@ mat-icon.mat-icon.notranslate.curser-pointer {
 ::ng-deep .error-vd .ng-select-container {
     border: 1px solid #F44336 !important;
 }
+ 
