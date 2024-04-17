@@ -14,7 +14,7 @@ import { FocusOnClickDirective } from './focus-on-click.directive';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component'; 
+import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.component';
 import { PortfolioProjectsComponent } from '../portfolio-projects/portfolio-projects.component';
 import { ViewDashboardProjectsComponent } from '../view-dashboard-projects/view-dashboard-projects.component';
 import { ProjectsAddComponent } from '../projects-add/projects-add.component';
@@ -47,6 +47,6 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
   providers:[DatePipe, ProjectsSummaryComponent, PortfolioProjectsComponent,
              ViewDashboardProjectsComponent, ProjectsAddComponent, ToDoProjectsComponent,NotificationComponent],
  exports:[TruncatePipe]
-  
+
 })
 export class ProjectInfoModule { }

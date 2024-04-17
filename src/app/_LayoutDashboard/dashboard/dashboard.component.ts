@@ -1565,13 +1565,13 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-    debugger
+   
      if(
       this.Title_Name&&
       this.Startts&&
       this.Endtms&&
-      this.MinLastNameLength&&
-      (this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+      this.MinLastNameLength
+      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
     ){
           this.OnSubmitSchedule();
           this.notProvided=false;
@@ -5343,7 +5343,6 @@ drawBarGraph(){
 
 
   getObjOf(arr, id, idName) {
-    debugger
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }

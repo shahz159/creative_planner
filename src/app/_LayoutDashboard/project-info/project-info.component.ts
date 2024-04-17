@@ -109,11 +109,11 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         4       Projects Add to Portfolio
         5       ToDo Projects
         6       Notifications
-        
+
   */
 
   ngOnInit() {
-   
+
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this._Urlid = this.route.snapshot.params['id'];
     // alert(this._Urlid);
@@ -124,7 +124,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.LoadProjectDetails();
       this.GetRacisPeople()
       // this.getapprovalStats();
-      
+
       // this.getdeadlinecount();
       // this.getProjectHoldDate();
       // this.getapproval_actiondetails();
@@ -137,7 +137,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     //     var tigger = $(".dropdown-menu");
     //       if( tigger !== event.target && !tigger.has(event.target).length){
     //            event.preventDefault();
-    //       } 
+    //       }
     // });
   }
 
@@ -290,23 +290,23 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
-      
+
         console.log(data, "data")
         if (data != null && data != undefined) {
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
           this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json']);
- 
-          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);  
+
+          this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
           this.Approver_No = this.ProjectStatesJson[0]['ApproverEmpNo'];
           this.isRequest = this.ProjectStatesJson[0]['request_type'];
           if(this.Approver_No && this.Approver_No==this.Current_user_ID){
             this.getapprovalStats();
-          }    
+          }
           this.ProjectStatesJson.forEach((item) => {
             this.Approver_Name = item.ApproverName
           });
-          
+
           if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json'] != undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
             this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);
@@ -357,7 +357,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this.ProjectPercentage = data[0]['ProjectPercentage'] + '%';
           this.ProjectStatus = data[0]['ProjectStatus'];
           this._MainProjectStatus = this.ProjectStatesJson[0]['Status'];
-          
+
           console.log("ProjectDetails-->", this.ProjectNameJson);
           this.date1 = this.ProjectStatesJson[0]['StartDate'];
 
@@ -388,7 +388,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         }
       });
 
-      
+
       // this.approvalservice.GetProjectApproval(this.projectCode).subscribe((data)=>{
       //   if(data['message']="1"){
       //   }
@@ -419,7 +419,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     if (this._Urlid == '1') {
       this._projectSummary.closeInfo();
       this.router.navigate(["/backend/ProjectsSummary/"]);
-    
+
     }
     else if (this._Urlid == '2') {
       this.BsService.bs_SelectedPortId.subscribe(c => { this.port_id = c });
@@ -702,7 +702,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           // console.log("Actula Memo List On Row Click--->", this._ActualMemoslist);
           let arr2: any = this._dbMemoIdList;
           this._SelectedIdsfromDb = _.map(arr2, (d) => { return d.MailId });
-          //Rejecting Same Ids 
+          //Rejecting Same Ids
           this.Memos_List = _.reject(arr1, (d) => {
             var findId = _.find(this._SelectedIdsfromDb, (sId) => { return sId === d.MailId });
             if (findId) {
@@ -797,7 +797,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
           this._MemosNotFound = "No memos linked";
         }
       });
-    //Displaying Right Side Bar... 
+    //Displaying Right Side Bar...
     //document.getElementById("MemosSideBar").style.width = "350px";
   }
 
@@ -1055,7 +1055,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   approvalClick(actionType) {
     // $("#ProjectInfoNew").scrollTop(0);
     this.comments=""
-   switch (actionType) {    
+   switch (actionType) {
       case 'ACCEPT': {
         this.isRejectOptionsVisible = false
         this.selectedType = '1';
@@ -1390,7 +1390,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             this.contenttype = (this.complete_List[0]['contenttype']);
             this.iscloud = (this.complete_List[0]['IsCloud']);
           }
-      
+
           console.log(this.requestDetails, 'transfer');
         }
         // console.log(this.comments_list, "req")
@@ -1404,7 +1404,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
       this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
         this.requestDetails = data as [];
         console.log(this.requestDetails, "approval")
-  
+
         if (this.requestDetails.length > 0) {
           this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
           this.requestType = (this.requestDetails[0]['Request_type']);
@@ -1470,7 +1470,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
             this.repdate = (this.complete_List[0]['Reportdate']);
             this.submitby = (this.complete_List[0]['SubmittedBy']);
             this.contenttype = (this.complete_List[0]['contenttype']);
-            this.iscloud = (this.complete_List[0]['IsCloud']);  
+            this.iscloud = (this.complete_List[0]['IsCloud']);
           }
           console.log(this.requestDetails, 'transfer');
         }
@@ -1478,9 +1478,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         // console.log(this.approvalEmpId ,this.requestComments,this.requestDate,this.requestDeadline,this.requestType,"request status");
       });
     }
-    
 
-   
+
+
   }
 
   resetApproval() {
@@ -1540,7 +1540,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
         this.approvalObj.Status = 'Rejected';
       }
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
-        console.log('++>',JSON.parse(data[0]['reject_CommentsList']));      
+        console.log('++>',JSON.parse(data[0]['reject_CommentsList']));
         this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
         this.rejectlength = this.rejectcommentsList.length;
       });
@@ -1922,11 +1922,11 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   }
 
   openPDF_Standard(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
-    
+
     repDate = new Date(repDate);
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-    
+
 
     let Day = repDate.getDate();
     let Month = repDate.getMonth() + 1;
@@ -2078,14 +2078,14 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
 // uniqueSet :any
 // nonRacisList:any=[];
 // GetPeopleDatils(){
-//   this.service.NewProjectService(this.URL_ProjectCode).subscribe( 
+//   this.service.NewProjectService(this.URL_ProjectCode).subscribe(
 //     (data) => {
 
 //       if (data != null && data != undefined) {
 //         this.Project_List = JSON.parse(data[0]['RacisList']);
 //         this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
 //         const uniqueNamesArray = [...this.uniqueName];
-//          this.newArray = uniqueNamesArray.slice(3);      
+//          this.newArray = uniqueNamesArray.slice(3);
 //         this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
 //         this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
 //         this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
@@ -2130,6 +2130,6 @@ GetRacisPeople(){
   }
 
 ///////////////////////////////////// RACIS end /////////////////////////
-  
+
 
 }
