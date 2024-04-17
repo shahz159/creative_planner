@@ -141,6 +141,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.getDetailsScheduleId()
       this.GetAssigned_SubtaskProjects();
       this.GetMemosByEmployeeId_new();
+      this.GetProjectAndsubtashDrpforCalender();
+      this.GetTimeslabfordate()
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -793,9 +795,10 @@ GetProjectAndsubtashDrpforCalender() {
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
     ((data) => {     
         this.ProjectListArray=JSON.parse(data['Projectlist'])
-        var recordProjects=this.Project_code.map(item=>item.stringval)
-        this.ProjectListArray=this.ProjectListArray.filter(item=>!recordProjects.includes(item.Project_Code))
-        console.log(this.ProjectListArray,'GetProjectAndsubtashDrpforCalender');
+        // 69 var recordProjects=this.Project_code.map(item=>item.stringval)
+        // 69 this.ProjectListArray=this.ProjectListArray.filter(item=>!recordProjects.includes(item.Project_Code))
+        this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+        console.log(this.ProjectListArray,'ProjectListArray');
 
 
 
@@ -808,7 +811,7 @@ GetProjectAndsubtashDrpforCalender() {
 
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         var recordparticipants=this.User_Scheduledjson.map(item=>item.stringval)
-        this._EmployeeListForDropdown=this._EmployeeListForDropdown.filter(item=> !recordparticipants.includes(item.Emp_No))
+        // this._EmployeeListForDropdown=this._EmployeeListForDropdown.filter(item=> !recordparticipants.includes(item.Emp_No))
         this.originalparticipants =this._EmployeeListForDropdown;
 
     });
@@ -999,7 +1002,6 @@ GetProjectAndsubtashDrpforCalender() {
 
 
   Addportfolios_meetingreport() {
-    alert('portfolio')
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -2115,6 +2117,8 @@ MonthArr: any = [
   { "Day": "30", "value": "30", "checked": false },
   { "Day": "31", "value": "31", "checked": false }
 ];
+
+
 _EndDate: any;
 minDate = moment().format("YYYY-MM-DD").toString();
 maxDate = "";
@@ -2152,25 +2156,6 @@ SubmissionName: string;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ReshudingTaskandEvent() {
   document.getElementById("div_endDate").style.display = "none";
   document.getElementById("Schenddate").style.display = "none";
@@ -2182,7 +2167,7 @@ ReshudingTaskandEvent() {
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-    debugger
+   
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       // console.log(this.EventScheduledjson, "test11111")
       this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -2237,7 +2222,7 @@ ReshudingTaskandEvent() {
         // this._PopupConfirmedValue = 1;
       }
       
-      document.getElementById("div_recurrence").style.display = "block";
+      document.getElementById("div_recurrence").style.display = "none";
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
@@ -2317,6 +2302,27 @@ ReshudingTaskandEvent() {
           });
         }
       }
+
+      if (this.ScheduleType == 'Task') {
+        this.EventScheduledjson[0]['Ed_Time']
+        this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+        this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+        this.MasterCode = (this.MasterCode[0].stringval);
+
+        document.getElementById("subtaskid").style.display = "block";
+        // document.getElementById("Link_Name").style.display = "none";
+        document.getElementById("Guest_Name").style.display = "none";
+        document.getElementById("Location_Name").style.display = "none";
+        document.getElementById("Descrip_Name").style.display = "none";
+        document.getElementById("core_viw123").style.display = "block";
+        document.getElementById("core_viw121").style.display = "none";
+        document.getElementById("core_viw222").style.display = "none";
+        document.getElementById("core_Dms").style.display = "none";
+        // document.getElementById("Monthly_121").style.display = "none";
+        // document.getElementById("weekly_121").style.display = "none";
+
+      }
+
       if (this.ScheduleType == 'Event') {
         this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
@@ -2361,14 +2367,10 @@ ReshudingTaskandEvent() {
         document.getElementById("core_viw123").style.display = "none";
         document.getElementById("core_viw222").style.display = "block";
         document.getElementById("core_Dms").style.display = "block";
+        console.log(this.MasterCode,'decode')
       }
     });
   // this.closeevearea();
-}
-
-
-ReshudingTaskandEvents(){
-  document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
 }
 
 
@@ -2384,12 +2386,293 @@ LastLengthValidation11() {
   }
 }
 
+AgendaInputEvent:string|undefined;
+AgendasAddedEvent:number=0;
+
+AddAgendaEvent() {
+  if (this.AgendaInputEvent && this.AgendaInputEvent.trim().length > 0) {
+    this.AgendasAddedEvent += 1;
+    const agenda = {
+      index: this.AgendasAddedEvent,
+      name: this.AgendaInputEvent
+    };
+    this.allAgendas.push(agenda);
+    this.AgendaInputEvent = undefined;
+  }
+
+  console.log("allAgendas:", this.allAgendas);
+}
+
+
+
+editAgendaEvent(index: number) {
+  $(`#agenda-label-Event-${index}`).addClass('d-none');
+  $(`#agenda-text-field-Event-${index}`).removeClass('d-none');
+  $(`#agenda-text-field-Event-${index}`).focus();
+
+  $(`#edit-cancel-Event-${index}`).removeClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-Event-${index}`).removeClass('d-none');   // save btn is visible.
+
+  $(`#edit-agendaname-btn-Event-${index}`).addClass('d-none');  // edit btn is invisible.
+  $(`#remove-agenda-btn-Event-${index}`).addClass('d-none');   // delete btn is invisible.
+
+}
+
+
+deleteAgendaEvent(index: number) {
+  if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
+    Swal.fire({
+      title: 'Remove this Agenda ?',
+      text: this.allAgendas[index].name,
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then(option => {
+      if (option.isConfirmed) {
+        this.allAgendas.splice(index, 1);
+      }
+    });
+  }
+  console.log("allAgendas:", this.allAgendas);
+}
+
+
+cancelAgendaEditEvent(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-Event-${index}`);
+  tf.value = this.allAgendas[index].name;
+
+  $(`#agenda-label-Event-${index}`).removeClass('d-none');   // label is visible.
+  $(`#agenda-text-field-Event-${index}`).addClass('d-none');   // textfield is invisible.
+  $(`#edit-cancel-Event-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-Event-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-Event-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-Event-${index}`).removeClass('d-none');   // delete btn is visible.
+}
+
+
+
+updateAgendaEvent(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-Event-${index}`);
+  this.allAgendas[index].name = tf.value;
+
+  $(`#agenda-label-Event-${index}`).removeClass('d-none'); // label is visible.
+  $(`#agenda-text-field-Event-${index}`).addClass('d-none');  // textfield is invisible.
+  $(`#edit-cancel-Event-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-Event-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-Event-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-Event-${index}`).removeClass('d-none');   // delete btn is visible.
+  console.log('all agendas after updating:', this.allAgendas);
+}
+
+
+
+getObjOf(arr, id, idName) {
+ 
+  const obj = arr.find(item => item[idName] == id);
+  return obj;
+}
+
+
+getProjectName(projectCode: string) {
+
+  if (this.ProjectListArray) {
+    const P = this.ProjectListArray.find(pr => pr.Project_Code.trim() == projectCode.trim());
+    return P ? P.BlockNameProject : '';
+  }
+  return [];
+
+}
+
+
+
+onProjectSelected(e: any) {
+  const prjChoosed = this.ProjectListArray.find((p: any) => p.Project_Code === e.option.value);
+  if (prjChoosed) {
+    if (!this.MasterCode)   // if Portfolio is null,undefined,''
+      this.MasterCode = [];
+    const index = this.MasterCode.indexOf(prjChoosed.Project_Code);
+    if (index === -1) {
+      // if not present then add it
+      this.MasterCode.push(prjChoosed.Project_Code);
+    }
+    else {
+      this.MasterCode.splice(index, 1);
+    }
+  }
+  this.openAutocompleteDrpDwn('ProjectsDrpDwn');
+}
+
+
+
+
+
+removeSelectedProject(item) {
+  const index = this.MasterCode.indexOf(item);
+  if (index !== -1) {
+    this.MasterCode.splice(index, 1);
+  }
+}
+
+
+
+
+
+  onPortfolioSelected(e: any) {
+    const portfolioChoosed: any = this.Portfoliolist_1.find((p: any) => p.portfolio_id === e.option.value);
+    console.log(portfolioChoosed);
+    if (portfolioChoosed) {
+      if (!this.Portfolio)   // if Portfolio is null,undefined,''
+        this.Portfolio = [];
+      const index = this.Portfolio.indexOf(portfolioChoosed.portfolio_id);
+      if (index === -1) {
+        // if not present then add it
+        this.Portfolio.push(portfolioChoosed.portfolio_id);
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.Portfolio.splice(index, 1);
+      }
+    }
+    this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+  }
+
+
+  removeSelectedPortfolio(item) {
+    const index = this.Portfolio.indexOf(item);
+    if (index !== -1) {
+      this.Portfolio.splice(index, 1);
+    }
+  }
+
+  onDMSMemoSelected(e) {
+    const memoChoosed = this.Memos_List.find((c) => c.MailId === e.option.value);
+    if (memoChoosed) {
+      if (!this.SelectDms)   // if SelectDms is null,undefined,''
+        this.SelectDms = [];
+
+      const index = this.SelectDms.indexOf(memoChoosed.MailId);
+      if (index === -1) {
+        // if not present then add it
+        this.SelectDms.push(memoChoosed.MailId);
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.SelectDms.splice(index, 1);
+      }
+    }
+    this.openAutocompleteDrpDwn('MemoDrpDwn');
+  }
+  removeSelectedDMSMemo(item) {
+    const index = this.SelectDms.indexOf(item);
+    if (index !== -1) {
+      this.SelectDms.splice(index, 1);
+    }
+  }
+
+
+
+
+  onParticipantSelected(e: any) {
+    const participantChoosed = this._EmployeeListForDropdown.find((c) => c.Emp_No === e.option.value);
+    if (participantChoosed) {
+      if (!this.ngEmployeeDropdown)   // if ngEmployeeDropdown is null,undefined,''
+        this.ngEmployeeDropdown = [];
+
+      const index = this.ngEmployeeDropdown.indexOf(participantChoosed.Emp_No);
+      if (index === -1) {
+        // if not present then add it
+        this.ngEmployeeDropdown.push(participantChoosed.Emp_No);
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.ngEmployeeDropdown.splice(index, 1);
+      }
+    }
+    this.openAutocompleteDrpDwn('ParticipantsDrpDwn');
+  }
+
+  removeSelectedParticipant(item) {
+    const index = this.ngEmployeeDropdown.indexOf(item);
+    if (index !== -1) {
+      this.ngEmployeeDropdown.splice(index, 1);
+    }
+  }
+
+
+
+  _selectedId = 0;
+  _SecondSelectedId = 0;
+  _total = 14;
+
+
+
+
+  getavltime(e) {
+    this.timeslotsavl = [];
+    this.timeslotsavl.push(this.Avaliabletime.find(i => i.count === parseInt(e.target.value)));
+    this._selectedId = 0;
+    this._SecondSelectedId = 0;
+    this.timeslotsavl.forEach(element => {
+      this._total = element.SlotsJson.length;
+    });
+  }
+
+
+
+
+  RemoveSelectedFile1(_id) {
+    var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
+    this._lstMultipleFiales.splice(removeIndex, 1);
+
+    const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
+    uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
+  
+  }
+
+  RemovedAttach: any = [];
+
+
+  RemoveExistingFile(_id) {
+    this.Attachment12_ary.forEach(element => {
+      if (element.file_id == _id) {
+        this.RemovedAttach.push(element.Cloud_Name)
+      }
+    });
+    var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
+    this.Attachment12_ary.splice(removeIndex, 1);
+  }
+
+
+
+  GetTimeslabfordate() {
+  
+    this._calenderDto.minutes = 5;
+    // this._hrtime = parseInt(moment(new Date()).format("HH"));
+    // this.Startts = this._hrtime.toString() + ':00';
+    this._calenderDto.StartTime = "00:00";
+    this._calenderDto.EndTime = "23:55";
+
+    this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
+      ((data) => {
+
+        this._arrayObj = data as [];
+        this._arrayObj.forEach(element => {
+          this.EndTimearr.push(element.TSEnd);
+          this.AllEndtime.push(element.TSEnd);
+          this.StartTimearr.push(element.TSStart);
+          this.Alltimes.push(element.TSStart);
+        });
+
+        // console.log(this.EndTimearr[0]);
+        // console.log("Array" + this.EndTimearr);
+      });
+  }
+
+
+
+
+
 
 
 GetSubtasklistfromProject(MasterCode) {
 
   this.ProjectListArray.forEach(element => {
-
     if (element.Project_Code == MasterCode) {
 
       this.Projectstartdate = element.StatDate;
