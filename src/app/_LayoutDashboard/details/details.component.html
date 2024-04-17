@@ -7696,7 +7696,7 @@
                       </li>
                   </ul>
                   <div class="d-flex align-items-center">
-                      <a type="button" class="btn icon-btn icn-hvr fav-btn recall-btn" title="Meeting Recall" (click)="getRecallMeetings()">
+                      <a type="button" class="btn icon-btn icn-hvr fav-btn recall-btn" title="Meeting Recall" (click)="showRecallMeetingsView(); getLinkableMtgsList();">
                         <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                 <g id="surface1">
@@ -9117,7 +9117,78 @@
     
             <div class="mt-2 p-3 meeting-scroll-y">
                     <div class="recall-main">
-keep here
+    
+
+
+
+                        <div class="matchip-drp-dwn">
+
+                                                                 
+                            <mat-form-field class="drp-dwn-field w-100" *ngIf="LinkableMtgsList">
+                                <mat-label>Select Meeting</mat-label>
+                                <mat-chip-list #selectedMtgs2Linked_list>
+                                               
+                                        <mat-chip class="Data_chip_kt"  *ngFor="let mtg of selectedMtgs2Link"   (removed)="removeSelectedLinkableMtg(mtg)">
+                                           {{getSelectedMtgName(mtg)}}
+                                            <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+                                   
+                                </mat-chip-list>
+                                <div class="d-flex">
+                                    <input class="flex-1" [matChipInputFor]="selectedMtgs2Linked_list"
+                                        [matAutocomplete]="LinkableMtgsDrpDwn" #mtgs2LinkedTF />
+                                    <button *ngIf="isLinkableMtgsDrpDwnOpened" class="bg-transparent border-0 "><mat-icon
+                                            class="close-icon"
+                                            (click)=" isLinkableMtgsDrpDwnOpened=false;  mtgs2LinkedTF.value='';  closeAutocompleteDrpDwn('LinkableMtgsDrpDwn');">cancel</mat-icon></button>
+                                    <button *ngIf="!isLinkableMtgsDrpDwnOpened" class="bg-transparent border-0"><mat-icon
+                                            class="add-icon"
+                                            (click)="isLinkableMtgsDrpDwnOpened=true; openAutocompleteDrpDwn('LinkableMtgsDrpDwn');">add</mat-icon></button>
+                                </div>
+                                
+                                <mat-autocomplete aria-label="LinkableMtgsDrpDwn" #LinkableMtgsDrpDwn="matAutocomplete"
+                                    (optionSelected)="onMtgForLinkSelected($event); mtgs2LinkedTF.value=''; "
+                                    (opened)="isLinkableMtgsDrpDwnOpened=true" (closed)="isLinkableMtgsDrpDwnOpened=false; ">
+                               
+
+                                    <mat-option *ngFor="let mtg of (LinkableMtgsList|filter:mtgs2LinkedTF.value.trim()).slice(0,1000)"  [value]="mtg.EventNumber" >
+                                        <mat-checkbox color="primary"
+                                            [checked]="selectedMtgs2Link.indexOf(mtg.EventNumber)!==-1"></mat-checkbox>
+                                        {{mtg.Task_Name}} (<span class="LM_mtg-recurrence-type">{{mtg.Recurrence}}</span>) (<span class="LM_mtg-Owner">{{mtg.Owner}}</span>) 
+                                    </mat-option>
+
+
+
+                                    <mat-option  style="pointer-events:none;" *ngIf="(LinkableMtgsList|filter:mtgs2LinkedTF.value.trim()).slice(0,1000).length===0" >
+                                      <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                          <g id="SVGRepo_iconCarrier">
+                                              <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                          </g>
+                                      </svg>
+                                      <span style="color:#757575" class="ml-2">No results found.</span>
+                                  </mat-option> 
+  
+  
+                                </mat-autocomplete>
+                            </mat-form-field>
+              
+              
+              
+                            <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn " (click)="linkMtgsToProject()">Link</button>
+              
+                        </div>
+
+
+
+
+
+
+
+
+
                     </div>
             </div>
         </div>

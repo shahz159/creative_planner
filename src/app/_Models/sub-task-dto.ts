@@ -51,4 +51,6 @@ export class SubTaskDTO {
   startdate:any;
   enddate:any;
 
+  EventNumber:string;
+
 }

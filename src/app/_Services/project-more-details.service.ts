@@ -39,4 +39,19 @@ export class ProjectMoreDetailsService {
   }
 
 
+
+  NewGetEmployeeMeetings(EmpNo:any){
+      this.ObjSubTaskDTO.Emp_No=EmpNo;
+      return this.http.post(this.rootUrl+'CalenderAPI/NewGetEmployeeMeetings',this.ObjSubTaskDTO);
+  }
+
+
+  NewLinkMeetingInProjectDetails(EventNumber:string,Emp_No:string,Project_Code:string){
+      this.ObjSubTaskDTO.Emp_No=Emp_No;
+      this.ObjSubTaskDTO.Project_Code=Project_Code;
+      this.ObjSubTaskDTO.EventNumber=EventNumber;
+      return this.http.post(this.rootUrl+'CalenderAPI/NewLinkMeetingInProjectDetails',this.ObjSubTaskDTO);
+  }
+
+
 }
