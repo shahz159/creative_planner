@@ -7547,7 +7547,7 @@
               </div>
           </div>
       </div>
-      <div class="kt-portlet__body flex-row" *ngIf="meetingsViewOn; else mysideInfobar_schd">
+      <div class="kt-portlet__body flex-row" id="main-meeting" *ngIf="meetingsViewOn; else mysideInfobar_schd">
           <div class="w-100">
 
               <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
@@ -7644,7 +7644,7 @@
                       </li>
                   </ul>
                   <div class="d-flex align-items-center">
-                      <a type="button" class="btn icon-btn icn-hvr fav-btn recall-btn" title="Meeting Recall">
+                      <a type="button" class="btn icon-btn icn-hvr fav-btn recall-btn" title="Meeting Recall" (click)="getRecallMeetings()">
                         <span class="svg-icon svg-icon-primary svg-icon-2x mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                 <g id="surface1">
@@ -7655,7 +7655,7 @@
                                 </g>
                             </svg>
                         </span>
-                          <span class="tsk">Recall</span>
+                          <span class="tsk">Link Meetings</span>
                       </a>
                       <div class="dropdown no-after btm-btn ml-2 nav-item create-btn"
                       *ngIf="projectInfo&&projectInfo.Status != 'Completed'">
@@ -7705,7 +7705,7 @@
 
                               <div class="met-card mb-3" *ngFor="let meeting of meetings.totalmeetings">
                                   <div class="card-body">
-                                      <div class="d-flex">
+                                      <div class="d-flex align-items-center">
                                           <div class="mt-left">
                                               <div class="mt-date">
                                                   <div class="mt-date-haed met-month">
@@ -7802,7 +7802,7 @@
                                               </div>
 
 
-                                              <div class="Organizer-name meeting-participant  *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
+                                              <div class="Organizer-name meeting-participant"  *ngIf="meeting.usersjson&&meeting.usersjson.length>0">
                                                   <div class="kt-met-dtl">
                                                       <div class="kt-met-label"> Participant: </div>
                                                        <div class="kt-met-info">
@@ -7899,7 +7899,7 @@
 
                               <div class="met-card mb-3 cursor-pointer" *ngFor="let meeting of tmeetings.totalmeetings"   (click)="beginMeeting()"  >
                                   <div class="card-body">
-                                      <div class="d-flex">
+                                      <div class="d-flex align-items-center">
                                           <div class="mt-left">
                                               <div class="mt-date">
                                                   <div class="mt-date-haed met-month">
@@ -8116,7 +8116,7 @@
 
                               <div class="met-card mb-3" *ngFor="let lmeeting of lmeetings.totalmeetings">
                                   <div class="card-body">
-                                      <div class="d-flex">
+                                      <div class="d-flex align-items-center">
                                           <div class="mt-left">
                                               <div class="mt-date">
                                                   <div class="mt-date-haed met-month">
@@ -8333,7 +8333,7 @@
 
                               <div class="met-card mb-3" *ngFor="let lmmeeting of lmmeetings.totalmeetings">
                                   <div class="card-body">
-                                      <div class="d-flex">
+                                      <div class="d-flex align-items-center">
                                           <div class="mt-left">
                                               <div class="mt-date">
                                                   <div class="mt-date-haed met-month">
@@ -8559,7 +8559,7 @@
 
                               <div class="met-card mb-3" *ngFor="let omeeting of omeetings.totalmeetings">
                                   <div class="card-body">
-                                      <div class="d-flex">
+                                      <div class="d-flex align-items-center">
                                           <div class="mt-left">
                                               <div class="mt-date">
                                                   <div class="mt-date-haed met-month">
@@ -8827,7 +8827,7 @@
 
                               <div class="met-card mb-3" *ngFor="let meeting of meetings.totalmeetings">
                                   <div class="card-body">
-                                      <div class="d-flex">
+                                      <div class="d-flex align-items-center">
                                           <div class="mt-left">
                                               <div class="mt-date">
                                                   <div class="mt-date-haed met-month">
@@ -9006,6 +9006,33 @@
 
           </div>
       </div>
+      <div class="kt-portlet__body flex-row" id="recall-meeting" style="display: none;">
+        <div class="w-100">
+    
+            <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
+                <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
+                    <li class="nav-item" style="cursor:default; margin: 2px 0px;">
+                        <a class="icon-btn icn-hvr fav-btn"><span class="lbl-hdn">Link Meetings</span></a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a type="button" class="btn icon-btn icn-hvr fav-btn recall-btn"  (click)="backMainMeetings()">
+                        <i class="fas fa-arrow-left" style="font-size: 12px;"></i>
+                        <span class="tsk">Back</span>
+                    </a>
+                    <!-- <a type="button" class="btn icon-btn icn-hvr fav-btn submit-btn">
+                        <span class="tsk">Submit</span>
+                    </a> -->
+                </div>
+            </div>
+    
+            <div class="mt-2 p-3 meeting-scroll-y">
+                    <div class="recall-main">
+keep here
+                    </div>
+            </div>
+        </div>
+    </div>
       <ng-template #mysideInfobar_schd>
           <div class="kt-portlet mb-0 m-2">
               <div class="offcanvas-header d-flex align-items-center  p-1 mt-2"

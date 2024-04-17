@@ -7527,7 +7527,14 @@ NewAddUserCountFeature() {
       document.getElementById("feature-modal-backdrop").classList.remove("show");
 }
 
-
+getRecallMeetings() {
+  document.getElementById("recall-meeting").style.display = "block";
+  document.getElementById("main-meeting").style.display = "none";
+}
+backMainMeetings() {
+  document.getElementById("recall-meeting").style.display = "none";
+  document.getElementById("main-meeting").style.display = "block";
+}
 
 //  save meeting as draft start.
 Insert_indraft() { debugger

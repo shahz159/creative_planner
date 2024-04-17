@@ -4714,6 +4714,21 @@ background-color: #e2e8f0c9;
 .recall-btn:hover, .create-btn:hover {
   color: #000;
 }
+.submit-btn{
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px;
+  border-radius: 5px;
+  background-color: #2786fb;
+  margin-right: 4px;
+  padding: 0.35rem 0.75rem;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.submit-btn:hover {
+  background-color: #0072ff;
+  color: #fff;
+}
 #Attachment_view.kt-quick-active--on {
   width: 50% !important;
 }
