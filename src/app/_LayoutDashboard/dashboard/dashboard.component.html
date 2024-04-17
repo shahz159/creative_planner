@@ -504,6 +504,9 @@
                                     <div class="fc-event-title ml-2"> {{item.Task_Name}}</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
+                                <div class="delete-btn" title="Delete pending" (click)="onSingleEventDelete()">
+                                    <a><i class="fas fa-trash-alt"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -995,7 +998,7 @@
 
 
 
-                    <div class="icons-right  curser-pointer" title="Start new meeting" (click)="newMeetingReport()">
+                    <div class="icons-right  curser-pointer" title="Start new meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'" (click)="newMeetingReport()">
                             <span class="kt-meeting-status-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1007,7 +1010,7 @@
                     </div>
 
 
-                    <div class="icons-right met-done curser-pointer"
+                    <div class="met-done curser-pointer"
                         *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="meetingReport()">
                         <span></span><small>Completed</small>
                     </div>
@@ -3173,7 +3176,11 @@
                         </div> 
 
                         <!-- <div class="mb-3 curser-pointer">
+<<<<<<< HEAD
                             <label for="formFile" class="form-label">Default file input example</label> 
+=======
+                            <label for="formFile" class="form-label">Default file input example</label>
+>>>>>>> 8406039ece507d5b5e2b407043e5219b22e76f76
                             <input class="form-control curser-pointer" type="file" id="formFile">
                           </div> -->
 
@@ -3761,12 +3768,16 @@
                 class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
                     data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
+                <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                     (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                 class="form-group mb-0">
                 <button type="submit" class="btn btn-info btn-sm"
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                     (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
             </div>
             <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
@@ -3774,6 +3785,7 @@
                     (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
                 <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
                     (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
+                
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
 
             </div>

@@ -20,6 +20,7 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
 import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
 import tippy from 'node_modules/tippy.js';
 import {
   MAT_MOMENT_DATE_FORMATS,
