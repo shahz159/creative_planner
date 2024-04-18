@@ -1844,10 +1844,11 @@ EnterSubmit(_Demotext) {
     this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
     this._ObjAssigntaskDTO.TaskName = _Demotext;
     this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
+    this._ObjAssigntaskDTO.Agenda_Id = this.AgendaId;
 
     // this.text.push(this._Demotext);
     // this._Demotext = "";
-    this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    this.ProjectTypeService._NewInsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
       (data) => {
         //console.log("Data---->", data);
         this._TodoList = JSON.parse(data['Todomeeting']);

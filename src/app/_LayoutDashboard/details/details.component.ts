@@ -2023,7 +2023,7 @@ currentStdAprView:number|undefined;
        if(x===0)
         this.closeApprovalSideBar(); 
 
-       this.notifyService.showSuccess("tasks requests Approved.",'Success');
+       this.notifyService.showSuccess("Standard Task complete approved.",'Success');
        this.selectedStdAprvs=[];
        this.getapprovalStats();
        this.allStdAprSelected=false;
