@@ -946,7 +946,7 @@ onProjectOwnerChanged(){
   projectType:any
   // allocated:any
 
-  onButtonClick(value:any,id:number){
+  onButtonClick(value:any,id:number){ debugger
     this.bind_Project = [value]
     // this.duration=this.bind_Project[0].Duration;
 
@@ -967,6 +967,7 @@ onProjectOwnerChanged(){
     // this.Prjstartdate =this.bind_Project[0].Start_Date
     // this.Prjenddate = this.bind_Project[0].End_Date
   }
+
 
   conditionalList:any
 
