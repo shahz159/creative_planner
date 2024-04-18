@@ -7713,7 +7713,7 @@ LinkableMtgsList:any;
 selectedMtgs2Link:any=[];
 
 getLinkableMtgsList(){
-    this.projectMoreDetailsService.NewGetEmployeeMeetings(this.Current_user_ID).subscribe((res:any)=>{
+    this.projectMoreDetailsService.NewGetEmployeeMeetings(this.Current_user_ID,this.URL_ProjectCode).subscribe((res:any)=>{
            this.LinkableMtgsList=JSON.parse(res['AvailableSlotsJson']);
            console.log("LinkableMtgsList:",this.LinkableMtgsList);
     })
