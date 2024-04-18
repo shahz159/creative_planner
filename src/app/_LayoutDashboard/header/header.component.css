@@ -843,7 +843,7 @@ a.ordr-a {
     stroke-width: 20px;
 }
 
-#streamfeature:hover svg .new-ann{
+.kt-header__topbar-item:hover svg .new-ann{
     transition: all 0.3s;
     stroke: #001eff;
 }

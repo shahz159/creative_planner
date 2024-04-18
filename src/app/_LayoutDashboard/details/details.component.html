@@ -7272,10 +7272,10 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12">
                       <div class="form-group mb-0">
-                          <button type="submit" [disabled]="!Holddate || !hold_remarks" 
+                          <button type="submit"  
                           class="btn btn-info w-110  ml-2"
                           (click)="onProject_Hold(Pid,currentActionView===undefined?_MasterCode:projectActionInfo[currentActionView].Project_Code)">Submit</button>
-                          <!-- -->
+                          <!-- [disabled]="!Holddate || !hold_remarks"-->
                           <button type="submit" class="btn w-110 btn-secondary  ml-2"
                               (click)="closePrjHoldSideBar()">Cancel</button>
 
@@ -7389,10 +7389,10 @@
 
                                       <div class="col-lg-12 mt-3 p-0">
                                           <div class="form-group">
-                                              <button type="submit" [disabled]="!hold_remarks"
+                                              <button type="submit" 
                                               class="btn btn-info w-110 ml-2"
                                               (click)="holdreleaseProject()">Submit</button>
-                                              <!--  -->
+                                              <!-- [disabled]="!hold_remarks" -->
                                               <button type="submit" class="btn w-110 btn-secondary  ml-2"
                                                   (click)="closePrjReleaseSideBar()">Cancel</button>
 
@@ -7445,8 +7445,8 @@
                                           <div class="form-group">
                                               <button type="submit"
                                               class="btn btn-info w-110 ml-2"
-                                              (click)="updateReleaseDate()" [disabled]="!hold_remarks">Submit</button>
-                                              <!--  -->
+                                              (click)="updateReleaseDate()" >Submit</button>
+                                              <!-- [disabled]="!hold_remarks" -->
                                               <button type="submit"
                                                   class="btn w-110 btn-secondary  ml-2">Cancel</button>
 
@@ -7532,9 +7532,9 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12">
                       <div class="form-group mb-0">
-                          <button type="submit"  [disabled]="!hold_remarks" class="btn btn-info w-110 ml-2"
+                          <button type="submit"  class="btn btn-info w-110 ml-2"
                           (click)="updateProjectCancel()">Submit</button>
-                          <!-- -->
+                          <!-- [disabled]="!hold_remarks" -->
                           <button type="submit" class="btn w-110 btn-secondary  ml-2"
                               (click)="closePrjCancelSb()">Cancel</button>
 
