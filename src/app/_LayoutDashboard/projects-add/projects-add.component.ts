@@ -1032,7 +1032,7 @@ addPrjsToPortflio() {
 
   }
   else{
-    this.notifyService.showError("please select atleast one project","missing");
+    this.notifyService.showInfo("please select atleast one project to add","");
   }
 
 }

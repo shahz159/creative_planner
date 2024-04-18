@@ -3780,7 +3780,10 @@ mat-icon {
     border-bottom: 2px solid #1a73e8;
 }
 
-
+.border-b-dashed{
+    border-bottom: 1px dashed #dbdbdb;
+      padding-bottom: 7px;
+  }
 
 
 /* } */

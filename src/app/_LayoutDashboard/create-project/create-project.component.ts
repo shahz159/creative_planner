@@ -1392,7 +1392,7 @@ sendApproval(){
               this.ProjectDto.Project_Cost=this.PrjCost;
               this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
                 if(res&&res.message==='Success'){
-                      this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+                      this.notification.showSuccess("Project sent to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
                       this.router.navigate(['./backend/ProjectsSummary']);
                       //  this.closeInfo();
                   }

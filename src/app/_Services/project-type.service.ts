@@ -765,6 +765,29 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTask", this._ObjAssigntaskDTO);
   }
 
+  _NewInsertOnlyTaskServie(_ObjAssigntaskDTO) {
+
+    this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
+    this._ObjAssigntaskDTO.CreatedBy = localStorage.getItem('EmpNo');
+    this._ObjAssigntaskDTO.ProjectType = _ObjAssigntaskDTO.ProjectType;
+    this._ObjAssigntaskDTO.TaskName = _ObjAssigntaskDTO.TaskName;
+    this._ObjAssigntaskDTO.TaskDescription = _ObjAssigntaskDTO.TaskDescription;
+    this._ObjAssigntaskDTO.AssignTo = _ObjAssigntaskDTO.AssignTo;
+    this._ObjAssigntaskDTO.StartDate = _ObjAssigntaskDTO.StartDate;
+    this._ObjAssigntaskDTO.EndDate = _ObjAssigntaskDTO.EndDate;
+    this._ObjAssigntaskDTO.ProjectDays = _ObjAssigntaskDTO.ProjectDays;
+    this._ObjAssigntaskDTO.SubmissionType = _ObjAssigntaskDTO.SubmissionType;
+    this._ObjAssigntaskDTO.AssignId = _ObjAssigntaskDTO.AssignId;
+    this._ObjAssigntaskDTO.CategoryName = _ObjAssigntaskDTO.CategoryName;
+    this._ObjAssigntaskDTO.CategoryId = _ObjAssigntaskDTO.CategoryId;
+    this._ObjAssigntaskDTO.Remarks = _ObjAssigntaskDTO.Remarks;
+    this._ObjAssigntaskDTO.Reference = _ObjAssigntaskDTO.Reference;
+    this._ObjAssigntaskDTO.Schedule_ID = _ObjAssigntaskDTO.Schedule_ID;
+    this._ObjAssigntaskDTO.Agenda_Id = _ObjAssigntaskDTO.Agenda_Id;
+
+    return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTaskwithAgenda", this._ObjAssigntaskDTO);
+  }
+
   _InsertAssignTaskServie(fd) {
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
