@@ -639,7 +639,7 @@ a.ordr-a {
   }
   .kt-header__topbar-icon:hover .feature-icon{
     transition: all 0.3s;
-    color: #5867dd;
+    color: #001eff;
   }
 
   .feature-content-hero{
@@ -836,4 +836,14 @@ a.ordr-a {
 .feature-modal-backdrop.show {
     opacity: 0.5;
     display: block;
+}
+
+.new-ann {
+    stroke: #000000;
+    stroke-width: 20px;
+}
+
+.kt-header__topbar-item:hover svg .new-ann{
+    transition: all 0.3s;
+    stroke: #001eff;
 }
