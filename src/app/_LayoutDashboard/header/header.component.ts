@@ -72,6 +72,15 @@ export class HeaderComponent implements OnInit {
         animateFill: true,
         inertia: true,
       });
+
+      tippy('#streamfeature', {
+        content: "New features",
+        arrow: true,
+        animation: 'scale-extreme',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+      });
       
       tippy('#user_details', {
         content: "User details",
