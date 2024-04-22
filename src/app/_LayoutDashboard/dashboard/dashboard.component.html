@@ -1225,7 +1225,7 @@
                         </div>
                     </div>
 
-
+                    <!-- allAgendas here also -->
               <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
                         <div class="boxcl-div">
                             <div class="kt-meeting-title-icon">
@@ -3224,7 +3224,7 @@
                             <div class="form-group flex-1">
                                 <label>{{_labelName}}<span class="text-danger">*</span></label>
                                 <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
-                                    <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
+                                    <input [matDatepicker]="picker1" (click)="picker1.open()"
                                         (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
                                         [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;">
                                     <div class="input-group-append">
@@ -3365,7 +3365,7 @@
                                     </div>
                                 </div>
 
-  
+   
  
                             </div>
                         </div>

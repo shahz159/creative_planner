@@ -3787,6 +3787,10 @@ mat-icon {
 .kt-agenda-item, .kt-agenda-items {
     height: 70px;
 }
+.border-b-dashed{
+    border-bottom: 1px dashed #dbdbdb;
+      padding-bottom: 7px;
+  }
 
 
 .main-title{       
