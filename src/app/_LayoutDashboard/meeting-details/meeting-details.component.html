@@ -42,17 +42,14 @@
                                                 </span>
                                             </ng-container>
                                             <ng-container *ngIf="meetingInProgress">
+
+
                                                 <span (click)="leaveMeeting()">Leave Meeting</span>
                                             </ng-container>
-                                            <span class="text-white">|</span>
+               
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
-
                                                 <span>{{startTime |date: 'h:mm'}}</span>
-
                                             </span>
-
-
-
                                         </div>
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
@@ -111,42 +108,7 @@
                                             <span class="kt-meeting-title-name">Meeting Metrics </span>
 
                                              <!-- | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span> -->
-
-
-
-
-
-
-
-
-                                             <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                             {{item.Schedule_Type}}  
-                                         </span>
-                                         <span
-                                             *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
-                                             style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
-                                             {{item.Recurrence}}
-                                         </span>
-                                         <span *ngIf="Meeting_status==true" style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                             {{item.Schedule_Type}}
-                                         </span>
-                                         <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true"
-                                             style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1">
-                                             {{item.Recurrence}}
-                                         </span>
-                                         <span *ngIf="Status1 =='Rejected'" style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                             {{item.Schedule_Type}}
-                                         </span>
-                                         <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'"
-                                             style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1">
-                                             {{item.Recurrence}}
-                                         </span>
+                                            
                                       </div>
                                         
                                     </div>
@@ -883,14 +845,61 @@
                     </div>
                     <div   class="card-body p-0  pt-3 h-100">
                         <ng-container *ngFor="let item of EventScheduledjson"> 
-                        <div *ngIf="currentAgendaView==undefined" class="kt-info-box kt-info-meeting-box  meeting-details border-0">
+                        <div *ngIf="currentAgendaView==undefined;else AgendaList " class="kt-info-box kt-info-meeting-box  meeting-details border-0">
                             <div class="d-flex justify-content-between">
                                 <div class="kt-project-name d-flex align-items-center gap-2">
                                     <h4>{{item.Task_Name}}</h4>
                                 </div>
                                 <div class="kt-project-option">
-                                    <div class="options event">Event</div>
-                                    <div class="options monthly">Monthly</div>
+
+
+
+
+
+
+
+                             <!-- <div class="options event">Event</div>
+                                    <div class="options monthly">Monthly</div> -->
+
+
+                                    <div>
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
+                                    class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                    {{item.Schedule_Type}}  
+                                </span>
+                                <span
+                                    *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
+                                    style="height: 18px;"
+                                    class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
+                                    {{item.Recurrence}}
+                                </span>
+                                <span *ngIf="Meeting_status==true" style="height: 18px;"
+                                    class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                    {{item.Schedule_Type}}
+                                </span>
+                                <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true"
+                                    style="height: 18px;"
+                                    class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1">
+                                    {{item.Recurrence}}
+                                </span>
+                                <span *ngIf="Status1 =='Rejected'" style="height: 18px;"
+                                    class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                    {{item.Schedule_Type}}
+                                </span>
+                                <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'"
+                                    style="height: 18px;"
+                                    class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1">
+                                    {{item.Recurrence}}
+                                </span>
+                            </div>
+
+
+
+
+
+
+
+
                                     <!-- <div class="v-line"></div> -->
                                     <div class="PA_title PA_Edit_btn" (click)="ReshudingTaskandEvent()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -1162,19 +1171,12 @@
                                 </div>
 
 
-
-
-
-
-
-
-
                                 <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
                                                 
-                                                
+                                                   <svg _ngcontent-nli-c395="" xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g _ngcontent-nli-c395="" clip-path="url(#clip0_365_5615)"><path _ngcontent-nli-c395="" d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="black"></path><path _ngcontent-nli-c395="" d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="black"></path><path _ngcontent-nli-c395="" d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="black"></path><path _ngcontent-nli-c395="" d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="black"></path></g><defs _ngcontent-nli-c395=""><clipPath _ngcontent-nli-c395="" id="clip0_365_5615"><rect _ngcontent-nli-c395="" width="15" height="16.1538" fill="black" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                                             </span>
                                             <span class="label-name">
                                                 Agenda 
@@ -1184,7 +1186,7 @@
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control" *ngFor="let list of  Agendas_List;let i=index">
                                            
-                                                <p >{{i+1}}.{{list.Agenda_Name}}</p>  
+                                                <p>{{i+1}}.{{list.Agenda_Name}}</p>  
                                         </div>
                                     </div>
                                 </div>
@@ -1506,6 +1508,7 @@
                                 </div>
                             </div>
                         </div>
+                        <ng-template #AgendaList>
                         <div class="kt-info-box kt-info-meeting-box meeting-notes border-0">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="kt-project-name d-flex align-items-start flex-column">
@@ -1519,8 +1522,38 @@
                                     </ng-container>
 
                                     <ng-template #Agenda>
-                                        <h4>{{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                                        <ng-container *ngIf="Agendas_List[currentAgendaView].Status==1;else completeAgenda">
+                                            <h4><s>
+                                                {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name | slice:0:limited_data}}
+                                                    {{ isExpanded ? (Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name | slice:limited_data): ' ' }}
+                                                </s>
+                                                    <ng-container *ngIf="Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name.length>98">
+                                                         <a href="javascript:void(0)"
+                                                        (click)="toggleReadMore()">{{ isExpanded ? 'less' : 'more...' }}</a>
+                                                    </ng-container>
+                                      
+                                                <!-- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}} -->
+                                         
+                                            </h4>
+                                        </ng-container>
+                                        <ng-template #completeAgenda>
+
+
+                                            <h4>
+                                            {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name | slice:0:limited_data}}
+                                            {{ isExpanded ? (Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name | slice:limited_data): ' ' }}
+                                    
+                                            <ng-container *ngIf="Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name.length>98">
+                                                 <a href="javascript:void(0)"
+                                                (click)="toggleReadMore()">{{ isExpanded ? 'less' : 'more...' }}</a>
+                                            </ng-container>
                                         </h4>
+
+
+
+                                            <!-- <h4>{{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                                            </h4> -->
+                                        </ng-template>                                     
                                     </ng-template>
 
 
@@ -1598,14 +1631,19 @@
                                     (click)="onEditorFocus()"
                                     (focus)="onEditorFocus()" 
                                     (copy)="onCopy($event)"
-                                    (keyup)="addBulletPointsOnEnter($event)"> -->
+                                    (keyup)="addBulletPointsOnEnter($event)">    
+                                 </angular-editor>  -->
 
-                                     <angular-editor [config]="config" [(ngModel)]="Notes_Type" >
-                                 </angular-editor>
-                                
+                                <ng-container *ngIf="Agendas_List[currentAgendaView].Status==0;">
+                                 <angular-editor [config]="config" [(ngModel)]="Notes_Type"
+                                 (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
+                                </ng-container>
 
-
-                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed' ">
+                                 <!-- <ng-template #angularEditor>
+                                 <angular-editor [config]="config" [(ngModel)]="Notes_Type"></angular-editor>
+                                </ng-template> -->
+                                    
+                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
                                         <div class="task-header">
@@ -1675,6 +1713,81 @@
                             </div>
                         </div>
                     </div> 
+
+
+
+
+
+ <!--    View All Team members notes Start   -->
+
+ <div *ngIf="currentAgendaView+1>0" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+    <div class="accordion-item" >
+        <h2 class="accordion-header" id="headingOne">
+            <a class="accordion-button" type="button" data-toggle="collapse"
+                data-target="#attendes_notes" aria-expanded="false"
+                aria-controls="attendes_notes">
+                <div class="head-content">
+                    <span class="accordion-heading">View All Team members notes</span>
+                    <!-- <span class="message-count"> 24 Messages</span> -->
+                </div>
+                <div>
+                    <span class="accordion-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                            viewBox="0 0 15 9" fill="none">
+                            <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </h2>
+                                                            
+        <div id="attendes_notes" class="accordion-collapse collapse" 
+            aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+            <div class="accordion-body">
+                <div *ngIf="currentAgendaView+1">                                       
+                    <h5>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                   </h5>                                 
+                  </div>
+                <ul class="attendees-note-userlist" *ngFor="let data of AllAttendees_notes">
+                    <li class="attendees-note-user">
+                        <div class="user-info">
+                            <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
+                            <span>
+                                <div class="user-name">{{data.Emp_Name}}
+                                   
+                                    </div>
+                                </span>
+                         
+                        </div>
+                        <div class="user-notes">
+                          
+                            <p [innerHTML]="data.Meeting_notes"></p>
+                        </div>
+                    </li>
+                    <!-- <li class="attendees-note-user">
+                    <div class="user-info">
+                        <span class="user-icon">
+                            <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                        </span>
+                        <span>
+                            <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
+                            <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                        </span>
+                    </div>
+                    <div class="user-notes">
+                        <p>How likely are you to recommend our company to your friends and family ?</p>
+                        <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+                </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--   View All Team members notes End  -->
+
 
                  
        <!--      Assign Task/Project Start      -->
@@ -2091,7 +2204,6 @@
 
 
 
-
                             <!-- <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
                                 <div class="kt-meeting-title mt-0 mb-2">
                                     <div class="kt-meeting-title-icon">
@@ -2212,80 +2324,25 @@
                             </div> -->
 
 
-           <!--    View All Team members notes Start   -->
-
-                            <div *ngIf="currentAgendaView+1>0" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
-                                <div class="accordion-item" >
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <a class="accordion-button" type="button" data-toggle="collapse"
-                                            data-target="#attendes_notes" aria-expanded="false"
-                                            aria-controls="attendes_notes">
-                                            <div class="head-content">
-                                                <span class="accordion-heading">View All Team members notes</span>
-                                                <!-- <span class="message-count"> 24 Messages</span> -->
-                                            </div>
-                                            <div>
-                                                <span class="accordion-icon">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
-                                                        viewBox="0 0 15 9" fill="none">
-                                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
-                                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </h2>
-                                                                                        
-                                    <div id="attendes_notes" class="accordion-collapse collapse" 
-                                        aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
-                                        <div class="accordion-body">
-                                            <div *ngIf="currentAgendaView+1">                                       
-                                                <h5>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
-                                               </h5>                                 
-                                              </div>
-                                            <ul class="attendees-note-userlist" *ngFor="let data of AllAttendees_notes">
-                                                <li class="attendees-note-user">
-                                                    <div class="user-info">
-                                                        <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
-                                                        <span>
-                                                            <div class="user-name">{{data.Emp_Name}}
-                                                               
-                                                                </div>
-                                                            </span>
-                                                     
-                                                    </div>
-                                                    <div class="user-notes">
-                                                      
-                                                        <p [innerHTML]="data.Meeting_notes"></p>
-                                                    </div>
-                                                </li>
-                                                <!-- <li class="attendees-note-user">
-                                                <div class="user-info">
-                                                    <span class="user-icon">
-                                                        <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                                                    </span>
-                                                    <span>
-                                                        <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
-                                                        <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
-                                                    </span>
-                                                </div>
-                                                <div class="user-notes">
-                                                    <p>How likely are you to recommend our company to your friends and family ?</p>
-                                                    <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
-                                            </li> -->
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-           <!--   View All Team members notes End  -->
-
-
                         </div>
+                    </ng-template>
                     </ng-container>
+                   
                     </div>
+                    <ng-containr style="position: fixed; bottom: 13px;
+                    right: 20px;"> 
+                    
+                        <div *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                            <button class="btn btn-info btn-sm mr-2" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal">
+                                End Meeting
+                            </button>  
+                        </div>
+                        <div *ngIf="Meetingstatuscom==Completed && Isadmin==false">
+                            <button class="btn btn-info btn-sm mr-2" (click)="leavemeet($event)">Leave Meeting</button>                                                 
+                        </div>
+                    
+                    </ng-containr>
+                   
                 </div>
             </div>
         </div>
@@ -4729,6 +4786,230 @@
 
 
 <!-- Meeting Edit Functionality End  -->
+
+
+
+
+  <!-- meeting End pop box start  -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title fs-5" id="exampleModalLabel">Meeting Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <i aria-hidden="true" class="ki ki-close"></i>
+              </button>
+          </div>
+          <div class="modal-body">
+
+              <div id="NameDate" class="main-title" *ngFor="let item of EventScheduledjson">
+                  <div class="boxcl-div">
+                      <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
+                  </div>
+
+                  <div id="" class="title-right">
+                      <div class="title-area">
+                          <div class="title-main">
+                              <span id="title1">{{item.Task_Name}}</span>
+                          </div>
+
+                          <div class="d-flex">
+                              <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}<span
+                                      _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">{{item.NewSt_Time}}
+                                      – </span>
+                              </div>
+                              <div class="title-day"> {{item.NewSt_Time}} </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+
+              <div id="project" class="eve-area ng-star-inserted">
+                <div class="left-icon">
+                    <span aria-hidden="true" class="side-icns">
+
+
+                       <svg _ngcontent-nli-c395="" xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g _ngcontent-nli-c395="" clip-path="url(#clip0_365_5615)"><path _ngcontent-nli-c395="" d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="black"></path><path _ngcontent-nli-c395="" d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="black"></path><path _ngcontent-nli-c395="" d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="black"></path><path _ngcontent-nli-c395="" d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="black"></path></g><defs _ngcontent-nli-c395=""><clipPath _ngcontent-nli-c395="" id="clip0_365_5615"><rect _ngcontent-nli-c395="" width="15" height="16.1538" fill="black" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
+                        <!-- <i class="fab-icn fab fa-wpforms"></i> -->
+                    </span>
+                </div>
+                <div class="rgt-des">
+                    <div>
+                        <div class="main-s pro-nm"> <span
+                                class="kt-dt-cnt-view">
+                                {{completedAgendaList&&completedAgendaList.length}}/{{totalAgendaList}}
+                              </span>Agenda</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+              <div class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                              <path _ngcontent-gpx-c394=""
+                                  d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                              </path>
+                          </svg>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s"> <span class="kt-dt-cnt-view">
+                            {{Guestcount}}/{{totalguest}}
+                        </span>
+                              Participants</div>
+                      </div>
+                  </div>
+              </div>
+              <div class="avar-div">
+              </div>
+
+              <!-- /*-----Projects ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <i class="fab-icn fab fa-wpforms"></i>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"> <span
+                                  class="kt-dt-cnt-view">
+                                  {{projectcount}}/{{totalproject}}
+                                </span> Projects</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----Projects list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+
+              <!-- /*-----Portfolios ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <i class="fas-icn fas fa-list"></i>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"> <span
+                                  class="kt-dt-cnt-view">
+                                  {{portfoliocount}}/{{totalportfolios}}
+                                </span> Portfolios
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----Portfolios list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+
+              <!-- /*-----DMS ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
+                              class="svg-icn">
+                              <path _ngcontent-owa-c389="" fill="none" d="M0 0h24v24H0z"></path>
+                              <path _ngcontent-owa-c389=""
+                                  d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z">
+                              </path>
+                          </svg>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">
+                            {{dmscount}}/{{totaldms}}
+                        </span>
+                              DMS</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----DMS list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+              <!-- /*-----Meeting notes ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27"
+                              class="svg-icn">
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                              <g id="SVGRepo_iconCarrier">
+                                  <path
+                                      d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z"
+                                      fill="#292D32"></path>
+                              </g>
+                          </svg>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"><span class="kt-dt-cnt-view">
+                            {{assigncount}}/{{todocount}}
+                        </span>
+                              Assign Task</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----Meeting notes list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-info btn-sm mr-2"
+                  (click)="Insert_meetingreport()">confirm</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+ <!-- meeting End pop box End -->
+
+
+
+
+
+
+
 
 
 
