@@ -504,7 +504,7 @@
                                     <div class="fc-event-title ml-2"> {{item.Task_Name}}</div>
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
-                                <div class="delete-btn" title="Delete pending" (click)="onSingleEventDelete()">
+                                <div class="delete-btn" title="Delete pending" (click)="onSinglePendingEventDelete(item.Schedule_ID)">
                                     <a><i class="fas fa-trash-alt"></i></a>
                                 </div>
                             </div>

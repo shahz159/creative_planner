@@ -570,7 +570,7 @@ export class DashboardComponent implements OnInit {
     var DayNum1 = "DayNum";
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
-    this.GetProjectAndsubtashDrpforCalender();
+    // this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
@@ -1035,6 +1035,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  PendingdeleteSchedule(id) {
+
+    this._calenderDto.Schedule_ID = id;
+    this._calenderDto.flag_id = this.flagevent;
+    this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
+      this.notifyService.showSuccess("Deleted Successfully", "Success");
+      this.closeevearea();
+      this.GetScheduledJson();
+      this.GetPending_Request();
+    })
+
+
+  }
+
   onSingleEventDelete(){
 
     Swal.fire({
@@ -1046,6 +1060,22 @@ export class DashboardComponent implements OnInit {
        if(choice.isConfirmed){
         this.AllDelete_event(1);
         this.AlldeleteSchedule()
+       }
+    });
+
+  }
+
+  onSinglePendingEventDelete(id){
+
+    Swal.fire({
+      title:`Delete ${this.Schedule_type1}`,
+      text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
+      showConfirmButton:true,
+      showCancelButton:true
+    }).then(choice=>{
+       if(choice.isConfirmed){
+        this.AllDelete_event(1);
+        this.PendingdeleteSchedule(id);
        }
     });
 
@@ -3870,7 +3900,7 @@ debugger
     //     event.setProp('title', newTitle);
     //   }
     // }
-debugger
+// debugger
 let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0);
     if (eventIsWithinView && (startMidnight !== endMidnight)&&!is12am) {
 
