@@ -2280,8 +2280,8 @@ ReshudingTaskandEvent() {
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
-      // document.getElementById("rightbar-overlay").style.display = "block";
-      // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
       this.AllDatesSDandED = [];
       var jsonData = {};
