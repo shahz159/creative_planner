@@ -2157,7 +2157,7 @@ debugger
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
-debugger
+
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -2165,6 +2165,7 @@ debugger
       this._calenderDto.attachment = this.RemovedAttach.toString();
 
       // console.log(JSON.stringify(finalarray), "finalarray");
+      debugger
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
           this.RemovedAttach = [];
