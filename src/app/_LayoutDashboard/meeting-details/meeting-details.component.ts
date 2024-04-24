@@ -156,17 +156,17 @@ export class MeetingDetailsComponent implements OnInit {
   getDetailsScheduleId() {
     this.router.navigate(["Meeting-Details/" + this.Schedule_ID]);
   }
-  @HostListener('copy', ['$event'])
-  editorFocused: boolean = false;
+  // @HostListener('copy', ['$event'])
+  // editorFocused: boolean = false;
 
-  onEditorFocus(): void {
-    this.editorFocused = true;
-    // alert(this.editorFocused)
-  }
+  // onEditorFocus(): void {
+  //   this.editorFocused = true;
+  //   // alert(this.editorFocused)
+  // }
 
-  onEditorBlur(): void {
-    this.editorFocused = false;
-  }
+  // onEditorBlur(): void {
+  //   this.editorFocused = false;
+  // }
 
   ngOnDestroy(): void {
     // Unsubscribe when the component is destroyed to prevent memory leaks
@@ -1912,7 +1912,7 @@ EnterSubmit(_Demotext) {
         console.log("Data---->", this._TodoList);
         this._Demotext = "";
         this.selectedText="";
-        this.editorFocused=false;
+        // this.editorFocused=false;
         //this.GetAssignTask();
         this.notifyService.showSuccess("Successfully", "Added");
         // this.closeInfo();
