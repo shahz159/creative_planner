@@ -19,9 +19,9 @@
                                                 </svg>
 
                                             </div>
-                                            <span class="kt-meeting-title-name">Meeting Details</span>
+                                            <span class="kt-meeting-title-name">Meeting Dashboard</span>
                                         </div>
-                                        <div class="kt-meeting-status started mt-0 mb-2">
+                                        <!-- <div class="kt-meeting-status started mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                     version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -31,12 +31,12 @@
                                                         d="M30,6h-0.887c-0.525,0-1.029,0.207-1.404,0.576L25,9.248V8c0-1.657-1.344-3-3-3H3  C1.346,5,0,6.345,0,8v6.972V24c0,1.656,1.343,3,3,3h19c1.656,0,3-1.344,3-3v-1.221l2.709,2.672c0.375,0.369,0.879,0.576,1.404,0.576  H30c1.104,0,2-0.895,2-2V8C32,6.895,31.104,6,30,6z M3,25c-0.552,0-1-0.449-1-1V8c0-0.553,0.447-1,1-1h19c0.551,0,1,0.448,1,1v16  c0,0.551-0.449,1-1,1H3z M30,24.027h-0.887H29l-4-4V20l-1-1v-6l5-5h0.113H30V24.027z"
                                                         fill="currentcolor" id="video" />
                                                 </svg>
-                                            </span>
+                                            </span> -->
                                             <!-- <span class="kt-meeting-status-title">Started</span>
                                             <span class="text-white">|</span>
                                             <span class="kt-meeting-status-time">12:45</span> -->
 
-                                            <ng-container *ngIf="!meetingInProgress && !meetingStopped">
+                                            <!-- <ng-container *ngIf="!meetingInProgress && !meetingStopped">
                                                 <span class="kt-meeting-status-title" (click)="startMeeting()">
                                                     Start Meeting
                                                 </span>
@@ -50,7 +50,7 @@
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
                                                 <span>{{startTime |date: 'h:mm'}}</span>
                                             </span>
-                                        </div>
+                                        </div> -->
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -125,9 +125,13 @@
                                                     <div class="kt-sub-name">Participants</div>
                                                 </div>
                                                 <div class="kt-metric-sub-info">
-                                                    <div class="kt-sub-label" title="{{item.Location}}">
+                                                    <div class="kt-sub-label" *ngIf="item.Location" title="{{item.Location}}">
                                                         <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}
                                                         </a>
+                                                    </div>
+                                                    <div class="kt-sub-label" *ngIf="!item.Location">Not provided
+                                                        <!-- <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}} -->
+                                                        <!-- </a> -->
                                                     </div>
                                                     <div class="kt-sub-name">Location</div>
                                                     <!-- <div class="main-s">{{item.FullAddress_loc}}</div>  -->
@@ -257,6 +261,7 @@
                                                     <div class="app-title">Teams Meeting</div>
                                                 </a>
                                                 </span>
+                                                <span  *ngIf="!Link_Detail.includes('meet.google.com') && !Link_Detail.includes('skype.com') && !Link_Detail.includes('zoom') && !Link_Detail.includes('teams.microsoft.com')"><div class="app-logo">Offline</div></span>
                                             </div>
                                         </div>
                                     </div>
@@ -272,11 +277,10 @@
                                                           
                                                         </div>
                                                        
-                                                        <div class="muted-title">Date</div>
+                                                        <!-- <div class="muted-title">Date</div> -->
                                                     </div>
-                                                    <diV class="kt-metric-duration">
+                                                    <!-- <diV class="kt-metric-duration">
                                                         <span class="duration">
-                                                            <!-- 60:00 -->
                                                             {{ formatTime(elapsedTime) }}
                                                         </span>
                                                         <span class="ml-2 l-h-0">
@@ -305,14 +309,14 @@
                                                                 </span>
                                                             </ng-container>
                                                         </span>
-                                                    </diV>
+                                                    </diV> -->
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <div class="kt-metric-duration-time">
                                                         <div class="kt-metric-time start">
-                                                            <div class="dark-title">{{startTime |date: 'h:mm a'}} </div>
+                                                            <div class="dark-title">{{item.St_Time}} </div>
                                                             <div class="muted-title">Start Time </div>
                                                         </div>
                                                         <div class="kt-metric-timeline">
@@ -432,7 +436,7 @@
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <div class="agenda-input-field p-1">
+                                            <!-- <div class="agenda-input-field p-1">
                                                 <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"
                                                     version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -456,11 +460,19 @@
                                                 <input class="task-input ml-2" id="todo-input" name="text"
                                                     placeholder="Add Agenda enter value." autofocus="true"
                                                     [(ngModel)]="agendaInput" (keyup.enter)=" addAgenda() " />
-                                                <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
+                                                
                                                 <ng-container *ngIf="agendaInput">
                                                 <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-agena"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
                                                 </button>
-                                            </ng-container>
+                                                </ng-container>
+                                            </div> -->
+
+                                            <div class="agenda-input-field">
+                                                <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
+                                                <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
+                                                />
+                                              <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                                             </div>
                                         </div>
 
@@ -1452,14 +1464,14 @@
                                                 </svg>
                                             </span>
                                             <span class="label-name">
-                                                Attendess
+                                                Attendees
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
                                             <div class="attendess" *ngFor="let item of User_Scheduledjson" >
-                                                <div class="user-icon" >
+                                                <div class="user-icon" title="{{item.TM_DisplayName}}">
                                                     <span>{{getInitials(item.TM_DisplayName)}}</span>
                                                 </div>
 

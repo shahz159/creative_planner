@@ -2051,15 +2051,15 @@ div#DemoList-table div.demo i {
 /*new */
 
 
-.task-input {
+/* .task-input {
     flex: 1;
     font-size: 1rem;
     font-family: var(--font);
     padding: 10px 10px 10px 2px;
     border: 0;
     /* box-shadow: 0 -1px 0 #e7ebf7  inset; */
-    color: #455963;
-}
+    /* color: #455963; */
+/* }  */
 
 .task-input::-moz-placeholder {
     color: #a8b5bb;
@@ -2074,7 +2074,7 @@ div#DemoList-table div.demo i {
 }
 
 .task-input:focus {
-    box-shadow: 0 -1px 0 #bdcdd6 inset;
+    /* box-shadow: 0 -1px 0 #bdcdd6 inset; */
     outline: none;
 }
 
@@ -2193,9 +2193,9 @@ div#DemoList-table div.demo i {
     flex: 1;
     font-size: 16px;
     font-family: var(--font);
-    padding: 10px 20px;
+    padding: 10px 0px;
     border: 0;
-    box-shadow: 0 -1px 0 #e2e4ea inset;
+    /* box-shadow: 0 -1px 0 #e2e4ea inset; */
     color: #455963;
 }
 
@@ -2212,7 +2212,7 @@ div#DemoList-table div.demo i {
 }
 
 .task-input:focus {
-    box-shadow: 0 -1px 0 #bdcdd6 inset;
+    /* box-shadow: 0 -1px 0 #bdcdd6 inset; */
     outline: none;
 }
 
@@ -3961,5 +3961,9 @@ span.kt-dt-cnt-view {
 .fas-icn{
     color: #5f6368;
     font-size: 16px;
+}
+
+.add-agenda-btn{
+    border-radius: 0rem 0.25rem 0.25rem 0rem;
 }
 /* } */

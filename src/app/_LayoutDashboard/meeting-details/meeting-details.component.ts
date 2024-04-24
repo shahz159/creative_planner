@@ -178,60 +178,60 @@ export class MeetingDetailsComponent implements OnInit {
 
   selectedText:any;
 
-  makeLineATask(): void {
+  // makeLineATask(): void {
 
-    // alert(this.editorFocused)
-    const editorContent = this.Notes_Type;
-    if (this.editorFocused===true) {
-      const selection = window.getSelection();
-      if (!selection || selection.rangeCount === 0) {
-      alert('Nothing is selected');
-    } 
+  //   // alert(this.editorFocused)
+  //   const editorContent = this.Notes_Type;
+  //   if (this.editorFocused===true) {
+  //     const selection = window.getSelection();
+  //     if (!selection || selection.rangeCount === 0) {
+  //     alert('Nothing is selected');
+  //   } 
     
 
-    // const range = selection.getRangeAt(0);
-    // const selectedText = range.toString();
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString().trim();
-    const containerEl = range.commonAncestorContainer;
+  //   // const range = selection.getRangeAt(0);
+  //   // const selectedText = range.toString();
+  //   const range = selection.getRangeAt(0);
+  //   const selectedText = range.toString().trim();
+  //   const containerEl = range.commonAncestorContainer;
 
-    // We assume `containerEl` is where the Angular Editor's content is
-    // Now we need to convert it to a proper HTML element if it's not already
-    const editorEl = containerEl.nodeType === 3 ? containerEl.parentNode : containerEl;
+  //   // We assume `containerEl` is where the Angular Editor's content is
+  //   // Now we need to convert it to a proper HTML element if it's not already
+  //   const editorEl = containerEl.nodeType === 3 ? containerEl.parentNode : containerEl;
 
-    // Get all the text content split by line breaks
-    const lines = editorEl.textContent.split('\n');
+  //   // Get all the text content split by line breaks
+  //   const lines = editorEl.textContent.split('\n');
 
-    // Find which line has the selected text
-    const currentLineIndex = lines.findIndex(line => line.includes(selectedText));
-    if (currentLineIndex === -1) return; // Selected text not part of the lines, exit
+  //   // Find which line has the selected text
+  //   const currentLineIndex = lines.findIndex(line => line.includes(selectedText));
+  //   if (currentLineIndex === -1) return; // Selected text not part of the lines, exit
 
-    // Replace the current line with the task HTML
-    lines[currentLineIndex] = `<div class="task">${lines[currentLineIndex]}</div>`;
+  //   // Replace the current line with the task HTML
+  //   lines[currentLineIndex] = `<div class="task">${lines[currentLineIndex]}</div>`;
 
-    // Update the Notes_Type model with the new content
-    // alert(lines.join('\n'));
-    let stringWithoutHtml = this.stripHtml(lines);
-    console.log(stringWithoutHtml, "todo");
+  //   // Update the Notes_Type model with the new content
+  //   // alert(lines.join('\n'));
+  //   let stringWithoutHtml = this.stripHtml(lines);
+  //   console.log(stringWithoutHtml, "todo");
 
-    // this.checkIfCopiedCorrectly(stringWithoutHtml);
-    if(stringWithoutHtml==''){
-      alert("Please select & copy some text from editor or place cursor on the line you want to select");
-    }
-    else{
-      if(this.selectedText!="" && stringWithoutHtml.includes(this.selectedText)){
-        this.EnterSubmit(this.selectedText);
-      }
-      else{
-        this.EnterSubmit(stringWithoutHtml);
-      }
-    }
-    }
-    else{
-      alert('This action is only for the angular editor')
-    }
-    this.editorFocused=false;
-  }
+  //   // this.checkIfCopiedCorrectly(stringWithoutHtml);
+  //   if(stringWithoutHtml==''){
+  //     alert("Please select & copy some text from editor or place cursor on the line you want to select");
+  //   }
+  //   else{
+  //     if(this.selectedText!="" && stringWithoutHtml.includes(this.selectedText)){
+  //       this.EnterSubmit(this.selectedText);
+  //     }
+  //     else{
+  //       this.EnterSubmit(stringWithoutHtml);
+  //     }
+  //   }
+  //   }
+  //   else{
+  //     alert('This action is only for the angular editor')
+  //   }
+  //   this.editorFocused=false;
+  // }
 
   makeLineAProject(){
 
@@ -241,42 +241,42 @@ export class MeetingDetailsComponent implements OnInit {
 
   }
   
-  onCopy(event: ClipboardEvent) {
-    // Using Clipboard API
-    const copiedText = event.clipboardData?.getData('text/plain');
+  // onCopy(event: ClipboardEvent) {
+  //   // Using Clipboard API
+  //   const copiedText = event.clipboardData?.getData('text/plain');
     
-    // If Clipboard API is not available, use window.getSelection()
-    if (!copiedText && window.getSelection) {
-      const selectedText = window.getSelection().toString();
-      console.log('Copied with window.getSelection:', selectedText);
-      this.selectedText=selectedText;
-    } else {
-      console.log('Copied with Clipboard API:', copiedText);
-      this.selectedText=copiedText;
-      // Now you can do something with the copied text
-      // ...
-    }
+  //   // If Clipboard API is not available, use window.getSelection()
+  //   if (!copiedText && window.getSelection) {
+  //     const selectedText = window.getSelection().toString();
+  //     console.log('Copied with window.getSelection:', selectedText);
+  //     this.selectedText=selectedText;
+  //   } else {
+  //     console.log('Copied with Clipboard API:', copiedText);
+  //     this.selectedText=copiedText;
+  //     // Now you can do something with the copied text
+  //     // ...
+  //   }
 
-    // Optional: prevent the default copy action
-    // event.preventDefault();
-  }
+  //   // Optional: prevent the default copy action
+  //   // event.preventDefault();
+  // }
 
-  stripHtml(html: any): string {
-    // Check if html is an array and has at least one element.
-    if (Array.isArray(html) && html.length > 0) {
-      // Assume the first element is the string to be stripped of HTML.
-      const string = html[0];
-      if (typeof string === 'string') {
-        return string.replace(/<[^>]*>/g, '');
-      } else {
-        console.error('Expected a string in the array but got:', string);
-        return ''; // or some default string representation
-      }
-    } else {
-      console.error('Expected an array with at least one item but got:', html);
-      return ''; // or some default string representation
-    }
-  }
+  // stripHtml(html: any): string {
+  //   // Check if html is an array and has at least one element.
+  //   if (Array.isArray(html) && html.length > 0) {
+  //     // Assume the first element is the string to be stripped of HTML.
+  //     const string = html[0];
+  //     if (typeof string === 'string') {
+  //       return string.replace(/<[^>]*>/g, '');
+  //     } else {
+  //       console.error('Expected a string in the array but got:', string);
+  //       return ''; // or some default string representation
+  //     }
+  //   } else {
+  //     console.error('Expected an array with at least one item but got:', html);
+  //     return ''; // or some default string representation
+  //   }
+  // }
 
   // sendMessage(name: string, message: string) {
   //   this.signalRService.send(name, message);
