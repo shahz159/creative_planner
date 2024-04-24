@@ -404,7 +404,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 meeting_details(){ 
     this._calenderDto.Schedule_ID=this.Schedule_ID;
-   
+
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     console.log("meeting details",this.EventScheduledjson)
@@ -432,7 +432,7 @@ meeting_details(){
     });
 
     this.Guestcount = this.checkedusers.length;
-    console.log('AgendaStatus')
+   
     // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
     
     // console.log('meeting_details--->',x)
@@ -446,11 +446,14 @@ meeting_details(){
 
     this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
-    this._TotalAttachment=this.Attachments_ary.length
+    this._TotalAttachment=this.Attachments_ary.length;
 
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
-    this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code)
+    this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code);
+
+    console.log('Project_code',this.Project_code);
+    
     this.totalproject = this.Project_code.length;
 
     this.Project_code.forEach(element => {
@@ -709,7 +712,6 @@ addNewDMS() {
 
 
     AddDMS_meetingreport() {
-      alert('DMs')
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;  
@@ -1678,9 +1680,10 @@ GetMeetingnotes_data() {
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
-
+debugger
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
+    
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
@@ -2280,8 +2283,8 @@ ReshudingTaskandEvent() {
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
-      // document.getElementById("rightbar-overlay").style.display = "block";
-      // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
       this.AllDatesSDandED = [];
       var jsonData = {};
