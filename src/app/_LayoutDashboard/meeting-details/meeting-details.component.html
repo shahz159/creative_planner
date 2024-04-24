@@ -1611,7 +1611,7 @@
                                     (keyup)="addBulletPointsOnEnter($event)">    
                                  </angular-editor>  -->
 
-                                <ng-container *ngIf="Agendas_List[currentAgendaView].Status==0;">
+                                <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
                                  <angular-editor [config]="config" [(ngModel)]="Notes_Type"
                                  (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
                                 </ng-container>
@@ -1620,7 +1620,7 @@
                                  <angular-editor [config]="config" [(ngModel)]="Notes_Type"></angular-editor>
                                 </ng-template> -->
                                     
-                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0;">
+                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
                                         <div class="task-header">
