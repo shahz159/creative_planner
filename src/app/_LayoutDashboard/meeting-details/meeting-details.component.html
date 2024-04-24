@@ -481,7 +481,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                       <div class="no-agenda">
+                                       <div class="no-agenda" *ngIf="Agendas_List.length==0">
                                             <img src="../../../assets/images/noActionPresent.png">
                                             <h6>No Agenda Created</h6>
                                        </div>
@@ -504,9 +504,9 @@
                                                                     <label [id]="'agenda-label-'+i"
                                                                     class="task-name">{{item.Agenda_Name}}</label>
                                                                     <div  class="d-flex align-items-center justify-content-between">
-                                                                        <div  class="kt-info-lable-v"> By Md Waseem Akram </div>
+                                                                        <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
                                                                         
-                                                                        <div  class="kt-info-lable-v"> 08-10-2023 </div>
+                                                                        <div  class="kt-info-lable-v"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
                                                                     </div>
                                                                 <input [id]="'agenda-text-field-'+i" type="text"
                                                                     class="task-name-editfield  d-none "
@@ -586,9 +586,6 @@
                                                                     </svg>
                                                                 </button>
                                                             </div>
-                                                            <div class="d-flex">
-                                                                <span class="status-done">Completed</span>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div  *ngIf="item.Status==1 "  class="kt-agenda-items"
@@ -604,11 +601,25 @@
                                                             <div class="item-details">
                                                                  <label [id]="'agenda-label-'+i"
                                                                     class="task-name"><s>{{item.Agenda_Name}}</s></label>
-                                                                 
+
+                                                                    
+                                                                    <div  class="d-flex align-items-center justify-content-between">
+                                                                        <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
+                                                                        
+                                                                        <div  class="kt-info-lable-v"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
+                                                                    </div>
+
+
+
+
+
                                                                 <input [id]="'agenda-text-field-'+i" type="text"
                                                                     class="task-name-editfield  d-none "
                                                                     [value]="item.Agenda_Name" />
     
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <span class="status-done">Completed</span>
                                                             </div>
                                                             <!-- <div class="d-flex">
                                                                 <button *ngIf="Isadmin==true" [id]="'edit-agendaname-btn-'+i"
@@ -682,7 +693,7 @@
                                                                         </g>
                                                                     </svg>
                                                                 </button>
-                                                            </div> -->
+                                                            </div> -->                                                                                                                
                                                         </div>                                                        
                                                     </div>  
                                                                                                   
@@ -856,7 +867,14 @@
                                 </div>
                                 <div>
                                     <div class="kt-project-leave">
-                                        <span class="title">Leave Meeting</span>
+                                        <ng-container *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                                            <span class="title" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
+                                           </ng-container>
+                                        <ng-container *ngIf="Meetingstatuscom==Completed && Isadmin==false">
+                                        <span class="title" (click)="leavemeet($event)">Leave Meeting</span>
+                                       </ng-container>
+        
+                        
                                         <span class="icon">
                                             <svg width="22px" height="22px" viewBox="0 0 24 24" id="_24x24_On_Light_Session-Leave" data-name="24x24/On Light/Session-Leave" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="view-box" width="24" height="24" fill="none"></rect> <path id="Shape" d="M2.95,17.5A2.853,2.853,0,0,1,0,14.75v-12A2.854,2.854,0,0,1,2.95,0h8.8a.75.75,0,0,1,0,1.5H2.95A1.362,1.362,0,0,0,1.5,2.75v12A1.363,1.363,0,0,0,2.95,16h8.8a.75.75,0,0,1,0,1.5Zm9.269-4.219a.751.751,0,0,1,0-1.061L14.939,9.5H5.75a.75.75,0,0,1,0-1.5h9.19L12.219,5.28A.75.75,0,1,1,13.28,4.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.751.751,0,0,1-1.061,0Z" transform="translate(3.25 3.25)" fill="currentColor"></path> </g></svg>
                                         </span>
@@ -1244,46 +1262,7 @@
                                                 <p [innerHTML]="item.Description"></p>  
                                         </div>
                                     </div>
-                                </div>
-
-
-
-
-
-
-
-
-
-                                <div class="row">
-                                    <div class="col-md-3 details-bg">
-                                        <div class="details-label">
-                                            <span class="label-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"
-                                                viewBox="0 0 11 13" fill="none">
-                                                <path
-                                                    d="M6.82886 0.651855H2.42886C2.13712 0.651855 1.85733 0.767748 1.65104 0.974038C1.44475 1.18033 1.32886 1.46012 1.32886 1.75186V10.5519C1.32886 10.8436 1.44475 11.1234 1.65104 11.3297C1.85733 11.536 2.13712 11.6519 2.42886 11.6519H9.02886C9.3206 11.6519 9.60038 11.536 9.80667 11.3297C10.013 11.1234 10.1289 10.8436 10.1289 10.5519V3.95186L6.82886 0.651855Z"
-                                                    stroke="#979797" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                                
-                                            </span>
-                                            <span class="label-name">
-                                                Agenda 
-                                            </span>
-                                        </div> 
-                                    </div>
-                                    <div class="col-md-9 details-form-control-bg">
-                                        <div class="details-form-control" *ngFor="let list of  Agendas_List;let i=index">
-                                           
-                                                <p >{{i+1}}.{{list.Agenda_Name}}</p>  
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-                                </div>                           
+                                </div>                                                        
                                 <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
@@ -1602,9 +1581,11 @@
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
                                             <ng-container *ngIf="totalguest>0;else NoUser"></ng-container>
-                                            <div class="attendess" *ngFor="let item of User_Scheduledjson" >
-                                                <div class="user-icon" title="{{item.TM_DisplayName}}">
-                                                    <span>{{getInitials(item.TM_DisplayName)}}</span>
+                                            <div class="attendess" >
+                                                <div class="user-icon"  *ngFor="let item of User_Scheduledjson" >
+                                                    <span  title="{{item.TM_DisplayName}}">
+                                                        <span>{{getInitials(item.TM_DisplayName)}}</span>
+                                                    </span>
                                                 </div>
 
                                                 <!-- <div class="user-icon" *ngIf="item.TM_DisplayName==''">
@@ -1639,6 +1620,7 @@
                                     </div>
                                 </div>
                             </div>
+                               </div>
                         <!-- </div> -->
                         <ng-template #AgendaList>
                         <div class="kt-info-box kt-info-meeting-box meeting-notes border-0">
@@ -1705,7 +1687,7 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="Kt-Pd-Status Done"> Completed </div>
+                                    <div class="Kt-Pd-Status Done"  *ngIf="Agendas_List[currentAgendaView].Status==1"> Completed </div>
                                 </div>    
                             </div>
 
