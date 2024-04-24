@@ -90,6 +90,7 @@ export class ActionToAssignComponent implements OnInit {
   Difference_In_Time: any;
   Difference_In_Days: any;
   _Urlid:any;
+  formFieldsRequired:boolean=false;
 
   constructor(private notifyService: NotificationService,private route: ActivatedRoute,
     public ProjectTypeService: ProjectTypeService,
@@ -191,6 +192,16 @@ TEsb.addEventListener('scroll', (ac:any) => {
   }
 
   OnAssignTask_Submit() {
+
+    // check whether all mandatory fields provided
+    if(!((this._taskName)&&this.SelectedEmplList)){
+      this.formFieldsRequired=true;
+      return;
+    }
+    else this.formFieldsRequired=false; 
+    // check whether all mandatory fields provided
+
+
 
     // debugger
     if (this._StartDate == null && this._EndDate != null) {

@@ -1,5 +1,5 @@
 
-import { Component, OnInit,ViewChild  } from '@angular/core';
+import { Component, OnInit,ViewChild ,ViewChildren,QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -20,7 +20,7 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
 import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete'
 import tippy from 'node_modules/tippy.js';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -93,6 +93,8 @@ export class ActionToProjectComponent implements OnInit {
   ObjUserDetails: UserDetailsDTO;
   public filterText: any;
   _ProjectDataList: any;
+  informer:any;
+  coordinator:any
   ProjectDeadLineDate: Date;
   ProjectStartDate: Date;
   maxAllocation: number;
@@ -276,9 +278,11 @@ export class ActionToProjectComponent implements OnInit {
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
       (data) => {
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
+
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
         console.log(this.allUsers,"groupby");
+        console.log()
       });
   }
 
@@ -859,6 +863,46 @@ onFileChanged(event: any) {
   // Reset file input value to allow selecting the same file again
   this.fileInput.nativeElement.value = '';
 }
+
+
+// @ViewChildren(MatAutocompleteTrigger) autocompletes: QueryList<MatAutocompleteTrigger>;
+//  openAutocompleteDrpDwn(Acomp: string) {
+//    const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+//    requestAnimationFrame(() => autoCompleteDrpDwn.openPanel());
+//  }
+
+//  closeAutocompleteDrpDwn(Acomp: string) {
+//    const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+//    requestAnimationFrame(() => autoCompleteDrpDwn.closePanel());
+//  }
+
+// PrjSupport:{RACIS:string,Emp_No:string}[]=[];
+// isPrjSprtDrpDwnOpen:boolean=false;
+// PrjResp:string;
+
+
+
+// onPrjSprtSelected(e:any){
+//   const sprtChoosed=this._ProjectDataList.find((p:any)=>p.Emp_No===e.option.value);
+//   if(sprtChoosed){
+//        const index=this.PrjSupport.indexOf(sprtChoosed);
+//        if(index===-1){
+//           // if not present then add it
+//           this.PrjSupport.push(sprtChoosed);
+//        }
+//        else{ //  if item choosed is already selected then remove it.
+//         this.PrjSupport.splice(index,1);
+//        }
+//   }
+//   this.openAutocompleteDrpDwn('PrjSprtDrpDwn');
+// }
+
+// removeSelectedPrjSprt(sprt:{Emp_No:string,RACIS:string}){
+//   const index=this.PrjSupport.indexOf(sprt);
+//   if(index!==-1){
+//     this.PrjSupport.splice(index,1);
+//   }
+// }
 
 
 

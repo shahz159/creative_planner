@@ -19,9 +19,9 @@
                                                 </svg>
 
                                             </div>
-                                            <span class="kt-meeting-title-name">Meeting Details</span>
+                                            <span class="kt-meeting-title-name">Meeting Dashboard</span>
                                         </div>
-                                        <div class="kt-meeting-status started mt-0 mb-2">
+                                        <!-- <div class="kt-meeting-status started mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                     version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -31,29 +31,27 @@
                                                         d="M30,6h-0.887c-0.525,0-1.029,0.207-1.404,0.576L25,9.248V8c0-1.657-1.344-3-3-3H3  C1.346,5,0,6.345,0,8v6.972V24c0,1.656,1.343,3,3,3h19c1.656,0,3-1.344,3-3v-1.221l2.709,2.672c0.375,0.369,0.879,0.576,1.404,0.576  H30c1.104,0,2-0.895,2-2V8C32,6.895,31.104,6,30,6z M3,25c-0.552,0-1-0.449-1-1V8c0-0.553,0.447-1,1-1h19c0.551,0,1,0.448,1,1v16  c0,0.551-0.449,1-1,1H3z M30,24.027h-0.887H29l-4-4V20l-1-1v-6l5-5h0.113H30V24.027z"
                                                         fill="currentcolor" id="video" />
                                                 </svg>
-                                            </span>
+                                            </span> -->
                                             <!-- <span class="kt-meeting-status-title">Started</span>
                                             <span class="text-white">|</span>
                                             <span class="kt-meeting-status-time">12:45</span> -->
 
-                                            <ng-container *ngIf="!meetingInProgress && !meetingStopped">
+                                            <!-- <ng-container *ngIf="!meetingInProgress && !meetingStopped">
                                                 <span class="kt-meeting-status-title" (click)="startMeeting()">
                                                     Start Meeting
                                                 </span>
                                             </ng-container>
                                             <ng-container *ngIf="meetingInProgress">
+
+
                                                 <span (click)="leaveMeeting()">Leave Meeting</span>
                                             </ng-container>
-                                            <!-- <span class="text-white">|</span> -->
+                                             <span class="text-white">|</span> -->
+               
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
-
                                                 <span>{{startTime |date: 'h:mm'}}</span>
-
                                             </span>
-
-
-
-                                        </div>
+                                        </div> 
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -111,42 +109,7 @@
                                             <span class="kt-meeting-title-name">Meeting Metrics </span>
 
                                              <!-- | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span> -->
-
-
-
-
-
-
-
-
-                                             <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                             {{item.Schedule_Type}}  
-                                         </span>
-                                         <span
-                                             *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
-                                             style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
-                                             {{item.Recurrence}}
-                                         </span>
-                                         <span *ngIf="Meeting_status==true" style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                             {{item.Schedule_Type}}
-                                         </span>
-                                         <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true"
-                                             style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge--bold kt-badge--inline mb-1">
-                                             {{item.Recurrence}}
-                                         </span>
-                                         <span *ngIf="Status1 =='Rejected'" style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1 mr-2">
-                                             {{item.Schedule_Type}}
-                                         </span>
-                                         <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'"
-                                             style="height: 18px;"
-                                             class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge--bold kt-badge--inline mb-1">
-                                             {{item.Recurrence}}
-                                         </span>
+                                            
                                       </div>
                                         
                                     </div>
@@ -163,9 +126,13 @@
                                                     <div class="kt-sub-name">Participants</div>
                                                 </div>
                                                 <div class="kt-metric-sub-info">
-                                                    <div class="kt-sub-label" title="{{item.Location}}">
+                                                    <div class="kt-sub-label" *ngIf="item.Location" title="{{item.Location}}">
                                                         <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}
                                                         </a>
+                                                    </div>
+                                                    <div class="kt-sub-label" *ngIf="!item.Location">Not provided
+                                                        <!-- <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}} -->
+                                                        <!-- </a> -->
                                                     </div>
                                                     <div class="kt-sub-name">Location</div>
                                                     <!-- <div class="main-s">{{item.FullAddress_loc}}</div>  -->
@@ -295,6 +262,7 @@
                                                     <div class="app-title">Teams Meeting</div>
                                                 </a>
                                                 </span>
+                                                <span  *ngIf="!Link_Detail.includes('meet.google.com') && !Link_Detail.includes('skype.com') && !Link_Detail.includes('zoom') && !Link_Detail.includes('teams.microsoft.com')"><div class="app-logo">Offline</div></span>
                                             </div>
                                         </div>
                                     </div>
@@ -310,11 +278,10 @@
                                                           
                                                         </div>
                                                        
-                                                        <div class="muted-title">Date</div>
+                                                        <!-- <div class="muted-title">Date</div> -->
                                                     </div>
-                                                    <diV class="kt-metric-duration">
+                                                    <!-- <diV class="kt-metric-duration">
                                                         <span class="duration">
-                                                            <!-- 60:00 -->
                                                             {{ formatTime(elapsedTime) }}
                                                         </span>
                                                         <span class="ml-2 l-h-0">
@@ -343,14 +310,14 @@
                                                                 </span>
                                                             </ng-container>
                                                         </span>
-                                                    </diV>
+                                                    </diV> -->
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <div class="kt-metric-duration-time">
                                                         <div class="kt-metric-time start">
-                                                            <div class="dark-title">{{startTime |date: 'h:mm a'}} </div>
+                                                            <div class="dark-title">{{item.St_Time}} </div>
                                                             <div class="muted-title">Start Time </div>
                                                         </div>
                                                         <div class="kt-metric-timeline">
@@ -470,7 +437,7 @@
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <div class="agenda-input-field p-1">
+                                            <!-- <div class="agenda-input-field p-1">
                                                 <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"
                                                     version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -494,11 +461,19 @@
                                                 <input class="task-input ml-2" id="todo-input" name="text"
                                                     placeholder="Add Agenda enter value." autofocus="true"
                                                     [(ngModel)]="agendaInput" (keyup.enter)=" addAgenda() " />
-                                                <!-- [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) " -->
+                                                
                                                 <ng-container *ngIf="agendaInput">
                                                 <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-agena"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
                                                 </button>
-                                            </ng-container>
+                                                </ng-container>
+                                            </div> -->
+
+                                            <div class="agenda-input-field">
+                                                <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
+                                                <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
+                                                />
+                                              <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                                             </div>
                                         </div>
 
@@ -887,15 +862,10 @@
                     </div>
                     <div   class="card-body p-0  pt-3 h-100">
                         <ng-container *ngFor="let item of EventScheduledjson"> 
-                        <div *ngIf="currentAgendaView==undefined" class="kt-info-box kt-info-meeting-box  meeting-details border-0">
-                            <div class="d-flex justify-content-between">
-                                <div class="kt-project-name d-flex align-items-center gap-2">
+                        <div *ngIf="currentAgendaView==undefined;else AgendaList " class="kt-info-box kt-info-meeting-box  meeting-details border-0">
+                            <div class="d-flex justify-content-between  mb-2 border-b-dashed">
+                                <div class="kt-project-name d-flex align-items-center gap-2" >
                                     <h4>{{item.Task_Name}}</h4>
-                                </div>
-                                <div class="kt-project-option">
-                                    <div class="options event">Event</div>
-                                    <div class="options monthly">Monthly</div>
-                                    <!-- <div class="v-line"></div> -->
                                     <div class="PA_title PA_Edit_btn" (click)="ReshudingTaskandEvent()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 18 18" fill="none">
@@ -911,8 +881,102 @@
                                         <span class="lbl-hdn">Edit</span>
                                     </div>
                                 </div>
+                                <div class="kt-project-option">
+                                    <div class="options event">Event</div>
+                                    <div class="options monthly">{{item.Recurrence}}</div>
+                                    <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
+                                        <span class="title">Private Notes</span>
+                                        <span class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                viewBox="0 0 22 22" fill="currentcolor">
+                                                <path
+                                                    d="M21.2731 10.8727L21.0535 10.7208L21.4443 10.1849C21.5898 9.98651 21.6941 9.76166 21.7515 9.52329C21.8088 9.28492 21.8179 9.03771 21.7784 8.79584C21.7388 8.55397 21.6513 8.32219 21.5209 8.11381C21.3905 7.90543 21.2197 7.72455 21.0184 7.58153L20.5706 7.26695C20.3699 7.12293 20.1424 7.01955 19.9011 6.96274C19.6599 6.90593 19.4096 6.89682 19.1648 6.93594C18.92 6.97506 18.6854 7.06162 18.4745 7.19066C18.2637 7.3197 18.0807 7.48866 17.9362 7.68783L11.0231 17.1772C10.9699 17.2503 10.936 17.3353 10.9243 17.4245L10.4852 20.7569C10.4726 20.8539 10.4866 20.9525 10.526 21.0422C10.5654 21.1319 10.6286 21.2095 10.7089 21.2666C10.7892 21.3237 10.8837 21.3583 10.9823 21.3668C11.0809 21.3752 11.1799 21.3571 11.269 21.3145L14.3249 19.85C14.407 19.8108 14.4779 19.7519 14.5312 19.6787L20.4169 11.6059L20.6364 11.7578C20.7366 11.8311 20.8038 11.9401 20.8239 12.0617C20.844 12.1832 20.8153 12.3077 20.744 12.4087L18.6101 15.3288C18.5251 15.4456 18.4906 15.591 18.514 15.733C18.5375 15.875 18.6171 16.002 18.7353 16.086C18.8535 16.17 19.0006 16.2041 19.1443 16.1809C19.288 16.1578 19.4164 16.0791 19.5014 15.9623L21.6287 13.0465C21.8725 12.7114 21.972 12.2944 21.9053 11.887C21.8387 11.4795 21.6113 11.1148 21.2731 10.8727ZM18.8341 8.31916C18.8942 8.23612 18.9705 8.16567 19.0583 8.11186C19.1461 8.05804 19.2439 8.02193 19.3459 8.0056C19.4479 7.98926 19.5522 7.99303 19.6527 8.01669C19.7533 8.04034 19.8481 8.08342 19.9317 8.14343L20.384 8.46668C20.468 8.52615 20.5393 8.60146 20.5937 8.68827C20.6482 8.77508 20.6847 8.87167 20.7013 8.97249C20.7178 9.07332 20.714 9.17637 20.69 9.27573C20.6661 9.37509 20.6225 9.46879 20.5618 9.55143L14.158 18.3314C13.7597 17.7207 13.1426 17.2814 12.4303 17.1013L18.8341 8.31916ZM11.9407 18.1144C12.2399 18.1538 12.5246 18.2657 12.7694 18.4402C13.0141 18.6148 13.2114 18.8464 13.3436 19.1146L11.7015 19.9021L11.9407 18.1144Z"
+                                                    fill="currentcolor" fill-opacity="65%" />
+                                                <path
+                                                    d="M9.03198 18.0362H2.51186C2.33253 18.0362 2.16055 17.9658 2.03374 17.8405C1.90694 17.7151 1.8357 17.5452 1.8357 17.368V6.08656H15.6663V7.10406C15.6663 7.2479 15.7241 7.38586 15.827 7.48757C15.9299 7.58929 16.0695 7.64643 16.2151 7.64643C16.3606 7.64643 16.5002 7.58929 16.6032 7.48757C16.7061 7.38586 16.7639 7.2479 16.7639 7.10406V3.65672C16.7633 3.19199 16.5763 2.74645 16.2437 2.41783C15.9112 2.08921 15.4604 1.90434 14.9901 1.90377H13.9144V0.649797C13.9144 0.50595 13.8566 0.367995 13.7536 0.26628C13.6507 0.164565 13.5111 0.107422 13.3656 0.107422C13.22 0.107422 13.0804 0.164565 12.9775 0.26628C12.8745 0.367995 12.8167 0.50595 12.8167 0.649797V1.90377H10.8409V0.649797C10.8409 0.50595 10.7831 0.367995 10.6802 0.26628C10.5773 0.164565 10.4377 0.107422 10.2921 0.107422C10.1465 0.107422 10.0069 0.164565 9.90402 0.26628C9.80109 0.367995 9.74327 0.50595 9.74327 0.649797V1.90377H7.76747V0.649797C7.76747 0.50595 7.70965 0.367995 7.60672 0.26628C7.5038 0.164565 7.3642 0.107422 7.21864 0.107422C7.07308 0.107422 6.93349 0.164565 6.83056 0.26628C6.72763 0.367995 6.66981 0.50595 6.66981 0.649797V1.90377H4.69402V0.649797C4.69402 0.50595 4.63619 0.367995 4.53327 0.26628C4.43034 0.164565 4.29074 0.107422 4.14518 0.107422C3.99962 0.107422 3.86003 0.164565 3.7571 0.26628C3.65418 0.367995 3.59635 0.50595 3.59635 0.649797V1.90377H2.51186C2.04159 1.90434 1.59075 2.08921 1.25822 2.41783C0.925689 2.74645 0.738618 3.19199 0.738037 3.65672V17.368C0.738618 17.8327 0.925689 18.2782 1.25822 18.6069C1.59075 18.9355 2.04159 19.1203 2.51186 19.1209H9.03198C9.17754 19.1209 9.31714 19.0638 9.42006 18.9621C9.52299 18.8603 9.58081 18.7224 9.58081 18.5785C9.58081 18.4347 9.52299 18.2967 9.42006 18.195C9.31714 18.0933 9.17754 18.0362 9.03198 18.0362ZM2.51186 2.98852H15.0011C15.1804 2.98852 15.3524 3.05892 15.4792 3.18423C15.606 3.30954 15.6772 3.4795 15.6772 3.65672V5.00181H1.84668V3.65672C1.84665 3.48137 1.91638 3.31303 2.04082 3.18802C2.16526 3.06302 2.33444 2.99136 2.51186 2.98852Z"
+                                                    fill="currentcolor" />
+                                                <path
+                                                    d="M8.89786 7.13089H8.60808C8.10171 7.13146 7.61625 7.33051 7.25819 7.68435C6.90014 8.03819 6.69873 8.51794 6.69815 9.01836V10.1226C6.36178 10.1692 6.05373 10.3342 5.83067 10.5873C5.60762 10.8404 5.48455 11.1646 5.48413 11.5003V13.5266C5.48413 13.896 5.63262 14.2502 5.89693 14.5114C6.16125 14.7727 6.51973 14.9194 6.89353 14.9194H10.6256C10.8107 14.9194 10.9939 14.8834 11.1649 14.8134C11.3359 14.7434 11.4913 14.6408 11.6222 14.5114C11.7531 14.3821 11.8569 14.2286 11.9277 14.0596C11.9985 13.8906 12.035 13.7095 12.035 13.5266V11.5003C12.0346 11.1646 11.9115 10.8404 11.6884 10.5873C11.4654 10.3342 11.1573 10.1692 10.821 10.1226V9.01836C10.8207 8.76947 10.7707 8.5231 10.6737 8.29338C10.5768 8.06366 10.435 7.85512 10.2563 7.67974C10.0776 7.50436 9.86558 7.36559 9.63247 7.2714C9.39935 7.17721 9.14971 7.12946 8.89786 7.13089ZM8.60808 8.21564H8.89786C9.11311 8.21621 9.31938 8.30097 9.47159 8.45138C9.62379 8.6018 9.70956 8.80564 9.71013 9.01836V10.1031H7.79581V9.01836C7.79639 8.80564 7.88215 8.6018 8.03436 8.45138C8.18656 8.30097 8.39283 8.21621 8.60808 8.21564ZM10.9241 11.5003V13.5266C10.9241 13.6083 10.8913 13.6866 10.8328 13.7444C10.7744 13.8022 10.6951 13.8346 10.6124 13.8346H6.88036C6.79768 13.8346 6.71839 13.8022 6.65993 13.7444C6.60147 13.6866 6.56862 13.6083 6.56862 13.5266V11.5003C6.56862 11.4186 6.60147 11.3402 6.65993 11.2824C6.71839 11.2247 6.79768 11.1922 6.88036 11.1922H10.6124C10.6951 11.1922 10.7744 11.2247 10.8328 11.2824C10.8913 11.3402 10.9241 11.4186 10.9241 11.5003Z"
+                                                    fill="currentcolor" />
+                                                <path
+                                                    d="M8.75074 11.9707C8.60518 11.9707 8.46558 12.0278 8.36265 12.1296C8.25973 12.2313 8.2019 12.3692 8.2019 12.5131C8.2019 12.6569 8.25973 12.7949 8.36265 12.8966C8.46558 12.9983 8.60518 13.0555 8.75074 13.0555C8.8963 13.0555 9.03589 12.9983 9.13882 12.8966C9.24174 12.7949 9.29957 12.6569 9.29957 12.5131C9.29957 12.3692 9.24174 12.2313 9.13882 12.1296C9.03589 12.0278 8.8963 11.9707 8.75074 11.9707Z"
+                                                    fill="currentcolor" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <!-- <div class="v-line"></div> -->
+                                </div>
                             </div>
+                            
                             <div class="kt-meeting-details mt-4">
+
+                                <div class="row">
+                                    <div class="col-md-3 details-bg">
+                                        <div class="details-label">
+                                            <span class="label-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"
+                                                    viewBox="0 0 11 13" fill="none">
+                                                    <path
+                                                        d="M6.82886 0.651855H2.42886C2.13712 0.651855 1.85733 0.767748 1.65104 0.974038C1.44475 1.18033 1.32886 1.46012 1.32886 1.75186V10.5519C1.32886 10.8436 1.44475 11.1234 1.65104 11.3297C1.85733 11.536 2.13712 11.6519 2.42886 11.6519H9.02886C9.3206 11.6519 9.60038 11.536 9.80667 11.3297C10.013 11.1234 10.1289 10.8436 10.1289 10.5519V3.95186L6.82886 0.651855Z"
+                                                        stroke="#979797" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                </svg>
+                                            </span>
+                                            <span class="label-name">
+                                                Description
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 details-form-control-bg">
+                                        <div class="details-form-control" *ngIf="item.Description!=''">
+                                            <!-- <div class="dark-title">
+                                                New design improvements
+                                            </div> 
+                                               <ul class="muted-title">
+                                                <li>Assign responsibilities for designing and implementing the new
+                                                    website</li>
+                                                <li>Set a timeline for the website design project, including key
+                                                    milestones</li>
+                                                <li>Determine the budget and resources needed for the website design
+                                                </li>
+                                                <li>Discuss the integration of branding elements into the website design
+                                                </li>
+                                                <li>Discuss desired goals and objectives for the new website design</li>
+                                                <li>Brainstorm ideas for a fresh and modern</li>
+                                            </ul> -->
+                                                <p [innerHTML]="item.Description"></p>  
+                                        </div>
+                                        <div class="details-form-control"  *ngIf="item.Description==''">
+                                                <p >No description in this meeting</p>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 details-bg">
+                                        <div class="details-label">
+                                            <span class="label-icon">
+                                                
+                                                   <svg _ngcontent-nli-c395="" xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g _ngcontent-nli-c395="" clip-path="url(#clip0_365_5615)"><path _ngcontent-nli-c395="" d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="black"></path><path _ngcontent-nli-c395="" d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="black"></path><path _ngcontent-nli-c395="" d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="black"></path><path _ngcontent-nli-c395="" d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="black"></path></g><defs _ngcontent-nli-c395=""><clipPath _ngcontent-nli-c395="" id="clip0_365_5615"><rect _ngcontent-nli-c395="" width="15" height="16.1538" fill="black" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
+                                            </span>
+                                            <span class="label-name">
+                                                Agenda 
+                                            </span>
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-9 details-form-control-bg" *ngIf="Agendas_List&&Agendas_List.length>0; else noAgenda">
+                                        <div class="details-form-control" *ngFor="let list of Agendas_List;let i=index">
+                                                <p>{{i+1}}.{{list.Agenda_Name}}<p>                                              
+                                        </div> 
+                                                                        
+                                    </div>
+                                    <ng-template #noAgenda>
+                                        <div class="col-md-9 details-form-control-bg">
+                                        <div class="details-form-control">
+                                        <p >No Agenda in this meeting</p> 
+                                    </div>
+                                </div>
+                                    </ng-template> 
+                                </div>
                                 <div class="row">
                                     <div class="col-md-3 details-bg top-rl">
                                         <div class="details-label">
@@ -1202,6 +1266,7 @@
 
 
 
+                                </div>                           
                                 <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
@@ -1481,16 +1546,23 @@
                                                 </svg>
                                             </span>
                                             <span class="label-name">
-                                                Attendess
+                                                Attendees
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
-                                            <div class="attendess" >
-                                                <div class="user-icon" *ngFor="let item of User_Scheduledjson">
+                                            <div class="attendess" *ngFor="let item of User_Scheduledjson" >
+                                                <div class="user-icon" title="{{item.TM_DisplayName}}">
                                                     <span>{{getInitials(item.TM_DisplayName)}}</span>
                                                 </div>
+
+                                                <!-- <div class="user-icon" *ngIf="item.TM_DisplayName==''">
+                                                    <span>No attendees linked in this meeting</span>
+                                                </div> -->
+
+
+
                                                 <!-- <div class="user-icon">
                                                     <span>RR</span>
                                                 </div>
@@ -1506,9 +1578,9 @@
                                                 <div class="user-icon">
                                                     <span>CF</span>
                                                 </div> -->
-                                                <div class="user-icon">
+                                                <!-- <div class="user-icon">
                                                     <span>+5</span>
-                                                </div>
+                                                </div> -->
                                             </div>
 
                                         </div>
@@ -1516,6 +1588,7 @@
                                 </div>
                             </div>
                         </div>
+                        <ng-template #AgendaList>
                         <div class="kt-info-box kt-info-meeting-box meeting-notes border-0">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="kt-project-name d-flex align-items-start flex-column">
@@ -1529,11 +1602,20 @@
                                     </ng-container>
 
                                     <ng-template #Agenda>
-                                        <h4>{{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
-                                        </h4>
-                                    </ng-template>
-
-
+                                        
+                                            <h4>
+                                                {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name | slice:0:limited_data}}
+                                                    {{ isExpanded ? (Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name | slice:limited_data): ' ' }}
+                                              
+                                                    <ng-container *ngIf="Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name.length>98">
+                                                         <a href="javascript:void(0)"
+                                                        (click)="toggleReadMore()">{{ isExpanded ? 'less' : 'more...' }}</a>
+                                                    </ng-container>
+                                      
+                                                <!-- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}} -->
+                                         
+                                            </h4>
+                                      </ng-template>
                                     <!-- <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6> -->
                                 </div>
                                 <div class="kt-btn-notes-div" >
@@ -1608,14 +1690,19 @@
                                     (click)="onEditorFocus()"
                                     (focus)="onEditorFocus()" 
                                     (copy)="onCopy($event)"
-                                    (keyup)="addBulletPointsOnEnter($event)"> -->
+                                    (keyup)="addBulletPointsOnEnter($event)">    
+                                 </angular-editor>  -->
 
-                                     <angular-editor [config]="config" [(ngModel)]="Notes_Type" >
-                                 </angular-editor>
-                                
+                                <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
+                                 <angular-editor [config]="config" [(ngModel)]="Notes_Type"
+                                 (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
+                                </ng-container>
 
-
-                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed' ">
+                                 <!-- <ng-template #angularEditor>
+                                 <angular-editor [config]="config" [(ngModel)]="Notes_Type"></angular-editor>
+                                </ng-template> -->
+                                    
+                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
                                         <div class="task-header">
@@ -1685,6 +1772,81 @@
                             </div>
                         </div>
                     </div> 
+
+
+
+
+
+ <!--    View All Team members notes Start   -->
+
+ <div *ngIf="currentAgendaView+1>0" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+    <div class="accordion-item" >
+        <h2 class="accordion-header" id="headingOne">
+            <a class="accordion-button" type="button" data-toggle="collapse"
+                data-target="#attendes_notes" aria-expanded="false"
+                aria-controls="attendes_notes">
+                <div class="head-content">
+                    <span class="accordion-heading">View All Team members notes</span>
+                    <!-- <span class="message-count"> 24 Messages</span> -->
+                </div>
+                <div>
+                    <span class="accordion-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                            viewBox="0 0 15 9" fill="none">
+                            <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </h2>
+                                                            
+        <div id="attendes_notes" class="accordion-collapse collapse" 
+            aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
+            <div class="accordion-body">
+                <div *ngIf="currentAgendaView+1">                                       
+                    <h5>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                   </h5>                                 
+                  </div>
+                <ul class="attendees-note-userlist" *ngFor="let data of AllAttendees_notes">
+                    <li class="attendees-note-user">
+                        <div class="user-info">
+                            <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
+                            <span>
+                                <div class="user-name">{{data.Emp_Name}}
+                                   
+                                    </div>
+                                </span>
+                         
+                        </div>
+                        <div class="user-notes">
+                          
+                            <p [innerHTML]="data.Meeting_notes"></p>
+                        </div>
+                    </li>
+                    <!-- <li class="attendees-note-user">
+                    <div class="user-info">
+                        <span class="user-icon">
+                            <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
+                        </span>
+                        <span>
+                            <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
+                            <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
+                        </span>
+                    </div>
+                    <div class="user-notes">
+                        <p>How likely are you to recommend our company to your friends and family ?</p>
+                        <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
+                </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--   View All Team members notes End  -->
+
 
                  
        <!--      Assign Task/Project Start      -->
@@ -2101,7 +2263,6 @@
 
 
 
-
                             <!-- <div class="action-section mb-3" *ngIf="Meetingstatuscom!='Completed'">
                                 <div class="kt-meeting-title mt-0 mb-2">
                                     <div class="kt-meeting-title-icon">
@@ -2222,80 +2383,25 @@
                             </div> -->
 
 
-           <!--    View All Team members notes Start   -->
-
-                            <div *ngIf="currentAgendaView+1>0" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
-                                <div class="accordion-item" >
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <a class="accordion-button" type="button" data-toggle="collapse"
-                                            data-target="#attendes_notes" aria-expanded="false"
-                                            aria-controls="attendes_notes">
-                                            <div class="head-content">
-                                                <span class="accordion-heading">View All Team members notes</span>
-                                                <!-- <span class="message-count"> 24 Messages</span> -->
-                                            </div>
-                                            <div>
-                                                <span class="accordion-icon">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
-                                                        viewBox="0 0 15 9" fill="none">
-                                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
-                                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </h2>
-                                                                                        
-                                    <div id="attendes_notes" class="accordion-collapse collapse" 
-                                        aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
-                                        <div class="accordion-body">
-                                            <div *ngIf="currentAgendaView+1">                                       
-                                                <h5>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
-                                               </h5>                                 
-                                              </div>
-                                            <ul class="attendees-note-userlist" *ngFor="let data of AllAttendees_notes">
-                                                <li class="attendees-note-user">
-                                                    <div class="user-info">
-                                                        <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div> 
-                                                        <span>
-                                                            <div class="user-name">{{data.Emp_Name}}
-                                                               
-                                                                </div>
-                                                            </span>
-                                                     
-                                                    </div>
-                                                    <div class="user-notes">
-                                                      
-                                                        <p [innerHTML]="data.Meeting_notes"></p>
-                                                    </div>
-                                                </li>
-                                                <!-- <li class="attendees-note-user">
-                                                <div class="user-info">
-                                                    <span class="user-icon">
-                                                        <img src="https://s3-alpha-sig.figma.com/img/5360/734e/a027574358b24a6e36de90b6be2b5c60?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=I4AHIFNT61RsolYvR3BarHi8Qhetk2WukVWFoOoIFjFsNc-EqSPTlETDCQVYNWWkNwD8NIDgCHjNIu55J5QGDeq8TeHe2APMmiRi9muYg3~Z9YWYAbWP3yqzsY1TxDom4KPufbbMmUXAbuaitQWzPZ1o4HgtzeBGVthi17wypcJC6XjHUb5WpFYpzDUwpRKwRtnEh3gNij~HVKfFajFsLYjWFTWfIDSw6T~xvCRt5KgZMbZFMXxEuKLsKlYzFUzRfJXXVODpEEHw37VNtoMQHfMjU8tDtJjg2TzD8PS5ZpIlJ7F544vcTOivWKTRZhezom0V6NE7wNlvQHwiqq1WCA__">
-                                                    </span>
-                                                    <span>
-                                                        <div class="user-name">Siva Nadendla <span class="user-time">10 mins</span></div>
-                                                        <div><span class="user-role">UX/UI Designer</span> <span class="user-company">Devbox Software Pvt.ltd.</span></div>
-                                                    </span>
-                                                </div>
-                                                <div class="user-notes">
-                                                    <p>How likely are you to recommend our company to your friends and family ?</p>
-                                                    <p class="mt-3">Not all people can afford to pay for content immediately after creating their website, so that's not a condition you can demand from your clients. Instead, you can use a dummy text generator.</div>
-                                            </li> -->
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-           <!--   View All Team members notes End  -->
-
-
                         </div>
+                    </ng-template>
                     </ng-container>
+                   
                     </div>
+                    <ng-containr style="position: fixed; bottom: 13px;
+                    right: 20px;"> 
+                    
+                        <div *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                            <button class="btn btn-info btn-sm mr-2" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal">
+                                End Meeting
+                            </button>  
+                        </div>
+                        <div *ngIf="Meetingstatuscom==Completed && Isadmin==false">
+                            <button class="btn btn-info btn-sm mr-2" (click)="leavemeet($event)">Leave Meeting</button>                                                 
+                        </div>
+                    
+                    </ng-containr>
+                   
                 </div>
             </div>
         </div>
@@ -2335,7 +2441,7 @@
         </div>
         <div class="private_notes_vh kt-portlet__body kt-portlet__body_scroll">
             <div class="kt-chat__messages">
-                <angular-editor [config]="config" [(ngModel)]="Notes_Type"></angular-editor>
+                <angular-editor [config]="config" [(ngModel)]="Notes_Type" (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
             </div>
         </div>
     </div>
@@ -3440,11 +3546,8 @@
                                                 <div class="kt-user-2lt kt-clr-1" >{{item.Initials}}</div>  
                                                 <div class="user-name">{{item.Emp_Name}}                                                  
                                                 </div>                                         
-                                         
-                                            
-                                            </div>   
-                                                                                  
-                                            <div class="user-notes" >                                              
+                                            </div>                                          
+                                            <div class="user-notes">                                              
                                                 <p [innerHtml]="item.Meeting_notes"></p>                                                           
                                            </div>
                                        </div>
@@ -3817,9 +3920,9 @@
                      <div class="agenda-input-field">
                         <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
                         <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
-                          [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
+                          [(ngModel)]="AgendaInputEvent"   (keyup.enter)="AddAgendaEvent()"
                         />
-                      <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                      <button *ngIf="AgendaInputEvent" class="btn btn-secondary add-agenda-btn" (click)="AddAgendaEvent()">Add</button>
                     </div>
                 </div>
     
@@ -3828,17 +3931,17 @@
                 <div class="todo-list">
                     <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">
                         <span class="agenda-index">{{i+1}}.</span>
-                        <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label>
-                        <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
+                        <label [id]="'agenda-label-Event-'+i" class="task-name">{{agenda.name}}</label>
+                        <input [id]="'agenda-text-field-Event-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
     
                     <div class="agenda-ctrl-btns">
     
     
-                        <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
+                        <button [id]="'edit-agendaname-btn-Event-'+i" class="edit-agendaname-btn-Event" (click)="editAgendaEvent(i)">
                             <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
                         </button>
     
-                        <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(i)">
+                        <button [id]="'remove-agenda-btn-Event-'+i" class="remove-agenda-btn-Event" (click)="deleteAgendaEvent(i)">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
                                 role="img" font-size="1.5rem" width="1em" height="1em"
@@ -3849,34 +3952,31 @@
                             </svg>
                         </button>
     
-                     <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
+                     <button (click)="cancelAgendaEditEvent(i)" title="cancel" [id]="'edit-cancel-Event-'+i" class="editing-cancel d-none">
                        <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
                      </button>
     
     
-                     <button (click)="updateAgenda(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
+                     <button (click)="updateAgendaEvent(i)"  title="save" [id]="'editing-save-Event-'+i" class="editing-save-Event d-none ">
                         <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
                      </button>
-    
-    
-    
                     </div>
-    
                     </div>
                 </div>
-    
             </div>
         </div>
         <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > Please provide atleast one agenda.</span>
     
-    </div>
-    
-    
-    
-    
-    
+    </div>    
     <!--agenda field end-->
-                    <!--this is for Schedule task start-->
+
+
+
+
+
+
+    <!--this is for Schedule task start-->
+
                     <div class="form-group" id="core_viw123">
                         <label class="cus-lbl">Select Project <span class="text-danger"
                                 *ngIf="ScheduleType=='Task'">*</span>
@@ -3910,21 +4010,17 @@
     
                     <ng-container *ngIf="ScheduleType=='Event'">
                          <mat-form-field class="drp-dwn-field w-100"  *ngIf="ProjectListArray">
-                            <mat-label>Select Project</mat-label>
-    
-                            <mat-chip-list #selectedProjects>
-    
+                            <mat-label>Select Project</mat-label> 
+                            <mat-chip-list #selectedProjectsEvent>
                                         <mat-chip *ngFor="let prjcode of MasterCode"  class="Data_chip_kt" (removed)="removeSelectedProject(prjcode)">
                                             {{getProjectName(prjcode)}}
                                             <button matChipRemove>
                                                 <mat-icon>cancel</mat-icon>
                                             </button>
-                                        </mat-chip>
-    
-                            </mat-chip-list>
-    
+                                        </mat-chip>   
+                            </mat-chip-list>  
                             <div class="d-flex">
-                                <input class="flex-1" [matChipInputFor]="selectedProjects"
+                                <input class="flex-1" [matChipInputFor]="selectedProjectsEvent"
                                     [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
     
                                 <button *ngIf="isProjectsDrpDwnOpen"
@@ -3933,8 +4029,7 @@
     
                                 <button *ngIf="!isProjectsDrpDwnOpen"
                                     class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn');">
-                                    <mat-icon class="add-icon"
-                                        >add</mat-icon></button>
+                                    <mat-icon class="add-icon">add</mat-icon></button>
                             </div>
     
                             <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
@@ -3946,7 +4041,6 @@
                                         [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
                                        {{prj.BlockNameProject}}
                                 </mat-option>
-    
                             </mat-autocomplete>
                         </mat-form-field>
                     </ng-container>
@@ -3984,7 +4078,7 @@
     
                              <mat-form-field class="drp-dwn-field w-100"  *ngIf="Portfoliolist_1">
                                 <mat-label>Add Portfolio</mat-label>
-                                <mat-chip-list #selectedPortfolios>
+                                <mat-chip-list #selectedPortfoliosEvent>
                                     <mat-chip *ngFor="let prtid of Portfolio" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtid)">
                                              {{getObjOf(Portfoliolist_1,prtid,'portfolio_id').Portfolio_Name}}-{{getObjOf(Portfoliolist_1,prtid,'portfolio_id').DisplayName}}
                                         <button matChipRemove>
@@ -3994,7 +4088,7 @@
     
                                 </mat-chip-list>
                                 <div class="d-flex">
-                                    <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                                    <input class="flex-1" [matChipInputFor]="selectedPortfoliosEvent"
                                         [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
     
                                     <button *ngIf="isPortfolioDrpDwnOpen"
@@ -4078,11 +4172,10 @@
                                 <ng-option *ngFor="let item of  _EmployeeListForDropdown" [value]="item.Emp_No">
                                     {{item.DisplayName}} </ng-option>
                             </ng-select>    -->
-    
-    
+       
                             <mat-form-field class="drp-dwn-field w-100"  *ngIf="_EmployeeListForDropdown">
                                 <mat-label>Add Participants</mat-label>
-                                <mat-chip-list #selectedParticipants>
+                                <mat-chip-list #selectedParticipantsEvent>
                                     <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt" (removed)="removeSelectedParticipant(p)">
                                         {{getObjOf(_EmployeeListForDropdown,p,'Emp_No').DisplayName}}
                                         <button matChipRemove>
@@ -4091,7 +4184,7 @@
                                     </mat-chip>
                                 </mat-chip-list>
                                 <div class="d-flex">
-                                    <input class="flex-1" [matChipInputFor]="selectedParticipants"
+                                    <input class="flex-1" [matChipInputFor]="selectedParticipantsEvent"
                                         [matAutocomplete]="ParticipantsDrpDwn" #ParticipantsTF />
     
                                     <button *ngIf="isParticipantsDrpDwnOpen"
@@ -4147,19 +4240,11 @@
                                     (change)="onFileChange($event)" multiple>
     
                             </div> 
-    
                             <!-- <div class="mb-3 curser-pointer">
                                 <label for="formFile" class="form-label">Default file input example</label>
                                 <input class="form-control curser-pointer" type="file" id="formFile">
                               </div> -->
-    
-    
-    
-    
-    
                         </div>
-    
-    
                         <div class="dropzone dropzone-multi form-group" id="">
                             <div id="div_exixtingfiles" class="dropzone-items">
                                 <div *ngFor='let url of _lstMultipleFiales'>
@@ -4168,7 +4253,7 @@
                                             <div class="dropzone-filename">
                                                 <span>{{url.FileName}}</span>
                                                 <strong>(<span>{{url.Size}}kb</span>)</strong>
-                                                <span (click)="RemoveSelectedFile(url.UniqueId)" class="dropzone-delete">
+                                                <span (click)="RemoveSelectedFile1(url.UniqueId)" class="dropzone-delete">
                                                     <i class="flaticon2-cross"></i>
                                                 </span>
                                             </div>
@@ -4197,15 +4282,14 @@
                                 <div class="form-group flex-1">
                                     <label>{{_labelName}}<span class="text-danger">*</span></label>
                                     <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
-                                        <input matInput [matDatepicker]="picker1" (click)="picker1.open()"
-                                            (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
-                                            [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;">
+                                        <input (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                            [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;" readonly>
                                         <div class="input-group-append">
     
-                                            <div class="input-group-text p-0">
+                                            <!-- <div class="input-group-text p-0">
                                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker1></mat-datepicker>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
@@ -4213,7 +4297,7 @@
                                 <div class="form-group flex-1" >
                                     <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
                                     <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
-                                    <ng-select  class="kt-input form-control" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                    <ng-select  class="kt-inputs form-control" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
                                         placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                         <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
                                             {{item}}</ng-option>
@@ -4222,7 +4306,7 @@
                                 </div>
                                 <div class="form-group flex-1 " >
                                     <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
-                                    <ng-select class="kt-input form-control" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                    <ng-select class="kt-inputs form-control" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
                                         [(ngModel)]="Endtms">
                                         <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
                                             {{item1}}</ng-option>
@@ -4284,14 +4368,11 @@
                                                 <mat-option value="0">Do not repeat</mat-option>
                                                 <mat-option value="1">Daily</mat-option>
                                                 <mat-option value="2">Weekly</mat-option>
-                                                <!-- <mat-option value="4">Bi-Weekly</mat-option> -->
+                                              
                                                 <mat-option value="3">Monthly</mat-option>
                                             </mat-select>
                                         </div>
                                     </div>
-    
-    
-    
                                 </div>
     
                                 <div class="wc-cus">
@@ -4743,8 +4824,8 @@
                     class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"
                         (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
-                    <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
-                         (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
+                    <!-- <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                         (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp; -->
                     <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
                 </div>
                 <div *ngIf="  pending_status==true && editTask==true " class="form-group mb-0">
@@ -4767,6 +4848,64 @@
 
 
 
+  <!-- meeting End pop box start  -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title fs-5" id="exampleModalLabel">Meeting Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <i aria-hidden="true" class="ki ki-close"></i>
+              </button>
+          </div>
+          <div class="modal-body">
+
+              <div id="NameDate" class="main-title" *ngFor="let item of EventScheduledjson">
+                  <div class="boxcl-div">
+                      <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
+                  </div>
+
+                  <div id="" class="title-right">
+                      <div class="title-area">
+                          <div class="title-main">
+                              <span id="title1">{{item.Task_Name}}</span>
+                          </div>
+
+                          <div class="d-flex">
+                              <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}<span
+                                      _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">{{item.NewSt_Time}}
+                                      – </span>
+                              </div>
+                              <div class="title-day"> {{item.NewSt_Time}} </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+
+              <div id="project" class="eve-area ng-star-inserted">
+                <div class="left-icon">
+                    <span aria-hidden="true" class="side-icns">
+
+
+                       <svg _ngcontent-nli-c395="" xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g _ngcontent-nli-c395="" clip-path="url(#clip0_365_5615)"><path _ngcontent-nli-c395="" d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="black"></path><path _ngcontent-nli-c395="" d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="black"></path><path _ngcontent-nli-c395="" d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="black"></path><path _ngcontent-nli-c395="" d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="black"></path></g><defs _ngcontent-nli-c395=""><clipPath _ngcontent-nli-c395="" id="clip0_365_5615"><rect _ngcontent-nli-c395="" width="15" height="16.1538" fill="black" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
+                        <!-- <i class="fab-icn fab fa-wpforms"></i> -->
+                    </span>
+                </div>
+                <div class="rgt-des">
+                    <div>
+                        <div class="main-s pro-nm"> <span
+                                class="kt-dt-cnt-view">
+                                {{completedAgendaList&&completedAgendaList.length}}/{{totalAgendaList}}
+                              </span>Agenda</div>
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -4779,15 +4918,149 @@
 
 
 
+              <div class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn">
+                              <path _ngcontent-gpx-c394=""
+                                  d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                              </path>
+                          </svg>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s"> <span class="kt-dt-cnt-view">
+                            {{Guestcount}}/{{totalguest}}
+                        </span>
+                              Participants</div>
+                      </div>
+                  </div>
+              </div>
+              <div class="avar-div">
+              </div>
+
+              <!-- /*-----Projects ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <i class="fab-icn fab fa-wpforms"></i>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"> <span
+                                  class="kt-dt-cnt-view">
+                                  {{projectcount}}/{{totalproject}}
+                                </span> Projects</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----Projects list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+
+              <!-- /*-----Portfolios ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <i class="fas-icn fas fa-list"></i>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"> <span
+                                  class="kt-dt-cnt-view">
+                                  {{portfoliocount}}/{{totalportfolios}}
+                                </span> Portfolios
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----Portfolios list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+
+              <!-- /*-----DMS ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
+                              class="svg-icn">
+                              <path _ngcontent-owa-c389="" fill="none" d="M0 0h24v24H0z"></path>
+                              <path _ngcontent-owa-c389=""
+                                  d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z">
+                              </path>
+                          </svg>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">
+                            {{dmscount}}/{{totaldms}}
+                        </span>
+                              DMS</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----DMS list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+              <!-- /*-----Meeting notes ----------*/ -->
+              <div id="project" class="eve-area ng-star-inserted">
+                  <div class="left-icon">
+                      <span aria-hidden="true" class="side-icns">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27"
+                              class="svg-icn">
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                              <g id="SVGRepo_iconCarrier">
+                                  <path
+                                      d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z"
+                                      fill="#292D32"></path>
+                                  <path
+                                      d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z"
+                                      fill="#292D32"></path>
+                              </g>
+                          </svg>
+                      </span>
+                  </div>
+                  <div class="rgt-des">
+                      <div>
+                          <div class="main-s pro-nm"><span class="kt-dt-cnt-view">
+                            {{assigncount}}/{{todocount}}
+                        </span>
+                              Assign Task</div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /*-----Meeting notes list----------*/ -->
+              <div class="side-div ng-star-inserted">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-info btn-sm mr-2"
+                  (click)="Insert_meetingreport()">confirm</button>
+          </div>
+      </div>
+  </div>
+</div>
 
 
-
-
-
-
-
-
-
+ <!-- meeting End pop box End -->
 
 
 

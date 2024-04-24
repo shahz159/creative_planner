@@ -69,7 +69,7 @@ FullCalendarModule.registerPlugins([
   ],
   providers: [DatePipe
     ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]}, GuidedTourService,
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]}, GuidedTourService
   ],
   exports: [DashboardComponent]
 })

@@ -1349,8 +1349,8 @@
 
                           <ng-container [ngSwitch]="notificationMsg">
                                 <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation! Enter the initial project details to continue.</span>
-                                <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away for creating the project.</span>
-                                <span *ngSwitchCase="2" class="notif-msg">You are 1 step away for creating the project.</span>
+                                <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away from creating the project.</span>
+                                <span *ngSwitchCase="2" class="notif-msg">You are 1 step away from creating the project.</span>
                                 <span *ngSwitchCase="3" class="notif-msg">Project not yet submitted. Click the 'Submit Project' button to submit the project for approval or continue adding actions.</span>
                                 <span *ngSwitchCase="4" class="notif-msg">Click the 'Submit Project' button to send the project for approval.</span>
                           </ng-container>
@@ -1745,7 +1745,7 @@
                               </button>
                               <button type="button" (click)="back_to_options();"
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back to options</button>
-                              
+
                               <!-- [disabled]="!(Prjtype&&(PrjName&&PrjName.trim().split(' ').length>=3)&&PrjClient&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&PrjCategory&&Prjstartdate&&Prjenddate&&Prjduration)" -->
                             </div>
                           </div>
@@ -1778,7 +1778,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Authority<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth"  [ngClass]="{'error-border':!PrjAuth&&notProvided}" 
+                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth"  [ngClass]="{'error-border':!PrjAuth&&notProvided}"
                                     *ngIf="Responsible_json" (change)="setRACIS(); ">
                                     <ng-option
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
@@ -2128,7 +2128,7 @@
                                                                     </div>
                                                                     </a>
                                                                 </span> -->
-                                  
+
 
 
 
@@ -3069,7 +3069,7 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Sub Section:</h4>
-                    <p>select Starting Date &amp;  and the expected Ending Date of the given project. A
+                    <p>Select Starting Date and the expected Ending Date of the given project. A
                       team member cannot select the DPG (Date of Project Given) which is less than the current date. You
                       should not select the past date as a deadline. System will not accept.</p>
                   </div>
@@ -3079,7 +3079,7 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Subtask :</h4>
-                    <p>a step by step process to complete the project. Each subtask have name , description, start Date,
+                    <p>A step by step process to complete the project. Each subtask have name , description, start Date,
                       End Date, TotalDuration time with multiple owner selection(optional)</p>
                   </div>
                   <div class="Guidelines_info_text">
@@ -3109,13 +3109,13 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Name:</h4>
-                    <p>Project Name should be more than 3 words and Please try to avoid using
+                    <p>Project Name should be atleast 3 words and Please try to avoid using
                       special characters like @ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: Printing and Packaging Development for RAC</p>
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Description:</h4>
-                    <p>Project Description should be more than 5 words and Please try to avoid
+                    <p>Project Description should be atleast 5 words and Please try to avoid
                       using special characters like -@ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: The task is created to co-ordinate with RAC GDC and packaging Supplier
                       to develop all standard packaging to meet the corporate requirements</p>
@@ -3171,7 +3171,7 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Sub Section:</h4>
-                    <p>select Starting Date &amp; Time and the expected Ending Date &amp; Time of
+                    <p>select Starting Date & the expected Ending Date of
                       the given project. A team member cannot select the DPG (Date of Project Given) which is less than
                       the current date. You should not select the past date as a deadline. System will not accept.</p>
                   </div>
@@ -3212,13 +3212,13 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Name:</h4>
-                    <p>Project Name should be more than 3 words and Please try to avoid using special
+                    <p>Project Name should be atleast 3 words and Please try to avoid using special
                       characters like @ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: Globus Business Plan and Sales Target Analysis</p>
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Description:</h4>
-                    <p>Project Description should be more than 5 words and Please try to avoid using special
+                    <p>Project Description should be atleast 5 words and Please try to avoid using special
                       characters like -@ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: Globus business plan and target has to be analysed for Business Clients and
                       necessary actions has to be taken to achieve the Business Plan &amp; sales target</p>
@@ -3686,13 +3686,13 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Name:</h4>
-                    <p>Project Name should be more than 3 words and Please try to avoid using
+                    <p>Project Name should be atleast 3 words and Please try to avoid using
                       special characters like @ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: Visit to Agility Logistics with Group FC and GM YRSS</p>
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Project Description:</h4>
-                    <p>Project Description should be more than 5 words and Please try to avoid
+                    <p>Project Description should be atleast 5 words and Please try to avoid
                       using special characters like -@ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p>Ex: Need to visit Agility logistics to meet and discuss the ongoing issue
                       to release the BL for the consignment came from USA and hold by Agility.</p>
@@ -3748,7 +3748,7 @@
                   </div>
                   <div class="Guidelines_info_text">
                     <h4>Sub Section:</h4>
-                    <p>select Starting Date &amp; Time and the expected Ending Date &amp; Time of
+                    <p>select Starting Date and the expected Ending Date of
                       the given project. A team member cannot select the DPG (Date of Project Given) which is less than
                       the current date. You should not select the past date as a deadline. System will not accept. In
                       ToDo list duration shouldn't more than 3 days</p>
@@ -3784,13 +3784,13 @@
                   </div>
                   <div  class="Guidelines_info_text">
                     <h4 >Project Name:</h4>
-                    <p >Project Name should be more than 3 words and Please try to avoid using
+                    <p >Project Name should be atleast 3 words and Please try to avoid using
                       special characters like @ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p >Ex: Checking Emails and send response</p>
                   </div>
                   <div  class="Guidelines_info_text">
                     <h4 >Project Description:</h4>
-                    <p >Project Description should be more than 5 words and Please try to avoid
+                    <p >Project Description should be atleast 5 words and Please try to avoid
                       using special characters like -@ # $ % &amp; * ! ( ) ; , . . . .Etc.</p>
                     <p >Ex: Daily Checking Emails and send response to respected customers</p>
                   </div>
@@ -3898,7 +3898,7 @@
                     <p >You can re use previous projects structure for new projects</p>
                   </div>
                 </div>
-              </div> 
+              </div>
             </div>
           </div>
         </div>

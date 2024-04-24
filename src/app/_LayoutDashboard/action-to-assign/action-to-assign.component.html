@@ -33,14 +33,16 @@
                 <mat-option [value]="16">Annually</mat-option>
             </mat-select>
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'error-date': !_taskName&&formFieldsRequired}" >
             <label> Task/Project Name : </label>
             <!-- <span class="text-danger">*</span> -->
-            <input type="text" class="form-control" placeholder="Enter task name" aria-describedby="basic-addon1"
+            <input type="text"              
+             class="form-control" placeholder="Enter task name" aria-describedby="basic-addon1"
                 [(ngModel)]="_taskName" (ngModelChange)="isPrjNameValid=isValidString(_taskName,3)" >
                 <span style="color:rgb(217, 48, 37)" class=""
                 *ngIf="!isPrjNameValid" >please enter atleast 3
-                  words</span>
+                  words. </span>
+                  <span *ngIf="!_taskName&&formFieldsRequired" style="color:red">task name required.</span>    
         </div>
         <div class="form-group">
             <label>Description : </label>
@@ -58,19 +60,26 @@
             </ng-multiselect-dropdown>  - {{item.TM_DisplayName}} portfolio owner name
         </div> -->
 
-        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" [ngClass]="{'error-vd': !SelectedEmplList&&formFieldsRequired}">
             <label> Assign To <span class="text-danger">*</span> : <strong></strong></label>
-            <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select employee" >
+            <ng-select #assign="ngModel"   required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedEmplList" placeholder="Select employee" >
                 <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
                     {{item.DisplayName}}
                 </ng-option>
             </ng-select>
-            <span *ngIf="assign.touched && !SelectedEmplList" style="color:red">Assign To required!</span>
+            <span *ngIf="!SelectedEmplList&&formFieldsRequired" style="color:red">Assign To required!</span>
         </div>
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+          <label>Link Portfolio : <strong></strong></label>
+          <ng-select #Portfolio="ngModel"  [(ngModel)]="port_id" placeholder="Select portfolio">
+              <ng-option [value]="item.Portfolio_ID" *ngFor="let item of PortfolioList">
+                  {{item.Portfolio_Name}}
+              </ng-option>
+          </ng-select>
+      </div>
 
 
-
-        <div class="form-group">
+        <!-- <div class="form-group">
         <mat-form-field class="drp-dwn-field w-100"   *ngIf="PortfolioList">
           <mat-label>Link Portfolio</mat-label>
            <mat-chip-list #selectedPortfolios>
@@ -110,10 +119,10 @@
     </mat-form-field>
 
 
-</div>
+</div> -->
 
 
-<div class="row ">
+<!-- <div class="row ">
     <div class="form-group text-dark-50 w-75px col-md-6 brdng-0">
         <label> Inform </label>
         <ng-select #assign="ngModel" required (change)="EmployeeOnSelect($event)" [(ngModel)]="SelectedinformlList" placeholder="Select Informer" >
@@ -132,15 +141,15 @@
         </ng-select>
 
     </div>
-</div>
+</div> -->
 
 
 
 
-<div class="form-group">
+<!-- <div class="form-group">
   <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
     <mat-form-field class="drp-dwn-field w-100">
-      <mat-label class="text-dark-50 w-75px">Support<span style="color:rgb(217,48,37)">*</span></mat-label>
+      <mat-label class="text-dark-50 w-75px">Support</mat-label>
       <mat-chip-list #selectedProjSprt>
         <mat-chip *ngFor="let p of PrjSupport" class="Data_chip_kt"
           (removed)="removeSelectedPrjSprt(p);  ">
@@ -179,10 +188,10 @@
             </mat-option>
         </ng-template>
       </mat-autocomplete>
-    </mat-form-field>
+    </mat-form-field> -->
     <!-- <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">please select support.</span> -->
-  </div>
-</div>
+  <!-- </div> -->
+<!-- </div> -->
 
 <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
     <label> RACIS </label>

@@ -1083,7 +1083,9 @@ tr.odd.project-list_AC.active{
   background-color: #1B272D !important;
   color: white;
   padding: 2px 8px;
-  border-radius: 2px
+  border-radius: 2px;
+  width: max-content;
+  display: inline-block;
 }
 .ToDo-InProcess{
   background-color: #1B272D  !important;

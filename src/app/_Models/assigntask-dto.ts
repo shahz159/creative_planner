@@ -1,6 +1,7 @@
 export class AssigntaskDTO {
     AssignId: number;
     Schedule_ID:number;
+    Agenda_Id:number;
     EmpNo: string;
     ProjectType: string;
     TaskName: string;

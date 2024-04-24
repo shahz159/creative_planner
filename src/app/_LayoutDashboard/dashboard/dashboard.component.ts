@@ -1035,6 +1035,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  PendingdeleteSchedule(id) {
+
+    this._calenderDto.Schedule_ID = id;
+    this._calenderDto.flag_id = this.flagevent;
+    this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
+      this.notifyService.showSuccess("Deleted Successfully", "Success");
+      this.closeevearea();
+      this.GetScheduledJson();
+      this.GetPending_Request();
+    })
+
+
+  }
+
   onSingleEventDelete(){
 
     Swal.fire({
@@ -1046,6 +1060,22 @@ export class DashboardComponent implements OnInit {
        if(choice.isConfirmed){
         this.AllDelete_event(1);
         this.AlldeleteSchedule()
+       }
+    });
+
+  }
+
+  onSinglePendingEventDelete(id){
+
+    Swal.fire({
+      title:`Delete ${this.Schedule_type1}`,
+      text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
+      showConfirmButton:true,
+      showCancelButton:true
+    }).then(choice=>{
+       if(choice.isConfirmed){
+        this.AllDelete_event(1);
+        this.PendingdeleteSchedule(id);
        }
     });
 
@@ -1448,7 +1478,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1565,13 +1595,13 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked(){
-    debugger
+   
      if(
       this.Title_Name&&
       this.Startts&&
       this.Endtms&&
-      this.MinLastNameLength&&
-      (this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+      this.MinLastNameLength
+      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
     ){
           this.OnSubmitSchedule();
           this.notProvided=false;
@@ -2090,7 +2120,7 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        // debugger
+        debugger
             var vMeeting_Agendas="Meeting_Agendas";
             const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
             element[vMeeting_Agendas]=updatedAgnds;
@@ -3870,7 +3900,7 @@ debugger
     //     event.setProp('title', newTitle);
     //   }
     // }
-debugger
+// debugger
 let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0);
     if (eventIsWithinView && (startMidnight !== endMidnight)&&!is12am) {
 
@@ -5343,7 +5373,6 @@ drawBarGraph(){
 
 
   getObjOf(arr, id, idName) {
-    debugger
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }
