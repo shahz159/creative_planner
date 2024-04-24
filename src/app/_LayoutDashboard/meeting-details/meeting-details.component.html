@@ -44,7 +44,7 @@
                                             <ng-container *ngIf="meetingInProgress">
                                                 <span (click)="leaveMeeting()">Leave Meeting</span>
                                             </ng-container>
-                                            <span class="text-white">|</span>
+                                            <!-- <span class="text-white">|</span> -->
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
 
                                                 <span>{{startTime |date: 'h:mm'}}</span>
@@ -66,7 +66,7 @@
                                                 </svg>
                                             </span>
                                             <span class="kt-meeting-status-title">Hold</span>
-                                            <span class="text-white">|</span>
+                                            <!-- <span class="text-white">|</span> -->
                                             <span class="kt-meeting-status-time">12:45</span>
                                         </div>
                                         <div class="kt-meeting-status completed d-none mt-0 mb-2">
@@ -81,7 +81,7 @@
                                                 </svg>
                                             </span>
                                             <span class="kt-meeting-status-title">Completed</span>
-                                            <span class="text-white">|</span>
+                                            <!-- <span class="text-white">|</span> -->
                                             <span class="kt-meeting-status-time">12:45</span>
                                         </div>
                                     </div>
@@ -506,6 +506,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
+                                       <div class="no-agenda">
+                                            <img src="../../../assets/images/noActionPresent.png">
+                                            <h6>No Agenda Created</h6>
+                                       </div>
                                         <div class="kt-agenda-scroll flipped">
                                             <ul class="kt-agenda-content kt-agenda-list">
                                                 <li *ngFor="let item of Agendas_List;let i = index;"
@@ -1173,7 +1177,13 @@
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
-                                                
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"
+                                                viewBox="0 0 11 13" fill="none">
+                                                <path
+                                                    d="M6.82886 0.651855H2.42886C2.13712 0.651855 1.85733 0.767748 1.65104 0.974038C1.44475 1.18033 1.32886 1.46012 1.32886 1.75186V10.5519C1.32886 10.8436 1.44475 11.1234 1.65104 11.3297C1.85733 11.536 2.13712 11.6519 2.42886 11.6519H9.02886C9.3206 11.6519 9.60038 11.536 9.80667 11.3297C10.013 11.1234 10.1289 10.8436 10.1289 10.5519V3.95186L6.82886 0.651855Z"
+                                                    stroke="#979797" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
                                                 
                                             </span>
                                             <span class="label-name">
@@ -1244,9 +1254,9 @@
                                                         </defs>
                                                     </svg>
                                                 </span>
-                                                <a href="javascript:void(0)"
+                                                <a class="title" href="javascript:void(0)"
                                                 (click)="moreDetails(item.stringval)">   
-                                                <p class="title"> {{item.Project_Name}}</p>
+                                                 {{item.Project_Name}}
                                                 </a>
                                             </div>
                                             <!-- <div class="project">
