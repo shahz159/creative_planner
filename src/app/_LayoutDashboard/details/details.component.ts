@@ -3693,7 +3693,7 @@ check_allocation() {
   updateMainProject() {
     debugger
 // for checking whether mandatory fields are provided or not.
-   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks&&!this.selectedFile)){
+   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
       return;
    }
