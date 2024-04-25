@@ -1675,7 +1675,7 @@ GetNotedata() {
 
 addBulletPointsOnEnter(event: any) {
   if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
-     debugger
+
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1702,7 +1702,7 @@ GetMeetingnotes_data() {
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
-debugger
+
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
     
@@ -3386,7 +3386,7 @@ daysSelected: any[] = [];
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
-   debugger
+
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
     var start = moment(this.minDate);
@@ -3495,7 +3495,7 @@ daysSelected: any[] = [];
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+      
         const date1: Date = new Date(this._StartDate);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
           this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');

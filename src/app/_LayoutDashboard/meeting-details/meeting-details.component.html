@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                               
                                 <div class="kt-meeting-box mt-3">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="kt-meeting-title mt-0 mb-2">
@@ -369,6 +369,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </div>
                             <div class="kt-meeting-box mt-3  p-2">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="kt-meeting-title mt-0 mb-2">
@@ -505,14 +506,15 @@
                                                               
                                                                    <label [id]="'agenda-label-'+i"
                                                                     class="task-name">{{i+1}}. {{item.Agenda_Name}}</label>
+                                                                    <input [id]="'agenda-text-field-'+i" type="text"
+                                                                    class="task-name-editfield  d-none "
+                                                                    [value]="item.Agenda_Name" />
                                                                     <div  class="d-flex align-items-center justify-content-between">
                                                                         <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
                                                                         
-                                                                        <div  class="kt-info-lable-v"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
+                                                                        <div  class="kt-info-lable-v-date"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
                                                                     </div>
-                                                                <input [id]="'agenda-text-field-'+i" type="text"
-                                                                    class="task-name-editfield  d-none "
-                                                                    [value]="item.Agenda_Name" />
+                                                               
     
                                                             </div>                        
                                                             <div class="d-flex">
@@ -602,23 +604,15 @@
                                                         <div class="item-info">
                                                             <div class="item-details">
                                                                  <label [id]="'agenda-label-'+i"
-                                                                    class="task-name"><s>{{i+1}}. {{item.Agenda_Name}}</s></label>
-
-                                                                    
+                                                                    class="task-name"><s>{{i+1}}. {{item.Agenda_Name}}</s></label>                                                                    
                                                                     <div  class="d-flex align-items-center justify-content-between">
                                                                         <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
                                                                         
                                                                         <div  class="kt-info-lable-v"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
                                                                     </div>
-
-
-
-
-
                                                                 <input [id]="'agenda-text-field-'+i" type="text"
                                                                     class="task-name-editfield  d-none "
                                                                     [value]="item.Agenda_Name" />
-    
                                                             </div>
                                                             <div class="d-flex">
                                                                 <span class="status-done">Completed</span>
