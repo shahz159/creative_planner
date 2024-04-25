@@ -429,7 +429,7 @@
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName" [ngClass]="{'error-vd': (fieldRequired&&!project_code)}"
                 [ngClass]="{'error-vd': (noact_msg==true && project_type=='core')}"
-                    [(ngModel)]="project_code"  (change)="getPADetails(project_code,'ACTION'); ">
+                    [(ngModel)]="project_code"  (change)="getPADetails(project_code,'ACTION');  prostate(project_code);">
                     <ng-option [value]="item.Project_Code" *ngFor="let item of actionList">
                         {{item.Project_Name }}
                     </ng-option>
@@ -503,8 +503,8 @@
             <ng-container  *ngIf="project_type==='core'&&project_code&&bothActTlSubm">
             
                 <div class="form-group mt-3">
-                    <label>Attachments</label>
-                    <div class="input-group mb-3" #uploadFile>
+                    <label>Attachments</label><span *ngIf="ProState" style="color:red">*</span>
+                    <div class="input-group mb-3" #uploadFile  [ngClass]="{'error-border': (ProState&&fieldRequired&&!selectedFile)}" >
                         <div class="input-group-prepend">
                             <span class="input-group-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -528,7 +528,10 @@
                             </label>
                         </div>
                     </div>
-                    <span class="text-info"> *Accept only pdf files</span>
+                    
+                    <span class="text-info"> *Accept only pdf files</span><br/>
+                    <span style="color:red" *ngIf="(ProState&&fieldRequired&&!selectedFile)">please provide file attachment.</span>
+                   
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>

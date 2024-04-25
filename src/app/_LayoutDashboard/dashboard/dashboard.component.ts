@@ -37,8 +37,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-
-
+import { MatChipsModule } from '@angular/material/chips';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -65,7 +64,6 @@ moment.locale('en');
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   template: `{{ myTime | date: 'h:mm a' }}`
-
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -471,7 +469,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-
+ 
 
 
     // moment(this.scstartdate, "DD-MM-YYYY")
@@ -1448,7 +1446,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1571,7 +1569,7 @@ export class DashboardComponent implements OnInit {
       this.Startts&&
       this.Endtms&&
       this.MinLastNameLength
-      // &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
     ){
           this.OnSubmitSchedule();
           this.notProvided=false;
@@ -1580,8 +1578,8 @@ export class DashboardComponent implements OnInit {
       {
          if(!this.Title_Name)
          document.getElementById('dsb-evt-titleName').focus();
-        //  else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
-        //  {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+         else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
+         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
 
 
         this.notProvided=true;
@@ -1747,9 +1745,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
 
-        // var vAgendas = "Meeting_Agendas";
-        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        // element[vAgendas] = mtgAgendas;
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
 
         debugger
       });
@@ -2091,9 +2089,9 @@ debugger
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
         // debugger
-            // var vMeeting_Agendas="Meeting_Agendas";
-            // const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-            // element[vMeeting_Agendas]=updatedAgnds;
+            var vMeeting_Agendas="Meeting_Agendas";
+            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+            element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -2127,7 +2125,7 @@ debugger
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
-debugger
+
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -2136,7 +2134,7 @@ debugger
 
       // console.log(JSON.stringify(finalarray), "finalarray");
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
-        (data => {
+        (data => {   debugger
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -2189,7 +2187,19 @@ debugger
           else {
             this.notifyService.showSuccess(this._Message, "Success");
           }
-          this.GetScheduledJson();
+
+       // 1. sol
+          // if(this.showsearch)
+          //   this.evesrchclose();
+          // this.GetScheduledJson();
+     
+      // 2. sol   
+          if(this.showsearch)
+            this.Search_byname();
+          else 
+            this.GetScheduledJson();
+      
+          
           this.GetPending_Request();
           this.penhide();
           this.Title_Name = null;
@@ -2238,14 +2248,14 @@ debugger
     }
   }
 
-  Search_byname() {
+  Search_byname() { 
     this.showsearch = true;
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.Search_text = this.Searchword;
     // alert(this.Searchword);
 
     this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => { debugger
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
         console.log(this.Scheduledjson, "Testing");
       });
@@ -2824,7 +2834,8 @@ debugger
       //  console.log( this.Alltimes,"times")
     });
 
-
+console.log("StartTimearr:",this.StartTimearr);
+console.log("EndTimearr:",this.EndTimearr);
     // alert(this.Startts);
 
 
@@ -3757,16 +3768,17 @@ debugger
   }
 
   GetScheduledJson() {
-
+ debugger
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
-
+debugger
+       
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
-
+       
         this.calendarOptions = {
 
           initialView: 'listWeek',
@@ -3806,6 +3818,7 @@ debugger
           //   info.el.style.borderColor = 'red';
           // }
         };
+      
       });
   }
 
@@ -3816,7 +3829,7 @@ debugger
 
   TwinEvent=[];
   customizeEvent=(info)=>{
-
+ debugger
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -5075,9 +5088,10 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     $(".fc-header-toolbar").addClass("d-none");
   }
   evesrchclose() {
-    this.showsearch = false;
+    this.showsearch = false; this.Searchword=null;
     document.getElementById("drp-srch").classList.remove("show");
     $(".fc-header-toolbar").removeClass("d-none");
+    this.GetScheduledJson();
     //document.getElementById("showlist").classList.remove("show");
     //document.getElementById("showlist").style.display = "none";
   }
@@ -5383,5 +5397,27 @@ drawBarGraph(){
     return [];
   }
   // mat-autocomplete dropdowns code end.
+
+
+getTimeDuration(time1:string,time2:string){
+  if(time1&&time2){
+    time1='2024-04-20 '+time1;
+    if(time1.toLocaleUpperCase().includes('PM')&&time2.toUpperCase().includes('AM')){
+        time2='2024-04-21 '+time2;
+    }else
+    time2='2024-04-20 '+time2;
+
+    let T1=moment(time1,'YYYY-MM-DD hh:mm a');
+    let T2=moment(time2,'YYYY-MM-DD hh:mm a');
+    const result=Math.abs(T1.diff(T2,'minute'));  
+    return result<60?(result+' mins'):
+              (result/60).toFixed(2)+' hrs';
+    
+  }
+   
+}
+
+
+
 
 }

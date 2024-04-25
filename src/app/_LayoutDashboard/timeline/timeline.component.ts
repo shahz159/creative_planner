@@ -113,7 +113,7 @@ export class TimelineComponent implements OnInit {
   _Message: any;
   timelineDuration:any;
   showtimeline:boolean=true;
-
+  ProState:boolean=false;
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.timelineLog(this.type1);
@@ -142,7 +142,7 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO.PageSize = 30;
 
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data=>{
+      (data=>{ 
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         this.timelineDuration=(data[0]['TotalTime']);
         this.darArray=this.timelineList;
@@ -702,7 +702,7 @@ onTLSubmitBtnClick(){
            this.starttime&&
            this.endtime&&
            (this.starttime<this.endtime)&&
-           ((this.showAction&&this.bothActTlSubm)?this._remarks:true)
+           ((this.showAction&&this.bothActTlSubm)?(this._remarks&&(this.ProState?this.selectedFile:true)):true)
          ){
       // when all mandatory fields are provided.
          this.submitDar();
@@ -723,7 +723,17 @@ onTLSubmitBtnClick(){
 
 
 
+// functionality : file attachment is mandatory when action completion. start
+prostate(actioncode:any){
+  const selectedAction=this.actionList.find(action=>action.Project_Code==actioncode);
+  if(selectedAction){
+    this.ProState=selectedAction.ProState?true:false;   
+  }
+  else 
+  this.ProState=false;
+}
 
+// functionality : file attachment is mandatory when action completion. end
 
 
 

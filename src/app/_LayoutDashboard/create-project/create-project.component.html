@@ -1652,10 +1652,10 @@
                                       <div class="d-flex" (click)="newpfl_massage()">
                                         <input class="flex-1" [matChipInputFor]="selectedPortfolioDrpDwn"
                                           [matAutocomplete]="PortfolioDrpDwn" #portfolioTF />
-                                        <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
-                                            class="close-icon"
-                                            (click)=" this.isPortDrpDwnOpen=false;  portfolioTF.value='';  closeAutocompleteDrpDwn('PortfolioDrpDwn');">cancel</mat-icon></button>
-                                        <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon
+                                        <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                            class="close-icon save-mat-selection "
+                                            (click)=" this.isPortDrpDwnOpen=false;  portfolioTF.value='';  closeAutocompleteDrpDwn('PortfolioDrpDwn');">done</mat-icon></button>
+                                        <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
                                             class="add-icon"
                                             (click)="this.isPortDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">add</mat-icon></button>
                                       </div>
@@ -1835,10 +1835,10 @@
                                     <div class="d-flex">
                                       <input class="border-gray" [matChipInputFor]="selectedProjSprt"
                                         [matAutocomplete]="ProjSprtDrpDwn" #PrjSprtSelectTF />
-                                      <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
-                                          color="primary" class="close-icon"
-                                          (click)=" this.isPrjSprtDrpDwnOpen=false;  PrjSprtSelectTF.value='';  closeAutocompleteDrpDwn('PrjSprtDrpDwn');">cancel</mat-icon></button>
-                                      <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0"><mat-icon
+                                      <button *ngIf="isPrjSprtDrpDwnOpen" class="bg-transparent border-0 curser-pointer "><mat-icon
+                                          color="primary" class="close-icon  save-mat-selection "
+                                          (click)=" this.isPrjSprtDrpDwnOpen=false;  PrjSprtSelectTF.value='';  closeAutocompleteDrpDwn('PrjSprtDrpDwn');">done</mat-icon></button>
+                                      <button *ngIf="!isPrjSprtDrpDwnOpen" class="bg-transparent border-0 curser-pointer   "><mat-icon
                                           class="add-icon"
                                           (click)="this.isPrjSprtDrpDwnOpen=true; openAutocompleteDrpDwn('PrjSprtDrpDwn');">add</mat-icon></button>
                                     </div>

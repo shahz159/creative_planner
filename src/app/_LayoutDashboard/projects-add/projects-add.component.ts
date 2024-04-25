@@ -846,141 +846,63 @@ DeleteProjects(projInfo:any){
 //   }}
 
 
-removePrjsOfPortflio(){
-  let removedCount:number=0;
-  this._ProjectDataList.forEach(element => {
-    if (element.checked == false) {
-      let prid = element.id;
-      let poid = this._portfolioId;
-      let Projname = element.Project_Name;
-      let pCode = element.Project_Code;
-      let Createdby = element.Emp_No;
-      try{
-      this.service.DeleteProject(prid,poid,pCode,Projname,Createdby,this.deletedBy).subscribe((data) => {
-             removedCount+=1;
-             if(removedCount==this._ProjectDataList.length)
-             { this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');   }
-        // this.service.GetProjectsBy_portfolioId(this._Pid)
-        //   .subscribe((data) => {
-        //     // //console.log("Retrun After Delete :" + data);
-        //     // this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-        //     // this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
-        //     this.notifyService.showSuccess("Project removed successfully ", '');
-        //   });
-        // // this._objStatusDTO.Emp_No = this.Current_user_ID;
-        // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
-        //   (data) => {
-        //     this._ListProjStat = data as StatusDTO[];
-        //   });
+// removePrjsOfPortflio(){
+//   let removedCount:number=0;
+//   this._ProjectDataList.forEach(element => {
+//     if (element.checked == false) {
+//       let prid = element.id;
+//       let poid = this._portfolioId;
+//       let Projname = element.Project_Name;
+//       let pCode = element.Project_Code;
+//       let Createdby = element.Emp_No;
+//       try{
+//       this.service.DeleteProject(prid,poid,pCode,Projname,Createdby,this.deletedBy).subscribe((data) => {
+//              removedCount+=1;
+//              if(removedCount==this._ProjectDataList.length)
+//              { this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');   }
+//         // this.service.GetProjectsBy_portfolioId(this._Pid)
+//         //   .subscribe((data) => {
+//         //     // //console.log("Retrun After Delete :" + data);
+//         //     // this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+//         //     // this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
+//         //     this.notifyService.showSuccess("Project removed successfully ", '');
+//         //   });
+//         // // this._objStatusDTO.Emp_No = this.Current_user_ID;
+//         // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+//         //   (data) => {
+//         //     this._ListProjStat = data as StatusDTO[];
+//         //   });
 
 
 
-      });
-    }catch(e){
-        this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');
-        console.log(e);
-    }
-    }
-  });
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  selectUnSelectAllPrj(evt){
-//       this.isAllPrjSelected=evt.target.checked;
-//       this._ProjectDataList.forEach((prj)=>{
-//              prj.checked=this.isAllPrjSelected;
 //       });
-//       this.OnAllSelectedPrjSave();
-//  }
-
-
-
-
-
-
-
-
-
-
-
-
-  //  approve all selected prject end.
-
-
-  // project(){
-  //   if(this.isAllPrjSelected){
-  //         // add all projects into the portfolio.
-  //         this.addPrjsToPortflio();
-  //     }
-  //     // else{
-  //     //     this.removePrjsOfPortflio();
-  //     //     // remove all projects from the portfolio.
-  //     //   }
-  // }
-
-
-//   singlechecking:any[]
-//   singlecheckbox(item: any) {
-//     if (this.singlechecking && this.singlechecking.includes(item.Project_Code)) {
-//       this.singlechecking.push(item.Project_Code);
+//     }catch(e){
+//         this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');
+//         console.log(e);
 //     }
+//     }
+//   });
+
 // }
 
 
 
-// addedd() {
-//   this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
-//   const selectedPrjsss=this._ProjectDataList.filter(item=>item.checked);
-//   let LengthOfSelectedItems = JSON.stringify(selectedPrjsss.length);
-//   this.Obj_Portfolio_DTO.SelectedProjects = selectedPrjsss;
-//   this.service.SavePortfolio(this.Obj_Portfolio_DTO)
-//     .subscribe(data => {
-//       debugger
-//       this._portfolioId = data['Portfolio_ID'];
-//       if(this._portfolioId!==''){
-//         this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
-//       }
-//     });
-// }
 
-
-
-// new test
+// portfolio new start
 allSelectedProjects:any=[];  // overall selection
-tempSelection:any=[];    // current page selection
-addedSelectedPrj:any=[];   // added selected prjs of current page.
+isAllPrjSelected:boolean=false;
+
 selectUnSelectProject(e,item){ debugger
-      if(e.checked){
+      if(e.checked){ 
           this.allSelectedProjects.push(item);
+      
           const allsel=this._ProjectDataList.every(item=>{
             return this.allSelectedProjects.map(p=>p.Project_Code).includes(item.Project_Code)
           })
           this.isAllPrjSelected=allsel;
       }
       else{   // when unchecked
-          const index=this.allSelectedProjects.findIndex(obj=>obj.Project_Code==item.Project_Code)
+          let index=this.allSelectedProjects.findIndex(obj=>obj.Project_Code==item.Project_Code)
           if(index!=-1)
           this.allSelectedProjects.splice(index,1);
 
@@ -1000,7 +922,6 @@ selectUnSelectProject(e,item){ debugger
 }
 
 
-
 addPrjsToPortflio() {
   if(this.allSelectedProjects.length>0){
       this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
@@ -1014,7 +935,7 @@ addPrjsToPortflio() {
           if(this._portfolioId!==''){
             this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
           }
-          this.tempSelection=[...this.tempSelection,...this.allSelectedProjects.map(item=>item.Project_Code)];
+        
 
            this._ProjectDataList.map(PRJ=>{
 
@@ -1049,46 +970,25 @@ removePrjFromPortfolio(element:any){
 
      this.notifyService.showSuccess("Project removed successfully","");
 
+     const index=this._ProjectDataList.findIndex(p=>p.Project_Code==pCode);
+     if(index!=-1){
+           delete this._ProjectDataList[index].addedIntoPortfolio;
+     } 
 
+  
 
   });
 
 }
 
 
-
-
-
-
-
-
 isProjectSelected(prjcode:any):boolean{
+
+  // console.log("prj:",this.allSelectedProjects.map(x=>x.Project_Code).includes(prjcode));
   return this.allSelectedProjects.map(x=>x.Project_Code).includes(prjcode);
     //  const x=this.allSelectedProjects.find((item)=>item.Project_Code==prjcode);
     //  return x?true:false;
 }
-
-
-
-
-isAllPrjSelected:boolean=false;
-// addRemovePrjofPortfolio(evt){  debugger
-//   this.isAllPrjSelected=evt.checked;
-//   if(this.isAllPrjSelected)
-//   {
-//     const filtered=this._ProjectDataList.filter(Prj=>{
-//        const y=this.allSelectedProjects.map(x=>x.Project_Code);
-//               return !y.includes(Prj.Project_Code);
-//     });
-//     this.allSelectedProjects=[...this.allSelectedProjects,...filtered];
-//     this.tempSelection=[...this._ProjectDataList.map(item=>item.Project_Code)];
-//   }
-// else{
-//   this.allSelectedProjects=this.allSelectedProjects.filter(item=>!this.tempSelection.includes(item.Project_Code));
-//   this.tempSelection=[];
-// }
-// console.log("allSelectedProjects:",this.allSelectedProjects);
-// }
 
 
 selectUnselectPagePrjs(evt){ debugger
@@ -1100,7 +1000,6 @@ selectUnselectPagePrjs(evt){ debugger
              return !selprjs.includes(item.Project_Code);
         })
         this.allSelectedProjects=[...PageunselPrjs,...this.allSelectedProjects];   // current page projects + selected projects.
-        this.tempSelection=[...this._ProjectDataList.map(item=>item.Project_Code)];
     }
     else{
          // unchecked
@@ -1108,30 +1007,12 @@ selectUnselectPagePrjs(evt){ debugger
          this.allSelectedProjects=this.allSelectedProjects.filter(item=>{
                 return !curPagePrjs.includes(item.Project_Code)
          });
-         this.tempSelection=[];
-
     }
     console.log("allSelectedProjects:",this.allSelectedProjects);
 }
 
 
-// new test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// portfolio new end
 
 
 }

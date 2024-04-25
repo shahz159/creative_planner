@@ -698,7 +698,7 @@
 
 
                                                       <div class="Requested_user_info"
-                                                          *ngIf="requestType&&projectInfo.ApproverName">
+                                                          *ngIf="(requestType&&projectInfo.ApproverName)||isPrjContainAprvls">
                                                           <span class="svg-Rq-icon"><svg
                                                                   xmlns="http://www.w3.org/2000/svg" width="24"
                                                                   height="24" viewBox="0 0 24 24" fill="none"
@@ -715,14 +715,13 @@
                                                       </div>
 
 
-
                                                   </div>
                                               </div>
 
                                           </div>
 
                                           <div class="pending_approval_form"
-                                              *ngIf="requestType&&projectInfo.ApproverName">
+                                              *ngIf="(requestType&&projectInfo.ApproverName)||isPrjContainAprvls">
                                               <div class="Paf_info">
                                                   <label>Pending Approval</label>
                                                   <p><span class="Dote_red"></span> {{projectInfo.ApproverName}}</p>
@@ -2103,7 +2102,7 @@
 
 
       <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list" style="cursor:pointer;">
-      <div class="notification delay-notification cursor-pointer " *ngIf="TOTAL_ACTIONS_IN_DELAY>0"
+      <div class="notification delay-notification curser-pointer " *ngIf="TOTAL_ACTIONS_IN_DELAY>0"
       (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:'All'});   showActionDetails(this.delayActionsOfEmps[0].delayActions[0].IndexId-1); ">
       <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -3268,8 +3267,8 @@
                                                       </div>
 
 
-                                                         <div class="View_graph_act">
-                                                          <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT');  graphOptionChanged=false;   " >
+                                                         <div class="View_graph_act  curser-pointer" *ngIf="!activitiesLoading">
+                                                          <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT'); graphOptionChanged=false;   " >
                                                               <svg  width="14px" height="14px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path> </g></svg>
                                                               View Graph
                                                           </a>
@@ -3277,7 +3276,7 @@
 
 
 
-
+ 
                                                   </div>
 
                                               <ng-container *ngIf="activitiesLoading;else prjactivitiesloaded">
@@ -4752,8 +4751,8 @@
                   <div class="d-flex">
                       <input class="border-gray" [matChipInputFor]="selectedmemoslist" [matAutocomplete]="memoDrpDown"
                           #dmsSelectTF />
-                      <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                              (click)="closeMemoDrpDwn()">cancel</mat-icon></button>
+                      <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 curser-pointer "><mat-icon class="close-icon save-mat-selection "
+                              (click)="closeMemoDrpDwn()">done</mat-icon></button>
                       <button *ngIf="!isDMSDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
                               (click)="openMemoDrpDwn()">add</mat-icon></button>
                   </div>
@@ -4891,15 +4890,15 @@
                   </mat-chip>
               </mat-chip-list>
               <div class="d-flex">
-                  <input class="border-gray" [placeholder]="'Select Portfolio(s)'"
+                  <input class="border-gray" [placeholder]="'Select Portfolio(s)'"  #prtfiosTF
                     (input)="filterportfolio($event.target.value.trim())"  [matChipInputFor]="selectedportfolioslist" [matAutocomplete]="prtDrpDown">
-                  <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                          (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
+                  <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon class="close-icon save-mat-selection "
+                          (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">done</mat-icon> </button>
                   <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
                           (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
               </div>
               <mat-autocomplete aria-label="PORTFOLIOdrpdwn" #prtDrpDown="matAutocomplete"
-                  (optionSelected)="onPrtClicked($event)" (closed)="isPortDrpDwnOpen=false"
+                  (optionSelected)="onPrtClicked($event); prtfiosTF.value=''; " (closed)="isPortDrpDwnOpen=false"
                   (opened)="isPortDrpDwnOpen=true">
                  <mat-option *ngFor=" let prt of _portfoliosList" [value]="prt.Portfolio_ID"
                       (click)="Portfolio_Select(ngDropdwonPort)">
@@ -5152,8 +5151,8 @@
 
                 <ng-container *ngIf="bothActTlSubm">
                   <div class="form-group mt-3">
-                      <label>Attachments</label>
-                      <div class="input-group mb-3" #uploadFile>
+                      <label>Attachments</label><span *ngIf="proState" style="color:red">*</span>
+                      <div class="input-group mb-3"  [ngClass]="{'error-border':(proState&&notProvided&&!selectedFile)}" #uploadFile>
                           <div class="input-group-prepend">
                               <span class="input-group-text">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -5166,7 +5165,7 @@
                               </span>
                           </div>
                           <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="uploadFile" (change)="onFileChange($event)" />
+                              <input  type="file" class="custom-file-input" id="uploadFile" (change)="onFileChange($event)" />
                               <label class="custom-file-label" id="_upload" for="uploadFile">
                                   <ng-container *ngIf="_inputAttachments==='';else fileprovided">
                                       Select a file
@@ -5178,11 +5177,12 @@
                               </label>
                           </div>
                       </div>
-                      <span class="text-info"> *Accept only pdf files</span>
+                      <span class="text-info"> *Accept only pdf files</span><br/>
+                      <span style="color:red" *ngIf="(proState&&notProvided&&!selectedFile)">please provide file attachment.</span>
                   </div>
                   <div class="form-group">
                       <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-                      <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here." [ngClass]="{'error-vd': _remarks===''&&notProvided}"
+                      <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here." [ngClass]="{'error-border': _remarks===''&&notProvided}"
                           [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
                       <span style="color:red" *ngIf="_remarks===''&&notProvided">Please provide remarks</span>
                   </div>
@@ -6295,7 +6295,7 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item" *ngIf="projectInfo && (Current_user_ID == projectInfo.OwnerEmpNo ||isHierarchy == true ) ||(this.Current_user_ID == this.projectInfo.ResponsibleEmpNo)">
+                                <li class="nav-item" *ngIf="projectInfo && ((Current_user_ID == projectInfo.OwnerEmpNo ||isHierarchy == true ) ||(Current_user_ID == projectInfo.ResponsibleEmpNo))">
                                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                         <span class="svg-icv-hd">
                                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -6574,8 +6574,8 @@
                                               [matAutocomplete]="TeamMemberDrpDwn"
                                               (input)="filterEmployees($event.target.value.trim())" #SupportTF />
                                           <button *ngIf="isSupportDrpDwnOpen"
-                                              class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                                  (click)=" this.isSupportDrpDwnOpen=false;   closeAutocompleteDrpDwn('supportDrpDwn');">cancel</mat-icon></button>
+                                              class="bg-transparent border-0  curser-pointer"><mat-icon class="close-icon  save-mat-selection "
+                                                  (click)=" this.isSupportDrpDwnOpen=false;   closeAutocompleteDrpDwn('supportDrpDwn');">done</mat-icon></button>
                                           <button *ngIf="!isSupportDrpDwnOpen"
                                               class="bg-transparent border-0"><mat-icon class="add-icon"
                                                   (click)="this.isSupportDrpDwnOpen=true; openAutocompleteDrpDwn('supportDrpDwn');">add</mat-icon></button>
@@ -6892,7 +6892,7 @@
           </div>
           <div class="form-group mt-3">
               <label>Attachments<span class="text-danger" *ngIf="proState==true" >*</span></label>
-              <div class="input-group mb-3" #uploadFile>
+              <div class="input-group mb-3" [ngClass]="{'error-border': proState&&(!selectedFile)&&formFieldsRequired}"#uploadFile>
                   <div class="input-group-prepend">
                       <span class="input-group-text">
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -6933,7 +6933,7 @@
        -->
           <div class="form-group">
               <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-              <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
+              <textarea [ngClass]="{'error-border': !_remarks&&formFieldsRequired}" class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
                   [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
               <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">remarks required</span>    
           </div>
@@ -9121,10 +9121,10 @@
 
 
 
-                        <div class="matchip-drp-dwn">
+                        <div class="matchip-drp-dwn" *ngIf="LinkableMtgsList">
 
                                                                  
-                            <mat-form-field class="drp-dwn-field w-100" >
+                            <mat-form-field class="drp-dwn-field w-100">
                                 <mat-label>Select Meeting</mat-label>
                                 <mat-chip-list #selectedMtgs2Linked_list>
                                                
@@ -9139,9 +9139,9 @@
                                 <div class="d-flex">
                                     <input class="flex-1" [matChipInputFor]="selectedMtgs2Linked_list"
                                         [matAutocomplete]="LinkableMtgsDrpDwn" #mtgs2LinkedTF />
-                                    <button *ngIf="isLinkableMtgsDrpDwnOpened" class="bg-transparent border-0 "><mat-icon
-                                            class="close-icon"
-                                            (click)=" isLinkableMtgsDrpDwnOpened=false;  mtgs2LinkedTF.value='';  closeAutocompleteDrpDwn('LinkableMtgsDrpDwn');">cancel</mat-icon></button>
+                                    <button *ngIf="isLinkableMtgsDrpDwnOpened" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                            class="close-icon  save-mat-selection "
+                                            (click)=" isLinkableMtgsDrpDwnOpened=false;  mtgs2LinkedTF.value='';  closeAutocompleteDrpDwn('LinkableMtgsDrpDwn');">done</mat-icon></button>
                                     <button *ngIf="!isLinkableMtgsDrpDwnOpened" class="bg-transparent border-0"><mat-icon
                                             class="add-icon"
                                             (click)="isLinkableMtgsDrpDwnOpened=true; openAutocompleteDrpDwn('LinkableMtgsDrpDwn');">add</mat-icon></button>
@@ -9291,10 +9291,10 @@
                               <div class="d-flex">
                                   <input class="flex-1" [matChipInputFor]="selectedProjectDrpDwn"
                                       [matAutocomplete]="ProjectDrpDwn" #projectTF />
-                                  <button *ngIf="isProjectDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
-                                          class="close-icon"
-                                          (click)=" this.isProjectDrpDwnOpen=false;  projectTF.value='';  closeAutocompleteDrpDwn('ProjectDrpDwn');">cancel</mat-icon></button>
-                                  <button *ngIf="!isProjectDrpDwnOpen" class="bg-transparent border-0"><mat-icon
+                                  <button *ngIf="isProjectDrpDwnOpen" class="bg-transparent border-0  curser-pointer"><mat-icon
+                                          class="close-icon  save-mat-selection "
+                                          (click)=" this.isProjectDrpDwnOpen=false;  projectTF.value='';  closeAutocompleteDrpDwn('ProjectDrpDwn');">done</mat-icon></button>
+                                  <button *ngIf="!isProjectDrpDwnOpen" class="bg-transparent border-0 curser-pointer  "><mat-icon
                                           class="add-icon"
                                           (click)="this.isProjectDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectDrpDwn');">add</mat-icon></button>
                               </div>
@@ -9365,10 +9365,10 @@
                                       <input class="flex-1" [matChipInputFor]="selectedPortfolioDrpDwn"
                                           [matAutocomplete]="PortfolioDrpDwn" #portfolioTF />
                                       <button *ngIf="isPortfolioDrpDwnOpen"
-                                          class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                              (click)=" this.isPortfolioDrpDwnOpen=false;  portfolioTF.value='';  closeAutocompleteDrpDwn('PortfolioDrpDwn');">cancel</mat-icon></button>
+                                          class="bg-transparent border-0 curser-pointer "><mat-icon class="close-icon save-mat-selection "
+                                              (click)=" this.isPortfolioDrpDwnOpen=false;  portfolioTF.value='';  closeAutocompleteDrpDwn('PortfolioDrpDwn');">done</mat-icon></button>
                                       <button *ngIf="!isPortfolioDrpDwnOpen"
-                                          class="bg-transparent border-0"><mat-icon class="add-icon"
+                                          class="bg-transparent border-0 curser-pointer "><mat-icon class="add-icon"
                                               (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">add</mat-icon></button>
                                   </div>
                                   <mat-autocomplete aria-label="PortfolioDrpDwn"
@@ -9429,10 +9429,10 @@
                                       <input class="flex-1" [matChipInputFor]="selectedDmsMemoDrpDwn"
                                           [matAutocomplete]="MemoDrpDwn" #dmsMemoTF />
                                       <button *ngIf="isDMSMemoDrpDwnOpen"
-                                          class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                              (click)=" this.isDMSMemoDrpDwnOpen=false;   closeAutocompleteDrpDwn('MemoDrpDwn');">cancel</mat-icon></button>
+                                          class="bg-transparent border-0 curser-pointer"><mat-icon class="close-icon save-mat-selection"
+                                              (click)=" this.isDMSMemoDrpDwnOpen=false;   closeAutocompleteDrpDwn('MemoDrpDwn');">done</mat-icon></button>
                                       <button *ngIf="!isDMSMemoDrpDwnOpen"
-                                          class="bg-transparent border-0"><mat-icon class="add-icon"
+                                          class="bg-transparent border-0 curser-pointer"><mat-icon class="add-icon"
                                               (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">add</mat-icon></button>
                                   </div>
                                   <mat-autocomplete aria-label="MemoDrpDwn" #MemoDrpDwn="matAutocomplete"
@@ -9483,10 +9483,10 @@
                                           <input class="flex-1" [matChipInputFor]="selectedParticipants"
                                               [matAutocomplete]="participantsDrpDwn" #ParticipantTF />
                                           <button *ngIf="isParticipantDrpDwnOpen"
-                                              class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                                  (click)=" this.isParticipantDrpDwnOpen=false;   closeAutocompleteDrpDwn('ParticipantDrpDwn');">cancel</mat-icon></button>
+                                              class="bg-transparent border-0 curser-pointer "><mat-icon class="close-icon  save-mat-selection"
+                                                  (click)=" this.isParticipantDrpDwnOpen=false;   closeAutocompleteDrpDwn('ParticipantDrpDwn');">done</mat-icon></button>
                                           <button *ngIf="!isParticipantDrpDwnOpen"
-                                              class="bg-transparent border-0"><mat-icon class="add-icon"
+                                              class="bg-transparent border-0 curser-pointer  "><mat-icon class="add-icon"
                                                   (click)="this.isParticipantDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantDrpDwn');">add</mat-icon></button>
                                       </div>
                                       <mat-autocomplete aria-label="ParticipantDrpDwn"
@@ -10304,8 +10304,10 @@
                               <label class="pe-label">Project Name</label>
                               <div class="input-icon project-name_ed curser-pointer">
                                   <input type="text" class="form-control" [(ngModel)]="ProjectName"
+                                   [ngClass]="{'error-border':!(this.ProjectName&&this.ProjectName.trim()!='')&&formFieldsRequired}"
                                       placeholder="Search..." />
                               </div>
+                              <span style="color:red" *ngIf="!(this.ProjectName&&this.ProjectName.trim()!='')&&formFieldsRequired">project name required</span>
                           </div>
                       </div>
                       <div class="col-lg-12">
@@ -10313,8 +10315,10 @@
                               <label class="pe-label">Project description</label>
                               <div class="input-icon project_des_ed curser-pointer">
                                   <textarea type="text" class="form-control" placeholder="Search..." height="60px"
+                                      [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"></textarea>
                               </div>
+                              <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
                       </div>
                   </div>
@@ -10800,21 +10804,22 @@
                   <div class="col-lg-12">
                       <div class="form-group mb-2">
                           <label class="pe-label">Action Name</label>
-                          <div class="input-icon project-name_ed">
-                              <input type="text" class="form-control" [(ngModel)]="ActionName"
+                          <div class="input-icon project-name_ed" >
+                              <input type="text" class="form-control" [(ngModel)]="ActionName" [ngClass]="{'error-border': !ActionName&&formFieldsRequired}"
                                   placeholder="Search..." />
                           </div>
-                          <span style="color:red" class="fs-8" *ngIf="!ActionName" >*action name required.</span>
+                          <span style="color:red" class="fs-8" *ngIf="!ActionName&&formFieldsRequired" >action name required.</span>
                       </div>
                   </div>
                   <div class="col-lg-12">
                       <div class="form-group mb-2">
                           <label class="pe-label">Action description</label>
                           <div class="input-icon project_des_ed">
-                              <textarea type="text" class="form-control" placeholder="Search..." height="60px"
+                              <textarea type="text" class="form-control" placeholder="Search..." height="60px" 
+                              [ngClass]="{'error-border': !ActionDescription&&formFieldsRequired}"
                                   [(ngModel)]="ActionDescription"></textarea>
                           </div>
-                          <span style="color:red" class="fs-8" *ngIf="!ActionDescription" >*action description required.</span>
+                          <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>
                   </div>
               </div>
@@ -10881,7 +10886,9 @@
                               *ngIf="(Current_user_ID == projectActionInfo[currentActionView].Project_Owner || isHierarchy==true) && (projectActionInfo[currentActionView].Status !=='Under Approval' &&
                       projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval' && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval'
                           &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActionEdit">
-                              <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner ">
+                              <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner "
+                                   [ngClass]="{'error-vd': !ActionOwner&&formFieldsRequired}"
+                                  >
                                   <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
                                       {{item.RACIS}}
                                   </ng-option>
@@ -10894,7 +10901,7 @@
                           </ng-template>
 
                       </div>
-                      <span style="color:red" class="fs-8"  *ngIf="!ActionOwner">*action owner required.</span>
+                      <span style="color:red" class="fs-8"  *ngIf="!ActionOwner&&formFieldsRequired">action owner required.</span>
                   </div>
               </div>
               <div class="col-lg-4 text-left">
@@ -10917,7 +10924,9 @@
                           <ng-container
                               *ngIf="(projectActionInfo[currentActionView].Status !=='Under Approval' && projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval'
                               && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActEdit">
-                              <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible">
+                              <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible"
+                                     [ngClass]="{'error-vd': !ActionResponsible&&formFieldsRequired}"
+                                  >
                                   <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
                                       {{item.RACIS}}
                                   </ng-option>
@@ -10929,7 +10938,7 @@
                           </ng-template>
 
                       </div>
-                      <span style="color:red" class="fs-8"  *ngIf="!ActionResponsible">*action responsible required.</span>
+                      <span style="color:red" class="fs-8"  *ngIf="!ActionResponsible&&formFieldsRequired">action responsible required.</span>
                   </div>
               </div>
 
@@ -10944,14 +10953,16 @@
                               </svg>
                           </span> Category </div>
                       <div class="input-icon Sub_In_ed">
-                          <ng-select [(ngModel)]="selectedcategory" placeholder="Select Category">
+                          <ng-select [(ngModel)]="selectedcategory" placeholder="Select Category"
+                          [ngClass]="{'error-vd': !selectedcategory&&formFieldsRequired}"
+                              >
                               <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
                                   [disabled]="Category==item.ReportType">
                                   {{item.ReportType}}
                               </ng-option>
                           </ng-select>
                       </div>
-                      <span style="color:red" class="fs-8"  *ngIf="!selectedcategory">*category required.</span>
+                      <span style="color:red" class="fs-8"  *ngIf="!selectedcategory&&formFieldsRequired">category required.</span>
                   </div>
               </div>
 
@@ -10996,14 +11007,16 @@
                               </svg>
                           </span> Client </div>
                       <div class="input-icon Sub_In_ed">
-                          <ng-select [(ngModel)]="ActionClient" placeholder="Select client">
+                          <ng-select [(ngModel)]="ActionClient" placeholder="Select client"
+                                 [ngClass]="{'error-vd': !ActionClient&&formFieldsRequired}"
+                               >
                               <ng-option [value]="item.Com_No" *ngFor="let item of Client_List"
                                   [disabled]="Client==item.Com_Name">
                                   <a>{{item.Com_Name}}</a>
                               </ng-option>
                           </ng-select>
                       </div>
-                      <span style="color:red" class="fs-8"  *ngIf="!ActionClient">*client required.</span>
+                      <span style="color:red" class="fs-8"  *ngIf="!ActionClient&&formFieldsRequired">client required.</span>
                   </div>
               </div>
           </div>
@@ -11028,11 +11041,11 @@
                       <!-- <ng-container *ngIf="ActionstartDate < EndDate1"> -->
                       <div class="kt-info-lable-v"> Start date</div>
                       <div class="input-icon Sub_In_ed">
-                          <input type="text" class="form-control readonly"
+                          <input type="text" class="form-control readonly"   
                               [value]="ActionstartDate | date : 'dd-MM-yyyy'" placeholder="Start date"
                               readonly />
                       </div>
-                      <span style="color:red" class="fs-8"  *ngIf="!ActionstartDate">*start date required.</span>
+                      <span style="color:red" class="fs-8"  *ngIf="!ActionstartDate&&formFieldsRequired">*start date required.</span>
                       <!-- </ng-container> -->
                   </div>
               </div>
@@ -11040,7 +11053,7 @@
                   *ngIf="(projectInfo&&projectInfo.Project_Type==='Core Tasks'||projectInfo&&projectInfo.Project_Type=='Secondary Tasks'||projectInfo&&projectInfo.Project_Type==='To do List'); else submissionN">
                   <div class="form-group mb-2 Ic_ed">
                       <div class="kt-info-lable-v"> Deadline</div>
-                      <div class="input-icon Sub_In_ed  rounded-2 date-border-v d-flex">
+                      <div class="input-icon Sub_In_ed  rounded-2 date-border-v d-flex" [ngClass]="{'error-border': !ActionendDate&&formFieldsRequired}"  >
                           <input class="form-control" [(ngModel)]="ActionendDate"
                               [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                               [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
@@ -11052,7 +11065,7 @@
                               <mat-datepicker class="form-group " #ActionsEditsPicker></mat-datepicker>
                           </div>
                       </div>
-                      <span style="color:red" class="fs-8"  *ngIf="!ActionendDate">*end date required.</span>
+                      <span style="color:red" class="fs-8"  *ngIf="!ActionendDate&&formFieldsRequired">*end date required.</span>
                   </div>
               </div>
               <ng-template #submissionN>

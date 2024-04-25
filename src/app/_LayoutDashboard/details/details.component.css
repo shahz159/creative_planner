@@ -3428,25 +3428,51 @@ border:0;
 .drp-dwn-submitbtn {
 margin-bottom:15px;
 }
-.close-icon{
-color:#f4f3f3;
-background-color: gray;
-border-radius: 50%;
+.close-icon {
+  color: #f4f3f3;
+  background-color: gray;
+  border-radius: 50%;
 }
-.close-icon:hover{
-color:#e0e0e0;
-transform: none;
+
+.close-icon:hover {
+  color: #e0e0e0;
+  transform: none;
 }
 .add-icon{
-color:white;
-border-radius: 50%;
-background-color: #646C9A;
+  color: white;
+    border-radius: 50%;
+    background-color: #646C9A;
+    -webkit-text-stroke-width: thin;
 }
 .add-icon:hover{
 background-color: #3D4991;
 transform: none;
 color:white;
 }
+
+.save-mat-selection{
+  font-size: 17px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #646C9A;
+}
+.save-mat-selection:hover{
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
 /* portfolio End*/
 
 
@@ -3477,7 +3503,7 @@ color:white;
 }
 
 
-.close-icon{
+/* .close-icon{
   color:#f4f3f3;
   background-color: gray;
   border-radius: 50%;
@@ -3488,10 +3514,10 @@ color:white;
   color:#e0e0e0;
   transform: none;
 
-}
+} */
 
 
-.add-icon{
+/* .add-icon{
    color: #7d8ea3;
    border-radius: 50%;
    border:1px solid #7d8ea3;
@@ -3507,7 +3533,7 @@ color:white;
  transform: none;
  color:white;
  transition-duration:0.4s;
-}
+} */
 
 span.kt-user-list-ic {
   background-color: #fff;

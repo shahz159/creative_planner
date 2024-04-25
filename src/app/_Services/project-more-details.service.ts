@@ -40,8 +40,10 @@ export class ProjectMoreDetailsService {
 
 
 
-  NewGetEmployeeMeetings(EmpNo:string){
+  NewGetEmployeeMeetings(EmpNo:any,pcode:any){
       this.ObjSubTaskDTO.Emp_No=EmpNo;
+      this.ObjSubTaskDTO.Project_Code=pcode;
+
       return this.http.post(this.rootUrl+'CalenderAPI/NewGetEmployeeMeetings',this.ObjSubTaskDTO);
   }
 
