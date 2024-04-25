@@ -317,8 +317,8 @@
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <div class="kt-metric-duration-time">
                                                         <div class="kt-metric-time start">
-                                                            <div class="dark-title">{{item.St_Time}} </div>
-                                                            <div class="muted-title">Start Time </div>
+                                                            <div class="dark-title">{{item.St_Time}}</div>
+                                                            <div class="muted-title">Start Time</div>
                                                         </div>
                                                         <div class="kt-metric-timeline">
                                                             <div class="z-index-1 d-flex">
@@ -358,7 +358,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="kt-metric-time">
-                                                        <div class="dark-title">60:00 Min</div>
+                                                        <div class="dark-title" *ngIf="hours!=0">{{formattedDuration}} hr</div>
+                                                        <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div>
+                                                       
                                                         <div class="muted-title">Duration</div>
                                                     </div>
                                                 </div>
@@ -497,12 +499,12 @@
                                                             <input type="checkbox" (click)="completeAgenda()" name="Checkboxes15" />
                                                            <span></span>
                                                         </label>
-                                                        <div class="item-number">{{i+1}}</div>
+                                                       
                                                           <div class="item-info">
                                                             <div class="item-details">
-   
-                                                                    <label [id]="'agenda-label-'+i"
-                                                                    class="task-name">{{item.Agenda_Name}}</label>
+                                                              
+                                                                   <label [id]="'agenda-label-'+i"
+                                                                    class="task-name">{{i+1}}. {{item.Agenda_Name}}</label>
                                                                     <div  class="d-flex align-items-center justify-content-between">
                                                                         <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
                                                                         
@@ -596,11 +598,11 @@
                                                        <span></span>
                                                        </label>
                                                 
-                                                        <div class="item-number">{{i+1}}</div>
+                                                     
                                                         <div class="item-info">
                                                             <div class="item-details">
                                                                  <label [id]="'agenda-label-'+i"
-                                                                    class="task-name"><s>{{item.Agenda_Name}}</s></label>
+                                                                    class="task-name"><s>{{i+1}}. {{item.Agenda_Name}}</s></label>
 
                                                                     
                                                                     <div  class="d-flex align-items-center justify-content-between">
@@ -1421,7 +1423,7 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
-                                            <ng-container *ngIf="_MemosSubjectList[0].Subject!=undefined">
+                                            <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
                                             <div class="project"  *ngFor="let memo of _MemosSubjectList">
                                                 <span class="icon">
                                                     <img width="16"
@@ -1432,7 +1434,7 @@
                                                 <span class="title"> <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a></span>
                                             </div>
                                         </ng-container>
-                                        <ng-container  *ngIf="_MemosSubjectList[0].Subject==undefined">
+                                        <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
                                             <p>No DMS linked in the meeting</p>
                                         </ng-container>
                                         </div>
@@ -1581,7 +1583,7 @@
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
                                             <ng-container *ngIf="totalguest>0;else NoUser"></ng-container>
-                                            <div class="attendess" >
+                                            <div class="attendess">
                                                 <div class="user-icon"  *ngFor="let item of User_Scheduledjson" >
                                                     <span  title="{{item.TM_DisplayName}}">
                                                         <span>{{getInitials(item.TM_DisplayName)}}</span>
@@ -1746,7 +1748,7 @@
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <form class="task-form">
+                                            <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
                                                     [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
                                                     placeholder="Add a new task..." autofocus="true">

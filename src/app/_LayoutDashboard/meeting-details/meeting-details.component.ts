@@ -397,6 +397,12 @@ export class MeetingDetailsComponent implements OnInit {
   portfoliocount: number;
   totalAgendaList:any
   completedAgendaList:any
+  formattedDuration:any
+  hours:any
+  minutes:any
+
+
+
 
 
 
@@ -494,6 +500,22 @@ meeting_details(){
       this.dmsIdjson = JSON.stringify(this.dmsIdjson);
       this.GetDMSList();
     }
+
+
+
+    var St_Time=this.EventScheduledjson[0].St_Time;
+    var End_date=this.EventScheduledjson[0].Ed_Time;
+
+    var startTime = moment(St_Time, "hh:mm A");
+    var endTime = moment(End_date, "hh:mm A");
+
+    // Calculate the duration between the start time and end time
+    var duration = moment.duration(endTime.diff(startTime));
+
+     // Format the duration as hours:minutes
+    this.hours = Math.floor(duration.asHours());
+    this.minutes = duration.minutes();
+    this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
    })
 }
 
