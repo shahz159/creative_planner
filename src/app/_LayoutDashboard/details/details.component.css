@@ -3132,7 +3132,7 @@ i.date-rg-icon {
 }
 
 .kt-quick-Mettings--on{
-  width: 70%;
+  width: 65%;
 }
 /*----- edit btn css ----------*/
 .PA_title {
@@ -5302,4 +5302,12 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 
 .meeting-scroll-y::-webkit-scrollbar-track{
   background-color: transparent;
+}
+
+.LM_mtg-recurrence-type{
+
+}
+
+.LM_mtg-Owner{
+  
 }

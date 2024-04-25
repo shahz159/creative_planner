@@ -139,3 +139,13 @@
 .drp-dwn-field input {
   border: 0;
 }
+
+error-border, 
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+.error-date .custom-file-label {
+  border: 1px solid #F44336 !important;
+}

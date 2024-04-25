@@ -2026,7 +2026,7 @@ currentStdAprView:number|undefined;
        if(x===0)
         this.closeApprovalSideBar();
 
-       this.notifyService.showSuccess("tasks requests Approved.",'Success');
+       this.notifyService.showSuccess("Standard Task complete approved.",'Success');
        this.selectedStdAprvs=[];
        this.getapprovalStats();
        this.allStdAprSelected=false;
@@ -3697,7 +3697,7 @@ check_allocation() {
   updateMainProject() {
     debugger
 // for checking whether mandatory fields are provided or not.
-   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks&&!this.selectedFile)){
+   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
       return;
    }
@@ -7560,13 +7560,14 @@ NewAddUserCountFeature() {
       document.getElementById("feature-modal-backdrop").classList.remove("show");
 }
 
-getRecallMeetings() {
+showRecallMeetingsView() {
   document.getElementById("recall-meeting").style.display = "block";
   document.getElementById("main-meeting").style.display = "none";
 }
 backMainMeetings() {
   document.getElementById("recall-meeting").style.display = "none";
   document.getElementById("main-meeting").style.display = "block";
+  this.selectedMtgs2Link=[];  // clear selected meetings.
 }
 
 //  save meeting as draft start.
@@ -7688,27 +7689,102 @@ rejectAllStdTaskAprvs(){
 
 // meeting recall start
 
-linkMeetingToProject(mtgScheduleid:any){
 
 
-  // this.obj_CalenderDTO.Emp_No=obj.Emp_No;
-  // this.obj_CalenderDTO.Project_Code=obj.Project_Code;
-  // this.obj_CalenderDTO.flagid=obj.flagid;
+// linkMeetingToProject(mtgScheduleid:any){
+
+
+//   // this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+//   // this.obj_CalenderDTO.Project_Code=obj.Project_Code;
+//   // this.obj_CalenderDTO.flagid=obj.flagid;
 
 
 
 
 
-  this._calenderDto = new CalenderDTO;
+//   this._calenderDto = new CalenderDTO;
 
-  this._calenderDto.Schedule_ID=mtgScheduleid;
-  this._calenderDto.Emp_No=this.Current_user_ID;
-  this._calenderDto.flagid=1;
-  this._calenderDto.Project_Code=this.URL_ProjectCode;
-     this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe(res=>{
-        console.log("after linking:",res);
-     });
+//   this._calenderDto.Schedule_ID=mtgScheduleid;
+//   this._calenderDto.Emp_No=this.Current_user_ID;
+//   this._calenderDto.flagid=1;
+//   this._calenderDto.Project_Code=this.URL_ProjectCode;
+//      this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe(res=>{
+//         console.log("after linking:",res);
+//      });
+// }
+
+
+isLinkableMtgsDrpDwnOpened:boolean=false;
+LinkableMtgsList:any;
+selectedMtgs2Link:any=[];
+
+getLinkableMtgsList(){
+    this.projectMoreDetailsService.NewGetEmployeeMeetings(this.Current_user_ID,this.URL_ProjectCode).subscribe((res:any)=>{
+           this.LinkableMtgsList=JSON.parse(res['AvailableSlotsJson']);
+           console.log("LinkableMtgsList:",this.LinkableMtgsList);
+    })
 }
+
+
+removeSelectedLinkableMtg(mtg:any){
+    const index=this.selectedMtgs2Link.indexOf(mtg);
+    if(index!==-1)
+      this.selectedMtgs2Link.splice(index,1);
+}
+
+onMtgForLinkSelected(e:any){
+     const mtgChoosed=this.LinkableMtgsList.find((m:any)=>m.EventNumber===e.option.value);
+     if(mtgChoosed){
+          const index=this.selectedMtgs2Link.indexOf(mtgChoosed.EventNumber);
+          if(index===-1){
+               this.selectedMtgs2Link.push(mtgChoosed.EventNumber);
+          }else {
+               this.selectedMtgs2Link.splice(index,1);
+          }
+     }
+     this.openAutocompleteDrpDwn('LinkableMtgsDrpDwn');
+}
+
+
+ getSelectedMtgName(eventno:string){
+  if(this.LinkableMtgsList){
+   const M=this.LinkableMtgsList.find(m=>m.EventNumber.trim()==eventno.trim());
+   return M?M.Task_Name:'';
+  }
+   return [];
+}
+
+
+linkMtgsToProject(){
+
+  const mtgsSelected=this.selectedMtgs2Link.join(',');
+  let empno=this.Current_user_ID;
+  let prj_code=this.projectInfo.Project_Code;
+
+     this.projectMoreDetailsService.NewLinkMeetingInProjectDetails(mtgsSelected,empno,prj_code).subscribe(res=>{
+            console.log(res);
+            if(res){
+              if(res['message']==1){
+                this.notifyService.showSuccess("Successfully meeting added to the project","")
+                this.backMainMeetings();
+                this.GetmeetingDetails();
+                this.selectedMtgs2Link=[];
+              }
+              else if(res['message']==2){
+                this.notifyService.showError("Failed to link selected meeting into the project.","")
+              }
+            }
+            else
+            this.notifyService.showError("something went wrong","");
+
+
+     })
+
+
+}
+
+
+
 
 
 

@@ -18,6 +18,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
@@ -98,6 +99,7 @@ export class MeetingDetailsComponent implements OnInit {
       },
     ],
   };
+  private refreshSubscription: Subscription;
   constructor(
     private CalenderService:CalenderService,
     private route:ActivatedRoute,
@@ -154,74 +156,82 @@ export class MeetingDetailsComponent implements OnInit {
   getDetailsScheduleId() {
     this.router.navigate(["Meeting-Details/" + this.Schedule_ID]);
   }
-  @HostListener('copy', ['$event'])
-  editorFocused: boolean = false;
+  // @HostListener('copy', ['$event'])
+  // editorFocused: boolean = false;
 
-  onEditorFocus(): void {
-    this.editorFocused = true;
-    // alert(this.editorFocused)
+  // onEditorFocus(): void {
+  //   this.editorFocused = true;
+  //   // alert(this.editorFocused)
+  // }
+
+  // onEditorBlur(): void {
+  //   this.editorFocused = false;
+  // }
+
+  ngOnDestroy(): void {
+    // Unsubscribe when the component is destroyed to prevent memory leaks
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
-  onEditorBlur(): void {
-    this.editorFocused = false;
-  }
 
   selectedText:any;
 
-  makeLineATask(): void {
+  // makeLineATask(): void {
 
-    // alert(this.editorFocused)
-    const editorContent = this.Notes_Type;
-    if (this.editorFocused===true) {
-      const selection = window.getSelection();
-      if (!selection || selection.rangeCount === 0) {
-      alert('Nothing is selected');
-    } 
+  //   // alert(this.editorFocused)
+  //   const editorContent = this.Notes_Type;
+  //   if (this.editorFocused===true) {
+  //     const selection = window.getSelection();
+  //     if (!selection || selection.rangeCount === 0) {
+  //     alert('Nothing is selected');
+  //   } 
     
 
-    // const range = selection.getRangeAt(0);
-    // const selectedText = range.toString();
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString().trim();
-    const containerEl = range.commonAncestorContainer;
+  //   // const range = selection.getRangeAt(0);
+  //   // const selectedText = range.toString();
+  //   const range = selection.getRangeAt(0);
+  //   const selectedText = range.toString().trim();
+  //   const containerEl = range.commonAncestorContainer;
 
-    // We assume `containerEl` is where the Angular Editor's content is
-    // Now we need to convert it to a proper HTML element if it's not already
-    const editorEl = containerEl.nodeType === 3 ? containerEl.parentNode : containerEl;
+  //   // We assume `containerEl` is where the Angular Editor's content is
+  //   // Now we need to convert it to a proper HTML element if it's not already
+  //   const editorEl = containerEl.nodeType === 3 ? containerEl.parentNode : containerEl;
 
-    // Get all the text content split by line breaks
-    const lines = editorEl.textContent.split('\n');
+  //   // Get all the text content split by line breaks
+  //   const lines = editorEl.textContent.split('\n');
 
-    // Find which line has the selected text
-    const currentLineIndex = lines.findIndex(line => line.includes(selectedText));
-    if (currentLineIndex === -1) return; // Selected text not part of the lines, exit
+  //   // Find which line has the selected text
+  //   const currentLineIndex = lines.findIndex(line => line.includes(selectedText));
+  //   if (currentLineIndex === -1) return; // Selected text not part of the lines, exit
 
-    // Replace the current line with the task HTML
-    lines[currentLineIndex] = `<div class="task">${lines[currentLineIndex]}</div>`;
+  //   // Replace the current line with the task HTML
+  //   lines[currentLineIndex] = `<div class="task">${lines[currentLineIndex]}</div>`;
 
-    // Update the Notes_Type model with the new content
-    // alert(lines.join('\n'));
-    let stringWithoutHtml = this.stripHtml(lines);
-    console.log(stringWithoutHtml, "todo");
+  //   // Update the Notes_Type model with the new content
+  //   // alert(lines.join('\n'));
+  //   let stringWithoutHtml = this.stripHtml(lines);
+  //   console.log(stringWithoutHtml, "todo");
 
-    // this.checkIfCopiedCorrectly(stringWithoutHtml);
-    if(stringWithoutHtml==''){
-      alert("Please select & copy some text from editor or place cursor on the line you want to select");
-    }
-    else{
-      if(this.selectedText!="" && stringWithoutHtml.includes(this.selectedText)){
-        this.EnterSubmit(this.selectedText);
-      }
-      else{
-        this.EnterSubmit(stringWithoutHtml);
-      }
-    }
-    }
-    else{
-      alert('This action is only for the angular editor')
-    }
-    this.editorFocused=false;
-  }
+  //   // this.checkIfCopiedCorrectly(stringWithoutHtml);
+  //   if(stringWithoutHtml==''){
+  //     alert("Please select & copy some text from editor or place cursor on the line you want to select");
+  //   }
+  //   else{
+  //     if(this.selectedText!="" && stringWithoutHtml.includes(this.selectedText)){
+  //       this.EnterSubmit(this.selectedText);
+  //     }
+  //     else{
+  //       this.EnterSubmit(stringWithoutHtml);
+  //     }
+  //   }
+  //   }
+  //   else{
+  //     alert('This action is only for the angular editor')
+  //   }
+  //   this.editorFocused=false;
+  // }
 
   makeLineAProject(){
 
@@ -231,42 +241,42 @@ export class MeetingDetailsComponent implements OnInit {
 
   }
   
-  onCopy(event: ClipboardEvent) {
-    // Using Clipboard API
-    const copiedText = event.clipboardData?.getData('text/plain');
+  // onCopy(event: ClipboardEvent) {
+  //   // Using Clipboard API
+  //   const copiedText = event.clipboardData?.getData('text/plain');
     
-    // If Clipboard API is not available, use window.getSelection()
-    if (!copiedText && window.getSelection) {
-      const selectedText = window.getSelection().toString();
-      console.log('Copied with window.getSelection:', selectedText);
-      this.selectedText=selectedText;
-    } else {
-      console.log('Copied with Clipboard API:', copiedText);
-      this.selectedText=copiedText;
-      // Now you can do something with the copied text
-      // ...
-    }
+  //   // If Clipboard API is not available, use window.getSelection()
+  //   if (!copiedText && window.getSelection) {
+  //     const selectedText = window.getSelection().toString();
+  //     console.log('Copied with window.getSelection:', selectedText);
+  //     this.selectedText=selectedText;
+  //   } else {
+  //     console.log('Copied with Clipboard API:', copiedText);
+  //     this.selectedText=copiedText;
+  //     // Now you can do something with the copied text
+  //     // ...
+  //   }
 
-    // Optional: prevent the default copy action
-    // event.preventDefault();
-  }
+  //   // Optional: prevent the default copy action
+  //   // event.preventDefault();
+  // }
 
-  stripHtml(html: any): string {
-    // Check if html is an array and has at least one element.
-    if (Array.isArray(html) && html.length > 0) {
-      // Assume the first element is the string to be stripped of HTML.
-      const string = html[0];
-      if (typeof string === 'string') {
-        return string.replace(/<[^>]*>/g, '');
-      } else {
-        console.error('Expected a string in the array but got:', string);
-        return ''; // or some default string representation
-      }
-    } else {
-      console.error('Expected an array with at least one item but got:', html);
-      return ''; // or some default string representation
-    }
-  }
+  // stripHtml(html: any): string {
+  //   // Check if html is an array and has at least one element.
+  //   if (Array.isArray(html) && html.length > 0) {
+  //     // Assume the first element is the string to be stripped of HTML.
+  //     const string = html[0];
+  //     if (typeof string === 'string') {
+  //       return string.replace(/<[^>]*>/g, '');
+  //     } else {
+  //       console.error('Expected a string in the array but got:', string);
+  //       return ''; // or some default string representation
+  //     }
+  //   } else {
+  //     console.error('Expected an array with at least one item but got:', html);
+  //     return ''; // or some default string representation
+  //   }
+  // }
 
   // sendMessage(name: string, message: string) {
   //   this.signalRService.send(name, message);
@@ -376,14 +386,38 @@ export class MeetingDetailsComponent implements OnInit {
   status:string;
   Meeting_status: boolean;
   Link_Detail:any
+  totalguest: number;
+  checkedusers: any = [];
+  Guestcount: number;
+  totalproject: number;
+  checkedproject: any = [];
+  projectcount: number;
+  totalportfolios: number;
+  checkedportfolio: any = [];
+  portfoliocount: number;
+  totalAgendaList:any
+  completedAgendaList:any
+  formattedDuration:any
+  hours:any
+  minutes:any
+
+
+
+
+
+
 
 
 meeting_details(){ 
     this._calenderDto.Schedule_ID=this.Schedule_ID;
-   
+
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+    console.log("meeting details",this.EventScheduledjson)
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
+    this.totalAgendaList=this.Agendas_List.length;
+    this.completedAgendaList=this.Agendas_List.filter(item=>item.Status==1)
+
     var x =this.Agendas_List.length
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
@@ -395,20 +429,48 @@ meeting_details(){
   
 
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
-    console.log(this.User_Scheduledjson,'EventScheduledjson ')
+    this.totalguest = this.User_Scheduledjson.length;
+
+
+    this.User_Scheduledjson.forEach(element => {
+      this.checkedusers.push(element.stringval);
+      element.isChecked = true;
+    });
+
+    this.Guestcount = this.checkedusers.length;
+   
     // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
     
     // console.log('meeting_details--->',x)
     this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
-    
-    
+    this.totalportfolios = this.portfolio_Scheduledjson.length;
+    this.portfolio_Scheduledjson.forEach(element => {
+      this.checkedportfolio.push(element.numberval);
+      element.isChecked = true;
+    });
+
+
+    this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
-    this._TotalAttachment=this.Attachments_ary.length
+    this._TotalAttachment=this.Attachments_ary.length;
 
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
-    this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code)
-  
+    this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code);
+
+    console.log('Project_code',this.Project_code);
+    
+    this.totalproject = this.Project_code.length;
+
+    this.Project_code.forEach(element => {
+      element.isChecked = true;
+      this.checkedproject.push(element.stringval);
+
+    });
+    this.projectcount = this.checkedproject.length;
+
+
+
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
     this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
@@ -438,6 +500,22 @@ meeting_details(){
       this.dmsIdjson = JSON.stringify(this.dmsIdjson);
       this.GetDMSList();
     }
+
+
+
+    var St_Time=this.EventScheduledjson[0].St_Time;
+    var End_date=this.EventScheduledjson[0].Ed_Time;
+
+    var startTime = moment(St_Time, "hh:mm A");
+    var endTime = moment(End_date, "hh:mm A");
+
+    // Calculate the duration between the start time and end time
+    var duration = moment.duration(endTime.diff(startTime));
+
+     // Format the duration as hours:minutes
+    this.hours = Math.floor(duration.asHours());
+    this.minutes = duration.minutes();
+    this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
    })
 }
 
@@ -656,7 +734,6 @@ addNewDMS() {
 
 
     AddDMS_meetingreport() {
-      alert('DMs')
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;  
@@ -1628,6 +1705,7 @@ GetMeetingnotes_data() {
 
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
+    
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
@@ -1844,10 +1922,11 @@ EnterSubmit(_Demotext) {
     this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
     this._ObjAssigntaskDTO.TaskName = _Demotext;
     this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
+    this._ObjAssigntaskDTO.Agenda_Id = this.AgendaId;
 
     // this.text.push(this._Demotext);
     // this._Demotext = "";
-    this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    this.ProjectTypeService._NewInsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
       (data) => {
         //console.log("Data---->", data);
         this._TodoList = JSON.parse(data['Todomeeting']);
@@ -1858,7 +1937,7 @@ EnterSubmit(_Demotext) {
         console.log("Data---->", this._TodoList);
         this._Demotext = "";
         this.selectedText="";
-        this.editorFocused=false;
+        // this.editorFocused=false;
         //this.GetAssignTask();
         this.notifyService.showSuccess("Successfully", "Added");
         // this.closeInfo();
@@ -2226,8 +2305,8 @@ ReshudingTaskandEvent() {
       document.getElementById("Monthly_121").style.display = "none";
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
-      // document.getElementById("rightbar-overlay").style.display = "block";
-      // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
       this.AllDatesSDandED = [];
       var jsonData = {};
@@ -3185,8 +3264,6 @@ daysSelected: any[] = [];
         //69 this.calendar.updateTodaysDate();
       }
     }, delay);
-
-
   }
 
 
@@ -3208,7 +3285,6 @@ daysSelected: any[] = [];
     return this.daysSelectedII.find(x => x.Date == date && x.IsActive == false) ? "selected" :
       this.daysSelectedII.find(y => y.Date == date && y.IsActive == true) ? "selectedinvalid" : null;
   };
-
 
 
 
@@ -3304,7 +3380,449 @@ daysSelected: any[] = [];
     $('#upload').html('Select a file');
     // this._remarks = "";
   }
+
+
+  _subname1: boolean;
+  selected: Date | null;
+
+  OnSubmitReSchedule(type: number) {
+
+    this._calenderDto.flagid = this._PopupConfirmedValue;
+    this._calenderDto.type = type;
+    var start = moment(this.minDate);
+
+    if (this._PopupConfirmedValue == 3) {
+      // start = moment(this._Oldstart_date);
+      start = moment(this.minDate);
+    }
+
+    if (this.selectedrecuvalue == "0") {
+      var end = moment(this.minDate);
+    }
+    else if (this.pending_status == true || this._PopupConfirmedValue == 1) {
+      var end = moment(this.minDate);
+    }
+    else {
+      var end = moment(this.maxDate);
+    }
+    // alert(end);
+    const format2 = "YYYY-MM-DD";
+    const d1 = new Date(moment(start).format(format2));
+
+    const d2 = new Date(moment(end).format(format2));
+    const date = new Date(d1.getTime());
+    this.daysSelectedII = [];
+    this.AllDatesSDandED = [];
+    const dates = [];
+    while (date <= d2) {
+      dates.push(moment(date).format(format2));
+      var jsonData = {};
+      var columnName = "Date";
+      jsonData[columnName] = (moment(date).format(format2));
+      var columnNames = "StartTime";
+      jsonData[columnNames] = this.Startts;
+      var columnNamee = "EndTime";
+      jsonData[columnNamee] = this.Endtms;
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 1;
+      var Day = "Day";
+      // alert(moment(date).format('ddd').substring(0, 3));
+      jsonData[Day] = moment(date).format('ddd').substring(0, 3);
+      var DayNum = "DayNum";
+      jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+      this.AllDatesSDandED.push(jsonData);
+      date.setDate(date.getDate() + 1);
+    }
+
+    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+      this._subname1 = true;
+      return false;
+    }
+    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+      this._subname = true;
+      return false;
+    }
+    var now = new Date();
+    // let timestamp = "";
+    // timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+    //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+    // this.EventNumber = timestamp;
+    let finalarray = [];
+    this.daysSelectedII = [];
+    // const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
+    if (finalarray.length > 0) {
+      finalarray.forEach(element => {
+      
+        const date1: Date = new Date(this._StartDate);
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+        }
+        else {
+          this._SEndDate = this._StartDate;
+        }
+        const date2: Date = new Date(this._SEndDate);
+
+        const diffInMs: number = date2.getTime() - date1.getTime();
+
+        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        // var date3 = moment(date2).format("YYYY-MM-DD").toString();
+        // // var dd = moment(date3).add(diffInDays, 'days')
+
+
+        // var SEndDates = "SEndDate";
+        // element[SEndDates] = (date3);
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+        }
+        else{
+          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        }
+        var dd = moment(date3).add(diffInDays, 'days')
+
+
+        var SEndDates = "SEndDate";
+        element[SEndDates] = (dd.format(format2));
+        //  alert( element[SEndDates])
+
+        var vStartTime = "StartTime";
+        element[vStartTime] = this.Startts;
+
+        var vEndTime = "EndTime";
+        element[vEndTime] = this.Endtms;
+
+
+        var vEnd_date = "End_date";
+        element[vEnd_date] = this._EndDate;
+
+        var vIsDeleted = "IsDeleted";
+        element[vIsDeleted] = 0;
+
+        var vPending = "Pending_meeting";
+        element[vPending] = 0;
+
+        var vRecurrence = "Recurrence"
+        element[vRecurrence] = this.selectedrecuvalue;
+
+        var vRecurrence_value = "Recurrence_values"
+        element[vRecurrence_value] = _arraytext.toString();
+
+        var vEmp_No = "Emp_No";
+        element[vEmp_No] = this.Current_user_ID;
+
+        var vScheduleType = "ScheduleType";
+        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+
+        var vTitle_Name = "Title_Name";
+        element[vTitle_Name] = this.Title_Name;
+
+        var vMasterCode = "MasterCode";
+        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+        // var columnName = "Link_Type";
+        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+        var vUser_Name = "User_Name";
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+
+        var vLocation_Type = "Location_Type";
+        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+
+        var vLocation_fulladd = "FullAddress_loc";
+        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
+
+        var vLocation_url = "Addressurl";
+        element[vLocation_url] = this.Addressurl;
+
+        var vOnlinelink = "Onlinelink";
+        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+        var vLink_Details = "Link_Details";
+        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+
+        var vDescription = "Description";
+        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+        var vSubtask = "Subtask";
+        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+
+        var vEventNumber = "EventNumber";
+        element[vEventNumber] = this.EventNumber;
+
+        var vPortfolio_name = "Portfolio_name";
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+
+        var vDMS_Name = "DMS_Name";
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+
+        // debugger
+            var vMeeting_Agendas="Meeting_Agendas";
+            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+            element[vMeeting_Agendas]=updatedAgnds;
+
+      });
+      if (this._OldRecurranceId == '0') {
+        if (this.selectedrecuvalue != this._OldRecurranceId) {
+          this._calenderDto.flagid = 3;
+        }
+      }
+
+      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      if (this._OldRecurranceId == this.selectedrecuvalue) {
+        if (this._OldEnd_date != this._EndDate) {
+          if (this._PopupConfirmedValue == 1)
+            this._calenderDto.flagid = 1;
+          else
+            this._calenderDto.flagid = 2;
+        }
+      }
+      if (this.Schedule_ID != 0) {
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+
+      }
+      else {
+        this._calenderDto.Schedule_ID = 0;
+      }
+      let _attachmentValue = 0;
+      const frmData = new FormData();
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+      }
+      if (this._lstMultipleFiales.length > 0)
+        _attachmentValue = 1;
+      else
+        _attachmentValue = 0;
+
+      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+      frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      this._calenderDto.attachment = this.RemovedAttach.toString();
+
+      // console.log(JSON.stringify(finalarray), "finalarray");
+      this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
+        (data => {
+          this.RemovedAttach = [];
+          // alert(data['Schedule_date'])
+          frmData.append("Schedule_date", data['Schedule_date'].toString());
+          if (_attachmentValue == 1) {
+            this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+              (event: HttpEvent<any>) => {
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! ${this.progress}%`);
+                    break;
+                  case HttpEventType.Response:
+                    console.log('User successfully created!', event.body);
+
+                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    this._lstMultipleFiales = [];
+                    // empty(this._lstMultipleFiales);
+                    // alert(this._lstMultipleFiales.length);
+                    setTimeout(() => {
+                      this.progress = 0;
+                    }, 1500);
+
+                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                }
+              }
+            )
+          }
+
+          // console.log(data, "m");
+          this._Message = data['message'];
+          if (this._Message == 'Not updated') {
+            Swal.fire({
+              title: 'Meeting not released from the Pending list.',
+              text: 'Meeting already exists on the selected scheduled date. Please change the Schedule date and try again.',
+            });
+          }
+          else if (this._Message == 'Nothing to Update') {
+            this.notifyService.showInfo(this._Message, "Update failed");
+          }
+          else {
+            this.notifyService.showSuccess(this._Message, "Success");
+            this.meeting_details();
+          }
+          //69 this.GetScheduledJson();
+          //69 this.GetPending_Request();
+          //69 this.penhide();
+          this.Title_Name = null;
+          this.RemovedAttach = [];
+          this.ngEmployeeDropdown = null;
+          this.Description_Type = null;
+          this.MasterCode = null;
+          this.Subtask = null;
+          this.Startts = null;
+          this.Endtms = null;
+          this.St_date = null;
+          this.Ed_date = null;
+          this._status = null;
+          this.SelectDms = null;
+          this._SEndDate = moment().format("YYYY-MM-DD").toString();
+          this.Location_Type = null;
+          this.Allocated_subtask = null;
+          this.Link_Details = null;
+          this._onlinelink = false;
+          this.TM_DisplayName = null;
+          this.Projectstartdate = "";
+          this.projectEnddate = null;
+          this.Status_project = null;
+          this.AllocatedHours = null;
+          this.daysSelectedII = [];
+          this.Avaliabletime = [];
+          this.timeslotsavl = [];
+          this.singleselectarry = [];
+          this.daysSelected = [];
+          this._lstMultipleFiales = [];
+          this.Attachment12_ary = [];
+          // this.Recurr_arr = [];
+          this.selected = null;
+          // this.TImetable();
+          this.Portfolio = null;
+          this.minDate = moment().format("YYYY-MM-DD").toString();
+          this.maxDate = null;
+          //69 this.calendar.updateTodaysDate();
+          // this.TImetable();
+
+        });
+      this.closeschd();
+    }
+    else {
+      alert('Please Select Valid Date and Time');
+    }
+  }
+
+
+
+ 
+
 ////////////////////////////////////////// Meeting Edit Functionality End /////////////////////////////////////////////////////
+
+
+///////////////////////////////////////// Meeting End functionality start //////////////////////////////////////////////
+Action_item: any = [];
+interval:any = 0;
+
+
+
+Insert_meetingreport() {
+
+  this.Action_item = []
+
+  this._TodoList.forEach(element => {
+    this.Action_item.push(element.Assign_Id)
+
+  });
+
+  this.Schedule_ID = this.Scheduleid;
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
+  this._calenderDto.Note = this.Notes_Type;
+  this._calenderDto.Action_item = this.Action_item.join(',')
+  this._calenderDto.User_list = this.checkedusers.join(',');
+  this._calenderDto.Dms = this.checkeddms.join(',');
+  this._calenderDto.Portfolio = this.checkedportfolio.join(',');
+  this._calenderDto.Project = this.checkedproject.join(',');
+  console.log(this._calenderDto,"dto")
+  this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
+    (data => {
+      this.notifyService.showSuccess("Successfully", "Completed");
+      // window.close();
+      this.GetcompletedMeeting_data();
+      if (this.Meetingstatuscom == 'Completed') {
+        this.interval == 0;
+        if (this.interval == 0) {
+          clearInterval(this.interval);
+        }
+      }
+    });
+  const modalElement = document.getElementById('exampleModal');
+
+  // Close the modal by removing the "show" class from the modal element
+  if (modalElement) {
+    modalElement.classList.remove('show');
+
+    // Additionally, you might want to reset the modal backdrop (optional)
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    if (modalBackdrop) {
+      modalBackdrop.parentNode?.removeChild(modalBackdrop);
+    }
+  }
+
+  if (this.refreshSubscription) {
+    this.refreshSubscription.unsubscribe();
+  }
+  this.notifyService.showSuccess("Meeting completed successfully", "Success");
+}
+
+
+///////////////////////////////////////// Meeting End functionality End //////////////////////////////////////////////
+
+limit = 60;  // Set the initial limit
+limited_data= 98;
+
+isExpanded = false;
+toggleReadMore() {
+  this.isExpanded = !this.isExpanded;
+}
+
+limit_data=75;
+isExpandeds = false;
+_toggleReadMore() {
+  this.isExpandeds = !this.isExpandeds;
+}
+
 
 
 
