@@ -2619,3 +2619,6 @@ color: #2786fb;
   border: 1px solid #F44336 !important;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}

@@ -793,7 +793,7 @@ debugger
         (data) => {
           this.OnCategoryClick(this._Categoryid, this._CategoryName)
           let message: string = data['Message'];
-          this.notifyService.showInfo("", message);
+          this.notifyService.showInfo("Rename successfully", message);
           (<HTMLInputElement>document.getElementById("spanTextbox_" + this._AssignId)).style.display = "none";
           (<HTMLInputElement>document.getElementById("spnLabel_" + this._AssignId)).style.display = "block";
           (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";

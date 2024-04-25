@@ -5,7 +5,7 @@ import { LoginDTO } from 'src/app/_Models/login-dto';
 import { UserDetailsDTO } from 'src/app/_Models/user-details-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { Login } from 'src/app/_Interface/login';
-import { AuthService } from 'src/app/_Services/auth.service'
+import { AuthService } from 'src/app/_Services/auth.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
@@ -57,16 +57,16 @@ export class LoginComponent implements OnInit {
     this.authService.logout();
 
     $('.showOrHide').on('click', function (e) {
-      var target = e.currentTarget
-      $(target).hasClass('showp') ? hidePassword($(target)) : showPassword($(target))
-    })
+      var target = e.currentTarget;
+      $(target).hasClass('showp') ? hidePassword($(target)) : showPassword($(target));
+    });
     function hidePassword(e) {
-      e.removeClass('showp').addClass('hide')
-      e.prev('input').attr('type', 'password')
+      e.removeClass('showp').addClass('hide');
+      e.prev('input').attr('type', 'password');
     }
     function showPassword(e) {
-      e.removeClass('hide').addClass('showp')
-      e.prev('input').attr('type', 'text')
+      e.removeClass('hide').addClass('showp');
+      e.prev('input').attr('type', 'text');
     }
 
   }
@@ -197,10 +197,12 @@ export class LoginComponent implements OnInit {
           });
     }
   }
-
+  buttonClicked: boolean = false;
   login() {
+    this.buttonClicked=true;
     this.submitted = true;
-    if (this.loginForm.invalid) {
+    if (this.loginForm.invalid ) {
+
       return;
     }
     else {
@@ -212,19 +214,24 @@ export class LoginComponent implements OnInit {
       this.service.LoginCredentials(this.Obj_ILoginDTO)
         .subscribe(
           (data) => {
+            this.buttonClicked=false;
             this.UserDetails_List = data as UserDetailsDTO[];
            // console.log("Data---->", this.UserDetails_List);
             this.message = this.UserDetails_List[0]['Message'];
             this.DB_username = this.UserDetails_List[0]['UserName'].toLowerCase();
             this.DB_password = this.UserDetails_List[0]['Password'];
-            this.User_FullName = this.UserDetails_List[0]['TM_DisplayName']
+            this.User_FullName = this.UserDetails_List[0]['TM_DisplayName'];
             this.IsPolicy = this.UserDetails_List[0]['IsPolicy'];
+
+
+
             // console.log("Policy Test---->",this.IsPolicy);
             if (this.f.userid.value.toLowerCase() == this.DB_username && this.f.password.value == this.DB_password) {
               //console.log("Login successful");
               // alert("successful Login");
               localStorage.setItem('isLoggedIn', "true");
               this.InValidPassword = false;
+              // this.buttonClicked=false
               this.cd.detectChanges();
               this.EmpNo = data[0]['Emp_No'];
               localStorage.setItem('EmpNo', this.EmpNo);
@@ -238,18 +245,24 @@ export class LoginComponent implements OnInit {
               localStorage.setItem("UserfullName", this.User_FullName);
               localStorage.setItem('_Currentuser', this.DB_username);
               localStorage.setItem('OrganizationId', this.OrganizationId);
+
               //debugger
-              if (this.IsPolicy == 1) {
+              if (this.IsPolicy == 1 ) {
                 this.router.navigate([this.dashboardUrl]);
                 this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
                 this.notifyService.showSuccess("Successfully", "Logged In");
                 this.InValidPassword = false;
                 this.cd.detectChanges();
+
+
               }
+
               else if (this.IsPolicy == 0) {
+                // this.buttonClicked=false
                 this.router.navigate([this.policyUrl]);
                 this.InValidPassword = false;
                 this.cd.detectChanges();
+
               }
               //this.router.navigate([this.policyUrl]);
               // alert(this.returnUrl);
@@ -257,17 +270,23 @@ export class LoginComponent implements OnInit {
               // this.notifyService.showSuccess("Successfully", "Logged In");
             }
             else {
+
               this.InValidPassword = true;
               console.log("Invalid Login");
               this.authService.logout();
               localStorage.removeItem('EmpNo');
               this.cd.detectChanges();
+
               // alert("Invalid");
               // this.message = "Please check your UserName and Password";
             }
           });
+
     }
+
   }
+
+
 }
 
 

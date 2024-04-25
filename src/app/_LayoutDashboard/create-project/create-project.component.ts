@@ -964,9 +964,31 @@ onProjectOwnerChanged(){
     this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
     this.duration=this.bind_Project[0].Duration+1
+    this.Allocated_Hours=this.bind_Project[0].Allocated
     // this.Prjstartdate =this.bind_Project[0].Start_Date
     // this.Prjenddate = this.bind_Project[0].End_Date
   }
+
+
+onRejectButtonClick(value:any,id:number){
+    this.bind_Project = [value];
+    console.log(this.bind_Project,'+++++++++++>')
+    this.PrjName=this.bind_Project[0].Task_Name;
+    this.CreateName=this.bind_Project[0].Created_Name;
+    this.PrjDes=this.bind_Project[0].Task_Description
+    this.unique_id=id;
+    this.Prjtype=this.bind_Project[0].Project_Type;
+    this.duration=this.bind_Project[0].Duration+1
+    this.Prjstartdate = this.bind_Project[0].Start_Date;
+    this.Prjenddate = this.bind_Project[0].End_Date;
+  }
+
+
+
+
+
+
+
 
   conditionalList:any
 
@@ -1392,7 +1414,7 @@ sendApproval(){
               this.ProjectDto.Project_Cost=this.PrjCost;
               this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
                 if(res&&res.message==='Success'){
-                      this.notification.showSuccess("Project is send to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+                      this.notification.showSuccess("Project is sent to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
                       this.router.navigate(['./backend/ProjectsSummary']);
                       //  this.closeInfo();
                   }

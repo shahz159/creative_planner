@@ -245,7 +245,7 @@
         <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
         <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value.</span>
         <span *ngIf="this._StartDate == null || this._EndDate == null" style="color:red">{{_message}}</span>
-        <span *ngIf="this._alchr==true||(allocated.touched&&!_allocated)" style="color:red">Allocated hours required.</span>
+        <span *ngIf="this._alchr==true||(allocated.touched&&!_allocated)" style="color:red">Allocated hours required.Hours should not be in decimal</span>
     </div>
 
     <div class="form-group">

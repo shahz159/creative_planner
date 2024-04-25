@@ -29,7 +29,7 @@
                     color: #67666e;">Sign In </h2>
                   </div>
                   <div class="kt-login__form">
-  
+
                     <form class="kt-form" action="" [formGroup]="loginForm" (ngSubmit)="login()">
                       <div class="form-group mb-4" [ngClass]="{ 'has-error': submitted && f.userid.errors }">
                         <input class="form-control" type="text" placeholder="UserName" autocomplete="off"
@@ -46,14 +46,14 @@
                             <span class="close-eye">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" class="iconify iconify--mdi" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg>
                             </span>
-                            
+
                             <span class="open-eye">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" class="iconify iconify--mdi" width="1em" height="1em" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M2 5.27L3.28 4L20 20.72L18.73 22l-3.08-3.08c-1.15.38-2.37.58-3.65.58c-5 0-9.27-3.11-11-7.5c.69-1.76 1.79-3.31 3.19-4.54L2 5.27M12 9a3 3 0 0 1 3 3a3 3 0 0 1-.17 1L11 9.17A3 3 0 0 1 12 9m0-4.5c5 0 9.27 3.11 11 7.5a11.79 11.79 0 0 1-4 5.19l-1.42-1.43A9.862 9.862 0 0 0 20.82 12A9.821 9.821 0 0 0 12 6.5c-1.09 0-2.16.18-3.16.5L7.3 5.47c1.44-.62 3.03-.97 4.7-.97M3.18 12A9.821 9.821 0 0 0 12 17.5c.69 0 1.37-.07 2-.21L11.72 15A3.064 3.064 0 0 1 9 12.28L5.6 8.87c-.99.85-1.82 1.91-2.42 3.13Z"></path></svg>
                             </span>
-                            
+
                           </a>
-  
+
                         <div *ngIf="submitted && f.password.errors" class="help-block">
                           <div *ngIf="f.password.errors.required" class="text-info"><b>Password is required !</b></div>
                         </div>
@@ -66,16 +66,26 @@
                         </label>
                       </div> -->
                       <div class="kt-login__actions">
-                        <button id="kt_login_signin_submit" class="btn btn-primary kt-btn px-5" style="height: 38px;"
-                          type="submit">Sign In</button>
+                        <button id="kt_login_signin_submit" class="btn btn-primary kt-btn px-5" style="height: 38px; position: relative;"
+                        type="submit" [disabled]="buttonClicked">
+                  <span *ngIf="buttonClicked" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <!-- Add your loader or spinner here -->
+                    <!-- For example, using Bootstrap spinner -->
+                    <div class="spinner-border text-light" role="status">
+                      <span class="visually-hidden"></span>
+                    </div>
+                  </span>
+                  <span *ngIf="!buttonClicked">Sign In</span>
+                </button>
+
 
                           <!-- <button id="kt_login_signin_submit" class="btn btn-success kt-btn px-5" style="height: 38px;"
                           (click)="AddArray()">AddArray</button> -->
-                          
-  
+
+
                         <!-- <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate"
                           style="background-color: #22b9ff;color: #ffffff;" type="submit">
-                          [disabled]="isLoading" 
+                          [disabled]="isLoading"
                          <img  style="width: 30px;" src="assets/Spinners/spinner4.gif" />
                           Sign In
                         </button> -->
@@ -112,7 +122,7 @@
             </div> -->
           </div>
         </div>
-  
+
       </div>
     </div>
   </div>
