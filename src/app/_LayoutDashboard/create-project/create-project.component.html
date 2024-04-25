@@ -489,7 +489,7 @@
                                       </div>
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
-                                          <div class="kt-dl-icon db-v" (click)="onButtonClick(record,i+1)" data-toggle="modal"
+                                          <div class="kt-dl-icon db-v" (click)="onRejectButtonClick(record,i+1)" data-toggle="modal"
                                             data-target="#exampleModalCenter"><span class="kt-svg-ic"><svg width="26px"
                                                 height="26px" viewBox="0 0 23 23" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -1016,22 +1016,25 @@
                                 </ng-template>
                                 <div class="col text-center">
                                   <div class="kt-info-lable-v"> Duration </div>
-                                  <div class="kt-project-sts-data ">
-                                    <ng-container *ngIf="['001','002','011'].includes(Prjtype);else DuraDiv">
-                                            <ng-container *ngIf="projectInfo&&projectInfo.Duration !=''; else days">
-                                              {{projectInfo&&projectInfo.Duration +1}} days
-                                            </ng-container>
-                                            <ng-template #days>
-                                              {{durationInDays + 1}} days
-                                            </ng-template>
-                                  </ng-container>
-                                  <ng-template  #DuraDiv>
-                                     Continous
-                                  </ng-template>
+                                  <div class="kt-project-sts-data">
+                                      <ng-container *ngIf="['001', '002', '011'].includes(Prjtype)">
+                                          <ng-container *ngIf="projectInfo && projectInfo.Duration !== ''">
+                                              {{ projectInfo.Duration === 1 ? '1 day' : projectInfo.Duration + ' days' }}
+                                          </ng-container>
+                                          <ng-container *ngIf="!(projectInfo && projectInfo.Duration !== '')">
+                                              {{ durationInDays === 0 ? '1 day' : (durationInDays + 1) + ' days' }}
+                                          </ng-container>
+                                      </ng-container>
+                                      <ng-container *ngIf="!['001', '002', '011'].includes(Prjtype)">
+                                          Continous
+                                      </ng-container>
                                   </div>
-                                </div>
+                              </div>
+
+
+
                                 <div class="col text-center">
-                                  <div class="kt-info-lable-v"> Allocated </div>
+                                  <div class="kt-info-lable-v"> Allocated</div>
                                   <div class="kt-project-sts-data">
                                     <!-- <ng-container *ngIf="['001','002'].includes(Prjtype);else AllcDiv"> -->
                                               <!-- <ng-container *ngIf="projectInfo&&projectInfo.AllocatedHours; else Hrs">
@@ -1349,8 +1352,8 @@
 
                           <ng-container [ngSwitch]="notificationMsg">
                                 <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation! Enter the initial project details to continue.</span>
-                                <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away for creating the project.</span>
-                                <span *ngSwitchCase="2" class="notif-msg">You are 1 step away for creating the project.</span>
+                                <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away from creating the project.</span>
+                                <span *ngSwitchCase="2" class="notif-msg">You are 1 step away from creating the project.</span>
                                 <span *ngSwitchCase="3" class="notif-msg">Project not yet submitted. Click the 'Submit Project' button to submit the project for approval or continue adding actions.</span>
                                 <span *ngSwitchCase="4" class="notif-msg">Click the 'Submit Project' button to send the project for approval.</span>
                           </ng-container>
@@ -1463,7 +1466,7 @@
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>Start date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjstartdate && notProvided}">
-                                      <input class="form-control ng-pristine" name="date" [(ngModel)]="Prjstartdate" (ngModelChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
+                                      <input class="form-control ng-pristine" name="date" [(ngModel)]="Prjstartdate" (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
                                         id="d-date" placeholder="select start date" [matDatepicker]="picker2"
                                         (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
                                         #SrtDate="ngModel" />
@@ -1484,7 +1487,7 @@
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjenddate && notProvided}">
                                       <input class="form-control ng-pristine" [(ngModel)]="Prjenddate"  id="end-date"
                                         placeholder="select end date" [matDatepicker]="picker3" (click)="picker3.open()"
-                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null"/>
+                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null"/>
                                       <div class="input-group-text p-0">
                                         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                         <mat-datepicker #picker3></mat-datepicker>

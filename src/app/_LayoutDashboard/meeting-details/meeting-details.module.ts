@@ -15,6 +15,7 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 
 // import { FormsModule } from '@angular/forms';
@@ -34,7 +35,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     FormsModule,
     Ng2SearchPipeModule,
-
+    GooglePlaceModule,
     ReactiveFormsModule
     // FormsModule
   ],

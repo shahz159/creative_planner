@@ -1,3 +1,4 @@
+import { BsServiceService } from './../../_Services/bs-service.service';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef,Renderer2 } from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
@@ -37,7 +38,8 @@ import { GrdFilterPipePipe } from 'src/app/Shared/Filter/grd-filter-pipe.pipe'
 //import { ItemsList } from '@ng-select/ng-select/lib/items-list';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { LinkService } from 'src/app/_Services/link.service';
-import { BsServiceService } from 'src/app/_Services/bs-service.service';
+// import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { helpers } from 'chart.js';
 
 @Component({
   selector: 'app-portfolio-projects',
@@ -120,6 +122,14 @@ export class PortfolioProjectsComponent implements OnInit {
     this._objStatusDTO = new StatusDTO;
     this.ObjSharePortfolio = new Shareportfolio_DTO();
     this._objDropdownDTO = new DropdownDTO();
+
+
+    this.BsService.data$.subscribe((data)=>{
+      console.log("data is this:",data);
+   });
+
+
+
   }
 
   _PortFolio_Namecardheader: string;
@@ -128,8 +138,50 @@ export class PortfolioProjectsComponent implements OnInit {
   Max50Char: boolean;
   Url_portfolioId: number;
 
+  checkForUpdates(){
+        const data=localStorage.getItem('newdata');
+        console.log('data is',data)
+  }
+
+
   ngOnInit(): void {
 
+    setInterval(() => {
+      const update = localStorage.getItem('projectUpdated');
+
+      if (update && update == '1') {
+        this.GetPortfolioProjectsByPid();
+        localStorage.setItem('projectUpdated', '0');
+
+        // if (this.CountRejecteds == 0 ||this.Count_ToDoAchieved==0||this.Count_ToDoCompleted==0|| this.CountInprocess == 0 || this.CountDelay==0 || this.CountNotStarted == 0 || this.CountCompleted == 0 || this.CountAll_UA == 0 || this.CountProjectHold == 0  || this.CountDeleted == 0) {
+        //   this.labelAll()
+        //   this.onButtonClick('tot')
+        // }
+
+      }
+    }, 1000);
+
+
+
+
+
+
+   // Page 1
+// Listen for the custom event
+// window.addEventListener('dataUpdated', () => {
+//   // Retrieve the updated information from localStorage
+//   const transferredInfo = localStorage.getItem('infoKey');
+//   console.log(transferredInfo);
+//   // Update the UI with the transferredInfo
+// });
+
+
+
+    // this.BsService.ProjectStatusChanged.subscribe(() => {
+
+    //     alert("hello")
+
+    //   })
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Project_Graph = "Graphs";
@@ -331,6 +383,18 @@ export class PortfolioProjectsComponent implements OnInit {
           this.Share_preferences = false;
         }
       });
+
+
+
+    //  if(this._PortProjStatus!==''){
+
+    //  }
+
+
+
+
+
+
   }
 
   btnEdit() {
@@ -1618,6 +1682,18 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
+
+
+
+triger(){
+  if (this.CountProjectHold == 0){
+    this.onButtonClick('tot');
+  this.labelAll();
+}
+
+}
+
 
 }
 /// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">

@@ -1447,7 +1447,7 @@ label.my-chosse-flv {
 
 
 .Inprocess {
-  background-color: #1B272D !important;
+  background-color: #0089FB !important;
   color:#fff;
 }
 
@@ -4615,7 +4615,7 @@ background-color: #e2e8f0c9;
 
 
 .new-prjrejected-notf {
-      background-color:#dfdfdf8f !important;  
+      background-color:#dfdfdf8f !important;
 }
 
 .new-prjrejected-notf .notif-msg{
@@ -4647,7 +4647,7 @@ background-color: #e2e8f0c9;
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
- 
+
 }
 .release-now-shrtcut:hover{
     background-color:#f1da91;
@@ -4834,7 +4834,7 @@ background-color: #e2e8f0c9;
 }
 .actvy-item .actvy-item-part2{
    text-wrap: nowrap;
-   
+
 }
 
 
@@ -4862,7 +4862,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   width: 280px;
   max-width: 280px;
   height:500px;
-  
+
 }
 
 .actvy-done-by-name{
@@ -4895,10 +4895,10 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   background-color: #6C757D;
   border-color: #6C757D;
   color: #FFFFFF !important;
-} 
+}
 
 @keyframes fromLeftToRight-anim{
-   0%{ 
+   0%{
         opacity: 0.0;
         transform:translateX(-100%);
    }
@@ -4908,7 +4908,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
    }
   }
 
-  
+
 .kt-total-approval{
   background-color: #cbe8ff !important;
   color: #2196f3 !important;
@@ -5041,7 +5041,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 
   /*--new features--*/
   .feature-icon{
-    width: 1.5em; 
+    width: 1.5em;
     height: 1.5em;
     vertical-align: middle;
     color: #64748b;
@@ -5265,7 +5265,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 /*dummy design temporary for mtg recall start */
 
 .mtg-side-btns{
-  display: flex;                                   
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
@@ -5285,7 +5285,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 
 
 .met-card:hover .mtg-side-btns{
-  
+
 }
 
 /*dummy design temporary for mtg recall end */

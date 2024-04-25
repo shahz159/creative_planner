@@ -386,7 +386,7 @@
                             <div class="kt-portlet__head-toolbar">
                               <button class="badge total-project kt-badge--inline mr-2 py-8px btn-sm"  >  <span class="total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}
                               </span> Total Projects</button>
-                              <button class="badge task  mr-2 py-8px btn-sm"  (click)="scrollTo('taskdd')"  *ngIf='_TodoList.length>0' >  <span class="task">{{_TodoList.length}}</span> Task</button>
+                              <button class="badge task  mr-2 py-8px btn-sm"  (click)="scrollTo('taskdd')"  *ngIf='_TodoList.length>0' >  <span class="task">{{_TodoList.length}}</span> UnassignTask</button>
                               <button class="badge done kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('Completed')" *ngIf='_CompletedList&&_CompletedList.length>0' >  <span class="done">{{_CompletedList&&_CompletedList.length}}</span> Completed</button>
                               <button class="badge action-to-project kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('ActionToProjects')"  *ngIf='ActionedSubtask_Json&&ActionedSubtask_Json.length>0' >  <span class="action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span> Action To Projects</button>
                               <button class="badge assigned-task assigned-task mr-2 py-8px btn-sm" (click)="scrollTo('AssignedTask')" *ngIf='ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0'>  <span class="assigned-task  ">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span> Assigned Task</button>
@@ -430,7 +430,7 @@
                         <div class="row" >
                             <div class="col-lg-12" >
                                 <div class="p-2 scrollbar1">
-                                    <h5 id="taskdd" *ngIf="_TodoList.length>0">Task</h5>
+                                    <h5 id="taskdd" *ngIf="_TodoList.length>0">UnassignTask</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
                                         <div class="mb-2 card" *ngFor="let item of _TodoList; let i=index">
                                             <div class="card-body p-2 Replied_border_left_true_NewProject mr-2">
@@ -495,7 +495,7 @@
 
                                                     <div class="d-flex align-items-center py-lg-0 py-2"
                                                         id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
-                                                        <span matTooltip="Action Re-Name"
+                                                        <span matTooltip="Re-Name"
                                                             (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
                                                             class="mr-2 cursor-pointer">
                                                             <mat-icon class="mr-2" color="primary">edit</mat-icon>
@@ -747,7 +747,7 @@
                                                                     <i class="fa fa-info-circle info-icon-cir"></i>
                                                                 </a>
                                                                 <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)"
-                                                                    role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="More Info!" class="ml-3 curser-pointer">
+                                                                    role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="Project dashboard!" class="ml-3 curser-pointer">
                                                                     <i class="fa fa-chart-bar info-icon-cir"></i>
                                                                 </a>
                                                             </div>&nbsp;

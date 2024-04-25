@@ -2657,3 +2657,6 @@ color: #2786fb;
   color: #ffffff;
   transform: none;
 }
+.cursor-pointer {
+  cursor: pointer;
+}

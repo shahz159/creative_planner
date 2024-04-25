@@ -1033,6 +1033,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  PendingdeleteSchedule(id) {
+
+    this._calenderDto.Schedule_ID = id;
+    this._calenderDto.flag_id = this.flagevent;
+    this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
+      this.notifyService.showSuccess("Deleted Successfully", "Success");
+      this.closeevearea();
+      this.GetScheduledJson();
+      this.GetPending_Request();
+    })
+
+
+  }
+
   onSingleEventDelete(){
 
     Swal.fire({
@@ -1044,6 +1058,22 @@ export class DashboardComponent implements OnInit {
        if(choice.isConfirmed){
         this.AllDelete_event(1);
         this.AlldeleteSchedule()
+       }
+    });
+
+  }
+
+  onSinglePendingEventDelete(id){
+
+    Swal.fire({
+      title:`Delete ${this.Schedule_type1}`,
+      text:`Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
+      showConfirmButton:true,
+      showCancelButton:true
+    }).then(choice=>{
+       if(choice.isConfirmed){
+        this.AllDelete_event(1);
+        this.PendingdeleteSchedule(id);
        }
     });
 
@@ -2088,7 +2118,7 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        // debugger
+        debugger
             var vMeeting_Agendas="Meeting_Agendas";
             const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
             element[vMeeting_Agendas]=updatedAgnds;
@@ -2133,6 +2163,7 @@ debugger
       this._calenderDto.attachment = this.RemovedAttach.toString();
 
       // console.log(JSON.stringify(finalarray), "finalarray");
+      debugger
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {   debugger
           this.RemovedAttach = [];
@@ -3883,7 +3914,7 @@ debugger
     //     event.setProp('title', newTitle);
     //   }
     // }
-debugger
+// debugger
 let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0);
     if (eventIsWithinView && (startMidnight !== endMidnight)&&!is12am) {
 
