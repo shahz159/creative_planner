@@ -4017,6 +4017,16 @@ span.kt-dt-cnt-view {
     font-size: 14px;
     margin-top: 0.5rem;
 }
+
+.kt-info-lable-v-date {
+    color: #939393;
+    letter-spacing: 0.3px;
+    font-size: 14px;
+    margin-left: 76px;
+    margin-top: 0.5rem;
+}
+
+
 .Done {
     background-color: #62B134 !important;
     color: #fff !important;
