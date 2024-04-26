@@ -923,6 +923,15 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveRequests",this.ObjDto)
   }
 
+  InsertNewFeatureView(Emp_no){
+    this.ObjDto.Emp_No=Emp_no
+    return this.http.post(this.rootUrl+"Projects/NewInsertNewFeatureView",this.ObjDto)
+  }
+
+  GetNewFeatureView(Emp_no){
+    this.ObjDto.Emp_No=Emp_no
+    return this.http.post(this.rootUrl+"Projects/NewGetNewFeatureView",this.ObjDto)
+  }
 
 
   GetEmployeeLeaveResponses(Emp_no){

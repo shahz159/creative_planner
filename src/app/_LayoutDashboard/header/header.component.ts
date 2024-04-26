@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.getusername();
+    this.getNewFeatures();
     // this._fullname = localStorage.getItem('UserfullName');
     this.timelineType = this.type1;
     this.selectedSort = 'today';
@@ -97,6 +98,18 @@ export class HeaderComponent implements OnInit {
     this.service._GetUserName(this.Current_user_ID).subscribe(data=>{
       this._fullname=data['Emp_First_Name'];
     });
+  }
+
+  isView:any;
+
+  getNewFeatures(){
+    this.service.GetNewFeatureView(this.Current_user_ID).subscribe(data=>{
+      this.isView=data['message'];
+      if(this.isView=='0')
+        this.featuremodel();
+    });
+
+   
   }
 
   menutoggle() {
@@ -423,6 +436,11 @@ export class HeaderComponent implements OnInit {
     document.getElementById("feature-modal-backdrop").classList.add("show");
   }
   NewAddUserCountFeature() {
+    if(this.isView=='0'){
+      this.service.InsertNewFeatureView(this.Current_user_ID).subscribe(data=>{
+        console.log("user count added",data['message'])
+      });
+    }
         document.getElementById("newfeatures").style.display = "none";
         document.getElementById("newfeatures").style.overflow = "hidden";
         document.getElementById("feature-modal-backdrop").classList.remove("show");

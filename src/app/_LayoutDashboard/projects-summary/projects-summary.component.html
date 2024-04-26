@@ -149,7 +149,7 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Project Type</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -164,7 +164,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Status</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -200,7 +200,22 @@
                                                         </div> -->
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
+                                                    <div class="count-height">
+                                                        <p><strong>Employees</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isEmpChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Employees</strong></p>
                                                         <div class="d-flex justify-content-between"
