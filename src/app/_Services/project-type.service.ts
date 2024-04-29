@@ -137,6 +137,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
     this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.SelectedCompany = obj.SelectedCompany;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
@@ -149,6 +150,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
     this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.SelectedCompany = obj.SelectedCompany;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
@@ -162,6 +164,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
     this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.SelectedCompany = obj.SelectedCompany;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
@@ -481,6 +484,7 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.SelectedCompany = obj.SelectedCompany;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsData", this.objDropdownsDTO);
@@ -490,6 +494,7 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.SelectedCompany = obj.SelectedCompany;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
 
@@ -501,6 +506,7 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.SelectedCompany = obj.SelectedCompany;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
 

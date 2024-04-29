@@ -202,11 +202,11 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="count-height">
-                                                        <p><strong>Employees</strong></p>
+                                                        <p><strong>Company</strong></p>
                                                         <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
+                                                            *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
                                                             <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isEmpChecked(item)"
+                                                                <input type="checkbox" (change)="isCompanyChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
                                                                 {{item.Name}}
                                                                 <span></span>
