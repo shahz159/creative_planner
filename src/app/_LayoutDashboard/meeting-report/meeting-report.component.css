@@ -1225,7 +1225,8 @@ span.side-icns.kt-org-ic {
 }
 
 .kt-mt-dw {
-  max-height: 150px;
+  /* max-height: 150px; */
+  max-height: 250px;
   overflow: auto;
 }
 /*--------meeting notes data view btn -------------*/

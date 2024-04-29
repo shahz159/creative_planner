@@ -146,43 +146,6 @@ export class PortfolioProjectsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    setInterval(() => {
-      const update = localStorage.getItem('projectUpdated');
-
-      if (update && update == '1') {
-        this.GetPortfolioProjectsByPid();
-        localStorage.setItem('projectUpdated', '0');
-
-        // if (this.CountRejecteds == 0 ||this.Count_ToDoAchieved==0||this.Count_ToDoCompleted==0|| this.CountInprocess == 0 || this.CountDelay==0 || this.CountNotStarted == 0 || this.CountCompleted == 0 || this.CountAll_UA == 0 || this.CountProjectHold == 0  || this.CountDeleted == 0) {
-        //   this.labelAll()
-        //   this.onButtonClick('tot')
-        // }
-
-      }
-    }, 1000);
-
-
-
-
-
-
-   // Page 1
-// Listen for the custom event
-// window.addEventListener('dataUpdated', () => {
-//   // Retrieve the updated information from localStorage
-//   const transferredInfo = localStorage.getItem('infoKey');
-//   console.log(transferredInfo);
-//   // Update the UI with the transferredInfo
-// });
-
-
-
-    // this.BsService.ProjectStatusChanged.subscribe(() => {
-
-    //     alert("hello")
-
-    //   })
-
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
@@ -197,7 +160,23 @@ export class PortfolioProjectsComponent implements OnInit {
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
     this.onButtonClick('tot')
+    this.updateListbyDetailsPage();  
   }
+
+  updateListbyDetailsPage(){
+    setInterval(() => {
+      const update = localStorage.getItem('projectUpdated');
+
+      if (update && update == '1') {
+        this.GetPortfolioProjectsByPid();
+        localStorage.setItem('projectUpdated', '0');
+      }
+    }, 1000);
+  }
+
+
+
+
 
   _PortfolioDetailsById: any;
   _MessageIfNotOwner: string;
@@ -382,18 +361,19 @@ export class PortfolioProjectsComponent implements OnInit {
         else if (this.PreferenceTpye == 0) {
           this.Share_preferences = false;
         }
+
+
+        if( 
+            (this._PortProjStatus=='Delay'&&this.CountDelay==0)||
+            (this._PortProjStatus=='Project Hold'&&this.CountProjectHold==0)
+          )
+          {
+            this.labelAll();
+            this.onButtonClick('tot');
+          }
+
+
       });
-
-
-
-    //  if(this._PortProjStatus!==''){
-
-    //  }
-
-
-
-
-
 
   }
 

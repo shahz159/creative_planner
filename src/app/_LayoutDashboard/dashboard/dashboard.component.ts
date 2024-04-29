@@ -445,6 +445,8 @@ export class DashboardComponent implements OnInit {
   pending_status: boolean;
   pending: boolean;
   notProvided:boolean=false;
+  projectsSelected:any=[];
+
   constructor(public service: ProjectTypeService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
@@ -1259,6 +1261,7 @@ export class DashboardComponent implements OnInit {
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject });
           });
           this.Portfolio = [];
           this.Portfolio1 = [];
@@ -1483,6 +1486,7 @@ export class DashboardComponent implements OnInit {
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject });
           });
           this.Portfolio = [];
           this.Portfolio1 = [];
@@ -1865,7 +1869,8 @@ debugger
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
-          this.MasterCode = null;
+          this.MasterCode = null; 
+          this.projectsSelected=[];
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
@@ -2238,6 +2243,7 @@ debugger
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.MasterCode = null;
+          this.projectsSelected=[];
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
@@ -4773,6 +4779,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.Description_Type = null;
     this.SelectDms = null;
     this.MasterCode = null;
+    this.projectsSelected=[];
     this.Subtask = null;
     this.Startts = null;
     this.Endtms = null;
@@ -4844,6 +4851,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.Description_Type = null;
     this.SelectDms = null;
     this.MasterCode = null;
+    this.projectsSelected=[];
     this.Subtask = null;
     this.Startts = null;
     this.Endtms = null;
@@ -5393,27 +5401,31 @@ drawBarGraph(){
   }
 
 
+  searchingResult:boolean=false;
 
   isProjectsDrpDwnOpen: boolean = false;
   removeSelectedProject(item) {
     const index = this.MasterCode.indexOf(item);
     if (index !== -1) {
       this.MasterCode.splice(index, 1);
+      this.projectsSelected.splice(index,1);
     }
   }
 
   onProjectSelected(e: any) {
     const prjChoosed = this.ProjectListArray.find((p: any) => p.Project_Code === e.option.value);
     if (prjChoosed) {
-      if (!this.MasterCode)   // if Portfolio is null,undefined,''
+      if (!this.MasterCode)   // if MasterCode is null,undefined,''
         this.MasterCode = [];
       const index = this.MasterCode.indexOf(prjChoosed.Project_Code);
       if (index === -1) {
         // if not present then add it
-        this.MasterCode.push(prjChoosed.Project_Code);
+        this.MasterCode.push(prjChoosed.Project_Code);   
+        this.projectsSelected.push({Project_Code:prjChoosed.Project_Code,  Project_Name:prjChoosed.Project_Name,  BlockNameProject:prjChoosed.BlockNameProject});
       }
       else {
         this.MasterCode.splice(index, 1);
+        this.projectsSelected.splice(index,1);
       }
     }
     this.openAutocompleteDrpDwn('ProjectsDrpDwn');
@@ -5421,8 +5433,8 @@ drawBarGraph(){
 
 
   getProjectName(projectCode: string) {
-    if (this.ProjectListArray) {
-      const P = this.ProjectListArray.find(pr => pr.Project_Code.trim() == projectCode.trim());
+    if (this.projectsSelected) {
+      const P = this.projectsSelected.find(pr => pr.Project_Code.trim() == projectCode.trim());
       return P ? P.BlockNameProject : '';
     }
     return [];
@@ -5430,23 +5442,39 @@ drawBarGraph(){
   // mat-autocomplete dropdowns code end.
 
 
-getTimeDuration(time1:string,time2:string){
-  if(time1&&time2){
-    time1='2024-04-20 '+time1;
-    if(time1.toLocaleUpperCase().includes('PM')&&time2.toUpperCase().includes('AM')){
-        time2='2024-04-21 '+time2;
-    }else
-    time2='2024-04-20 '+time2;
+// getTimeDuration(time1:string,time2:string){
+//   if(time1&&time2){
+//     time1='2024-04-20 '+time1;
+//     if(time1.toLocaleUpperCase().includes('PM')&&time2.toUpperCase().includes('AM')){
+//         time2='2024-04-21 '+time2;
+//     }else
+//     time2='2024-04-20 '+time2;
 
-    let T1=moment(time1,'YYYY-MM-DD hh:mm a');
-    let T2=moment(time2,'YYYY-MM-DD hh:mm a');
-    const result=Math.abs(T1.diff(T2,'minute'));  
-    return result<60?(result+' mins'):
-              (result/60).toFixed(2)+' hrs';
+//     let T1=moment(time1,'YYYY-MM-DD hh:mm a');
+//     let T2=moment(time2,'YYYY-MM-DD hh:mm a');
+//     const result=Math.abs(T1.diff(T2,'minute'));  
+//     return result<60?(result+' mins'):
+//               (result/60).toFixed(2)+' hrs';
     
-  }
+//   }
    
+// }
+
+
+onProjectSearch(inputtext:any){
+    this.searchingResult=true;
+    this.CalenderService.NewGetProjectandsubtaskDrp(inputtext).subscribe((res:any)=>{
+        console.log(res);
+        if(res){
+          this.ProjectListArray=JSON.parse(res['Projectlist']); 
+          //  console.log("project name searched result:",this.ProjectListArray);
+          this.searchingResult=false;
+        }
+      
+    })
 }
+
+
 
 
 
