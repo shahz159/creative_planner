@@ -636,6 +636,8 @@ a.ordr-a {
     vertical-align: middle;
     color: #64748b;
     overflow: hidden;
+ 
+
   }
   .kt-header__topbar-icon:hover .feature-icon{
     transition: all 0.3s;
@@ -847,3 +849,47 @@ a.ordr-a {
     transition: all 0.3s;
     stroke: #001eff;
 }
+
+
+/*test*/
+  
+  
+  
+.whatsnewanim{
+    animation-name:anim1;
+    animation-duration: 0.4s;
+    animation-iteration-count: 1;   
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
+    transform:  scaleX(0) skewY(0) skewX(0) scaleY(0) translateX(419%) translateY(-444%);
+}
+
+
+
+@keyframes anim1{
+    0%{
+        transform:  scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(419%) translateY(-444%);
+    }
+    50%{
+        transform: scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(10%) translateY(-235%);
+    }
+    100%{
+        transform: scaleX(1) skewY(0) skewX(0) scaleY(1) translateX(0%) translateY(0%);
+    }
+}
+
+@keyframes anim2{
+    0%{
+        transform: scaleX(1) skewY(0) skewX(0) scaleY(1) translateX(0%) translateY(0%);
+    }
+    50%{
+        transform: scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(10%) translateY(-235%);
+    }
+    100%{
+        transform:  scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(419%) translateY(-444%);
+    }
+}
+
+
+
+/*test*/

@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
   notilength: number;
   _NotificationActivity: [];
   urlcomponent:any;
-
+  newfeaturetippy:any;
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.getusername();
@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
         inertia: true,
       });
 
-      tippy('#streamfeature', {
+      this.newfeaturetippy=tippy('#streamfeature', {
         content: "New features",
         arrow: true,
         animation: 'scale-extreme',
@@ -434,6 +434,10 @@ export class HeaderComponent implements OnInit {
     document.getElementById("newfeatures").style.display = "block";
     document.getElementById("newfeatures").style.overflow = "auto";
     document.getElementById("feature-modal-backdrop").classList.add("show");
+    let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
+         whatsnew.style.animationName='anim1';
+         whatsnew.style.animationDuration='0.4s';
+         whatsnew.style.animationTimingFunction='cubic-bezier(0.2, 0.9, 0.2, 1)';
   }
   NewAddUserCountFeature() {
     if(this.isView=='0'){
@@ -441,8 +445,32 @@ export class HeaderComponent implements OnInit {
         console.log("user count added",data['message'])
       });
     }
-        document.getElementById("newfeatures").style.display = "none";
-        document.getElementById("newfeatures").style.overflow = "hidden";
-        document.getElementById("feature-modal-backdrop").classList.remove("show");
+    this.closeNewFeatures();
+    setTimeout(()=>{
+      document.getElementById("newfeatures").style.display = "none";
+      document.getElementById("newfeatures").style.overflow = "hidden";
+      document.getElementById("feature-modal-backdrop").classList.remove("show");
+    },600);
+      
   }
+
+
+
+  closeNewFeatures(){
+         let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
+         whatsnew.style.animationName='anim2';
+         whatsnew.style.animationTimingFunction='cubic-bezier(0.3, 0.9, 0.1, 1)'; 
+         this.newfeaturetippy[0].show();
+         let sf:any=document.getElementById('streamfeature');
+         sf.style.backgroundColor=' #d3d3d342';
+        
+         setTimeout(()=>{
+          this.newfeaturetippy[0].hide();
+          let sf:any=document.getElementById('streamfeature');
+          sf.style.backgroundColor='transparent';
+         },2000)
+  }
+
+
+
 }
