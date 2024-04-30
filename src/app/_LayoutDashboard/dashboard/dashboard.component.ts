@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
   _calenderDto: CalenderDTO;
-  ProjectListArray: any;
+  ProjectListArray: any=[];
   BlockNameProject1: any;
   Timeslab: any;
   MasterCode: any = [];
@@ -314,7 +314,7 @@ export class DashboardComponent implements OnInit {
   DMS_Scheduledjson: any = [];
   Portfolio: any = [];
   Portfolio1: any = [];
-  Portfoliolist_1: [];
+  Portfoliolist_1:any= [];
   Note_deadlineexpire: boolean;
   MinLastNameLength: boolean;
   _SelectedEmployees: any = [];
@@ -570,7 +570,7 @@ export class DashboardComponent implements OnInit {
     var DayNum1 = "DayNum";
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
-    this.GetProjectAndsubtashDrpforCalender();
+    // this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
@@ -1256,6 +1256,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
+          this.GetProjectAndsubtashDrpforCalender();
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
@@ -1298,6 +1299,21 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
+
+
+
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+
+
+
+
+
         }
 
       });
@@ -1479,6 +1495,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
+          this.GetProjectAndsubtashDrpforCalender();
           this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -1523,6 +1540,17 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
+
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+
+
+
         }
       });
     this.closeevearea();
@@ -2431,6 +2459,9 @@ debugger
     }
     else {
       this.ScheduleType = "Event";
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.Project_Code=null;
+      this.GetProjectAndsubtashDrpforCalender();
 
       document.getElementById("subtaskid").style.display = "none";
       // document.getElementById("Link_Name").style.display = "block";
@@ -2806,7 +2837,8 @@ debugger
   GetProjectAndsubtashDrpforCalender() {
 
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => {  
+        console.log(" Result of GetProjectAndsubtashDrpforCalender:",data);
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);

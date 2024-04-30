@@ -343,6 +343,7 @@ $(document).ready(function(){
   EmpCountInFilter = [];
   TypeContInFilter = [];
   StatusCountFilter = [];
+  CompanyCountFilter = [];
   searchText: string;
   txtSearch: string;
   public _totalProjectsCount: number;
@@ -491,6 +492,7 @@ $(document).ready(function(){
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
     this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
+    this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
     if(this.isChecked==true){
@@ -503,6 +505,7 @@ $(document).ready(function(){
     this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
       .subscribe((data) => {
         //Emp
+        console.log("company data",data)
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
         }
@@ -515,6 +518,13 @@ $(document).ready(function(){
         }
         else {
           this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Company
+        if (this.selectedItem_Company.length == 0) {
+          this.CompanyCountFilter = JSON.parse(data[0]['CompanyType_Json']);
+        }
+        else {
+          this.CompanyCountFilter = this.selectedItem_Company[0];
         }
         //Status
         if (this.selectedItem_Status.length == 0) {
@@ -547,6 +557,7 @@ $(document).ready(function(){
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
       this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
       this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
+      this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
       if(this.isChecked==true){
@@ -559,6 +570,7 @@ $(document).ready(function(){
       this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO)
         .subscribe((data) => {
           //Emp
+          console.log("company data",data)
           if (this.selectedItem_Emp.length == 0) {
             this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
           }
@@ -571,6 +583,13 @@ $(document).ready(function(){
           }
           else {
             this.TypeContInFilter = this.selectedItem_Type[0];
+          }
+          //Company
+          if (this.selectedItem_Company.length == 0) {
+            this.CompanyCountFilter = JSON.parse(data[0]['CompanyType_Json']);
+          }
+          else {
+            this.CompanyCountFilter = this.selectedItem_Company[0];
           }
           //Status
           if (this.selectedItem_Status.length == 0) {
@@ -603,10 +622,13 @@ $(document).ready(function(){
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
+  checkedItems_Cmp: any = [];
   selectedType_String: string;
   selectedEmp_String: string;
   selectedStatus_String: string;
+  selectedCompany_String: string;
   selectedItem_Status = [];
+  selectedItem_Company = [];
 
   isStatusChecked(item) {
     let arr = [];
@@ -632,7 +654,7 @@ $(document).ready(function(){
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
       this.edited=false;
       this.canceledit = false;
     }
@@ -669,7 +691,40 @@ $(document).ready(function(){
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+      this.canceledit = false;
+    }
+    else{
+      this.edited=true;
+    }
+  }
+
+  isCompanyChecked(item) {
+    let arr = [];
+    this.edited = true;
+    this.canceledit = true;
+    this.CompanyCountFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Company_No: element.Company_No });
+        return this.checkedItems_Cmp = arr;
+      }
+    });
+    let arr2 = [];
+    this.CompanyCountFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Company.push(arr2);
+    this.CompanyCountFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Company.length = 0;
+        this.resetFilters();
+      }
+    });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
       this.edited=false;
       this.canceledit = false;
     }
@@ -704,7 +759,7 @@ $(document).ready(function(){
         this.resetFilters();
       }
     });
-    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0){
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0) {
       this.edited=false;
       this.canceledit = false;
     }
@@ -737,9 +792,13 @@ $(document).ready(function(){
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
       return select.Status;
     }).join(',');
+    this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
+      return select.Company_No;
+    }).join(',');
     if(this.Type=='ALL Projects'){
       //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
+    this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
     this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
@@ -774,6 +833,7 @@ $(document).ready(function(){
     }
     else if(this.Type=='RACIS Projects'){
       this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
+      this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
       this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
       this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
       this.ObjUserDetails.PageNumber = this.CurrentPageNo;
@@ -869,6 +929,10 @@ $(document).ready(function(){
       this.selectedEmp_String = null;
       this.checkedItems_Emp = [];
     }
+    if (this.selectedItem_Company.length == 0) {
+      this.selectedCompany_String = null;
+      this.checkedItems_Cmp = [];
+    }
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
   }
@@ -885,6 +949,7 @@ $(document).ready(function(){
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0;
+    this.selectedItem_Company.length = 0;
     this.isChecked=false;
     this.resetFilters();
   }

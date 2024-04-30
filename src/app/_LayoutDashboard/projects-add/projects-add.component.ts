@@ -35,6 +35,7 @@ export class ProjectsAddComponent implements OnInit {
   btnGetRecords: boolean;
   EmpCountInFilter = [];
   TypeContInFilter = [];
+  CompanyCountFilter =[];
   StatusCountFilter = [];
   searchText: string;
   txtSearch: string;
@@ -57,6 +58,7 @@ export class ProjectsAddComponent implements OnInit {
   StoredPortfolio_ID: number;
 
   searchResult: boolean = false;
+  edited: boolean = false;
 
   // textMessage:boolean=true;
 
@@ -154,11 +156,13 @@ export class ProjectsAddComponent implements OnInit {
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
     this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
+    this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
     this._objDropdownDTO.PortfolioId = parseInt(this._portfolioId, 10);
     this.service.GetDropDownsData(this._objDropdownDTO)
       .subscribe((data) => {
         //Emp
+        console.log("company data",data)
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
         }
@@ -171,6 +175,13 @@ export class ProjectsAddComponent implements OnInit {
         }
         else {
           this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Company
+        if (this.selectedItem_Company.length == 0) {
+          this.CompanyCountFilter = JSON.parse(data[0]['Cmp_Json']);
+        }
+        else {
+          this.CompanyCountFilter = this.selectedItem_Company[0];
         }
         //Status
         if (this.selectedItem_Status.length == 0) {
@@ -240,9 +251,11 @@ debugger
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
+  checkedItems_Cmp: any = [];
   selectedType_String: string;
   selectedEmp_String: string;
   selectedStatus_String: string;
+  selectedCompany_String: string;
 
   selectedItem_Status = [];
   isStatusChecked(item) {
@@ -267,6 +280,12 @@ debugger
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedItem_Type = [];
@@ -293,6 +312,12 @@ debugger
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedItem_Emp = [];
@@ -318,7 +343,45 @@ debugger
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
+  }
+
+  selectedItem_Company=[];
+
+  isCompanyChecked(item) {
+    let arr = [];
+    this.CompanyCountFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Com_No: element.Com_No });
+        return this.checkedItems_Cmp = arr;
+      }
+    });
+    let arr2 = [];
+    this.CompanyCountFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Company.push(arr2);
+    this.CompanyCountFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Company.length = 0;
+        this.resetFilters();
+      }
+    });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   //Apply Filters
   SearchbyText() {
@@ -339,12 +402,16 @@ debugger
       return select.Status;
     }).join(',');
 
+    this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
+      return select.Com_No;
+    }).join(',');
+
     //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
 
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
     this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
-
+    this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.searchText;
@@ -486,7 +553,7 @@ debugger
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
-
+    this.edited=false;
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
       this.checkedItems_Type = [];
@@ -499,6 +566,10 @@ debugger
       this.selectedEmp_String = null;
       this.checkedItems_Emp = [];
     }
+    if (this.selectedItem_Company.length == 0) {
+      this.selectedCompany_String = null;
+      this.checkedItems_Cmp = [];
+    }
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
   }
@@ -506,7 +577,8 @@ debugger
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
-    this.selectedItem_Emp.length = 0
+    this.selectedItem_Emp.length = 0;
+    this.selectedItem_Company.length = 0;
     this.resetFilters();
   }
   BackBttn() {
