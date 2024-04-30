@@ -835,7 +835,7 @@ select(ev,item){
       if(this.selectedItems.length==this._NotificationActivity.length){
         this.selectAllCheckbox=true;
       }
-      else 
+      else
       this.selectAllCheckbox=false;
    }
    else
@@ -975,7 +975,7 @@ acceptSelectedValues() {
     this.rejectType=null;
   }
 
-  submitReject(){    
+  submitReject(){
     console.log(this.selectedItems,"reject");
     this.selectedItems.forEach(element => {
       element.RejectType=this.rejectType;

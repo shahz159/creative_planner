@@ -40,6 +40,7 @@ import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { LinkService } from 'src/app/_Services/link.service';
 // import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { helpers } from 'chart.js';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 @Component({
   selector: 'app-portfolio-projects',
@@ -160,7 +161,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
     this.onButtonClick('tot')
-    this.updateListbyDetailsPage();  
+    this.updateListbyDetailsPage();
   }
 
   updateListbyDetailsPage(){
@@ -173,7 +174,6 @@ export class PortfolioProjectsComponent implements OnInit {
       }
     }, 1000);
   }
-
 
 
 
@@ -362,18 +362,28 @@ export class PortfolioProjectsComponent implements OnInit {
           this.Share_preferences = false;
         }
 
-
-        if( 
-            (this._PortProjStatus=='Delay'&&this.CountDelay==0)||
-            (this._PortProjStatus=='Project Hold'&&this.CountProjectHold==0)
-          )
-          {
-            this.labelAll();
-            this.onButtonClick('tot');
+        if(
+            (this._PortProjStatus=='Delay' && this.CountDelay==0) ||
+            (this._PortProjStatus=='Project Hold' && this.CountProjectHold==0) ||
+            (this._PortProjStatus=='InProcess' && this.CountInprocess==0) ||
+            (this._PortProjStatus=='Not Started' && this.CountInprocess ==0) ||
+            (this._PortProjStatus=='Completed' && this.CountCompleted == 0) ||
+            (this._PortProjStatus == 'New Project' && this.CountNewProject==0) ||
+            (this._PortProjStatus=='Rejected' && this.CountRejecteds==0) ||
+            (this._PortProjStatus=='ToDo Achieved' && this.Count_ToDoAchieved==0) ||
+            (this._PortProjStatus=='Under Approval' && this.CountAll_UA==0) ||
+            (this._PortProjStatus=='ToDo Completed' && this.Count_ToDoCompleted==0)||
+            (this._PortProjStatus==''&&this.showDeletedPrjOnly==true && this.CountDeleted==0)
+         ){
+        this.labelAll()
+        this.onButtonClick('tot')
           }
-
-
       });
+
+
+
+
+
 
   }
 
@@ -829,6 +839,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               // console.log("rejecteds Projects Count---->", this.CountRejecteds)
               this.CountProjectHold = this.CountProjectHold + ProjectHolded;
               this.notifyService.showSuccess("Deleted successfully ", '');
+              // this.GetPortfolioProjectsByPid()
               this.notifyService.showInfo("Please add projects to avail this portfolio",'Alert');
             });
           this._objStatusDTO.Emp_No = this.Current_user_ID;
@@ -951,6 +962,8 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               // console.log("rejecteds Projects Count---->", this.CountRejecteds)
               this.CountProjectHold = this.CountProjectHold + ProjectHolded;
               this.notifyService.showSuccess("Deleted successfully ", '');
+              this.GetPortfolioProjectsByPid()
+
             });
           this._objStatusDTO.Emp_No = this.Current_user_ID;
           this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
@@ -1675,6 +1688,23 @@ triger(){
 }
 
 
+
+
+  RestorePortfolioProjects(prjcode,portfolioid) {
+
+    this.service.UpdateRestorePortfolioProjects(prjcode,portfolioid).subscribe((data:any) => {
+      console.log('Response data:', data);
+      if (data.message==="1"){
+      this.notifyService.showSuccess("Project Restored Successfully", '');
+      this.GetPortfolioProjectsByPid()
+      }
+      else if (data.message==="2"){
+        this.notifyService.showError("Project Failed to Restore",'');
+      }
+
+    });
+
+  }
 }
 /// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">
 // <ng-option [value]="com.Com_No" *ngFor="let com of Company_List" >
