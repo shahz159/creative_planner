@@ -1496,7 +1496,7 @@ export class DashboardComponent implements OnInit {
         }
         else if (this.ScheduleType == 'Event') {
           this.GetProjectAndsubtashDrpforCalender();
-          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1631,7 +1631,7 @@ export class DashboardComponent implements OnInit {
       this.Startts&&
       this.Endtms&&
       this.MinLastNameLength
-      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+      // &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
     ){
           this.OnSubmitSchedule();
           this.notProvided=false;
@@ -1640,8 +1640,8 @@ export class DashboardComponent implements OnInit {
       {
          if(!this.Title_Name)
          document.getElementById('dsb-evt-titleName').focus();
-         else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
-         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+        //  else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
+        //  {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
 
 
         this.notProvided=true;
@@ -1807,11 +1807,11 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
 
-        var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+        // var vAgendas = "Meeting_Agendas";
+        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        // element[vAgendas] = mtgAgendas;
 
-        debugger
+        // debugger
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -2151,10 +2151,10 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        debugger
-            var vMeeting_Agendas="Meeting_Agendas";
-            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-            element[vMeeting_Agendas]=updatedAgnds;
+        // debugger
+        //     var vMeeting_Agendas="Meeting_Agendas";
+        //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+        //     element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
