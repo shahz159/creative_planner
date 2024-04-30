@@ -459,7 +459,7 @@
             <div class="form-group timeline-date">
                 <label>Date<span class="text-danger">*</span></label>
                 <div class="input-group">
-                    <input matInput (dateChange)="orgValueChange($event)"  [value]="dateF.value"
+                    <input (dateChange)="orgValueChange($event)"  [value]="dateF.value"
                         [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
                         [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control"
                         name="date" >
