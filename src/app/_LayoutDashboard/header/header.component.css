@@ -856,11 +856,11 @@ a.ordr-a {
   
   
 .whatsnewanim{
-    /* animation-name:anim1;
+    animation-name:anim1;
     animation-duration: 0.4s;
     animation-iteration-count: 1;   
     animation-fill-mode: forwards;
-    animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1); */
+    animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
     transform:  scaleX(0) skewY(0) skewX(0) scaleY(0) translateX(419%) translateY(-444%);
 }
 
