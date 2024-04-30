@@ -114,6 +114,19 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolioSharePreferences_Json", this.objPortfolioDTO)
   }
 
+
+  UpdateRestorePortfolioProjects(proj_Id,pid){
+    this.objPortfolioDTO.Project_ID = proj_Id;
+    this.objPortfolioDTO.Portfolio_ID = pid;
+    this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "TestAPI/NewUpdateRestorePortfolioProjects", this.objPortfolioDTO)
+  }
+
+
+
+
+
+
   GetPortfoliosBy_ProjectId(pid) {
     this.objPortfolioDTO.Project_Code = pid;
     this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');

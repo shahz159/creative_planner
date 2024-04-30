@@ -1664,3 +1664,19 @@ left: 38%;
 .restore{
   margin-right: 20px;
 }
+.btn-v{
+  text-transform: capitalize;
+  font-weight: 600;
+  text-align: center;
+  border: 2px solid #5867dd !important;
+  background-color: #5867dd !important;
+  color: white !important;
+  width: 66px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  border-radius: 0.65rem;
+  font-size: .85rem !important;
+}

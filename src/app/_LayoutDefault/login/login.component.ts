@@ -253,6 +253,7 @@ export class LoginComponent implements OnInit {
                 this.notifyService.showSuccess("Successfully", "Logged In");
                 this.InValidPassword = false;
                 this.cd.detectChanges();
+                this.buttonClicked=true
 
 
               }

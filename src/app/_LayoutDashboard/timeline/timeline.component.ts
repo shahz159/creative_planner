@@ -17,6 +17,7 @@ import 'moment/locale/fr';
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD-MM-YYYY',
@@ -134,6 +135,8 @@ export class TimelineComponent implements OnInit {
   }
 
   timelineLog(type){
+
+    console.log("timelineLog input:",);
     this.Type=type;
     this.showtimeline=true;
 
@@ -143,7 +146,6 @@ export class TimelineComponent implements OnInit {
 
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
       (data=>{
-        debugger
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         console.log(this.timelineList,"timelinedata")
         this.timelineDuration=(data[0]['TotalTime']);
@@ -342,7 +344,7 @@ getTimelineActions(){
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-   debugger
+
     this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
@@ -543,11 +545,10 @@ submitDar() {
             });
         }
         // after timeline submission success then complete the action also if needed.  end
-
+        this.timelineLog(this.Type);
         this.clear();   // clear all fields. project_code, master_code, ....
     });
 
-  this.timelineLog(this.Type);
   this.getDarTime();
   document.getElementById("timepage").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
@@ -644,7 +645,7 @@ onFileChange(e) {
 p_details:any;
 a_details:any;
 getPADetails(prjcode,of:'PROJECT'|'ACTION'){
-  debugger
+
     if(prjcode)
     {
       if(of==='PROJECT'){
@@ -656,7 +657,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
       }
 
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
-        debugger
+
                  console.log("|||=>",res[0].ProjectStates_Json);
                  if(of==='PROJECT'){
 
