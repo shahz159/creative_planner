@@ -1680,3 +1680,9 @@ left: 38%;
   border-radius: 0.65rem;
   font-size: .85rem !important;
 }
+.dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
+  vertical-align: baseline;
+}
+td p{
+  margin-bottom: 0px;
+}
