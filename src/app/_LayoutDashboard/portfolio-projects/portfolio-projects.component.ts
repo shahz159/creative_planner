@@ -147,8 +147,6 @@ export class PortfolioProjectsComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
@@ -163,23 +161,18 @@ export class PortfolioProjectsComponent implements OnInit {
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
     this.onButtonClick('tot')
-    this.updateListbyDetailsPage()
-
+    this.updateListbyDetailsPage();
   }
 
-
-
   updateListbyDetailsPage(){
-  setInterval(() => {
-    const update = localStorage.getItem('projectUpdated');
+    setInterval(() => {
+      const update = localStorage.getItem('projectUpdated');
 
-    if (update && update == '1') {
-      this.GetPortfolioProjectsByPid();
-      localStorage.setItem('projectUpdated', '0');
-
-    }
-  }, 1000);
-
+      if (update && update == '1') {
+        this.GetPortfolioProjectsByPid();
+        localStorage.setItem('projectUpdated', '0');
+      }
+    }, 1000);
   }
 
 

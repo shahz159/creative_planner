@@ -2896,41 +2896,67 @@
 
                         <div class="d-flex">
                             <input class="flex-1" [matChipInputFor]="selectedProjects"
-                                [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
+                                [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF  (input)="onProjectSearch(ProjectsTF.value)"  (click)="onProjectSearch(ProjectsTF.value)"   />
 
                             <button *ngIf="isProjectsDrpDwnOpen"
-                                class="bg-transparent border-0 "  (click)="this.isProjectsDrpDwnOpen=false; closeAutocompleteDrpDwn('ProjectsDrpDwn');">
-                                <mat-icon class="close-icon">cancel</mat-icon></button>
+                                class="bg-transparent border-0 curser-pointer " (click)="this.isProjectsDrpDwnOpen=false; closeAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                <mat-icon class="close-icon  save-mat-selection ">done</mat-icon>
+                            </button>
 
                             <button *ngIf="!isProjectsDrpDwnOpen"
-                                class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                class="bg-transparent border-0 curser-pointer " (click)="this.isProjectsDrpDwnOpen=true;  openAutocompleteDrpDwn('ProjectsDrpDwn'); onProjectSearch(ProjectsTF.value);   ">
                                 <mat-icon class="add-icon"
                                     >add</mat-icon></button>
+
+                                    
+                                      
+                                      
                         </div>
 
-                        <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
-                        (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
-                        (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
-
-                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000)" [value]="prj.Project_Code">
-                                <mat-checkbox color="primary"
-                                    [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
-                                   {{prj.BlockNameProject}}
-                            </mat-option>
+                        <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel" #ProjectsDrpDwn="matAutocomplete"
+                        (optionSelected)="onProjectSelected($event); ProjectsTF.value='';   "
+                        (opened)="isProjectsDrpDwnOpen=true; " (closed)="isProjectsDrpDwnOpen=false; ">
 
 
-                            <mat-option *ngIf="(ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
-                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
-                                    </g>
-                                </svg>
-                                <span style="color:#757575" class="ml-2">No results found.</span>
-                            </mat-option> 
+                           <ng-container *ngIf="searchingResult;else PrjSearchResultGot">
+                                 <mat-option style="pointer-events:none;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div role="status" class="spinner-border m-0 p-0 fs-5" style="color: #3d4991cc; width: 1.5rem; height: 1.5rem; ">
+                                        </div>
+                                        <span class="fs-5 text-muted">Searching..</span>
+                                   </div>
+
+                                 </mat-option>
+                           </ng-container>
+                           <ng-template #PrjSearchResultGot>
+
+                                    <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000)" [value]="prj.Project_Code">
+                                        <mat-checkbox color="primary"
+                                            [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
+                                        {{prj.BlockNameProject}}
+                                    </mat-option>
+
+                                    <mat-option *ngIf="(ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                            </g>
+                                        </svg>
+                                        <span style="color:#757575" class="ml-2">No results found.</span>
+                                    </mat-option> 
+
+                           </ng-template>
 
 
+
+                            
+
+
+                            
+                       
+ 
 
 
 
@@ -2985,11 +3011,11 @@
                                     [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
 
                                 <button *ngIf="isPortfolioDrpDwnOpen"
-                                    class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                    class="bg-transparent border-0  curser-pointer "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
+                                    <mat-icon class="close-icon save-mat-selection ">done</mat-icon></button>
 
                                 <button *ngIf="!isPortfolioDrpDwnOpen"
-                                    class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
+                                    class="bg-transparent border-0 curser-pointer " (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
                                     <mat-icon class="add-icon"
                                         >add</mat-icon></button>
                             </div>
@@ -3048,11 +3074,11 @@
                                     [matAutocomplete]="MemoDrpDwn" #dmsMemoTF  />
 
                                 <button *ngIf="isDMSMemoDrpDwnOpen"
-                                    class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                    class="bg-transparent border-0  curser-pointer"  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
+                                    <mat-icon class="close-icon  save-mat-selection ">done</mat-icon></button>
 
                                 <button *ngIf="!isDMSMemoDrpDwnOpen"
-                                    class="bg-transparent border-0" (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">
+                                    class="bg-transparent border-0  curser-pointer" (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">
 
                                     <mat-icon class="add-icon"
                                         >add</mat-icon></button>
@@ -3108,11 +3134,11 @@
                                     [matAutocomplete]="ParticipantsDrpDwn" #ParticipantsTF />
 
                                 <button *ngIf="isParticipantsDrpDwnOpen"
-                                    class="bg-transparent border-0 "  (click)="this.isParticipantsDrpDwnOpen=false; closeAutocompleteDrpDwn('ParticipantsDrpDwn');">
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                    class="bg-transparent border-0  curser-pointer"  (click)="this.isParticipantsDrpDwnOpen=false; closeAutocompleteDrpDwn('ParticipantsDrpDwn');">
+                                    <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
 
                                 <button *ngIf="!isParticipantsDrpDwnOpen"
-                                    class="bg-transparent border-0" (click)="this.isParticipantsDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantsDrpDwn');">
+                                    class="bg-transparent border-0 curser-pointer" (click)="this.isParticipantsDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantsDrpDwn');">
                                     <mat-icon class="add-icon"
                                         >add</mat-icon></button>
                             </div>
@@ -3252,7 +3278,16 @@
                                 <ng-select class="kt-input form-control" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
                                     [(ngModel)]="Endtms">
                                     <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                        {{item1}}</ng-option>
+                                        {{item1}} 
+                                        ({{   
+                                            Startts|timeDiff:item1
+                                        }})  
+                                        
+                                        <!-- ((StartTimearr.indexOf(item1)-StartTimearr.indexOf(Startts))*5)<60?
+                                            (StartTimearr.indexOf(item1)-StartTimearr.indexOf(Startts))*5+' mins'
+                                            :((StartTimearr.indexOf(item1)-StartTimearr.indexOf(Startts))*5/60).toFixed(2)+' hrs' -->
+                                    
+                                    </ng-option>
                                 </ng-select>
                                 <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
                             </div>

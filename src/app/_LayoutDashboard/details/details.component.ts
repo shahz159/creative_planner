@@ -134,6 +134,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   requestDetails: any;
   requestType: any;
+  isPrjContainAprvls:boolean=false;  // to control pending approval label located in prj status section.
   forwardType: string;
   requestDate: any;
   requestDeadline: any;
@@ -1758,6 +1759,7 @@ debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
+        this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -1830,6 +1832,7 @@ debugger
       else{
         // if there is no requests
         this.isApprovalSection=false;
+        this.isPrjContainAprvls=false;  //to remove pending aprvl label of prj status section.
         // if there is no requests
 
         // if there are no std task aprv request
@@ -2471,7 +2474,7 @@ currentStdAprView:number|undefined;
                 let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
                 const prjActionindex = this.projectActionInfo.indexOf(prjAction)
                 if (prjActionindex !== -1) {
-                  const prjActionComp = { ...prjAction, Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
+                  const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
                   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
                   this.clearFilterConfigs();
                 }  // updated project action.
@@ -2710,6 +2713,22 @@ currentStdAprView:number|undefined;
 
   // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
+
+// check all mandatory fields are provided or not
+   if(!(
+        (this.ProjectName&&this.ProjectName.trim()!='')&&
+        (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+      ))
+   {
+      this.formFieldsRequired=true;
+      return;
+   }
+   else this.formFieldsRequired=false;  // back to initial value.
+// check all mandatory fields are provided or not
+
+
+
+
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2922,6 +2941,18 @@ currentStdAprView:number|undefined;
 
 
   onAction_update() {
+
+// check all mandatory field are provided.    
+    if(!(this.ActionName&&this.ActionDescription&&
+         this.ActionOwner&&this.ActionResponsible&&
+         this.selectedcategory&&this.ActionClient&&
+         this.ActionstartDate&&this.ActionendDate&&
+         this.editAllocatedhours&&(this.editAllocatedhours<=this.ActionmaxAllocation))
+       ){
+            this.formFieldsRequired=true;
+            return;
+    }else this.formFieldsRequired=false;   // back to initial value.
+// check all mandatory field are provided.
 
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -3213,7 +3244,7 @@ check_allocation() {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
-  }
+  } 
 
 
  submitDar(){
@@ -3224,7 +3255,7 @@ check_allocation() {
    this.workdes&&
    this.starttime&&
    this.endtime&&
-   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?this._remarks:true)
+   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
 
@@ -3372,6 +3403,8 @@ check_allocation() {
         break;
     if (i !== this.projectActionInfo.length)
       this.currentActionView = i;
+
+    this.prostate(this.projectActionInfo[this.currentActionView].proState);
   }   // whenever action is changed or selected.
 
 
@@ -4306,6 +4339,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
     this.oldMtgCnt = 0;  // Older Meetings Count
     //
+
+    this.backMainMeetings();
   }
 
 
@@ -7227,13 +7262,13 @@ getActivitiesOf(d){
 
 activitiesOnthat:any=[];
 selectedactvy:string|undefined;
-
+lastActivityOn:string|undefined;
 
 showFullGraph(){
   debugger
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
-
+  this.lastActivityOn=alldates[alldates.length-1];   // last activity on
   const actvies=this.getActivitiesOfDates(this.graphOption,...alldates);       //[{date:'2023-08-11',total:4},{date:'2024-02-02',total:8} ...]
   console.log("all graph line points :",actvies);
 
@@ -7283,16 +7318,26 @@ showFullGraph(){
 
 
   FusionCharts.ready(()=> {
-    var myChart = new FusionCharts({
+    let myChart=new FusionCharts({
       type: "zoomline",
       renderAt: "full-graph",
       width: "100%",
       height: "100%",
       dataFormat: "json",
-      dataSource
+      dataSource:dataSource
     }).render();
-
-
+    
+ // resolves slowness occuring in the starting. by rendering graph again.   
+    myChart=new FusionCharts({
+      type: "zoomline",
+      renderAt: "full-graph",
+      width: "100%",
+      height: "100%",
+      dataFormat: "json",
+      dataSource:dataSource
+    }).render();   
+// resolves slowness occuring in the starting. by rendering graph again.
+ 
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
@@ -7324,42 +7369,13 @@ onGraphOptionChanged(option:string){
 
 }
 
-loadActivitiesByDate(d){
-  this.activitiesOnthat=this.getActivitiesOf(d);   console.log("activities on that: ",this.activitiesOnthat);
+loadActivitiesByDate(d){   debugger
+
+  this.activitiesOnthat=this.getActivitiesOf(d);  
   const currentDt=new Date();
-  this.selectedactvy=d==currentDt?'TODAY':d;
+  const dateClicked=new Date(d);
+  this.selectedactvy=(dateClicked.getDate()==currentDt.getDate())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

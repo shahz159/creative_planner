@@ -56,15 +56,16 @@
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters(); tempSelection=[];"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters(); "
                             [disabled]="_CurrentpageRecords<30"  >
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <!-- Filters -->
                         <div class="stores-sec mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a class="btn btn-label-primary btn-upper btn-sm btn-bold" data-toggle="dropdown"><i
-                                            class="fas fa-ellipsis-v mr-0"></i></a>
+                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
+                                        class="fas fa-ellipsis-v mr-0 "></i>
+                                    </a>
                                     <div class="dropdown-menu mega-dropdown-menu">
                                         <div (click)="$event.stopPropagation();">
                                             <div class="row">
@@ -86,7 +87,7 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Project Type</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -108,7 +109,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Status</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -130,7 +131,27 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
+                                                    <div class="count-height">
+                                                        <p><strong>Company</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of CompanyCountFilter|filter:txtSearch">
+                                                            <label class="kt-checkbox mb-3">
+                                                                <!-- <mat-checkbox class="example-margin" color="primary"
+                                                                (change)="isEmpChecked(item)"
+                                                                [(ngModel)]="item.checked">
+                                                                {{item.Name}}
+                                                            </mat-checkbox> -->
+                                                                <input type="checkbox" (change)="isCompanyChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Employees</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -226,7 +247,7 @@
                                                         </mat-list-item> -->
 
                                                           <mat-checkbox  [checked]="isAllPrjSelected"   title="Select All" (change)="selectUnselectPagePrjs($event)" color="primary"></mat-checkbox>
-
+                                                          <label class="fs-7 ml-2" style="position: absolute;left: 3%;">Select all</label>
 
                                                     </th>
 
@@ -302,7 +323,7 @@
 
                                                         <mat-checkbox
                                                            color="primary"
-                                                           [checked]="isProjectSelected(item.Project_Code)||tempSelection.includes(item.Project_Code)"
+                                                           [checked]="(isProjectSelected(item.Project_Code)||item.addedIntoPortfolio)"
                                                            (change)="selectUnSelectProject($event,item)"
                                                         ></mat-checkbox>
                                                         </mat-list-item>
@@ -375,8 +396,8 @@
                                                     <td>
                                                         <p class="kt-widget__title mb-0">
                                                             {{item.Project_Name}}
-
                                                         </p>
+                                                        <span *ngIf="item.addedIntoPortfolio" class="fs-8 text-muted">Added in portfolio.</span>
                                                         <!-- <p class="kt-widget5__desc">{{item.Project_Description}}</p> -->
                                                     </td>
                                                     <td>

@@ -35,6 +35,7 @@ export class ProjectsAddComponent implements OnInit {
   btnGetRecords: boolean;
   EmpCountInFilter = [];
   TypeContInFilter = [];
+  CompanyCountFilter =[];
   StatusCountFilter = [];
   searchText: string;
   txtSearch: string;
@@ -57,6 +58,7 @@ export class ProjectsAddComponent implements OnInit {
   StoredPortfolio_ID: number;
 
   searchResult: boolean = false;
+  edited: boolean = false;
 
   // textMessage:boolean=true;
 
@@ -154,11 +156,13 @@ export class ProjectsAddComponent implements OnInit {
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
     this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
+    this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
     this._objDropdownDTO.PortfolioId = parseInt(this._portfolioId, 10);
     this.service.GetDropDownsData(this._objDropdownDTO)
       .subscribe((data) => {
         //Emp
+        console.log("company data",data)
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
         }
@@ -171,6 +175,13 @@ export class ProjectsAddComponent implements OnInit {
         }
         else {
           this.TypeContInFilter = this.selectedItem_Type[0];
+        }
+        //Company
+        if (this.selectedItem_Company.length == 0) {
+          this.CompanyCountFilter = JSON.parse(data[0]['Cmp_Json']);
+        }
+        else {
+          this.CompanyCountFilter = this.selectedItem_Company[0];
         }
         //Status
         if (this.selectedItem_Status.length == 0) {
@@ -240,9 +251,11 @@ debugger
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
+  checkedItems_Cmp: any = [];
   selectedType_String: string;
   selectedEmp_String: string;
   selectedStatus_String: string;
+  selectedCompany_String: string;
 
   selectedItem_Status = [];
   isStatusChecked(item) {
@@ -267,6 +280,12 @@ debugger
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedItem_Type = [];
@@ -293,6 +312,12 @@ debugger
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
   }
   selectedItem_Emp = [];
@@ -318,7 +343,45 @@ debugger
         this.resetFilters();
       }
     });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
 
+  }
+
+  selectedItem_Company=[];
+
+  isCompanyChecked(item) {
+    let arr = [];
+    this.CompanyCountFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Com_No: element.Com_No });
+        return this.checkedItems_Cmp = arr;
+      }
+    });
+    let arr2 = [];
+    this.CompanyCountFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Company.push(arr2);
+    this.CompanyCountFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Company.length = 0;
+        this.resetFilters();
+      }
+    });
+    if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
+      this.edited=false;
+    }
+    else{
+      this.edited=true;
+    }
   }
   //Apply Filters
   SearchbyText() {
@@ -339,12 +402,16 @@ debugger
       return select.Status;
     }).join(',');
 
+    this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
+      return select.Com_No;
+    }).join(',');
+
     //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
 
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
     this.ObjUserDetails.SelectedBlock_No = this.selectedType_String;
-
+    this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.searchText;
@@ -486,7 +553,7 @@ debugger
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
-
+    this.edited=false;
     if (this.selectedItem_Type.length == 0) {
       this.selectedType_String = null;
       this.checkedItems_Type = [];
@@ -499,6 +566,10 @@ debugger
       this.selectedEmp_String = null;
       this.checkedItems_Emp = [];
     }
+    if (this.selectedItem_Company.length == 0) {
+      this.selectedCompany_String = null;
+      this.checkedItems_Cmp = [];
+    }
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
   }
@@ -506,7 +577,8 @@ debugger
     this.txtSearch = '';
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
-    this.selectedItem_Emp.length = 0
+    this.selectedItem_Emp.length = 0;
+    this.selectedItem_Company.length = 0;
     this.resetFilters();
   }
   BackBttn() {
@@ -846,141 +918,63 @@ DeleteProjects(projInfo:any){
 //   }}
 
 
-removePrjsOfPortflio(){
-  let removedCount:number=0;
-  this._ProjectDataList.forEach(element => {
-    if (element.checked == false) {
-      let prid = element.id;
-      let poid = this._portfolioId;
-      let Projname = element.Project_Name;
-      let pCode = element.Project_Code;
-      let Createdby = element.Emp_No;
-      try{
-      this.service.DeleteProject(prid,poid,pCode,Projname,Createdby,this.deletedBy).subscribe((data) => {
-             removedCount+=1;
-             if(removedCount==this._ProjectDataList.length)
-             { this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');   }
-        // this.service.GetProjectsBy_portfolioId(this._Pid)
-        //   .subscribe((data) => {
-        //     // //console.log("Retrun After Delete :" + data);
-        //     // this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-        //     // this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
-        //     this.notifyService.showSuccess("Project removed successfully ", '');
-        //   });
-        // // this._objStatusDTO.Emp_No = this.Current_user_ID;
-        // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
-        //   (data) => {
-        //     this._ListProjStat = data as StatusDTO[];
-        //   });
+// removePrjsOfPortflio(){
+//   let removedCount:number=0;
+//   this._ProjectDataList.forEach(element => {
+//     if (element.checked == false) {
+//       let prid = element.id;
+//       let poid = this._portfolioId;
+//       let Projname = element.Project_Name;
+//       let pCode = element.Project_Code;
+//       let Createdby = element.Emp_No;
+//       try{
+//       this.service.DeleteProject(prid,poid,pCode,Projname,Createdby,this.deletedBy).subscribe((data) => {
+//              removedCount+=1;
+//              if(removedCount==this._ProjectDataList.length)
+//              { this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');   }
+//         // this.service.GetProjectsBy_portfolioId(this._Pid)
+//         //   .subscribe((data) => {
+//         //     // //console.log("Retrun After Delete :" + data);
+//         //     // this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+//         //     // this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
+//         //     this.notifyService.showSuccess("Project removed successfully ", '');
+//         //   });
+//         // // this._objStatusDTO.Emp_No = this.Current_user_ID;
+//         // this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+//         //   (data) => {
+//         //     this._ListProjStat = data as StatusDTO[];
+//         //   });
 
 
 
-      });
-    }catch(e){
-        this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');
-        console.log(e);
-    }
-    }
-  });
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  selectUnSelectAllPrj(evt){
-//       this.isAllPrjSelected=evt.target.checked;
-//       this._ProjectDataList.forEach((prj)=>{
-//              prj.checked=this.isAllPrjSelected;
 //       });
-//       this.OnAllSelectedPrjSave();
-//  }
-
-
-
-
-
-
-
-
-
-
-
-
-  //  approve all selected prject end.
-
-
-  // project(){
-  //   if(this.isAllPrjSelected){
-  //         // add all projects into the portfolio.
-  //         this.addPrjsToPortflio();
-  //     }
-  //     // else{
-  //     //     this.removePrjsOfPortflio();
-  //     //     // remove all projects from the portfolio.
-  //     //   }
-  // }
-
-
-//   singlechecking:any[]
-//   singlecheckbox(item: any) {
-//     if (this.singlechecking && this.singlechecking.includes(item.Project_Code)) {
-//       this.singlechecking.push(item.Project_Code);
+//     }catch(e){
+//         this.notifyService.showInfo(`${removedCount} Projects removed successfully `, '');
+//         console.log(e);
 //     }
+//     }
+//   });
+
 // }
 
 
 
-// addedd() {
-//   this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
-//   const selectedPrjsss=this._ProjectDataList.filter(item=>item.checked);
-//   let LengthOfSelectedItems = JSON.stringify(selectedPrjsss.length);
-//   this.Obj_Portfolio_DTO.SelectedProjects = selectedPrjsss;
-//   this.service.SavePortfolio(this.Obj_Portfolio_DTO)
-//     .subscribe(data => {
-//       debugger
-//       this._portfolioId = data['Portfolio_ID'];
-//       if(this._portfolioId!==''){
-//         this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
-//       }
-//     });
-// }
 
-
-
-// new test
+// portfolio new start
 allSelectedProjects:any=[];  // overall selection
-tempSelection:any=[];    // current page selection
-addedSelectedPrj:any=[];   // added selected prjs of current page.
+isAllPrjSelected:boolean=false;
+
 selectUnSelectProject(e,item){ debugger
-      if(e.checked){
+      if(e.checked){ 
           this.allSelectedProjects.push(item);
+      
           const allsel=this._ProjectDataList.every(item=>{
             return this.allSelectedProjects.map(p=>p.Project_Code).includes(item.Project_Code)
           })
           this.isAllPrjSelected=allsel;
       }
       else{   // when unchecked
-          const index=this.allSelectedProjects.findIndex(obj=>obj.Project_Code==item.Project_Code)
+          let index=this.allSelectedProjects.findIndex(obj=>obj.Project_Code==item.Project_Code)
           if(index!=-1)
           this.allSelectedProjects.splice(index,1);
 
@@ -1000,7 +994,6 @@ selectUnSelectProject(e,item){ debugger
 }
 
 
-
 addPrjsToPortflio() {
   if(this.allSelectedProjects.length>0){
       this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
@@ -1014,7 +1007,7 @@ addPrjsToPortflio() {
           if(this._portfolioId!==''){
             this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
           }
-          this.tempSelection=[...this.tempSelection,...this.allSelectedProjects.map(item=>item.Project_Code)];
+        
 
            this._ProjectDataList.map(PRJ=>{
 
@@ -1049,46 +1042,25 @@ removePrjFromPortfolio(element:any){
 
      this.notifyService.showSuccess("Project removed successfully","");
 
+     const index=this._ProjectDataList.findIndex(p=>p.Project_Code==pCode);
+     if(index!=-1){
+           delete this._ProjectDataList[index].addedIntoPortfolio;
+     } 
 
+  
 
   });
 
 }
 
 
-
-
-
-
-
-
 isProjectSelected(prjcode:any):boolean{
+
+  // console.log("prj:",this.allSelectedProjects.map(x=>x.Project_Code).includes(prjcode));
   return this.allSelectedProjects.map(x=>x.Project_Code).includes(prjcode);
     //  const x=this.allSelectedProjects.find((item)=>item.Project_Code==prjcode);
     //  return x?true:false;
 }
-
-
-
-
-isAllPrjSelected:boolean=false;
-// addRemovePrjofPortfolio(evt){  debugger
-//   this.isAllPrjSelected=evt.checked;
-//   if(this.isAllPrjSelected)
-//   {
-//     const filtered=this._ProjectDataList.filter(Prj=>{
-//        const y=this.allSelectedProjects.map(x=>x.Project_Code);
-//               return !y.includes(Prj.Project_Code);
-//     });
-//     this.allSelectedProjects=[...this.allSelectedProjects,...filtered];
-//     this.tempSelection=[...this._ProjectDataList.map(item=>item.Project_Code)];
-//   }
-// else{
-//   this.allSelectedProjects=this.allSelectedProjects.filter(item=>!this.tempSelection.includes(item.Project_Code));
-//   this.tempSelection=[];
-// }
-// console.log("allSelectedProjects:",this.allSelectedProjects);
-// }
 
 
 selectUnselectPagePrjs(evt){ debugger
@@ -1100,7 +1072,6 @@ selectUnselectPagePrjs(evt){ debugger
              return !selprjs.includes(item.Project_Code);
         })
         this.allSelectedProjects=[...PageunselPrjs,...this.allSelectedProjects];   // current page projects + selected projects.
-        this.tempSelection=[...this._ProjectDataList.map(item=>item.Project_Code)];
     }
     else{
          // unchecked
@@ -1108,30 +1079,12 @@ selectUnselectPagePrjs(evt){ debugger
          this.allSelectedProjects=this.allSelectedProjects.filter(item=>{
                 return !curPagePrjs.includes(item.Project_Code)
          });
-         this.tempSelection=[];
-
     }
     console.log("allSelectedProjects:",this.allSelectedProjects);
 }
 
 
-// new test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// portfolio new end
 
 
 }

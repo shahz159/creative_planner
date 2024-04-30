@@ -37,8 +37,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { GuidedTourService, GuidedTour, Orientation, TourStep } from 'ngx-guided-tour';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-
-
+import { MatChipsModule } from '@angular/material/chips';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -65,7 +64,6 @@ moment.locale('en');
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   template: `{{ myTime | date: 'h:mm a' }}`
-
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -95,7 +93,7 @@ export class DashboardComponent implements OnInit {
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
   _calenderDto: CalenderDTO;
-  ProjectListArray: any;
+  ProjectListArray: any=[];
   BlockNameProject1: any;
   Timeslab: any;
   MasterCode: any = [];
@@ -316,7 +314,7 @@ export class DashboardComponent implements OnInit {
   DMS_Scheduledjson: any = [];
   Portfolio: any = [];
   Portfolio1: any = [];
-  Portfoliolist_1: [];
+  Portfoliolist_1:any= [];
   Note_deadlineexpire: boolean;
   MinLastNameLength: boolean;
   _SelectedEmployees: any = [];
@@ -447,6 +445,8 @@ export class DashboardComponent implements OnInit {
   pending_status: boolean;
   pending: boolean;
   notProvided:boolean=false;
+  projectsSelected:any=[];
+
   constructor(public service: ProjectTypeService,
     private router: Router,
     public dateAdapter: DateAdapter<Date>,
@@ -471,7 +471,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-
+ 
 
 
     // moment(this.scstartdate, "DD-MM-YYYY")
@@ -570,7 +570,7 @@ export class DashboardComponent implements OnInit {
     var DayNum1 = "DayNum";
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
-    this.GetProjectAndsubtashDrpforCalender();
+    // this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.Event_requests();
@@ -1256,11 +1256,13 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
+          this.GetProjectAndsubtashDrpforCalender();
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject });
           });
           this.Portfolio = [];
           this.Portfolio1 = [];
@@ -1297,6 +1299,21 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
+
+
+
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+
+
+
+
+
         }
 
       });
@@ -1478,6 +1495,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
+          this.GetProjectAndsubtashDrpforCalender();
           this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -1485,6 +1503,7 @@ export class DashboardComponent implements OnInit {
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject });
           });
           this.Portfolio = [];
           this.Portfolio1 = [];
@@ -1521,6 +1540,17 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "block";
           document.getElementById("core_Dms").style.display = "block";
+
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+
+
+
         }
       });
     this.closeevearea();
@@ -1867,7 +1897,8 @@ debugger
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
-          this.MasterCode = null;
+          this.MasterCode = null; 
+          this.projectsSelected=[];
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
@@ -2167,7 +2198,7 @@ debugger
       // console.log(JSON.stringify(finalarray), "finalarray");
       debugger
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
-        (data => {
+        (data => {   debugger
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -2220,7 +2251,19 @@ debugger
           else {
             this.notifyService.showSuccess(this._Message, "Success");
           }
-          this.GetScheduledJson();
+
+       // 1. sol
+          // if(this.showsearch)
+          //   this.evesrchclose();
+          // this.GetScheduledJson();
+     
+      // 2. sol   
+          if(this.showsearch)
+            this.Search_byname();
+          else 
+            this.GetScheduledJson();
+      
+          
           this.GetPending_Request();
           this.penhide();
           this.Title_Name = null;
@@ -2228,6 +2271,7 @@ debugger
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.MasterCode = null;
+          this.projectsSelected=[];
           this.Subtask = null;
           this.Startts = null;
           this.Endtms = null;
@@ -2269,14 +2313,14 @@ debugger
     }
   }
 
-  Search_byname() {
+  Search_byname() { 
     this.showsearch = true;
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.Search_text = this.Searchword;
     // alert(this.Searchword);
 
     this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => { debugger
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
         console.log(this.Scheduledjson, "Testing");
       });
@@ -2415,6 +2459,9 @@ debugger
     }
     else {
       this.ScheduleType = "Event";
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.Project_Code=null;
+      this.GetProjectAndsubtashDrpforCalender();
 
       document.getElementById("subtaskid").style.display = "none";
       // document.getElementById("Link_Name").style.display = "block";
@@ -2790,7 +2837,8 @@ debugger
   GetProjectAndsubtashDrpforCalender() {
 
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => {  
+        console.log(" Result of GetProjectAndsubtashDrpforCalender:",data);
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
@@ -2855,7 +2903,8 @@ debugger
       //  console.log( this.Alltimes,"times")
     });
 
-
+console.log("StartTimearr:",this.StartTimearr);
+console.log("EndTimearr:",this.EndTimearr);
     // alert(this.Startts);
 
 
@@ -3788,16 +3837,17 @@ debugger
   }
 
   GetScheduledJson() {
-
+ debugger
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
-
+debugger
+       
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
-
+       
         this.calendarOptions = {
 
           initialView: 'listWeek',
@@ -3837,6 +3887,7 @@ debugger
           //   info.el.style.borderColor = 'red';
           // }
         };
+      
       });
   }
 
@@ -3847,7 +3898,7 @@ debugger
 
   TwinEvent=[];
   customizeEvent=(info)=>{
-
+ debugger
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -4760,6 +4811,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.Description_Type = null;
     this.SelectDms = null;
     this.MasterCode = null;
+    this.projectsSelected=[];
     this.Subtask = null;
     this.Startts = null;
     this.Endtms = null;
@@ -4831,6 +4883,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.Description_Type = null;
     this.SelectDms = null;
     this.MasterCode = null;
+    this.projectsSelected=[];
     this.Subtask = null;
     this.Startts = null;
     this.Endtms = null;
@@ -5106,9 +5159,10 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     $(".fc-header-toolbar").addClass("d-none");
   }
   evesrchclose() {
-    this.showsearch = false;
+    this.showsearch = false; this.Searchword=null;
     document.getElementById("drp-srch").classList.remove("show");
     $(".fc-header-toolbar").removeClass("d-none");
+    this.GetScheduledJson();
     //document.getElementById("showlist").classList.remove("show");
     //document.getElementById("showlist").style.display = "none";
   }
@@ -5379,27 +5433,31 @@ drawBarGraph(){
   }
 
 
+  searchingResult:boolean=false;
 
   isProjectsDrpDwnOpen: boolean = false;
   removeSelectedProject(item) {
     const index = this.MasterCode.indexOf(item);
     if (index !== -1) {
       this.MasterCode.splice(index, 1);
+      this.projectsSelected.splice(index,1);
     }
   }
 
   onProjectSelected(e: any) {
     const prjChoosed = this.ProjectListArray.find((p: any) => p.Project_Code === e.option.value);
     if (prjChoosed) {
-      if (!this.MasterCode)   // if Portfolio is null,undefined,''
+      if (!this.MasterCode)   // if MasterCode is null,undefined,''
         this.MasterCode = [];
       const index = this.MasterCode.indexOf(prjChoosed.Project_Code);
       if (index === -1) {
         // if not present then add it
-        this.MasterCode.push(prjChoosed.Project_Code);
+        this.MasterCode.push(prjChoosed.Project_Code);   
+        this.projectsSelected.push({Project_Code:prjChoosed.Project_Code,  Project_Name:prjChoosed.Project_Name,  BlockNameProject:prjChoosed.BlockNameProject});
       }
       else {
         this.MasterCode.splice(index, 1);
+        this.projectsSelected.splice(index,1);
       }
     }
     this.openAutocompleteDrpDwn('ProjectsDrpDwn');
@@ -5407,12 +5465,50 @@ drawBarGraph(){
 
 
   getProjectName(projectCode: string) {
-    if (this.ProjectListArray) {
-      const P = this.ProjectListArray.find(pr => pr.Project_Code.trim() == projectCode.trim());
+    if (this.projectsSelected) {
+      const P = this.projectsSelected.find(pr => pr.Project_Code.trim() == projectCode.trim());
       return P ? P.BlockNameProject : '';
     }
     return [];
   }
   // mat-autocomplete dropdowns code end.
+
+
+// getTimeDuration(time1:string,time2:string){
+//   if(time1&&time2){
+//     time1='2024-04-20 '+time1;
+//     if(time1.toLocaleUpperCase().includes('PM')&&time2.toUpperCase().includes('AM')){
+//         time2='2024-04-21 '+time2;
+//     }else
+//     time2='2024-04-20 '+time2;
+
+//     let T1=moment(time1,'YYYY-MM-DD hh:mm a');
+//     let T2=moment(time2,'YYYY-MM-DD hh:mm a');
+//     const result=Math.abs(T1.diff(T2,'minute'));  
+//     return result<60?(result+' mins'):
+//               (result/60).toFixed(2)+' hrs';
+    
+//   }
+   
+// }
+
+
+onProjectSearch(inputtext:any){
+    this.searchingResult=true;
+    this.CalenderService.NewGetProjectandsubtaskDrp(inputtext).subscribe((res:any)=>{
+        console.log(res);
+        if(res){
+          this.ProjectListArray=JSON.parse(res['Projectlist']); 
+          //  console.log("project name searched result:",this.ProjectListArray);
+          this.searchingResult=false;
+        }
+      
+    })
+}
+
+
+
+
+
 
 }

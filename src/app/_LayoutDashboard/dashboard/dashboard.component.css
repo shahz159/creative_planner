@@ -3255,6 +3255,7 @@ span.kt-dashboard-delay-cnt {
     color: white;
     border-radius: 50%;
     background-color: #646C9A;
+    -webkit-text-stroke-width: thin;
 }
 
 .add-icon:hover {
@@ -3262,6 +3263,25 @@ span.kt-dashboard-delay-cnt {
     transform: none;
     color: white;
 }
+
+
+.save-mat-selection{
+    font-size: 17px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background-color: #646C9A;
+}
+.save-mat-selection:hover{
+    background-color: #3D4991;
+    transform: none;
+    color: white;
+}
+
+
+
 
 .Data_chip_kt {
     padding: 6px !important;

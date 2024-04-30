@@ -277,12 +277,13 @@ export class ActionToProjectComponent implements OnInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
       (data) => {
+    
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
-
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
         console.log(this.allUsers,"groupby");
         console.log()
+      
       });
   }
 
@@ -497,8 +498,7 @@ debugger
 
 
 
-
-
+   const continueNext=()=>{
 
     if(this.owner==null || this.owner==undefined || this.owner==''){
       this.owner=this.Owner_Empno;
@@ -667,6 +667,37 @@ debugger
 
       });
     });
+   }
+
+
+
+
+    if(this._Urlid == 5){   
+      // only in project creation page.
+         const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
+         if(exceeds)
+          {
+               Swal.fire({
+                  showCancelButton:true,
+                  showConfirmButton:true,
+                  text:'Provided allocated hrs to this action exceeds the project planned allocated hrs. Do you want to continue?',
+                  title:'Exceeds Project Allocated Hrs.'
+               }).then(choice=>{
+                   if(choice.isConfirmed)
+                    continueNext();   
+               })
+          }
+          else 
+           continueNext();
+    }
+    else
+    {  // details page, runway ...
+        continueNext();  
+    }
+
+
+  
+  
   }
 
   convert(str) {

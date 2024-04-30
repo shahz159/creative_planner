@@ -946,7 +946,7 @@ onProjectOwnerChanged(){
   projectType:any
   // allocated:any
 
-  onButtonClick(value:any,id:number){
+  onButtonClick(value:any,id:number){ debugger
     this.bind_Project = [value]
     // this.duration=this.bind_Project[0].Duration;
 
@@ -1075,7 +1075,7 @@ getActionsDetails(){
     this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
     else
     this.PrjActionsInfo=[];
-  });
+  });   
 }
 
 
@@ -1740,7 +1740,20 @@ $('.sbs--basic li:nth-child(3)').addClass('active');
 //  opens the step-3 view
 
 this.newProjectDetails(this.draft_json[index].Project_Code);
-this.getActionsDetails();
+// this.getActionsDetails();
+
+this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
+  if(res[0].Action_Json)
+  this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+  else
+  this.PrjActionsInfo=[];
+  
+  const alh=this.PrjActionsInfo.reduce((sum,action)=>sum+action.AllocatedHours,0);
+  const pjalh=this.draft_json[index].Duration;
+  this.isExceededTotalAllocatedHr=pjalh==alh;
+
+
+});  
 
 
 }
@@ -1830,6 +1843,28 @@ debugger
 
 
 
+
+
+
+// functionality to check prj allocated hr with action allocated hrs
+isExceededTotalAllocatedHr:boolean=false;
+hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
+
+   if(!this.isExceededTotalAllocatedHr){
+
+          const totalhrsused=this.PrjActionsInfo.reduce((sum:any,action:any)=>{
+            return sum+Number.parseInt(action.AllocatedHours);
+          },0)
+          const newAlcHrs=totalhrsused+actionAllocHr;   // used hrs + new alloc
+          const result=newAlcHrs>this.projectInfo.AllocatedHours;  
+          this.isExceededTotalAllocatedHr=result;
+          return  result;     
+   }
+   else 
+      return false;
+}
+
+// functionality to check prj allocated hr with action allocated hrs
 
 
   }
