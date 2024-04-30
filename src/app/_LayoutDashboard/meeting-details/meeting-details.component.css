@@ -1239,8 +1239,8 @@ ul.attendees-note-userlist {
 
 
 /* angular-editor color picker position fix */
-::ng-deep .angular-editor-toolbar {
-    input[type=color]:not(.color-picker) {
+::ng-deep .angular-editor-toolbar 
+     input[type=color]:not(.color-picker) {
         /* added :not(.color-picker) so that this will be ignored when the package is updated */
         display: initial !important;
         position: absolute;
@@ -1251,7 +1251,6 @@ ul.attendees-note-userlist {
         height: 0;
         width: 0;
     }
-}
 
 ::ng-deep .suggestion-heading {
     color: #a6a6a6;
@@ -2568,8 +2567,8 @@ div#DemoList-table div.demo i {
 }
 
 .accordion-attendes-notes .accordion-icon svg {
-    Width: 14px;
-    Height: 14px;
+    width: 14px;
+    height: 14px;
     color: #6F6F6F;
     transition: all 0.25s ease-in-out;
 }

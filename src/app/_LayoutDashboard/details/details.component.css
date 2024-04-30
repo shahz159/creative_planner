@@ -4659,7 +4659,7 @@ background-color: #e2e8f0c9;
 .release-now-shrtcut:hover{
    background-color: #E2d9bc;
    color:#000;
-} */
+} 
 .kt-inbox__icon.event-active {
   background-color: #ecf2ff !important;
   position: relative;
@@ -4972,8 +4972,8 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   transform: rotate(180deg);
 }
 .approval-view .accordion-icon svg {
-  Width: 14px;
-  Height: 14px;
+  width: 14px;
+  height: 14px;
   color: #6F6F6F;
   transition: all 0.25s ease-in-out;
 }
