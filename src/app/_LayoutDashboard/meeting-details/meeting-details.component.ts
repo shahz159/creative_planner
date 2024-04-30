@@ -156,17 +156,17 @@ export class MeetingDetailsComponent implements OnInit {
   getDetailsScheduleId() {
     this.router.navigate(["Meeting-Details/" + this.Schedule_ID]);
   }
-  @HostListener('copy', ['$event'])
-  editorFocused: boolean = false;
+  // @HostListener('copy', ['$event'])
+  // editorFocused: boolean = false;
 
-  onEditorFocus(): void {
-    this.editorFocused = true;
-    // alert(this.editorFocused)
-  }
+  // onEditorFocus(): void {
+  //   this.editorFocused = true;
+  //   // alert(this.editorFocused)
+  // }
 
-  onEditorBlur(): void {
-    this.editorFocused = false;
-  }
+  // onEditorBlur(): void {
+  //   this.editorFocused = false;
+  // }
 
   ngOnDestroy(): void {
     // Unsubscribe when the component is destroyed to prevent memory leaks
@@ -397,6 +397,12 @@ export class MeetingDetailsComponent implements OnInit {
   portfoliocount: number;
   totalAgendaList:any
   completedAgendaList:any
+  formattedDuration:any
+  hours:any
+  minutes:any
+
+
+
 
 
 
@@ -404,7 +410,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 meeting_details(){ 
     this._calenderDto.Schedule_ID=this.Schedule_ID;
-   
+
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     console.log("meeting details",this.EventScheduledjson)
@@ -432,7 +438,7 @@ meeting_details(){
     });
 
     this.Guestcount = this.checkedusers.length;
-    console.log('AgendaStatus')
+   
     // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
     
     // console.log('meeting_details--->',x)
@@ -446,11 +452,14 @@ meeting_details(){
 
     this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
-    this._TotalAttachment=this.Attachments_ary.length
+    this._TotalAttachment=this.Attachments_ary.length;
 
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
-    this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code)
+    this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code);
+
+    console.log('Project_code',this.Project_code);
+    
     this.totalproject = this.Project_code.length;
 
     this.Project_code.forEach(element => {
@@ -491,6 +500,22 @@ meeting_details(){
       this.dmsIdjson = JSON.stringify(this.dmsIdjson);
       this.GetDMSList();
     }
+
+
+
+    var St_Time=this.EventScheduledjson[0].St_Time;
+    var End_date=this.EventScheduledjson[0].Ed_Time;
+
+    var startTime = moment(St_Time, "hh:mm A");
+    var endTime = moment(End_date, "hh:mm A");
+
+    // Calculate the duration between the start time and end time
+    var duration = moment.duration(endTime.diff(startTime));
+
+     // Format the duration as hours:minutes
+    this.hours = Math.floor(duration.asHours());
+    this.minutes = duration.minutes();
+    this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
    })
 }
 
@@ -709,7 +734,6 @@ addNewDMS() {
 
 
     AddDMS_meetingreport() {
-      alert('DMs')
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;  
@@ -1651,7 +1675,7 @@ GetNotedata() {
 
 addBulletPointsOnEnter(event: any) {
   if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
-     debugger
+
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1681,6 +1705,7 @@ GetMeetingnotes_data() {
 
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
+    
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
@@ -1912,7 +1937,7 @@ EnterSubmit(_Demotext) {
         console.log("Data---->", this._TodoList);
         this._Demotext = "";
         this.selectedText="";
-        this.editorFocused=false;
+        // this.editorFocused=false;
         //this.GetAssignTask();
         this.notifyService.showSuccess("Successfully", "Added");
         // this.closeInfo();
@@ -3361,7 +3386,7 @@ daysSelected: any[] = [];
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
-   debugger
+
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
     var start = moment(this.minDate);
@@ -3470,7 +3495,7 @@ daysSelected: any[] = [];
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+      
         const date1: Date = new Date(this._StartDate);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
           this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');

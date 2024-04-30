@@ -409,15 +409,15 @@
                     </ng-option>
                 </ng-select>
 
-                    <div  class="txtm-cus mt-1 ml-1 ng-star-inserted  d-flex  align-items-center " *ngIf="p_details&&master_code">
-                        <span class="d-inline-flex align-items-center "><i class="fas fa-calendar-alt mr-1"></i>{{p_details.StartDate|date:'dd-MM-yyyy'}}</span>
-                        <span class="d-inline-flex align-items-center ml-3 "><i class="fas fa-calendar-alt mr-1"></i>{{p_details.EndDate|date:'dd-MM-yyyy'}}</span>
-                        <span class="d-inline-flex align-items-center ml-3 "><i class="fas fa-star mr-1"></i>{{p_details.Status}}</span>
-                        <span class="d-inline-flex align-items-center ml-3 "><i class="fas fa-clock mr-1"></i>Allocated Hours : {{p_details.AllocatedHours}}</span>
-                        <span class="d-inline-flex align-items-center ml-3 ">
+                    <div  class="txtm-cus mt-1 ml-1 ng-star-inserted  d-flex  align-items-center flex-wrap gap-1    " *ngIf="p_details&&master_code">
+                        <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-calendar-alt mr-1"></i>{{p_details.StartDate|date:'dd-MM-yyyy'}}</span>
+                        <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-calendar-alt mr-1"></i>{{p_details.EndDate|date:'dd-MM-yyyy'}}</span>
+                        <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-star mr-1"></i>{{p_details.Status}}</span>
+                        <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-clock mr-1"></i>Allocated Hours : {{p_details.AllocatedHours}}</span>
+                        <span class="d-inline-flex align-items-center mr-2">
                             <svg width="16px" height="16px" class="mr-1" fill="#757575" viewBox="-2.16 -2.16 28.32 28.32" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" stroke="#757575"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.144"></g><g id="SVGRepo_iconCarrier"> <path d="M23.707,16.325a1,1,0,0,0-1.414,0l-5.627,5.628L13.978,19.3A1,1,0,0,0,12.543,20.7L15.287,23.4a1.876,1.876,0,0,0,1.345.6h.033A1.873,1.873,0,0,0,18,23.447l5.707-5.708a1,1,0,0,0,0-1.414Z M11.09,21.959A10,10,0,1,1,22,12c0,.307-.015.611-.041.911A1,1,0,0,0,22.866,14a.989.989,0,0,0,1.085-.907C23.983,12.73,24,12.367,24,12A12,12,0,1,0,10.91,23.951c.031,0,.061,0,.091,0a1,1,0,0,0,.089-2Z M11,7v4.586L8.293,14.293a1,1,0,1,0,1.414,1.414l3-3A1,1,0,0,0,13,12V7a1,1,0,0,0-2,0Z"></path></g></svg>
                             Used Hours : {{p_details.usedHours}}</span>
-                        <span class="d-inline-flex align-items-center ml-3 ">
+                        <span class="d-inline-flex align-items-center mr-2 ">
                             <svg width="16px" height="16px" class="mr-1" viewBox="-1.2 -1.2 26.40 26.40" fill="#757575" xmlns="http://www.w3.org/2000/svg" stroke="#757575" stroke-width="0.5"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22.9504 13.051C22.9832 12.7051 23 12.3545 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C12.3545 23 12.7051 22.9832 13.051 22.9504C12.4841 22.3838 12.014 21.7204 11.6675 20.9871C6.85477 20.8122 3.00683 16.8555 3.00683 12C3.00683 7.03321 7.03321 3.00683 12 3.00683C16.8555 3.00683 20.8122 6.85477 20.9871 11.6675C21.7204 12.014 22.3838 12.4841 22.9504 13.051Z" fill="#757575"></path> <path d="M13.8426 12.3677L13 11.8812V6C13 5.44772 12.5523 5 12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L12.3766 13.8307C12.7902 13.2737 13.2847 12.7802 13.8426 12.3677Z" fill="#757575"></path> <path d="M16 17C15.4477 17 15 17.4477 15 18C15 18.5523 15.4477 19 16 19H20C20.5523 19 21 18.5523 21 18C21 17.4477 20.5523 17 20 17H16Z" fill="#757575"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M24 18C24 21.3137 21.3137 24 18 24C14.6863 24 12 21.3137 12 18C12 14.6863 14.6863 12 18 12C21.3137 12 24 14.6863 24 18ZM13.9819 18C13.9819 20.2191 15.7809 22.0181 18 22.0181C20.2191 22.0181 22.0181 20.2191 22.0181 18C22.0181 15.7809 20.2191 13.9819 18 13.9819C15.7809 13.9819 13.9819 15.7809 13.9819 18Z" fill="#757575"></path> </g></svg>
                             Remaining Hours :&nbsp;<span *ngIf="p_details.remainingHours!==null&&p_details.remainingHours!==undefined"  [ngStyle]="{'color':p_details.remainingHours>0?'darkgray':'red'}"  >{{p_details.remainingHours>0?p_details.remainingHours:0}}</span></span>
                         
@@ -429,21 +429,21 @@
                 <label>Action <span class="text-danger">*</span></label>
                 <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName" [ngClass]="{'error-vd': (fieldRequired&&!project_code)}"
                 [ngClass]="{'error-vd': (noact_msg==true && project_type=='core')}"
-                    [(ngModel)]="project_code"  (change)="getPADetails(project_code,'ACTION'); ">
+                    [(ngModel)]="project_code"  (change)="getPADetails(project_code,'ACTION');  prostate(project_code);">
                     <ng-option [value]="item.Project_Code" *ngFor="let item of actionList">
                         {{item.Project_Name }}
                     </ng-option>
                 </ng-select>
 
-                <div class="txtm-cus mt-1 ml-1 ng-star-inserted d-flex align-items-center "  *ngIf="a_details&&project_code">
-                    <span class="d-inline-flex align-items-center"><i class="fas fa-calendar-alt mr-1"></i>{{a_details.StartDate|date:'dd-MM-yyyy'}}</span>
-                    <span class="d-inline-flex align-items-center ml-3"><i class="fas fa-calendar-alt mr-1"></i>{{a_details.EndDate|date:'dd-MM-yyyy'}}</span>
-                    <span class="d-inline-flex align-items-center ml-3"><i class="fas fa-star mr-1"></i>{{a_details.Status}}</span>
-                    <span class="d-inline-flex align-items-center ml-3"><i class="fas fa-clock mr-1"></i>Allocated Hours : {{a_details.AllocatedHours}}</span>
-                    <span class="d-inline-flex align-items-center ml-3">
+                <div class="txtm-cus mt-1 ml-1 ng-star-inserted d-flex align-items-center flex-wrap gap-1 "  *ngIf="a_details&&project_code">
+                    <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-calendar-alt mr-1"></i>{{a_details.StartDate|date:'dd-MM-yyyy'}}</span>
+                    <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-calendar-alt mr-1"></i>{{a_details.EndDate|date:'dd-MM-yyyy'}}</span>
+                    <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-star mr-1"></i>{{a_details.Status}}</span>
+                    <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-clock mr-1"></i>Allocated Hours : {{a_details.AllocatedHours}}</span>
+                    <span class="d-inline-flex align-items-center mr-2">
                         <svg width="16px" height="16px" class="mr-1" fill="#757575" viewBox="-2.16 -2.16 28.32 28.32" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" stroke="#757575"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.144"></g><g id="SVGRepo_iconCarrier"> <path d="M23.707,16.325a1,1,0,0,0-1.414,0l-5.627,5.628L13.978,19.3A1,1,0,0,0,12.543,20.7L15.287,23.4a1.876,1.876,0,0,0,1.345.6h.033A1.873,1.873,0,0,0,18,23.447l5.707-5.708a1,1,0,0,0,0-1.414Z M11.09,21.959A10,10,0,1,1,22,12c0,.307-.015.611-.041.911A1,1,0,0,0,22.866,14a.989.989,0,0,0,1.085-.907C23.983,12.73,24,12.367,24,12A12,12,0,1,0,10.91,23.951c.031,0,.061,0,.091,0a1,1,0,0,0,.089-2Z M11,7v4.586L8.293,14.293a1,1,0,1,0,1.414,1.414l3-3A1,1,0,0,0,13,12V7a1,1,0,0,0-2,0Z"></path></g></svg>
                         Used Hours : {{a_details.usedHours}}</span>
-                    <span class="d-inline-flex align-items-center ml-3">
+                    <span class="d-inline-flex align-items-center mr-2">
                         <svg width="16px" height="16px" class="mr-1" viewBox="-1.2 -1.2 26.40 26.40" fill="#757575" xmlns="http://www.w3.org/2000/svg" stroke="#757575" stroke-width="0.5"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22.9504 13.051C22.9832 12.7051 23 12.3545 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C12.3545 23 12.7051 22.9832 13.051 22.9504C12.4841 22.3838 12.014 21.7204 11.6675 20.9871C6.85477 20.8122 3.00683 16.8555 3.00683 12C3.00683 7.03321 7.03321 3.00683 12 3.00683C16.8555 3.00683 20.8122 6.85477 20.9871 11.6675C21.7204 12.014 22.3838 12.4841 22.9504 13.051Z" fill="#757575"></path> <path d="M13.8426 12.3677L13 11.8812V6C13 5.44772 12.5523 5 12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L12.3766 13.8307C12.7902 13.2737 13.2847 12.7802 13.8426 12.3677Z" fill="#757575"></path> <path d="M16 17C15.4477 17 15 17.4477 15 18C15 18.5523 15.4477 19 16 19H20C20.5523 19 21 18.5523 21 18C21 17.4477 20.5523 17 20 17H16Z" fill="#757575"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M24 18C24 21.3137 21.3137 24 18 24C14.6863 24 12 21.3137 12 18C12 14.6863 14.6863 12 18 12C21.3137 12 24 14.6863 24 18ZM13.9819 18C13.9819 20.2191 15.7809 22.0181 18 22.0181C20.2191 22.0181 22.0181 20.2191 22.0181 18C22.0181 15.7809 20.2191 13.9819 18 13.9819C15.7809 13.9819 13.9819 15.7809 13.9819 18Z" fill="#757575"></path> </g></svg>
                         Remaining Hours :&nbsp;<span *ngIf="a_details.remainingHours!==null&&a_details.remainingHours!==undefined" [ngStyle]="{'color':a_details.remainingHours>0?'darkgray':'red'}">{{a_details.remainingHours>0?a_details.remainingHours:0}}</span></span>
                     
@@ -459,7 +459,7 @@
             <div class="form-group timeline-date">
                 <label>Date<span class="text-danger">*</span></label>
                 <div class="input-group">
-                    <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
+                    <input (dateChange)="orgValueChange($event)"  [value]="dateF.value"
                         [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
                         [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control"
                         name="date" >
@@ -503,8 +503,8 @@
             <ng-container  *ngIf="project_type==='core'&&project_code&&bothActTlSubm">
             
                 <div class="form-group mt-3">
-                    <label>Attachments</label>
-                    <div class="input-group mb-3" #uploadFile>
+                    <label>Attachments</label><span *ngIf="ProState" style="color:red">*</span>
+                    <div class="input-group mb-3" #uploadFile  [ngClass]="{'error-border': (ProState&&fieldRequired&&!selectedFile)}" >
                         <div class="input-group-prepend">
                             <span class="input-group-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -528,7 +528,10 @@
                             </label>
                         </div>
                     </div>
-                    <span class="text-info"> *Accept only pdf files</span>
+                    
+                    <span class="text-info"> *Accept only pdf files</span><br/>
+                    <span style="color:red" *ngIf="(ProState&&fieldRequired&&!selectedFile)">please provide file attachment.</span>
+                   
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>

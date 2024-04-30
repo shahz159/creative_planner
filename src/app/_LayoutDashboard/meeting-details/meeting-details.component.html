@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                               
                                 <div class="kt-meeting-box mt-3">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="kt-meeting-title mt-0 mb-2">
@@ -317,8 +317,8 @@
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <div class="kt-metric-duration-time">
                                                         <div class="kt-metric-time start">
-                                                            <div class="dark-title">{{item.St_Time}} </div>
-                                                            <div class="muted-title">Start Time </div>
+                                                            <div class="dark-title">{{item.St_Time}}</div>
+                                                            <div class="muted-title">Start Time</div>
                                                         </div>
                                                         <div class="kt-metric-timeline">
                                                             <div class="z-index-1 d-flex">
@@ -358,7 +358,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="kt-metric-time">
-                                                        <div class="dark-title">60:00 Min</div>
+                                                        <div class="dark-title" *ngIf="hours!=0">{{formattedDuration}} hr</div>
+                                                        <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div>
+                                                       
                                                         <div class="muted-title">Duration</div>
                                                     </div>
                                                 </div>
@@ -366,6 +368,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             </div>
                             <div class="kt-meeting-box mt-3  p-2">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -430,7 +433,7 @@
 
 
 
-                                <div class="action-section" *ngIf="Isadmin==true">
+                                <div class="action-section" >
 
                                     <div class="todo-main">
                                         <div class="task-header">
@@ -481,7 +484,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                       <div class="no-agenda">
+                                       <div class="no-agenda" *ngIf="Agendas_List.length==0">
                                             <img src="../../../assets/images/noActionPresent.png">
                                             <h6>No Agenda Created</h6>
                                        </div>
@@ -497,24 +500,23 @@
                                                             <input type="checkbox" (click)="completeAgenda()" name="Checkboxes15" />
                                                            <span></span>
                                                         </label>
-                                                    
-
-                                                        <div class="item-number">{{i+1}}</div>
+                                                       
                                                           <div class="item-info">
                                                             <div class="item-details">
-   
-                                                                    <label [id]="'agenda-label-'+i"
-                                                                    class="task-name">{{item.Agenda_Name}}</label>
-                                                                    <div  class="d-flex align-items-center justify-content-between">
-                                                                        <div  class="kt-info-lable-v"> By Md Waseem Akram </div>
-                                                                        
-                                                                        <div  class="kt-info-lable-v"> 08-10-2023 </div>
-                                                                    </div>
-                                                                <input [id]="'agenda-text-field-'+i" type="text"
+                                                              
+                                                                   <label [id]="'agenda-label-'+i"
+                                                                    class="task-name">{{i+1}}. {{item.Agenda_Name}}</label>
+                                                                    <input [id]="'agenda-text-field-'+i" type="text"
                                                                     class="task-name-editfield  d-none "
                                                                     [value]="item.Agenda_Name" />
+                                                                    <div  class="d-flex align-items-center justify-content-between">
+                                                                        <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
+                                                                        
+                                                                        <div  class="kt-info-lable-v-date"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
+                                                                    </div>
+                                                               
     
-                                                            </div>
+                                                            </div>                        
                                                             <div class="d-flex">
                                                                 <button *ngIf="Isadmin==true " [id]="'edit-agendaname-btn-'+i"
                                                                     class="edit-agendaname-btn" (click)="editAgenda(i)">
@@ -588,16 +590,8 @@
                                                                     </svg>
                                                                 </button>
                                                             </div>
-                                                            <div class="d-flex">
-                                                                <span class="status-done">Completed</span>
-                                                            </div>
                                                         </div>
                                                     </div>
-
-
-
-
-                                     
                                                     <div  *ngIf="item.Status==1 "  class="kt-agenda-items"
                                                         [ngClass]="{'Active':currentAgendaView===i}">                
                                                         <label *ngIf="Isadmin==true "
@@ -605,22 +599,25 @@
                                                         <input type="checkbox" (click)="UndoCompleteAgenda()" name="Checkboxes15" checked />
                                                        <span></span>
                                                        </label>
-                                                  
-
-                                                        <div class="item-number">{{i+1}}</div>
+                                                
+                                                     
                                                         <div class="item-info">
                                                             <div class="item-details">
-    
-                                                                                                                                          
-                                                                    <label [id]="'agenda-label-'+i"
-                                                                    class="task-name"><s>{{item.Agenda_Name}}</s></label>
-                                                                 
+                                                                 <label [id]="'agenda-label-'+i"
+                                                                    class="task-name"><s>{{i+1}}. {{item.Agenda_Name}}</s></label>                                                                    
+                                                                    <div  class="d-flex align-items-center justify-content-between">
+                                                                        <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
+                                                                        
+                                                                        <div  class="kt-info-lable-v"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
+                                                                    </div>
                                                                 <input [id]="'agenda-text-field-'+i" type="text"
                                                                     class="task-name-editfield  d-none "
                                                                     [value]="item.Agenda_Name" />
-    
                                                             </div>
                                                             <div class="d-flex">
+                                                                <span class="status-done">Completed</span>
+                                                            </div>
+                                                            <!-- <div class="d-flex">
                                                                 <button *ngIf="Isadmin==true" [id]="'edit-agendaname-btn-'+i"
                                                                     class="edit-agendaname-btn" (click)="editAgenda(i)">
                                                                     <svg width="15px" height="15px" viewBox="0 0 24 24"
@@ -692,9 +689,10 @@
                                                                         </g>
                                                                     </svg>
                                                                 </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>                                                   
+                                                            </div> -->                                                                                                                
+                                                        </div>                                                        
+                                                    </div>  
+                                                                                                  
                                                 </li>
                                                 <!-- <li class="kt-agenda-item">
                                                     <div class="item-number">02</div>
@@ -865,7 +863,14 @@
                                 </div>
                                 <div>
                                     <div class="kt-project-leave">
-                                        <span class="title">Leave Meeting</span>
+                                        <ng-container *ngIf="Meetingstatuscom==Completed && Isadmin==true">
+                                            <span class="title" (click)="InsertstartandendTimerMeeting('End')" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
+                                           </ng-container>
+                                        <ng-container *ngIf="Meetingstatuscom==Completed && Isadmin==false">
+                                        <span class="title" (click)="leavemeet($event)">Leave Meeting</span>
+                                       </ng-container>
+        
+                        
                                         <span class="icon">
                                             <svg width="22px" height="22px" viewBox="0 0 24 24" id="_24x24_On_Light_Session-Leave" data-name="24x24/On Light/Session-Leave" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="view-box" width="24" height="24" fill="none"></rect> <path id="Shape" d="M2.95,17.5A2.853,2.853,0,0,1,0,14.75v-12A2.854,2.854,0,0,1,2.95,0h8.8a.75.75,0,0,1,0,1.5H2.95A1.362,1.362,0,0,0,1.5,2.75v12A1.363,1.363,0,0,0,2.95,16h8.8a.75.75,0,0,1,0,1.5Zm9.269-4.219a.751.751,0,0,1,0-1.061L14.939,9.5H5.75a.75.75,0,0,1,0-1.5h9.19L12.219,5.28A.75.75,0,1,1,13.28,4.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.751.751,0,0,1-1.061,0Z" transform="translate(3.25 3.25)" fill="currentColor"></path> </g></svg>
                                         </span>
@@ -1028,8 +1033,9 @@
                                                 {{item.Schedule_date | date:'d EEE,MMMM YYYY'}}
                                                 <!-- Jan 20, 2024, 1:00 AM - 1:30 AM (30 mins) -->
                                             </div>
-                                            <div class="muted-title">
-                                                Repeats every week until Mar 23, 2024
+                                            <div class="muted-title" *ngIf="item.Recurrence!='Do not repeat'">
+                                                <!-- Repeats every week until Mar 23, 2024 -->
+                                                Repeats every {{item.Recurrence}} until {{item.SEndDate | date : 'MMMM dd, YYYY'}}
                                             </div>
                                         </div>
                                     </div>
@@ -1057,10 +1063,13 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
-                                            <div class="dark-title">
+                                            <div class="dark-title" *ngIf="item.Location!=''">
                                                 <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}
                                                 </a>
                                             </div>
+                                            <ng-container *ngIf="item.Location==''">
+                                               <p>Not Provided </p>
+                                            </ng-container>
                                         </div>
                                     </div>
                                 </div>
@@ -1082,10 +1091,10 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
-                                            <span class="dark-title" >
-                                                Online
+                                            <span class="dark-title" *ngIf="Link_Detail==''">
+                                                Offline
                                             </span>
-
+                                            <ng-conainer *ngIf="Link_Detail!=''">
                                             <span class="meeting-link" *ngIf="Link_Detail.includes('meet.google.com')">
                                                 <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
                                                 target="_blank">
@@ -1208,7 +1217,7 @@
                                                 <span class="link">Teams Meeting</span>
                                             </a>
                                             </span>
-
+                                        </ng-conainer>
                                         </div>
                                     </div>
                                 </div>
@@ -1249,46 +1258,7 @@
                                                 <p [innerHTML]="item.Description"></p>  
                                         </div>
                                     </div>
-                                </div>
-
-
-
-
-
-
-
-
-
-                                <div class="row">
-                                    <div class="col-md-3 details-bg">
-                                        <div class="details-label">
-                                            <span class="label-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"
-                                                viewBox="0 0 11 13" fill="none">
-                                                <path
-                                                    d="M6.82886 0.651855H2.42886C2.13712 0.651855 1.85733 0.767748 1.65104 0.974038C1.44475 1.18033 1.32886 1.46012 1.32886 1.75186V10.5519C1.32886 10.8436 1.44475 11.1234 1.65104 11.3297C1.85733 11.536 2.13712 11.6519 2.42886 11.6519H9.02886C9.3206 11.6519 9.60038 11.536 9.80667 11.3297C10.013 11.1234 10.1289 10.8436 10.1289 10.5519V3.95186L6.82886 0.651855Z"
-                                                    stroke="#979797" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                                
-                                            </span>
-                                            <span class="label-name">
-                                                Agenda 
-                                            </span>
-                                        </div> 
-                                    </div>
-                                    <div class="col-md-9 details-form-control-bg">
-                                        <div class="details-form-control" *ngFor="let list of  Agendas_List;let i=index">
-                                           
-                                                <p >{{i+1}}.{{list.Agenda_Name}}</p>  
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-                                </div>                           
+                                </div>                                                        
                                 <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
@@ -1322,30 +1292,41 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
-
+                                            <ng-container *ngIf="Project_code.length>0;else NoProject_code">
+                                           
                                             <div class="project" *ngFor="let item of Project_code; let i=index">
-                                                <span class="icon">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="15"
-                                                        height="16" viewBox="0 0 15 16" fill="none">
-                                                        <rect x="0.324951" y="0.825195" width="14.1855" height="14.1855"
-                                                            rx="2" fill="url(#p1)" />
-                                                        <defs>
-                                                            <pattern id="p1" patternContentUnits="objectBoundingBox"
-                                                                width="1" height="1">
-                                                                <use xlink:href="#image0_374_6217"
-                                                                    transform="scale(0.00220264)" />
-                                                            </pattern>
-                                                            <image id="image0_374_6217" width="454" height="454"
-                                                                xlink:href="data:image/png;base64,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" />
-                                                        </defs>
-                                                    </svg>
+                                                <span class="icon mb-3" >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 13 13" fill="none">
+                                                    <path
+                                                        d="M2.79688 6.59887C2.79688 7.60359 3.196 8.56717 3.90645 9.27762C4.6169 9.98807 5.58047 10.3872 6.5852 10.3872C7.58992 10.3872 8.5535 9.98807 9.26395 9.27762C9.97439 8.56717 10.3735 7.60359 10.3735 6.59887C10.3735 5.59414 9.97439 4.63057 9.26395 3.92012C8.5535 3.20967 7.58992 2.81055 6.5852 2.81055C5.58047 2.81055 4.6169 3.20967 3.90645 3.92012C3.196 4.63057 2.79688 5.59414 2.79688 6.59887Z"
+                                                        fill="white" />
+                                                    <path
+                                                        d="M6.60814 12.5889C6.51837 12.5889 6.44492 12.5171 6.44492 12.4273C6.44492 12.3375 6.51674 12.2641 6.60651 12.2624C6.65874 12.2624 6.7126 12.2608 6.76483 12.2592C6.8546 12.2559 6.92968 12.3261 6.93294 12.4175C6.93621 12.5073 6.86602 12.5823 6.77462 12.5856C6.72239 12.5872 6.66526 12.5889 6.60814 12.5889C6.60977 12.5889 6.60977 12.5889 6.60814 12.5889ZM5.95689 12.5579C5.952 12.5579 5.94547 12.5579 5.93894 12.5562L5.77245 12.5366C5.68268 12.5252 5.62066 12.442 5.63209 12.3538C5.64351 12.2641 5.72675 12.202 5.81489 12.2135C5.86712 12.22 5.91935 12.2265 5.97158 12.2314C6.06135 12.2412 6.12664 12.3212 6.11685 12.411C6.11032 12.4958 6.04013 12.5579 5.95689 12.5579ZM7.42097 12.5285C7.34099 12.5285 7.27081 12.4697 7.25938 12.3881C7.24633 12.2983 7.30835 12.2167 7.39812 12.2037L7.55481 12.1792C7.64295 12.1645 7.72782 12.2233 7.74415 12.3114C7.76047 12.3995 7.70008 12.4844 7.61194 12.5007C7.55644 12.5105 7.50095 12.5187 7.44545 12.5268C7.43729 12.5285 7.42913 12.5285 7.42097 12.5285ZM5.15549 12.4159C5.14243 12.4159 5.12937 12.4142 5.11631 12.411C5.06245 12.3979 5.00859 12.3832 4.95473 12.3685C4.86822 12.344 4.81762 12.2543 4.8421 12.1678C4.86659 12.0813 4.95636 12.0307 5.04286 12.0551C5.09346 12.0698 5.14569 12.0829 5.19629 12.0959C5.28443 12.1172 5.33666 12.2069 5.31544 12.2934C5.29422 12.3669 5.2273 12.4159 5.15549 12.4159ZM8.21748 12.3538C8.1473 12.3538 8.08201 12.3081 8.06079 12.2363C8.03468 12.1498 8.08527 12.0584 8.17178 12.0339C8.22238 12.0192 8.27298 12.0029 8.32357 11.9866C8.41008 11.9588 8.50148 12.0062 8.52923 12.091C8.55698 12.1776 8.50964 12.269 8.42477 12.2967C8.37254 12.3147 8.31704 12.331 8.26481 12.3457C8.24849 12.3522 8.2338 12.3538 8.21748 12.3538ZM4.37856 12.1629C4.35734 12.1629 4.33776 12.1596 4.31654 12.1514C4.26431 12.1302 4.21208 12.109 4.16148 12.0862C4.07824 12.0502 4.0407 11.9539 4.07824 11.8707C4.11415 11.7875 4.21044 11.7499 4.29369 11.7875C4.34265 11.8087 4.39162 11.8299 4.44058 11.8495C4.52383 11.8838 4.56463 11.9784 4.53035 12.0617C4.50424 12.1253 4.44385 12.1629 4.37856 12.1629ZM8.98298 12.0715C8.92096 12.0715 8.8622 12.0356 8.83445 11.9752C8.79691 11.8936 8.83282 11.7956 8.91606 11.7597C8.96339 11.7385 9.01236 11.7156 9.05969 11.6928C9.1413 11.6536 9.23923 11.6863 9.27841 11.7679C9.31758 11.8495 9.28494 11.9474 9.20333 11.9866C9.15273 12.0111 9.10213 12.0356 9.05153 12.0584C9.02705 12.0666 9.0042 12.0715 8.98298 12.0715ZM3.64571 11.8038C3.61796 11.8038 3.59021 11.7973 3.5641 11.7809C3.51676 11.7532 3.4678 11.7238 3.42046 11.6944C3.34375 11.6471 3.31927 11.5459 3.36823 11.4692C3.41557 11.3925 3.51676 11.368 3.59348 11.417C3.63918 11.4447 3.68488 11.4724 3.72895 11.4986C3.80729 11.5443 3.83341 11.6438 3.78771 11.7222C3.7567 11.776 3.70283 11.8038 3.64571 11.8038ZM9.69951 11.683C9.64565 11.683 9.59342 11.6569 9.56078 11.6079C9.51181 11.5312 9.53466 11.4316 9.61137 11.3827C9.65544 11.3549 9.69951 11.3255 9.74358 11.2962C9.76136 11.2841 9.78134 11.2757 9.80238 11.2714C9.82341 11.2671 9.8451 11.267 9.86618 11.2711C9.88726 11.2752 9.90732 11.2834 9.92522 11.2953C9.94311 11.3071 9.95849 11.3224 9.97046 11.3402C9.98251 11.358 9.99093 11.378 9.99524 11.399C9.99955 11.4201 9.99965 11.4418 9.99556 11.4628C9.99147 11.4839 9.98325 11.504 9.97138 11.5219C9.95951 11.5398 9.94422 11.5551 9.92639 11.5671C9.88069 11.5981 9.83335 11.6291 9.78602 11.6585C9.75827 11.6748 9.72889 11.683 9.69951 11.683ZM2.97161 11.3468C2.9357 11.3468 2.90143 11.3353 2.87041 11.3125C2.82634 11.2782 2.78227 11.2423 2.73984 11.2064C2.67129 11.1493 2.66149 11.0464 2.71862 10.9763C2.77575 10.9077 2.87857 10.8979 2.94876 10.955C2.98956 10.9893 3.03037 11.022 3.07281 11.0546C3.14299 11.1101 3.15605 11.2129 3.10055 11.2831C3.06791 11.3255 3.01894 11.3468 2.97161 11.3468ZM10.354 11.1999C10.3083 11.1999 10.2626 11.1803 10.23 11.1427C10.1712 11.0742 10.1794 10.9714 10.2479 10.9126C10.2887 10.8783 10.3279 10.8441 10.3671 10.8081C10.434 10.7478 10.5368 10.7526 10.5972 10.8196C10.6576 10.8865 10.6527 10.9893 10.5858 11.0497C10.545 11.0872 10.5026 11.1248 10.4601 11.1607C10.4291 11.1868 10.3916 11.1999 10.354 11.1999ZM2.36607 10.8C2.32363 10.8 2.28119 10.7837 2.24855 10.7494C2.20938 10.7102 2.17183 10.6678 2.13429 10.627C2.0739 10.5601 2.0788 10.4572 2.14572 10.3968C2.21264 10.3364 2.31547 10.3413 2.37586 10.4083C2.41177 10.4474 2.44768 10.4866 2.48358 10.5241C2.54561 10.5894 2.54397 10.6923 2.47869 10.7543C2.44768 10.7853 2.40687 10.8 2.36607 10.8ZM10.9367 10.6302C10.8975 10.6302 10.86 10.6172 10.829 10.5894C10.7621 10.529 10.7555 10.4262 10.8159 10.3593C10.8502 10.3201 10.8861 10.2793 10.9204 10.2385C10.9792 10.17 11.082 10.1602 11.1505 10.2189C11.2191 10.2777 11.2289 10.3805 11.1701 10.4491C11.1342 10.4915 11.0967 10.5339 11.0608 10.5764C11.0265 10.6106 10.9824 10.6302 10.9367 10.6302ZM1.84376 10.1749C1.79317 10.1749 1.7442 10.152 1.71156 10.1079C1.67891 10.0622 1.64627 10.0165 1.61526 9.97083C1.56466 9.89575 1.58261 9.79455 1.65769 9.74395C1.73277 9.69335 1.83397 9.71131 1.88457 9.78639C1.91395 9.83046 1.94496 9.8729 1.97597 9.91533C2.0282 9.98878 2.01188 10.09 1.94006 10.1438C1.91068 10.1651 1.87641 10.1749 1.84376 10.1749ZM11.4362 9.98388C11.4052 9.98388 11.3741 9.97572 11.3464 9.95614C11.2713 9.90554 11.2517 9.80434 11.3007 9.72926C11.3301 9.68519 11.3595 9.64112 11.3872 9.59542C11.4345 9.51871 11.5357 9.49586 11.6124 9.54319C11.6892 9.59053 11.712 9.69172 11.6647 9.76844C11.6353 9.81577 11.6043 9.8631 11.5733 9.9088C11.5406 9.9594 11.4884 9.98388 11.4362 9.98388ZM1.41123 9.48443C1.35247 9.48443 1.29698 9.45342 1.2676 9.39793C1.24148 9.34896 1.21537 9.29836 1.19089 9.2494C1.15008 9.16942 1.18436 9.07149 1.26433 9.03068C1.34594 8.98988 1.44224 9.02416 1.48305 9.10413C1.5059 9.15147 1.53038 9.1988 1.55487 9.2445C1.5973 9.32448 1.56629 9.42241 1.48795 9.46485C1.46346 9.47791 1.43735 9.48443 1.41123 9.48443ZM11.8393 9.27551C11.8148 9.27551 11.792 9.27062 11.7691 9.25919C11.6875 9.22002 11.6532 9.12209 11.6924 9.04211C11.7153 8.99478 11.7381 8.94581 11.7593 8.89848C11.7969 8.81687 11.8932 8.77933 11.9748 8.81524C12.0564 8.85278 12.0939 8.94907 12.058 9.03068C12.0352 9.08128 12.0123 9.13351 11.9879 9.18248C11.9585 9.24124 11.8997 9.27551 11.8393 9.27551ZM1.08153 8.73852C1.01461 8.73852 0.952586 8.69772 0.928103 8.6308C0.908517 8.57857 0.890562 8.5247 0.872608 8.47247C0.844861 8.3876 0.890562 8.29456 0.977069 8.26682C1.06194 8.23907 1.15498 8.28477 1.18272 8.37128C1.19905 8.42188 1.217 8.47247 1.23496 8.52144C1.26597 8.60631 1.2219 8.69935 1.13702 8.73036C1.11907 8.73689 1.09948 8.73852 1.08153 8.73852ZM12.1396 8.51654C12.1233 8.51654 12.107 8.51328 12.0907 8.50838C12.0042 8.48064 11.9568 8.38923 11.9846 8.30273C12.0009 8.25213 12.0156 8.20153 12.0303 8.15093C12.0548 8.06443 12.1462 8.01383 12.2327 8.03831C12.3192 8.06279 12.3698 8.1542 12.3453 8.2407C12.3306 8.29456 12.3143 8.34843 12.2963 8.40066C12.2735 8.47247 12.2098 8.51654 12.1396 8.51654ZM0.857918 7.95507C0.782838 7.95507 0.714285 7.90284 0.697963 7.82612C0.686538 7.77226 0.675113 7.71677 0.66532 7.66127C0.648998 7.57313 0.707757 7.48826 0.797527 7.47194C0.885666 7.45562 0.97054 7.51438 0.986862 7.60415C0.996655 7.65638 1.00645 7.70861 1.01787 7.7592C1.03583 7.84734 0.980333 7.93385 0.892195 7.9518C0.880769 7.95344 0.869344 7.95507 0.857918 7.95507ZM12.3306 7.72493C12.3224 7.72493 12.3127 7.72493 12.3029 7.7233C12.2147 7.70861 12.1543 7.62373 12.169 7.53559L12.1935 7.3789C12.2066 7.28913 12.2882 7.22711 12.3779 7.24017C12.4677 7.25322 12.5297 7.33483 12.5167 7.42461C12.5085 7.4801 12.5004 7.53559 12.4906 7.59109C12.4791 7.6678 12.409 7.72493 12.3306 7.72493ZM0.746929 7.14713C0.662055 7.14713 0.590239 7.08184 0.58371 6.99534C0.580445 6.93984 0.577181 6.88272 0.575549 6.82722C0.572284 6.73745 0.642469 6.66074 0.73224 6.65747C0.82201 6.65421 0.898723 6.72439 0.901988 6.81416C0.90362 6.86639 0.906884 6.92026 0.910149 6.97249C0.916677 7.06226 0.848125 7.1406 0.758355 7.1455C0.753458 7.14713 0.750194 7.14713 0.746929 7.14713ZM12.4106 6.91373H12.4057C12.3159 6.91046 12.2441 6.83702 12.2474 6.74561C12.249 6.69338 12.249 6.63952 12.249 6.58729C12.249 6.49752 12.3224 6.42407 12.4122 6.42407C12.502 6.42407 12.5754 6.49752 12.5754 6.58729C12.5754 6.64278 12.5754 6.69991 12.5738 6.75541C12.5705 6.84354 12.4987 6.91373 12.4106 6.91373ZM0.748562 6.33267H0.737136C0.647366 6.32614 0.578813 6.24779 0.585342 6.15802C0.588607 6.10253 0.593503 6.04703 0.600032 5.99154C0.608193 5.90177 0.68817 5.83648 0.777941 5.84464C0.867712 5.8528 0.932999 5.93278 0.924839 6.02255C0.919942 6.07478 0.915045 6.12864 0.911781 6.18087C0.905252 6.26738 0.833436 6.33267 0.748562 6.33267ZM12.3779 6.12048C12.2963 6.12048 12.2245 6.05846 12.2164 5.97522C12.2115 5.92299 12.2049 5.87076 12.1968 5.81853C12.1853 5.72876 12.2474 5.64715 12.3371 5.63409C12.4269 5.62266 12.5085 5.68469 12.5216 5.77446C12.5297 5.82995 12.5363 5.88545 12.5412 5.94094C12.551 6.03071 12.4857 6.11069 12.3959 6.12048H12.3779ZM0.862815 5.52473C0.85139 5.52473 0.839964 5.5231 0.828539 5.52147C0.7404 5.50188 0.684906 5.41537 0.70286 5.32724C0.714285 5.27174 0.727343 5.21788 0.740401 5.16402C0.761619 5.07588 0.849757 5.02202 0.937896 5.04323C1.02603 5.06445 1.0799 5.15259 1.05868 5.24073C1.04562 5.29133 1.0342 5.34356 1.02277 5.39579C1.00482 5.4725 0.937896 5.52473 0.862815 5.52473ZM12.2343 5.31744C12.1609 5.31744 12.0956 5.26848 12.076 5.1934C12.0629 5.1428 12.0499 5.09057 12.0352 5.03997C12.0107 4.95346 12.0613 4.86369 12.1478 4.83921C12.2343 4.81473 12.3241 4.86532 12.3486 4.95183L12.3926 5.11342C12.4155 5.20156 12.3616 5.2897 12.2735 5.31091C12.2621 5.31581 12.249 5.31744 12.2343 5.31744ZM1.08806 4.74128C1.0701 4.74128 1.05052 4.73801 1.03256 4.73148C0.947689 4.70047 0.905252 4.60744 0.936264 4.52256C0.95585 4.47033 0.975436 4.4181 0.996655 4.36587C1.0293 4.28263 1.1256 4.24183 1.20884 4.27447C1.29208 4.30711 1.33289 4.40341 1.30024 4.48666C1.28066 4.53562 1.26107 4.58622 1.24312 4.63519C1.217 4.70047 1.15498 4.74128 1.08806 4.74128ZM11.9813 4.54378C11.9177 4.54378 11.8556 4.50624 11.8295 4.44259C11.8099 4.39362 11.7887 4.34466 11.7675 4.29732C11.7316 4.21408 11.7691 4.11778 11.8507 4.08187C11.934 4.04596 12.0303 4.0835 12.0662 4.16511C12.089 4.21571 12.1103 4.26794 12.1315 4.31854C12.1658 4.40178 12.125 4.49808 12.0417 4.53073C12.0221 4.53889 12.0009 4.54378 11.9813 4.54378ZM1.42266 3.997C1.39654 3.997 1.37043 3.99047 1.34594 3.97741C1.26597 3.93497 1.23659 3.83541 1.27902 3.75707C1.30514 3.7081 1.33289 3.6575 1.36063 3.61017C1.4047 3.53182 1.5059 3.50408 1.58261 3.54978C1.66096 3.59385 1.68871 3.69504 1.643 3.77176C1.61689 3.81746 1.59077 3.86479 1.56629 3.91049C1.53691 3.96599 1.47978 3.997 1.42266 3.997ZM11.6206 3.81256C11.5651 3.81256 11.5096 3.78318 11.4802 3.73095C11.4541 3.68525 11.4264 3.63955 11.3986 3.59548C11.3513 3.51876 11.3741 3.41757 11.4509 3.37024C11.5276 3.3229 11.6288 3.34575 11.6761 3.42247C11.7055 3.4698 11.7349 3.51713 11.7626 3.5661C11.8083 3.64444 11.7822 3.74401 11.7038 3.78971C11.6777 3.80603 11.6484 3.81256 11.6206 3.81256ZM1.85682 3.30658C1.82418 3.30658 1.7899 3.29679 1.76052 3.27557C1.68707 3.22171 1.67238 3.12051 1.72461 3.04706C1.75726 3.00136 1.79153 2.95729 1.82581 2.91322C1.8813 2.8414 1.98413 2.82835 2.05432 2.88384C2.12613 2.93934 2.13919 3.04216 2.0837 3.11235C2.05105 3.15315 2.02004 3.19559 1.98903 3.23966C1.95639 3.28373 1.90742 3.30658 1.85682 3.30658ZM11.162 3.13846C11.113 3.13846 11.0657 3.11725 11.033 3.07644C11.0004 3.03564 10.9677 2.9932 10.9335 2.95403C10.8763 2.88547 10.8845 2.78265 10.9547 2.72389C11.0232 2.66676 11.1261 2.67492 11.1848 2.7451C11.2207 2.78754 11.2566 2.83161 11.2909 2.87568C11.3464 2.94586 11.335 3.04869 11.2632 3.10419C11.2338 3.12704 11.1979 3.13846 11.162 3.13846ZM2.38239 2.68308C2.34158 2.68308 2.30078 2.66839 2.26813 2.63738C2.20285 2.57536 2.20121 2.4709 2.26487 2.40724C2.30404 2.36807 2.34322 2.32726 2.38402 2.28809C2.44931 2.22444 2.55214 2.22607 2.61416 2.29136C2.67781 2.35664 2.67618 2.45947 2.61089 2.52149L2.49827 2.63412C2.46726 2.66676 2.42482 2.68308 2.38239 2.68308ZM10.6135 2.53618C10.5727 2.53618 10.5319 2.52149 10.5009 2.49048C10.4634 2.45457 10.4242 2.41703 10.385 2.38276C10.3181 2.32237 10.3132 2.21954 10.3736 2.15262C10.434 2.0857 10.5368 2.0808 10.6037 2.14119C10.6446 2.17873 10.687 2.21791 10.7262 2.25545C10.7915 2.31747 10.7931 2.42193 10.7311 2.48559C10.7 2.51823 10.6576 2.53618 10.6135 2.53618ZM2.98956 2.13956C2.9406 2.13956 2.89326 2.11834 2.86062 2.07591C2.80513 2.00409 2.81818 1.90289 2.88837 1.8474C2.93244 1.81312 2.97651 1.77885 3.02221 1.7462C3.09566 1.69234 3.19685 1.70866 3.25072 1.78048C3.30458 1.85393 3.28826 1.95512 3.21644 2.00899C3.174 2.04 3.13156 2.07264 3.09076 2.10529C3.05975 2.12814 3.02384 2.13956 2.98956 2.13956ZM9.98841 2.01388C9.95577 2.01388 9.92149 2.00409 9.89374 1.98287C9.85131 1.95186 9.80724 1.92085 9.76317 1.89147C9.68809 1.84087 9.67013 1.73967 9.72073 1.66459C9.77133 1.58951 9.87253 1.57156 9.94761 1.62216C9.99331 1.65317 10.0406 1.68581 10.0847 1.71845C10.1582 1.77069 10.1745 1.87351 10.1223 1.94696C10.088 1.9894 10.039 2.01388 9.98841 2.01388ZM3.66529 1.68418C3.60817 1.68418 3.5543 1.6548 3.52329 1.60257C3.47759 1.52422 3.50534 1.42466 3.58368 1.37896C3.63265 1.35121 3.68161 1.32346 3.73058 1.29735C3.81056 1.25491 3.90849 1.28429 3.95093 1.36427C3.99336 1.44425 3.96398 1.54218 3.88401 1.58461C3.8383 1.6091 3.79097 1.63521 3.74527 1.66133C3.72079 1.67765 3.69304 1.68418 3.66529 1.68418ZM9.29473 1.58298C9.26861 1.58298 9.2425 1.57645 9.21802 1.5634C9.17068 1.53891 9.12335 1.51443 9.07602 1.49158C8.99441 1.45241 8.96176 1.35448 9.00093 1.27287C9.04011 1.19126 9.13804 1.15861 9.21965 1.19779C9.27025 1.22227 9.31921 1.24838 9.36981 1.2745C9.44979 1.31694 9.4808 1.41487 9.43836 1.49484C9.41061 1.55197 9.35349 1.58298 9.29473 1.58298ZM4.39815 1.32999C4.33286 1.32999 4.27247 1.29082 4.24635 1.22716C4.21208 1.14392 4.25288 1.04926 4.33776 1.01498C4.38999 0.993761 4.44222 0.974175 4.49445 0.954588C4.57932 0.923577 4.67236 0.966013 4.70337 1.05089C4.73438 1.13576 4.69194 1.2288 4.60707 1.25981C4.5581 1.27776 4.5075 1.29735 4.45854 1.31694C4.43895 1.3251 4.41937 1.32999 4.39815 1.32999ZM8.54882 1.25328C8.53086 1.25328 8.51128 1.25002 8.49332 1.24349C8.44272 1.22553 8.39213 1.20758 8.34316 1.19126C8.25829 1.16351 8.21095 1.07047 8.2387 0.9856C8.26645 0.900726 8.35948 0.853392 8.44436 0.881139C8.49659 0.899094 8.55045 0.917048 8.60431 0.936634C8.68919 0.967646 8.73325 1.06068 8.70224 1.14555C8.67776 1.21247 8.61574 1.25328 8.54882 1.25328ZM5.17507 1.07863C5.10162 1.07863 5.0347 1.02804 5.01675 0.954588C4.99553 0.86645 5.04939 0.778311 5.1359 0.757093C5.18976 0.744035 5.24526 0.730977 5.29912 0.719552C5.38726 0.699966 5.47376 0.757093 5.49335 0.845231C5.51294 0.933369 5.45581 1.01988 5.36767 1.03946C5.31707 1.05089 5.26484 1.06231 5.21261 1.07537C5.20119 1.07863 5.1865 1.07863 5.17507 1.07863ZM7.76373 1.03293C7.75231 1.03293 7.74088 1.0313 7.73109 1.02967C7.68049 1.01824 7.62663 1.00845 7.57603 1.00029C7.48789 0.983967 7.4275 0.899094 7.44382 0.810955C7.46014 0.722817 7.54502 0.662425 7.63316 0.678747C7.68865 0.68854 7.74415 0.699966 7.79801 0.709759C7.88615 0.727713 7.94327 0.814219 7.92532 0.902358C7.90736 0.979071 7.83881 1.03293 7.76373 1.03293ZM5.97811 0.941531C5.89487 0.941531 5.82468 0.879507 5.81652 0.794633C5.80673 0.704862 5.87202 0.624885 5.96179 0.615092L6.12827 0.600402C6.21804 0.593873 6.29639 0.660793 6.30292 0.750564C6.30945 0.840335 6.24253 0.91868 6.15276 0.925209C6.10053 0.928473 6.04666 0.93337 5.99443 0.938266C5.9879 0.939898 5.98301 0.941531 5.97811 0.941531ZM6.95579 0.923576H6.94437C6.89214 0.920312 6.83828 0.917048 6.78605 0.915415C6.69628 0.912151 6.62609 0.83707 6.62936 0.745667C6.63262 0.655897 6.7077 0.585712 6.7991 0.588977C6.8546 0.590609 6.91173 0.593873 6.96722 0.597138C7.05699 0.603666 7.12554 0.68038 7.11901 0.77015C7.11249 0.856657 7.04067 0.923576 6.95579 0.923576Z"
+                                                        fill="#787878" />
+                                                    <path
+                                                        d="M10.8926 2.30615C10.6494 2.30615 10.4519 2.50365 10.4519 2.74684C10.4519 2.99004 10.6494 3.18754 10.8926 3.18754C11.1358 3.18754 11.3333 2.99004 11.3333 2.74684C11.3333 2.50365 11.1358 2.30615 10.8926 2.30615Z"
+                                                        fill="#E6E6E6" />
+                                                    <path
+                                                        d="M10.8926 1.97949C10.4699 1.97949 10.1255 2.32389 10.1255 2.74662C10.1255 3.16936 10.4699 3.51375 10.8926 3.51375C11.3154 3.51375 11.6598 3.16936 11.6598 2.74662C11.6598 2.32389 11.3154 1.97949 10.8926 1.97949ZM10.4503 2.74662C10.4503 2.50343 10.6478 2.30593 10.891 2.30593C11.1342 2.30593 11.3317 2.50343 11.3317 2.74662C11.3317 2.98982 11.1342 3.18732 10.891 3.18732C10.6478 3.18732 10.4503 2.98982 10.4503 2.74662Z"
+                                                        fill="#787878" />
+                                                    <path
+                                                        d="M10.0095 4.96777H3.13474C3.08414 5.07387 3.03844 5.18322 2.99927 5.29421H10.1466C10.1058 5.18322 10.0601 5.07387 10.0095 4.96777Z"
+                                                        fill="#787878" />
+                                                    <path
+                                                        d="M9.72076 3.43889C8.88018 2.59831 7.76212 2.13477 6.57225 2.13477C5.38238 2.13477 4.26433 2.59831 3.42375 3.43889C2.58317 4.27947 2.11963 5.39752 2.11963 6.58739C2.11963 7.77726 2.58317 8.89531 3.42375 9.73589C4.26433 10.5765 5.38238 11.04 6.57225 11.04C7.76212 11.04 8.88018 10.5765 9.72076 9.73589C10.5613 8.89531 11.0249 7.77726 11.0249 6.58739C11.0249 5.39752 10.563 4.27947 9.72076 3.43889ZM3.17729 8.28977H4.59893C4.61689 8.342 4.63647 8.39423 4.65606 8.44646C4.8356 8.91 5.08533 9.35396 5.39707 9.76527C5.56356 9.98399 5.72841 10.1701 5.87857 10.3219C4.69523 10.1031 3.70286 9.33437 3.17729 8.28977ZM6.40903 10.3741C6.21317 10.2043 5.92917 9.93013 5.64843 9.55798C5.4085 9.23971 5.14408 8.8137 4.94659 8.28814H6.40903V10.3741ZM6.73547 10.3741V8.28977H8.19792C8.00042 8.8137 7.73601 9.24134 7.49608 9.55962C7.21534 9.93176 6.93134 10.2043 6.73547 10.3741ZM7.26757 10.3235C7.41773 10.1701 7.58258 9.98562 7.74907 9.76691C8.06245 9.35396 8.31217 8.91164 8.49008 8.44809C8.50967 8.39586 8.52925 8.34363 8.54721 8.2914H9.96885C9.44328 9.33437 8.45091 10.1031 7.26757 10.3235ZM10.1141 7.96333H8.64841C8.76756 7.5308 8.82795 7.08358 8.82795 6.6282C8.82795 6.17608 8.76756 5.72886 8.65004 5.29306H8.30891C8.42643 5.69458 8.49988 6.14017 8.49988 6.6282C8.49988 7.11785 8.4248 7.56508 8.30728 7.96333H6.73547V5.29469H6.40903V7.96333H4.83723C4.71971 7.56508 4.64463 7.11949 4.64463 6.6282C4.64463 6.1418 4.71971 5.69458 4.8356 5.29306H4.49447C4.37695 5.72886 4.31656 6.17608 4.31656 6.6282C4.31656 7.08358 4.37695 7.52917 4.4961 7.96333H3.03039C2.86391 7.5357 2.77251 7.07215 2.77251 6.58739C2.77251 6.13364 2.85248 5.69785 2.99938 5.29469C3.04019 5.1837 3.08589 5.07435 3.13485 4.96825C3.65226 3.87468 4.67728 3.06512 5.90469 2.8464C5.748 3.01125 5.57172 3.21201 5.39544 3.45195C5.08369 3.87632 4.83397 4.33007 4.65443 4.79851C4.63321 4.854 4.61362 4.91113 4.59403 4.96825H4.94169C5.14082 4.42963 5.4085 3.98567 5.65006 3.65434C5.9308 3.27241 6.21317 2.9884 6.40903 2.81049V4.96825H6.73547V2.81049C6.93134 2.9884 7.21371 3.27404 7.49444 3.65434C7.73764 3.98567 8.00532 4.428 8.20282 4.96825H8.55047C8.53089 4.91113 8.5113 4.85563 8.49008 4.79851C8.31054 4.32843 8.06245 3.87632 7.74907 3.45195C7.57442 3.21201 7.39814 3.00962 7.24145 2.8464C8.46886 3.06512 9.49388 3.87468 10.0113 4.96825C10.0619 5.07435 10.1076 5.1837 10.1468 5.29469C10.2937 5.69785 10.3736 6.13364 10.3736 6.58739C10.372 7.07215 10.2806 7.53733 10.1141 7.96333Z"
+                                                        fill="#787878" />
+                                                </svg>
                                                 </span>
                                                 <a class="title" href="javascript:void(0)"
                                                 (click)="moreDetails(item.stringval)">   
                                                  {{item.Project_Name}}
                                                 </a>
                                             </div>
+                                        </ng-container>                                        
+                                        <ng-template #NoProject_code>
+                                            <p class="title">No project linked in this meeting</p>
+                                        </ng-template>
                                             <!-- <div class="project">
                                                 <span class="icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -1418,6 +1399,7 @@
                                                 </span>
                                                 <span class="title">Design for all project performance</span>
                                             </div> -->
+                                    
                                         </div>
                                     </div>
                                 </div>
@@ -1435,6 +1417,7 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
+                                            <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
                                             <div class="project"  *ngFor="let memo of _MemosSubjectList">
                                                 <span class="icon">
                                                     <img width="16"
@@ -1444,6 +1427,10 @@
                                                
                                                 <span class="title"> <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a></span>
                                             </div>
+                                        </ng-container>
+                                        <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
+                                            <p>No DMS linked in the meeting</p>
+                                        </ng-container>
                                         </div>
                                     </div>
                                 </div>
@@ -1466,6 +1453,8 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
+
+                                            <ng-container *ngIf="_TotalAttachment>0;else NoAttachments_ary"></ng-container>
                                             <div class="project"  *ngFor="let item of Attachments_ary">
                                                 <span class="icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -1486,6 +1475,15 @@
                                                 </span>
                                                 <span class="title-muted"> <a target=”_blank” href="{{item.url}}"> {{item.File_Name}}</a></span>
                                             </div>
+
+                                            <ng-template #NoAttachments_ary>
+                                                <span class="title-muted">No attachment linked in this meeting</span>
+                                            </ng-template>
+
+
+
+
+
                                             <!-- <div class="project">
                                                 <span class="icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -1506,6 +1504,10 @@
                                                 </span>
                                                 <span class="title-muted">dashboard .jpg</span>
                                             </div> -->
+                                       
+                                        
+                                        
+                                        
                                         </div>
                                     </div>
                                 </div>
@@ -1574,12 +1576,12 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
+                                            <ng-container *ngIf="totalguest>0;else NoUser"></ng-container>
                                             <div class="attendess">
                                                 <div class="user-icon"  *ngFor="let item of User_Scheduledjson" >
                                                     <span  title="{{item.TM_DisplayName}}">
                                                         <span>{{getInitials(item.TM_DisplayName)}}</span>
                                                     </span>
-                                                    
                                                 </div>
 
                                                 <!-- <div class="user-icon" *ngIf="item.TM_DisplayName==''">
@@ -1607,11 +1609,14 @@
                                                     <span>+5</span>
                                                 </div> -->
                                             </div>
-
+                                            <ng-template #NoUser>
+                                                <span>No attendees linked in this meeting</span>
+                                            </ng-template>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                               </div>
                         <!-- </div> -->
                         <ng-template #AgendaList>
                         <div class="kt-info-box kt-info-meeting-box meeting-notes border-0">
@@ -1678,7 +1683,7 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="Kt-Pd-Status Done"> Completed </div>
+                                    <div class="Kt-Pd-Status Done"  *ngIf="Agendas_List[currentAgendaView].Status==1"> Completed </div>
                                 </div>    
                             </div>
 
@@ -1737,12 +1742,13 @@
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <form class="task-form">
+                                            <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
                                                     [(ngModel)]="_Demotext" (keyup.enter)=" EnterSubmit(_Demotext) "
                                                     placeholder="Add a new task..." autofocus="true">
                                                 <!-- <button class="task-button" (click)=" EnterSubmit(_Demotext) "
                                                     id="btn1">Add Task</button> -->
+                                                    <button *ngIf="_Demotext" class="btn btn-secondary add-agenda-btn" (click)="EnterSubmit(_Demotext)">Add</button>
                                             </form>
                                         </div>
 

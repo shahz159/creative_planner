@@ -605,7 +605,7 @@ background-color: #eaf2fd !important;
   color:white !important;
 }
 .Inprocess{
-  background-color: #1B272D !important;
+  background-color: #0089FB !important;
   color:#ffffff;
 }
 
@@ -945,12 +945,13 @@ li.w-50P {
   background-color: #2786fb !important;
   color: #Fff !important;
 }
-.More_info_btn:hover span i{
-  color: #fff !important;
+.More_info_btn:hover span svg{
+ color: #2786fb  !important;
+ /* border: 50px; */
+  /* color: #2786fb   !important; */
 }
 .Kt-Pd-Status.More_info_btn span {
-  position: relative;
-  top: 4px;
+
   margin-right: 5px;
 }
 .Paf_info label {
@@ -1263,3 +1264,19 @@ span.Rq_date_V {
   background-color: #ff3b3b !important;
   color: #fff !important;
 }
+.icon {
+  display: center;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.icon:hover svg {
+  color: #0089FB; /* Change the color to red on hover */
+}
+.Kt-Pd-Status.More_info_btn svg {
+  width: 25px;
+  height: 25px;
+}
+/* .Kt-Pd-Status.More_info_btn svg:hover{
+color: blue!important;
+} */

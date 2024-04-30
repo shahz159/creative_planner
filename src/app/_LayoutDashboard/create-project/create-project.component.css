@@ -2619,3 +2619,44 @@ color: #2786fb;
   border: 1px solid #F44336 !important;
 }
 
+.save-mat-selection{
+  font-size: 17px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #646C9A;
+}
+.save-mat-selection:hover{
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+
+.add-icon {
+  color: white;
+  border-radius: 50%;
+  background-color: #646C9A;
+  -webkit-text-stroke-width: thin;
+}
+
+.add-icon:hover {
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+
+.close-icon {
+  color: #f4f3f3;
+  /* background-color: gray; */
+  border-radius: 50%;
+}
+
+.close-icon:hover {
+  color: #ffffff;
+  transform: none;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

@@ -134,6 +134,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   requestDetails: any;
   requestType: any;
+  isPrjContainAprvls:boolean=false;  // to control pending approval label located in prj status section.
   forwardType: string;
   requestDate: any;
   requestDeadline: any;
@@ -980,7 +981,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-           
+
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
 
@@ -1044,7 +1045,7 @@ debugger
   GetActivityDetails() {
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
-      (data) => {   
+      (data) => {
         if (data !== null && data !== undefined) {
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
@@ -1066,13 +1067,13 @@ debugger
       })
   }
 
- 
+
   ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
   GetActionActivityDetails(code) {
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
-      (data) => {  
+      (data) => {
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
@@ -1080,7 +1081,7 @@ debugger
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                   return {
                    ...item,
-                   ModifiedDate:d===0?'Today': 
+                   ModifiedDate:d===0?'Today':
                    d===1?'Yesterday':
                    [2,3].includes(d)?d+' days ago':
                    this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
@@ -1296,7 +1297,7 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
   }
-  
+
   closeApprovalSideBar(){
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -1316,7 +1317,7 @@ debugger
     document.getElementById("main-approval").classList.remove("d-none");
     document.getElementById("main-reject").classList.add("d-none");
   }
-  closeInfo() {  
+  closeInfo() {
     this._remarks = ''
     this.selectedFile=null;
     this._inputAttachments='';
@@ -1388,7 +1389,7 @@ debugger
     else if(this.activitiesOf==='ACTION-ACTIVITIES'){
       this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get all activities of the action selcted.
     }
-    
+
   }
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
@@ -1758,6 +1759,7 @@ debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
+        this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -1823,13 +1825,14 @@ debugger
         }
 
          this.getstandardapprovalStats();
-         
+
         }
 
       }
       else{
         // if there is no requests
         this.isApprovalSection=false;
+        this.isPrjContainAprvls=false;  //to remove pending aprvl label of prj status section.
         // if there is no requests
 
         // if there are no std task aprv request
@@ -1846,13 +1849,13 @@ debugger
 
 standardjson:any;
 currentStdAprView:number|undefined;
-  getstandardapprovalStats(){  
+  getstandardapprovalStats(){
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson); 
-      
+      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
+
 
       // if(this.standardjson.length>0){
       //     this.isApprovalSection=true;
@@ -1873,6 +1876,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+
       }; break;
       case 'CONDITIONAL': {
         this.isRejectOptionsVisible = false;
@@ -1903,6 +1907,8 @@ currentStdAprView:number|undefined;
     }
     if(actionType!=='NOTSELECTED')
     this.isTextAreaVisible = true;
+
+
   }
 
   removeCommit() {
@@ -1958,7 +1964,7 @@ currentStdAprView:number|undefined;
       }
       this.approvalservice.GetRejectComments(this.approvalObj).subscribe(data => {
         console.log('++>', JSON.parse(data[0]['reject_CommentsList']));
-        this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);  
+        this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
         this.rejectlength = this.rejectcommentsList.length;
       });
     }
@@ -2009,7 +2015,7 @@ currentStdAprView:number|undefined;
       this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
       return;
     }
-     
+
 
 
     const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
@@ -2021,20 +2027,20 @@ currentStdAprView:number|undefined;
       this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
       console.log(data,"accept-data");
        if(x===0)
-        this.closeApprovalSideBar(); 
+        this.closeApprovalSideBar();
 
        this.notifyService.showSuccess("Standard Task complete approved.",'Success');
        this.selectedStdAprvs=[];
        this.getapprovalStats();
        this.allStdAprSelected=false;
-        
+
       });
     }
-    
+
   }
 
   onStdAprvSelected(e,aprvls){
-   
+
     aprvls.forEach(aprv=>{
           if(e.target.checked){
                 if(!this.selectedStdAprvs.includes(aprv.SNo))
@@ -2044,7 +2050,7 @@ currentStdAprView:number|undefined;
                 this.selectedStdAprvs.splice(x,1);
           }
     });
-      
+
   }
 
 
@@ -2081,6 +2087,7 @@ currentStdAprView:number|undefined;
           this.getapprovalStats();
           this.GetApproval(1);
           this.getProjectDetails(this.URL_ProjectCode);
+          this.updatePortfolioPage();
         });
       console.log(this.singleapporval_json, "accept")
     }
@@ -2467,7 +2474,7 @@ currentStdAprView:number|undefined;
                 let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
                 const prjActionindex = this.projectActionInfo.indexOf(prjAction)
                 if (prjActionindex !== -1) {
-                  const prjActionComp = { ...prjAction, Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
+                  const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
                   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
                   this.clearFilterConfigs();
                 }  // updated project action.
@@ -2706,6 +2713,22 @@ currentStdAprView:number|undefined;
 
   // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
+
+// check all mandatory fields are provided or not
+   if(!(
+        (this.ProjectName&&this.ProjectName.trim()!='')&&
+        (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+      ))
+   {
+      this.formFieldsRequired=true;
+      return;
+   }
+   else this.formFieldsRequired=false;  // back to initial value.
+// check all mandatory fields are provided or not
+
+
+
+
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -2918,6 +2941,18 @@ currentStdAprView:number|undefined;
 
 
   onAction_update() {
+
+// check all mandatory field are provided.    
+    if(!(this.ActionName&&this.ActionDescription&&
+         this.ActionOwner&&this.ActionResponsible&&
+         this.selectedcategory&&this.ActionClient&&
+         this.ActionstartDate&&this.ActionendDate&&
+         this.editAllocatedhours&&(this.editAllocatedhours<=this.ActionmaxAllocation))
+       ){
+            this.formFieldsRequired=true;
+            return;
+    }else this.formFieldsRequired=false;   // back to initial value.
+// check all mandatory field are provided.
 
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -3209,7 +3244,7 @@ check_allocation() {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
-  }
+  } 
 
 
  submitDar(){
@@ -3220,7 +3255,7 @@ check_allocation() {
    this.workdes&&
    this.starttime&&
    this.endtime&&
-   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?this._remarks:true)
+   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
 
@@ -3368,6 +3403,8 @@ check_allocation() {
         break;
     if (i !== this.projectActionInfo.length)
       this.currentActionView = i;
+
+    this.prostate(this.projectActionInfo[this.currentActionView].proState);
   }   // whenever action is changed or selected.
 
 
@@ -3693,7 +3730,7 @@ check_allocation() {
   updateMainProject() {
     debugger
 // for checking whether mandatory fields are provided or not.
-   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks&&!this.selectedFile)){
+   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
       return;
    }
@@ -3707,7 +3744,7 @@ check_allocation() {
 
 
 
-    
+
     if (this.projectInfo.Project_Type == 'To do List') {
       this.selectedFile = null;
     }
@@ -4302,6 +4339,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
     this.oldMtgCnt = 0;  // Older Meetings Count
     //
+
+    this.backMainMeetings();
   }
 
 
@@ -6139,9 +6178,9 @@ removeSelectedDMSMemo(item){
   maxhold: any = new Date();
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
-  
+
   onProject_Hold(id, Pcode) {
-  
+
   if(this.Holddate&&this.hold_remarks){
        // if holddate and remarks are provided.
        this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
@@ -6149,33 +6188,34 @@ removeSelectedDMSMemo(item){
        this.objProjectDto.Project_Code = Pcode;
        this.objProjectDto.Remarks = this.hold_remarks;
        this.service._ProjectHoldService(this.objProjectDto).subscribe(data => {
-        
+
          this._Message = data['message'];
          if (this._Message == 'Project Hold Updated') {
- 
+
            if(this.currentActionView!==undefined)
            this._Message=this._Message.replace('Project','Action')
- 
+
            this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
            this.closePrjHoldSideBar();
            this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
            this.getholdate();
            this.getRejectType();
+           this.updatePortfolioPage();
            debugger
            if(this.currentActionView!==undefined){
              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
              }else{
                this.GetActivityDetails();
- 
+
              }
- 
- 
- 
+
+
+
          }
        });
   }
-  else 
-   this.formFieldsRequired=true;   
+  else
+   this.formFieldsRequired=true;
 
   }
 
@@ -6207,6 +6247,7 @@ removeSelectedDMSMemo(item){
               this.notifyService.showSuccess("Project released by " + this._fullname, "Success");
               this.getProjectDetails(this.URL_ProjectCode);
               this.getRejectType();
+              this.updatePortfolioPage();
             }
             else if (this._Message == '2' || this._Message == '0') {
               this.notifyService.showError("Project release failed", "Failed");
@@ -6252,7 +6293,7 @@ removeSelectedDMSMemo(item){
       }
        }
     }
-    else 
+    else
      this.formFieldsRequired=true;
 
   }
@@ -6260,7 +6301,7 @@ removeSelectedDMSMemo(item){
   updateReleaseDate() {
 
     if(this.release_date&&this.hold_remarks){
-     // if release date and remarks both are provided 
+     // if release date and remarks both are provided
       if (this.release_date == null || this.release_date == 'Invalid date') {
         this.notifyService.showError("Please enter valid date", "Failed");
         return false;
@@ -6288,7 +6329,7 @@ removeSelectedDMSMemo(item){
       }
 
     }
-    else 
+    else
     this.formFieldsRequired=true;
 
   }
@@ -6311,7 +6352,7 @@ removeSelectedDMSMemo(item){
 
 
 
-  openPrjReleaseSideBar() {  
+  openPrjReleaseSideBar() {
     document.getElementById("prj-release-sidebar").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -6441,7 +6482,7 @@ removeSelectedDMSMemo(item){
     });
 
   }
-  else 
+  else
    this.formFieldsRequired=true;
 
   }
@@ -6454,7 +6495,7 @@ removeSelectedDMSMemo(item){
         this.formFieldsRequired=true;
         return;
     }
-     
+
 
 
 
@@ -6511,7 +6552,7 @@ removeSelectedDMSMemo(item){
 
   notachieveStandard() {
     if(this._remarks==''){
-      this.formFieldsRequired=true;  
+      this.formFieldsRequired=true;
       return;
     }
 
@@ -6619,7 +6660,7 @@ closePanel(){
 
 
   onProject_updateSupport() {
-  
+
     const commaSeparatedString = this.selectedEmpIds.join(', ');
 
     if (this.selectedEmployees != null&&this.selectedEmployees.length>0) {
@@ -7023,7 +7064,7 @@ releasenewProject(){
 
 
         if(this.Current_user_ID==this.projectInfo.OwnerEmpNo)
-        { 
+        {
           this.isApprovalSection=true; // back to initial value
           this.isTextAreaVisible=false;    // back to initial value
           this.getapprovalStats();
@@ -7064,8 +7105,8 @@ displaymessagemain(){
 
 
 formatTimes(time: string): string {
-  
-  const [hours, minutes] = time.split(':'); 
+
+  const [hours, minutes] = time.split(':');
   const date = new Date();
   date.setHours(parseInt(hours, 10));
   date.setMinutes(parseInt(minutes, 10));
@@ -7221,13 +7262,13 @@ getActivitiesOf(d){
 
 activitiesOnthat:any=[];
 selectedactvy:string|undefined;
-
+lastActivityOn:string|undefined;
 
 showFullGraph(){
   debugger
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
-
+  this.lastActivityOn=alldates[alldates.length-1];   // last activity on
   const actvies=this.getActivitiesOfDates(this.graphOption,...alldates);       //[{date:'2023-08-11',total:4},{date:'2024-02-02',total:8} ...]
   console.log("all graph line points :",actvies);
 
@@ -7275,38 +7316,48 @@ showFullGraph(){
     ]
   };
 
-  
+
   FusionCharts.ready(()=> {
-    var myChart = new FusionCharts({
+    let myChart=new FusionCharts({
       type: "zoomline",
       renderAt: "full-graph",
       width: "100%",
       height: "100%",
       dataFormat: "json",
-      dataSource
+      dataSource:dataSource
     }).render();
-
-
+    
+ // resolves slowness occuring in the starting. by rendering graph again.   
+    myChart=new FusionCharts({
+      type: "zoomline",
+      renderAt: "full-graph",
+      width: "100%",
+      height: "100%",
+      dataFormat: "json",
+      dataSource:dataSource
+    }).render();   
+// resolves slowness occuring in the starting. by rendering graph again.
+ 
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
-    });  
-   
+    });
+
     // this is for remove fusion chart watermark label from the graph.
     myChart.addEventListener('rendered',()=>{
       setTimeout(()=>{
         const x:any=document.querySelectorAll('#full-graph .fusioncharts-container svg>g[class^="raphael"]');
         x[1].style.display='none';
       },10);
-    });   
+    });
    // this is for remove fusion chart watermark label from the graph.
 
 
 
   });
 
- 
-  
+
+
 }
 
 onGraphOptionChanged(option:string){
@@ -7315,45 +7366,16 @@ onGraphOptionChanged(option:string){
     this.graphOption=option;
     this.showFullGraph();
     this.graphOptionChanged=true;
-   
+
 }
 
-loadActivitiesByDate(d){
-  this.activitiesOnthat=this.getActivitiesOf(d);   console.log("activities on that: ",this.activitiesOnthat);
+loadActivitiesByDate(d){   debugger
+
+  this.activitiesOnthat=this.getActivitiesOf(d);  
   const currentDt=new Date();
-  this.selectedactvy=d==currentDt?'TODAY':d;
+  const dateClicked=new Date(d);
+  this.selectedactvy=(dateClicked.getDate()==currentDt.getDate())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -7626,7 +7648,7 @@ Insert_indraft() { debugger
 // std task apr and reject code new start.
 
 
-rejectAllStdTaskAprvs(){   
+rejectAllStdTaskAprvs(){
   if (this.selectedType == '3') {
     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
       this.noRejectType = true;
@@ -7634,8 +7656,8 @@ rejectAllStdTaskAprvs(){
       return false;
     }
     else {
-    
-    
+
+
 
     let selectedStdApprovals=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
     selectedStdApprovals=selectedStdApprovals.map(item=>({
@@ -7654,18 +7676,18 @@ rejectAllStdTaskAprvs(){
       });
 
       this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedStdApprovals).
-        subscribe((data) => {  
+        subscribe((data) => {
           this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
 
           if(this.standardjson.length-this.selectedStdAprvs.length!==0){
               this.backmainapproval();
           }  // back to approvals list.
-          
-          
+
+
           this.getapprovalStats();
           this.getProjectDetails(this.URL_ProjectCode);
           this.getRejectType();
-          
+
 
 
         });
@@ -7687,7 +7709,7 @@ rejectAllStdTaskAprvs(){
 
 // linkMeetingToProject(mtgScheduleid:any){
 
-  
+
 //   // this.obj_CalenderDTO.Emp_No=obj.Emp_No;
 //   // this.obj_CalenderDTO.Project_Code=obj.Project_Code;
 //   // this.obj_CalenderDTO.flagid=obj.flagid;
@@ -7768,13 +7790,13 @@ linkMtgsToProject(){
                 this.notifyService.showError("Failed to link selected meeting into the project.","")
               }
             }
-            else 
+            else
             this.notifyService.showError("something went wrong","");
-            
-            
+
+
      })
 
-   
+
 }
 
 
@@ -7787,6 +7809,15 @@ linkMtgsToProject(){
 
 
 // meeting recall end
+
+updatePortfolioPage(){
+  // this.bsService.updateData("new bhai data");
+   localStorage.setItem('projectUpdated','1');
+
+
+}
+
+
 
 
 }

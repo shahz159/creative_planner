@@ -1,14 +1,16 @@
 import { Observable } from 'rxjs';
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { nextFrame } from '@amcharts/amcharts4/core';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class BsServiceService {
 
-  constructor() { }
+  constructor() {
+
+   }
 
   private _Pcode = new BehaviorSubject<any>(null);
   private _PName = new BehaviorSubject<any>(null);
@@ -32,6 +34,14 @@ export class BsServiceService {
 
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
+  ProjectStatusChanged:EventEmitter<undefined>=new EventEmitter<undefined>()
+
+
+  private dataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public data$ = this.dataSubject.asObservable();
+  updateData(newData: any) {
+    this.dataSubject.next(newData);
+  }
 
 
   bs_projectCode = this._Pcode.asObservable();
