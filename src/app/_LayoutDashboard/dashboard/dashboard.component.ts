@@ -3887,18 +3887,37 @@ console.log("EndTimearr:",this.EndTimearr);
     console.log("--------------->", this.selectedFile)
   }
 
+
+  fetchDataStartTime: number;
+  fetchDataEndTime: number;
+  dataBindStartTime: number;
+  dataBindEndTime: number;
+  fetchDataTime: number;
+  dataBindTime: number;
+
   GetScheduledJson() {
  
     this._calenderDto.EmpNo = this.Current_user_ID;
-
+    this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
+        this.fetchDataEndTime = performance.now();
+        this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
+        
+        this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
+
+        this.dataBindEndTime = performance.now();
+        this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         console.log(this.Scheduledjson, "Testingssd");
+
+        console.log("Fetch Data Time: in milliseconds",this.fetchDataTime);
+        console.log("Data Bind Time: in milliseconds",this.dataBindTime);
+
+
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
        
         this.calendarOptions = {
-
           initialView: 'listWeek',
 
           firstDay: moment().weekday(),
