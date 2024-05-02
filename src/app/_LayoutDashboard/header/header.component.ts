@@ -431,14 +431,17 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['login']);
   }
   featuremodel() {
-    document.getElementById("newfeatures").style.display = "block";
+    // document.getElementById("newfeatures").style.display = "block";
     document.getElementById("newfeatures").style.overflow = "auto";
     document.getElementById("feature-modal-backdrop").classList.add("show");
-    let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
-         whatsnew.style.animationName='anim1';
-         whatsnew.style.animationDuration='0.4s';
-         whatsnew.style.animationTimingFunction='cubic-bezier(0.2, 0.9, 0.2, 1)';
+    document.getElementById("newfeatures").classList.add("feature-animate-active");
+    document.getElementById("kt-bodyc").classList.add("position-fixed");
+    // let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
+    //      whatsnew.style.animationName='anim1';
+    //      whatsnew.style.animationDuration='0.4s';
+    //      whatsnew.style.animationTimingFunction='cubic-bezier(0.2, 0.9, 0.2, 1)';
   }
+
   NewAddUserCountFeature() {
     if(this.isView=='0'){
       this.service.InsertNewFeatureView(this.Current_user_ID).subscribe(data=>{
@@ -447,9 +450,11 @@ export class HeaderComponent implements OnInit {
     }
     this.closeNewFeatures();
     setTimeout(()=>{
-      document.getElementById("newfeatures").style.display = "none";
+      // document.getElementById("newfeatures").style.display = "none";
       document.getElementById("newfeatures").style.overflow = "hidden";
       document.getElementById("feature-modal-backdrop").classList.remove("show");
+      document.getElementById("newfeatures").classList.remove("feature-animate-active");
+      document.getElementById("kt-bodyc").classList.remove("position-fixed");
     },600);
       
   }
@@ -457,9 +462,14 @@ export class HeaderComponent implements OnInit {
 
 
   closeNewFeatures(){
-         let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
-         whatsnew.style.animationName='anim2';
-         whatsnew.style.animationTimingFunction='cubic-bezier(0.3, 0.9, 0.1, 1)'; 
+        // document.getElementById("newfeatures").style.display = "none";
+        document.getElementById("newfeatures").style.overflow = "hidden";
+        document.getElementById("feature-modal-backdrop").classList.remove("show");
+        document.getElementById("newfeatures").classList.remove("feature-animate-active");
+        document.getElementById("kt-bodyc").classList.remove("position-fixed");
+        //  let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
+        //  whatsnew.style.animationName='anim2';
+        //  whatsnew.style.animationTimingFunction='cubic-bezier(0.3, 0.9, 0.1, 1)'; 
          this.newfeaturetippy[0].show();
          let sf:any=document.getElementById('streamfeature');
          sf.style.backgroundColor=' #d3d3d342';
