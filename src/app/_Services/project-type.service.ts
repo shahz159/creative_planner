@@ -563,7 +563,7 @@ export class ProjectTypeService {
     this._ObjCompletedProj.Emp_No = objDTO.Emp_No;
     this._ObjCompletedProj.Mode = objDTO.Mode;
     this._ObjCompletedProj.PageNumber = objDTO.PageNumber;
-
+    this._ObjCompletedProj.Agenda_id=objDTO.Agenda_id;
     this._ObjCompletedProj.SelectedBlock_No = objDTO.SelectedBlock_No;
     this._ObjCompletedProj.SelectedStatus = objDTO.SelectedStatus;
     this._ObjCompletedProj.SelectedEmp_No = objDTO.SelectedEmp_No;

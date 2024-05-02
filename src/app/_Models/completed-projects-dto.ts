@@ -66,4 +66,5 @@ export class CompletedProjectsDTO {
     CategoryId: number;
     Filter:string;
     Type:string;
+    Agenda_id:any
 }

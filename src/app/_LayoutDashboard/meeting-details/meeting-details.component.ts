@@ -141,7 +141,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.addAgenda();
       // this.GetMeetingnotes_data();
       this.getDetailsScheduleId()
-      this.GetAssigned_SubtaskProjects();
+     
       this.GetMemosByEmployeeId_new();
       this.GetProjectAndsubtashDrpforCalender();
       this.GetTimeslabfordate()
@@ -404,7 +404,7 @@ export class MeetingDetailsComponent implements OnInit {
   formattedDuration:any
   hours:any
   minutes:any
-
+  hasStatusOne: boolean = false
 
 
 
@@ -419,6 +419,13 @@ meeting_details(){
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     console.log("meeting details",this.EventScheduledjson)
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
+    
+      if (this.Agendas_List.every(obj => obj.Status == 1)) {
+        this.hasStatusOne = true;
+      }else{
+        this.hasStatusOne = false;
+      }
+
     this.totalAgendaList=this.Agendas_List.length;
     this.completedAgendaList=this.Agendas_List.filter(item=>item.Status==1)
 
@@ -430,7 +437,6 @@ meeting_details(){
     this.Link_Detail=this.EventScheduledjson[0].Link_Details;
 
    
-  
 
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
     this.totalguest = this.User_Scheduledjson.length;
@@ -446,14 +452,15 @@ meeting_details(){
     // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
     
     // console.log('meeting_details--->',x)
-    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name)
+    this.portfolio_Scheduledjson=JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+   
     this.totalportfolios = this.portfolio_Scheduledjson.length;
     this.portfolio_Scheduledjson.forEach(element => {
       this.checkedportfolio.push(element.numberval);
       element.isChecked = true;
     });
 
-
+    // console.log(this.portfolio_Scheduledjson,'}}}}}}}}}}}}}}}}')
     this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
     this._TotalAttachment=this.Attachments_ary.length;
@@ -515,7 +522,7 @@ meeting_details(){
 
     // Calculate the duration between the start time and end time
     var duration = moment.duration(endTime.diff(startTime));
-
+  
      // Format the duration as hours:minutes
     this.hours = Math.floor(duration.asHours());
     this.minutes = duration.minutes();
@@ -1581,13 +1588,13 @@ AgendaId:any
 showAgendaDetails(item,index){
   this.AgendaId=item.AgendaId
   this.currentAgendaView=index
-  // this.Notes_Type=''
+  this.GetAssigned_SubtaskProjects()
 }
 
 
 currentAgendaProject(){
   this.currentAgendaView=undefined;
-  // this.Notes_Type=''
+  
 }
 
 
@@ -1614,18 +1621,22 @@ cancelAgendaEdit(index:number){
   $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 }
 
+Meetingnotes_time: any = [];
 
 
 completeAgenda(){
-  this._calenderDto.Emp_No=this.Current_user_ID;
-  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
-
-  this.CalenderService.NewUpdateCompleteAgenda(this._calenderDto).subscribe((data)=>{ 
-    this.meeting_details() 
-    this.notifyService.showSuccess("Agenda completed", "Success"); 
-  })
-
+    this._calenderDto.Emp_No=this.Current_user_ID;
+    this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
+    this.CalenderService.NewUpdateCompleteAgenda(this._calenderDto).subscribe((data)=>{ 
+      this.meeting_details() 
+      this.notifyService.showSuccess("Agenda completed", "Success"); 
+    })
 }
+
+
+
+
+
 
 UndoCompleteAgenda(){
   this._calenderDto.Emp_No=this.Current_user_ID;
@@ -1702,7 +1713,6 @@ addBulletPointsOnEnter(event: any) {
 }
 
 
-Meetingnotes_time: any = [];
 
 GetMeetingnotes_data() {
   this.Schedule_ID = this.Scheduleid;
@@ -1712,18 +1722,44 @@ GetMeetingnotes_data() {
 
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
-    
+   
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
+    
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
          }else {
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
          }
          this.GetAttendeesnotes();
-         console.log(this.Meetingnotes_time, 'Notes_Type')
+        
     });
 
 }
+
+
+completeSelectedAgenda(){
+  this.Schedule_ID = this.Scheduleid;
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.AgendaId=this.Agendas_List[this.currentAgendaView].AgendaId;
+  this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe((data:any)=> {
+       if(data){
+           console.log("completeSelectedAgenda:",data);
+           const Mtgnotes_time=JSON.parse(data['Checkdatetimejson']);
+           if(Mtgnotes_time&&Mtgnotes_time.length>0){
+             this.completeAgenda();
+           }
+           else{
+            const chkbox:any=document.getElementById(data.AgendaId+'ckbox');
+            chkbox.checked=false;
+             this.notifyService.showWarning('Please provide notes for this agenda.','Notes missing.');
+              // selected agenda has no notes
+           }
+       }
+  });
+}
+
+
 /////////////////////////////////////////// Meeting Notes End /////////////////////////////////////////////////////////
 
 /////////////////////////////////////////// Private Notes sidebar Start /////////////////////////////////////////////////////////
@@ -1990,7 +2026,7 @@ EnterSubmit(_Demotext) {
 
   _AssignId: any;
   ActionToProject_Click(taskName, Assignid) {
- 
+    //debugger
     this._taskName = taskName;
     this._AssignId = Assignid;
     this.router.navigate(["Meeting-Details/" + this.Schedule_ID + "/ActionToProject/7"]);
@@ -2016,18 +2052,19 @@ GetAssigned_SubtaskProjects() {
   this._ObjCompletedProj.CategoryId = 2411;
   this._ObjCompletedProj.Mode = 'Todo';
   this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
-
+  this._ObjCompletedProj.Agenda_id=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
     (data) => {
    
-      // console.log("Data---->", data);
+ 
       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
 
       // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-      this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-
+      this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+     
+   
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
       // console.log("the sss", this._TodoList)
@@ -2508,6 +2545,7 @@ editAgendaEvent(index: number) {
 
 
 deleteAgendaEvent(index: number) {
+ 
   if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
     Swal.fire({
       title: 'Remove this Agenda ?',
@@ -3763,6 +3801,45 @@ daysSelected: any[] = [];
 ///////////////////////////////////////// Meeting End functionality start //////////////////////////////////////////////
 Action_item: any = [];
 interval:any = 0;
+
+@ViewChild('exampleModal') exampleModal: ElementRef;
+
+
+EndMeetingSweetAlertBox(){
+  Swal.fire({
+    title: 'All agenda still not complete ?',
+    text: 'Do you want to repeat this meeting',
+    showConfirmButton: true,
+    showCancelButton: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // If the user confirms, open the modal
+      const modal = document.getElementById('exampleModal');
+      if (modal) {
+     
+        modal.classList.add('show'); // Show the modal
+        modal.style.display = 'block'; // Display the modal
+        document.body.classList.add('modal-open'); // Add class to body for modal-open
+        const backdrop = document.createElement('div');
+        document.getElementById("rightbar-overlay").style.display = "block";
+        document.body.appendChild(backdrop); // Add backdrop
+      }
+    }
+  });
+}
+
+closeModal() {
+  const modal = document.getElementById('exampleModal');
+      if (modal) {
+        modal.classList.remove('show'); // Show the modal
+        modal.style.display = 'none'; // Display the modal
+        document.body.classList.remove('modal-open'); // Add class to body for modal-open
+        const backdrop = document.createElement('div');       
+        document.getElementById("rightbar-overlay").style.display = "none";
+        document.body.appendChild(backdrop); // Add backdrop
+       
+      }
+}
 
 
 

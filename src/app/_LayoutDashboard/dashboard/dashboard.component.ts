@@ -771,7 +771,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.flagid = this.EventAction_type;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']); 
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
     this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
@@ -2891,7 +2891,7 @@ export class DashboardComponent implements OnInit {
       ((data) => {  
         console.log(" Result of GetProjectAndsubtashDrpforCalender:",data);
         this.ProjectListArray = JSON.parse(data['Projectlist']);
-        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']); 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         console.log(this.Portfoliolist_1, "Project List Array");
 
@@ -3887,18 +3887,37 @@ console.log("EndTimearr:",this.EndTimearr);
     console.log("--------------->", this.selectedFile)
   }
 
+
+  fetchDataStartTime: number;
+  fetchDataEndTime: number;
+  dataBindStartTime: number;
+  dataBindEndTime: number;
+  fetchDataTime: number;
+  dataBindTime: number;
+
   GetScheduledJson() {
  
     this._calenderDto.EmpNo = this.Current_user_ID;
-
+    this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
+        this.fetchDataEndTime = performance.now();
+        this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
+        
+        this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
+
+        this.dataBindEndTime = performance.now();
+        this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         console.log(this.Scheduledjson, "Testingssd");
+
+        console.log("Fetch Data Time: in milliseconds",this.fetchDataTime);
+        console.log("Data Bind Time: in milliseconds",this.dataBindTime);
+
+
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
        
         this.calendarOptions = {
-
           initialView: 'listWeek',
 
           firstDay: moment().weekday(),
