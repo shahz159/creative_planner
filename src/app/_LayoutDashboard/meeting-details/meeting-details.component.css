@@ -962,7 +962,7 @@ ul.meeting-attendees-userlist {
 
 .meeting-attendees-user .user-name {
     color: #000;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .meeting-attendees-user .user-time {
@@ -1094,7 +1094,7 @@ ul.attendees-note-userlist {
 
 .attendees-note-user .user-name {
     color: #000;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .attendees-note-user .user-time {
@@ -1136,13 +1136,14 @@ ul.attendees-note-userlist {
 .attendees-note-user .user-notes p {
     margin-bottom: 0;
     font-size: 11.5px;
-    font-size: 12px;
+    font-size: 13px;
     color: #000;
 }
 
 
-
-
+.user-Meeting_notes {
+   margin-left: 3em !important;
+}
 
 
 
@@ -1152,9 +1153,6 @@ ul.attendees-note-userlist {
     padding: 0px 0px;
     margin-bottom: 10px;
 }
-
-
-
 
 
 .allAttendees-user.user-info {
@@ -1179,7 +1177,7 @@ ul.attendees-note-userlist {
 
 .allAttendees-user .user-name {
     color: #000;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .allAttendees-user .user-time {
@@ -1220,7 +1218,7 @@ ul.attendees-note-userlist {
 .allAttendees-user .user-notes p {
     margin-bottom: 0;
     font-size: 11.5px;
-    font-size: 12px;
+    font-size: 13px;
     color: #000;
 }
 
@@ -4043,3 +4041,7 @@ span.kt-dt-cnt-view {
     font-size: 13px;
     min-height: 24px;
 }
+
+
+
+

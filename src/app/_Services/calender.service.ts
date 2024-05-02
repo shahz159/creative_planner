@@ -403,7 +403,7 @@ DeleteProjectsOfMeeting(obj: CalenderDTO) {
 NewUpdateCompleteAgenda(obj:CalenderDTO){
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.AgendaId=obj.AgendaId
-debugger
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewUpdateCompleteAgenda",this.obj_CalenderDTO)
 }
 
@@ -411,7 +411,7 @@ debugger
 NewUpdateUndoCompleteAgenda(obj:CalenderDTO){
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.AgendaId=obj.AgendaId
-debugger
+
   return this.http.post(this.rootUrl+"CalenderAPI/NewUpdateUndoCompleteAgenda",this.obj_CalenderDTO)
 }
 }
