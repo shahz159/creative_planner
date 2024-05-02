@@ -12154,7 +12154,7 @@
                                                               primary="true">Submit</button>
 
                                                           <button type="submit"
-                                                              class="btn btn-project-stv Bt-Submit pt-2 pb-2 "
+                                                              class="btn btn-project-stv Bt-Submit pt-2 pb-2"
                                                               *ngIf="Conditional_Active || Reject_active"
                                                               data-to="#pills-3-tab" [disabled]="!comments || !selectedType "
                                                               (click)="submitApproval();Close_Approval()"
@@ -12470,8 +12470,8 @@
       </div>
       <div  class="kt-portlet__foot py-3">
           <div  class="form-group mb-0">
-              <button  type="submit" class="btn btn-info btn-sm mr-2" (click)="rejectAllmultipleAprvs()" >Submit </button>
-              <button  type="submit" class="btn btn-secondary btn-sm "  >Reset</button>
+              <button  type="submit" class="btn btn-project-stv Bt-Submit pt-2 pb-2" [disabled]="!comments" (click)="rejectAllmultipleAprvs()" >Submit </button>
+              <button  type="submit" class="btn btn-project-stv mr-3 ml-2 pt-2 pb-2" (click)="closeMultipleSideBar()" >Back</button>
           </div>
           </div>
   </div>
