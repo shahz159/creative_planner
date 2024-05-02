@@ -1178,6 +1178,7 @@ span.count2 {
 .kt-pot-ttls span {
   text-transform: capitalize;
   font-weight: 600;
+  /* margin-right: 20px; */
 }
 .tb-w-45{
   width: 45px !important;
@@ -1350,7 +1351,7 @@ color:#000;
 
   }
   .in-process{
-  background-color: #1B272D !important;
+  background-color: #0089FB !important;
   color: white!important;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1383,7 +1384,7 @@ color:#000;
     height: 26px;
   }
   .in-processs{
-    background-color: #1B272D;
+    background-color: #0089FB;
     color:white;
 
 
@@ -1524,7 +1525,7 @@ left: 38%;
   .in-processs.active-in-processs::after {
     content: "";
     position: absolute !important;
-    border-top: 10px solid #1b272d;
+    border-top: 10px solid #0089FB;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     bottom: -32%;
@@ -1646,4 +1647,61 @@ left: 38%;
 }
 .font {
   font-size: 14px; /* Adjust the font size as per your requirement */
+}
+.symbol-label {
+  /* border-radius: 50px; */
+  border: 2px solid #5867dd !important;
+  background-color: #5867dd !important;
+  color:white !important ;
+  font-size: large;
+}
+
+/* .symbol-label:hover  {
+  color: #5867dd !important;
+  background-color:white !important ;
+  font-size: large;
+} */
+.restore{
+  margin-right: 20px;
+}
+.btn-v{
+  text-transform: capitalize;
+  font-weight: 600;
+  text-align: center;
+  border: 2px solid #5867dd !important;
+  background-color: #5867dd !important;
+  color: white !important;
+  width: 66px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  border-radius: 0.65rem;
+  font-size: .85rem !important;
+}
+.dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
+  vertical-align: baseline;
+}
+td p{
+  margin-bottom: 0px;
+}
+a.btn-v-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #585858;
+}
+a.btn-v-icon:hover{
+  background: #e6e6ff;
+  color: #7D7EBB;
+}
+a.btn-v-icon svg {
+  width: 24px;
+  height: 24px;
 }

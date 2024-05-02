@@ -414,4 +414,16 @@ NewUpdateUndoCompleteAgenda(obj:CalenderDTO){
 
   return this.http.post(this.rootUrl+"CalenderAPI/NewUpdateUndoCompleteAgenda",this.obj_CalenderDTO)
 }
+
+
+NewGetProjectandsubtaskDrp(prjName:string){
+     this.obj_CalenderDTO.Search_text=prjName.trim();
+     return this.http.post(this.rootUrl+"CalenderAPI/NewGetProjectandsubtaskDrp",this.obj_CalenderDTO);
+}
+
+
+
+
+
+
 }

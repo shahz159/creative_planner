@@ -290,7 +290,7 @@
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 info-btn  mr-2" role="button" placement="right"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!"  (click)="newDetails(item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!"  (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
 <g>
@@ -471,7 +471,7 @@
                                                     <!-- <td></td> -->
                                                     <td align="center">
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus" (click)="openInfo(item.Project_Code, item.Project_Name);info_active_btn(item)">
+                                                            data-trigger="focus" title="Project Info!" (click)="openInfo(item.Project_Code, item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
 <g>
@@ -496,7 +496,7 @@
                                                         </a>
 
                                                         <a *ngIf="(delayType==='Actions'||Mode==='AssignedActions'); else justopenprj"   tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!"  (click)="newDetails(item.Master_Code,item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!"  (click)="newDetails(item.Master_Code,item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
 <g>
@@ -522,7 +522,7 @@
                                                         </a>
                                                       <ng-template #justopenprj>
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                        data-trigger="focus"  data-toggle="tooltip" title="More Info!"  (click)="newDetails(item.Project_Code)">
+                                                        data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!"  (click)="newDetails(item.Project_Code)">
                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                         viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                    <g>
@@ -542,7 +542,7 @@
                                                        <path fill="#FFFFFF" d="M6.008,6.756c0.012-0.492,0.296-0.759,0.8-0.754C7.28,6.007,7.594,6.326,7.587,6.79
                                                            C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"/>
                                                    </g>
-                                                   
+
                                                    </svg>
                                                        </a>
                                                       </ng-template>

@@ -17,6 +17,7 @@ import 'moment/locale/fr';
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD-MM-YYYY',
@@ -60,7 +61,7 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
    }
-  
+
   ObjSubTaskDTO: SubTaskDTO;
   Current_user_ID: any;
   timelineList:any;
@@ -113,7 +114,7 @@ export class TimelineComponent implements OnInit {
   _Message: any;
   timelineDuration:any;
   showtimeline:boolean=true;
-
+  ProState:boolean=false;
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.timelineLog(this.type1);
@@ -124,7 +125,7 @@ export class TimelineComponent implements OnInit {
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
     // this.french();
- 
+
   }
 
 
@@ -134,6 +135,8 @@ export class TimelineComponent implements OnInit {
   }
 
   timelineLog(type){
+
+    console.log("timelineLog input:",);
     this.Type=type;
     this.showtimeline=true;
 
@@ -144,6 +147,7 @@ export class TimelineComponent implements OnInit {
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
       (data=>{
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+        console.log(this.timelineList,"timelinedata")
         this.timelineDuration=(data[0]['TotalTime']);
         this.darArray=this.timelineList;
         this._CurrentpageRecords=this.timelineList.length;
@@ -196,7 +200,7 @@ export class TimelineComponent implements OnInit {
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
       this.ObjSubTaskDTO.sort = sort;
-  
+
         this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -232,7 +236,7 @@ export class TimelineComponent implements OnInit {
         this.timelineDuration=(data[0]['TotalTime']);
       });
     }
-  } 
+  }
 
   loadMore() {
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
@@ -277,7 +281,7 @@ export class TimelineComponent implements OnInit {
       this.ObjSubTaskDTO.PageNumber = this.CurrentPageNo;
       this.ObjSubTaskDTO.PageSize = 30;
       this.ObjSubTaskDTO.sort = this.sortType;
-  
+
         this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
@@ -340,7 +344,7 @@ getTimelineActions(){
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-   debugger
+
     this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
@@ -351,13 +355,13 @@ getTimelineActions(){
     }
     else if(this.actionList.length==0 && this.Current_user_ID!=this.owner_empno && this.Current_user_ID!=this.resp_empno){
       // user is support. and he is not having actions in selected prj.
-      if(this.ObjSubTaskDTO.ProjectBlock=='standard') 
+      if(this.ObjSubTaskDTO.ProjectBlock=='standard')
       this.showAction=false;      // when prj is std,routine,todo.
-      else{  
+      else{
       this.showAction=true;
       this.noact_msg=true;    // when prj is core/secondary. tell user to create action first.
       }
-   
+
     }
     else{
       this.showAction=true;
@@ -371,7 +375,7 @@ clear(){
   this.project_code=null;
   this.showAction=false;
   this.project_type=null;
-  this.workdes = ""; 
+  this.workdes = "";
   this.workdes = "";
   this.current_Date = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   this.dateF = new FormControl(new Date());
@@ -428,7 +432,7 @@ getDarTime() {
 
   this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
     .subscribe(data => {
-      
+
       this.timeList = JSON.parse(data[0]['time_json']);
       if (this.timeList.length != 0) {
         this.bol = false;
@@ -457,7 +461,7 @@ diff_minutes(dt2, dt1) {
 }
 
 submitDar() {
- 
+
   if (this.starttime != null && this.endtime != null) {
     const [shours, sminutes] = this.starttime.split(":");
     const [ehours, eminutes] = this.endtime.split(":");
@@ -501,9 +505,9 @@ submitDar() {
     .subscribe(data => {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
-       
-      
-      
+
+
+
       // after timeline submission success then complete the action also if needed. start
         if(this.bothActTlSubm){
           const fd = new FormData();
@@ -512,7 +516,7 @@ submitDar() {
           fd.append("Master_Code", this.master_code);                                                               // MAIN PROJECT CODE.
           fd.append("Team_Autho", this.Current_user_ID);                                                            // USER ID.
           fd.append("Projectblock", this.project_type);                                                             //  prj type (optional)
-          fd.append("Remarks", this._remarks);                                                                  // REMARKS 
+          fd.append("Remarks", this._remarks);                                                                  // REMARKS
           fd.append('file', this.selectedFile);                                                                // FILE ATTACHMENT.
           this.service._UpdateSubtaskByProjectCode(fd)
             .subscribe((event: HttpEvent<any>) => {
@@ -536,21 +540,20 @@ submitDar() {
                   else
                   this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
                 };break;
-               
-              } 
+
+              }
             });
         }
         // after timeline submission success then complete the action also if needed.  end
-      
-        this.clear();   // clear all fields. project_code, master_code, .... 
+        this.timelineLog(this.Type);
+        this.clear();   // clear all fields. project_code, master_code, ....
     });
 
-  this.timelineLog(this.Type);
   this.getDarTime();
   document.getElementById("timepage").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-  
+
 }
 //Timeline submission ends
 
@@ -564,15 +567,15 @@ submitDar() {
     this.clear();
   }
 
-  closedarBar() { 
+  closedarBar() {
     document.getElementById("timepage").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     this.notifyService.showError("Cancelled", '');
     this.clear();
   }
-  
-  closeInfo(){   
+
+  closeInfo(){
     document.getElementById("timepage").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
@@ -605,7 +608,7 @@ submitDar() {
 // complete action with timeline start
 _inputAttachments:string='';
 bothActTlSubm:boolean=false;
-selectedFile:any;  
+selectedFile:any;
 _remarks:string='';
 onFileChange(e) {
   this._inputAttachments = e.target.files[0].name;
@@ -635,14 +638,14 @@ onFileChange(e) {
 //   // this.projectMoreDetailsService.getProjectMoreDetails(this.master_code).subscribe(res => {
 //   //          this.pcomplete_details=res[0];
 //   //          this.proj_details=this.pcomplete_details.ProjectInfo_Json;
-//   //          console.log('proj_details:',this.proj_details);     
+//   //          console.log('proj_details:',this.proj_details);
 //   // });
 // }
 
 p_details:any;
 a_details:any;
 getPADetails(prjcode,of:'PROJECT'|'ACTION'){
-  debugger
+
     if(prjcode)
     {
       if(of==='PROJECT'){
@@ -652,12 +655,12 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
       else{
         this.a_details=null;
       }
-  
+
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
-        debugger
+
                  console.log("|||=>",res[0].ProjectStates_Json);
                  if(of==='PROJECT'){
-                  
+
                   this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => {
                       const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
@@ -665,9 +668,9 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         ...this.p_details,
                         usedHours:tlTotalHrs,
                         remainingHours:+(this.p_details.AllocatedHours-tlTotalHrs).toFixed(1)
-                      }; 
+                      };
                   });
-                  
+
                  }
                  else{
                   this.a_details=JSON.parse(res[0].ProjectStates_Json)[0];
@@ -680,7 +683,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                              remainingHours:+(maxDuration-UsedInDAR).toFixed(1)
                             };
                    });
-                 }        
+                 }
       });
 
 
@@ -694,7 +697,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 
 // form validation new start.
 fieldRequired:boolean=false;
-onTLSubmitBtnClick(){ 
+onTLSubmitBtnClick(){
        if(
            this.master_code&&
            (this.showAction?this.project_code:true)&&
@@ -702,7 +705,7 @@ onTLSubmitBtnClick(){
            this.starttime&&
            this.endtime&&
            (this.starttime<this.endtime)&&
-           ((this.showAction&&this.bothActTlSubm)?this._remarks:true)
+           ((this.showAction&&this.bothActTlSubm)?(this._remarks&&(this.ProState?this.selectedFile:true)):true)
          ){
       // when all mandatory fields are provided.
          this.submitDar();
@@ -714,17 +717,23 @@ onTLSubmitBtnClick(){
 }
 
 
-
-
-
 // form validation new end.
 
 
 
 
 
+// functionality : file attachment is mandatory when action completion. start
+prostate(actioncode:any){
+  const selectedAction=this.actionList.find(action=>action.Project_Code==actioncode);
+  if(selectedAction){
+    this.ProState=selectedAction.ProState?true:false;
+  }
+  else
+  this.ProState=false;
+}
 
-
+// functionality : file attachment is mandatory when action completion. end
 
 
 

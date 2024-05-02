@@ -149,7 +149,7 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Project Type</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -164,7 +164,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Status</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -200,7 +200,22 @@
                                                         </div> -->
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
+                                                    <div class="count-height">
+                                                        <p><strong>Company</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
+                                                            <label class="kt-checkbox mb-3">
+                                                                <input type="checkbox" (change)="isCompanyChecked(item)"
+                                                                    [(ngModel)]="item.checked" [checked]="item">
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
                                                     <div class="count-height">
                                                         <p><strong>Employees</strong></p>
                                                         <div class="d-flex justify-content-between"
@@ -678,7 +693,7 @@
                                                         aria-label="Users: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> RACIS
                                                     </th>
-                                                    <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter[0].Name!='Delay')" >
+                                                    <ng-container  *ngIf="(StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
                                                         <th [appSort]="_ProjectDataList" data-order="desc"
                                                                 data-name="Status" tabindex="0" aria-controls="project-4"
                                                                 rowspan="1" colspan="1" class="curser-pointer"
@@ -690,7 +705,7 @@
 
                                                 </ng-container>
 
-                                                    <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter[0].Name=='Delay')" >
+                                                    <ng-container  *ngIf="(StatusCountFilter.length!=0&&StatusCountFilter[0].Name=='Delay')" >
                                                         <th [appSort]="_ProjectDataList" data-order="desc"  (click)="newDelaySorting() "
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
@@ -741,7 +756,7 @@
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a> -->
                                                         <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="More Info!" (click)="newDetails(item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!" (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                          <g>

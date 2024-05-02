@@ -293,29 +293,33 @@ export class MeetingDetailsComponent implements OnInit {
   View_Attendees_Notes() {
     document.getElementById("Attendees_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("meetingdetails").classList.add("position-fixed");
+    // document.getElementById("meetingdetails").classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.GetAttendeesnotes();
   }
   close_attendeesnotes_sideBar() {
     document.getElementById("Attendees_Notes").classList.remove("kt-quick-active--on");
-    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    // document.getElementById("meetingdetails").classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
   View_Private_Notes() {
     document.getElementById("Private_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("meetingdetails").classList.add("position-fixed");
+    // document.getElementById("meetingdetails").classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
   }
   close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    // document.getElementById("meetingdetails").classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
   }
   View_Meeting_Attendees() {
     document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
     this.GetProjectAndsubtashDrpforCalender();
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-    document.getElementById("meetingdetails").classList.add("position-fixed");
+    // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
   }
 
@@ -323,7 +327,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.selectedEmployees=[];
     document.getElementById("Meeting_Attendees").classList.remove("kt-quick-active--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.fruitInput.nativeElement.value = '';
   }
@@ -336,7 +340,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
     document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
-    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
@@ -620,7 +624,8 @@ selectedEmpId: any = [];
 addNewDMS() {
 
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
-    document.getElementById("meetingdetails").classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
     this.GetDMSList();
@@ -835,7 +840,7 @@ originalparticipants:any[]
 
 AddPortfolio(){
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
-    document.getElementById("meetingdetails").classList.add("position-fixed");
+    // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetProjectAndsubtashDrpforCalender();
@@ -851,7 +856,7 @@ closeLinkSideBar(){
       this.fruitInputpro.nativeElement.value = '';
     }
  
-    document.getElementById("meetingdetails").classList.remove("position-fixed");
+    // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -866,7 +871,7 @@ closeLinkSideBar(){
 
 AddProjects(){
   document.getElementById("LinkSideBar2").classList.add("kt-quick-panel--on");
-  document.getElementById("meetingdetails").classList.add("position-fixed");
+  // document.getElementById("meetingdetails").classList.add("position-fixed");
   document.getElementById("kt-bodyc").classList.add("overflow-hidden");
   document.getElementById("rightbar-overlay").style.display = "block";
   this.GetProjectAndsubtashDrpforCalender();
@@ -1435,7 +1440,8 @@ moreDetails(ProjectCode) {
 /////////////////////////////////////////// Previous Meeting Notes Side-Bar start /////////////////////////////////////////////////////////
 
 Slide_meeting() {
-  document.getElementById("meetingdetails").classList.add("position-fixed");
+  // document.getElementById("meetingdetails").classList.add("position-fixed");
+  document.getElementById("kt-bodyc").classList.add("overflow-hidden");
   document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
   document.getElementById("rightbar-overlay").style.display = "block";
  this.GetPreviousdate_meetingdata()
@@ -1443,7 +1449,8 @@ Slide_meeting() {
 
 closeInfo() {
   document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
-  document.getElementById("meetingdetails").classList.remove("position-fixed");
+  // document.getElementById("meetingdetails").classList.remove("position-fixed");
+  document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
   document.getElementById("rightbar-overlay").style.display = "none";
 }
 
@@ -1773,14 +1780,16 @@ Private_Notes:any
 Attachment_views() {
   document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "block";
-  document.getElementById("meetingdetails").classList.add("position-fixed");
+  // document.getElementById("meetingdetails").classList.add("position-fixed");
+  document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 }
 
 
 closedarBar() {
   document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "none";
-  document.getElementById("meetingdetails").classList.remove("position-fixed");
+  // document.getElementById("meetingdetails").classList.remove("position-fixed");
+  document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
 }
 
 filterText: string;

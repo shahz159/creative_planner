@@ -8,6 +8,8 @@ export class DropdownDTO {
     Selected_ProjectType:string;
     Selected_Status:string;
     SelectedEmp_No:string;
+    SelectedCmp_No:string;
+    SelectedCompany:string;
     Selected_SearchText:string;
 
     PortfolioId:number;

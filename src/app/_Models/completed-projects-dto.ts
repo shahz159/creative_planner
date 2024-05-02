@@ -1,5 +1,6 @@
 export class CompletedProjectsDTO {
     Schedule_ID:any;
+    Agenda_Id:any;
     //Calendar Event
     title: string;
     end: string;

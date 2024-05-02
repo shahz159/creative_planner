@@ -114,6 +114,19 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolioSharePreferences_Json", this.objPortfolioDTO)
   }
 
+
+  UpdateRestorePortfolioProjects(proj_Id,pid){
+    this.objPortfolioDTO.Project_ID = proj_Id;
+    this.objPortfolioDTO.Portfolio_ID = pid;
+    this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "TestAPI/NewUpdateRestorePortfolioProjects", this.objPortfolioDTO)
+  }
+
+
+
+
+
+
   GetPortfoliosBy_ProjectId(pid) {
     this.objPortfolioDTO.Project_Code = pid;
     this.objPortfolioDTO.Emp_No = localStorage.getItem('EmpNo');
@@ -137,6 +150,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
     this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.SelectedCompany = obj.SelectedCompany;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
@@ -149,6 +163,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
     this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.SelectedCompany = obj.SelectedCompany;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
@@ -162,6 +177,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.SelectedBlock_No = obj.SelectedBlock_No;
     this.ObjUserDetails.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjUserDetails.SelectedStatus = obj.SelectedStatus;
+    this.ObjUserDetails.SelectedCompany = obj.SelectedCompany;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
@@ -481,6 +497,7 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.SelectedCompany = obj.SelectedCompany;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     this.objDropdownsDTO.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "TestAPI/NewGetDropdownsData", this.objDropdownsDTO);
@@ -490,6 +507,7 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.SelectedCompany = obj.SelectedCompany;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
 
@@ -501,6 +519,7 @@ export class ProjectTypeService {
     this.objDropdownsDTO.Selected_ProjectType = obj.Selected_ProjectType;
     this.objDropdownsDTO.Selected_Status = obj.Selected_Status;
     this.objDropdownsDTO.SelectedEmp_No = obj.SelectedEmp_No;
+    this.objDropdownsDTO.SelectedCompany = obj.SelectedCompany;
     this.objDropdownsDTO.Selected_SearchText = obj.Selected_SearchText;
     this.objDropdownsDTO.ActiveStatus = obj.ActiveStatus;
 
@@ -550,6 +569,7 @@ export class ProjectTypeService {
     this._ObjCompletedProj.SelectedEmp_No = objDTO.SelectedEmp_No;
     this._ObjCompletedProj.CategoryId = objDTO.CategoryId;
     this._ObjCompletedProj.Schedule_ID = objDTO.Schedule_ID;
+    this._ObjCompletedProj.Agenda_Id = objDTO.Agenda_Id;
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
@@ -923,6 +943,15 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveRequests",this.ObjDto)
   }
 
+  InsertNewFeatureView(Emp_no){
+    this.ObjDto.Emp_No=Emp_no
+    return this.http.post(this.rootUrl+"Projects/NewInsertNewFeatureView",this.ObjDto)
+  }
+
+  GetNewFeatureView(Emp_no){
+    this.ObjDto.Emp_No=Emp_no
+    return this.http.post(this.rootUrl+"Projects/NewGetNewFeatureView",this.ObjDto)
+  }
 
 
   GetEmployeeLeaveResponses(Emp_no){
