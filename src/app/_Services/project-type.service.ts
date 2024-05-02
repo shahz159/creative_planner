@@ -569,6 +569,7 @@ export class ProjectTypeService {
     this._ObjCompletedProj.SelectedEmp_No = objDTO.SelectedEmp_No;
     this._ObjCompletedProj.CategoryId = objDTO.CategoryId;
     this._ObjCompletedProj.Schedule_ID = objDTO.Schedule_ID;
+    this._ObjCompletedProj.Agenda_Id = objDTO.Agenda_Id;
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);

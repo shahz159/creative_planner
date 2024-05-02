@@ -1417,7 +1417,7 @@ DeleteProject(ProjectCode: number) {
 }
 
 moreDetails(ProjectCode) {
-  let name: string = 'MoreDetails';
+  let name: string = 'Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${ProjectCode}`;
   var myWindow = window.open(myurl, ProjectCode);

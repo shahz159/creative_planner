@@ -481,9 +481,9 @@ this.prjPIECHART.render();
     if(this.currentActionView===undefined){
 
          // 1. bar chart start.
-             this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, '1', this.Current_user_ID).subscribe((res: any) => {
+            
 
-               let tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
+               let tlTotalHrs:number = this.projectInfo.TotalHours;
 
 
                  //standard  graph cal start    may need updation.
@@ -573,7 +573,7 @@ this.prjPIECHART.render();
 
 
 
-             });
+             
          //  bar chart end.
 
          // 2. Pie chart start.
@@ -934,7 +934,7 @@ this.prjPIECHART.render();
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
     }
 
-debugger
+
 
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
@@ -1050,7 +1050,7 @@ debugger
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-debugger
+
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                  return {
@@ -1755,7 +1755,7 @@ debugger
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-      debugger
+      
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -1807,7 +1807,7 @@ debugger
           }
 
         }
-        debugger
+        
         if (this.requestType == 'Task Complete') {
           this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
@@ -1838,7 +1838,7 @@ debugger
         // if there are no std task aprv request
          this.standardjson=[];
          this.currentStdAprView=undefined;
-         this.closeApprovalSideBar();
+        //  this.closeApprovalSideBar();
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -1850,7 +1850,7 @@ debugger
 standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
@@ -1866,7 +1866,7 @@ currentStdAprView:number|undefined;
     });
   }
 
-  approvalClick(actionType) {  debugger
+  approvalClick(actionType) {  
     this.comments = ""
     switch (actionType) {
       case 'ACCEPT': {
@@ -2010,7 +2010,7 @@ currentStdAprView:number|undefined;
   allStdAprSelected:boolean=false;
   selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
-     debugger
+     
     if(this.selectedStdAprvs.length===0){
       this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
       return;
@@ -2068,7 +2068,7 @@ currentStdAprView:number|undefined;
 
 
 
-  submitApproval() {     debugger
+  submitApproval() {     
     if (this.selectedType == '1') {
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2080,7 +2080,7 @@ currentStdAprView:number|undefined;
           element.Remarks = this.comments;
         });
       }
-      debugger
+      
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
@@ -2842,7 +2842,7 @@ currentStdAprView:number|undefined;
       });
     }
     else if (val == 1) {
-      debugger
+      
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.json = jsonvalue;
@@ -2850,7 +2850,7 @@ currentStdAprView:number|undefined;
       this.approvalObj.isApproval = val;
 
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-        debugger
+        
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
@@ -3484,7 +3484,7 @@ check_allocation() {
 
 
   Portfolio_Select(selecteditems) {
-    debugger
+    
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -3550,7 +3550,7 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-    debugger
+    
     if(this._SelectedPorts==' '||this._SelectedPorts==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
@@ -3705,7 +3705,7 @@ check_allocation() {
 
 
 
-  closeInfoProject() { debugger
+  closeInfoProject() { 
     // For closing sidebar on 'X' buttton
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     // For sidebar overlay background removing the slide on 'X' button
@@ -3728,7 +3728,7 @@ check_allocation() {
 
 
   updateMainProject() {
-    debugger
+    
 // for checking whether mandatory fields are provided or not.
    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
@@ -3760,7 +3760,7 @@ check_allocation() {
       fd.append("Project_Name", this.projectInfo.Project_Name);
       this.service._fileuploadService(fd).
         subscribe((event: HttpEvent<any>) => {
-          debugger
+          
           switch (event.type) {
             case HttpEventType.Sent:
               console.log('Request has been made!');
@@ -5692,7 +5692,7 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-    debugger
+    
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -6201,7 +6201,7 @@ removeSelectedDMSMemo(item){
            this.getholdate();
            this.getRejectType();
            this.updatePortfolioPage();
-           debugger
+           
            if(this.currentActionView!==undefined){
              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
              }else{
@@ -6235,12 +6235,12 @@ removeSelectedDMSMemo(item){
       if(this.currentActionView===undefined){
         // project release
         if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-          debugger
+          
           this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = 'Project Release';
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
-          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { debugger
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { 
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
@@ -6866,7 +6866,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+  
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -6913,7 +6913,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 /////////////////////task attachemnets start///////////////////////////////////////
 openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
-debugger
+
   repDate = new Date(repDate);
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -7020,7 +7020,7 @@ send_from: any;
 rejectactivity: any;
 
 
-openNewPrjReleaseSideBar() { debugger
+openNewPrjReleaseSideBar() { 
   document.getElementById("new-prj-release-sidebar").classList.add("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementById("newdetails").classList.add("position-fixed");
@@ -7265,7 +7265,7 @@ selectedactvy:string|undefined;
 lastActivityOn:string|undefined;
 
 showFullGraph(){
-  debugger
+  
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
   this.lastActivityOn=alldates[alldates.length-1];   // last activity on
@@ -7369,7 +7369,7 @@ onGraphOptionChanged(option:string){
 
 }
 
-loadActivitiesByDate(d){   debugger
+loadActivitiesByDate(d){   
 
   this.activitiesOnthat=this.getActivitiesOf(d);  
   const currentDt=new Date();
@@ -7587,7 +7587,7 @@ backMainMeetings() {
 }
 
 //  save meeting as draft start.
-Insert_indraft() { debugger
+Insert_indraft() { 
   if (this.draftid != 0) {
     this._calenderDto.draftid = this.draftid;
   }
@@ -7619,7 +7619,7 @@ Insert_indraft() { debugger
   this._calenderDto.Project_Code = this.MasterCode.toString();
 
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-    (data => { debugger
+    (data => { 
       if (data['message'] == '1') {
         // this.Getdraft_datalistmeeting();
         this.closeschd();

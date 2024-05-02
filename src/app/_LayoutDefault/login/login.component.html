@@ -1,128 +1,118 @@
 <div class="kt-grid kt-grid--ver kt-grid--root kt-page">
-    <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v6 kt-login--signin h-100" id="kt_login">
-      <div
-        class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile">
-        <div class="kt-grid__item kt-grid__item--fluid kt-grid__item--center kt-grid kt-grid--ver kt-login__content"
-          style="background-image: url(assets/images/login-banner.jpg);">
-          <div class="kt-login__section">
-            <div class="kt-login__block">
-              <!-- <h3 class="kt-login__title">Join Our Community</h3> -->
-              <div class="kt-login__desc">
-                <!-- Execution Process... -->
-                <br>
-              </div>
+  <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v6 kt-login--signin h-100" id="kt_login">
+    <div
+      class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile">
+      <div class="kt-grid__item kt-grid__item--fluid kt-grid__item--center kt-grid kt-grid--ver kt-login__content"
+        style="background-image: url(assets/images/login-banner.jpg);">
+        <div class="kt-login__section">
+          <div class="kt-login__block">
+            <!-- <h3 class="kt-login__title">Join Our Community</h3> -->
+            <div class="kt-login__desc">
+              <!-- Execution Process... -->
+              <br>
             </div>
           </div>
         </div>
-        <div class="kt-grid__item  kt-grid__item--order-tablet-and-mobile-2  kt-grid kt-grid--hor kt-login__aside p-0">
-          <div class="kt-login__wrapper">
-            <div class="kt-login__container">
-              <div class="kt-login__body" style="padding:25px 30px; border-radius: 5px;">
-                <div class="kt-login__logo mb-4">
-                  <a href="#">
-                    <!-- <img src="assets/images/logo.png" width="60"> -->
-                  </a>
-                </div>
-                <div class="kt-login__signin">
-                  <div class="kt-login__head">
-                    <h2 style="font-size: 2rem;
-                    color: #67666e;">Sign In </h2>
-                  </div>
-                  <div class="kt-login__form">
-
-                    <form class="kt-form" action="" [formGroup]="loginForm" (ngSubmit)="login()">
-                      <div class="form-group mb-4" [ngClass]="{ 'has-error': submitted && f.userid.errors }">
-                        <input class="form-control" type="text" placeholder="UserName" autocomplete="off"
-                          formControlName="userid">
-                        <div *ngIf="submitted && f.userid.errors" class="help-block">
-                          <div *ngIf="f.userid.errors.required" class="text-info"><b>UserName is required !</b></div>
-                        </div>
-                        <p *ngIf="InValidUserName" class="text-danger"><strong>In Correct UserName</strong></p>
-                      </div>
-                      <div class="form-group position-relative" [ngClass]="{ 'has-error': submitted && f.password.errors }">
-                        <input class="form-control" type="password" placeholder="Password" formControlName="password"
-                          (keypress)="OnKeyPress()">
-                          <a class="showOrHide">
-                            <span class="close-eye">
-                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" class="iconify iconify--mdi" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg>
-                            </span>
-
-                            <span class="open-eye">
-                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" class="iconify iconify--mdi" width="1em" height="1em" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M2 5.27L3.28 4L20 20.72L18.73 22l-3.08-3.08c-1.15.38-2.37.58-3.65.58c-5 0-9.27-3.11-11-7.5c.69-1.76 1.79-3.31 3.19-4.54L2 5.27M12 9a3 3 0 0 1 3 3a3 3 0 0 1-.17 1L11 9.17A3 3 0 0 1 12 9m0-4.5c5 0 9.27 3.11 11 7.5a11.79 11.79 0 0 1-4 5.19l-1.42-1.43A9.862 9.862 0 0 0 20.82 12A9.821 9.821 0 0 0 12 6.5c-1.09 0-2.16.18-3.16.5L7.3 5.47c1.44-.62 3.03-.97 4.7-.97M3.18 12A9.821 9.821 0 0 0 12 17.5c.69 0 1.37-.07 2-.21L11.72 15A3.064 3.064 0 0 1 9 12.28L5.6 8.87c-.99.85-1.82 1.91-2.42 3.13Z"></path></svg>
-                            </span>
-
-                          </a>
-
-                        <div *ngIf="submitted && f.password.errors" class="help-block">
-                          <div *ngIf="f.password.errors.required" class="text-info"><b>Password is required !</b></div>
-                        </div>
-                      </div>
-                      <p *ngIf="message" class="text-center error" class="text-danger"><strong>{{message}}</strong></p>
-                      <!-- <div class="kt-login__extra">
-                        <label class="kt-checkbox">
-                          <input type="checkbox" name="remember"> Remember me
-                          <span></span>
-                        </label>
-                      </div> -->
-                      <div class="kt-login__actions">
-                        <button id="kt_login_signin_submit" class="btn btn-primary kt-btn px-5" style="height: 38px; position: relative;"
-                        type="submit" [disabled]="buttonClicked">
-                  <span *ngIf="buttonClicked" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                    <!-- Add your loader or spinner here -->
-                    <!-- For example, using Bootstrap spinner -->
-                    <div class="spinner-border text-light" role="status">
-                      <span class="visually-hidden"></span>
-                    </div>
-                  </span>
-                  <span *ngIf="!buttonClicked">Sign In</span>
-                </button>
-
-
-                          <!-- <button id="kt_login_signin_submit" class="btn btn-success kt-btn px-5" style="height: 38px;"
-                          (click)="AddArray()">AddArray</button> -->
-
-
-                        <!-- <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate"
-                          style="background-color: #22b9ff;color: #ffffff;" type="submit">
-                          [disabled]="isLoading"
-                         <img  style="width: 30px;" src="assets/Spinners/spinner4.gif" />
-                          Sign In
-                        </button> -->
-                        <!-- *ngIf="isLoading" -->
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="kt-login__forgot">
-                  <div class="kt-login__head">
-                    <h3 class="kt-login__title">Forgotten Password ?</h3>
-                    <div class="kt-login__desc">Enter your email to reset your password:</div>
-                  </div>
-                  <div class="kt-login__form">
-                    <form class="kt-form" action="">
-                      <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Email" name="email" id="kt_email"
-                          autocomplete="off">
-                      </div>
-                      <div class="kt-login__actions">
-                        <button id="kt_login_forgot_submit" class="btn btn-brand btn-pill btn-elevate">Request</button>
-                        <button id="kt_login_forgot_cancel" class="btn btn-outline-brand btn-pill">Cancel</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- <div class="kt-login__account">
-              <span class="kt-login__account-msg">
-                Don't have an account yet ?
-              </span>&nbsp;&nbsp;
-              <a href="javascript:;" id="kt_login_signup" class="kt-login__account-link">Sign Up!</a>
-            </div> -->
-          </div>
-        </div>
-
       </div>
+      <div class="kt-grid__item  kt-grid__item--order-tablet-and-mobile-2  kt-grid kt-grid--hor kt-login__aside p-0">
+        <div class="kt-login__wrapper">
+          <div class="kt-login__container">
+            <div class="kt-login__body" style="padding:25px 30px; border-radius: 5px;">
+              <div class="kt-login__logo mb-4">
+                <a href="#">
+                  <!-- <img src="assets/images/logo.png" width="60"> -->
+                </a>
+              </div>
+              <div class="kt-login__signin">
+                <div class="kt-login__head">
+                  <h2 style="font-size: 2rem;
+                  color: #67666e;">Sign In </h2>
+                </div>
+                <div class="kt-login__form">
+
+                  <form class="kt-form" action="" [formGroup]="loginForm" (ngSubmit)="login()">
+                    <div class="form-group mb-4" [ngClass]="{ 'has-error': submitted && f.userid.errors }">
+                      <input class="form-control" type="text" placeholder="UserName" autocomplete="off"
+                        formControlName="userid">
+                      <div *ngIf="submitted && f.userid.errors" class="help-block">
+                        <div *ngIf="f.userid.errors.required" class="text-info"><b>UserName is required !</b></div>
+                      </div>
+                      <p *ngIf="InValidUserName" class="text-danger"><strong>In Correct UserName</strong></p>
+                    </div>
+                    <div class="form-group position-relative" [ngClass]="{ 'has-error': submitted && f.password.errors }">
+                      <input class="form-control" type="password" placeholder="Password" formControlName="password"
+                        (keypress)="OnKeyPress()">
+                        <a class="showOrHide">
+                          <span class="open-eye">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" class="iconify iconify--mdi" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg>
+                          </span>
+                          
+                          <span class="close-eye">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" class="iconify iconify--mdi" width="1em" height="1em" viewBox="0 0 24 24">
+                              <path fill="currentColor" d="M2 5.27L3.28 4L20 20.72L18.73 22l-3.08-3.08c-1.15.38-2.37.58-3.65.58c-5 0-9.27-3.11-11-7.5c.69-1.76 1.79-3.31 3.19-4.54L2 5.27M12 9a3 3 0 0 1 3 3a3 3 0 0 1-.17 1L11 9.17A3 3 0 0 1 12 9m0-4.5c5 0 9.27 3.11 11 7.5a11.79 11.79 0 0 1-4 5.19l-1.42-1.43A9.862 9.862 0 0 0 20.82 12A9.821 9.821 0 0 0 12 6.5c-1.09 0-2.16.18-3.16.5L7.3 5.47c1.44-.62 3.03-.97 4.7-.97M3.18 12A9.821 9.821 0 0 0 12 17.5c.69 0 1.37-.07 2-.21L11.72 15A3.064 3.064 0 0 1 9 12.28L5.6 8.87c-.99.85-1.82 1.91-2.42 3.13Z"></path></svg>
+                          </span>
+                          
+                        </a>
+
+                      <div *ngIf="submitted && f.password.errors" class="help-block">
+                        <div *ngIf="f.password.errors.required" class="text-info"><b>Password is required !</b></div>
+                      </div>
+                    </div>
+                    <p *ngIf="message" class="text-center error" class="text-danger"><strong>{{message}}</strong></p>
+                    <!-- <div class="kt-login__extra">
+                      <label class="kt-checkbox">
+                        <input type="checkbox" name="remember"> Remember me
+                        <span></span>
+                      </label>
+                    </div> -->
+                    <div class="kt-login__actions">
+                      <button id="kt_login_signin_submit" class="btn btn-primary kt-btn px-5" style="height: 38px;"
+                        type="submit">Sign In</button>
+
+                        <!-- <button id="kt_login_signin_submit" class="btn btn-success kt-btn px-5" style="height: 38px;"
+                        (click)="AddArray()">AddArray</button> -->
+                        
+
+                      <!-- <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate"
+                        style="background-color: #22b9ff;color: #ffffff;" type="submit">
+                        [disabled]="isLoading" 
+                       <img  style="width: 30px;" src="assets/Spinners/spinner4.gif" />
+                        Sign In
+                      </button> -->
+                      <!-- *ngIf="isLoading" -->
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="kt-login__forgot">
+                <div class="kt-login__head">
+                  <h3 class="kt-login__title">Forgotten Password ?</h3>
+                  <div class="kt-login__desc">Enter your email to reset your password:</div>
+                </div>
+                <div class="kt-login__form">
+                  <form class="kt-form" action="">
+                    <div class="form-group">
+                      <input class="form-control" type="text" placeholder="Email" name="email" id="kt_email"
+                        autocomplete="off">
+                    </div>
+                    <div class="kt-login__actions">
+                      <button id="kt_login_forgot_submit" class="btn btn-brand btn-pill btn-elevate">Request</button>
+                      <button id="kt_login_forgot_cancel" class="btn btn-outline-brand btn-pill">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="kt-login__account">
+            <span class="kt-login__account-msg">
+              Don't have an account yet ?
+            </span>&nbsp;&nbsp;
+            <a href="javascript:;" id="kt_login_signup" class="kt-login__account-link">Sign Up!</a>
+          </div> -->
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
