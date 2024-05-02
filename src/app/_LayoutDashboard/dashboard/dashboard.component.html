@@ -3123,10 +3123,12 @@
                             <mat-label>Add Participants</mat-label>
                             <mat-chip-list #selectedParticipants>
                                 <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt" (removed)="removeSelectedParticipant(p)">
+                                  
                                     {{getObjOf(_EmployeeListForDropdown,p,'Emp_No').DisplayName}}
                                     <button matChipRemove>
                                         <mat-icon>cancel</mat-icon>
                                     </button>
+                                    
                                 </mat-chip>
                             </mat-chip-list>
                             <div class="d-flex">

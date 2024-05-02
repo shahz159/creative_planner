@@ -3313,7 +3313,16 @@
                                                               <div class="fw-mormal timeline-content text-muted ps-3">
                                                                   <p class="kt-timeline-tl mb-0">
                                                                       <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
-                                                                      <span  class="fw-bold text-turquoise text-gray-800 "> {{item.Value}} by</span>
+                                                                      <span  class="fw-bold text-turquoise text-gray-800 "> 
+                                                                        <ng-container *ngIf="item.count==0||item.count==1;else whencount">
+                                                                            {{item.Value}} by
+                                                                        </ng-container>
+                                                                        <ng-template #whencount>
+                                                                              
+                                                                    Project Deadline Change ({{item.count+(item.count>2?'th':'nd')}} Update)
+
+                                                                        </ng-template>
+                                                                      </span>
                                                                       <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
 
                                                                         <!-- <span  class="fw-bold text-gray-750"> {{item.Modifiedby}}</span> -->
@@ -10627,7 +10636,7 @@
                                           <ng-option *ngFor="let item of Week_array">{{item}}</ng-option>
                                       </ng-select>
                                       <span class="Wd_text_kt"> Max Duration limit is 2 hrs only.</span>
-                                  </div>
+                                  </div> 
                               </div>
                               <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="3"> Allocated hours
                                   <div class="input-icon Sub_In_ed">

@@ -765,7 +765,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.flagid = this.EventAction_type;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']); 
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
     this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
@@ -1280,7 +1280,7 @@ export class DashboardComponent implements OnInit {
           this.SelectDms = [];
           this.SelectDms1 = [];
           let arr3 = [];
-          var str = (this.EventScheduledjson[0]['DMS_Name']);
+          var str = (this.EventScheduledjson[0]['DMS_Name']); debugger
           arr3 = str.split(",");
           for (var i = 0; i < arr3.length; i++) {
             this.Memos_List.forEach(element => {
@@ -1289,6 +1289,7 @@ export class DashboardComponent implements OnInit {
               }
             });
           }
+          console.log("inside duplicate task and event:this.SelectDms value  ", this.SelectDms);
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
@@ -2840,7 +2841,7 @@ debugger
       ((data) => {  
         console.log(" Result of GetProjectAndsubtashDrpforCalender:",data);
         this.ProjectListArray = JSON.parse(data['Projectlist']);
-        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']); 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         console.log(this.Portfoliolist_1, "Project List Array");
 
@@ -5429,7 +5430,7 @@ drawBarGraph(){
 
   getObjOf(arr, id, idName) {
     const obj = arr.find(item => item[idName] == id);
-    return obj;
+    return obj?obj:'';
   }
 
 
