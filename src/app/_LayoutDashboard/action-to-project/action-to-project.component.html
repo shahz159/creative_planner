@@ -32,7 +32,10 @@
     <div class="form-group">
         <label> Action Name <span class="text-danger">*</span></label>
         <input #name="ngModel" required type="text" class="form-control" [ngClass]="{'error-border': _subname == true||(name.touched&&!Sub_ProjectName)}" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName" required  (ngModelChange)="_subname=!Sub_ProjectName" />
+       
+    
         <span *ngIf ="_subname == true||(name.touched&&!Sub_ProjectName)" style="color:red">Please enter action name</span>
+    
     </div>
     <div class="form-group">
         <label>Description :<span class="text-danger">*</span></label>

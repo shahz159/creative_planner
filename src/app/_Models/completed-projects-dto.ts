@@ -1,5 +1,6 @@
 export class CompletedProjectsDTO {
     Schedule_ID:any;
+    Agenda_Id:any;
     //Calendar Event
     title: string;
     end: string;
@@ -65,4 +66,5 @@ export class CompletedProjectsDTO {
     CategoryId: number;
     Filter:string;
     Type:string;
+    Agenda_id:any
 }

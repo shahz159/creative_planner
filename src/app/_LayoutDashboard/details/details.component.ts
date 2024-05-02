@@ -481,10 +481,9 @@ this.prjPIECHART.render();
     if(this.currentActionView===undefined){
 
          // 1. bar chart start.
-             this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, '1', this.Current_user_ID).subscribe((res: any) => {
 
-               let tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
 
+               let tlTotalHrs:number = this.projectInfo.TotalHours;
 
                  //standard  graph cal start    may need updation.
                  let x=0;
@@ -573,7 +572,7 @@ this.prjPIECHART.render();
 
 
 
-             });
+
          //  bar chart end.
 
          // 2. Pie chart start.
@@ -934,7 +933,7 @@ this.prjPIECHART.render();
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
     }
 
-debugger
+
 
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
@@ -1056,7 +1055,7 @@ debugger
           // })
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-debugger
+
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                  return {
@@ -1154,14 +1153,21 @@ debugger
 
 
   sendRequest(): void {
-    this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
-   console.log(res,'openRequestDialog')
-    })
-    Swal.fire('Request Sent Successfully');
-    this.isRequestSent = true;
-    this.ishide=false
-    $('.hide-content').addClass('d-none')
-
+    if (!this.Usercomment){
+      this.formFieldsRequired=true;
+      return
+    }
+    else{
+      this.formFieldsRequired=false;
+      this.closeRequestDialog();
+      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+        console.log(res,'openRequestDialog')
+         });
+         Swal.fire('Request Sent Successfully');
+         this.isRequestSent = true;
+         this.ishide=false
+         $('.hide-content').addClass('d-none');
+    }
   }
 
   BarChartOfAction:any;
@@ -1304,11 +1310,29 @@ debugger
     document.getElementById("newdetails").classList.add("position-fixed");
   }
 
+
+  MultipleApprovalSideBar() {
+    document.getElementById("multiple_view").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+  }
+
+
   closeApprovalSideBar(){
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
   }
+
+  closeMultipleSideBar(){
+    document.getElementById("multiple_view").classList.remove("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
+  }
+
+
+
+
   hide_main_approval(){
     if(this.selectedStdAprvs&&this.selectedStdAprvs.length>0){
       // atleast one selection required.
@@ -1323,6 +1347,13 @@ debugger
     document.getElementById("main-approval").classList.remove("d-none");
     document.getElementById("main-reject").classList.add("d-none");
   }
+
+multipleback(){
+  document.getElementById('multiple-approval').classList.remove('d-none')
+  document.getElementById('multiple-reject').classList.add('d-none')
+}
+
+
   closeInfo() {
     this._remarks = ''
     this.selectedFile=null;
@@ -1754,6 +1785,7 @@ debugger
   repdate:any;
   contenttype: any;
   submitby:any;
+  multiapproval_list:any[]
 
   getapprovalStats() {
     // this.approvalEmpId = null;
@@ -1761,12 +1793,16 @@ debugger
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-     
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
+
+
+        this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']))
+        console.log('multiapproval_list',this.multiapproval_list)
+
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
@@ -1813,7 +1849,6 @@ debugger
           }
 
         }
-       
         if (this.requestType == 'Task Complete') {
           this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
@@ -1843,8 +1878,10 @@ debugger
 
         // if there are no std task aprv request
          this.standardjson=[];
+         this.multiapproval_list=[]
          this.currentStdAprView=undefined;
          this.closeApprovalSideBar();
+         this.closeMultipleSideBar()
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -1856,7 +1893,7 @@ debugger
 standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => { 
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
@@ -1872,7 +1909,7 @@ currentStdAprView:number|undefined;
     });
   }
 
-  approvalClick(actionType) { 
+  approvalClick(actionType) {
     this.comments = ""
     switch (actionType) {
       case 'ACCEPT': {
@@ -1882,6 +1919,8 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        // this.getapprovalStats();
+        //    this.getProjectDetails(this.URL_ProjectCode);
 
       }; break;
       case 'CONDITIONAL': {
@@ -2016,7 +2055,6 @@ currentStdAprView:number|undefined;
   allStdAprSelected:boolean=false;
   selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
-    
     if(this.selectedStdAprvs.length===0){
       this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
       return;
@@ -2074,7 +2112,7 @@ currentStdAprView:number|undefined;
 
 
 
-  submitApproval() {    
+  submitApproval() {
     if (this.selectedType == '1') {
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2086,7 +2124,6 @@ currentStdAprView:number|undefined;
           element.Remarks = this.comments;
         });
       }
-     
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
@@ -2848,7 +2885,6 @@ debugger
       });
     }
     else if (val == 1) {
-     
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.json = jsonvalue;
@@ -2856,7 +2892,6 @@ debugger
       this.approvalObj.isApproval = val;
 
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-       
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
@@ -2948,7 +2983,7 @@ debugger
 
   onAction_update() {
 
-// check all mandatory field are provided.    
+// check all mandatory field are provided.
     if(!(this.ActionName&&this.ActionDescription&&
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
@@ -3247,7 +3282,7 @@ check_allocation() {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
-  } 
+  }
 
 
  submitDar(){
@@ -3487,7 +3522,6 @@ check_allocation() {
 
 
   Portfolio_Select(selecteditems) {
-   
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -3553,7 +3587,6 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-   
     if(this._SelectedPorts==' '||this._SelectedPorts==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
@@ -3731,7 +3764,6 @@ check_allocation() {
 
 
   updateMainProject() {
-   
 // for checking whether mandatory fields are provided or not.
    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
@@ -3763,7 +3795,6 @@ check_allocation() {
       fd.append("Project_Name", this.projectInfo.Project_Name);
       this.service._fileuploadService(fd).
         subscribe((event: HttpEvent<any>) => {
-         
           switch (event.type) {
             case HttpEventType.Sent:
               console.log('Request has been made!');
@@ -5695,7 +5726,6 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-   
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -6204,7 +6234,6 @@ removeSelectedDMSMemo(item){
            this.getholdate();
            this.getRejectType();
            this.updatePortfolioPage();
-          
            if(this.currentActionView!==undefined){
              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
              }else{
@@ -6238,7 +6267,6 @@ removeSelectedDMSMemo(item){
       if(this.currentActionView===undefined){
         // project release
         if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-         
           this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = 'Project Release';
           this.approvalObj.Emp_no = this.Current_user_ID;
@@ -6869,7 +6897,6 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
- 
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -6916,7 +6943,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 /////////////////////task attachemnets start///////////////////////////////////////
 openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
-debugger
+
   repDate = new Date(repDate);
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -7268,7 +7295,6 @@ selectedactvy:string|undefined;
 lastActivityOn:string|undefined;
 
 showFullGraph(){
- 
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
   this.lastActivityOn=alldates[alldates.length-1];   // last activity on
@@ -7329,8 +7355,8 @@ showFullGraph(){
       dataFormat: "json",
       dataSource:dataSource
     }).render();
-    
- // resolves slowness occuring in the starting. by rendering graph again.   
+
+ // resolves slowness occuring in the starting. by rendering graph again.
     myChart=new FusionCharts({
       type: "zoomline",
       renderAt: "full-graph",
@@ -7338,9 +7364,9 @@ showFullGraph(){
       height: "100%",
       dataFormat: "json",
       dataSource:dataSource
-    }).render();   
+    }).render();
 // resolves slowness occuring in the starting. by rendering graph again.
- 
+
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
@@ -7372,9 +7398,9 @@ onGraphOptionChanged(option:string){
 
 }
 
-loadActivitiesByDate(d){  
+loadActivitiesByDate(d){
 
-  this.activitiesOnthat=this.getActivitiesOf(d);  
+  this.activitiesOnthat=this.getActivitiesOf(d);
   const currentDt=new Date();
   const dateClicked=new Date(d);
   this.selectedactvy=(dateClicked.getDate()==currentDt.getDate())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
@@ -7819,6 +7845,124 @@ updatePortfolioPage(){
 
 
 }
+
+
+
+allMUlAprSelected:boolean=false;
+selectedmulAprvs:any=[];
+acceptAllMulApprReq(){
+debugger
+  if(this.selectedmulAprvs.length===0){
+    this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
+    return;
+  }
+
+
+
+  const multasktoApprove=this.multiapproval_list.filter(item=>this.selectedmulAprvs.includes(item.SNo));
+  if(multasktoApprove.length==0){
+    this.notifyService.showInfo("Please select atleast one task to approve","Note:");
+  }
+  else{
+    const x=this.multiapproval_list.length-multasktoApprove.length;   // decides whether the sidebar remain open or should close.
+    this.approvalservice.NewUpdateAcceptApprovalsService(multasktoApprove).subscribe(data =>{
+    console.log(data,"accept-data");
+     if(x===0)
+      this.closeMultipleSideBar();
+
+     this.notifyService.showSuccess("approved.",'Success');
+this.getProjectDetails(this.URL_ProjectCode);
+     this.getapprovalStats();
+     this.selectedmulAprvs=[];
+     this.allMUlAprSelected=false;
+
+    });
+  }
+
+}
+
+
+hide_mul_approval(){
+  if(this.selectedmulAprvs&&this.selectedmulAprvs.length>0){
+    // atleast one selection required.
+  document.getElementById("multiple-approval").classList.add("d-none");
+  document.getElementById("multiple-reject").classList.remove("d-none");
+  }
+  else{
+    this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
+  }
+}
+
+
+onMultipleAprvSel(e,aprvls){
+
+  aprvls.forEach(aprv=>{
+        if(e.target.checked){
+              if(!this.selectedmulAprvs.includes(aprv.SNo))
+              this.selectedmulAprvs.push(aprv.SNo);
+        }else{
+              const x=this.selectedmulAprvs.indexOf(aprv.SNo);
+              this.selectedmulAprvs.splice(x,1);
+        }
+  });
+
+}
+
+
+
+
+rejectAllmultipleAprvs(){
+  debugger
+  if (this.selectedType == '3') {
+    if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+      this.noRejectType = true;
+      this.notifyService.showError("Please select Reject Type", "Failed");
+      return false;
+    }
+    else {
+
+
+    let selectedmultipleApprovals=this.multiapproval_list.filter(item=>this.selectedmulAprvs.includes(item.SNo));
+    selectedmultipleApprovals=selectedmultipleApprovals.map(item=>({
+              SNo: item.SNo,
+              Type: item.Type,
+              ReportType: item.ReportType,
+              RejectType: item.RejectType,
+              sendFrom: item.sendFrom,
+              Project_Code: item.Project_Code,
+              Remarks: item.Remarks,
+              Rec_Date: item.Rec_Date
+    }));
+    selectedmultipleApprovals.forEach(element => {
+        element.Remarks = this.comments;
+        element.RejectType = this.rejectType;
+      });
+
+      this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedmultipleApprovals).
+        subscribe((data) => {
+
+          this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
+
+          if(this.multiapproval_list.length-this.selectedmulAprvs.length!==0){
+              this.multipleback();
+          }  // back to approvals list.
+
+
+          this.getapprovalStats();
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.getRejectType();
+
+          // this.getapproval_actiondetails();
+
+        });
+
+
+
+
+    }
+  }
+}
+
 
 
 

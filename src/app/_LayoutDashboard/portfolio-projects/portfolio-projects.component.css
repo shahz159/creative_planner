@@ -1680,3 +1680,28 @@ left: 38%;
   border-radius: 0.65rem;
   font-size: .85rem !important;
 }
+.dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
+  vertical-align: baseline;
+}
+td p{
+  margin-bottom: 0px;
+}
+a.btn-v-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #585858;
+}
+a.btn-v-icon:hover{
+  background: #e6e6ff;
+  color: #7D7EBB;
+}
+a.btn-v-icon svg {
+  width: 24px;
+  height: 24px;
+}

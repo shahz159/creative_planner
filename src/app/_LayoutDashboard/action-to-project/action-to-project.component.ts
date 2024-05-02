@@ -149,9 +149,13 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_projectCode.subscribe(p => this.pcode=p);
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
     this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
-    this.BsService.bs_TaskName.subscribe(t => {
-      this.Sub_ProjectName = t
-    });
+     setTimeout(() => {
+      this.BsService.bs_TaskName.subscribe(t => {
+        this.Sub_ProjectName = t
+        console.log(this.Sub_ProjectName,'======>')
+      });
+     }, 100);
+
     this._inputAttachments = [];
     this._projcode = false;
     this._desbool = false;
