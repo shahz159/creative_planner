@@ -456,7 +456,9 @@
     color: #858190;
     font-size: 16px !important;
 }
-
+.kt-project-name{
+    width: 55%;
+}
 .kt-project-name h4 {
     color: #000;
     font-size: 17px;

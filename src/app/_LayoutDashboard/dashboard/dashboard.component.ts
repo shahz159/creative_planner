@@ -491,11 +491,11 @@ export class DashboardComponent implements OnInit {
       initialView: 'listWeek',
       firstDay: moment().weekday(),
       //  timeZone: 'local',
-      //     initialDate:new Date(2023,  ),
+      //     initialDate:new Date(2023,  ),'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        right: ''
       },
       themeSystem: "solar",
       weekNumbers: true,
@@ -555,7 +555,7 @@ export class DashboardComponent implements OnInit {
     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
     //end
 
-    this.GetMemosByEmployeeId();
+    // this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
 
@@ -573,7 +573,7 @@ export class DashboardComponent implements OnInit {
     // this.GetProjectAndsubtashDrpforCalender();
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
-    this.Event_requests();
+    // this.Event_requests();
 
 
     $(document).on('scroll', function () {
@@ -638,14 +638,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  ngAfterViewInit() {
 
 
-    this.drawBarGraph();
-    // setTimeout(() => {
-    //   this.startTour();
-    // }, 3000);
-  }
+  ngOnDestroy() {
+  // Cleanup code goes here.
+}
+
+  // ngAfterViewInit() {
+
+
+  //   this.drawBarGraph();
+  //   // setTimeout(() => {
+  //   //   this.startTour();
+  //   // }, 3000);
+  // }
 
 
   public startTour() {
@@ -697,7 +703,7 @@ export class DashboardComponent implements OnInit {
         }];
       }
     } 
-    debugger
+    
     const uploadFileInput=(<HTMLInputElement>document.getElementById("uploadFile"));
     uploadFileInput.value=null;
     uploadFileInput.style.color=this._lstMultipleFiales.length===0?'darkgray':'transparent';
@@ -1257,6 +1263,7 @@ export class DashboardComponent implements OnInit {
         }
         else if (this.ScheduleType == 'Event') {
           this.GetProjectAndsubtashDrpforCalender();
+          // this.GetMemosByEmployeeId();
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
@@ -1277,18 +1284,42 @@ export class DashboardComponent implements OnInit {
           this.arr2.forEach(element => {
             this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
           });
+
+          // this.SelectDms = [];
+          // this.SelectDms1 = [];
+          // let arr3 = [];
+          // var str = (this.EventScheduledjson[0]['DMS_Name']);
+          // arr3 = str.split(",");
+          
+          // for (var i = 0; i < arr3.length; i++) {
+          //   this.Memos_List.forEach(element => {
+          //     if (element.MailId == arr3[i]) {
+          //       this.SelectDms.push(element.MailId);
+          //     }
+          //   });
+          // }
           this.SelectDms = [];
           this.SelectDms1 = [];
-          let arr3 = [];
-          var str = (this.EventScheduledjson[0]['DMS_Name']);
-          arr3 = str.split(",");
-          for (var i = 0; i < arr3.length; i++) {
-            this.Memos_List.forEach(element => {
-              if (element.MailId == arr3[i]) {
-                this.SelectDms.push(element.MailId);
-              }
-            });
-          }
+
+          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+                 this.Memos_List = JSON.parse(data['JsonData']);
+                 console.log(this.Memos_List, "test iiii");
+
+                 let arr3 = [];
+                 var str = (this.EventScheduledjson[0]['DMS_Name']);
+                 arr3 = str.split(",");
+                 for (var i = 0; i < arr3.length; i++) {
+                      this.Memos_List.forEach(element => {
+                        if (element.MailId == arr3[i]) {
+                          this.SelectDms.push(element.MailId);
+                        }
+                      });
+                 }
+
+          });
+
+          
+        
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
@@ -1323,7 +1354,7 @@ export class DashboardComponent implements OnInit {
 
 
   ReshudingTaskandEvent() {
-    debugger
+    
   
     document.getElementById("div_endDate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
@@ -1335,7 +1366,7 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        debugger
+        
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1496,6 +1527,7 @@ export class DashboardComponent implements OnInit {
         }
         else if (this.ScheduleType == 'Event') {
           this.GetProjectAndsubtashDrpforCalender();
+          // this.GetMemosByEmployeeId();
           // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -1518,18 +1550,36 @@ export class DashboardComponent implements OnInit {
           this.arr2.forEach(element => {
             this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
           });
+          // this.SelectDms = [];
+          // this.SelectDms1 = [];
+          // let arr3 = [];
+          // var str = (this.EventScheduledjson[0]['DMS_Name']);
+          // arr3 = str.split(",");
+          // for (var i = 0; i < arr3.length; i++) {
+          //   this.Memos_List.forEach(element => {
+          //     if (element.MailId == arr3[i]) {
+          //       this.SelectDms.push(element.MailId);
+          //     }
+          //   });
+          // }
+
           this.SelectDms = [];
           this.SelectDms1 = [];
-          let arr3 = [];
-          var str = (this.EventScheduledjson[0]['DMS_Name']);
-          arr3 = str.split(",");
-          for (var i = 0; i < arr3.length; i++) {
-            this.Memos_List.forEach(element => {
-              if (element.MailId == arr3[i]) {
-                this.SelectDms.push(element.MailId);
-              }
-            });
-          }
+
+          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+                 this.Memos_List = JSON.parse(data['JsonData']);
+                 let arr3 = [];
+                 var str = (this.EventScheduledjson[0]['DMS_Name']);
+                 arr3 = str.split(",");
+                 for (var i = 0; i < arr3.length; i++) {
+                      this.Memos_List.forEach(element => {
+                        if (element.MailId == arr3[i]) {
+                          this.SelectDms.push(element.MailId);
+                        }
+                      });
+                 }
+          });
+
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
@@ -1649,7 +1699,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitSchedule() {
-    debugger
+    
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1811,7 +1861,7 @@ export class DashboardComponent implements OnInit {
         // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
         // element[vAgendas] = mtgAgendas;
 
-        // debugger
+        // 
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -1843,7 +1893,7 @@ export class DashboardComponent implements OnInit {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-debugger
+
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
@@ -1942,7 +1992,7 @@ debugger
   }
 
   OnSubmitReSchedule(type: number) {
-    debugger
+    
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
     var start = moment(this.minDate);
@@ -2051,7 +2101,7 @@ debugger
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+        
         const date1: Date = new Date(this._StartDate);
         if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
           this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -2151,7 +2201,7 @@ debugger
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        // debugger
+        // 
         //     var vMeeting_Agendas="Meeting_Agendas";
         //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
         //     element[vMeeting_Agendas]=updatedAgnds;
@@ -2196,9 +2246,9 @@ debugger
       this._calenderDto.attachment = this.RemovedAttach.toString();
 
       // console.log(JSON.stringify(finalarray), "finalarray");
-      debugger
+      
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
-        (data => {   debugger
+        (data => {   
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -2320,7 +2370,7 @@ debugger
     // alert(this.Searchword);
 
     this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => { 
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
         console.log(this.Scheduledjson, "Testing");
       });
@@ -2462,6 +2512,7 @@ debugger
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Project_Code=null;
       this.GetProjectAndsubtashDrpforCalender();
+      this.GetMemosByEmployeeId();
 
       document.getElementById("subtaskid").style.display = "none";
       // document.getElementById("Link_Name").style.display = "block";
@@ -2802,27 +2853,27 @@ debugger
       });
   }
 
-  Doubleclick(event: any) {
+  // Doubleclick(event: any) {
 
-    this.preventSingleClick = true;
-    clearTimeout(this.timer);
+  //   this.preventSingleClick = true;
+  //   clearTimeout(this.timer);
 
-    this._calenderDto.Scheduled_date = this.doubleclickdate;
-    this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
-      ((data) => {
-        debugger
-        this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
-        // this._total = this.Avaliabletime[0].SlotsJson.length;
-        this.timeslotsavl = [];
+  //   this._calenderDto.Scheduled_date = this.doubleclickdate;
+  //   this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
+  //     ((data) => {
+  //       
+  //       this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
+  //       // this._total = this.Avaliabletime[0].SlotsJson.length;
+  //       this.timeslotsavl = [];
 
 
-      })
-    // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
+  //     })
+  //   // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
 
-    // console.log(event)
-    this.calendar.updateTodaysDate();
+  //   // console.log(event)
+  //   this.calendar.updateTodaysDate();
 
-  }
+  // }
 
   getavltime(e) {
     this.timeslotsavl = [];
@@ -2889,7 +2940,7 @@ debugger
   }
 
   addstarttime() {
-    debugger
+    
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -3661,8 +3712,8 @@ console.log("EndTimearr:",this.EndTimearr);
 
     this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
       ((data) => {
-        this.Pending_request = data as []
-        this.pendingcount = this.Pending_request.length
+        this.Pending_request = data as [];
+        this.pendingcount = this.Pending_request.length;
         // alert(this.pendingcount)
         // alert(this.Pending_request.length)
         console.log(this.Pending_request, "111100000")
@@ -3837,13 +3888,11 @@ console.log("EndTimearr:",this.EndTimearr);
   }
 
   GetScheduledJson() {
- debugger
+ 
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
-debugger
-       
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
@@ -3855,11 +3904,11 @@ debugger
           firstDay: moment().weekday(),
 
           // timeZone: 'local',
-          // initialDate:new Date(1, 3-9, 2023),
+          // initialDate:new Date(1, 3-9, 2023),'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            right: ''
           },
 
           themeSystem: "solar",
@@ -3898,7 +3947,7 @@ debugger
 
   TwinEvent=[];
   customizeEvent=(info)=>{
- debugger
+ 
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -3952,7 +4001,7 @@ debugger
     //     event.setProp('title', newTitle);
     //   }
     // }
-// debugger
+// 
 let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0);
     if (eventIsWithinView && (startMidnight !== endMidnight)&&!is12am) {
 
@@ -4655,7 +4704,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
-  Insert_indraft() { debugger
+  Insert_indraft() { 
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -4687,7 +4736,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-      (data => {   debugger
+      (data => {   
         if (data['message'] == '1') {
           this.Getdraft_datalistmeeting();
           this.closeschd();
@@ -4839,7 +4888,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.allAgendas = [];
     this.TImetable();
     this.selectedrecuvalue = "0";
-    this.Doubleclick(this.event);
+    // this.Doubleclick(this.event);
     this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
@@ -4910,8 +4959,8 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.allAgendas = [];
     this.TImetable();
     this.selectedrecuvalue = "0";
-    this.Doubleclick(this.event);
-    this.calendar.updateTodaysDate();
+    // this.Doubleclick(this.event);
+    // this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
     });
@@ -5399,7 +5448,7 @@ drawBarGraph(){
 
   isPortfolioDrpDwnOpen: boolean = false;
   onPortfolioSelected(e: any) {
-    debugger
+    
     const portfolioChoosed: any = this.Portfoliolist_1.find((p: any) => p.portfolio_id === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
@@ -5429,7 +5478,7 @@ drawBarGraph(){
 
   getObjOf(arr, id, idName) {
     const obj = arr.find(item => item[idName] == id);
-    return obj;
+    return obj?obj:'';
   }
 
 

@@ -4695,16 +4695,13 @@
                   </div>
               </div>
 
-
-
-
           </div>
       </div>
   </ng-template>
 </ng-container>
 <ng-template #pleasewait>
   <div class=" d-flex align-items-center  justify-content-center " style="height:100vh">
-      <div class="spinner-border  w-100px    h-100px          " style="color:#6388e3;" role="status">
+      <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
           <span class="visually-hidden"></span>
       </div>
   </div>
@@ -11425,7 +11422,7 @@
           </div>
       </div>
 
-      <div  class="kt-portlet__body pt-4  kt-portlet__body_scroll">
+      <div  class="kt-portlet__body pt-4  ">
           <div class="svg-white" class="d-flex justify-content-between">
 
               <!-- <div class="svg-white" class="kt-info-box-tittle">
@@ -11480,7 +11477,7 @@
                   <button class="btn btn-outline-danger btn-sm fs-8 fw-700 curser-pointer" (click)="hide_main_approval(); selectedType='3';">Reject</button>
               </div>
           </div>
-          <div class="accordion mt-3" id="accordionApproval">
+          <div class="accordion mt-3 kt-portlet__body_scroll pr-3 pb-3" id="accordionApproval" >
 
 
               <div *ngFor="let aprv of standardjson;let i=index"    class="accordion-card  mb-3">

@@ -5036,7 +5036,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 }
 .approval-view .kt-portlet__body_scroll {
   height: calc(100vh - 106px);
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
   /*--new features--*/
