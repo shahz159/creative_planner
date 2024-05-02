@@ -4659,7 +4659,7 @@ background-color: #e2e8f0c9;
 .release-now-shrtcut:hover{
    background-color: #E2d9bc;
    color:#000;
-} 
+}
 .kt-inbox__icon.event-active {
   background-color: #ecf2ff !important;
   position: relative;
@@ -4931,7 +4931,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   background-color: #777171!important;
   color: #fff!important;
 }
-#Approval_view.kt-quick-active--on {
+#Approval_view.kt-quick-active--on, #multiple_view.kt-quick-active--on {
   width: 50% !important;
 }
 .approval-view .accordion-header a {
@@ -5335,5 +5335,18 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 }
 
 .LM_mtg-Owner{
-  
+
+}
+
+/* error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+.error-date .custom-file-label {
+  border: 1px solid #F44336 !important;
+} */
+.error-border, .error-date .input-group-text, .error-date .form-control, ::ng-deep .error-vd .ng-select-container {
+  border: 1px solid #F44336 !important;
 }
