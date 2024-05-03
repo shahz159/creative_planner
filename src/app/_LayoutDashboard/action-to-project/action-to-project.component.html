@@ -236,7 +236,7 @@
     <div class="form-group">                          <!--*ngIf="selectedEmpNo == Current_user_ID"-->
         <label>Allocated Hours<span class="text-danger">*</span></label>
         <!-- [ngClass]="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
-        <input id="hour-input" #allocated="ngModel" required type="number" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
+        <input id="hour-input" #allocated="ngModel" required type="tel" class="form-control" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='');"
             (click)="alertMaxAllocation()"  (change)="_alchr=!_allocated"
             [ngClass]="{'error-border': _allocated > maxAllocation}"
             [ngClass]="{'error-border': (_allocated==0)}"

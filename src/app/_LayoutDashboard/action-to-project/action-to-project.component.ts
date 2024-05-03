@@ -682,10 +682,12 @@ debugger
          if(exceeds)
           {
                Swal.fire({
+                  confirmButtonText:'Yes',
+                  cancelButtonText:'No',
                   showCancelButton:true,
                   showConfirmButton:true,
                   text:'Provided allocated hrs to this action exceeds the project planned allocated hrs. Do you want to continue?',
-                  title:'Exceeds Project Allocated Hrs.'
+                  title:'Exceeds project allocated hrs.'
                }).then(choice=>{
                    if(choice.isConfirmed)
                     continueNext();   

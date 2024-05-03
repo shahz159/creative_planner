@@ -126,7 +126,7 @@ export class CreateProjectComponent implements OnInit {
   maxAllocation: number;
   _allocated:any
   maxDate:any
-  URL_ProjectCode: any;
+  URL_ProjectCode: any; 
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
@@ -315,15 +315,15 @@ export class CreateProjectComponent implements OnInit {
 
   this.service.GetRACISandNonRACISEmployeesforMoredetails(prjCode).subscribe(
     (data) => {
-      this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
-      this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
+      this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));  
+      this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);  
     });
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
       (data) => {
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
-        console.log(this.Client_List, "CategoryDropdown");
+        console.log(this.Category_List, "CategoryDropdown");
     });
 
     this.service.NewProjectService(this.PrjCode).subscribe(
@@ -1131,6 +1131,7 @@ OGProjectTypeid: any
 selectedOwnResp:any
 selectedcategory:any
 selectedclient:any
+ActionDuration:any;
 
 
 
@@ -1743,6 +1744,7 @@ this.newProjectDetails(this.draft_json[index].Project_Code);
 // this.getActionsDetails();
 
 this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
+  console.log("after after openDraft method:",res);
   if(res[0].Action_Json)
   this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
   else
@@ -1752,6 +1754,18 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
   const pjalh=this.draft_json[index].Duration;
   this.isExceededTotalAllocatedHr=pjalh==alh;
 
+
+// getting file attachment name if provided in the draft project. start
+  const PrjI=JSON.parse(res[0]['ProjectInfo_Json'])[0];
+  if(PrjI.Sourcefile){
+    this.fileAttachment={name:PrjI.Sourcefile};
+    this.isFileUploaded=true;
+  }
+  else{
+       this.fileAttachment=null;
+       this.isFileUploaded=undefined;
+  }  
+// getting file attachment name if provided in the draft project. start
 
 });  
 
@@ -1865,6 +1879,191 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 }
 
 // functionality to check prj allocated hr with action allocated hrs
+
+
+    ///////////////////////////////////////// Action Edit start /////////////////////////////
+
+
+    Action_details_edit() { 
+      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      document.getElementById("Action_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
+      document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      $("#mysideInfobar12").scrollTop(0);
+      this.bindActionDetailsIntoForm();
+    }
+
+    closeAction_details_edit(){
+      document.getElementById("Action_Details_Edit_forms").classList.remove("kt-quick-Project_edit_form--on");
+      document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+      // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+      document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+      document.getElementById("project-creation-page").classList.remove("position-fixed");
+      document.getElementById("rightbar-overlay").style.display = "none";
+      
+      this.notProvided=false;   // back to initial state.
+    }
+  
+    bindActionDetailsIntoForm() {
+
+      // this.OGownerid = this.projectInfo['OwnerEmpNo'];
+      // this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
+      // this.OGselectedcategoryid = this.projectInfo['Reportid'];
+      // this.OGselectedclientid = this.projectInfo['ClientNo'];
+      // this.OGSubmission_Nameid = this.projectInfo['SubmissionId'];
+      this.OGProjectTypeid = this.projectInfo['Project_Block'];                    // Prj type no.     
+      // this.OGProjectType = this.projectInfo.Project_Type;
+      this.selectedOwner = this.PrjActionsInfo[this.currentActionView].Owner;      // action owner name.
+      this.OGowner = this.PrjActionsInfo[this.currentActionView].Project_Owner;    // action owner no.
+      this.selectedOwnResp = this.PrjActionsInfo[this.currentActionView].Responsible;   // action resp name.
+      this.OGresponsible = this.PrjActionsInfo[this.currentActionView].Team_Res;        // action resp no.
+      
+      this.selectedcategory = this.Category_List.find(ctg=>ctg.ReportType.trim()===this.PrjActionsInfo[this.currentActionView].Category.trim()).ReportID; // category no.
+      // this.OGcategory = this.projectInfo.Category;
+      this.selectedclient = this.PrjActionsInfo[this.currentActionView].ClientNo;     // client no. 
+      // this.OGclient = this.projectInfo.Client
+      // this.Submission_Name = this.projectInfo.SubmissionName
+      // this.OGSubmission = this.projectInfo.SubmissionName
+      this.ProjectName = this.PrjActionsInfo[this.currentActionView].Project_Name;      // action name
+      this.ProjectDescription = this.PrjActionsInfo[this.currentActionView].Project_Description;  // action descriptipn
+      this.Start_Date = this.PrjActionsInfo[this.currentActionView].StartDate;       // action start date.
+      // this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
+      this.Allocated = this.PrjActionsInfo[this.currentActionView].AllocatedHours;    // action alloc hrs.
+      this.End_Date = this.PrjActionsInfo[this.currentActionView].EndDate;          // action end date.
+      this.ActionDuration=this.PrjActionsInfo[this.currentActionView].Duration;     // action duration.
+  
+  }
+
+
+  alterAction(){
+debugger
+
+        // check all mandatory field are provided.    
+        if(!(this.ProjectName&&this.ProjectDescription&&
+          this.OGowner&&this.OGresponsible&&
+          this.selectedcategory&&this.selectedclient&&
+          this.Start_Date&&this.End_Date&&
+          this.Allocated)){
+            this.notProvided=true;
+            return;
+        }else this.notProvided=false;   // back to initial value.
+        // check all mandatory field are provided.
+
+
+      const datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");   
+      const datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");       
+      let jsonobj:any={ 
+          Project_Type: this.OGProjectTypeid,             // prj type no.
+          Project_Name: this.ProjectName,                 //new action name
+          Project_Description: this.ProjectDescription,   //new action description
+          Owner: this.OGowner,                           // action owner no.
+          Responsible: this.OGresponsible,               // action resp no.
+          Category: this.selectedcategory,              // prj category no.
+          Client: this.selectedclient,                 // prj client no.
+          StartDate:datestrStart,                   // new action start date.
+          EndDate:datestrEnd,                     // new action end date.
+          AllocatedHours: this.Allocated,             // new action alc hrs.
+      };
+
+      jsonobj = JSON.stringify(jsonobj);
+      const dateOne = new Date(this.projectInfo.EndDate);   // prj end date.
+      const dateTwo = new Date(this.End_Date);             // new action end date.
+      
+      this.approvalObj.Emp_no = this.Current_user_ID;  // emp no.
+      this.approvalObj.Project_Code = this.PrjActionsInfo[this.currentActionView].Project_Code;  // action code.
+      this.approvalObj.json = jsonobj;            // action details 
+      this.approvalObj.Remarks = this._remarks?this._remarks:'';   // remark provided.
+
+
+      if (dateOne < dateTwo) {
+        Swal.fire({
+          title: 'Action deadline is greater than main project deadline ?',
+          text: 'Do you want to continue for selection of date after main project deadline!!',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((response: any) => {
+          if (response.value) {
+            this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+              console.log(data['message'], "edit response");
+              if (data['message'] == '1') {
+                this.notifyService.showSuccess("Updated successfully", "Success");
+                this.getActionsDetails();
+              }
+              else if (data['message'] == '2') {
+                this.notifyService.showError("Not updated", "Failed");
+              }
+              else if (data['message'] == '5') {
+                this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
+                this.getActionsDetails();
+              }
+              else if (data['message'] == '6') {
+                this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+                this.getActionsDetails();
+              }
+              else if (data['message'] == '8') {
+                this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+              }
+              this.closeAction_details_edit();
+
+              // this.getProjectDetails(this.URL_ProjectCode);
+              // this.closeInfo();
+              // this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+            });
+          } else if (response.dismiss === Swal.DismissReason.cancel) {
+        //    this.close_space();
+            Swal.fire(
+              'Cancelled',
+              'Action end date not updated',
+              'error'
+            )
+          }
+        });
+      }
+      else {
+        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+          console.log(data['message'], "edit response");
+          if (data['message'] == '1') {
+            this.notifyService.showSuccess("Updated successfully", "Success");
+            this.getActionsDetails();
+          }
+          else if (data['message'] == '2') {
+            this.notifyService.showError("Not updated", "Failed");
+          }
+          else if (data['message'] == '5') {
+            this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
+            this.getActionsDetails();
+          }
+          else if (data['message'] == '6') {
+            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.getActionsDetails();
+          }
+          else if (data['message'] == '8') {
+            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+          }
+          this.closeAction_details_edit();
+          // this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+          // this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+          // this.closeInfo();
+        });
+      }
+
+
+
+  }
+
+
+
+
+
+
+
+
+   ///////////////////////////////////////// Action Edit End /////////////////////////////
+
+
+
+
 
 
   }

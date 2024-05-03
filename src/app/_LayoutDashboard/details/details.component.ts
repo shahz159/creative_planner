@@ -485,7 +485,6 @@ this.prjPIECHART.render();
 
                let tlTotalHrs:number = this.projectInfo.TotalHours;
 
-
                  //standard  graph cal start    may need updation.
                  let x=0;
                  let AL=0;
@@ -1049,6 +1048,12 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
+          // this.Activity_List.map((actv:any)=>{
+          //      if(actv.count!=0&&actv.Value=='Project Deadline Change'){
+
+          //      }
+          // })
+
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
 
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
@@ -1148,20 +1153,24 @@ this.prjPIECHART.render();
 
 
   sendRequest(): void {
+    debugger
     if (!this.Usercomment){
       this.formFieldsRequired=true;
       return
     }
     else{
       this.formFieldsRequired=false;
-      this.closeRequestDialog();
+
       this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
         console.log(res,'openRequestDialog')
+        this.closeRequestDialog();
+        Swal.fire('Request Sent Successfully');
+        this.isRequestSent = true;
+        this.ishide=false
+        $('.hide-content').addClass('d-none');
+
          });
-         Swal.fire('Request Sent Successfully');
-         this.isRequestSent = true;
-         this.ishide=false
-         $('.hide-content').addClass('d-none');
+
     }
   }
 
@@ -2050,7 +2059,6 @@ currentStdAprView:number|undefined;
   allStdAprSelected:boolean=false;
   selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
-
     if(this.selectedStdAprvs.length===0){
       this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
       return;
@@ -2120,7 +2128,6 @@ currentStdAprView:number|undefined;
           element.Remarks = this.comments;
         });
       }
-
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
@@ -2767,7 +2774,7 @@ currentStdAprView:number|undefined;
 // check all mandatory fields are provided or not
 
 
-
+debugger
 
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -2882,7 +2889,6 @@ currentStdAprView:number|undefined;
       });
     }
     else if (val == 1) {
-
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.json = jsonvalue;
@@ -2890,7 +2896,6 @@ currentStdAprView:number|undefined;
       this.approvalObj.isApproval = val;
 
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
@@ -2993,7 +2998,7 @@ currentStdAprView:number|undefined;
             return;
     }else this.formFieldsRequired=false;   // back to initial value.
 // check all mandatory field are provided.
-
+debugger
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -3071,9 +3076,6 @@ currentStdAprView:number|undefined;
   this.approvalObj.json = jsonvalues;
   this.approvalObj.Remarks = this._remarks;
 
-
-
-  console.log(dateOne, dateTwo, "dates")
   if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
     Swal.fire({
       title: 'Action deadline is greater than main project deadline ?',
@@ -3524,7 +3526,6 @@ check_allocation() {
 
 
   Portfolio_Select(selecteditems) {
-
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -3590,7 +3591,6 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-
     if(this._SelectedPorts==' '||this._SelectedPorts==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
@@ -3768,7 +3768,6 @@ check_allocation() {
 
 
   updateMainProject() {
-
 // for checking whether mandatory fields are provided or not.
    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
@@ -3800,7 +3799,6 @@ check_allocation() {
       fd.append("Project_Name", this.projectInfo.Project_Name);
       this.service._fileuploadService(fd).
         subscribe((event: HttpEvent<any>) => {
-
           switch (event.type) {
             case HttpEventType.Sent:
               console.log('Request has been made!');
@@ -5732,7 +5730,6 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -6241,7 +6238,6 @@ removeSelectedDMSMemo(item){
            this.getholdate();
            this.getRejectType();
            this.updatePortfolioPage();
-
            if(this.currentActionView!==undefined){
              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
              }else{
@@ -6275,7 +6271,6 @@ removeSelectedDMSMemo(item){
       if(this.currentActionView===undefined){
         // project release
         if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-
           this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = 'Project Release';
           this.approvalObj.Emp_no = this.Current_user_ID;
@@ -6906,7 +6901,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -7305,7 +7300,6 @@ selectedactvy:string|undefined;
 lastActivityOn:string|undefined;
 
 showFullGraph(){
-
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
   this.lastActivityOn=alldates[alldates.length-1];   // last activity on
@@ -7927,6 +7921,7 @@ rejectAllmultipleAprvs(){
   if (this.selectedType == '3') {
     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
       this.noRejectType = true;
+
       this.notifyService.showError("Please select Reject Type", "Failed");
       return false;
     }
