@@ -123,6 +123,8 @@ export class DashboardComponent implements OnInit {
   Allocated_subtask: number;
   TM_DisplayName: string;
   SubmissionName: string;
+  SearchOfPendingItem:any
+  SearchOfDraftItem:any
   _Exec_BlockName: string = "";
   _SEndDate: any;
   day: boolean = false;
@@ -1528,7 +1530,7 @@ export class DashboardComponent implements OnInit {
         else if (this.ScheduleType == 'Event') {
           this.GetProjectAndsubtashDrpforCalender();
           // this.GetMemosByEmployeeId();
-          // this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
 
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1681,7 +1683,7 @@ export class DashboardComponent implements OnInit {
       this.Startts&&
       this.Endtms&&
       this.MinLastNameLength
-      // &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
     ){
           this.OnSubmitSchedule();
           this.notProvided=false;
@@ -1690,8 +1692,8 @@ export class DashboardComponent implements OnInit {
       {
          if(!this.Title_Name)
          document.getElementById('dsb-evt-titleName').focus();
-        //  else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
-        //  {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+         else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
+         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
 
 
         this.notProvided=true;
@@ -1857,9 +1859,9 @@ export class DashboardComponent implements OnInit {
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
 
-        // var vAgendas = "Meeting_Agendas";
-        // const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        // element[vAgendas] = mtgAgendas;
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
 
         // 
       });
@@ -2201,10 +2203,10 @@ export class DashboardComponent implements OnInit {
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        // 
-        //     var vMeeting_Agendas="Meeting_Agendas";
-        //     const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-        //     element[vMeeting_Agendas]=updatedAgnds;
+        
+            var vMeeting_Agendas="Meeting_Agendas";
+            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+            element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -4470,7 +4472,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
   }
 
 
-  newMeetingReport() {
+  newMeetingDetails() {
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;

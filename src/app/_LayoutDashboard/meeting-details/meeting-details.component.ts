@@ -144,7 +144,8 @@ export class MeetingDetailsComponent implements OnInit {
      
       this.GetMemosByEmployeeId_new();
       this.GetProjectAndsubtashDrpforCalender();
-      this.GetTimeslabfordate()
+      this.GetTimeslabfordate();
+      this.GetcompletedMeeting_data();
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -1939,6 +1940,8 @@ GetcompletedMeeting_data() {
     (data => {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
+      
+      console.log(this.Meetingstatuscom,"??????????????????????")
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
       // this.GetNotedata();
@@ -1961,6 +1964,7 @@ assigncount: number;
 
 
 EnterSubmit(_Demotext) {
+  debugger
   if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
     this._ObjAssigntaskDTO.CategoryId = 2411;
     this._ObjAssigntaskDTO.TypeOfTask = "ToDo";

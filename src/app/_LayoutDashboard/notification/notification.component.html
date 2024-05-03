@@ -498,7 +498,7 @@
                         <td>
                           <span class="text-info font-weight-400"
                             *ngIf="item.Req_Type=='New Project' || item.Req_Type=='Request Access' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
-                                                               || item.Req_Type=='ToDo Achieved'">{{item.Req_Type=='Request Access'?'Access Approval':item.Req_Type}}</span>
+                                                               || item.Req_Type=='ToDo Achieved'">{{item.Req_Type=="Request Access"? "Access Approval":item.Req_Type}}</span>
                           <span class="text-danger font-weight-400"
                             *ngIf="item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
                                                                || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
@@ -1085,11 +1085,14 @@
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
                           data-toggle="tooltip" title="Project Status!">
-                          {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
+
+
+ {{item.Status=='Under Approval'?'New Approval':item.Status=='Enactive Under Approval'?'Enactive Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
+
                         </h6>
                         <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
                           *ngIf="item.Status=='Delay'">
-                          {{item.Status==='Under Approval'?'New Project Under Approval':item.Status}}
+                          {{item.Status==='Under Approval'?'New Approval':item.Status}}
                           {{item.Delaydays}} days
                         </h6>
                       </div>
@@ -1107,7 +1110,7 @@
                                                     'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
                                                     || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
                                                     }" data-toggle="tooltip" title="Request type">
-                          {{item.Req_Type}}
+                          {{item.Req_Type=="New Project"?"New Approval":item.Req_Type}}
                         </h6>
                       </div>
                       <span class="mr-2 showv">|</span>

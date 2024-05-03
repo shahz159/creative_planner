@@ -672,8 +672,12 @@
                                                                       'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
                                                                       'kt-badge cancelled': item.Status === 'Cancelled',
                                                                       'kt-badge new-project-under':item.Status==='Under Approval'
-                                                                    }"> {{item.Status==='Under Approval'?'New Project Under Approval' : item.Status==='InProcess'?
-                                                                      'In-Process':item.Status}}
+                                                                    }">
+{{item.Status=='Under Approval'?'New Approval':item.Status=='Enactive Under Approval'?'Enactive Approval'
+:item.Status=="Cancellation Under Approval"?"Cancellation Approval" :item.Status== "Completion Under Approval" ?
+"Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':
+item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
+:item.Status=='InProcess'?'In-Process':item.Status}}
                                                                 <!-- <div></div> -->
                                                              </span>
                                                              <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
@@ -815,8 +819,12 @@
                                                                       'kt-badge cancelled': item.Project_status === 'Cancelled',
                                                                       'kt-badge new-project-under':item.Project_status==='Under Approval'
                                                                     }">
-                                                                    <div> {{item.Project_status==='Under Approval'?'New Project Under Approval' : item.Project_status==='InProcess'?
-                                                                      'In-Process':item.Project_status}}</div>
+                                                                    <div>{{item.Project_status=='Under Approval'?'New Approval':item.Project_status=='Enactive Under Approval'?'Enactive Approval'
+                                                                      :item.Project_status=="Cancellation Under Approval"?"Cancellation Approval" :item.Project_status== "Completion Under Approval" ?
+                                                                      "Completion Approval" :item.Project_status=='Forward Under Approval'? "Forward Approval" :item.Project_status=='Not Started'?'Draft':
+                                                                      item.Project_status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
+                                                                      :item.Project_status=='InProcess'?'In-Process':item.Project_status}}
+                                                                    </div>
                                                              </span>
                                                              <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">

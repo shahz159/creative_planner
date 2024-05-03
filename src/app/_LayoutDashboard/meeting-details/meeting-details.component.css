@@ -2553,8 +2553,8 @@ div#DemoList-table div.demo i {
 }
 
 .accordion-attendes-notes .accordion-heading {
-    color: #757575;
-    font-size: 14px;
+    /* color: #757575; */
+    font-size: 15px;
 }
 
 .accordion-attendes-notes .message-count {

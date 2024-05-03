@@ -1181,20 +1181,24 @@ this.prjPIECHART.render();
 
 
   sendRequest(): void {
+    debugger
     if (!this.Usercomment){
       this.formFieldsRequired=true;
       return
     }
     else{
       this.formFieldsRequired=false;
-      this.closeRequestDialog();
+
       this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
         console.log(res,'openRequestDialog')
+        this.closeRequestDialog();
+        Swal.fire('Request Sent Successfully');
+        this.isRequestSent = true;
+        this.ishide=false
+        $('.hide-content').addClass('d-none');
+
          });
-         Swal.fire('Request Sent Successfully');
-         this.isRequestSent = true;
-         this.ishide=false
-         $('.hide-content').addClass('d-none');
+
     }
   }
 
@@ -6925,6 +6929,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -7944,6 +7949,7 @@ rejectAllmultipleAprvs(){
   if (this.selectedType == '3') {
     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
       this.noRejectType = true;
+
       this.notifyService.showError("Please select Reject Type", "Failed");
       return false;
     }
