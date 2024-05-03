@@ -1050,7 +1050,7 @@ this.prjPIECHART.render();
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
           // this.Activity_List.map((actv:any)=>{
           //      if(actv.count!=0&&actv.Value=='Project Deadline Change'){
-                     
+
           //      }
           // })
 
@@ -6901,6 +6901,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";

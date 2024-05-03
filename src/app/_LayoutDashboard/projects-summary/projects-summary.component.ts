@@ -871,12 +871,17 @@ $(document).ready(function(){
   Team_Autho:any
   Team_Res:any
   Project_Code:any
-  LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string) {
+  LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string,Pcode:string,tauth:string,tresp:string) {
+    debugger
+    this.Project_Code=Pcode;
+    this.Team_Autho=tauth;
+    this.Team_Res=tresp;
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (Iscloud == false) {
+      FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       if (this.Team_Autho == this.Team_Res) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
         FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
@@ -886,7 +891,7 @@ $(document).ready(function(){
         FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
       }
 
-      let name = "ArchiveView/" + this.Project_Code;
+      let name = "ArchiveView/" + this.Project_Code.trim();
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
       let url = encoder.encode(FileUrl);
@@ -894,8 +899,23 @@ $(document).ready(function(){
       FileName = FileName.replace(/#/g, "%23");
       FileName = FileName.replace(/&/g, "%26");
       var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&"+  "type=" + type;
+
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     else if (Iscloud == true) {
