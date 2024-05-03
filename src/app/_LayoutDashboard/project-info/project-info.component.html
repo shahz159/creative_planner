@@ -119,7 +119,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="kt-project-type">
                                     <div class="Kt-Pd-Status Delay {{item.Status=='Under Approval'?'new-project' :'black-text'}}" *ngIf="item.Status=='Delay'">
-                                        {{item.Status =='InProcess'?'In-Process':(item.Status=='Under Approval'?'New Project Under Approval   ddddd':item.Status)}} {{item.Delaydays}} days
+                                        {{item.Status =='InProcess'?'In-Process':(item.Status=='Under Approval'?'New Approval':item.Status)}} {{item.Delaydays}} days
                                     </div>
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
                                                         'UnderApproval': item.Status=='Under Approval',
@@ -136,9 +136,7 @@
                                                         'Cancelled': item.Status=='Cancelled',
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold'}">
-                                        <ng-container *ngIf="item.Status!='Project Hold'">{{
-                                        item.Status=='InProcess'?'In-Process':item.Status=='Not Started'?'Draft':
-                                        (item.Status=='Under Approval'?'New Project Under Approval':item.Status)}}
+                                        <ng-container *ngIf="item.Status!='Project Hold'"> {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
                                         </ng-container>
                                         <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
                                     </div>
@@ -178,7 +176,7 @@
                            </div> -->
                         <div class="kt-project-type  ">
                             <div class="Kt-Pd-Status Delay   " *ngIf="item.Status=='Delay'">
-                                {{item.Status=='Under Approval'?'New Project Under Approval':(item.Status=='InProcess'?'In-Process':item.Status)}} {{item.Delaydays}} days
+                                {{item.Status=='Under Approval'?'New Approval':(item.Status=='InProcess'?'In-Process':item.Status)}} {{item.Delaydays}} days
                             </div>
                             <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                 'Inprocess': item.Status=='InProcess' , 'NewProjectRejected': item.Status=='New Project Rejected',
@@ -190,7 +188,7 @@
                                                 >
                                                  <ng-container *ngIf="item.Status !== 'Project Hold'">
                                                   <span class=" font-weight-400 ">
-                                                   {{ item.Status === 'InProcess' ? 'In-Process' : item.Status === 'Not Started' ? 'Draft' : (item.Status === 'Under Approval' ? 'New Project Under Approval' : item.Status) }}
+                                                    {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
                                                  </span>
                                                   </ng-container>
 
@@ -276,7 +274,7 @@
                                                 'Cancelled': item.Status=='Cancelled',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}" >
-                            {{item.Status=='Under Approval'?'New Project Under Approval':item.Status=='Not Started'?'Draft': item.Status=='InProcess'?'In-Process':item.Status}}
+                            {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
                         </div>
 
                         <div class="Requested_user_info">
@@ -963,7 +961,7 @@
                         </div>
                         <div class="kt-project-type">
                             <div class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">
-                                Completion Under Approval</div>
+                                Completion Approval</div>
                             <div class="Requested_user_info">
                                 <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1378,7 +1376,7 @@
                         <div class="kt-prg-progress">
                             <ul>
                               <li *ngIf="Under_Approval > 0" >
-                                <span class="B-Bot P_Not_Started  new-project "></span> <span class=""> New Project Under Approval</span>
+                                <span class="B-Bot P_Not_Started  new-project "></span> <span class=""> New Approval</span>
                                 <b>({{Under_Approval}})</b>
                             </li>
                                 <li *ngIf="inprogress>0"><span class="B-Bot P_In_Progress"></span>In-Processs
@@ -1388,10 +1386,9 @@
                                         class="B-Bot P_New_Project_Rejected w-50P"></span> New Project Rejected
                                     <b>({{Rejected}})</b></li>
                                 <li class="w-50P" *ngIf="Completion_Under>0 "><span
-                                        class="B-Bot P_Completion_under_Approval w-50P"></span> Completion Under
-                                    Approval <b>({{Completion_Under}})</b></li>
+                                        class="B-Bot P_Completion_under_Approval w-50P"></span> Completion Approval <b>({{Completion_Under}})</b></li>
                                 <li class="w-50P" *ngIf="Forward_Under>0 "><span
-                                        class="B-Bot P_ForwardUnderApproval w-50P"></span> Forward Under Approval
+                                        class="B-Bot P_ForwardUnderApproval w-50P"></span> Forward Approval
                                     <b>({{Forward_Under}})</b></li>
                                 <li *ngIf="completed>0"><span class="B-Bot P_Done"></span> Completed
                                     <b>({{completed}})</b></li>
@@ -1490,7 +1487,7 @@
                     </div>
                     <div class="kt-project-type">
                         <div class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">
-                            Completion Under Approval</div>
+                            Completion Approval</div>
                         <div class="Requested_user_info">
                             <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

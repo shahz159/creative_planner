@@ -124,7 +124,7 @@
 
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name =='Under Approval'?'New Project Under Approval': item.Name =='InProcess' ? 'In-Process' :(item.Name=='Not Started'?'Draft' :item.Name)}}
+                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Cancellation Under Approval"?"Cancellation Approval"   :item.Name== "Completion Under Approval" ? "Completion Approval" :item.Name=='Forward Under Approval'? "Forward Approval" :item.Name=='InProcess'?'In-Process':item.Name =="Not Started"?"Draft":item.Name}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -469,15 +469,11 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="Completion-Under-Approval font-weight-400">Completion
-                                                                Under
-                                                                Approval
+                                                            <span class="Completion-Under-Approval font-weight-400">Completion Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancellation Under Approval'">
-                                                            <span class="Cancellation-Under-Approval font-weight-400">Cancellation
-                                                                Under
-                                                                Approval
+                                                            <span class="Cancellation-Under-Approval font-weight-400">Cancellation Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancelled'">
@@ -485,13 +481,11 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="under-approval font-weight-400">New Project Under Approval
+                                                            <span class="under-approval font-weight-400">New Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
-                                                            <span class="Forward-Under-Approval font-weight-400">Forward
-                                                                Under
-                                                                Approval
+                                                            <span class="Forward-Under-Approval font-weight-400">Forward Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Not Started'">
@@ -509,9 +503,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                            <span class="Enactive-Under-Approval font-weight-400">Enactive
-                                                                Under
-                                                                Approval
+                                                            <span class="Enactive-Under-Approval font-weight-400">Enactive Approval
                                                             </span>
                                                         </div>
 
@@ -520,8 +512,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="Deadline-Extend-Under-Approval font-weight-400">Deadline Extend
-                                                                Under Approval
+                                                            <span class="Deadline-Extend-Under-Approval font-weight-400">Deadline Extend Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
@@ -531,7 +522,7 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
                                                             <span class=" Project-Hold-Under-Approval font-weight-400"
-                                                                >Project Hold Under Approval
+                                                                > Hold Approval
                                                             </span>
                                                         </div>
                                                     </td>
