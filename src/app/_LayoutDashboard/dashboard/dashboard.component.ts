@@ -123,6 +123,8 @@ export class DashboardComponent implements OnInit {
   Allocated_subtask: number;
   TM_DisplayName: string;
   SubmissionName: string;
+  SearchOfPendingItem:any
+  SearchOfDraftItem:any
   _Exec_BlockName: string = "";
   _SEndDate: any;
   day: boolean = false;
@@ -4470,7 +4472,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
   }
 
 
-  newMeetingReport() {
+  newMeetingDetails() {
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${this.Schedule_ID}`;
