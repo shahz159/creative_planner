@@ -1047,12 +1047,24 @@ this.prjPIECHART.render();
       (data) => {
         if (data !== null && data !== undefined) {
 
-          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
-          // this.Activity_List.map((actv:any)=>{
-          //      if(actv.count!=0&&actv.Value=='Project Deadline Change'){
-                     
-          //      }
-          // })
+          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
+
+    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+          let count:number=0;  
+          this.Activity_List.map((actv:any)=>{
+            
+            if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=`Project Deadline Change (${updatecount+x} Update)`;
+                   count+=1;
+               }
+              return actv;
+          });    
+   // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+
+
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
 
@@ -1079,8 +1091,24 @@ this.prjPIECHART.render();
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
+        debugger
         if (data !== null && data !== undefined) {
-          this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
+          this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
+          let count:number=0;  
+          this.ActionActivity_List.map((actv:any)=>{
+            debugger
+            if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....  
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Update)`);
+                   count+=1;
+               }
+              return actv;
+          });
+
+
+
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');

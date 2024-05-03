@@ -3353,14 +3353,7 @@
                                                                   <p class="kt-timeline-tl mb-0">
                                                                       <!-- <span class="fw-bold text-gray-800 "> {{item.Value}} by</span> -->
                                                                       <span  class="fw-bold text-turquoise text-gray-800 "> 
-                                                                        <ng-container *ngIf="item.count==0||item.count==1;else whencount">
-                                                                            {{item.Value}} by
-                                                                        </ng-container>
-                                                                        <ng-template #whencount>
-                                                                              
-                                                                    Project Deadline Change ({{item.count+(item.count>2?'th':'nd')}} Update)
-
-                                                                        </ng-template>
+                                                                        {{item.Value}} by
                                                                       </span>
                                                                       <span  class="fw-bold text-gray-800"> {{item.Modifiedby}}</span>
 
