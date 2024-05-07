@@ -1941,7 +1941,7 @@ GetcompletedMeeting_data() {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
       
-      console.log(this.Meetingstatuscom,"??????????????????????")
+      console.log(this.CompletedMeeting_notes,"??????????????????????")
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
       // this.GetNotedata();
@@ -1964,7 +1964,7 @@ assigncount: number;
 
 
 EnterSubmit(_Demotext) {
-  debugger
+
   if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
     this._ObjAssigntaskDTO.CategoryId = 2411;
     this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
@@ -3359,7 +3359,7 @@ daysSelected: any[] = [];
 
 
   closeschd() {
-
+    this.repeatMeeting=false;
     // this.Insert_indraft();
     document.getElementById("mysideInfobar_schd_new").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3646,10 +3646,9 @@ daysSelected: any[] = [];
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        // debugger
-            var vMeeting_Agendas="Meeting_Agendas";
-            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-            element[vMeeting_Agendas]=updatedAgnds;
+        var vMeeting_Agendas="Meeting_Agendas";
+        const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+        element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -3657,7 +3656,7 @@ daysSelected: any[] = [];
           this._calenderDto.flagid = 3;
         }
       }
-
+       console.log(finalarray,'finalarray of Edit')
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this._OldRecurranceId == this.selectedrecuvalue) {
         if (this._OldEnd_date != this._EndDate) {
@@ -3805,31 +3804,49 @@ daysSelected: any[] = [];
 ///////////////////////////////////////// Meeting End functionality start //////////////////////////////////////////////
 Action_item: any = [];
 interval:any = 0;
+repeatMeeting:boolean=false
 
 @ViewChild('exampleModal') exampleModal: ElementRef;
 
 
 EndMeetingSweetAlertBox(){
+ 
   Swal.fire({
     title: 'All agenda still not complete ?',
     text: 'Do you want to repeat this meeting',
     showConfirmButton: true,
+    confirmButtonText:'Yes',
     showCancelButton: true,
+    cancelButtonText:'No'
   }).then((result) => {
     if (result.isConfirmed) {
       // If the user confirms, open the modal
+      this.repeatMeeting=true;
+      document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      this.ReshudingTaskandEvent();
+      // if (modal) {
+      //   modal.classList.add('show'); // Show the modal
+      //   modal.style.display = 'block'; // Display the modal
+      //   document.body.classList.add('modal-open'); // Add class to body for modal-open
+      //   const backdrop = document.createElement('div');
+      //   document.getElementById("rightbar-overlay").style.display = "block";
+      //   document.body.appendChild(backdrop); // Add backdrop
+      // }
+    }
+    else{
       const modal = document.getElementById('exampleModal');
       if (modal) {
-     
         modal.classList.add('show'); // Show the modal
         modal.style.display = 'block'; // Display the modal
         document.body.classList.add('modal-open'); // Add class to body for modal-open
         const backdrop = document.createElement('div');
         document.getElementById("rightbar-overlay").style.display = "block";
         document.body.appendChild(backdrop); // Add backdrop
-      }
+      }  
     }
-  });
+  })
 }
 
 closeModal() {
@@ -3840,8 +3857,7 @@ closeModal() {
         document.body.classList.remove('modal-open'); // Add class to body for modal-open
         const backdrop = document.createElement('div');       
         document.getElementById("rightbar-overlay").style.display = "none";
-        document.body.appendChild(backdrop); // Add backdrop
-       
+        document.body.appendChild(backdrop); // Add backdrop    
       }
 }
 
@@ -3914,6 +3930,10 @@ _toggleReadMore() {
 }
 
 
+Select_flag(val) {
 
+  this._PopupConfirmedValue = val;
+
+}
 
 } 
