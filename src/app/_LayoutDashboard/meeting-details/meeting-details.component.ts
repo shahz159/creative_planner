@@ -146,6 +146,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.GetProjectAndsubtashDrpforCalender();
       this.GetTimeslabfordate();
       this.GetcompletedMeeting_data();
+      this.GetAttendeesnotes();
+
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -1725,7 +1727,7 @@ GetMeetingnotes_data() {
     (data => {
    
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
-    
+     
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
          }else {
