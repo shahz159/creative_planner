@@ -100,7 +100,7 @@
                                                 <tr>
                                                     <th style="width: 50px;">S.No.</th>
                                                     <th style="width: 280px;">Employee</th>
-                                                    <th style="width: 280px;">Project</th>
+                                                    <th style="width: 280px;">Type</th>
                                                     <th>Achievement</th>
                                                     <th style="width: 80px;">Start</th>
                                                     <th style="width: 80px;">End</th>
@@ -122,7 +122,7 @@
                                                         <a *ngIf="item1.Tasktype=='Lunch'">Lunch</a>
                                                         <a *ngIf="item1.Tasktype=='Personal'">Personal</a>
                                                         <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype }}</a>
-                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7">Action</span>{{item1.ActionName }}</div>
+                                                        <div class="timeline-text fs-6 " *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7 actlabel-at-type">Action</span>{{item1.ActionName }}</div>
                                                     </td>
                                                     <td>{{item1.WorkAchieved}}</td>
                                                     <td>{{item1.starttime}}</td>
@@ -391,11 +391,13 @@
 
         <div>
             <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
-                <label>Project Type<span class="text-danger">*</span></label>
+                <label>Type<span class="text-danger">*</span></label>
                 <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType" [ngClass]="{'error-vd': (fieldRequired&&!project_type)}"
-                    [(ngModel)]="project_type" (change)="getTimelineProjects()">
+                    [(ngModel)]="project_type" (change)="onTypeChanged()">
                     <ng-option value="core">Core/Secondary tasks</ng-option>
                     <ng-option value="standard">Standard/Routine/ToDo tasks</ng-option>
+                    <ng-option value="lunch">Lunch break</ng-option>
+                    <ng-option value="personal">Personal</ng-option>
                 </ng-select>
                 <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select project type.</span>
             </div>
