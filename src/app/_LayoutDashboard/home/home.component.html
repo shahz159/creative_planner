@@ -130,24 +130,6 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="count-height">
-                                                            <p><strong>Companys</strong></p>
-                                                            <div class="d-flex justify-content-between"
-                                                                *ngFor="let item of Companylist_Json |filter:txtSearch;let i=index">
-                                                                <label class="kt-checkbox">
-                                                                    <!-- (change)="isCompanychecked(item)" -->
-                                                                    <input type="checkbox"
-                                                                        (change)="isCompanychecked(item)"
-                                                                        [(ngModel)]="item.checked">
-                                                                    {{item.Name}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <span class="count-btn">{{item.Count}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-
-                                                        <div class="count-height">
                                                             <p><strong>Status</strong></p>
                                                             <p class="text-danger"></p>
                                                             <div class="d-flex justify-content-between"
@@ -163,6 +145,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <div class="count-height">
+                                                            <p><strong>Company</strong></p>
+                                                            <div class="d-flex justify-content-between"
+                                                                *ngFor="let item of Companylist_Json |filter:txtSearch;let i=index">
+                                                                <label class="kt-checkbox">
+                                                                    <!-- (change)="isCompanychecked(item)" -->
+                                                                    <input type="checkbox"
+                                                                        (change)="isCompanychecked(item)"
+                                                                        [(ngModel)]="item.checked">
+                                                                    {{item.Name}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <span class="count-btn">{{item.Count}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
                                                     <div class="col-md-4">
                                                         <div class="count-height">
                                                             <p><strong>Employees</strong></p>
