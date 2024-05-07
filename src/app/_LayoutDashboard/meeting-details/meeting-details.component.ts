@@ -2048,7 +2048,7 @@ EnterSubmit(_Demotext) {
     //this.GetProjectsByUserName();
   }
 
-
+  _CompletedList = [];
 
 
 GetAssigned_SubtaskProjects() {
@@ -2066,17 +2066,19 @@ GetAssigned_SubtaskProjects() {
       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
 
-      // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+      this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+      console.log(this._CompletedList,">>>>>>>>>>>>>>>>>>>>>>>>>>")
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
       this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-     
-   
+      
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
       // console.log("the sss", this._TodoList)
     });
 
 }
+
+
 
 _Deletetask(id, name) {
   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -2097,7 +2099,7 @@ _Deletetask(id, name) {
         (data) => {
           // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
           // this._CompletedList = JSON.parse(data['CompletedList']);
-
+            
           let message: string = data['Message'];
           this._Demotext = "";
           this.notifyService.showInfo("Successfully", message);
@@ -2109,6 +2111,47 @@ _Deletetask(id, name) {
     }
   });
 }
+
+
+
+On_Uncheck(id) {
+  debugger
+  this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
+  this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+  this._ObjAssigntaskDTO.AssignId = id;
+  //69 this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
+  this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    (data) => {
+      let message: string = data['Message'];
+      this.GetAssigned_SubtaskProjects();
+      this._Demotext = "";
+      this.notifyService.showInfo("", message);
+    });
+
+}
+
+
+OnRadioClick(id) {
+      this._ObjAssigntaskDTO.TypeOfTask = "Update";
+      this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+      this._ObjAssigntaskDTO.AssignId = id;
+      //69 this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          this.GetAssigned_SubtaskProjects();
+          let message: string = data['Message'];
+          this.GetAssigned_SubtaskProjects();
+            this._Demotext = "";
+          this.notifyService.showSuccess("", message);
+        });
+    }
+
+
+
+
+
+
+
 /////////////////////////////////////////// assign task End //////////////////////////////////////////////////////////////////
 
 
@@ -2282,7 +2325,7 @@ _Exec_BlockName: string = "";
 SubmissionName: string;
 
 
-
+projectsSelected:any=[];
 
 
 
@@ -2462,6 +2505,7 @@ ReshudingTaskandEvent() {
         this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
         this.arr.forEach(element => {
           this.MasterCode.push(element.stringval);
+          this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject });
         });
         this.Portfolio = [];
         this.Portfolio1 = [];
@@ -2598,16 +2642,14 @@ updateAgendaEvent(index: number) {
 
 
 getObjOf(arr, id, idName) {
- 
   const obj = arr.find(item => item[idName] == id);
-  return obj;
+  return obj?obj:'';
 }
-
 
 getProjectName(projectCode: string) {
 
-  if (this.ProjectListArray) {
-    const P = this.ProjectListArray.find(pr => pr.Project_Code.trim() == projectCode.trim());
+  if (this.projectsSelected) {
+    const P = this.projectsSelected.find(pr => pr.Project_Code.trim() == projectCode.trim());
     return P ? P.BlockNameProject : '';
   }
   return [];
@@ -2625,9 +2667,11 @@ onProjectSelected(e: any) {
     if (index === -1) {
       // if not present then add it
       this.MasterCode.push(prjChoosed.Project_Code);
+      this.projectsSelected.push({Project_Code:prjChoosed.Project_Code,  Project_Name:prjChoosed.Project_Name,  BlockNameProject:prjChoosed.BlockNameProject});
     }
     else {
       this.MasterCode.splice(index, 1);
+      this.projectsSelected.splice(index,1);
     }
   }
   this.openAutocompleteDrpDwn('ProjectsDrpDwn');
@@ -2641,6 +2685,7 @@ removeSelectedProject(item) {
   const index = this.MasterCode.indexOf(item);
   if (index !== -1) {
     this.MasterCode.splice(index, 1);
+    this.projectsSelected.splice(index,1);
   }
 }
 
@@ -3937,5 +3982,36 @@ Select_flag(val) {
   this._PopupConfirmedValue = val;
 
 }
+
+
+
+
+
+searchingResult:boolean=false;
+onProjectSearch(inputtext:any){
+  this.searchingResult=true;
+  this.CalenderService.NewGetProjectandsubtaskDrp(inputtext).subscribe((res:any)=>{
+      console.log(res);
+      if(res){
+        this.ProjectListArray=JSON.parse(res['Projectlist']); 
+        //  console.log("project name searched result:",this.ProjectListArray);
+        this.searchingResult=false;
+      }
+    
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 } 
