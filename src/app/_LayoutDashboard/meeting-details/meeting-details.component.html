@@ -1915,7 +1915,7 @@
 
  <!--    View All Team members notes Start   -->
 
- <div *ngIf="(currentAgendaView+1>0 && Meetingnotes_time.length>0)" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+ <div *ngIf="(currentAgendaView+1>0 && AllAttendees_notes.length>0)" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
     <div class="accordion-item" >
         <h2 class="accordion-header" id="headingOne">
             <a class="accordion-button" type="button" data-toggle="collapse"
@@ -2869,6 +2869,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
+            <ng-container  *ngIf="Meetingstatuscom!='Completed'">
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -2921,6 +2922,7 @@
              </ng-container>
        
             </div>
+        </ng-container> 
         </ul>
     
         <div class="kt-inbox mt-0 scrollbar1">
@@ -2955,7 +2957,8 @@
                                     <!-- <i class="fas fa-edit invisible"></i>
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
-                                    </a> -->        
+                                    </a> --> 
+                                    <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                                      <ng-container *ngIf="Isadmin==true">
                                     <ng-container *ngFor="let item of EventScheduledjson">         
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -2974,6 +2977,7 @@
                                       
                                        </ng-container>                 
                                      </ng-container> 
+                                      </ng-container> 
                                     </ng-container>
                                 </div>
                             </div>
