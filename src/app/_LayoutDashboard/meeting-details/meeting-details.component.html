@@ -875,9 +875,7 @@
                                         </svg>
                                     </a>       
                                 </div>
-                                <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom==Completed)">
-                                <div class="Kt-Pd-Status Done"  *ngIf="Agendas_List[currentAgendaView].Status==1 "> Completed </div>
-                              </ng-container>
+                               
 
                            
                                 <div class="Kt-Pd-Status Done"  *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</div>
@@ -1753,6 +1751,10 @@
                                       </ng-template>
                                     <!-- <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6> -->
                                 </div>
+
+                                <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom==Completed)">
+                                    <div class="Kt-Pd-Status Done"  *ngIf="Agendas_List[currentAgendaView].Status==1 "> Completed </div>
+                                  </ng-container>
                                 <div class="kt-btn-notes-div" >
                                     <div *ngIf="currentAgendaView+1>0" class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
                                         <span class="title">Attendees Notes</span>
@@ -1827,22 +1829,23 @@
                                     (copy)="onCopy($event)"
                                     (keyup)="addBulletPointsOnEnter($event)">    
                                  </angular-editor>  -->
-
+                                 <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                 <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
                                  <angular-editor [config]="config" [(ngModel)]="Notes_Type"
                                  (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
                                 </ng-container>
-
+                             </ng-container>
                                 
                                  <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
                                         <div class="task-header">
                                             <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
-                                            <h1 class="task-header-title">Assign Task</h1>
+                                            <h1 class="task-header-title">Assign Task </h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
+                                            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                                             <div class="d-flex">
                                             <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
@@ -1853,7 +1856,8 @@
                                                  
                                             </form>
                                             <button *ngIf="_Demotext" class="btn btn-secondary add-agenda-btn" (click)="EnterSubmit(_Demotext)">Add</button>
-                                        </div>
+                                          </div>
+                                          </ng-container>
                                         </div>
 
 
@@ -1877,13 +1881,18 @@
                                  -->
                                 <div class="todo-list">
                                     <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <input class="task-status" type="checkbox">
-                                        <label class="task-name">{{item.Task_Name}}</label>
+                                       </ng-container>
+                                         <label class="task-name">{{item.Task_Name}}</label>
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <div class="task-actions" >                                                                        
                                                     <mat-icon title="Assign Task/Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
                                                  
                                                     <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
                                         </div>
+                                    </ng-container>
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                                         <button class="task-delete task-btns"
                                             (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -1895,6 +1904,7 @@
                                                 </path>
                                             </svg>
                                         </button>
+                                    </ng-container>
                                     </div>
                                 </div>
                                     <!-- <ngx-summernote [(ngModel)]="Notes_Type"></ngx-summernote> -->                             
@@ -2620,7 +2630,7 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-                <h4 class="m-0">All Attendees Notes
+                <h4 class="m-0">All Attendees Notes -  Agenda {{currentAgendaView+1}}:- {{Agendas_List                  [currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="close_attendeesnotes_sideBar()">
@@ -2645,16 +2655,15 @@
                 <li class="allAttendees-user">
                   
                     <div class="accordion-item">
-                    <h2 class="accordion-header accordion-attendes-notes mt-1" id="headingOne" >
-                        <a class="accordion-button" type="button" data-toggle="collapse"
+                    <!-- <h2 class="accordion-header accordion-attendes-notes mt-1" id="headingOne" >
+                        <a class="accordion-button" type="button"
                         (click)="toggleAccordion(a)" [attr.aria-expanded]="data.expanded ? 'true' : 'false'"
                         [attr.data-target]="'#attendes' + data.Emp_no" 
                         [attr.data-target]="'#attendes' + data.Emp_no">
                            
-
-                        <div class="accordion-all-agenda-notes" *ngIf="currentAgendaView+1">  
-                            <h4>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
-                           </h4>
+ 
+                        <div class="accordion-all-agenda-notes" *ngIf="currentAgendaView+1">    data-toggle="collapse"
+                            accordion-collapse collapse
                           </div>
 
 
@@ -2669,9 +2678,9 @@
                                 </span>
                             </div>
                         </a>
-                    </h2>
+                    </h2> -->
                 </div>                               
-                         <div id="attendes{{data.Emp_no}}" class="accordion-collapse collapse">
+                         <div id="attendes{{data.Emp_no}}" class="">
                           <div class="user-notes" > 
                             <div class="head-content">
                                 <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div>  
@@ -2869,7 +2878,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+            
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -2922,7 +2931,7 @@
              </ng-container>
        
             </div>
-        </ng-container> 
+           
         </ul>
     
         <div class="kt-inbox mt-0 scrollbar1">
@@ -2958,9 +2967,9 @@
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> --> 
-                                    <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                                   
                                      <ng-container *ngIf="Isadmin==true">
-                                    <ng-container *ngFor="let item of EventScheduledjson">         
+                                     <ng-container *ngFor="let item of EventScheduledjson">         
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                                         
                                         <i class="fas fa-edit invisible"></i>
@@ -2978,7 +2987,7 @@
                                        </ng-container>                 
                                      </ng-container> 
                                       </ng-container> 
-                                    </ng-container>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -3028,6 +3037,7 @@
         </div>
 
         <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
+            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
             <div *ngIf="Isadmin==true" class="meeting-search">
                 <div class="input-group mt-2">
                     <mat-form-field class="drp-dwn-field ">
@@ -3084,6 +3094,7 @@
                      </ng-container>                   -->
                 </div>
             </div>
+        </ng-container>
             <div class="kt-chat__messages">
 
                 <div class="w-100 d-flex align-items-center justify-content-between">
@@ -3110,7 +3121,8 @@
                             <span>organizer</span>
                             <p>{{Createdby}}</p>
                         </div>
-                    </div>          
+                    </div>       
+                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">    
                     <div class="admin-check curser-pointer"
                         *ngIf="Isadmin==true && status=='Owner'">
                         <span aria-hidden="true" class="admin-check-svg">
@@ -3124,6 +3136,7 @@
                         </span>
                         <span>Admin</span>
                     </div>
+                   
                     <div class="admin-check curser-pointer"
                         *ngIf="Isadmin==false && status!='Owner' && sched_admin==true">
                         <span aria-hidden="true" class="admin-check-svg">
@@ -3137,6 +3150,7 @@
                         </span>
                         <span>Admin</span>
                     </div>
+              
                     <div class="admin-check curser-pointer"
                         *ngIf="Isadmin==true && sched_admin==false && isCheckboxDisabled==false"
                         (click)=" Updating_Adminmeeting(Emp_No)">
@@ -3151,6 +3165,7 @@
                         </span>
                         <span>Back to admin</span>
                     </div>
+                  </ng-container>
                 </div>
 
   
@@ -3182,6 +3197,7 @@
                                 </span>
                                 <span>Online</span>
                             </div>
+                            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                             <ng-container   *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false" >
                             <div class="user-status-action"  (click)=" Updating_Adminmeeting(item.stringval)">
                                 <span class="admin-hover" >
@@ -3230,7 +3246,7 @@
                                 </span>
                             </div>
                         </ng-container>
-
+                   
                         <ng-container  *ngIf="item.IsAdmin">
                             <div class="user-status-action">
                                 <span class="admin-hover" >
@@ -3288,6 +3304,7 @@
                                 </span>
                             </div>
                         </ng-container>
+                    </ng-container>
                         </div>
                     </li>
                     <!-- <li class="meeting-attendees-user">
@@ -3829,7 +3846,7 @@
                         <div class="text-center">
                             <img src="./assets/images/No Attachment.png" width="268" height="256">
                             <div class="bnk-txt mt-3">
-                                <h3 class="blank-txt pfl-img">No Attachment Found</h3>
+                                <h3 class="blank-txt pfl-img ml-2">No Attachment Found</h3>
                             </div>
                         </div>
                     </ng-container>
