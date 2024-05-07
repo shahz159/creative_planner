@@ -396,7 +396,7 @@
                     [(ngModel)]="project_type" (change)="onTypeChanged()">
                     <ng-option value="core">Core/Secondary tasks</ng-option>
                     <ng-option value="standard">Standard/Routine/ToDo tasks</ng-option>
-                    <ng-option value="lunch">Lunch break</ng-option>
+                    <ng-option value="lunch">Lunch</ng-option>
                     <ng-option value="personal">Personal</ng-option>
                 </ng-select>
                 <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select project type.</span>
