@@ -349,6 +349,7 @@ debugger
   }
 
   On_Uncheck(id) {
+    debugger
     this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = id;
@@ -359,8 +360,8 @@ debugger
 
         let message: string = data['Message'];
         this.GetAssigned_SubtaskProjects();
-       this._Demotext = "";
- this.notifyService.showInfo("", message);
+        this._Demotext = "";
+        this.notifyService.showInfo("", message);
 
 
         // if( message =='Todomeeting'){

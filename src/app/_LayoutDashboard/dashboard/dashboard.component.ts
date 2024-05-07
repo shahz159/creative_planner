@@ -784,7 +784,7 @@ export class DashboardComponent implements OnInit {
         this.Event_requests();
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "May be");
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
         this.closeevearea();
 
 
@@ -809,7 +809,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -832,7 +832,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -855,7 +855,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Rejected");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -878,7 +878,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Rejected");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -1981,7 +1981,7 @@ export class DashboardComponent implements OnInit {
           this.Portfolio = null;
           this.minDate = moment().format("YYYY-MM-DD").toString();
           this.maxDate = null;
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.TImetable();
 
         });
@@ -2365,7 +2365,7 @@ export class DashboardComponent implements OnInit {
                 this.Portfolio = null;
                 this.minDate = moment().format("YYYY-MM-DD").toString();
                 this.maxDate = null;
-                this.calendar.updateTodaysDate();
+                // this.calendar.updateTodaysDate();
                 this.TImetable();
       
               });
@@ -2814,7 +2814,7 @@ export class DashboardComponent implements OnInit {
           this.daysSelected.splice(index, 1);
           this.singleselectarry.splice(index, 1);
         }
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
         this.daysSelectedII = [];
         this.daysSelected.forEach(element => {
           const found = this.Timechangearry.some(el => el.Date === element);
@@ -2858,7 +2858,7 @@ export class DashboardComponent implements OnInit {
         //   this.Checkdatetimetable(this.daysSelectedII);
         // }
 
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
       }
     }, delay);
 
@@ -2874,7 +2874,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewGetcheckdateandtime(this._calenderDto).subscribe
       ((data) => {
         this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
 
       });
   }
@@ -2897,7 +2897,7 @@ export class DashboardComponent implements OnInit {
   //   // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
 
   //   // console.log(event)
-  //   this.calendar.updateTodaysDate();
+  //   // this.calendar.updateTodaysDate();
 
   // }
 
@@ -3213,7 +3213,7 @@ console.log("EndTimearr:",this.EndTimearr);
         });
       }
       // console.log("Updated Array" + JSON.stringify(this.Timechangearry))
-      this.calendar.updateTodaysDate();
+      // this.calendar.updateTodaysDate();
       this._selectedId = 0;
       this._SecondSelectedId = 0;
       $('.wp-100 .time').removeClass('time');
@@ -3360,7 +3360,7 @@ console.log("EndTimearr:",this.EndTimearr);
       jsonData[IsActive] = 1;
 
       this.daysSelectedII.push(jsonData);
-      this.calendar.updateTodaysDate();
+      // this.calendar.updateTodaysDate();
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("weekly_122").style.display = "none";
       document.getElementById("Monthly_121").style.display = "none";
@@ -3410,7 +3410,7 @@ console.log("EndTimearr:",this.EndTimearr);
   selectmonthlydays(day) {
     let objIndex = this.MonthArr.findIndex((obj => obj.value == day.target.value));
     this.MonthArr[objIndex].checked = day.target.checked;
-    this.calendar.updateTodaysDate();
+    // this.calendar.updateTodaysDate();
   }
 
   OnEmpSelect(emp: string) {
@@ -4780,6 +4780,9 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
+   debugger
+    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+    this._calenderDto.DraftAgendas=mtgAgendas;
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {   
         if (data['message'] == '1') {
@@ -4803,9 +4806,10 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
-        // console.log(data,"ssdddd")
+        console.log(data,"ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
+       
           this.draftcount = this.draftdata_meet.length;
         }
         else {
@@ -4835,14 +4839,15 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
   draft_arry: any = [];
 
   darft_click(Sno, val) {
-
     this.draftid = Sno;
 
     this.Task_type(val);
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
-
+    console.log(this.draft_arry[0],'6969')
     // console.log(this.draft_arry,"ss11111111")
+    this.allAgendas=JSON.parse(this.draft_arry[0]['Agendas']);
+
     this.MasterCode = [];
     this.arr = JSON.parse(this.draft_arry[0]['Project_code']);
     this.arr.forEach(element => {
@@ -4915,7 +4920,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
-    this.draftid = 0;
+    this.draftid = this.draftid;
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
@@ -4931,10 +4936,11 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.singleselectarry = [];
     this.Avaliabletime = [];
     this.allAgendas = [];
+    this.agendasAdded=0;
     this.TImetable();
     this.selectedrecuvalue = "0";
     // this.Doubleclick(this.event);
-    this.calendar.updateTodaysDate();
+    // this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
     });
@@ -5002,6 +5008,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.singleselectarry = [];
     this.Avaliabletime = [];
     this.allAgendas = [];
+    this.agendasAdded=0;
     this.TImetable();
     this.selectedrecuvalue = "0";
     // this.Doubleclick(this.event);
