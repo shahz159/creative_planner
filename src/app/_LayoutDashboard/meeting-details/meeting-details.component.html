@@ -476,7 +476,7 @@
                                                 </ng-container>
                                             </div> -->
 
-                                            <div class="agenda-input-field" >
+                                            <div class="agenda-input-field"  *ngIf="Meetingstatuscom==Completed">
                                                 <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
                                                 <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
                                                   [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
@@ -499,13 +499,17 @@
                                                     (click)="showAgendaDetails(item,i);GetMeetingnotes_data()">
                                                     <div  *ngIf="item.Status==undefined  || item.Status==0" class="kt-agenda-item "
                                                         [ngClass]="{'Active':currentAgendaView===i}">
-               
-                                                        <label *ngIf="Isadmin==true"
+                
+
+
+                                                        <ng-container  *ngIf="Meetingstatuscom==Completed"
+                                                        >
+                                                        <label *ngIf="Isadmin==true "
                                                             class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                                             <input [id]="item.AgendaId+'ckbox'" type="checkbox" (click)="completeSelectedAgenda()" name="Checkboxes15" />
                                                            <span></span>
                                                         </label>
-                                                       
+                                                    </ng-container>
                                                           <div class="item-info">
                                                             <div class="item-details">
                                                               
@@ -521,7 +525,8 @@
                                                                     </div>
                                                                
     
-                                                            </div>                        
+                                                            </div>  
+                                                            <ng-container  *ngIf="Meetingstatuscom==Completed">                      
                                                             <div class="d-flex">
                                                                 <button *ngIf="Isadmin==true " [id]="'edit-agendaname-btn-'+i"
                                                                     class="edit-agendaname-btn" (click)="editAgenda(i)">
@@ -595,16 +600,20 @@
                                                                     </svg>
                                                                 </button>
                                                             </div>
+                                                        </ng-container>
+                                                        
                                                         </div>
                                                     </div>
                                                     <div  *ngIf="item.Status==1 "  class="kt-agenda-items"
-                                                        [ngClass]="{'Active':currentAgendaView===i}">                
+                                                        [ngClass]="{'Active':currentAgendaView===i}"> 
+                                                        
+                                                        <ng-container  *ngIf="Meetingstatuscom==Completed">
                                                         <label *ngIf="Isadmin==true "
                                                         class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                                         <input type="checkbox" (click)="UndoCompleteAgenda()" name="Checkboxes15" checked />
                                                        <span></span>
                                                        </label>
-                                                
+                                                    </ng-container>
                                                      
                                                         <div class="item-info">
                                                             <div class="item-details">
@@ -875,13 +884,13 @@
                            
                                 <div>                                
                                     <div class="kt-project-leave"  *ngIf="Meetingstatuscom==Completed">                                        
-                                        <ng-container *ngIf="Isadmin==true && hasStatusOne==true">
+                                        <ng-container *ngIf="Isadmin==true">
                                             <span class="title" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
                                            </ng-container>
 
-                                           <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
+                                           <!-- <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
                                             <span class="title" (click)="EndMeetingSweetAlertBox()">End Meeting</span>
-                                           </ng-container>
+                                           </ng-container> -->
 
 
                                         <ng-container *ngIf="Isadmin==false">
@@ -904,6 +913,10 @@
                             <div class="d-flex justify-content-between  mb-2 border-b-dashed">
                                 <div class="kt-project-name d-flex align-items-center gap-2" >
                                     <h4>{{item.Task_Name}}</h4>
+
+                                    <ng-container *ngIf="Meetingstatuscom==Completed">
+                                    <div  class="PA_title"><span >Meeting</span>
+                                    </div>
                                     <div class="PA_title PA_Edit_btn" (click)="ReshudingTaskandEvent()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 18 18" fill="none">
@@ -918,6 +931,7 @@
                                         </svg>
                                         <span class="lbl-hdn">Edit</span>
                                     </div>
+                                </ng-container>
                                 </div>
                                 <div class="kt-project-option">
                                     <div class="options event">Event</div>
@@ -2725,6 +2739,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
+            <ng-container  *ngIf="Meetingstatuscom!='Completed'">
             <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                 <div class="matchip-drp-dwn">
                     <mat-form-field class="drp-dwn-field ">
@@ -2780,6 +2795,7 @@
                          </ng-container>
                 </div>
             </li>
+        </ng-container>
             <li class="kt-nav__item px-4">
                
                 <div id="DemoList-table">
@@ -2788,6 +2804,7 @@
                        
                         <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                         <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
+                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                         <ng-container *ngIf="Isadmin==true">
                         <ng-container *ngFor="let item of EventScheduledjson">         
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -2797,7 +2814,8 @@
                           <i class="fas fa-trash-alt p-2" (click)="DmsDeleteEvent(memo.MailId)"   data-target="#confirmpopup" data-toggle="modal" ></i> 
                            </ng-container>                 
                          </ng-container>    
-                        </ng-container>                      
+                        </ng-container>   
+                    </ng-container>                         
                     </div>
                 </ng-container>
                 </div>  
@@ -3933,7 +3951,7 @@
        <div id="mysideInfobar_schd_new" class="mysideInfobar-schd-new sideInfobar animate-right offcanvas">
         <div class="kt-portlet mb-0">
             <div class="kt-portlet__head">
-                <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1" *ngIf="editTask==true &&  copyTask==false">
+                <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1" *ngIf="editTask==true &&  copyTask==false && repeatMeeting==false ;else EditNamechange">
                     <h4 class="mb-0"> Edit {{ScheduleType}}</h4>
                     <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeschd()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
@@ -3944,6 +3962,20 @@
                         </svg>
                     </a>
                 </div>
+
+                <ng-template #EditNamechange>
+                <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1" >
+                    <h4 class="mb-0">Repeat Event</h4>
+                    <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeschd()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                            <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            </ng-template>
             </div>
             <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
                 *ngIf="copyTask==true ">
@@ -4360,7 +4392,7 @@
     
                         <div class="form-group mb-0">
                             <div class="d-flex gap-1">
-                                <div class="form-group flex-1">
+                                <div class="form-group flex-1" *ngIf="repeatMeeting==false">
                                     <label>{{_labelName}}<span class="text-danger">*</span></label>
                                     <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
                                         <input (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
@@ -4376,6 +4408,37 @@
                                     </div>
                                     <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
                                 </div>
+
+
+
+
+
+
+
+
+                                <div class="form-group flex-1" *ngIf="repeatMeeting==true">
+                                    <label>Schedule Date<span class="text-danger">*</span></label>
+                                    <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
+                                        <input [matDatepicker]="picker1" (click)="picker1.open()"
+                                            (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                            [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;">
+                                        <div class="input-group-append">
+    
+                                            <div class="input-group-text p-0">
+                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker1></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
+                                </div>
+
+
+
+
+
+
+                                
                                 <div class="form-group flex-1" >
                                     <label>Start Time <span class="text-danger">*</span> </label>
                                     <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
@@ -4396,7 +4459,7 @@
                                     <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
                                 </div>
     
-                                <div class="form-group flex-1" id="Schenddate">
+                                <div class="form-group flex-1 d-none" id="Schenddate">
                                     <label>Schedule End Date<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input matInput [matDatepicker]="picker6" (click)="picker6.open()"
@@ -4900,12 +4963,24 @@
                 </div>
     
     
-                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false"
+                <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false && repeatMeeting==false ;else updateRepeat"
                     class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
-                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
+                        data-target="#confirmpopups" (click)="viewconfirm()">Update</button> &nbsp;
                     <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
                 </div>
+                <ng-template #updateRepeat>
+                    <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
+                    data-target="#confirmpopups" (click)="viewconfirm()">Repeat & Update</button> &nbsp;
+                <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+                </ng-template>
+
+
+
+
+
+
+                
                 <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                     class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"
@@ -5149,6 +5224,35 @@
  <!-- meeting End pop box End -->
 
 
+ <div class="modal fade" id="confirmpopups">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="rescontent" style="color: #3c4043;">
+                    <div id="div_thisevent" class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" id="r1" (click)="Select_flag(1)" name="optradio"><span class="ml-2">This
+                                Event
+                                Only</span>
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" id="r2" (click)="Select_flag(2)" name="optradio"><span class="ml-2">This
+                                and Following Events</span>
+                        </label>
+                    </div>           
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="text-gry fs-5 mr-3" data-dismiss="modal">Close</a>
+                <a type="button" class="text-info fs-5" data-toggle="modal"
+                data-target="#confirmpopups" (click)="OnSubmitReSchedule(1)" data-dismiss="modal">
+                    Save changes</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
