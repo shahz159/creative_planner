@@ -446,7 +446,7 @@
                                 <span class="kt-dashboard-cnt">{{pendingcount}}</span>
                             </div>
 
-                            <div class="fc pend-bg" *ngIf="draftcount>0">
+                            <div class="fc pend-bg" *ngIf="draftcount&&draftcount>0">
                                 <button type="button" (click)="penshow1()" class="draft-btn">draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>

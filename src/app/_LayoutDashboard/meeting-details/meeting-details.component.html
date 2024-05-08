@@ -2120,14 +2120,19 @@
                                                                             data-mat-icon-type="font">task_alt </mat-icon>
                                                                         <b> {{item.AssignedTo}}</b>
                                                                     </span>
-                                                                    <span data-toggle="tooltip" title="Assigned Date!"
+                                                                    <span data-toggle="tooltip" title="Project Status!"
+                                                                        class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
+                                                                        ng-reflect-ng-class="[object Object]">
+                                                                        <div> {{item.Status}}</div>
+                                                                    </span>
+                                                                    <!-- <span data-toggle="tooltip" title="Assigned Date!"
                                                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
                                                                         <div>
                                                                             <img src="../creativeplanner/assets/icons/create1.png"
                                                                                 class="badge-img">
                                                                         </div>
                                                                         <div>{{item.Modified_DT|date}} </div>
-                                                                    </span>
+                                                                    </span> -->
                                                                     <!-- <span data-toggle="tooltip" title="Assigned Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-success" ng-reflect-ng-class="[object Object]">
                                                           <div> Accepted</div>
                                                         </span> -->
@@ -2136,11 +2141,7 @@
                                                                     <!-- <label data-toggle="tooltip" title="Project Type!" class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                           <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label> -->
             
-                                                                    <span data-toggle="tooltip" title="Project Status!"
-                                                                        class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
-                                                                        ng-reflect-ng-class="[object Object]">
-                                                                        <div> {{item.Status}}</div>
-                                                                    </span>
+                                                                    
             
                                                                     <!-- <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                           <div>
