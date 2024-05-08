@@ -2030,8 +2030,7 @@
       <div class="notifications-list">
 
 
-      <div *ngIf="myUnderApprvActions.length>0" class="notification underapproval-notification curser-pointer"
-          (click)="onFilterConfigChanged({filterBy:'Under Approval',sortBy:Current_user_ID});  showActionDetails(this.myUnderApprvActions[0].IndexId-1);">
+      <div *ngIf="myUnderApprvActions.length>0" class="notification underapproval-notification  myactions-underaprv-notif">
           <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
               enable-background="new 0 0 64 64" xml:space="preserve" style="
@@ -2057,10 +2056,34 @@
           <span class="notif-msg fs-5" style="color:#00a2eb">You have
               {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
               actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
+
+
+
+        <button title="show actions" class="myunderaprvactns-open-btn  curser-pointer " (click)="onFilterConfigChanged({filterBy:'Under Approval',sortBy:Current_user_ID});  showActionDetails(this.myUnderApprvActions[0].IndexId-1)">
+            <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path class="arrow"
+                        d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
+        </button>
+
+
+
+
+
+
+
+
       </div>
 
-      <div *ngIf="myDelayPrjActions.length>0" class="notification delay-notification  cursor-pointer "
-          (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:Current_user_ID});   showActionDetails(this.myDelayPrjActions[0].IndexId-1); ">
+      <div *ngIf="myDelayPrjActions.length>0" class="notification delay-notification  mydelay-action-notf">
           <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2075,10 +2098,27 @@
                   </g>
               </g>
           </svg>
-          <span class="notif-msg" style="color:#ff2727; cursor:pointer; "> You have {{myDelayPrjActions.length}}
+          <span class="notif-msg" style="color:#ff2727;"> You have {{myDelayPrjActions.length}}
               {{myDelayPrjActions.length>1?'actions':'action'}} delay with maximum delay
               of {{myDelayPrjActions[0].Delaydays>1?(myDelayPrjActions[0].Delaydays+'
               days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
+
+
+        <button title="show actions" class="mydelayactns-open-btn  curser-pointer " (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:Current_user_ID});   showActionDetails(this.myDelayPrjActions[0].IndexId-1); ">
+            <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                         stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path class="arrow"
+                        d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
+        </button>
+
       </div>
 
       <div *ngIf="+ProjectPercentage>100" class="notification overutilization-notification">
@@ -2104,9 +2144,8 @@
       </div>
 
 
-      <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list" style="cursor:pointer;">
-      <div class="notification delay-notification curser-pointer " *ngIf="TOTAL_ACTIONS_IN_DELAY>0"
-      (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:'All'});   showActionDetails(this.delayActionsOfEmps[0].delayActions[0].IndexId-1); ">
+      <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list">
+      <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0">
       <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2125,7 +2164,7 @@
           Project has {{TOTAL_ACTIONS_IN_DELAY}} Actions delay, max
           {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
           <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
-              {{action.name}}
+              <span (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:action.emp_no.trim()})"  class="delayaction-of-emp">{{action.name}}</span>
               ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?'
               days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
                   *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
@@ -3243,6 +3282,7 @@
                                                   (click)="LoadDocument1(projectInfo&&projectInfo.IsCloud,projectInfo&&projectInfo.Sourcefile,projectInfo&&projectInfo.CompleteProofDoc,projectInfo&&projectInfo.contenttype,projectInfo&&projectInfo.Responsible)">
 
                                                   <b class="word-break text-info curser-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
                                                       {{projectInfo&&projectInfo.Sourcefile}}</b>
                                               </div>
                                           </div>
@@ -4432,6 +4472,7 @@
                                                       (click)="LoadDocument1(projectActionInfo[currentActionView].IsCloud,projectActionInfo[currentActionView].Sourcefile,projectActionInfo[currentActionView].CompleteProofDoc,projectActionInfo[currentActionView].contenttype,projectActionInfo[currentActionView].Responsible)">
 
                                                       <b class="word-break text-info curser-pointer">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
                                                           {{projectActionInfo[currentActionView].Sourcefile}}</b>
                                                   </div>
                                               </div>
@@ -7245,7 +7286,7 @@
           <div class="card mt-4">
               <div class="card-body p-3">
                   <div class="row">
-                      <div class="col-lg-12">
+                      <div class="col-lg-12"> 
 
                           <div class="spacer--body tab-pane fade show active" id="kt_tab_pane_2" role="tabpanel"
                               aria-labelledby="kt_tab_pane_2">
@@ -7259,7 +7300,7 @@
                                                   <div class="input-group details-date"  [ngClass]="{'error-date': !Holddate&&formFieldsRequired}">
                                                       <input matInput [matDatepicker]="picker3"
                                                           id="Holdtext_{{Pid}}" (click)="picker3.open();"
-                                                          [min]="minhold" [max]="maxhold" [(ngModel)]="Holddate"
+                                                          [min]="minhold" [max]="maxhold" [(ngModel)]="Holddate" (dateChange)="onHoldDateChanged()"
                                                           placeholder="Select Date" class="form-control"
                                                           name="date" />
                                                       <div class="input-group-text p-0">
@@ -7279,9 +7320,44 @@
                                                       [(ngModel)]="hold_remarks"></textarea>
                                                       <span *ngIf="!hold_remarks&&formFieldsRequired"  style="color:red">Please provide remarks</span>
                                               </div>
+
+                              <ng-container *ngIf="currentActionView===undefined&&isEHsectionVisible">
+
+                                              <div class="deadline-exceeded-alert mt-4">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                                  </svg>
+                                                  <span>Hold date exceeds project deadline. Click on the checkbox below to extend.</span>
+                                              </div>
+
+
+                                                <div class="d-flex align-items-center mt-5"  >
+                                                        <input [(ngModel)]="extendAndHold" type="checkbox" id="actioncompl" class="mr-2" style="accent-color:#646c9a; width:15px; height:15px;"/>
+                                                        <label for="actioncompl" class="mb-0 font-weight-normal"> Extend project deadline.</label>
+                                                </div>
+
+
+                                              <div *ngIf="extendAndHold" class="form-group input-group  mt-4" id="select-new-deadline">
+                                                    <label>Select new project deadline<span class="text-danger">*</span></label>
+                                                    <div class="input-group details-date" [ngClass]="{'error-border':!newPrjDeadline&&formFieldsRequired}">
+                                                        <input  [min]="minPrjDeadline"  matInput [matDatepicker]="nddpicker" (click)="nddpicker.open();" [(ngModel)]="newPrjDeadline"
+                                                            placeholder="Select Date" class="form-control"
+                                                            name="date" />
+                                                        <div class="input-group-text p-0">
+                                                            <mat-datepicker-toggle matSuffix [for]="nddpicker">
+                                                            </mat-datepicker-toggle>
+                                                            <mat-datepicker #nddpicker></mat-datepicker>
+                                                        </div>
+                                                    </div>
+                                                    <span *ngIf="!newPrjDeadline&&formFieldsRequired"  style="color:red">please provide new project deadline.</span>
+                                              </div>
+                            </ng-container>
+
+
+
                                           </div>
                                       </div>
-                                      <li class="kt-nav__separator"></li>
+                                      <!-- <li class="kt-nav__separator"></li> -->
                                   </ul>
 
                               </div>
@@ -10587,7 +10663,7 @@
                       <div class="form-group mb-2">
                           <div class="kt-info-lable-v"> Deadline</div>
                           <div class="input-icon Sub_In_ed date-border-v d-flex">
-                              <input class="form-control curser-pointer" [(ngModel)]="End_Date"
+                              <input id="prj-edit-deadline-input" class="form-control curser-pointer" [(ngModel)]="End_Date"
                                   [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="strtEditsPicker"
                                   (click)="strtEditsPicker.open();" placeholder="Deadline Date..."
                                   class="form-control border-0 " name="date" />

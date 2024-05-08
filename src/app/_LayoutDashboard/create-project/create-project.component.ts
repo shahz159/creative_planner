@@ -1937,7 +1937,6 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
   alterAction(){
 debugger
-
         // check all mandatory field are provided.    
         if(!(this.ProjectName&&this.ProjectDescription&&
           this.OGowner&&this.OGresponsible&&
@@ -2048,15 +2047,51 @@ debugger
         });
       }
 
-
-
   }
 
 
+  
+LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
+  if (iscloud == false) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
 
+    if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.projectInfo.ResponsibleEmpNo + "/" + this.projectInfo.Project_Code + "/" + url1);
+    }
+    else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+      FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + this.projectInfo.Project_Code + "/" + url1);
+    }
 
+    let name = "ArchiveView/" + this.projectInfo.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
 
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.projectInfo.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
 
 
    ///////////////////////////////////////// Action Edit End /////////////////////////////
