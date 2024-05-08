@@ -154,8 +154,11 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Status=='Under Approval' ? 'New Project Under Approval' :(item.Status=='InProcess'?'In-Process':item.Status=="Not Started" ? 'Draft':item.Status)}}
-                                                                <span></span>
+                                                                    {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval":
+                                                                    item.Status=="Deadline Extend Under Approval" ? "Deadline Extend Approval" :item.Status== "Completion Under Approval" ?
+                                                                    "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval"
+                                                                    :item.Status=="Enactive Under Approval"?"Enactive Approval":item.Status=='InProcess'?'In-Process':item.Status =="Not Started"?"Draft":item.Status}}
+                                                                    <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
                                                         </div>
@@ -471,7 +474,7 @@
                                                     <!-- <td></td> -->
                                                     <td align="center">
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus" title="Project Info!" (click)="openInfo(item.Project_Code, item.Project_Name);info_active_btn(item)">
+                                                            data-trigger="focus" title="Project Info!" (click)="openInfo(item.Master_Code,item.Project_Code);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
 <g>
@@ -607,8 +610,7 @@
                                                     </td> -->
                                                     <td>
                                                         <div *ngIf="item.Status=='Under Approval'" >
-                                                            <span class="new-project  font-weight-400" > New Project Under
-                                                                Approval</span>
+                                                            <span class="new-project  font-weight-400" > New Approval</span>
                                                             <!-- <span class="bg-success">{{item.Status}}</span> -->
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
@@ -652,9 +654,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion
-                                                                Under
-                                                                Approval
+                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
@@ -662,9 +662,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
-                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward
-                                                                Under
-                                                                Approval
+                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Complete Rejected'">
@@ -674,9 +672,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive
-                                                                Under
-                                                                Approval
+                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive Approval
                                                             </span>
                                                         </div>
 
@@ -685,8 +681,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline Extend
-                                                                Under Approval
+                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline Extend Approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
@@ -696,7 +691,7 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
                                                             <span class="font-weight-400"
-                                                                style="color: #c0b5dc;">Project Hold Under Approval
+                                                                style="color: #c0b5dc;">Hold Approval
                                                             </span>
                                                         </div>
                                                     </td>

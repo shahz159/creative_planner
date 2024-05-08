@@ -41,6 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
+import { debug } from 'console';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -481,10 +482,9 @@ this.prjPIECHART.render();
     if(this.currentActionView===undefined){
 
          // 1. bar chart start.
-             this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, '1', this.Current_user_ID).subscribe((res: any) => {
 
-               let tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
 
+               let tlTotalHrs:number = this.projectInfo.TotalHours;
 
                  //standard  graph cal start    may need updation.
                  let x=0;
@@ -573,7 +573,7 @@ this.prjPIECHART.render();
 
 
 
-             });
+
          //  bar chart end.
 
          // 2. Pie chart start.
@@ -906,13 +906,13 @@ this.prjPIECHART.render();
       });
 
      if(this.filteremployee)
-     {
+     {  debugger
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
             if(delayActionsOfEmp.length>0){
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
-              this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
+              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp})
             }
           });
      }
@@ -934,7 +934,7 @@ this.prjPIECHART.render();
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
     }
 
-debugger
+
 
       console.log("delay-", this.delayActionsOfEmps)
       this.route.queryParamMap.subscribe((qparams)=>{
@@ -1048,9 +1048,27 @@ debugger
       (data) => {
         if (data !== null && data !== undefined) {
 
-          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
+          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
+
+    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+          let count:number=0;  
+          this.Activity_List.map((actv:any)=>{
+            
+            if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=`Project Deadline Change (${updatecount+x} Change)`;
+                   count+=1;
+               }
+              return actv;
+          });    
+   // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+
+
+
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
-debugger
+
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
                  return {
@@ -1074,8 +1092,24 @@ debugger
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
+        debugger
         if (data !== null && data !== undefined) {
-          this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
+          this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
+          let count:number=0;  
+          this.ActionActivity_List.map((actv:any)=>{
+            debugger
+            if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....  
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Change)`);
+                   count+=1;
+               }
+              return actv;
+          });
+
+
+
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
@@ -1148,14 +1182,25 @@ debugger
 
 
   sendRequest(): void {
-    this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
-   console.log(res,'openRequestDialog')
-    })
-    Swal.fire('Request Sent Successfully');
-    this.isRequestSent = true;
-    this.ishide=false
-    $('.hide-content').addClass('d-none')
+    debugger
+    if (!this.Usercomment){
+      this.formFieldsRequired=true;
+      return
+    }
+    else{
+      this.formFieldsRequired=false;
 
+      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+        console.log(res,'openRequestDialog')
+        this.closeRequestDialog();
+        Swal.fire('Request Sent Successfully');
+        this.isRequestSent = true;
+        this.ishide=false
+        $('.hide-content').addClass('d-none');
+
+         });
+
+    }
   }
 
   BarChartOfAction:any;
@@ -1298,11 +1343,29 @@ debugger
     document.getElementById("newdetails").classList.add("position-fixed");
   }
 
+
+  MultipleApprovalSideBar() {
+    document.getElementById("multiple_view").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+  }
+
+
   closeApprovalSideBar(){
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("newdetails").classList.remove("position-fixed");
   }
+
+  closeMultipleSideBar(){
+    document.getElementById("multiple_view").classList.remove("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("newdetails").classList.remove("position-fixed");
+  }
+
+
+
+
   hide_main_approval(){
     if(this.selectedStdAprvs&&this.selectedStdAprvs.length>0){
       // atleast one selection required.
@@ -1317,6 +1380,13 @@ debugger
     document.getElementById("main-approval").classList.remove("d-none");
     document.getElementById("main-reject").classList.add("d-none");
   }
+
+multipleback(){
+  document.getElementById('multiple-approval').classList.remove('d-none')
+  document.getElementById('multiple-reject').classList.add('d-none')
+}
+
+
   closeInfo() {
     this._remarks = ''
     this.selectedFile=null;
@@ -1365,6 +1435,7 @@ debugger
     this.closeLinkSideBar();
     this.closeMeetingSidebar();
     this.closePrjReleaseSideBar();
+    this.closePrjHoldSideBar();
   }
 
 
@@ -1748,6 +1819,7 @@ debugger
   repdate:any;
   contenttype: any;
   submitby:any;
+  multiapproval_list:any[]
 
   getapprovalStats() {
     // this.approvalEmpId = null;
@@ -1755,12 +1827,16 @@ debugger
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-      debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
+
+
+        this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']))
+        console.log('multiapproval_list',this.multiapproval_list)
+
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
@@ -1807,7 +1883,6 @@ debugger
           }
 
         }
-        debugger
         if (this.requestType == 'Task Complete') {
           this.isApprovalSection=false;   // std task approvals will be in sidebar not on front page.
           console.log("requestDetails :",this.requestDetails);
@@ -1837,8 +1912,10 @@ debugger
 
         // if there are no std task aprv request
          this.standardjson=[];
+         this.multiapproval_list=[]
          this.currentStdAprView=undefined;
          this.closeApprovalSideBar();
+         this.closeMultipleSideBar()
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -1850,7 +1927,7 @@ debugger
 standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {  debugger
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
@@ -1866,7 +1943,7 @@ currentStdAprView:number|undefined;
     });
   }
 
-  approvalClick(actionType) {  debugger
+  approvalClick(actionType) {
     this.comments = ""
     switch (actionType) {
       case 'ACCEPT': {
@@ -1876,6 +1953,8 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        // this.getapprovalStats();
+        //    this.getProjectDetails(this.URL_ProjectCode);
 
       }; break;
       case 'CONDITIONAL': {
@@ -2010,7 +2089,6 @@ currentStdAprView:number|undefined;
   allStdAprSelected:boolean=false;
   selectedStdAprvs:any=[];
   acceptAllStdApprReq(){
-     debugger
     if(this.selectedStdAprvs.length===0){
       this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
       return;
@@ -2068,7 +2146,7 @@ currentStdAprView:number|undefined;
 
 
 
-  submitApproval() {     debugger
+  submitApproval() {
     if (this.selectedType == '1') {
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2080,7 +2158,6 @@ currentStdAprView:number|undefined;
           element.Remarks = this.comments;
         });
       }
-      debugger
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
@@ -2727,7 +2804,7 @@ currentStdAprView:number|undefined;
 // check all mandatory fields are provided or not
 
 
-
+debugger
 
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -2842,7 +2919,6 @@ currentStdAprView:number|undefined;
       });
     }
     else if (val == 1) {
-      debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.json = jsonvalue;
@@ -2850,7 +2926,6 @@ currentStdAprView:number|undefined;
       this.approvalObj.isApproval = val;
 
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-        debugger
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
@@ -2942,7 +3017,7 @@ currentStdAprView:number|undefined;
 
   onAction_update() {
 
-// check all mandatory field are provided.    
+// check all mandatory field are provided.
     if(!(this.ActionName&&this.ActionDescription&&
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
@@ -2953,7 +3028,7 @@ currentStdAprView:number|undefined;
             return;
     }else this.formFieldsRequired=false;   // back to initial value.
 // check all mandatory field are provided.
-
+debugger
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -3031,9 +3106,6 @@ currentStdAprView:number|undefined;
   this.approvalObj.json = jsonvalues;
   this.approvalObj.Remarks = this._remarks;
 
-
-
-  console.log(dateOne, dateTwo, "dates")
   if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
     Swal.fire({
       title: 'Action deadline is greater than main project deadline ?',
@@ -3159,7 +3231,7 @@ check_allocation() {
 
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
-        console.log("sahil bhai this is your DAR array:", this.darArray);
+        // console.log("bhai this is your DAR array:", this.darArray);
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
@@ -3244,7 +3316,7 @@ check_allocation() {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
-  } 
+  }
 
 
  submitDar(){
@@ -3484,7 +3556,6 @@ check_allocation() {
 
 
   Portfolio_Select(selecteditems) {
-    debugger
     //console.log("Selected Item---->",selecteditems)
     let arr = [];
     this.Empty_portDropdown = selecteditems;
@@ -3550,7 +3621,6 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-    debugger
     if(this._SelectedPorts==' '||this._SelectedPorts==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
@@ -3705,7 +3775,7 @@ check_allocation() {
 
 
 
-  closeInfoProject() { debugger
+  closeInfoProject() {
     // For closing sidebar on 'X' buttton
     document.getElementById("mysideInfobar_ProjectsUpdate").classList.remove("kt-quick-panel--on");
     // For sidebar overlay background removing the slide on 'X' button
@@ -3728,7 +3798,6 @@ check_allocation() {
 
 
   updateMainProject() {
-    debugger
 // for checking whether mandatory fields are provided or not.
    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
@@ -3760,7 +3829,6 @@ check_allocation() {
       fd.append("Project_Name", this.projectInfo.Project_Name);
       this.service._fileuploadService(fd).
         subscribe((event: HttpEvent<any>) => {
-          debugger
           switch (event.type) {
             case HttpEventType.Sent:
               console.log('Request has been made!');
@@ -5692,7 +5760,6 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-    debugger
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -6179,10 +6246,9 @@ removeSelectedDMSMemo(item){
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
-  onProject_Hold(id, Pcode) {
 
-  if(this.Holddate&&this.hold_remarks){
-       // if holddate and remarks are provided.
+
+holdcontinue(Pcode:any){
        this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
        this.objProjectDto.Project_holddate = this.Holddate;
        this.objProjectDto.Project_Code = Pcode;
@@ -6201,18 +6267,105 @@ removeSelectedDMSMemo(item){
            this.getholdate();
            this.getRejectType();
            this.updatePortfolioPage();
-           debugger
            if(this.currentActionView!==undefined){
              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
              }else{
                this.GetActivityDetails();
 
              }
-
-
-
          }
        });
+}
+
+
+
+  newPrjDeadline:any;
+  extendAndHold:boolean=false;
+  isEHsectionVisible:boolean=false;
+  minPrjDeadline:Date;
+  onHoldDateChanged(){ 
+    debugger
+    if(this.currentActionView===undefined){     // only for project.
+      const d1=new Date(this.Holddate);
+      const d2=new Date(this.projectInfo.EndDate);
+      this.isEHsectionVisible=d1>d2;
+      d1.setDate(d1.getDate()+1);
+      this.minPrjDeadline=d1;
+    }
+      
+}
+  
+
+
+
+
+  onProject_Hold(id, Pcode) {
+debugger
+  if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
+       // if holddate and remarks are provided.
+
+      if(this.isEHsectionVisible){
+            if(this.extendAndHold){   
+                  
+debugger
+    // 1. PRJ UPDATE     (updating project using 'newPrjDeadline' )
+                   var datestrStart = moment(this.projectInfo.StartDate).format("MM/DD/YYYY");
+                   var datestrEnd = moment(this.newPrjDeadline).format("MM/DD/YYYY");
+                   const jsonobj = {
+                    Project_Type: this.projectInfo.Project_Block,
+                    Project_Name: this.projectInfo.Project_Name,
+                    Project_Description: this.projectInfo.Project_Description,
+                    Owner: this.projectInfo.OwnerEmpNo,
+                    Responsible: this.projectInfo.ResponsibleEmpNo,
+                    Category: this.projectInfo.Reportid,
+                    Client: this.projectInfo.ClientNo,
+                    StartDate: datestrStart,
+                    EndDate: datestrEnd,
+                    SubmissionName: 0,
+                    AllocatedHours: this.projectInfo.AllocatedHours,
+                    Recurrence:this.projectInfo.Annual_date
+                  }
+                  const jsonvalue = JSON.stringify(jsonobj);
+              
+                    this.approvalObj.Emp_no = this.Current_user_ID;
+                    this.approvalObj.Project_Code = this.URL_ProjectCode;
+                    this.approvalObj.json = jsonvalue;
+                    this.approvalObj.Remarks = '';
+                    this.approvalObj.isApproval = 0;
+              
+                    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+                      console.log(data['message'], "edit response");
+                      if (data['message'] == '1') {
+                        this.notifyService.showSuccess("Updated successfully", "Success");
+                      }
+                      else if (data['message'] == '2') {
+                        this.notifyService.showError("Not updated", "Failed");
+                      }
+                    });
+
+   // 2. PRJ HOLD 
+           this.holdcontinue(Pcode);
+
+            }
+            else 
+            {
+                  Swal.fire({
+                    text:'Continuing will make you accountable for project delays. Do you still want to proceed?',
+                    showConfirmButton:true,
+                    confirmButtonText:'Hold Anyway',
+                    confirmButtonColor:'',
+                    showCancelButton:true,
+                    icon:'warning',
+                  }).then((choice1:any)=>{
+                      if(choice1.value===true)
+                        this.holdcontinue(Pcode); 
+                  });
+            }
+
+      }
+      else 
+      this.holdcontinue(Pcode);
+
   }
   else
    this.formFieldsRequired=true;
@@ -6235,12 +6388,11 @@ removeSelectedDMSMemo(item){
       if(this.currentActionView===undefined){
         // project release
         if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
-          debugger
           this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = 'Project Release';
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
-          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => { debugger
+          this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
@@ -6345,6 +6497,12 @@ removeSelectedDMSMemo(item){
     this.hold_remarks = '';
     this.Holddate = null;
     this.formFieldsRequired=false;
+
+    this.isEHsectionVisible=false;
+    this.newPrjDeadline=undefined;
+    this.extendAndHold=false;
+    this.minPrjDeadline=undefined;
+
     document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -6790,10 +6948,12 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
-  this.filterConfig.filterby=filterBy;
-  this.filterConfig.sortby=sortBy;
-  this.filterConfigChanged=true;
-  this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
+  if(filterBy&&sortBy){
+    this.filterConfig.filterby=filterBy;
+    this.filterConfig.sortby=sortBy;
+    this.filterConfigChanged=true;
+    this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
+  }
 }
 
 clearFilterConfigs(){
@@ -6913,7 +7073,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 /////////////////////task attachemnets start///////////////////////////////////////
 openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Date, proofDoc: string, type: string,submitby: string) {
-debugger
+
   repDate = new Date(repDate);
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -7020,7 +7180,7 @@ send_from: any;
 rejectactivity: any;
 
 
-openNewPrjReleaseSideBar() { debugger
+openNewPrjReleaseSideBar() {
   document.getElementById("new-prj-release-sidebar").classList.add("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementById("newdetails").classList.add("position-fixed");
@@ -7265,7 +7425,6 @@ selectedactvy:string|undefined;
 lastActivityOn:string|undefined;
 
 showFullGraph(){
-  debugger
   let alldates=this.Activity_List.map(actvy=>actvy.ModifiedDate);    //  ['2024-02-02','2024-02-03','2024-02-02','2023-08-11']
   alldates=Array.from(new Set(alldates)).reverse();    // ['2023-08-11','2024-02-02','2024-02-03']   distinct and reverse
   this.lastActivityOn=alldates[alldates.length-1];   // last activity on
@@ -7326,8 +7485,8 @@ showFullGraph(){
       dataFormat: "json",
       dataSource:dataSource
     }).render();
-    
- // resolves slowness occuring in the starting. by rendering graph again.   
+
+ // resolves slowness occuring in the starting. by rendering graph again.
     myChart=new FusionCharts({
       type: "zoomline",
       renderAt: "full-graph",
@@ -7335,9 +7494,9 @@ showFullGraph(){
       height: "100%",
       dataFormat: "json",
       dataSource:dataSource
-    }).render();   
+    }).render();
 // resolves slowness occuring in the starting. by rendering graph again.
- 
+
     myChart.addEventListener('dataplotClick',(e)=>{
        console.log(e.data.categoryLabel,e.data.dataValue);
        this.loadActivitiesByDate(e.data.categoryLabel);
@@ -7369,9 +7528,9 @@ onGraphOptionChanged(option:string){
 
 }
 
-loadActivitiesByDate(d){   debugger
+loadActivitiesByDate(d){
 
-  this.activitiesOnthat=this.getActivitiesOf(d);  
+  this.activitiesOnthat=this.getActivitiesOf(d);
   const currentDt=new Date();
   const dateClicked=new Date(d);
   this.selectedactvy=(dateClicked.getDate()==currentDt.getDate())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
@@ -7587,7 +7746,7 @@ backMainMeetings() {
 }
 
 //  save meeting as draft start.
-Insert_indraft() { debugger
+Insert_indraft() {
   if (this.draftid != 0) {
     this._calenderDto.draftid = this.draftid;
   }
@@ -7619,7 +7778,7 @@ Insert_indraft() { debugger
   this._calenderDto.Project_Code = this.MasterCode.toString();
 
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-    (data => { debugger
+    (data => {
       if (data['message'] == '1') {
         // this.Getdraft_datalistmeeting();
         this.closeschd();
@@ -7816,6 +7975,125 @@ updatePortfolioPage(){
 
 
 }
+
+
+
+allMUlAprSelected:boolean=false;
+selectedmulAprvs:any=[];
+acceptAllMulApprReq(){
+debugger
+  if(this.selectedmulAprvs.length===0){
+    this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
+    return;
+  }
+
+
+
+  const multasktoApprove=this.multiapproval_list.filter(item=>this.selectedmulAprvs.includes(item.SNo));
+  if(multasktoApprove.length==0){
+    this.notifyService.showInfo("Please select atleast one task to approve","Note:");
+  }
+  else{
+    const x=this.multiapproval_list.length-multasktoApprove.length;   // decides whether the sidebar remain open or should close.
+    this.approvalservice.NewUpdateAcceptApprovalsService(multasktoApprove).subscribe(data =>{
+    console.log(data,"accept-data");
+     if(x===0)
+      this.closeMultipleSideBar();
+
+     this.notifyService.showSuccess("approved.",'Success');
+this.getProjectDetails(this.URL_ProjectCode);
+     this.getapprovalStats();
+     this.selectedmulAprvs=[];
+     this.allMUlAprSelected=false;
+
+    });
+  }
+
+}
+
+
+hide_mul_approval(){
+  if(this.selectedmulAprvs&&this.selectedmulAprvs.length>0){
+    // atleast one selection required.
+  document.getElementById("multiple-approval").classList.add("d-none");
+  document.getElementById("multiple-reject").classList.remove("d-none");
+  }
+  else{
+    this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
+  }
+}
+
+
+onMultipleAprvSel(e,aprvls){
+
+  aprvls.forEach(aprv=>{
+        if(e.target.checked){
+              if(!this.selectedmulAprvs.includes(aprv.SNo))
+              this.selectedmulAprvs.push(aprv.SNo);
+        }else{
+              const x=this.selectedmulAprvs.indexOf(aprv.SNo);
+              this.selectedmulAprvs.splice(x,1);
+        }
+  });
+
+}
+
+
+
+
+rejectAllmultipleAprvs(){
+  debugger
+  if (this.selectedType == '3') {
+    if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
+      this.noRejectType = true;
+
+      this.notifyService.showError("Please select Reject Type", "Failed");
+      return false;
+    }
+    else {
+
+
+    let selectedmultipleApprovals=this.multiapproval_list.filter(item=>this.selectedmulAprvs.includes(item.SNo));
+    selectedmultipleApprovals=selectedmultipleApprovals.map(item=>({
+              SNo: item.SNo,
+              Type: item.Type,
+              ReportType: item.ReportType,
+              RejectType: item.RejectType,
+              sendFrom: item.sendFrom,
+              Project_Code: item.Project_Code,
+              Remarks: item.Remarks,
+              Rec_Date: item.Rec_Date
+    }));
+    selectedmultipleApprovals.forEach(element => {
+        element.Remarks = this.comments;
+        element.RejectType = this.rejectType;
+      });
+
+      this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedmultipleApprovals).
+        subscribe((data) => {
+
+          this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
+
+          if(this.multiapproval_list.length-this.selectedmulAprvs.length!==0){
+              this.multipleback();
+          }  // back to approvals list.
+
+
+          this.getapprovalStats();
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.getRejectType();
+
+          // this.getapproval_actiondetails();
+
+        });
+
+
+
+
+    }
+  }
+}
+
 
 
 

@@ -200,6 +200,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_type = obj.Schedule_type;
     this.obj_CalenderDTO.User_list = obj.User_list;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
+    this.obj_CalenderDTO.DraftAgendas = obj.DraftAgendas;
     
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
@@ -403,7 +404,7 @@ DeleteProjectsOfMeeting(obj: CalenderDTO) {
 NewUpdateCompleteAgenda(obj:CalenderDTO){
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.AgendaId=obj.AgendaId
-debugger
+
   return this.http.post(this.rootUrl + "CalenderAPI/NewUpdateCompleteAgenda",this.obj_CalenderDTO)
 }
 
@@ -411,7 +412,7 @@ debugger
 NewUpdateUndoCompleteAgenda(obj:CalenderDTO){
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.AgendaId=obj.AgendaId
-debugger
+
   return this.http.post(this.rootUrl+"CalenderAPI/NewUpdateUndoCompleteAgenda",this.obj_CalenderDTO)
 }
 

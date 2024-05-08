@@ -327,9 +327,23 @@ getTimelineProjects(){
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-    this.projectList=JSON.parse(data[0]['ProjectList']);
+    this.projectList=JSON.parse(data[0]['ProjectList']); 
   });
 }
+
+onTypeChanged(){
+     if(['core','standard'].includes(this.project_type))
+      this.getTimelineProjects();
+     else if(['lunch','personal'].includes(this.project_type)){
+         this.showProject=false;
+         this.showAction=false;
+         this.master_code=null;    // Project code.
+         this.project_code=null;   // Action code.
+     } 
+}
+
+
+
 
 owner_empno: any;
 resp_empno: any;
@@ -488,15 +502,24 @@ submitDar() {
   this.objProjectDto.date = this.current_Date;
   this.objProjectDto.WorkAchieved = this.workdes;
 
-  if (this.showAction == false) {
-    this.objProjectDto.Master_code = this.master_code;
-    this.objProjectDto.Project_Code = this.master_code;
+  if(['lunch','personal'].includes(this.project_type)){ // when Timeline is for lunch or personal.
+      if(this.project_type==='lunch')
+         this.objProjectDto.Master_code='0';
+      else if(this.project_type==='personal') 
+         this.objProjectDto.Master_code='1'; 
+        
+      this.objProjectDto.Project_Code = null;
   }
-  else if (this.showAction == true) {
-    this.objProjectDto.Master_code = this.master_code;
-    this.objProjectDto.Project_Code = this.project_code;
+  else{  // when Timeline is for project or action ( core or standard )
+        if (this.showAction == false) {
+          this.objProjectDto.Master_code = this.master_code;
+          this.objProjectDto.Project_Code = this.master_code;
+        }
+        else if (this.showAction == true) {
+          this.objProjectDto.Master_code = this.master_code;
+          this.objProjectDto.Project_Code = this.project_code;
+        }
   }
-
   this.objProjectDto.Exec_BlockName=null;
   this.objProjectDto.Project_Name=null;
   this.objProjectDto.Emp_Comp_No=null;
@@ -509,7 +532,7 @@ submitDar() {
 
 
       // after timeline submission success then complete the action also if needed. start
-        if(this.bothActTlSubm){
+        if(this.bothActTlSubm&&(!['lunch','personal'].includes(this.project_type))){
           const fd = new FormData();
           fd.append("Project_Name", this.actionList.find(item => item.Project_Code == this.project_code).Project_Name);  // ACTION NAME
           fd.append("Project_Code", this.project_code);                                                             // ACTION CODE.
@@ -698,14 +721,19 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 // form validation new start.
 fieldRequired:boolean=false;
 onTLSubmitBtnClick(){
+ const isLunchOrPersonal:boolean=['lunch','personal'].includes(this.project_type);
+
        if(
-           this.master_code&&
-           (this.showAction?this.project_code:true)&&
+           (isLunchOrPersonal?true:this.master_code)&&
+           (isLunchOrPersonal?true:(this.showAction?this.project_code:true))&&
            this.workdes&&
            this.starttime&&
            this.endtime&&
            (this.starttime<this.endtime)&&
-           ((this.showAction&&this.bothActTlSubm)?(this._remarks&&(this.ProState?this.selectedFile:true)):true)
+           (
+               isLunchOrPersonal?true:
+              ((this.showAction&&this.bothActTlSubm)?(this._remarks&&(this.ProState?this.selectedFile:true)):true)
+           )
          ){
       // when all mandatory fields are provided.
          this.submitDar();

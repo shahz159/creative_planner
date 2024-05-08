@@ -125,7 +125,7 @@
 
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA();onButtonClick('underappr')" [hidden]="HideStatusDropdown"
-                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px cursor-pointer" id="underappr"> {{CountAll_UA}} Under
+                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px cursor-pointer" id="underappr"> {{CountAll_UA}} New
                             Approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
@@ -499,7 +499,7 @@
                                                   </div>
                                                   <div *ngIf="item1.Status=='Under Approval'">
                                                       <span
-                                                          class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
+                                                          class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Approval' : item1.Status }}</span>
                                                       <br>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Not Started'">
@@ -515,13 +515,13 @@
                                                   <div *ngIf="item1.Status=='Completion Under Approval'">
                                                       <!-- <h2>Mubeen</h2> -->
                                                       <span
-                                                          class="font-weight-400 completion-under-approval">{{item1.Status}}
+                                                          class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion Approval":item1.Status}}
                                                       </span>
 
                                                   </div>
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                       <span
-                                                          class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status}}
+                                                          class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation Approval":item1.Status}}
                                                       </span>
 
                                                   </div>
@@ -533,7 +533,7 @@
                                                   </div>
                                                   <div *ngIf="item1.Status=='Forward Under Approval'">
                                                       <span
-                                                          class="font-weight-400 Forward_Under_Approval_color">{{item1.Status}}
+                                                          class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward Approval":item1.Status}}
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='New Project'">
@@ -548,19 +548,19 @@
                                                   <div
                                                       *ngIf="item1.Status=='Deadline Extend Under Approval'">
                                                       <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
-                                                         >{{item1.Status}}
+                                                         >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline Extend Approval" :item1.Status}}
 
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Enactive Under Approval'">
                                                       <span class="font-weight-400 Enactive_Under_Approval_color"
-                                                     >{{item1.Status}}
+                                                     >{{item1.Status=="Enactive Under Approval"? "Enactive Approval":item1.Status}}
                                                       </span>
                                                   </div>
                                                   <div
                                                       *ngIf="item1.Status=='Project Hold Under Approval'">
                                                       <span class="font-weight-400"
-                                                          style="color: #a85098;">{{item1.Status}}
+                                                          style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold Approval" : item1.Status}}
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='ToDo Achieved'">
@@ -656,7 +656,7 @@
                                             </div>
                                             <div *ngIf="item1.Status=='Under Approval'">
                                                 <span
-                                                    class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Project Under Approval' : item1.Status }}</span>
+                                                    class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Approval' : item1.Status }}</span>
                                                 <br>
                                             </div>
                                             <div *ngIf="item1.Status=='Not Started'">
@@ -672,13 +672,13 @@
                                             <div *ngIf="item1.Status=='Completion Under Approval'">
                                                 <!-- <h2>Mubeen</h2> -->
                                                 <span
-                                                    class="font-weight-400 completion-under-approval">{{item1.Status}}
+                                                    class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion Approval":item1.Status}}
                                                 </span>
 
                                             </div>
                                             <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                 <span
-                                                    class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status}}
+                                                    class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation Approval":item1.Status}}
                                                 </span>
 
                                             </div>
@@ -690,7 +690,7 @@
                                             </div>
                                             <div *ngIf="item1.Status=='Forward Under Approval'">
                                                 <span
-                                                    class="font-weight-400 Forward_Under_Approval_color">{{item1.Status}}
+                                                    class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward Approval":item1.Status}}
                                                 </span>
                                             </div>
                                             <div *ngIf="item1.Status=='New Project'">
@@ -705,19 +705,19 @@
                                             <div
                                                 *ngIf="item1.Status=='Deadline Extend Under Approval'">
                                                 <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
-                                                   >{{item1.Status}}
+                                                   >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline Extend Approval" :item1.Status}}
 
                                                 </span>
                                             </div>
                                             <div *ngIf="item1.Status=='Enactive Under Approval'">
                                                 <span class="font-weight-400 Enactive_Under_Approval_color"
-                                               >{{item1.Status}}
+                                               >{{item1.Status=="Enactive Under Approval"? "Enactive Approval":item1.Status}}
                                                 </span>
                                             </div>
                                             <div
                                                 *ngIf="item1.Status=='Project Hold Under Approval'">
                                                 <span class="font-weight-400"
-                                                    style="color: #a85098;">{{item1.Status}}
+                                                    style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold Approval" : item1.Status}}
                                                 </span>
                                             </div>
                                             <div *ngIf="item1.Status=='ToDo Achieved'">
