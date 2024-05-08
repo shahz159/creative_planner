@@ -200,6 +200,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_type = obj.Schedule_type;
     this.obj_CalenderDTO.User_list = obj.User_list;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
+    this.obj_CalenderDTO.DraftAgendas = obj.DraftAgendas;
     
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }

@@ -41,6 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
+import { debug } from 'console';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -905,13 +906,13 @@ this.prjPIECHART.render();
       });
 
      if(this.filteremployee)
-     {
+     {  debugger
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
             if(delayActionsOfEmp.length>0){
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
-              this.delayActionsOfEmps.push({ name:emp.Responsible, delayActions:delayActionsOfEmp})
+              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp})
             }
           });
      }
@@ -1047,12 +1048,24 @@ this.prjPIECHART.render();
       (data) => {
         if (data !== null && data !== undefined) {
 
-          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List)
-          // this.Activity_List.map((actv:any)=>{
-          //      if(actv.count!=0&&actv.Value=='Project Deadline Change'){
+          this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
 
-          //      }
-          // })
+    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+          let count:number=0;  
+          this.Activity_List.map((actv:any)=>{
+            
+            if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=`Project Deadline Change (${updatecount+x} Change)`;
+                   count+=1;
+               }
+              return actv;
+          });    
+   // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+
+
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
 
@@ -1079,8 +1092,24 @@ this.prjPIECHART.render();
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
+        debugger
         if (data !== null && data !== undefined) {
-          this.ActionActivity_List = JSON.parse(data[0]['ActivityList'])
+          this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
+          let count:number=0;  
+          this.ActionActivity_List.map((actv:any)=>{
+            debugger
+            if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....  
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Change)`);
+                   count+=1;
+               }
+              return actv;
+          });
+
+
+
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
             const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
@@ -1406,6 +1435,7 @@ multipleback(){
     this.closeLinkSideBar();
     this.closeMeetingSidebar();
     this.closePrjReleaseSideBar();
+    this.closePrjHoldSideBar();
   }
 
 
@@ -6216,10 +6246,9 @@ removeSelectedDMSMemo(item){
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
-  onProject_Hold(id, Pcode) {
 
-  if(this.Holddate&&this.hold_remarks){
-       // if holddate and remarks are provided.
+
+holdcontinue(Pcode:any){
        this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
        this.objProjectDto.Project_holddate = this.Holddate;
        this.objProjectDto.Project_Code = Pcode;
@@ -6244,11 +6273,99 @@ removeSelectedDMSMemo(item){
                this.GetActivityDetails();
 
              }
-
-
-
          }
        });
+}
+
+
+
+  newPrjDeadline:any;
+  extendAndHold:boolean=false;
+  isEHsectionVisible:boolean=false;
+  minPrjDeadline:Date;
+  onHoldDateChanged(){ 
+    debugger
+    if(this.currentActionView===undefined){     // only for project.
+      const d1=new Date(this.Holddate);
+      const d2=new Date(this.projectInfo.EndDate);
+      this.isEHsectionVisible=d1>d2;
+      d1.setDate(d1.getDate()+1);
+      this.minPrjDeadline=d1;
+    }
+      
+}
+  
+
+
+
+
+  onProject_Hold(id, Pcode) {
+debugger
+  if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
+       // if holddate and remarks are provided.
+
+      if(this.isEHsectionVisible){
+            if(this.extendAndHold){   
+                  
+debugger
+    // 1. PRJ UPDATE     (updating project using 'newPrjDeadline' )
+                   var datestrStart = moment(this.projectInfo.StartDate).format("MM/DD/YYYY");
+                   var datestrEnd = moment(this.newPrjDeadline).format("MM/DD/YYYY");
+                   const jsonobj = {
+                    Project_Type: this.projectInfo.Project_Block,
+                    Project_Name: this.projectInfo.Project_Name,
+                    Project_Description: this.projectInfo.Project_Description,
+                    Owner: this.projectInfo.OwnerEmpNo,
+                    Responsible: this.projectInfo.ResponsibleEmpNo,
+                    Category: this.projectInfo.Reportid,
+                    Client: this.projectInfo.ClientNo,
+                    StartDate: datestrStart,
+                    EndDate: datestrEnd,
+                    SubmissionName: 0,
+                    AllocatedHours: this.projectInfo.AllocatedHours,
+                    Recurrence:this.projectInfo.Annual_date
+                  }
+                  const jsonvalue = JSON.stringify(jsonobj);
+              
+                    this.approvalObj.Emp_no = this.Current_user_ID;
+                    this.approvalObj.Project_Code = this.URL_ProjectCode;
+                    this.approvalObj.json = jsonvalue;
+                    this.approvalObj.Remarks = '';
+                    this.approvalObj.isApproval = 0;
+              
+                    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+                      console.log(data['message'], "edit response");
+                      if (data['message'] == '1') {
+                        this.notifyService.showSuccess("Updated successfully", "Success");
+                      }
+                      else if (data['message'] == '2') {
+                        this.notifyService.showError("Not updated", "Failed");
+                      }
+                    });
+
+   // 2. PRJ HOLD 
+           this.holdcontinue(Pcode);
+
+            }
+            else 
+            {
+                  Swal.fire({
+                    text:'Continuing will make you accountable for project delays. Do you still want to proceed?',
+                    showConfirmButton:true,
+                    confirmButtonText:'Hold Anyway',
+                    confirmButtonColor:'',
+                    showCancelButton:true,
+                    icon:'warning',
+                  }).then((choice1:any)=>{
+                      if(choice1.value===true)
+                        this.holdcontinue(Pcode); 
+                  });
+            }
+
+      }
+      else 
+      this.holdcontinue(Pcode);
+
   }
   else
    this.formFieldsRequired=true;
@@ -6380,6 +6497,12 @@ removeSelectedDMSMemo(item){
     this.hold_remarks = '';
     this.Holddate = null;
     this.formFieldsRequired=false;
+
+    this.isEHsectionVisible=false;
+    this.newPrjDeadline=undefined;
+    this.extendAndHold=false;
+    this.minPrjDeadline=undefined;
+
     document.getElementById("prj-hold-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -6825,10 +6948,12 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
-  this.filterConfig.filterby=filterBy;
-  this.filterConfig.sortby=sortBy;
-  this.filterConfigChanged=true;
-  this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
+  if(filterBy&&sortBy){
+    this.filterConfig.filterby=filterBy;
+    this.filterConfig.sortby=sortBy;
+    this.filterConfigChanged=true;
+    this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
+  }
 }
 
 clearFilterConfigs(){
