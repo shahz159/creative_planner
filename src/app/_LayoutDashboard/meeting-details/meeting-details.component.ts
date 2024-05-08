@@ -3911,7 +3911,7 @@ closeModal() {
 
 
 Insert_meetingreport() {
-
+  debugger
   this.Action_item = []
 
   this._TodoList.forEach(element => {
@@ -3927,7 +3927,7 @@ Insert_meetingreport() {
   this._calenderDto.Dms = this.checkeddms.join(',');
   this._calenderDto.Portfolio = this.checkedportfolio.join(',');
   this._calenderDto.Project = this.checkedproject.join(',');
-  console.log(this._calenderDto,"dto")
+  // console.log(this._calenderDto,"dto")
   this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
       this.notifyService.showSuccess("Successfully", "Completed");
