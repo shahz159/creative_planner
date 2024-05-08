@@ -476,7 +476,7 @@
                                                 </ng-container>
                                             </div> -->
 
-                                            <div class="agenda-input-field" >
+                                            <div class="agenda-input-field"  *ngIf="Meetingstatuscom==Completed">
                                                 <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
                                                 <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
                                                   [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
@@ -499,13 +499,17 @@
                                                     (click)="showAgendaDetails(item,i);GetMeetingnotes_data()">
                                                     <div  *ngIf="item.Status==undefined  || item.Status==0" class="kt-agenda-item "
                                                         [ngClass]="{'Active':currentAgendaView===i}">
-               
-                                                        <label *ngIf="Isadmin==true"
+                
+
+
+                                                        <ng-container  *ngIf="Meetingstatuscom==Completed"
+                                                        >
+                                                        <label *ngIf="Isadmin==true "
                                                             class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                                             <input [id]="item.AgendaId+'ckbox'" type="checkbox" (click)="completeSelectedAgenda()" name="Checkboxes15" />
                                                            <span></span>
                                                         </label>
-                                                       
+                                                    </ng-container>
                                                           <div class="item-info">
                                                             <div class="item-details">
                                                               
@@ -521,7 +525,8 @@
                                                                     </div>
                                                                
     
-                                                            </div>                        
+                                                            </div>  
+                                                            <ng-container  *ngIf="Meetingstatuscom==Completed">                      
                                                             <div class="d-flex">
                                                                 <button *ngIf="Isadmin==true " [id]="'edit-agendaname-btn-'+i"
                                                                     class="edit-agendaname-btn" (click)="editAgenda(i)">
@@ -595,16 +600,20 @@
                                                                     </svg>
                                                                 </button>
                                                             </div>
+                                                        </ng-container>
+                                                        
                                                         </div>
                                                     </div>
                                                     <div  *ngIf="item.Status==1 "  class="kt-agenda-items"
-                                                        [ngClass]="{'Active':currentAgendaView===i}">                
+                                                        [ngClass]="{'Active':currentAgendaView===i}"> 
+                                                        
+                                                        <ng-container  *ngIf="Meetingstatuscom==Completed">
                                                         <label *ngIf="Isadmin==true "
                                                         class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                                         <input type="checkbox" (click)="UndoCompleteAgenda()" name="Checkboxes15" checked />
                                                        <span></span>
                                                        </label>
-                                                
+                                                    </ng-container>
                                                      
                                                         <div class="item-info">
                                                             <div class="item-details">
@@ -866,22 +875,20 @@
                                         </svg>
                                     </a>       
                                 </div>
-                                <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom==Completed)">
-                                <div class="Kt-Pd-Status Done"  *ngIf="Agendas_List[currentAgendaView].Status==1 "> Completed </div>
-                              </ng-container>
+                               
 
                            
                                 <div class="Kt-Pd-Status Done"  *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</div>
                            
                                 <div>                                
                                     <div class="kt-project-leave"  *ngIf="Meetingstatuscom==Completed">                                        
-                                        <ng-container *ngIf="Isadmin==true && hasStatusOne==true">
+                                        <ng-container *ngIf="Isadmin==true">
                                             <span class="title" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
                                            </ng-container>
 
-                                           <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
+                                           <!-- <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
                                             <span class="title" (click)="EndMeetingSweetAlertBox()">End Meeting</span>
-                                           </ng-container>
+                                           </ng-container> -->
 
 
                                         <ng-container *ngIf="Isadmin==false">
@@ -904,7 +911,11 @@
                             <div class="d-flex justify-content-between  mb-2 border-b-dashed">
                                 <div class="kt-project-name d-flex align-items-center gap-2" >
                                     <h4>{{item.Task_Name}}</h4>
-                                    <div class="PA_title PA_Edit_btn" (click)="ReshudingTaskandEvent()">
+
+                                    <ng-container *ngIf="Meetingstatuscom==Completed">
+                                    <div  class="PA_title"><span >Meeting</span>
+                                    </div>
+                                    <div class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 18 18" fill="none">
                                             <path
@@ -916,8 +927,9 @@
                                                 stroke="#8D8D8D" stroke-width="1.5" stroke-linecap="round"
                                                 stroke-linejoin="round" />
                                         </svg>
-                                        <span class="lbl-hdn">Edit</span>
+                                        <span class="lbl-hdn ">Edit</span>
                                     </div>
+                                </ng-container>
                                 </div>
                                 <div class="kt-project-option">
                                     <div class="options event">Event</div>
@@ -1739,6 +1751,10 @@
                                       </ng-template>
                                     <!-- <h6>Thu, Dec 21, 12:50 AM - 1:30 AM (UTC-05:00)</h6> -->
                                 </div>
+
+                                <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom==Completed)">
+                                    <div class="Kt-Pd-Status Done ml-5"  *ngIf="Agendas_List[currentAgendaView].Status==1 "> Completed </div>
+                                  </ng-container>
                                 <div class="kt-btn-notes-div" >
                                     <div *ngIf="currentAgendaView+1>0" class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
                                         <span class="title">Attendees Notes</span>
@@ -1813,22 +1829,23 @@
                                     (copy)="onCopy($event)"
                                     (keyup)="addBulletPointsOnEnter($event)">    
                                  </angular-editor>  -->
-
+                                 <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                 <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
                                  <angular-editor [config]="config" [(ngModel)]="Notes_Type"
                                  (keyup)="addBulletPointsOnEnter($event)"></angular-editor>
                                 </ng-container>
-
+                             </ng-container>
                                 
                                  <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
                                         <div class="task-header">
                                             <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
-                                            <h1 class="task-header-title">Assign Task</h1>
+                                            <h1 class="task-header-title">Assign Task </h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
+                                            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                                             <div class="d-flex">
                                             <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
@@ -1839,7 +1856,8 @@
                                                  
                                             </form>
                                             <button *ngIf="_Demotext" class="btn btn-secondary add-agenda-btn" (click)="EnterSubmit(_Demotext)">Add</button>
-                                        </div>
+                                          </div>
+                                          </ng-container>
                                         </div>
 
 
@@ -1863,13 +1881,18 @@
                                  -->
                                 <div class="todo-list">
                                     <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
-                                        <input class="task-status" type="checkbox">
-                                        <label class="task-name">{{item.Task_Name}}</label>
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                                        <input class="task-status"  (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
+                                       </ng-container>
+                                         <label class="task-name">{{item.Task_Name}}</label>
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <div class="task-actions" >                                                                        
                                                     <mat-icon title="Assign Task/Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
                                                  
                                                     <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
                                         </div>
+                                    </ng-container>
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                                         <button class="task-delete task-btns"
                                             (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -1881,7 +1904,33 @@
                                                 </path>
                                             </svg>
                                         </button>
+                                    </ng-container>
+
+                                   
                                     </div>
+                                    <div class="task-item" *ngFor="let data of _CompletedList">                                  
+                                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                                        <input type="radio" class="subtask-radio mx-4"
+                                        (click)="On_Uncheck(data.Assign_Id)" checked>
+                                    </ng-container>
+                                    <label class="task-name">{{data.Task_Name}}</label> 
+                                    
+                                    
+
+                                    <div class="mt-2">
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
+                                            <div>
+                                                {{data.Modified_DT|date:'d MMM, y'}}
+                                            </div>
+                                        </span>
+                                        <span
+                                            class="kt-inbox__label kt-badge kt-badge done kt-badge-light-bold kt-badge--inline">
+                                            {{data.ToDo_Status}}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 </div>
                                     <!-- <ngx-summernote [(ngModel)]="Notes_Type"></ngx-summernote> -->                             
                                 <!-- <angular-editor  [editor]="Editor" 
@@ -1901,7 +1950,7 @@
 
  <!--    View All Team members notes Start   -->
 
- <div *ngIf="(currentAgendaView+1>0 && Meetingnotes_time.length>0)" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+ <div *ngIf="(currentAgendaView+1>0 && AllAttendees_notes.length>0)" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
     <div class="accordion-item" >
         <h2 class="accordion-header" id="headingOne">
             <a class="accordion-button" type="button" data-toggle="collapse"
@@ -2071,14 +2120,19 @@
                                                                             data-mat-icon-type="font">task_alt </mat-icon>
                                                                         <b> {{item.AssignedTo}}</b>
                                                                     </span>
-                                                                    <span data-toggle="tooltip" title="Assigned Date!"
+                                                                    <span data-toggle="tooltip" title="Project Status!"
+                                                                        class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
+                                                                        ng-reflect-ng-class="[object Object]">
+                                                                        <div> {{item.Status}}</div>
+                                                                    </span>
+                                                                    <!-- <span data-toggle="tooltip" title="Assigned Date!"
                                                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
                                                                         <div>
                                                                             <img src="../creativeplanner/assets/icons/create1.png"
                                                                                 class="badge-img">
                                                                         </div>
                                                                         <div>{{item.Modified_DT|date}} </div>
-                                                                    </span>
+                                                                    </span> -->
                                                                     <!-- <span data-toggle="tooltip" title="Assigned Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-success" ng-reflect-ng-class="[object Object]">
                                                           <div> Accepted</div>
                                                         </span> -->
@@ -2087,11 +2141,7 @@
                                                                     <!-- <label data-toggle="tooltip" title="Project Type!" class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                           <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label> -->
             
-                                                                    <span data-toggle="tooltip" title="Project Status!"
-                                                                        class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
-                                                                        ng-reflect-ng-class="[object Object]">
-                                                                        <div> {{item.Status}}</div>
-                                                                    </span>
+                                                                    
             
                                                                     <!-- <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                           <div>
@@ -2606,7 +2656,7 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
-                <h4 class="m-0">All Attendees Notes
+                <h4 class="m-0">All Attendees Notes -  Agenda {{currentAgendaView+1}}:- {{Agendas_List                  [currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="close_attendeesnotes_sideBar()">
@@ -2631,16 +2681,15 @@
                 <li class="allAttendees-user">
                   
                     <div class="accordion-item">
-                    <h2 class="accordion-header accordion-attendes-notes mt-1" id="headingOne" >
-                        <a class="accordion-button" type="button" data-toggle="collapse"
+                    <!-- <h2 class="accordion-header accordion-attendes-notes mt-1" id="headingOne" >
+                        <a class="accordion-button" type="button"
                         (click)="toggleAccordion(a)" [attr.aria-expanded]="data.expanded ? 'true' : 'false'"
                         [attr.data-target]="'#attendes' + data.Emp_no" 
                         [attr.data-target]="'#attendes' + data.Emp_no">
                            
-
-                        <div class="accordion-all-agenda-notes" *ngIf="currentAgendaView+1">  
-                            <h4>Agenda {{currentAgendaView+1}}:- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
-                           </h4>
+ 
+                        <div class="accordion-all-agenda-notes" *ngIf="currentAgendaView+1">    data-toggle="collapse"
+                            accordion-collapse collapse
                           </div>
 
 
@@ -2655,9 +2704,9 @@
                                 </span>
                             </div>
                         </a>
-                    </h2>
+                    </h2> -->
                 </div>                               
-                         <div id="attendes{{data.Emp_no}}" class="accordion-collapse collapse">
+                         <div id="attendes{{data.Emp_no}}" class="">
                           <div class="user-notes" > 
                             <div class="head-content">
                                 <div class="kt-user-2lt kt-clr-1" >{{data.Initials}}</div>  
@@ -2725,6 +2774,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
+            <ng-container  *ngIf="Meetingstatuscom!='Completed'">
             <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                 <div class="matchip-drp-dwn">
                     <mat-form-field class="drp-dwn-field ">
@@ -2742,9 +2792,9 @@
                             <input #fruitInputs class="flex-1" [matChipInputFor]="selectedTeamMembers"
                                 [matAutocomplete]="TeamMemberDrpDwns" (input)="filterEmployeesDMs($event.target.value)"
                                 #SupportTF />
-                            <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
+                            <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon save-mat-selection  "
                                     (click)=" this.isDMSDrpDwnOpen=false;  
-                                     closeAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">cancel</mat-icon></button>
+                                     closeAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">done</mat-icon></button>
                             <button *ngIf="!isDMSDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
                                     (click)="this.isDMSDrpDwnOpen=true;
                                      openAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">add</mat-icon></button>
@@ -2780,6 +2830,7 @@
                          </ng-container>
                 </div>
             </li>
+        </ng-container>
             <li class="kt-nav__item px-4">
                
                 <div id="DemoList-table">
@@ -2788,6 +2839,7 @@
                        
                         <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                         <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
+                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                         <ng-container *ngIf="Isadmin==true">
                         <ng-container *ngFor="let item of EventScheduledjson">         
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -2797,7 +2849,8 @@
                           <i class="fas fa-trash-alt p-2" (click)="DmsDeleteEvent(memo.MailId)"   data-target="#confirmpopup" data-toggle="modal" ></i> 
                            </ng-container>                 
                          </ng-container>    
-                        </ng-container>                      
+                        </ng-container>   
+                    </ng-container>                         
                     </div>
                 </ng-container>
                 </div>  
@@ -2851,6 +2904,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
+            
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -2868,8 +2922,8 @@
                         <input #fruitInputportfolio class="border-gray" [placeholder]="'Select Portfolio(s)'"
                             (input)="filterPortfolio($event.target.value)" [matChipInputFor]="selectedportfolioslist"
                             [matAutocomplete]="prtDrpDown">
-                        <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon"
-                                (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">cancel</mat-icon> </button>
+                        <button *ngIf="isPortDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon save-mat-selection "
+                                (click)="closeAutocompleteDrpDwn('PORTFOLIOdrpdwn')">done</mat-icon> </button>
                         <button *ngIf="!isPortDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
                                 (click)="openAutocompleteDrpDwn('PORTFOLIOdrpdwn')">add</mat-icon> </button>
                     </div>
@@ -2903,6 +2957,7 @@
              </ng-container>
        
             </div>
+           
         </ul>
     
         <div class="kt-inbox mt-0 scrollbar1">
@@ -2937,9 +2992,10 @@
                                     <!-- <i class="fas fa-edit invisible"></i>
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
-                                    </a> -->        
+                                    </a> --> 
+                                   
                                      <ng-container *ngIf="Isadmin==true">
-                                    <ng-container *ngFor="let item of EventScheduledjson">         
+                                     <ng-container *ngFor="let item of EventScheduledjson">         
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                                         
                                         <i class="fas fa-edit invisible"></i>
@@ -2956,7 +3012,8 @@
                                       
                                        </ng-container>                 
                                      </ng-container> 
-                                    </ng-container>
+                                      </ng-container> 
+                                   
                                 </div>
                             </div>
                         </div>
@@ -3006,6 +3063,7 @@
         </div>
 
         <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
+            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
             <div *ngIf="Isadmin==true" class="meeting-search">
                 <div class="input-group mt-2">
                     <mat-form-field class="drp-dwn-field ">
@@ -3023,8 +3081,8 @@
                             <input #fruitInput class="flex-1" [matChipInputFor]="selectedTeamMember"
                                 [matAutocomplete]="TeamMemberDrpDwn" (input)="filterEmployees($event.target.value)" />
                             <button *ngIf="isSupportDrpDwnOpen" class="bg-transparent border-0 "><mat-icon
-                                    class="close-icon" (click)=" this.isSupportDrpDwnOpen=false;  
-                                     closeAutocompleteDrpDwn_part('supportDrpDwn');">cancel</mat-icon></button>
+                                    class="close-icon save-mat-selection " (click)=" this.isSupportDrpDwnOpen=false;  
+                                     closeAutocompleteDrpDwn_part('supportDrpDwn');">done</mat-icon></button>
                             <button *ngIf="!isSupportDrpDwnOpen" class="bg-transparent border-0"><mat-icon
                                     class="add-icon" (click)="this.isSupportDrpDwnOpen=true;
                                      openAutocompleteDrpDwn_part('supportDrpDwn');">add</mat-icon></button>
@@ -3062,6 +3120,7 @@
                      </ng-container>                   -->
                 </div>
             </div>
+        </ng-container>
             <div class="kt-chat__messages">
 
                 <div class="w-100 d-flex align-items-center justify-content-between">
@@ -3088,7 +3147,8 @@
                             <span>organizer</span>
                             <p>{{Createdby}}</p>
                         </div>
-                    </div>          
+                    </div>       
+                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">    
                     <div class="admin-check curser-pointer"
                         *ngIf="Isadmin==true && status=='Owner'">
                         <span aria-hidden="true" class="admin-check-svg">
@@ -3102,6 +3162,7 @@
                         </span>
                         <span>Admin</span>
                     </div>
+                   
                     <div class="admin-check curser-pointer"
                         *ngIf="Isadmin==false && status!='Owner' && sched_admin==true">
                         <span aria-hidden="true" class="admin-check-svg">
@@ -3115,6 +3176,7 @@
                         </span>
                         <span>Admin</span>
                     </div>
+              
                     <div class="admin-check curser-pointer"
                         *ngIf="Isadmin==true && sched_admin==false && isCheckboxDisabled==false"
                         (click)=" Updating_Adminmeeting(Emp_No)">
@@ -3129,6 +3191,7 @@
                         </span>
                         <span>Back to admin</span>
                     </div>
+                  </ng-container>
                 </div>
 
   
@@ -3160,6 +3223,7 @@
                                 </span>
                                 <span>Online</span>
                             </div>
+                            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                             <ng-container   *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false" >
                             <div class="user-status-action"  (click)=" Updating_Adminmeeting(item.stringval)">
                                 <span class="admin-hover" >
@@ -3208,7 +3272,7 @@
                                 </span>
                             </div>
                         </ng-container>
-
+                   
                         <ng-container  *ngIf="item.IsAdmin">
                             <div class="user-status-action">
                                 <span class="admin-hover" >
@@ -3266,6 +3330,7 @@
                                 </span>
                             </div>
                         </ng-container>
+                    </ng-container>
                         </div>
                     </li>
                     <!-- <li class="meeting-attendees-user">
@@ -3464,8 +3529,8 @@
                             [matAutocomplete]="ProjectsDrpDwn" (input)="filterProjects($event.target.value)"
                             #SupportTF />
                         <button *ngIf="isSupportDrpDwnProjects" class="bg-transparent border-0 "><mat-icon
-                                class="close-icon" (click)=" this.isSupportDrpDwnProjects=false;  
-                                 closeAutocompleteDrpDwn_Project('supportDrpDwnpro');">cancel</mat-icon></button>
+                                class="close-icon  save-mat-selection" (click)=" this.isSupportDrpDwnProjects=false;  
+                                 closeAutocompleteDrpDwn_Project('supportDrpDwnpro');">done</mat-icon></button>
                         <button *ngIf="!isSupportDrpDwnProjects" class="bg-transparent border-0"><mat-icon
                                 class="add-icon" (click)="this.isSupportDrpDwnProjects=true;
                                  openAutocompleteDrpDwn_Project('supportDrpDwnpro');">add</mat-icon></button>
@@ -3807,7 +3872,7 @@
                         <div class="text-center">
                             <img src="./assets/images/No Attachment.png" width="268" height="256">
                             <div class="bnk-txt mt-3">
-                                <h3 class="blank-txt pfl-img">No Attachment Found</h3>
+                                <h3 class="blank-txt pfl-img ml-2">No Attachment Found</h3>
                             </div>
                         </div>
                     </ng-container>
@@ -3933,7 +3998,7 @@
        <div id="mysideInfobar_schd_new" class="mysideInfobar-schd-new sideInfobar animate-right offcanvas">
         <div class="kt-portlet mb-0">
             <div class="kt-portlet__head">
-                <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1" *ngIf="editTask==true &&  copyTask==false">
+                <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1" *ngIf="editTask==true &&  copyTask==false && repeatMeeting==false ;else EditNamechange">
                     <h4 class="mb-0"> Edit {{ScheduleType}}</h4>
                     <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeschd()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
@@ -3944,6 +4009,20 @@
                         </svg>
                     </a>
                 </div>
+
+                <ng-template #EditNamechange>
+                <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1" >
+                    <h4 class="mb-0">Repeat Event</h4>
+                    <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeschd()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                            <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            </ng-template>
             </div>
             <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
                 *ngIf="copyTask==true ">
@@ -4102,27 +4181,59 @@
                             </mat-chip-list>  
                             <div class="d-flex">
                                 <input class="flex-1" [matChipInputFor]="selectedProjectsEvent"
-                                    [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF />
+                                    [matAutocomplete]="ProjectsDrpDwn" #ProjectsTF    
+                        (input)="onProjectSearch(ProjectsTF.value)"  (click)="onProjectSearch(ProjectsTF.value)" 
+                                    />
     
                                 <button *ngIf="isProjectsDrpDwnOpen"
                                     class="bg-transparent border-0 "  (click)="this.isProjectsDrpDwnOpen=false; closeAutocompleteDrpDwn('ProjectsDrpDwn');">
-                                    <mat-icon class="close-icon">cancel</mat-icon></button>
+                                    <mat-icon class="close-icon save-mat-selection ">done</mat-icon></button>
     
                                 <button *ngIf="!isProjectsDrpDwnOpen"
-                                    class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn');">
+                                    class="bg-transparent border-0" (click)="this.isProjectsDrpDwnOpen=true; openAutocompleteDrpDwn('ProjectsDrpDwn'); onProjectSearch(ProjectsTF.value);     ">
                                     <mat-icon class="add-icon">add</mat-icon></button>
                             </div>
     
                             <mat-autocomplete aria-label="ProjectsDrpDwn"  panelClass="dropdown-panel"      #ProjectsDrpDwn="matAutocomplete"
                             (optionSelected)="onProjectSelected($event); ProjectsTF.value=''; "
                             (opened)="isProjectsDrpDwnOpen=true" (closed)="isProjectsDrpDwnOpen=false; ">
-    
-                                <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value).slice(0,1000)" [value]="prj.Project_Code">
-                                    <mat-checkbox color="primary"
-                                        [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
-                                       {{prj.BlockNameProject}}
+
+
+
+
+                            <ng-container *ngIf="searchingResult;else PrjSearchResultGot">
+                                <mat-option style="pointer-events:none;">
+                                   <div class="d-flex align-items-center gap-2">
+                                       <div role="status" class="spinner-border m-0 p-0 fs-5" style="color: #3d4991cc; width: 1.5rem; height: 1.5rem; ">
+                                       </div>
+                                       <span class="fs-5 text-muted">Searching..</span>
+                                  </div>
+
                                 </mat-option>
-                            </mat-autocomplete>
+                          </ng-container>
+                          <ng-template #PrjSearchResultGot>
+
+                            <mat-option *ngFor="let prj of (ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000)" [value]="prj.Project_Code">
+                                <mat-checkbox color="primary"
+                                    [checked]="MasterCode!=null&&MasterCode.indexOf(prj.Project_Code)!==-1"></mat-checkbox>
+                                {{prj.BlockNameProject}}
+                            </mat-option>
+
+
+                            <mat-option *ngIf="(ProjectListArray|filter:ProjectsTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </mat-option>
+                          </ng-template>
+
+                          </mat-autocomplete>
+
                         </mat-form-field>
                     </ng-container>
     
@@ -4174,7 +4285,7 @@
     
                                     <button *ngIf="isPortfolioDrpDwnOpen"
                                         class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
-                                        <mat-icon class="close-icon">cancel</mat-icon></button>
+                                        <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
     
                                     <button *ngIf="!isPortfolioDrpDwnOpen"
                                         class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
@@ -4222,7 +4333,7 @@
     
                                     <button *ngIf="isDMSMemoDrpDwnOpen"
                                         class="bg-transparent border-0 "  (click)="this.isDMSMemoDrpDwnOpen=false; closeAutocompleteDrpDwn('MemoDrpDwn');">
-                                        <mat-icon class="close-icon">cancel</mat-icon></button>
+                                        <mat-icon class="close-icon  save-mat-selection ">done</mat-icon></button>
     
                                     <button *ngIf="!isDMSMemoDrpDwnOpen"
                                         class="bg-transparent border-0" (click)="this.isDMSMemoDrpDwnOpen=true; openAutocompleteDrpDwn('MemoDrpDwn');">
@@ -4270,7 +4381,7 @@
     
                                     <button *ngIf="isParticipantsDrpDwnOpen"
                                         class="bg-transparent border-0 "  (click)="this.isParticipantsDrpDwnOpen=false; closeAutocompleteDrpDwn('ParticipantsDrpDwn');">
-                                        <mat-icon class="close-icon">cancel</mat-icon></button>
+                                        <mat-icon class="close-icon save-mat-selection ">done</mat-icon></button>
     
                                     <button *ngIf="!isParticipantsDrpDwnOpen"
                                         class="bg-transparent border-0" (click)="this.isParticipantsDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantsDrpDwn');">
@@ -4360,7 +4471,7 @@
     
                         <div class="form-group mb-0">
                             <div class="d-flex gap-1">
-                                <div class="form-group flex-1">
+                                <div class="form-group flex-1" *ngIf="repeatMeeting==false">
                                     <label>{{_labelName}}<span class="text-danger">*</span></label>
                                     <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
                                         <input (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
@@ -4376,6 +4487,37 @@
                                     </div>
                                     <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
                                 </div>
+
+
+
+
+
+
+
+
+                                <div class="form-group flex-1" *ngIf="repeatMeeting==true">
+                                    <label>Schedule Date<span class="text-danger">*</span></label>
+                                    <div class="input-group" [ngClass]="{'error-date': !_StartDate&&notProvided}">
+                                        <input [matDatepicker]="picker1" (click)="picker1.open()"
+                                            (dateChange)="selectStartDate($event)" [min]="disablePreviousDate"
+                                            [(ngModel)]="_StartDate" placeholder="Start Date" class="form-control"  style="cursor:pointer;">
+                                        <div class="input-group-append">
+    
+                                            <div class="input-group-text p-0">
+                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker1></mat-datepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span *ngIf="!_StartDate&&notProvided" style="color:red">Please select schedule date.</span>
+                                </div>
+
+
+
+
+
+
+                                
                                 <div class="form-group flex-1" >
                                     <label>Start Time <span class="text-danger">*</span> </label>
                                     <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
@@ -4396,7 +4538,7 @@
                                     <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
                                 </div>
     
-                                <div class="form-group flex-1" id="Schenddate">
+                                <div class="form-group flex-1 d-none" id="Schenddate">
                                     <label>Schedule End Date<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input matInput [matDatepicker]="picker6" (click)="picker6.open()"
@@ -4463,11 +4605,8 @@
                                             (click)="Customize()" href="#collapse_repeat" role="button" aria-expanded="false"
                                             aria-controls="collapse_repeat">Custom recurrence</button>
                                     </div> -->
-    
-    
                                     <div>
-    
-                                        <div class="ml-0 form-group" style="display: none;" id="weekly_121">
+                                        <div class="ml-0 form-group  d-none"  id="weekly_121">
                                             <label class="">Days</label>
                                             <div class="pt-1">
                                                 <div class="d-flex" style="gap: 10px">
@@ -4903,9 +5042,21 @@
                 <div *ngIf="_AllEventTasksCount > 1 && editTask==true && copyTask == false && pending_status==false"
                     class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
-                        data-target="#confirmpopup" (click)="viewconfirm()">Update</button> &nbsp;
+                        data-target="#confirmpopups" (click)="viewconfirm()">Update</button> &nbsp;
                     <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
                 </div>
+                <!-- <ng-template #updateRepeat>
+                    <button type="submit" class="btn btn-info btn-sm"  data-toggle="modal"
+                    data-target="#confirmpopups" (click)="viewconfirm()">Repeat & Update</button> &nbsp;
+                <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
+                </ng-template> -->
+
+
+
+
+
+
+                
                 <div *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0 && editTask==true && pending_status==false"
                     class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"
@@ -5149,6 +5300,35 @@
  <!-- meeting End pop box End -->
 
 
+ <div class="modal fade" id="confirmpopups">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="rescontent" style="color: #3c4043;">
+                    <div id="div_thisevent" class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" id="r1" (click)="Select_flag(1)" name="optradio"><span class="ml-2">This
+                                Event
+                                Only</span>
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" id="r2" (click)="Select_flag(2)" name="optradio"><span class="ml-2">This
+                                and Following Events</span>
+                        </label>
+                    </div>           
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="text-gry fs-5 mr-3" data-dismiss="modal">Close</a>
+                <a type="button" class="text-info fs-5" data-toggle="modal"
+                data-target="#confirmpopups" (click)="OnSubmitReSchedule(1)" data-dismiss="modal">
+                    Save changes</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

@@ -146,6 +146,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.GetProjectAndsubtashDrpforCalender();
       this.GetTimeslabfordate();
       this.GetcompletedMeeting_data();
+      this.GetAttendeesnotes();
+
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -1725,7 +1727,7 @@ GetMeetingnotes_data() {
     (data => {
    
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
-    
+     
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
           this.Notes_Type = ''
          }else {
@@ -1941,7 +1943,7 @@ GetcompletedMeeting_data() {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
       
-      console.log(this.Meetingstatuscom,"??????????????????????")
+      console.log(this.CompletedMeeting_notes,"??????????????????????")
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
       // this.GetNotedata();
@@ -1964,7 +1966,7 @@ assigncount: number;
 
 
 EnterSubmit(_Demotext) {
-  debugger
+
   if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
     this._ObjAssigntaskDTO.CategoryId = 2411;
     this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
@@ -2046,7 +2048,7 @@ EnterSubmit(_Demotext) {
     //this.GetProjectsByUserName();
   }
 
-
+  _CompletedList = [];
 
 
 GetAssigned_SubtaskProjects() {
@@ -2064,17 +2066,19 @@ GetAssigned_SubtaskProjects() {
       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
 
-      // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+      this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+      console.log(this._CompletedList,">>>>>>>>>>>>>>>>>>>>>>>>>>")
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
       this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-     
-   
+      
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
       // console.log("the sss", this._TodoList)
     });
 
 }
+
+
 
 _Deletetask(id, name) {
   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -2095,7 +2099,7 @@ _Deletetask(id, name) {
         (data) => {
           // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
           // this._CompletedList = JSON.parse(data['CompletedList']);
-
+            
           let message: string = data['Message'];
           this._Demotext = "";
           this.notifyService.showInfo("Successfully", message);
@@ -2107,6 +2111,47 @@ _Deletetask(id, name) {
     }
   });
 }
+
+
+
+On_Uncheck(id) {
+  debugger
+  this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
+  this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+  this._ObjAssigntaskDTO.AssignId = id;
+  //69 this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
+  this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    (data) => {
+      let message: string = data['Message'];
+      this.GetAssigned_SubtaskProjects();
+      this._Demotext = "";
+      this.notifyService.showInfo("", message);
+    });
+
+}
+
+
+OnRadioClick(id) {
+      this._ObjAssigntaskDTO.TypeOfTask = "Update";
+      this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+      this._ObjAssigntaskDTO.AssignId = id;
+      //69 this._ObjAssigntaskDTO.CategoryId = this._Categoryid;
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          this.GetAssigned_SubtaskProjects();
+          let message: string = data['Message'];
+          this.GetAssigned_SubtaskProjects();
+            this._Demotext = "";
+          this.notifyService.showSuccess("", message);
+        });
+    }
+
+
+
+
+
+
+
 /////////////////////////////////////////// assign task End //////////////////////////////////////////////////////////////////
 
 
@@ -2280,7 +2325,7 @@ _Exec_BlockName: string = "";
 SubmissionName: string;
 
 
-
+projectsSelected:any=[];
 
 
 
@@ -2460,6 +2505,7 @@ ReshudingTaskandEvent() {
         this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
         this.arr.forEach(element => {
           this.MasterCode.push(element.stringval);
+          this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject });
         });
         this.Portfolio = [];
         this.Portfolio1 = [];
@@ -2596,16 +2642,14 @@ updateAgendaEvent(index: number) {
 
 
 getObjOf(arr, id, idName) {
- 
   const obj = arr.find(item => item[idName] == id);
-  return obj;
+  return obj?obj:'';
 }
-
 
 getProjectName(projectCode: string) {
 
-  if (this.ProjectListArray) {
-    const P = this.ProjectListArray.find(pr => pr.Project_Code.trim() == projectCode.trim());
+  if (this.projectsSelected) {
+    const P = this.projectsSelected.find(pr => pr.Project_Code.trim() == projectCode.trim());
     return P ? P.BlockNameProject : '';
   }
   return [];
@@ -2623,9 +2667,11 @@ onProjectSelected(e: any) {
     if (index === -1) {
       // if not present then add it
       this.MasterCode.push(prjChoosed.Project_Code);
+      this.projectsSelected.push({Project_Code:prjChoosed.Project_Code,  Project_Name:prjChoosed.Project_Name,  BlockNameProject:prjChoosed.BlockNameProject});
     }
     else {
       this.MasterCode.splice(index, 1);
+      this.projectsSelected.splice(index,1);
     }
   }
   this.openAutocompleteDrpDwn('ProjectsDrpDwn');
@@ -2639,6 +2685,7 @@ removeSelectedProject(item) {
   const index = this.MasterCode.indexOf(item);
   if (index !== -1) {
     this.MasterCode.splice(index, 1);
+    this.projectsSelected.splice(index,1);
   }
 }
 
@@ -3359,7 +3406,7 @@ daysSelected: any[] = [];
 
 
   closeschd() {
-
+    this.repeatMeeting=false;
     // this.Insert_indraft();
     document.getElementById("mysideInfobar_schd_new").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -3646,10 +3693,9 @@ daysSelected: any[] = [];
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
 
-        // debugger
-            var vMeeting_Agendas="Meeting_Agendas";
-            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-            element[vMeeting_Agendas]=updatedAgnds;
+        var vMeeting_Agendas="Meeting_Agendas";
+        const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+        element[vMeeting_Agendas]=updatedAgnds;
 
       });
       if (this._OldRecurranceId == '0') {
@@ -3657,7 +3703,7 @@ daysSelected: any[] = [];
           this._calenderDto.flagid = 3;
         }
       }
-
+       console.log(finalarray,'finalarray of Edit')
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this._OldRecurranceId == this.selectedrecuvalue) {
         if (this._OldEnd_date != this._EndDate) {
@@ -3805,31 +3851,49 @@ daysSelected: any[] = [];
 ///////////////////////////////////////// Meeting End functionality start //////////////////////////////////////////////
 Action_item: any = [];
 interval:any = 0;
+repeatMeeting:boolean=false
 
 @ViewChild('exampleModal') exampleModal: ElementRef;
 
 
 EndMeetingSweetAlertBox(){
+ 
   Swal.fire({
     title: 'All agenda still not complete ?',
     text: 'Do you want to repeat this meeting',
     showConfirmButton: true,
+    confirmButtonText:'Yes',
     showCancelButton: true,
+    cancelButtonText:'No'
   }).then((result) => {
     if (result.isConfirmed) {
       // If the user confirms, open the modal
+      this.repeatMeeting=true;
+      document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
+      document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      this.ReshudingTaskandEvent();
+      // if (modal) {
+      //   modal.classList.add('show'); // Show the modal
+      //   modal.style.display = 'block'; // Display the modal
+      //   document.body.classList.add('modal-open'); // Add class to body for modal-open
+      //   const backdrop = document.createElement('div');
+      //   document.getElementById("rightbar-overlay").style.display = "block";
+      //   document.body.appendChild(backdrop); // Add backdrop
+      // }
+    }
+    else{
       const modal = document.getElementById('exampleModal');
       if (modal) {
-     
         modal.classList.add('show'); // Show the modal
         modal.style.display = 'block'; // Display the modal
         document.body.classList.add('modal-open'); // Add class to body for modal-open
         const backdrop = document.createElement('div');
         document.getElementById("rightbar-overlay").style.display = "block";
         document.body.appendChild(backdrop); // Add backdrop
-      }
+      }  
     }
-  });
+  })
 }
 
 closeModal() {
@@ -3840,15 +3904,14 @@ closeModal() {
         document.body.classList.remove('modal-open'); // Add class to body for modal-open
         const backdrop = document.createElement('div');       
         document.getElementById("rightbar-overlay").style.display = "none";
-        document.body.appendChild(backdrop); // Add backdrop
-       
+        document.body.appendChild(backdrop); // Add backdrop    
       }
 }
 
 
 
 Insert_meetingreport() {
-
+  debugger
   this.Action_item = []
 
   this._TodoList.forEach(element => {
@@ -3864,7 +3927,7 @@ Insert_meetingreport() {
   this._calenderDto.Dms = this.checkeddms.join(',');
   this._calenderDto.Portfolio = this.checkedportfolio.join(',');
   this._calenderDto.Project = this.checkedproject.join(',');
-  console.log(this._calenderDto,"dto")
+  // console.log(this._calenderDto,"dto")
   this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
       this.notifyService.showSuccess("Successfully", "Completed");
@@ -3912,6 +3975,41 @@ isExpandeds = false;
 _toggleReadMore() {
   this.isExpandeds = !this.isExpandeds;
 }
+
+
+Select_flag(val) {
+
+  this._PopupConfirmedValue = val;
+
+}
+
+
+
+
+
+searchingResult:boolean=false;
+onProjectSearch(inputtext:any){
+  this.searchingResult=true;
+  this.CalenderService.NewGetProjectandsubtaskDrp(inputtext).subscribe((res:any)=>{
+      console.log(res);
+      if(res){
+        this.ProjectListArray=JSON.parse(res['Projectlist']); 
+        //  console.log("project name searched result:",this.ProjectListArray);
+        this.searchingResult=false;
+      }
+    
+  })
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

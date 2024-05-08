@@ -515,7 +515,7 @@ export class DashboardComponent implements OnInit {
     };
 
     tippy('#agenda-info-icon', {
-      content: "Agenda is mandatory for meeting creation, Please provide atleast 1.",
+      content: "Agenda is mandatory for a meeting, Please provide atleast 1.",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'dark',
@@ -784,7 +784,7 @@ export class DashboardComponent implements OnInit {
         this.Event_requests();
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "May be");
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
         this.closeevearea();
 
 
@@ -809,7 +809,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -832,7 +832,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Success");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -855,7 +855,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Rejected");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -878,7 +878,7 @@ export class DashboardComponent implements OnInit {
           this.Event_requests();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "Rejected");
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.closeevearea();
 
 
@@ -1981,7 +1981,7 @@ export class DashboardComponent implements OnInit {
           this.Portfolio = null;
           this.minDate = moment().format("YYYY-MM-DD").toString();
           this.maxDate = null;
-          this.calendar.updateTodaysDate();
+          // this.calendar.updateTodaysDate();
           this.TImetable();
 
         });
@@ -1994,375 +1994,399 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitReSchedule(type: number) {
-    
-    this._calenderDto.flagid = this._PopupConfirmedValue;
-    this._calenderDto.type = type;
-    var start = moment(this.minDate);
 
-    if (this._PopupConfirmedValue == 3) {
-      // start = moment(this._Oldstart_date);
-      start = moment(this.minDate);
-    }
+    if(
+      this.Title_Name&&
+      this.Startts&&
+      this.Endtms&&
+      this.MinLastNameLength
+      &&(this.ScheduleType==='Event'?this.allAgendas.length>0:true) 
+    ){
+          this.notProvided=false;
 
-    if (this.selectedrecuvalue == "0") {
-      var end = moment(this.minDate);
-    }
-    else if (this.pending_status == true || this._PopupConfirmedValue == 1) {
-      var end = moment(this.minDate);
-    }
-    else {
-      var end = moment(this.maxDate);
-    }
-    // alert(end);
-    const format2 = "YYYY-MM-DD";
-    const d1 = new Date(moment(start).format(format2));
+          // update code below
 
-    const d2 = new Date(moment(end).format(format2));
-    const date = new Date(d1.getTime());
-    this.daysSelectedII = [];
-    this.AllDatesSDandED = [];
-    const dates = [];
-    while (date <= d2) {
-      dates.push(moment(date).format(format2));
-      var jsonData = {};
-      var columnName = "Date";
-      jsonData[columnName] = (moment(date).format(format2));
-      var columnNames = "StartTime";
-      jsonData[columnNames] = this.Startts;
-      var columnNamee = "EndTime";
-      jsonData[columnNamee] = this.Endtms;
-      var IsActive = "IsActive";
-      jsonData[IsActive] = 1;
-      var Day = "Day";
-      // alert(moment(date).format('ddd').substring(0, 3));
-      jsonData[Day] = moment(date).format('ddd').substring(0, 3);
-      var DayNum = "DayNum";
-      jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
-      this.AllDatesSDandED.push(jsonData);
-      date.setDate(date.getDate() + 1);
-    }
-
-    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
-      this._subname1 = true;
-      return false;
-    }
-    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
-      this._subname = true;
-      return false;
-    }
-    var now = new Date();
-    // let timestamp = "";
-    // timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
-    //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
-    // this.EventNumber = timestamp;
-    let finalarray = [];
-    this.daysSelectedII = [];
-    // const format2 = "YYYY-MM-DD";
-    var start = moment(this.minDate);
-    const _arraytext = [];
-    if (this.selectedrecuvalue == "0") {
-      const d1 = new Date(moment(start).format(format2));
-      const date = new Date(d1.getTime());
-      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-    }
-    else if (this.selectedrecuvalue == "1") {
-      this.daysSelectedII = this.AllDatesSDandED;
-    }
-    else if (this.selectedrecuvalue == "2") {
-      if (this.dayArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          const day = this.dayArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-      if (this.daysSelectedII.length == 0) {
-        alert('please select valid day');
-      }
-    }
-    else if (this.selectedrecuvalue == "3") {
-      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.MonthArr.length; index++) {
-        if (this.MonthArr[index].checked == true) {
-          const day = this.MonthArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-    }
-    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-
-    if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-        
-        const date1: Date = new Date(this._StartDate);
-        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
-        }
-        else {
-          this._SEndDate = this._StartDate;
-        }
-        const date2: Date = new Date(this._SEndDate);
-
-        const diffInMs: number = date2.getTime() - date1.getTime();
-
-        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        // var date3 = moment(date2).format("YYYY-MM-DD").toString();
-        // // var dd = moment(date3).add(diffInDays, 'days')
-
-
-        // var SEndDates = "SEndDate";
-        // element[SEndDates] = (date3);
-        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
-        }
-        else{
-          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
-        }
-        var dd = moment(date3).add(diffInDays, 'days')
-
-
-        var SEndDates = "SEndDate";
-        element[SEndDates] = (dd.format(format2));
-        //  alert( element[SEndDates])
-
-        var vStartTime = "StartTime";
-        element[vStartTime] = this.Startts;
-
-        var vEndTime = "EndTime";
-        element[vEndTime] = this.Endtms;
-
-
-        var vEnd_date = "End_date";
-        element[vEnd_date] = this._EndDate;
-
-        var vIsDeleted = "IsDeleted";
-        element[vIsDeleted] = 0;
-
-        var vPending = "Pending_meeting";
-        element[vPending] = 0;
-
-        var vRecurrence = "Recurrence"
-        element[vRecurrence] = this.selectedrecuvalue;
-
-        var vRecurrence_value = "Recurrence_values"
-        element[vRecurrence_value] = _arraytext.toString();
-
-        var vEmp_No = "Emp_No";
-        element[vEmp_No] = this.Current_user_ID;
-
-        var vScheduleType = "ScheduleType";
-        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
-
-        var vTitle_Name = "Title_Name";
-        element[vTitle_Name] = this.Title_Name;
-
-        var vMasterCode = "MasterCode";
-        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
-        // var columnName = "Link_Type";
-        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";
-        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
-
-        var vLocation_Type = "Location_Type";
-        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
-
-        var vLocation_fulladd = "FullAddress_loc";
-        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
-
-        var vLocation_url = "Addressurl";
-        element[vLocation_url] = this.Addressurl;
-
-        var vOnlinelink = "Onlinelink";
-        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-        var vLink_Details = "Link_Details";
-        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
-
-        var vDescription = "Description";
-        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-
-        var vSubtask = "Subtask";
-        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
-
-        var vEventNumber = "EventNumber";
-        element[vEventNumber] = this.EventNumber;
-
-        var vPortfolio_name = "Portfolio_name";
-        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
-
-        var vDMS_Name = "DMS_Name";
-        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
-
-        
-            var vMeeting_Agendas="Meeting_Agendas";
-            const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
-            element[vMeeting_Agendas]=updatedAgnds;
-
-      });
-      if (this._OldRecurranceId == '0') {
-        if (this.selectedrecuvalue != this._OldRecurranceId) {
-          this._calenderDto.flagid = 3;
-        }
-      }
-
-      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
-      if (this._OldRecurranceId == this.selectedrecuvalue) {
-        if (this._OldEnd_date != this._EndDate) {
-          if (this._PopupConfirmedValue == 1)
-            this._calenderDto.flagid = 1;
-          else
-            this._calenderDto.flagid = 2;
-        }
-      }
-      if (this.Schedule_ID != 0) {
-        this._calenderDto.Schedule_ID = this.Schedule_ID;
-
-      }
-      else {
-        this._calenderDto.Schedule_ID = 0;
-      }
-      let _attachmentValue = 0;
-      const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0)
-        _attachmentValue = 1;
-      else
-        _attachmentValue = 0;
-
-      frmData.append("EventNumber", this.EventNumber.toString());
-      frmData.append("CreatedBy", this.Current_user_ID.toString());
-      frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
-      frmData.append("flag_id", this._calenderDto.flagid.toString());
-      this._calenderDto.attachment = this.RemovedAttach.toString();
-
-      // console.log(JSON.stringify(finalarray), "finalarray");
+          this._calenderDto.flagid = this._PopupConfirmedValue;
+          this._calenderDto.type = type;
+          var start = moment(this.minDate);
       
-      this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
-        (data => {   
-          this.RemovedAttach = [];
-          // alert(data['Schedule_date'])
-          frmData.append("Schedule_date", data['Schedule_date'].toString());
-          if (_attachmentValue == 1) {
-            this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
-              (event: HttpEvent<any>) => {
-                switch (event.type) {
-                  case HttpEventType.Sent:
-                    console.log('Request has been made!');
-                    break;
-                  case HttpEventType.ResponseHeader:
-                    console.log('Response header has been received!');
-                    break;
-                  case HttpEventType.UploadProgress:
-                    this.progress = Math.round(event.loaded / event.total * 100);
-                    console.log(`Uploaded! ${this.progress}%`);
-                    break;
-                  case HttpEventType.Response:
-                    console.log('User successfully created!', event.body);
-
-                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    this._lstMultipleFiales = [];
-                    // empty(this._lstMultipleFiales);
-                    // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
-
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-                }
-              }
-            )
+          if (this._PopupConfirmedValue == 3) {
+            // start = moment(this._Oldstart_date);
+            start = moment(this.minDate);
           }
-
-          // console.log(data, "m");
-          this._Message = data['message'];
-          if (this._Message == 'Not updated') {
-            Swal.fire({
-              title: 'Meeting not released from the Pending list.',
-              text: 'Meeting already exists on the selected scheduled date. Please change the Schedule date and try again.',
-            });
+      
+          if (this.selectedrecuvalue == "0") {
+            var end = moment(this.minDate);
           }
-          else if (this._Message == 'Nothing to Update') {
-            this.notifyService.showInfo(this._Message, "Update failed");
+          else if (this.pending_status == true || this._PopupConfirmedValue == 1) {
+            var end = moment(this.minDate);
           }
           else {
-            this.notifyService.showSuccess(this._Message, "Success");
+            var end = moment(this.maxDate);
           }
-
-       // 1. sol
-          // if(this.showsearch)
-          //   this.evesrchclose();
-          // this.GetScheduledJson();
-     
-      // 2. sol   
-          if(this.showsearch)
-            this.Search_byname();
-          else 
-            this.GetScheduledJson();
+          // alert(end);
+          const format2 = "YYYY-MM-DD";
+          const d1 = new Date(moment(start).format(format2));
       
-          
-          this.GetPending_Request();
-          this.penhide();
-          this.Title_Name = null;
-          this.RemovedAttach = [];
-          this.ngEmployeeDropdown = null;
-          this.Description_Type = null;
-          this.MasterCode = null;
-          this.projectsSelected=[];
-          this.Subtask = null;
-          this.Startts = null;
-          this.Endtms = null;
-          this.St_date = null;
-          this.Ed_date = null;
-          this._status = null;
-          this.SelectDms = null;
-          this._SEndDate = moment().format("YYYY-MM-DD").toString();
-          this.Location_Type = null;
-          this.Allocated_subtask = null;
-          this.Link_Details = null;
-          this._onlinelink = false;
-          this.TM_DisplayName = null;
-          this.Projectstartdate = "";
-          this.projectEnddate = null;
-          this.Status_project = null;
-          this.AllocatedHours = null;
+          const d2 = new Date(moment(end).format(format2));
+          const date = new Date(d1.getTime());
           this.daysSelectedII = [];
-          this.Avaliabletime = [];
-          this.timeslotsavl = [];
-          this.singleselectarry = [];
-          this.daysSelected = [];
-          this._lstMultipleFiales = [];
-          this.Attachment12_ary = [];
-          // this.Recurr_arr = [];
-          this.selected = null;
-          this.TImetable();
-          this.Portfolio = null;
-          this.minDate = moment().format("YYYY-MM-DD").toString();
-          this.maxDate = null;
-          this.calendar.updateTodaysDate();
-          this.TImetable();
+          this.AllDatesSDandED = [];
+          const dates = [];
+          while (date <= d2) {
+            dates.push(moment(date).format(format2));
+            var jsonData = {};
+            var columnName = "Date";
+            jsonData[columnName] = (moment(date).format(format2));
+            var columnNames = "StartTime";
+            jsonData[columnNames] = this.Startts;
+            var columnNamee = "EndTime";
+            jsonData[columnNamee] = this.Endtms;
+            var IsActive = "IsActive";
+            jsonData[IsActive] = 1;
+            var Day = "Day";
+            // alert(moment(date).format('ddd').substring(0, 3));
+            jsonData[Day] = moment(date).format('ddd').substring(0, 3);
+            var DayNum = "DayNum";
+            jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+            this.AllDatesSDandED.push(jsonData);
+            date.setDate(date.getDate() + 1);
+          }
+      
+          if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+            this._subname1 = true;
+            return false;
+          }
+          if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+            this._subname = true;
+            return false;
+          }
+          var now = new Date();
+          // let timestamp = "";
+          // timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+          //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+          // this.EventNumber = timestamp;
+          let finalarray = [];
+          this.daysSelectedII = [];
+          // const format2 = "YYYY-MM-DD";
+          var start = moment(this.minDate);
+          const _arraytext = [];
+          if (this.selectedrecuvalue == "0") {
+            const d1 = new Date(moment(start).format(format2));
+            const date = new Date(d1.getTime());
+            this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+          }
+          else if (this.selectedrecuvalue == "1") {
+            this.daysSelectedII = this.AllDatesSDandED;
+          }
+          else if (this.selectedrecuvalue == "2") {
+            if (this.dayArr.filter(x => x.checked == true).length == 0) {
+              alert('Please select day');
+              return false;
+            }
+            for (let index = 0; index < this.dayArr.length; index++) {
+              if (this.dayArr[index].checked) {
+                const day = this.dayArr[index].value;
+                _arraytext.push(day);
+                var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+                this.daysSelectedII = this.daysSelectedII.concat(newArray);
+              }
+            }
+            if (this.daysSelectedII.length == 0) {
+              alert('please select valid day');
+            }
+          }
+          else if (this.selectedrecuvalue == "3") {
+            if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+              alert('Please select day');
+              return false;
+            }
+            for (let index = 0; index < this.MonthArr.length; index++) {
+              if (this.MonthArr[index].checked == true) {
+                const day = this.MonthArr[index].value;
+                _arraytext.push(day);
+                var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+                this.daysSelectedII = this.daysSelectedII.concat(newArray);
+              }
+            }
+          }
+          finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+      
+          if (finalarray.length > 0) {
+            finalarray.forEach(element => {
+              
+              const date1: Date = new Date(this._StartDate);
+              if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+                this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+              }
+              else {
+                this._SEndDate = this._StartDate;
+              }
+              const date2: Date = new Date(this._SEndDate);
+      
+              const diffInMs: number = date2.getTime() - date1.getTime();
+      
+              const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+              // var date3 = moment(date2).format("YYYY-MM-DD").toString();
+              // // var dd = moment(date3).add(diffInDays, 'days')
+      
+      
+              // var SEndDates = "SEndDate";
+              // element[SEndDates] = (date3);
+              if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+                var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+              }
+              else{
+                var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+              }
+              var dd = moment(date3).add(diffInDays, 'days')
+      
+      
+              var SEndDates = "SEndDate";
+              element[SEndDates] = (dd.format(format2));
+              //  alert( element[SEndDates])
+      
+              var vStartTime = "StartTime";
+              element[vStartTime] = this.Startts;
+      
+              var vEndTime = "EndTime";
+              element[vEndTime] = this.Endtms;
+      
+      
+              var vEnd_date = "End_date";
+              element[vEnd_date] = this._EndDate;
+      
+              var vIsDeleted = "IsDeleted";
+              element[vIsDeleted] = 0;
+      
+              var vPending = "Pending_meeting";
+              element[vPending] = 0;
+      
+              var vRecurrence = "Recurrence"
+              element[vRecurrence] = this.selectedrecuvalue;
+      
+              var vRecurrence_value = "Recurrence_values"
+              element[vRecurrence_value] = _arraytext.toString();
+      
+              var vEmp_No = "Emp_No";
+              element[vEmp_No] = this.Current_user_ID;
+      
+              var vScheduleType = "ScheduleType";
+              element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+      
+              var vTitle_Name = "Title_Name";
+              element[vTitle_Name] = this.Title_Name;
+      
+              var vMasterCode = "MasterCode";
+              element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+              // var columnName = "Link_Type";
+              // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+              var vUser_Name = "User_Name";
+              element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+      
+              var vLocation_Type = "Location_Type";
+              element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+      
+              var vLocation_fulladd = "FullAddress_loc";
+              element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
+      
+              var vLocation_url = "Addressurl";
+              element[vLocation_url] = this.Addressurl;
+      
+              var vOnlinelink = "Onlinelink";
+              element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+      
+              var vLink_Details = "Link_Details";
+              element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+      
+              var vDescription = "Description";
+              element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+      
+              var vSubtask = "Subtask";
+              element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+      
+              var vEventNumber = "EventNumber";
+              element[vEventNumber] = this.EventNumber;
+      
+              var vPortfolio_name = "Portfolio_name";
+              element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+      
+              var vDMS_Name = "DMS_Name";
+              element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+      
+              
+                  var vMeeting_Agendas="Meeting_Agendas";
+                  const updatedAgnds=JSON.stringify(this.allAgendas.map(item=>({index:item.index,name:item.name})));
+                  element[vMeeting_Agendas]=updatedAgnds;
+      
+            });
+            if (this._OldRecurranceId == '0') {
+              if (this.selectedrecuvalue != this._OldRecurranceId) {
+                this._calenderDto.flagid = 3;
+              }
+            }
+      
+            this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+            if (this._OldRecurranceId == this.selectedrecuvalue) {
+              if (this._OldEnd_date != this._EndDate) {
+                if (this._PopupConfirmedValue == 1)
+                  this._calenderDto.flagid = 1;
+                else
+                  this._calenderDto.flagid = 2;
+              }
+            }
+            if (this.Schedule_ID != 0) {
+              this._calenderDto.Schedule_ID = this.Schedule_ID;
+      
+            }
+            else {
+              this._calenderDto.Schedule_ID = 0;
+            }
+            let _attachmentValue = 0;
+            const frmData = new FormData();
+            for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+              frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+            }
+            if (this._lstMultipleFiales.length > 0)
+              _attachmentValue = 1;
+            else
+              _attachmentValue = 0;
+      
+            frmData.append("EventNumber", this.EventNumber.toString());
+            frmData.append("CreatedBy", this.Current_user_ID.toString());
+            frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+            frmData.append("flag_id", this._calenderDto.flagid.toString());
+            this._calenderDto.attachment = this.RemovedAttach.toString();
+      
+            // console.log(JSON.stringify(finalarray), "finalarray");
+            
+            this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
+              (data => {   
+                this.RemovedAttach = [];
+                // alert(data['Schedule_date'])
+                frmData.append("Schedule_date", data['Schedule_date'].toString());
+                if (_attachmentValue == 1) {
+                  this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+                    (event: HttpEvent<any>) => {
+                      switch (event.type) {
+                        case HttpEventType.Sent:
+                          console.log('Request has been made!');
+                          break;
+                        case HttpEventType.ResponseHeader:
+                          console.log('Response header has been received!');
+                          break;
+                        case HttpEventType.UploadProgress:
+                          this.progress = Math.round(event.loaded / event.total * 100);
+                          console.log(`Uploaded! ${this.progress}%`);
+                          break;
+                        case HttpEventType.Response:
+                          console.log('User successfully created!', event.body);
+      
+                          // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                          (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                          this._lstMultipleFiales = [];
+                          // empty(this._lstMultipleFiales);
+                          // alert(this._lstMultipleFiales.length);
+                          setTimeout(() => {
+                            this.progress = 0;
+                          }, 1500);
+      
+                          (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                          (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                          document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                          document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                      }
+                    }
+                  )
+                }
+      
+                // console.log(data, "m");
+                this._Message = data['message'];
+                if (this._Message == 'Not updated') {
+                  Swal.fire({
+                    title: 'Meeting not released from the Pending list.',
+                    text: 'Meeting already exists on the selected scheduled date. Please change the Schedule date and try again.',
+                  });
+                }
+                else if (this._Message == 'Nothing to Update') {
+                  this.notifyService.showInfo(this._Message, "Update failed");
+                }
+                else {
+                  this.notifyService.showSuccess(this._Message, "Success");
+                }
+      
+             // 1. sol
+                // if(this.showsearch)
+                //   this.evesrchclose();
+                // this.GetScheduledJson();
+           
+            // 2. sol   
+                if(this.showsearch)
+                  this.Search_byname();
+                else 
+                  this.GetScheduledJson();
+            
+                
+                this.GetPending_Request();
+                this.penhide();
+                this.Title_Name = null;
+                this.RemovedAttach = [];
+                this.ngEmployeeDropdown = null;
+                this.Description_Type = null;
+                this.MasterCode = null;
+                this.projectsSelected=[];
+                this.Subtask = null;
+                this.Startts = null;
+                this.Endtms = null;
+                this.St_date = null;
+                this.Ed_date = null;
+                this._status = null;
+                this.SelectDms = null;
+                this._SEndDate = moment().format("YYYY-MM-DD").toString();
+                this.Location_Type = null;
+                this.Allocated_subtask = null;
+                this.Link_Details = null;
+                this._onlinelink = false;
+                this.TM_DisplayName = null;
+                this.Projectstartdate = "";
+                this.projectEnddate = null;
+                this.Status_project = null;
+                this.AllocatedHours = null;
+                this.daysSelectedII = [];
+                this.Avaliabletime = [];
+                this.timeslotsavl = [];
+                this.singleselectarry = [];
+                this.daysSelected = [];
+                this._lstMultipleFiales = [];
+                this.Attachment12_ary = [];
+                // this.Recurr_arr = [];
+                this.selected = null;
+                this.TImetable();
+                this.Portfolio = null;
+                this.minDate = moment().format("YYYY-MM-DD").toString();
+                this.maxDate = null;
+                // this.calendar.updateTodaysDate();
+                this.TImetable();
+      
+              });
+            this.closeschd();
+          }
+          else {
+            alert('Please Select Valid Date and Time');
+          }
+     }
+     else
+      {
+         if(!this.Title_Name)
+         document.getElementById('dsb-evt-titleName').focus();
+         else if(this.ScheduleType==='Event'&&this.allAgendas.length===0)
+         {   const agf:any=document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
 
-        });
-      this.closeschd();
-    }
-    else {
-      alert('Please Select Valid Date and Time');
-    }
+
+        this.notProvided=true;
+      }
+    
+    
   }
 
   Search_byname() { 
@@ -2790,7 +2814,7 @@ export class DashboardComponent implements OnInit {
           this.daysSelected.splice(index, 1);
           this.singleselectarry.splice(index, 1);
         }
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
         this.daysSelectedII = [];
         this.daysSelected.forEach(element => {
           const found = this.Timechangearry.some(el => el.Date === element);
@@ -2834,7 +2858,7 @@ export class DashboardComponent implements OnInit {
         //   this.Checkdatetimetable(this.daysSelectedII);
         // }
 
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
       }
     }, delay);
 
@@ -2850,7 +2874,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewGetcheckdateandtime(this._calenderDto).subscribe
       ((data) => {
         this.daysSelectedII = JSON.parse(data['Checkdatetimejson']);
-        this.calendar.updateTodaysDate();
+        // this.calendar.updateTodaysDate();
 
       });
   }
@@ -2873,7 +2897,7 @@ export class DashboardComponent implements OnInit {
   //   // const date=event.getFullYear() + "-" + ("00" + (event.getMonth() + 1)).slice(-2) + "-" + ("00" + event.getDate()).slice(-2);
 
   //   // console.log(event)
-  //   this.calendar.updateTodaysDate();
+  //   // this.calendar.updateTodaysDate();
 
   // }
 
@@ -3189,7 +3213,7 @@ console.log("EndTimearr:",this.EndTimearr);
         });
       }
       // console.log("Updated Array" + JSON.stringify(this.Timechangearry))
-      this.calendar.updateTodaysDate();
+      // this.calendar.updateTodaysDate();
       this._selectedId = 0;
       this._SecondSelectedId = 0;
       $('.wp-100 .time').removeClass('time');
@@ -3336,7 +3360,7 @@ console.log("EndTimearr:",this.EndTimearr);
       jsonData[IsActive] = 1;
 
       this.daysSelectedII.push(jsonData);
-      this.calendar.updateTodaysDate();
+      // this.calendar.updateTodaysDate();
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("weekly_122").style.display = "none";
       document.getElementById("Monthly_121").style.display = "none";
@@ -3386,7 +3410,7 @@ console.log("EndTimearr:",this.EndTimearr);
   selectmonthlydays(day) {
     let objIndex = this.MonthArr.findIndex((obj => obj.value == day.target.value));
     this.MonthArr[objIndex].checked = day.target.checked;
-    this.calendar.updateTodaysDate();
+    // this.calendar.updateTodaysDate();
   }
 
   OnEmpSelect(emp: string) {
@@ -4756,6 +4780,9 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
+   debugger
+    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+    this._calenderDto.DraftAgendas=mtgAgendas;
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {   
         if (data['message'] == '1') {
@@ -4779,9 +4806,10 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
-        // console.log(data,"ssdddd")
+        console.log(data,"ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
+       
           this.draftcount = this.draftdata_meet.length;
         }
         else {
@@ -4811,14 +4839,15 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
   draft_arry: any = [];
 
   darft_click(Sno, val) {
-
     this.draftid = Sno;
 
     this.Task_type(val);
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
-
+    console.log(this.draft_arry[0],'6969')
     // console.log(this.draft_arry,"ss11111111")
+    this.allAgendas=JSON.parse(this.draft_arry[0]['Agendas']);
+
     this.MasterCode = [];
     this.arr = JSON.parse(this.draft_arry[0]['Project_code']);
     this.arr.forEach(element => {
@@ -4891,7 +4920,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
-    this.draftid = 0;
+    this.draftid = this.draftid;
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
@@ -4907,10 +4936,11 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.singleselectarry = [];
     this.Avaliabletime = [];
     this.allAgendas = [];
+    this.agendasAdded=0;
     this.TImetable();
     this.selectedrecuvalue = "0";
     // this.Doubleclick(this.event);
-    this.calendar.updateTodaysDate();
+    // this.calendar.updateTodaysDate();
     this.dayArr.map((element) => {
       return element.checked = false;;
     });
@@ -4978,6 +5008,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.singleselectarry = [];
     this.Avaliabletime = [];
     this.allAgendas = [];
+    this.agendasAdded=0;
     this.TImetable();
     this.selectedrecuvalue = "0";
     // this.Doubleclick(this.event);
