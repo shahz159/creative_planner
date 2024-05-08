@@ -4109,7 +4109,3 @@ span.project-name {
    transform:scale(1);
    transition-duration:0.2s;
  }
- .loading{
-   position: relative;
-   top: 15em;
- }
