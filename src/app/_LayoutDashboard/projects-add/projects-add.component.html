@@ -124,7 +124,7 @@
 
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Cancellation Under Approval"?"Cancellation Approval"   :item.Name== "Completion Under Approval" ? "Completion Approval" :item.Name=='Forward Under Approval'? "Forward Approval" :item.Name=='InProcess'?'In-Process':item.Name =="Not Started"?"Draft":item.Name}}
+                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Enactive Under Approval"?"Enactive Approval"  :item.Name=="Project Hold Under Approval"?"Hold Approval" :item.Name=="Deadline Extend Under Approval"?"Deadline Extend Approval":item.Name=="Cancellation Under Approval"?"Cancellation Approval"   :item.Name== "Completion Under Approval" ? "Completion Approval" :item.Name=='Forward Under Approval'? "Forward Approval" :item.Name=='InProcess'?'In-Process':item.Name =="Not Started"?"Draft":item.Name}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>

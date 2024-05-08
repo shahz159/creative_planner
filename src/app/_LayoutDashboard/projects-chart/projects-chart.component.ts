@@ -696,7 +696,7 @@ export class ProjectsChartComponent implements OnInit {
         litres: 501.9
       },
       {
-        country: "New Project Under Approval",
+        country: "New Approval",
         litres: 301.9
       },
       {

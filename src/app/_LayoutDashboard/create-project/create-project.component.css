@@ -1692,10 +1692,10 @@ span.Wd_text_kt {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.Bt-Submit:hover {
+/* .Bt-Submit:hover {
   background-color: #2786fb;
   color: #fff;
-}
+} */
 
 .active .Bt-Submit {
   background-color: #2786fb;

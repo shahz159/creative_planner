@@ -952,8 +952,8 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
-                                                            <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Team_Res)">Completed </span> <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Team_Res)"></b>
-                                                            <span class="kt-widget__other d-block st-line" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Team_Res)"title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
+                                                            <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed </span> <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                                                            <span class="kt-widget__other d-block st-line" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
 
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
