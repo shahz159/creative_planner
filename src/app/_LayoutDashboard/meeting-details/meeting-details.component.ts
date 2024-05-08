@@ -1935,15 +1935,17 @@ Meetingstatuscom: string;
 // unsubscribe: boolean = false;
 
 GetcompletedMeeting_data() {
+  debugger
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
+      console.log(this.CompletedMeeting_notes,"End Meeting")
       this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
       
-      console.log(this.CompletedMeeting_notes,"??????????????????????")
+  
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
       // this.GetNotedata();
@@ -2115,7 +2117,7 @@ _Deletetask(id, name) {
 
 
 On_Uncheck(id) {
-  debugger
+
   this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
   this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
   this._ObjAssigntaskDTO.AssignId = id;
@@ -3911,7 +3913,7 @@ closeModal() {
 
 
 Insert_meetingreport() {
-  debugger
+
   this.Action_item = []
 
   this._TodoList.forEach(element => {

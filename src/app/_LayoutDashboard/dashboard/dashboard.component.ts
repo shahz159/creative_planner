@@ -766,8 +766,12 @@ export class DashboardComponent implements OnInit {
       });
 
   }
-  Maybe_event(val) {
 
+
+
+
+  Maybe_event(val) {
+   
     this.EventAction_type = val;
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.flagid = this.EventAction_type;
@@ -786,8 +790,7 @@ export class DashboardComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "May be");
         // this.calendar.updateTodaysDate();
         this.closeevearea();
-
-
+       
       });
 
 
@@ -3445,14 +3448,18 @@ console.log("EndTimearr:",this.EndTimearr);
   Meeting_status: boolean;
   AdminMeeting_Status: string;
   Isadmin: boolean;
+  loading: boolean = false;
 
   GetClickEventJSON_Calender(arg) { 
+   this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+      this.loading = false; 
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
