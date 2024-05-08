@@ -3231,7 +3231,7 @@ check_allocation() {
 
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
-        console.log("sahil bhai this is your DAR array:", this.darArray);
+        // console.log("bhai this is your DAR array:", this.darArray);
         this.totalHours = (data1[0]['Totalhours']);
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
