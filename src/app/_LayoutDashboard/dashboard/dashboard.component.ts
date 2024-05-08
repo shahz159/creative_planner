@@ -343,11 +343,11 @@ export class DashboardComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '5rem',
+    minHeight: '6rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Enter text here...',
+    placeholder: 'Description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
@@ -5615,8 +5615,26 @@ onProjectSearch(inputtext:any){
 }
 
 
-
-
-
-
+project_filter() {
+  document.getElementById("project-filter").classList.add("show");
+  document.getElementById("filter-icon").classList.add("active");
+}
+close_project_filter() {
+  document.getElementById("project-filter").classList.remove("show");
+  document.getElementById("filter-icon").classList.remove("active");
+}
+date_menu(){
+  document.getElementById("date-menu").classList.add("show");
+}
+date_menu_close(){
+  document.getElementById("date-menu").classList.remove("show");
+}
+projectmodal(){
+  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+  document.getElementById("projectmodal").style.display = "block";
+}
+close_projectmodal(){
+  document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+  document.getElementById("projectmodal").style.display = "none";
+}
 }

@@ -98,7 +98,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   port_id: any;
   Mode: string = "UnderApproval";
   _fullname: any;
-
+Prj_Code:any;
 
   /*
     routing Url id's for different components
@@ -118,8 +118,17 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this._Urlid = this.route.snapshot.params['id'];
     // alert(this._Urlid);
     this.route.paramMap.subscribe(params => {
-      var Pcode = params.get('projectcode');
-      this.projectCode = Pcode;
+     const p_code=params.get('projectcode');
+     const a_code=params.get('actioncode');
+     if(p_code&&a_code){
+          this.Prj_Code=p_code;
+          this.projectCode=a_code;
+     }
+     else{
+      this.projectCode = p_code;
+     }
+
+
       this.getusername();
       this.LoadProjectDetails();
       this.GetRacisPeople()
@@ -748,6 +757,26 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     var myWindow = window.open(myurl,this._MasterCode);
     myWindow.focus();
   }
+
+
+
+
+  openDetails(pcode:string|undefined,acode:string|undefined) {
+
+    let qparams='';
+    if(acode!==undefined){
+      qparams=`?actionCode=${acode}`;
+    }
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}${qparams}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
+
+
+
+
 
   moreDetails1(pcode) {
     let name: string = 'MoreDetails';

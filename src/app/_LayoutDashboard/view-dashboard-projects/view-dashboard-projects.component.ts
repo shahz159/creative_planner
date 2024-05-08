@@ -85,7 +85,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   delayType2: string='Actions';
 
 
-  ngOnInit() { 
+  ngOnInit() {
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
     this.Z2A = false;
@@ -96,7 +96,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this.getDelayProjects(this.delayType1);
     }
     else if(this.Mode=='AssignedActions'){
-      this.getAssignedActions('TOME');   
+      this.getAssignedActions('TOME');
     }
     else{
       this.GetCompletedProjects();
@@ -122,10 +122,14 @@ export class ViewDashboardProjectsComponent implements OnInit {
   TotalWork_Hours: any;
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
-  openInfo(pcode, pName) {
+  openInfo(prjCode:string,actCode:string) {
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
-    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", pcode, "3"]);
+    if(prjCode&&actCode)
+      this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
+    else
+    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode, "3"]);
+
     //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -172,7 +176,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     if (this.Mode != "AssignedTask" && this.Mode != "Delay" && this.Mode != "") {
       this.projectsDataTable = false;
       this.AssignedTask = true;
-     
+
       if (this.Mode == "UnderApproval") {
         this._Statustitle = "Under Approval Projects";
         this._totalProjectsCount = parseInt(sessionStorage.getItem('CompletedCount'));
@@ -448,7 +452,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.CurrentPageNo = 1;
     this.applyFilters();
   }
-  applyFilters() {  
+  applyFilters() {
     if (this.Mode != "AssignedTask" && this.Mode != "") {
       this.selectedEmp_String = this.checkedItems_Emp.map(select => {
         return select.Emp_No;
@@ -468,7 +472,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ObjCompletedProj.Project_SearchText = this.searchText;
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service._GetCompletedProjects(this._ObjCompletedProj)
-        .subscribe(data => { 
+        .subscribe(data => {
           this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
@@ -660,7 +664,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     }
   }
 
-  //DMs Add And Delete 
+  //DMs Add And Delete
   _DBMemosIDList: any;
   dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
@@ -856,7 +860,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this._MemosNotFound = "No memos linked";
         }
       });
-    //Displaying Right Side Bar... 
+    //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
   }
 
@@ -867,9 +871,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
     var myWindow = window.open(myurl, pcode);
     myWindow.focus();
   }
-  
-  newDetails(pcode,acode:string|undefined) { 
-  
+
+  newDetails(pcode,acode:string|undefined) {
+
     let qparams='';
     if(acode!==undefined){
       qparams=`?actionCode=${acode}`;
@@ -944,11 +948,11 @@ getAssignedActions(type:'BYME'|'TOME'){
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
           this._CurrentpageRecords = this._ProjectDataList.length;
-          this._totalProjectsCount = data[0]['delaycount'];   
+          this._totalProjectsCount = data[0]['delaycount'];
           // console.log(this._ProjectDataList,"delay actions")
         }
       });
-  
+
 }
 
 

@@ -790,8 +790,8 @@
                     <div class="col-lg-5 right-side-dv d-none">
                       <div class="card h-100">
                         <div class="card-body p-3 left-sdv-max">
-                      <div class="Kt-info-box-main active"  
-                         (click)="this.currentActionView=undefined;" 
+                      <div class="Kt-info-box-main active"
+                         (click)="this.currentActionView=undefined;"
                         [ngClass]="{'active':currentActionView===undefined}">
                         <div class="kt-info-box curser-pointer border-0">
                           <div class="d-flex align-items-center">
@@ -1015,7 +1015,7 @@
                                   </div>
                                 </ng-template>
                                 <div class="col text-center">
-                                  <div class="kt-info-lable-v"> Duration </div>
+                                  <div class="kt-info-lable-v"> Duration</div>
                                   <div class="kt-project-sts-data">
                                       <ng-container *ngIf="['001', '002', '011'].includes(Prjtype)">
                                           <ng-container *ngIf="projectInfo && projectInfo.Duration !== ''">
@@ -1186,10 +1186,12 @@
                                     <div class="kt-action-p-tittle">
                                       <h4>{{action&&action.Project_Name}}</h4>
                                     </div>
+
                                     <div class="d-flex align-items-center justify-content-between">
                                       <div class="kt-info-lable-v">
                                         By {{action&&action.Responsible}}
                                       </div>
+
                                       <input type="text" [id]="'actionCode:'+action.Project_Code"
                                         style="height:0; width:0; border:0; outline:0; background:transparent; " />
                                       <div class="kt-info-lable-v">
@@ -1478,6 +1480,8 @@
                                   </div>
                                   <div *ngIf="Prjtype=='011'" style="color:grey">To do List not more than 3 Days </div>
                                   <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">Please select project start date</span>
+                                 <span *ngIf="['001', '002', '011'].includes(Prjtype)&&Prjstartdate && Prjenddate">Duration : {{this.durationInDays+1}} days </span>
+                                   <span *ngIf="Allocated_Hours">{{Allocated_Hours}} hours</span>
                                 </div>
 
                                 <div class="col-lg-4 mb-3">
@@ -1486,8 +1490,8 @@
                                     <label>End date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjenddate && notProvided}">
                                       <input class="form-control ng-pristine curser-pointer" [(ngModel)]="Prjenddate"  id="end-date"
-                                        placeholder="select end date" [matDatepicker]="picker3" (click)="picker3.open()"
-                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null"/>
+                                        placeholder="select end date" [matDatepicker]="picker3" (click)="picker3.open();"
+                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null;findProjectType()"/>
                                       <div class="input-group-text p-0">
                                         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                         <mat-datepicker #picker3></mat-datepicker>
@@ -1759,7 +1763,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Owner<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" [ngClass]="{'error-border':!PrjOwner&&notProvided}"   placeholder="Select Type.." [(ngModel)]="PrjOwner" 
+                                  <ng-select class="kt-form-vd" [ngClass]="{'error-border':!PrjOwner&&notProvided}"   placeholder="Select Type.." [(ngModel)]="PrjOwner"
                                   (change)="onProjectOwnerChanged();    setRACIS();   PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim();  ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
@@ -1807,13 +1811,13 @@
                                   <label>Inform<span class="text-danger">*</span></label>
                                   <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer" [ngClass]="{'error-border':!PrjInformer&&notProvided}"
                                     (change)="setRACIS() ">
-                                  
+
                                   <ng-container *ngIf="Responsible_json">
                                           <ng-container *ngIf="[PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()); else reportToMustPresent">
                                               <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name }}</ng-option>
                                           </ng-container>
                                           <ng-template #reportToMustPresent>
-                                              <ng-option [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option> 
+                                              <ng-option [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                           </ng-template>
                                   </ng-container>
 
@@ -2171,7 +2175,7 @@
                                               </svg>
                                             </div>
                                             <div class="kt-info-data-v">
-                                              <b class="word-break text-info">{{fileAttachment.name}}</b>
+                                              <b class="word-break text-info curser-pointer " (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" >{{fileAttachment.name}}</b>
                                             </div>
                                           </div>
                                           <div *ngSwitchCase="false">
@@ -2757,22 +2761,32 @@
               </div>
           </div>
           <div class="row pt-2">
-              <div class="col-lg-4 text-left">
-                  <div class="form-group mb-2 Ic_ed">
-                    <div class="kt-info-lable-v"> Start date</div>
-                        <div class="input-icon Sub_In_ed">
-                          <input type="text" class="form-control readonly"
-                          [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Start date" readonly />
-                        </div>
-                      </div>
+             <div class="col-lg-4 text-left">
+              <div class="form-group mb-2 Ic_ed">
+                <div class="kt-info-lable-v"> Start date</div>
+                    <div class="input-icon Sub_In_ed">
+                      <input type="text" class="form-control readonly"
+                      [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Start date" readonly />
+                    </div>
                   </div>
+              </div>
+
+
+
+
+
+
+
+
+
                   <div class="col-lg-4 text-left">
                       <div class="form-group mb-2  Ic_ed">
                           <div class="kt-info-lable-v"> Deadline</div>
                               <div class="input-icon Sub_In_ed date-border-v d-flex">
                                 <input class="form-control curser-pointer" [(ngModel)]="End_Date"
-                                    [min]="todayDate|date:'dd-MM-yyyy'" [matDatepicker]="strtEditsPicker"
-                                    (click)="strtEditsPicker.open();" placeholder="Deadline Date..."
+                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"
+                                    (click)="strtEditsPicker.open();"
+                                     placeholder="Deadline Date..."
                                     class="form-control border-0 " name="date" />
                                 <div class="input-group-append h-2">
                                     <mat-datepicker-toggle matSuffix [for]="strtEditsPicker"
@@ -2823,8 +2837,9 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12 mt-3">
                       <div class="form-group text-end">
-                          <button type="submit"  (click)="projectEdit(0);closeInfos(); " class="btn w-110 Bt-Submit ml-2" >
+                          <button type="submit"  (click)="projectEdit(0);closeInfos(); " class="btn btn-info w-110 ml-2" >
                               Update</button>
+                              <button class="btn w-110 btn-secondary ml-2"   (click)="closeInfos()">Cancel</button>
                       </div>
                   </div>
               </div>
@@ -2848,7 +2863,7 @@
                 <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                     height="24" fill="#ccc">
                     <path  fill="none" d="M0 0h24v24H0z"></path>
-                    <path 
+                    <path
                         d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
                     </path>
                 </svg>
@@ -2943,7 +2958,7 @@
                                         d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                     </path>
                                 </svg>
-                          </span> 
+                          </span>
                         Responsible
                     </div>
                     <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
@@ -3022,8 +3037,8 @@
                                           d="M24 8C15.178 8 8 15.178 8 24c0 2.362.536 4.738 1.551 6.871a.5.5 0 0 0 .903-.43A15.086 15.086 0 0 1 9 24c0-1.067 1.549-2.195 4.207-3.055-.068.5-.12 1.007-.154 1.522a.5.5 0 0 0 .466.532.493.493 0 0 0 .532-.466c.043-.649.124-1.28.222-1.902 1.406-.377 3.057-.681 4.9-.879-.034.411-.063.823-.086 1.235a.5.5 0 0 0 .471.527l.029.001a.5.5 0 0 0 .499-.472c.027-.473.06-.935.098-1.384a46.1 46.1 0 0 1 3.818-.16c1.342 0 2.612.06 3.818.16.036.421.067.851.093 1.293a.49.49 0 0 0 .528.47.5.5 0 0 0 .47-.528c-.022-.381-.05-.762-.081-1.142 1.842.198 3.493.502 4.899.879.098.622.179 1.253.222 1.901a.497.497 0 0 0 .497.468l.034-.001a.501.501 0 0 0 .466-.532 22.08 22.08 0 0 0-.154-1.522C37.451 21.805 39 22.933 39 24c0 2.21-.5 4.434-1.447 6.43a.5.5 0 1 0 .903.428A16.103 16.103 0 0 0 40 24c0-8.822-7.178-16-16-16zm0 1c.909 0 1.921 1.487 2.7 4.169A23.144 23.144 0 0 0 24 13c-.922 0-1.821.066-2.701.169C22.078 10.486 23.089 9 24 9zm-3.774 4.322c-1.34.224-2.621.554-3.806.994 1.409-2.466 3.327-4.246 5.482-4.96-.676.946-1.235 2.326-1.676 3.966zm5.87-3.967c2.155.713 4.075 2.494 5.484 4.961a20.939 20.939 0 0 0-3.807-.995c-.442-1.639-1.001-3.02-1.677-3.966zm-7.274.585c-1.523 1.203-2.836 2.913-3.831 4.976-2.071.974-3.792 2.272-5.009 3.789a15.06 15.06 0 0 1 8.84-8.765zM9.43 21.664c.763-2.115 2.525-3.971 4.949-5.326a20.413 20.413 0 0 0-.989 3.525c-1.636.484-3.011 1.086-3.96 1.801zm5.033-2.094a18.87 18.87 0 0 1 1.269-3.905 19.187 19.187 0 0 1 4.235-1.287 37.984 37.984 0 0 0-.699 4.373c-1.706.18-3.337.455-4.805.819zM24 18.5c-1.245 0-2.494.057-3.719.158.18-1.689.438-3.181.746-4.459a22.198 22.198 0 0 1 5.945 0c.309 1.278.567 2.771.747 4.459A45.407 45.407 0 0 0 24 18.5zm4.733.251a38.014 38.014 0 0 0-.7-4.373c1.522.284 2.95.718 4.236 1.287a18.87 18.87 0 0 1 1.269 3.905 35.836 35.836 0 0 0-4.805-.819zm5.878 1.112a20.503 20.503 0 0 0-.989-3.525c2.423 1.355 4.185 3.211 4.948 5.326-.949-.715-2.324-1.317-3.959-1.801zm-1.602-4.946c-.994-2.063-2.308-3.773-3.831-4.976a15.05 15.05 0 0 1 8.839 8.765c-1.217-1.517-2.938-2.816-5.008-3.789z">
                                       </path>
                                   </svg>
-                          </span> 
-                          Client 
+                          </span>
+                          Client
                       </div>
                     <div class="input-icon Sub_In_ed">
                         <div class="input-icon Sub_In_ed">
@@ -3042,20 +3057,23 @@
         </div>
         <div class="row pt-2">
             <div class="col-lg-4 text-left">
-                <div class="form-group mb-2 Ic_ed">
-                  <div class="kt-info-lable-v"> Start date</div>
-                      <div class="input-icon Sub_In_ed">
-                        <input type="text" class="form-control readonly"
-                        [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Start date" readonly />
-                      </div>
+              <div class="form-group mb-2 Ic_ed">
+                <div class="kt-info-lable-v"> Start date</div>
+                    <div class="input-icon Sub_In_ed">
+                      <input type="text" class="form-control readonly"
+                      [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Start date" readonly />
                     </div>
+                  </div>
+
+
                 </div>
                 <div class="col-lg-4 text-left">
                     <div class="form-group mb-2  Ic_ed">
                         <div class="kt-info-lable-v"> Deadline</div>
                             <div class="input-icon Sub_In_ed date-border-v d-flex" [ngClass]="{'error-border':!End_Date&&notProvided}"  >
                               <input  class="form-control curser-pointer" [(ngModel)]="End_Date"
-                                  [min]="todayDate|date:'dd-MM-yyyy'" [matDatepicker]="ActionEnd_Datepicker"
+                                  [min]="Start_Date" [matDatepicker]="ActionEnd_Datepicker"
+
                                   (click)="ActionEnd_Datepicker.open();" placeholder="Deadline Date..."
                                   class="form-control border-0 " name="date" />
                               <div class="input-group-append h-2">
@@ -3064,7 +3082,7 @@
                                   </mat-datepicker-toggle>
                                   <mat-datepicker class="form-group " #ActionEnd_Datepicker></mat-datepicker>
                               </div>
-                            
+
                           </div>
                           <span style="color:red" *ngIf="!End_Date&&notProvided">end date required.</span>
                     </div>
@@ -3117,7 +3135,7 @@
             <div class="row pt-2 pb-2">
                 <div class="col-lg-12 mt-3">
                     <div class="form-group text-end">
-  
+
                       <button type="submit"  (click)="alterAction(); " class="btn btn-info w-110 ml-2" >Update</button>
                       <button (click)="closeAction_details_edit()" class="btn w-110 btn-secondary ml-2" >Cancel</button>
 
