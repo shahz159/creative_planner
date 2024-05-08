@@ -2488,16 +2488,22 @@
                                                               Completion</button>
 
                                                     <ng-container *ngIf="['001','002','011'].includes(projectInfo.Project_Block)">
-                                                          <button class="Ct-btn Bt-hold ml-2"
+                                                         
+                                                        
+                                                        <button class="Ct-btn Bt-hold ml-2"
                                                               *ngIf="(projectInfo.Status==='Project Hold');else prHbtn"
                                                               (click)="openPrjReleaseSideBar()">Project
                                                               Release</button>
                                                           <ng-template #prHbtn>
                                                               <button class="Ct-btn Bt-hold ml-2"
                                                                   (click)="openPrjHoldSideBar()"
-                                                                  *ngIf="projectInfo.Status==='InProcess'||projectInfo.Status=='Delay'">Project
+                                                                  *ngIf="projectInfo.Status==='InProcess'">Project
                                                                   Hold</button>
                                                           </ng-template>
+
+
+
+
                                                     </ng-container>
 
                                                           <button class=" Bt-newprj-release  ml-2"
