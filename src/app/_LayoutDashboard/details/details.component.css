@@ -5399,6 +5399,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 .mydelay-action-notf .mydelayactns-open-btn svg{
    stroke:#ff00005C;
    stroke-width:1.7;
+   transform: rotate(90deg);
 }
 .mydelay-action-notf:hover .mydelayactns-open-btn,.myactions-underaprv-notif:hover .myunderaprvactns-open-btn{
     display:inline;
@@ -5432,6 +5433,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 
 .myactions-underaprv-notif .myunderaprvactns-open-btn svg{
    stroke:#00a2eb;
+   transform: rotate(90deg);
 }
 
 .myactions-underaprv-notif .myunderaprvactns-open-btn:hover svg{
