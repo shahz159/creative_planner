@@ -869,26 +869,26 @@ $(document).ready(function(){
   }
 
   Team_Autho:any
-  Team_Res:any
+  Emp_No:any
   Project_Code:any
   LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string,Pcode:string,tauth:string,tresp:string) {
     debugger
     this.Project_Code=Pcode;
     this.Team_Autho=tauth;
-    this.Team_Res=tresp;
+    this.Emp_No=tresp;
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
     if (Iscloud == false) {
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
-      if (this.Team_Autho == this.Team_Res) {
+      if (this.Team_Autho == this.Emp_No) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
-        FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+        FileUrl = (FileUrl +  this.Emp_No + "/" + this.Project_Code + "/" + url1);
 
       }
-      else if (this.Team_Autho !=  this.Team_Res) {
-        FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
+      else if (this.Team_Autho !=  this.Emp_No) {
+        FileUrl = (FileUrl + this.Emp_No + "/" + this.Project_Code + "/" + url1);
       }
 
       let name = "ArchiveView/" + this.Project_Code.trim();

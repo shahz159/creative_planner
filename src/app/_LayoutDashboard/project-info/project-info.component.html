@@ -47,7 +47,7 @@
                 </div>
             </div>
             <ng-container   *ngIf="ProjectNameJson[0].Project_Code" >
-            <div class="kt-project-type curser-pointer more-info mr-2"    (click)="newDetails()">
+            <div class="kt-project-type curser-pointer more-info mr-2"    (click)="Prj_Code?openDetails(Prj_Code,ProjectNameJson[0].Project_Code):newDetails()">
                 <div class="Kt-Pd-Status More_info_btn">
                     <span>  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                       viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -118,7 +118,7 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="kt-project-type">
-                                    <div class="Kt-Pd-Status Delay {{item.Status=='Under Approval'?'new-project' :'black-text'}}" *ngIf="item.Status=='Delay'">
+                                    <div class="Kt-Pd-Status Delay {{item.Status=='Under Approval'?'new-project' :'black-text'}}" [ngClass]="{'Delay':item.Status=='Delay'}" *ngIf="item.Status=='Delay'">
                                         {{item.Status =='InProcess'?'In-Process':(item.Status=='Under Approval'?'New Approval':item.Status)}} {{item.Delaydays}} days
                                     </div>
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
@@ -175,7 +175,7 @@
                                  </span>
                            </div> -->
                         <div class="kt-project-type  ">
-                            <div class="Kt-Pd-Status Delay   " *ngIf="item.Status=='Delay'">
+                            <div class="Kt-Pd-Status Delay  "  [ngClass]="{'Delay':item.Status=='Delay'}" *ngIf="item.Status=='Delay'">
                                 {{item.Status=='Under Approval'?'New Approval':(item.Status=='InProcess'?'In-Process':item.Status)}} {{item.Delaydays}} days
                             </div>
                             <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
@@ -272,6 +272,7 @@
                                                 'CompletionUnderApproval': item.Status=='Completion Under Approval',
                                                 'Delay': item.Status=='Cancellation Under Approval',
                                                 'Cancelled': item.Status=='Cancelled',
+                                                'Delay':item.Status=='Delay',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}" >
                             {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}

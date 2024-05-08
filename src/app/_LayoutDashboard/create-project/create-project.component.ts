@@ -126,7 +126,7 @@ export class CreateProjectComponent implements OnInit {
   maxAllocation: number;
   _allocated:any
   maxDate:any
-  URL_ProjectCode: any; 
+  URL_ProjectCode: any;
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
@@ -156,6 +156,7 @@ export class CreateProjectComponent implements OnInit {
     this.getProjectCreationDetails();
     this.GetAssignedTaskDetails();
     this.getPortfolios();
+
 
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('projectcode');
@@ -315,8 +316,8 @@ export class CreateProjectComponent implements OnInit {
 
   this.service.GetRACISandNonRACISEmployeesforMoredetails(prjCode).subscribe(
     (data) => {
-      this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));  
-      this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);  
+      this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+      this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
     });
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
@@ -351,7 +352,7 @@ export class CreateProjectComponent implements OnInit {
       this.Prjenddate=new Date(this.Prjenddate);
       const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime()
       const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.maxAllocation=(Difference_In_Days+1)*9;
+      this.maxAllocation=(Difference_In_Days+1)*10;
     }
     else
     this._message = "Start Date/End date missing!!"
@@ -1018,7 +1019,7 @@ onRejectButtonClick(value:any,id:number){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("kt-bodyc")
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -1044,7 +1045,7 @@ onRejectButtonClick(value:any,id:number){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-    document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
   //  this.getResponsibleActions();
@@ -1075,7 +1076,7 @@ getActionsDetails(){
     this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
     else
     this.PrjActionsInfo=[];
-  });   
+  });
 }
 
 
@@ -1749,7 +1750,7 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
   this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
   else
   this.PrjActionsInfo=[];
-  
+
   const alh=this.PrjActionsInfo.reduce((sum,action)=>sum+action.AllocatedHours,0);
   const pjalh=this.draft_json[index].Duration;
   this.isExceededTotalAllocatedHr=pjalh==alh;
@@ -1764,10 +1765,10 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
   else{
        this.fileAttachment=null;
        this.isFileUploaded=undefined;
-  }  
+  }
 // getting file attachment name if provided in the draft project. start
 
-});  
+});
 
 
 }
@@ -1870,11 +1871,11 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
             return sum+Number.parseInt(action.AllocatedHours);
           },0)
           const newAlcHrs=totalhrsused+actionAllocHr;   // used hrs + new alloc
-          const result=newAlcHrs>this.projectInfo.AllocatedHours;  
+          const result=newAlcHrs>this.projectInfo.AllocatedHours;
           this.isExceededTotalAllocatedHr=result;
-          return  result;     
+          return  result;
    }
-   else 
+   else
       return false;
 }
 
@@ -1884,7 +1885,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
     ///////////////////////////////////////// Action Edit start /////////////////////////////
 
 
-    Action_details_edit() { 
+    Action_details_edit() {
       document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
       document.getElementById("Action_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
       document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -1900,10 +1901,10 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
       document.getElementById("project-creation-page").classList.remove("position-fixed");
       document.getElementById("rightbar-overlay").style.display = "none";
-      
+
       this.notProvided=false;   // back to initial state.
     }
-  
+
     bindActionDetailsIntoForm() {
 
       // this.OGownerid = this.projectInfo['OwnerEmpNo'];
@@ -1911,16 +1912,16 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       // this.OGselectedcategoryid = this.projectInfo['Reportid'];
       // this.OGselectedclientid = this.projectInfo['ClientNo'];
       // this.OGSubmission_Nameid = this.projectInfo['SubmissionId'];
-      this.OGProjectTypeid = this.projectInfo['Project_Block'];                    // Prj type no.     
+      this.OGProjectTypeid = this.projectInfo['Project_Block'];                    // Prj type no.
       // this.OGProjectType = this.projectInfo.Project_Type;
       this.selectedOwner = this.PrjActionsInfo[this.currentActionView].Owner;      // action owner name.
       this.OGowner = this.PrjActionsInfo[this.currentActionView].Project_Owner;    // action owner no.
       this.selectedOwnResp = this.PrjActionsInfo[this.currentActionView].Responsible;   // action resp name.
       this.OGresponsible = this.PrjActionsInfo[this.currentActionView].Team_Res;        // action resp no.
-      
+
       this.selectedcategory = this.Category_List.find(ctg=>ctg.ReportType.trim()===this.PrjActionsInfo[this.currentActionView].Category.trim()).ReportID; // category no.
       // this.OGcategory = this.projectInfo.Category;
-      this.selectedclient = this.PrjActionsInfo[this.currentActionView].ClientNo;     // client no. 
+      this.selectedclient = this.PrjActionsInfo[this.currentActionView].ClientNo;     // client no.
       // this.OGclient = this.projectInfo.Client
       // this.Submission_Name = this.projectInfo.SubmissionName
       // this.OGSubmission = this.projectInfo.SubmissionName
@@ -1931,13 +1932,13 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       this.Allocated = this.PrjActionsInfo[this.currentActionView].AllocatedHours;    // action alloc hrs.
       this.End_Date = this.PrjActionsInfo[this.currentActionView].EndDate;          // action end date.
       this.ActionDuration=this.PrjActionsInfo[this.currentActionView].Duration;     // action duration.
-  
+
   }
 
 
   alterAction(){
 debugger
-        // check all mandatory field are provided.    
+        // check all mandatory field are provided.
         if(!(this.ProjectName&&this.ProjectDescription&&
           this.OGowner&&this.OGresponsible&&
           this.selectedcategory&&this.selectedclient&&
@@ -1949,9 +1950,9 @@ debugger
         // check all mandatory field are provided.
 
 
-      const datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");   
-      const datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");       
-      let jsonobj:any={ 
+      const datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
+      const datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
+      let jsonobj:any={
           Project_Type: this.OGProjectTypeid,             // prj type no.
           Project_Name: this.ProjectName,                 //new action name
           Project_Description: this.ProjectDescription,   //new action description
@@ -1967,10 +1968,10 @@ debugger
       jsonobj = JSON.stringify(jsonobj);
       const dateOne = new Date(this.projectInfo.EndDate);   // prj end date.
       const dateTwo = new Date(this.End_Date);             // new action end date.
-      
+
       this.approvalObj.Emp_no = this.Current_user_ID;  // emp no.
       this.approvalObj.Project_Code = this.PrjActionsInfo[this.currentActionView].Project_Code;  // action code.
-      this.approvalObj.json = jsonobj;            // action details 
+      this.approvalObj.json = jsonobj;            // action details
       this.approvalObj.Remarks = this._remarks?this._remarks:'';   // remark provided.
 
 
@@ -2050,7 +2051,7 @@ debugger
   }
 
 
-  
+
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
