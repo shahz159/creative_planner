@@ -981,7 +981,7 @@
                 <div class="">
                     <div class="">
                         <span class="date-info"> Created On</span>
-                        <div class="date-val"><span> {{creation_date|date:'EEE, MMMM d'}}</span></div>
+                        <div class="date-val" *ngIf="!loading"><span> {{creation_date|date:'EEE, MMMM d'}}</span></div>
                     </div>
                 </div>
 
@@ -1188,11 +1188,7 @@
             
 
 
-               <div class=" d-flex align-items-center  justify-content-center "*ngIf="loading" style="height:100vh">
-                  <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
-                 <span class="visually-hidden"></span>
-                 </div>
-              </div>
+               
 
 
     <!-- <div class="d-flex justify-content-center loading" >
@@ -1202,6 +1198,11 @@
       </div> -->
 
             <div class="card-body scrolly popup-ht-70vh" *ngIf="Schedule_type1=='Event'">
+                <div class=" d-flex align-items-center  justify-content-center " *ngIf="loading" style="height:65vh">
+                    <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
+                   <span class="visually-hidden"></span>
+                   </div>
+                </div>
                 <div class="" *ngFor="let item of EventScheduledjson">
                     <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
