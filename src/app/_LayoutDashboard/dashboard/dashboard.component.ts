@@ -3451,7 +3451,8 @@ console.log("EndTimearr:",this.EndTimearr);
   loading: boolean = false;
 
   GetClickEventJSON_Calender(arg) { 
-   this.loading = true;
+    this.EventScheduledjson=[];
+    this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
