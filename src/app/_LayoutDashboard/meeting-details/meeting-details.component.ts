@@ -52,7 +52,7 @@ export class MeetingDetailsComponent implements OnInit {
     minWidth: '0',
     placeholder: 'Enter text here...',
     translate: 'no',
-    defaultParagraphSeparator: 'p',
+    defaultParagraphSeparator: '',
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
@@ -98,6 +98,8 @@ export class MeetingDetailsComponent implements OnInit {
         tag: 'h1',
       },
     ],
+      // Add sanitizeHtml option and set it to false
+      sanitize: false
   };
   private refreshSubscription: Subscription;
   constructor(
@@ -530,7 +532,16 @@ meeting_details(){
     this.hours = Math.floor(duration.asHours());
     this.minutes = duration.minutes();
     this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
-   })
+   });
+
+   if (this.Meetingstatuscom == "Completed") {
+    this.isCheckboxDisabled = true;
+  }
+  else {
+    this.interval = setInterval(() => {
+      this.GetAttendeesnotes();
+    }, 2500);
+  }
 }
 
  getInitials(name) {
@@ -1696,7 +1707,8 @@ GetNotedata() {
 
 addBulletPointsOnEnter(event: any) {
   if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
-
+      // Replace newline characters with <br> tags
+      this.Notes_Type = this.Notes_Type.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1707,7 +1719,9 @@ addBulletPointsOnEnter(event: any) {
       // console.log(this._calenderDto,' ||||||||||||||||||||');
      this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
-          this.GetNotedata()
+          this.GetNotedata();
+          // this.GetAttendeesnotes();
+          // this.GetMeetingnotes_data();
         // window.close();
       });
       // this.Notes_Type=' '
@@ -2186,6 +2200,7 @@ GetAttendeesnotes(){
 
     // console.log(this.Employeeslist,'Meeting_notes_lists2');
   });
+  this.meeting_details();
 }
 
     
