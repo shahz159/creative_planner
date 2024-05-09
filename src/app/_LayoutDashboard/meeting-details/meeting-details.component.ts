@@ -2200,7 +2200,7 @@ GetAttendeesnotes(){
 
     // console.log(this.Employeeslist,'Meeting_notes_lists2');
   });
-  this.meeting_details();
+  // this.meeting_details();
 }
 
     
