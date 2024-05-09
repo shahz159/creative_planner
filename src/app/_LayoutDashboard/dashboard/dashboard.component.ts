@@ -3670,6 +3670,9 @@ console.log("EndTimearr:",this.EndTimearr);
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+        this.creation_date = this.EventScheduledjson[0].Created_date;
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {

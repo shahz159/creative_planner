@@ -1066,11 +1066,9 @@ ul.attendees-note-userlist {
 } */
 
 .attendees-note-user {
-
     border-radius: 5px;
     padding: 5px 0px;
-    margin-bottom: 10px;
-
+    margin-bottom: -14px;
 }
 
 

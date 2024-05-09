@@ -1,3 +1,8 @@
+
+
+<ng-container *ngIf="userFound!==undefined || meetingAdmin!==undefined;else pleasewait">
+
+<ng-container *ngIf="userFound===true || meetingAdmin===true;else accessdenied">
 <div class="kt-grid kt-grid--hor kt-grid--root">
     <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 p-3 "
         id="meetingdetails">
@@ -123,7 +128,7 @@
                                                 <div class="kt-metric-sub-info">
                                                     <div class="kt-sub-label">{{User_Scheduledjson.length}} Invitees
                                                     </div>
-                                                    <div class="kt-sub-name">Participants</div>
+                                                    <div class="kt-sub-name">Attendees</div>
                                                 </div>
                                                 <div class="kt-metric-sub-info">
                                                     <div class="kt-sub-label" *ngIf="item.Location" title="{{item.Location}}">
@@ -1552,11 +1557,10 @@
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
-                                                <!-- <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                    width="14px" height="16px" class="black-white"> -->
+                                               <span _ngcontent-trd-c395="" aria-hidden="true" class="side-icns"><svg _ngcontent-trd-c395="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27" class="svg-icn"><g _ngcontent-trd-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-trd-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-trd-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-trd-c395="" d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" fill="#292D32"></path></g></svg></span>
                                             </span>
                                             <span class="label-name">
-                                               Assign Task/Project
+                                               Assign Project
                                             </span>
                                         </div>
                                     </div>
@@ -1574,7 +1578,7 @@
                                             </div>
                                         </ng-container>
                                         <ng-container  *ngIf="ActionedAssigned_Josn&&ActionedAssigned_Josn.length==0">
-                                            <p>No Assign Task/Project link in this meeting</p>
+                                            <p>No Assign Project link in this meeting</p>
                                         </ng-container>
                                         </div>
                                     </div>
@@ -1831,13 +1835,13 @@
                                  <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
-                                        <div class="task-header">
+                                        <div class="task-header"  *ngIf="Meetingstatuscom!='Completed'">
                                             <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
                                             <h1 class="task-header-title">Assign Task </h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                                            <ng-container > 
                                             <div class="d-flex">
                                             <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
@@ -2310,11 +2314,11 @@
             <div class="todo-list ">
               
                 <div class="task-item" *ngFor="let data of _CompletedList">                                  
-                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                    <ng-container  >
                     <input type="radio" class="subtask-radio mx-4"
                     (click)="On_Uncheck(data.Assign_Id)" checked>
                 </ng-container>
-                <label class="task-name">{{data.Task_Name}}</label> 
+                <label class="task-name"><s>{{data.Task_Name}}</s></label> 
                 <div class="mt-2">
                     <span
                         class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
@@ -3845,7 +3849,7 @@
                             </div>
                         </a>
                     </h2>
-                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;"
+                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;let i = index"
                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                         <div class="accordion-body">
                             <ul class="attendees-note-userlist">
@@ -3858,7 +3862,7 @@
                                         [attr.data-target]="'#attendes_Name_' + Agenda.AgendaId" 
                                         [attr.data-target]="'#attendes_Name_' + Agenda.AgendaId">
                                             <div class="head-content">
-                                                <span class="accordion-heading">{{Agenda.Agenda_name}}</span>
+                                                <span class="accordion-heading">  Agenda {{i+1}} :- {{Agenda.Agenda_name}}</span>
                                             </div>
                                             <div>
                                                 <span class="accordion-icon">
@@ -5288,7 +5292,7 @@
                           <div class="main-s"> <span class="kt-dt-cnt-view">
                             {{Guestcount}}/{{totalguest}}
                         </span>
-                              Participants</div>
+                        Attendees</div>
                       </div>
                   </div>
               </div>
@@ -5448,24 +5452,99 @@
     </div>
 </div>
 
+</ng-container>
+</ng-container>
 
 
 
 
+ <!--  Access denied Start -->
+ <ng-template #pleasewait>
+<div class=" d-flex align-items-center  justify-content-center " style="height:65vh">
+    <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
+   <span class="visually-hidden"></span>
+   </div>
+</div>
+</ng-template>
+ <!--  Access denied End -->
 
 
 
 
+ <!--  Access denied Start -->
+<ng-template #accessdenied>
+    <div class="d-flex-cen flex-1 ng-star-inserted access-denied-header " >
+        <div class="kt-inbox__info">
+            <div class="kt-inbox__sender">
+                <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;
+            font-weight:bold; font-family:Lucida Sans Unicode">
+            <!-- {{getShorterName(projectInfo.Owner)}} -->
+        </span>
+            </div>
+        </div>
+        <div class="kt-inbox__details d-flex-center">
+            <div>
+                <div class="kt-inbox__message"><span class="kt-inbox__subject    fs-5">
+                       
+                    <!-- {{projectInfo&&projectInfo.Project_Name}}  -->
+                </span></div>
+                <div class="kt-inbox__labels">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex align-items-md-center flex-column">
 
 
+            <div class="text-center acc-section">
+                <h1 class="text-primary main_acc">Access denied 503 !</h1>
+                <h5 class="acc-desc  user-not-found-msg  hide-content">
+                    Unfortunately, we did not find you in this Meeting.
+                </h5>
+                <div  class="mt-4"><button
+                    class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request Access</button>
+                   </div>
+
+                <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
+                  be added. Happy Streaming!</h5>
+
+                </div>
+                <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
+
+                <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
+                <div class="col-lg-7 m-auto">
+                <div class="kt-card-cmt">
+                    <textarea [(ngModel)]="Usercomment"
+                        class="form-control form-control-solid kt-user-503-cmt" [ngClass]="{'error-border': !Usercomment&&formFieldsRequired}" rows="4" name="application"
+                        value="" placeholder="Add Your comment"></textarea>
+                        <div *ngIf="!Usercomment&&formFieldsRequired" style="color:red">Comment required!</div>
+
+                    <!-- <div class="text-end mb-1 mt-4">
+                        <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
+                            Clear</a>
+                        <button   class="btn btn-sm btn-info mr-2"
+                            data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
+                            Send Request
+                        </button>
+
+                    </div> -->
+                </div>
+                </div>
+                </div>
+            <div class="acc-img_sec">
+                <div class="acc-denied_img">
+                    <img class="img-fluid" src="./assets/images/AccessDenied503.png" alt="image">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</ng-template>
 
 
-
-
-
-
-
-
+ <!-- Access denied End -->
 
 
 
