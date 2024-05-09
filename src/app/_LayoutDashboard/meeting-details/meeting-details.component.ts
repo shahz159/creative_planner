@@ -536,15 +536,8 @@ meeting_details(){
     this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
    });
 
-debugger
-   if (this.Meetingstatuscom == "Completed") {
-    this.isCheckboxDisabled = true;
-  }
-  else {
-    this.interval = setInterval(() => {
-      this.GetAttendeesnotes();
-    }, 3000);
-  }
+
+  
 }
 
  getInitials(name) {
@@ -1962,7 +1955,17 @@ GetcompletedMeeting_data() {
     
       this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
       
-  
+
+
+      if (this.Meetingstatuscom == "Completed") {
+        this.isCheckboxDisabled = true;
+      }
+      else if(this.Meetingstatuscom != "Completed") {  
+        this.interval = setInterval(() => {
+          this.GetAttendeesnotes();
+        }, 3000);
+    
+      }
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
       // this.GetNotedata();
