@@ -2061,14 +2061,16 @@ GetAssigned_SubtaskProjects() {
   this._ObjCompletedProj.Mode = 'Todo';
   this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
   this._ObjCompletedProj.Agenda_id=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
+  debugger
   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
     (data) => {
    
  
       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
-
       this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+   
+      
       console.log(this._CompletedList,">>>>>>>>>>>>>>>>>>>>>>>>>>")
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
       this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
