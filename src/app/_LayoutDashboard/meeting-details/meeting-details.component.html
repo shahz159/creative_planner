@@ -1835,13 +1835,13 @@
                                  <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
-                                        <div class="task-header"  *ngIf="Meetingstatuscom!='Completed'">
+                                        <div class="task-header" *ngIf="Meetingstatuscom!='Completed'">
                                             <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
                                             <h1 class="task-header-title">Assign Task </h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <ng-container > 
+                                            <ng-container> 
                                             <div class="d-flex">
                                             <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
@@ -2251,18 +2251,19 @@
         
             <div class="todo-list ">
                 <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
-                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                    <ng-container>
+                        <!-- *ngIf="Meetingstatuscom!='Completed'" -->
                     <input class="task-status"  (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
                    </ng-container>
                      <label class="task-name">{{item.Task_Name}}</label>
-                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                    <ng-container >
                     <div class="task-actions" >                                                                        
                                 <mat-icon title="Assign Task/Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
                              
                                 <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
                     </div>
                 </ng-container>
-                    <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                    <ng-container > 
                     <button class="task-delete task-btns"
                         (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -2889,7 +2890,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+            <ng-container >
             <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                 <div class="matchip-drp-dwn">
                     <mat-form-field class="drp-dwn-field ">
@@ -2954,7 +2955,7 @@
                        
                         <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                         <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
-                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                        <ng-container >
                         <ng-container *ngIf="Isadmin==true">
                         <ng-container *ngFor="let item of EventScheduledjson">         
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -3019,7 +3020,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+            <ng-container  > 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -3108,7 +3109,7 @@
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> --> 
-                                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">  
+                                    <ng-container  >  
                                      <ng-container *ngIf="Isadmin==true">
                                      <ng-container *ngFor="let item of EventScheduledjson">         
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -3626,7 +3627,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+            <ng-container  > 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
 
 
@@ -3715,7 +3716,7 @@
                                     <a (click)="DeleteProject(item.stringval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> -->
-                                    <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                                    <ng-container > 
                                     <ng-container *ngIf="Isadmin==true">
                                     <ng-container *ngFor="let data of EventScheduledjson">         
                                         <ng-container *ngIf="data.Recurrence==='Do not repeat'">
@@ -3916,7 +3917,7 @@
                 </h4>
 
                 <div class="d-flex align-items-center">
-                    <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                    <ng-container> 
                     <button id="upload_btn" class="btn-silvr" (click)="upload_btn()">
                         <!-- *ngIf="Isadmin==true"   -->
                         <span>

@@ -1640,13 +1640,14 @@ cancelAgendaEdit(index:number){
 }
 
 Meetingnotes_time: any = [];
-
+loadagenda: boolean=false;
 
 completeAgenda(){
+
     this._calenderDto.Emp_No=this.Current_user_ID;
     this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
     this.CalenderService.NewUpdateCompleteAgenda(this._calenderDto).subscribe((data)=>{ 
-      this.meeting_details() 
+      this.meeting_details(); 
       this.notifyService.showSuccess("Agenda completed", "Success"); 
     })
 }
