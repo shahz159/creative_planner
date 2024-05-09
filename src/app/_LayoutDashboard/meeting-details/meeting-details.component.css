@@ -1980,7 +1980,7 @@ div#DemoList-table div.demo i {
 }
 
 .todo-list {
-    max-height: 20vh;
+    max-height: 26vh !important;
     overflow: auto;
 }
 
@@ -4090,7 +4090,14 @@ span.kt-dt-cnt-view {
     color: white;
 }
 
+.done{
+    background-color: #62B134 !important;
+    color: white
+}
 
+.Replied_border_left_true_success {
+    border-left: 5px solid #3CB371;
+}
 
 
 

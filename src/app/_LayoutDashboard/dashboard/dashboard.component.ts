@@ -343,11 +343,11 @@ export class DashboardComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '6rem',
+    minHeight: '5rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Description',
+    placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
@@ -766,12 +766,8 @@ export class DashboardComponent implements OnInit {
       });
 
   }
-
-
-
-
   Maybe_event(val) {
-   
+
     this.EventAction_type = val;
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.flagid = this.EventAction_type;
@@ -790,7 +786,8 @@ export class DashboardComponent implements OnInit {
         this.notifyService.showSuccess(this._Message, "May be");
         // this.calendar.updateTodaysDate();
         this.closeevearea();
-       
+
+
       });
 
 
@@ -2397,7 +2394,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.Search_text = this.Searchword;
     // alert(this.Searchword);
-
+   
     this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
       ((data) => { 
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
@@ -3459,8 +3456,7 @@ console.log("EndTimearr:",this.EndTimearr);
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-      this.loading = false; 
-
+        this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -3650,12 +3646,14 @@ console.log("EndTimearr:",this.EndTimearr);
   }
   getlistclick(id) {
     this.Schedule_ID = id;
+    this.EventScheduledjson=[];
+    this.loading = true;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+        this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
         // console.log(this.EventScheduledjson, "Testing");
@@ -4928,7 +4926,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
-    this.draftid = this.draftid;
+    this.draftid = 0;
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
@@ -5616,26 +5614,8 @@ onProjectSearch(inputtext:any){
 }
 
 
-project_filter() {
-  document.getElementById("project-filter").classList.add("show");
-  document.getElementById("filter-icon").classList.add("active");
-}
-close_project_filter() {
-  document.getElementById("project-filter").classList.remove("show");
-  document.getElementById("filter-icon").classList.remove("active");
-}
-date_menu(){
-  document.getElementById("date-menu").classList.add("show");
-}
-date_menu_close(){
-  document.getElementById("date-menu").classList.remove("show");
-}
-projectmodal(){
-  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-  document.getElementById("projectmodal").style.display = "block";
-}
-close_projectmodal(){
-  document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-  document.getElementById("projectmodal").style.display = "none";
-}
+
+
+
+
 }
