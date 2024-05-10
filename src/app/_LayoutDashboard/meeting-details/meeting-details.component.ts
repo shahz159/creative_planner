@@ -1951,21 +1951,28 @@ GetcompletedMeeting_data() {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
+      console.log(data,'CompletedMeeting_notes')
+
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-    
-      this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
-      
 
+      console.log(this.CompletedMeeting_notes,'CompletedMeeting_notes')
+      if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
+          this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
-      if (this.Meetingstatuscom == "Completed") {
-        this.isCheckboxDisabled = true;
-      }
-      else if(this.Meetingstatuscom != "Completed") {  
+    if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {  
         this.interval = setInterval(() => {
           this.GetAttendeesnotes();
         }, 3000);
     
+      } else if (this.Meetingstatuscom == "Completed") {
+        this.isCheckboxDisabled = true;
       }
+    }
+    else{
+      this.interval = setInterval(() => {
+        this.GetAttendeesnotes();
+      }, 3000);
+    }
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
       // this.GetNotedata();
