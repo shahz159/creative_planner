@@ -343,11 +343,11 @@ export class DashboardComponent implements OnInit {
     editable: true,
     spellcheck: true,
     height: 'auto',
-    minHeight: '6rem',
+    minHeight: '5rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Description',
+    placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
@@ -2394,7 +2394,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.Search_text = this.Searchword;
     // alert(this.Searchword);
-
+   
     this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
       ((data) => { 
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
@@ -3445,14 +3445,18 @@ console.log("EndTimearr:",this.EndTimearr);
   Meeting_status: boolean;
   AdminMeeting_Status: string;
   Isadmin: boolean;
+  loading: boolean = false;
 
   GetClickEventJSON_Calender(arg) { 
+    this.EventScheduledjson=[];
+    this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+        this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -3642,12 +3646,14 @@ console.log("EndTimearr:",this.EndTimearr);
   }
   getlistclick(id) {
     this.Schedule_ID = id;
+    this.EventScheduledjson=[];
+    this.loading = true;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+        this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
         // console.log(this.EventScheduledjson, "Testing");
@@ -3664,6 +3670,9 @@ console.log("EndTimearr:",this.EndTimearr);
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+        this.creation_date = this.EventScheduledjson[0].Created_date;
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
@@ -4920,7 +4929,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
-    this.draftid = this.draftid;
+    this.draftid = 0;
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
@@ -5608,26 +5617,8 @@ onProjectSearch(inputtext:any){
 }
 
 
-project_filter() {
-  document.getElementById("project-filter").classList.add("show");
-  document.getElementById("filter-icon").classList.add("active");
-}
-close_project_filter() {
-  document.getElementById("project-filter").classList.remove("show");
-  document.getElementById("filter-icon").classList.remove("active");
-}
-date_menu(){
-  document.getElementById("date-menu").classList.add("show");
-}
-date_menu_close(){
-  document.getElementById("date-menu").classList.remove("show");
-}
-projectmodal(){
-  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-  document.getElementById("projectmodal").style.display = "block";
-}
-close_projectmodal(){
-  document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-  document.getElementById("projectmodal").style.display = "none";
-}
+
+
+
+
 }

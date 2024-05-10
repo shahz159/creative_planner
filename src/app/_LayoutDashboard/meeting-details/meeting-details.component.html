@@ -1,3 +1,8 @@
+
+
+<ng-container *ngIf="userFound!==undefined || meetingAdmin!==undefined;else pleasewait">
+
+<ng-container *ngIf="userFound===true || meetingAdmin===true;else accessdenied">
 <div class="kt-grid kt-grid--hor kt-grid--root">
     <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 p-3 "
         id="meetingdetails">
@@ -36,17 +41,7 @@
                                             <span class="text-white">|</span>
                                             <span class="kt-meeting-status-time">12:45</span> -->
 
-                                            <!-- <ng-container *ngIf="!meetingInProgress && !meetingStopped">
-                                                <span class="kt-meeting-status-title" (click)="startMeeting()">
-                                                    Start Meeting
-                                                </span>
-                                            </ng-container>
-                                            <ng-container *ngIf="meetingInProgress">
-
-
-                                                <span (click)="leaveMeeting()">Leave Meeting</span>
-                                            </ng-container>
-                                             <span class="text-white">|</span> -->
+                                        
                
                                             <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
                                                 <span>{{startTime |date: 'h:mm'}}</span>
@@ -123,7 +118,7 @@
                                                 <div class="kt-metric-sub-info">
                                                     <div class="kt-sub-label">{{User_Scheduledjson.length}} Invitees
                                                     </div>
-                                                    <div class="kt-sub-name">Participants</div>
+                                                    <div class="kt-sub-name">Attendees</div>
                                                 </div>
                                                 <div class="kt-metric-sub-info">
                                                     <div class="kt-sub-label" *ngIf="item.Location" title="{{item.Location}}">
@@ -350,9 +345,10 @@
                                                                     <g id="Group 1000004425">
                                                                         <circle id="Ellipse 542" cx="8.8607"
                                                                             cy="9.32115" r="7.89" fill="white"
-                                                                            stroke="#FB6C59" />
+                                                                            stroke="#646c9a" />
                                                                         <circle id="Ellipse 548" cx="8.8605"
-                                                                            cy="9.32169" r="5.02432" fill="#FB6C59" />
+                                                                            cy="9.32169" r="5.02432" fill="#646c9a" />
+                                                                            <!-- #FB6C59 -->
                                                                     </g>
                                                                 </svg>
                                                             </div>
@@ -820,14 +816,14 @@
                                         </svg>
                                     </a> -->
 
-                                    <a class="kt-inbox__icon ac-activity" title="Activity Log">
+                                    <!-- <a class="kt-inbox__icon ac-activity" title="Activity Log">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1"
                                             stroke-width="1" class="iconify iconify--mdi">
                                             <path
                                                 d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z"
                                                 fill="currentColor"></path>
                                         </svg>
-                                    </a>
+                                    </a> -->
 
 
 
@@ -883,9 +879,20 @@
                                 <div>                                
                                     <div class="kt-project-leave"  *ngIf="Meetingstatuscom==Completed">                                        
                                         <ng-container *ngIf="Isadmin==true">
+
+
+                                            <ng-container *ngIf="!meetingInProgress && !meetingStopped">
+                                                <span class="kt-meeting-status-title" (click)="startMeeting()">
+                                                    Start Meeting
+                                                </span>
+                                            </ng-container>
+
+
+
+                                            <ng-container *ngIf="meetingInProgress">
                                             <span class="title" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
                                            </ng-container>
-
+                                        </ng-container>
                                            <!-- <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
                                             <span class="title" (click)="EndMeetingSweetAlertBox()">End Meeting</span>
                                            </ng-container> -->
@@ -896,6 +903,30 @@
                                        </ng-container>
         
                         
+
+
+
+
+
+                                   
+
+
+                                    <!-- <ng-container *ngIf="meetingInProgress">
+
+
+                                        <span (click)="leaveMeeting()">Leave Meeting</span>
+                                    </ng-container>
+                                     <span class="text-white">|</span> -->
+
+
+
+
+
+
+
+
+
+
                                         <span class="icon">
                                             <svg width="22px" height="22px" viewBox="0 0 24 24" id="_24x24_On_Light_Session-Leave" data-name="24x24/On Light/Session-Leave" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="view-box" width="24" height="24" fill="none"></rect> <path id="Shape" d="M2.95,17.5A2.853,2.853,0,0,1,0,14.75v-12A2.854,2.854,0,0,1,2.95,0h8.8a.75.75,0,0,1,0,1.5H2.95A1.362,1.362,0,0,0,1.5,2.75v12A1.363,1.363,0,0,0,2.95,16h8.8a.75.75,0,0,1,0,1.5Zm9.269-4.219a.751.751,0,0,1,0-1.061L14.939,9.5H5.75a.75.75,0,0,1,0-1.5h9.19L12.219,5.28A.75.75,0,1,1,13.28,4.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.751.751,0,0,1-1.061,0Z" transform="translate(3.25 3.25)" fill="currentColor"></path> </g></svg>
                                         </span>
@@ -912,7 +943,7 @@
                                 <div class="kt-project-name d-flex align-items-center gap-2" >
                                     <h4>{{item.Task_Name}}</h4>
 
-                                    <ng-container *ngIf="Meetingstatuscom==Completed">
+                                    <!-- <ng-container *ngIf="Meetingstatuscom==Completed">
                                     <div  class="PA_title"><span >Meeting</span>
                                     </div>
                                     <div class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
@@ -929,12 +960,13 @@
                                         </svg>
                                         <span class="lbl-hdn ">Edit</span>
                                     </div>
-                                </ng-container>
+                                </ng-container> -->
                                 </div>
                                 <div class="kt-project-option">
                                     <div class="options event">Event</div>
                                     <div class="options monthly">{{item.Recurrence}}</div>
-                                    <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
+                                    <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                                    <!-- <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
                                         <span class="title">Private Notes</span>
                                         <span class="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
@@ -953,7 +985,8 @@
                                                     fill="currentcolor" />
                                             </svg>
                                         </span>
-                                    </div>
+                                    </div> -->
+                                </ng-container>
                                     <!-- <div class="v-line"></div> -->
                                 </div>
                             </div>
@@ -1005,13 +1038,7 @@
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"
-                                                    viewBox="0 0 11 13" fill="none">
-                                                    <path
-                                                        d="M6.82886 0.651855H2.42886C2.13712 0.651855 1.85733 0.767748 1.65104 0.974038C1.44475 1.18033 1.32886 1.46012 1.32886 1.75186V10.5519C1.32886 10.8436 1.44475 11.1234 1.65104 11.3297C1.85733 11.536 2.13712 11.6519 2.42886 11.6519H9.02886C9.3206 11.6519 9.60038 11.536 9.80667 11.3297C10.013 11.1234 10.1289 10.8436 10.1289 10.5519V3.95186L6.82886 0.651855Z"
-                                                        stroke="#979797" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
+                                                <svg _ngcontent-aeh-c397="" stroke="#888888" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 16 17"><g _ngcontent-aeh-c397="" clip-path="url(#clip0_365_5615)"><path _ngcontent-aeh-c397="" d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="white" fill-opacity="0.65"></path><path _ngcontent-aeh-c397="" d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="white"></path><path _ngcontent-aeh-c397="" d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="white"></path><path _ngcontent-aeh-c397="" d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="white"></path><path _ngcontent-aeh-c397="" d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="white"></path><path _ngcontent-aeh-c397="" d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="white"></path><path _ngcontent-aeh-c397="" d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="white"></path><path _ngcontent-aeh-c397="" d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="white" fill-opacity="0.65"></path><path _ngcontent-aeh-c397="" d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="white"></path></g><defs _ngcontent-aeh-c397=""><clipPath _ngcontent-aeh-c397="" id="clip0_365_5615"><rect _ngcontent-aeh-c397="" width="15" height="16.1538" fill="white" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                                             </span>
                                             <span class="label-name">
                                                 Agenda 
@@ -1555,11 +1582,10 @@
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
-                                                <!-- <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                    width="14px" height="16px" class="black-white"> -->
+                                               <span _ngcontent-trd-c395="" aria-hidden="true" class="side-icns"><svg _ngcontent-trd-c395="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" width="27" height="27" class="svg-icn"><g _ngcontent-trd-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-trd-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-trd-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-trd-c395="" d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" fill="#292D32"></path><path _ngcontent-trd-c395="" d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" fill="#292D32"></path></g></svg></span>
                                             </span>
-                                            <span class="label-name">
-                                               Assign Task/Project
+                                            <span class="label-name ">
+                                               Assign Project
                                             </span>
                                         </div>
                                     </div>
@@ -1577,17 +1603,16 @@
                                             </div>
                                         </ng-container>
                                         <ng-container  *ngIf="ActionedAssigned_Josn&&ActionedAssigned_Josn.length==0">
-                                            <p>No Assign Task/Project link in this meeting</p>
+                                            <p>No Assign Project link in this meeting</p>
                                         </ng-container>
                                         </div>
                                     </div>
                                 </div> 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
-                                                <!-- <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                    width="14px" height="16px" class="black-white"> -->
+                                              
                                             </span>
                                             <span class="label-name">
                                                Action to project
@@ -1598,11 +1623,7 @@
                                         <div class="details-form-control">
                                             <ng-container *ngIf="ActionedSubtask_Json&&ActionedSubtask_Json.length>0">
                                             <div class="project"  *ngFor="let item of ActionedSubtask_Json;let i = index">
-                                                <!-- <span class="icon">
-                                                    <img width="16"
-                                                        src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                        height="16">
-                                                </span> -->
+                                              
                                                
                                                 <span class="title">{{i+1}}. {{item.Task_Name}}</span>
                                             </div>
@@ -1612,7 +1633,7 @@
                                         </ng-container>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>  -->
                                 <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
@@ -1839,13 +1860,13 @@
                                  <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
-                                        <div class="task-header">
+                                        <div class="task-header" *ngIf="Meetingstatuscom!='Completed'">
                                             <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
                                             <h1 class="task-header-title">Assign Task </h1>
                                             <div class="task-tools">
                                                 <div class="task-count"></div>
                                             </div>
-                                            <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                                            <ng-container> 
                                             <div class="d-flex">
                                             <form class="task-form todo-main">
                                                 <input class="task-input" id="todo-input" name="text"
@@ -1879,7 +1900,7 @@
                                     </div>
                                 </div>
                                  -->
-                                <div class="todo-list">
+                                <div class="todo-list d-none">
                                     <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <input class="task-status"  (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
@@ -2051,7 +2072,7 @@
 
 
                  
-       <!--      Assign Task/Project Start      -->
+<!--    Assign Task/Project Start      -->
  
                     <div class="accordion accordion-attendes-notes " *ngIf="ActionedAssigned_Josn.length>0" id="Assign_List">
                         <div class="accordion-item">
@@ -2223,6 +2244,126 @@
       <!--      Assign Task/Project End      -->
 
 
+
+
+
+<!--    Unassign Task      -->
+ 
+<div class="accordion accordion-attendes-notes" *ngIf="_TodoList.length>0" id="UssignTask_List">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="AssignOne">
+            <a class="accordion-button" type="button" data-toggle="collapse"
+                data-target="#UssignTask_notes" aria-expanded="false"
+                aria-controls="UssignTask_notes">
+                <div class="head-content">
+                    <span class="accordion-heading" >Unassigned Tasks</span>
+                   
+                </div>
+                <div>
+                    <span class="accordion-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                            viewBox="0 0 15 9" fill="none">
+                            <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </h2>
+        <div id="UssignTask_notes" class="accordion-collapse collapse  show"
+            aria-labelledby="AssignOne" data-parent="#UssignTask_List">
+        
+            <div class="todo-list ">
+                <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
+                    <ng-container>
+                        <!-- *ngIf="Meetingstatuscom!='Completed'" -->
+                    <input class="task-status"  (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
+                   </ng-container>
+                     <label class="task-name">{{item.Task_Name}}</label>
+                    <ng-container >
+                    <div class="task-actions" >                                                                        
+                                <mat-icon title="Assign Task/Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+                             
+                                <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
+                    </div>
+                </ng-container>
+                    <ng-container > 
+                    <button class="task-delete task-btns"
+                        (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                            role="img" font-size="1.5rem" width="1em" height="1em"
+                            viewBox="0 0 24 24" class="iconify iconify--mdi">
+                            <path fill="currentColor"
+                                d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                            </path>
+                        </svg>
+                    </button>
+                </ng-container>              
+                </div>          
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--   Unassign Task     -->
+
+
+
+<!--   Completed Task      -->
+ 
+<div class="accordion accordion-attendes-notes" *ngIf="_CompletedList.length>0" id="AssignTask_List">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="AssignOne">
+            <a class="accordion-button" type="button" data-toggle="collapse"
+                data-target="#AssignTask_notes" aria-expanded="false"
+                aria-controls="AssignTask_notes">
+                <div class="head-content">
+                    <span class="accordion-heading" >Completed Tasks</span>
+                   
+                </div>
+                <div>
+                    <span class="accordion-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                            viewBox="0 0 15 9" fill="none">
+                            <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </h2>
+        <div id="AssignTask_notes" class="accordion-collapse collapse"
+            aria-labelledby="AssignOne" data-parent="#AssignTask_List">
+            <div class="todo-list ">
+              
+                <div class="task-item" *ngFor="let data of _CompletedList">                                  
+                    <ng-container  >
+                    <input type="radio" class="subtask-radio mx-4"
+                    (click)="On_Uncheck(data.Assign_Id)" checked>
+                </ng-container>
+                <label class="task-name"><s>{{data.Task_Name}}</s></label> 
+                <div class="mt-2">
+                    <span
+                        class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
+                        <div>
+                            {{data.Modified_DT|date:'d MMM, y'}}
+                        </div>
+                    </span>
+                    <span
+                        class="kt-inbox__label kt-badge kt-badge done kt-badge-light-bold kt-badge--inline">
+                        {{data.ToDo_Status}}
+                    </span>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--   Completed Task     -->
 
 
       <!--      Action To Projects Start      -->
@@ -2774,7 +2915,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+            <ng-container >
             <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                 <div class="matchip-drp-dwn">
                     <mat-form-field class="drp-dwn-field ">
@@ -2839,7 +2980,7 @@
                        
                         <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                         <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
-                        <ng-container  *ngIf="Meetingstatuscom!='Completed'">
+                        <ng-container >
                         <ng-container *ngIf="Isadmin==true">
                         <ng-container *ngFor="let item of EventScheduledjson">         
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -2904,7 +3045,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            
+            <ng-container  > 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -2957,7 +3098,7 @@
              </ng-container>
        
             </div>
-           
+        </ng-container>
         </ul>
     
         <div class="kt-inbox mt-0 scrollbar1">
@@ -2993,15 +3134,16 @@
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> --> 
-                                   
+                                    <ng-container  >  
                                      <ng-container *ngIf="Isadmin==true">
                                      <ng-container *ngFor="let item of EventScheduledjson">         
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                                        
-                                        <i class="fas fa-edit invisible"></i>
-                                        <a (click)="DeletePortfolios(data.numberval)">
-                                        <i class="fas fa-trash-alt"></i>
+                                            
+                                            <i class="fas fa-edit invisible"></i>
+                                         <a (click)="DeletePortfolios(data.numberval)">
+                                            <i class="fas fa-trash-alt"></i>                                  
                                         </a>
+                                    
                                      </ng-container>                         
                                      <ng-container *ngIf="item.Recurrence!=='Do not repeat'">              
             
@@ -3013,7 +3155,7 @@
                                        </ng-container>                 
                                      </ng-container> 
                                       </ng-container> 
-                                   
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>
@@ -3510,6 +3652,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
+            <ng-container  > 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
 
 
@@ -3562,6 +3705,7 @@
                     </ng-container>           
                     </ng-container>
             </div>
+        </ng-container>
         </ul>
 
         <div class="kt-inbox mt-0 scrollbar1">
@@ -3597,6 +3741,7 @@
                                     <a (click)="DeleteProject(item.stringval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> -->
+                                    <ng-container > 
                                     <ng-container *ngIf="Isadmin==true">
                                     <ng-container *ngFor="let data of EventScheduledjson">         
                                         <ng-container *ngIf="data.Recurrence==='Do not repeat'">
@@ -3616,6 +3761,7 @@
                                        </ng-container>                 
                                      </ng-container>
                                     </ng-container>
+                                </ng-container>
                                 </div>
                             </div>                      
                         </div>
@@ -3729,7 +3875,7 @@
                             </div>
                         </a>
                     </h2>
-                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;"
+                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;let i = index"
                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                         <div class="accordion-body">
                             <ul class="attendees-note-userlist">
@@ -3742,7 +3888,7 @@
                                         [attr.data-target]="'#attendes_Name_' + Agenda.AgendaId" 
                                         [attr.data-target]="'#attendes_Name_' + Agenda.AgendaId">
                                             <div class="head-content">
-                                                <span class="accordion-heading">{{Agenda.Agenda_name}}</span>
+                                                <span class="accordion-heading">  Agenda {{i+1}} :- {{Agenda.Agenda_name}}</span>
                                             </div>
                                             <div>
                                                 <span class="accordion-icon">
@@ -3796,13 +3942,15 @@
                 </h4>
 
                 <div class="d-flex align-items-center">
-                    <button  *ngIf="Isadmin==true" id="upload_btn" class="btn-silvr" (click)="upload_btn()">
+                    <ng-container> 
+                    <button id="upload_btn" class="btn-silvr" (click)="upload_btn()">
+                        <!-- *ngIf="Isadmin==true"   -->
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
                             </svg>
                         </span> Quick Upload </button>
-
+                    </ng-container>
                     <button id="attach_btn" class="btn-silvr" (click)="attach_btn()" style="display: none;">
                         <span class="atch_back">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -5170,7 +5318,7 @@
                           <div class="main-s"> <span class="kt-dt-cnt-view">
                             {{Guestcount}}/{{totalguest}}
                         </span>
-                              Participants</div>
+                        Attendees</div>
                       </div>
                   </div>
               </div>
@@ -5279,7 +5427,7 @@
                           <div class="main-s pro-nm"><span class="kt-dt-cnt-view">
                             {{assigncount}}/{{todocount}}
                         </span>
-                              Assign Task</div>
+                              Assign Project</div>
                       </div>
                   </div>
               </div>
@@ -5329,6 +5477,125 @@
         </div>
     </div>
 </div>
+
+</ng-container>
+</ng-container>
+
+
+
+
+ <!--  Access denied Start -->
+ <ng-template #pleasewait>
+<div class=" d-flex align-items-center  justify-content-center " style="height:65vh">
+    <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
+   <span class="visually-hidden"></span>
+   </div>
+</div>
+</ng-template>
+ <!--  Access denied End -->
+
+
+
+
+ <!--  Access denied Start -->
+<ng-template #accessdenied>
+    <div class="d-flex-cen flex-1 ng-star-inserted access-denied-header " >
+        <div class="kt-inbox__info">
+            <div class="kt-inbox__sender">
+                <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;
+            font-weight:bold; font-family:Lucida Sans Unicode">
+            <!-- {{getShorterName(projectInfo.Owner)}} -->
+        </span>
+            </div>
+        </div>
+        <div class="kt-inbox__details d-flex-center">
+            <div>
+                <div class="kt-inbox__message"><span class="kt-inbox__subject    fs-5">
+                       
+                    <!-- {{projectInfo&&projectInfo.Project_Name}}  -->
+                </span></div>
+                <div class="kt-inbox__labels">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex align-items-md-center flex-column">
+
+
+            <div class="text-center acc-section">
+                <h1 class="text-primary main_acc">Access denied 503 !</h1>
+                <h5 class="acc-desc  user-not-found-msg  hide-content">
+                    Unfortunately, we did not find you in this Meeting.
+                </h5>
+                <div  class="mt-4"><button
+                    class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request Access</button>
+                   </div>
+
+                <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
+                  be added. Happy Streaming!</h5>
+
+                </div>
+                <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
+
+                <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
+                <div class="col-lg-7 m-auto">
+                <div class="kt-card-cmt">
+                    <textarea [(ngModel)]="Usercomment"
+                        class="form-control form-control-solid kt-user-503-cmt" [ngClass]="{'error-border': !Usercomment&&formFieldsRequired}" rows="4" name="application"
+                        value="" placeholder="Add Your comment"></textarea>
+                        <div *ngIf="!Usercomment&&formFieldsRequired" style="color:red">Comment required!</div>
+
+                    <!-- <div class="text-end mb-1 mt-4">
+                        <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
+                            Clear</a>
+                        <button   class="btn btn-sm btn-info mr-2"
+                            data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
+                            Send Request
+                        </button>
+
+                    </div> -->
+                </div>
+                </div>
+                </div>
+            <div class="acc-img_sec">
+                <div class="acc-denied_img">
+                    <img class="img-fluid" src="./assets/images/AccessDenied503.png" alt="image">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</ng-template>
+
+
+ <!-- Access denied End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
