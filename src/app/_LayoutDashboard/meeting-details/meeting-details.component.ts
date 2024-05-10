@@ -424,7 +424,7 @@ meeting_details(){
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
-   console.log('meeting_details--->',this.EventScheduledjson)
+     console.log('meeting_details--->',this.EventScheduledjson)
     if(this.EmpNo==this.Current_user_ID){
       this.meetingAdmin =true
     }else{
@@ -1714,7 +1714,7 @@ addBulletPointsOnEnter(event: any) {
       this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
       this._calenderDto.Status_type = "Left";
      
-      // console.log(this._calenderDto,' ||||||||||||||||||||');
+      console.log(this._calenderDto,'Private notes');
      this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
           this.GetNotedata();
@@ -2098,10 +2098,10 @@ GetAssigned_SubtaskProjects() {
       this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
    
       
-      // console.log(this._CompletedList,">>>>>>>>>>>>>>>>>>>>>>>>>>")
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
       this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-      
+       console.log(this.ActionedAssigned_Josn,"ActionedAssigned_Josn")
+
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
       // console.log("the sss", this._TodoList)
