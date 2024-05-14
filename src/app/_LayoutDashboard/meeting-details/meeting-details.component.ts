@@ -314,6 +314,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this.GetMeetingnotes_data();
   }
   close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
@@ -414,8 +415,8 @@ export class MeetingDetailsComponent implements OnInit {
   userFound: boolean|undefined;
   EmpNo:any;
   meetingAdmin: boolean|undefined;
-
-
+  Actiontask:any
+  AssignedTask:any
 
 meeting_details(){ 
 
@@ -424,7 +425,9 @@ meeting_details(){
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
-   console.log('meeting_details--->',this.EventScheduledjson)
+    this.Actiontask=this.EventScheduledjson[0].Actiontasks;
+    this.AssignedTask=this.EventScheduledjson[0].AssignedTasks;
+     console.log('meeting_details--->',this.EventScheduledjson)
     if(this.EmpNo==this.Current_user_ID){
       this.meetingAdmin =true
     }else{
@@ -547,9 +550,11 @@ meeting_details(){
 }
 
   startMeeting() {
+
     this.play=true;
     this.startTime = new Date();
     this.meetingInProgress = true;
+    this.GetcompletedMeeting_data();
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTime.getTime();
       if (this.elapsedTime >= this.duration) {
@@ -583,6 +588,8 @@ meeting_details(){
     clearInterval(this.timer);
     this.meetingInProgress = false;
     this.meetingStopped = true;
+
+   
   }
 
   leaveMeeting() {
@@ -1457,6 +1464,23 @@ Slide_meeting() {
  this.GetPreviousdate_meetingdata()
 }
 
+
+Slide_AssignTask() {
+  // document.getElementById("meetingdetails").classList.add("position-fixed");
+  document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+  document.getElementById("Assign_Project").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  this.meeting_details();
+}
+
+closeAssign() {
+  document.getElementById("Assign_Project").classList.remove("kt-quick-panel--on");
+  // document.getElementById("meetingdetails").classList.remove("position-fixed");
+  document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+  document.getElementById("rightbar-overlay").style.display = "none";
+}
+
+
 closeInfo() {
   document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
   // document.getElementById("meetingdetails").classList.remove("position-fixed");
@@ -1714,12 +1738,13 @@ addBulletPointsOnEnter(event: any) {
       this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
       this._calenderDto.Status_type = "Left";
      
-      // console.log(this._calenderDto,' ||||||||||||||||||||');
+      console.log(this._calenderDto,'Private notes');
      this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
+        console.log(data,'Private notes');
           this.GetNotedata();
           // this.GetAttendeesnotes();
-          // this.GetMeetingnotes_data();
+          // this.GetMeetingnotes_data(); 
         // window.close();
       });
       // this.Notes_Type=' '
@@ -1733,7 +1758,7 @@ GetMeetingnotes_data() {
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
-  this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
 
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
     (data => {
@@ -1946,6 +1971,8 @@ Meetingstatuscom: string;
 // unsubscribe: boolean = false;
 
 GetcompletedMeeting_data() {
+
+  
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1955,20 +1982,24 @@ GetcompletedMeeting_data() {
 
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
 
-      console.log(this.CompletedMeeting_notes,'CompletedMeeting_notes')
+    
+
+
+
+    
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
-    if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {  
-        this.interval = setInterval(() => {
-          this.GetAttendeesnotes();
-        }, 3000);
-    
-      } else if (this.Meetingstatuscom == "Completed") {
-        this.isCheckboxDisabled = true;
-      }
-    }
-    else{
+          // if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {  
+          //     this.interval = setInterval(() => {
+          //       this.GetAttendeesnotes();
+          //     }, 3000);
+          //   }
+          if (this.Meetingstatuscom == "Completed") {
+            this.isCheckboxDisabled = true;
+          }
+    // } else if(this.meetingInProgress){
+    } else{
       this.interval = setInterval(() => {
         this.GetAttendeesnotes();
       }, 3000);
@@ -2088,7 +2119,7 @@ GetAssigned_SubtaskProjects() {
   this._ObjCompletedProj.Mode = 'Todo';
   this._ObjCompletedProj.Schedule_ID = this.Scheduleid;
   this._ObjCompletedProj.Agenda_id=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
-  debugger
+
   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
     (data) => {
    
@@ -2098,10 +2129,10 @@ GetAssigned_SubtaskProjects() {
       this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
    
       
-      // console.log(this._CompletedList,">>>>>>>>>>>>>>>>>>>>>>>>>>")
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
       this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-      
+       console.log(this.ActionedSubtask_Json,"ActionedAssigned_Josn")
+
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
       // console.log("the sss", this._TodoList)
@@ -2195,7 +2226,7 @@ GetAttendeesnotes(){
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
   this._calenderDto.Emp_No=this.Current_user_ID
-  this._calenderDto.AgendaId=this.currentAgendaView===undefined?null:this.Agendas_List[this.currentAgendaView].AgendaId;
+  this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
   
@@ -3943,7 +3974,6 @@ closeModal() {
 
 
 Insert_meetingreport() {
-
   this.Action_item = []
 
   this._TodoList.forEach(element => {
