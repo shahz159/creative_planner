@@ -849,6 +849,10 @@ a.ordr-a {
     transition: all 0.3s;
     stroke: #001eff;
 }
+.kt-header__topbar-item:hover svg {
+    transition: all 0.3s;
+    fill: #8a75e7;
+}
 .modal.fade.show {
     display: block;
 }
@@ -859,46 +863,89 @@ a.ordr-a {
 .feature-animate-active{
     transform: translate(0%, 0%)!important;
 }
-
-/*test*/
-  
-  
-  
-/* .whatsnewanim{
-    animation-name:anim1;
-    animation-duration: 0.4s;
-    animation-iteration-count: 1;   
-    animation-fill-mode: forwards;
-    animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
-    transform:  scaleX(0) skewY(0) skewX(0) scaleY(0) translateX(419%) translateY(-444%);
+.kt-header__topbar-item {
+    color: #707070;
 }
-
-
-
-@keyframes anim1{
-    0%{
-        transform:  scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(419%) translateY(-444%);
-    }
-    50%{
-        transform: scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(10%) translateY(-235%);
-    }
-    100%{
-        transform: scaleX(1) skewY(0) skewX(0) scaleY(1) translateX(0%) translateY(0%);
-    }
+.apply-leave .form-control{
+    border: 1px solid #b1b1b1;
+    color: #000000;
 }
-
-@keyframes anim2{
-    0%{
-        transform: scaleX(1) skewY(0) skewX(0) scaleY(1) translateX(0%) translateY(0%);
-    }
-    50%{
-        transform: scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(10%) translateY(-235%);
-    }
-    100%{
-        transform:  scaleX(0.1) skewY(0) skewX(0) scaleY(0.1) translateX(419%) translateY(-444%);
-    }
-} */
-
-
-
-/*test*/
+::ng-deep .apply-leave .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-light {
+    color: #a8a8a8;
+    border: 1px solid #b1b1b1;
+}
+::ng-deep .apply-leave .bootstrap-select>.dropdown-toggle.btn-light {
+    color: #000000;
+    border: 1px solid #b1b1b1;
+}
+.apply-leave .form-control[readonly] {
+    background-color: #ffffff;
+    width: 25%;
+    font-weight: 500;
+}
+.apply-heading h3 {
+    color: #000;
+}
+.apply-heading p {
+    color: #6e6e6e;
+    font-size: 14px;
+}
+.apply-heading .highlight {
+    color: #4377ff;
+}
+.apply-leave label {
+    color: #484848;
+    font-weight: 500;
+}
+.radioleavetype {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    padding-left: 6px;
+    margin-bottom: 1.5rem;
+}
+.radioleavetype label{
+    color: #000;
+}
+.radioleavetype .form-check-input:checked {
+    background-color: #4377ff;
+    border-color: #4377ff;
+}
+.leave-date {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+span.leave-date-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+::ng-deep .apply-leave .leave-date input.mat-input-element {
+    margin-top: 0;
+    padding: 0.65rem 1rem !important;
+    box-sizing: border-box !important;
+}
+::ng-deep .apply-leave .leave-date .mat-icon-button {
+    width: 40px !important;
+    height: 100% !important;
+    line-height: 1 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+::ng-deep .apply-leave .leave-date span.mat-button-wrapper {
+    background: #e1e2f8;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    border-radius: 4px;
+    color: #4f536b;
+}
+::ng-deep .apply-leave .leave-date span.mat-button-wrapper svg {
+    width: 22px;
+    height: 22px;
+}

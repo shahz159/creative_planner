@@ -2394,7 +2394,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.Search_text = this.Searchword;
     // alert(this.Searchword);
-
+   
     this.CalenderService.NewGetSearchResults(this._calenderDto).subscribe
       ((data) => { 
         this.Scheduledjson = JSON.parse(data['Scheduledsearchlist']);
@@ -2451,20 +2451,38 @@ export class DashboardComponent implements OnInit {
 
     if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
-      var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-      radio1.disabled = false;
-      radio1.checked = true;
+    //   Swal.fire({
+    //     title: 'Caution!',
+    //     text: 'This meeting will be moved to new scheduled date and the saved data will be lost. Do you want to continue?',
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Yes',
+    //     cancelButtonText: 'No'
+    //   }).then((response: any) => {
+    //     if (response.value) {
+         
 
-      var radio2 = document.getElementById('r2') as HTMLInputElement | null;
-      radio2.disabled = false;
-      radio2.checked = false;
+    //   // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    //   // radio3.disabled = false;
+    //   // radio3.checked = false;
+    //   // document.getElementById("div_thisevent").style.display = "none";
 
-      // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-      // radio3.disabled = false;
-      // radio3.checked = false;
-      // document.getElementById("div_thisevent").style.display = "none";
+    //   this._PopupConfirmedValue = 1;
+    //     } else if (response.dismiss === Swal.DismissReason.cancel) {
+    //       Swal.fire(
+    //         'Cancelled',
+    //         'Meeting not moved.',
+    //         'error'
+    //       )
+    //     }
+    //   });
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
 
-      this._PopupConfirmedValue = 1;
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+      
     }
     else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
       document.getElementById("div_thisevent").style.display = "block";
@@ -3445,14 +3463,18 @@ console.log("EndTimearr:",this.EndTimearr);
   Meeting_status: boolean;
   AdminMeeting_Status: string;
   Isadmin: boolean;
+  loading: boolean = false;
 
   GetClickEventJSON_Calender(arg) { 
+    this.EventScheduledjson=[];
+    this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+        this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -3642,12 +3664,14 @@ console.log("EndTimearr:",this.EndTimearr);
   }
   getlistclick(id) {
     this.Schedule_ID = id;
+    this.EventScheduledjson=[];
+    this.loading = true;
     $('.bg-ovr').addClass('d-block');
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+        this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
         // console.log(this.EventScheduledjson, "Testing");
@@ -3664,6 +3688,9 @@ console.log("EndTimearr:",this.EndTimearr);
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+        this.creation_date = this.EventScheduledjson[0].Created_date;
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
@@ -4920,7 +4947,7 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
-    this.draftid = this.draftid;
+    this.draftid = 0;
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;

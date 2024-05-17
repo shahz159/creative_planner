@@ -34,23 +34,41 @@
     align-items: center;
     gap: 6px;
     cursor: pointer;
+    transition: all 0.15s ease-in;
 }
 
 .kt-meeting-status.started {
     background: #D0EDFF;
     color: #1EA7FF;
 }
-
+.kt-meeting-status.started:hover {
+    background: #bbe2f9;
+}
 .kt-meeting-status.hold {
     background: #FFF6DF;
     color: #FFC01E;
 }
-
+.kt-meeting-status.hold:hover {
+    background: #fbefcf;
+}
 .kt-meeting-status.completed {
     background: #CAFFD9;
     color: #0B9B33;
 }
-
+.kt-meeting-status.play {
+    background: #CAFFD9;
+    color: #0B9B33;
+}
+.kt-meeting-status.play:hover {
+    background: #a0ffbb;
+}
+.kt-meeting-status.leave {
+    background: #ffe9e7;
+    color: #f44336;
+}
+.kt-meeting-status.leave:hover {
+    background: #fdd7d4;
+}
 .kt-meeting-status-time {
     font-size: 10px;
     font-weight: 700;
@@ -457,7 +475,8 @@
     font-size: 16px !important;
 }
 .kt-project-name{
-    width: 55%;
+    width: 50%;
+    margin: 0px;
 }
 .kt-project-name h4 {
     color: #000;
@@ -738,6 +757,7 @@ hr.dotted {
 .LinkSideBar2 h4,
 .LinkSideBar1 h4,
 .mysideInfobar-schd-new h4,
+::ng-deep .mysideInfobar h4,
 .previous-sidebar h4 {
     color: #000;
     font-size: 16px;
@@ -763,7 +783,9 @@ hr.dotted {
 .Previous_sidebar.sideInfobar .kt-portlet__head,
 .attachment-view.sideInfobar .kt-portlet__head,
 .LinkSideBar2.sideInfobar .kt-portlet__head,
-.LinkSideBar1.sideInfobar .kt-portlet__head,.mysideInfobar-schd-new.sideInfobar .kt-portlet__head, .previous-sidebar.sideInfobar .kt-portlet__head {
+.LinkSideBar1.sideInfobar .kt-portlet__head,.mysideInfobar-schd-new.sideInfobar .kt-portlet__head,
+::ng-deep .mysideInfobar.sideInfobar .kt-portlet__head,
+ .previous-sidebar.sideInfobar .kt-portlet__head {
     background-color: #ffffff;
 }
 
@@ -776,7 +798,9 @@ hr.dotted {
 .attachment-view .btn-hover-info:hover,
 .LinkSideBar2 .btn-hover-info:hover,
 .LinkSideBar1 .btn-hover-info:hover,
-.mysideInfobar-schd-new .btn-hover-info:hover, .previous-sidebar .btn-hover-info:hover {
+.mysideInfobar-schd-new .btn-hover-info:hover,
+::ng-deep .mysideInfobar .btn-hover-info:hover,
+ .previous-sidebar .btn-hover-info:hover {
     color: #ffffff;
     background-color: #d8dadb;
     border-color: #e7e7e7;
@@ -1054,7 +1078,7 @@ ul.attendees-note-userlist {
     list-style: none;
 }
 
-/* .attendees-note-user {
+.attendees-note-user {
     display: flex;
     align-items: flex-start;
     justify-content: left;
@@ -1062,16 +1086,14 @@ ul.attendees-note-userlist {
     border-radius: 5px;
     padding: 5px 0px;
     margin-bottom: 10px;
-    gap: 10px;
-} */
+    gap: 4px;
+}
 
-.attendees-note-user {
-
+/* .attendees-note-user {
     border-radius: 5px;
     padding: 5px 0px;
-    margin-bottom: 10px;
-
-}
+    margin-bottom: -14px;
+} */
 
 
 .attendees-note-user .user-info {
@@ -1081,10 +1103,19 @@ ul.attendees-note-userlist {
 }
 
 .attendees-note-user .user-icon {
-    background-color: #D9D9D9;
-    width: 40px;
-    height: 40px;
+    background-color: #ffac00;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    line-height: 15px;
+    text-transform: uppercase;
 }
 
 .attendees-note-user .user-icon img {
@@ -1096,7 +1127,7 @@ ul.attendees-note-userlist {
 
 .attendees-note-user .user-name {
     color: #000;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .attendees-note-user .user-time {
@@ -1128,13 +1159,15 @@ ul.attendees-note-userlist {
     background: #FFF8F4;
     border-radius: 4px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .attendees-note-user:nth-child(2n) .user-notes {
     background: #F3F8FF;
 }
-
+.attendees-note-user:nth-child(2n) .user-icon {
+    background-color: #388bff;
+}
 .attendees-note-user .user-notes p {
     margin-bottom: 0;
     font-size: 11.5px;
@@ -1164,10 +1197,19 @@ ul.attendees-note-userlist {
 }
 
 .allAttendees-user .user-icon {
-    background-color: #D9D9D9;
-    width: 40px;
-    height: 40px;
+    background-color: #ffac00;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    line-height: 15px;
+    text-transform: uppercase;
 }
 
 .allAttendees-user .user-icon img {
@@ -1207,7 +1249,8 @@ ul.attendees-note-userlist {
 }
 
 .allAttendees-user .user-notes {
-    padding: 10px 1px;
+    margin-top: 5px;
+    padding: 10px 15px;
     background: #FFF8F4;
     border-radius: 4px;
     width: 100%;
@@ -1216,7 +1259,9 @@ ul.attendees-note-userlist {
 .allAttendees-user:nth-child(2n) .user-notes {
     background: #F3F8FF;
 }
-
+.allAttendees-user:nth-child(2n) .user-icon {
+    background-color: #388bff;
+}
 .allAttendees-user .user-notes p {
     margin-bottom: 0;
     font-size: 11.5px;
@@ -1980,7 +2025,7 @@ div#DemoList-table div.demo i {
 }
 
 .todo-list {
-    max-height: 20vh;
+    max-height: 26vh !important;
     overflow: auto;
 }
 
@@ -2221,14 +2266,14 @@ div#DemoList-table div.demo i {
 .task-form {
     display: flex;
     align-items: center;
-    padding: 0.25rem !important;
+    /* padding: 0rem 1rem !important; */
+    width: 100%;
 }
 
 .task-input {
     flex: 1;
     font-size: 16px;
-    font-family: var(--font);
-    padding: 10px 0px;
+    padding: 7px 0px;
     border: 0;
     /* box-shadow: 0 -1px 0 #e2e4ea inset; */
     color: #455963;
@@ -2553,8 +2598,8 @@ div#DemoList-table div.demo i {
 }
 
 .accordion-attendes-notes .accordion-heading {
-    /* color: #757575; */
-    font-size: 15px;
+    color: #757575;
+    font-size: 14px;
 }
 
 .accordion-attendes-notes .message-count {
@@ -2584,8 +2629,10 @@ div#DemoList-table div.demo i {
 .accordion-attendes-notes .accordion-body {
     padding: 0px 12px;
 }
-
-
+.accordion-attendes-notes .accordion-body h5{
+    color: #000;
+    font-size: 14px;
+}
 
 .accordion-attendes .accor-body {
     padding: 0px 0px;
@@ -4090,7 +4137,19 @@ span.kt-dt-cnt-view {
     color: white;
 }
 
+.done{
+    background-color: #62B134 !important;
+    color: white
+}
 
+.Replied_border_left_true_success {
+    border-left: 5px solid #3CB371;
+}
 
+.min-height-30{
+    min-height: calc(100vh - 30px);
+}
 
-
+.previous-sidebar .accordion-item {
+    width: 100%;
+}
