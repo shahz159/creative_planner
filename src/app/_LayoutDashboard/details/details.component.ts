@@ -984,6 +984,7 @@ this.prjPIECHART.render();
 
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
+          console.log(this.Project_List,"dddddddddddddddddddddddddddddddd")
 
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
@@ -997,6 +998,7 @@ this.prjPIECHART.render();
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
+            console.log(this.PeopleOnProject,"sssssssssssssssssssssssssssssssssssssss")
           //   const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
           //   if(p)
           //    obj.contribution=p.RespDuration;
@@ -1051,9 +1053,9 @@ this.prjPIECHART.render();
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
 
     // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
-          let count:number=0;  
+          let count:number=0;
           this.Activity_List.map((actv:any)=>{
-            
+
             if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
@@ -1062,12 +1064,13 @@ this.prjPIECHART.render();
                    count+=1;
                }
               return actv;
-          });    
+          });
    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
 
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
+          console.log(this.firstFiveRecords,"ffffive ffffffffffffffff")
 
           this.firstFiveRecords=this.firstFiveRecords.map((item)=>{
            const d=moment(new Date()).diff(moment(item.ModifiedDate),'days');
@@ -1095,11 +1098,11 @@ this.prjPIECHART.render();
         debugger
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
-          let count:number=0;  
+          let count:number=0;
           this.ActionActivity_List.map((actv:any)=>{
             debugger
             if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
-               {   // actv.count : 2,3,4....  
+               {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
                    actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Change)`);
@@ -1701,8 +1704,8 @@ multipleback(){
         console.log("here we go", projectcode, appId, dmsMemo, userid);
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
-          if (res.Message === "Updated Successfully") {
-            this.notifyService.showSuccess("", "DMS Successfully Added.");
+          if (res.Message === "Updated successfully") {
+            this.notifyService.showSuccess("", "DMS successfully added.");
           }
 
         });
@@ -1750,8 +1753,8 @@ multipleback(){
             totalmemos.splice(index, 1);
             let memosAfterDeletion: string = JSON.stringify(totalmemos.map((item: any) => ({ MailId: item.MailId }))) // [{MailId:123,Subject:'asd'},{MailId:234,Subject:'hdf'}]->[{MailId:123},{MailId:234}]->'[{MailId:123},{MailId:234}]'
             this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, memosAfterDeletion, userid).subscribe((res: any) => {
-              if (res.Message === 'Updated Successfully') {
-                this.notifyService.showInfo("", "Memo Removed.");
+              if (res.Message === 'Updated successfully') {
+                this.notifyService.showInfo("", "Memo removed.");
                 this._linkedMemos--;
                 this.GetDMS_Memos();
               }
@@ -1763,7 +1766,7 @@ multipleback(){
         }
       }
       else {   // when deletion operation has cancelled.
-        this.notifyService.showInfo("Action Cancelled ", '');
+        this.notifyService.showInfo("Action cancelled ", '');
       }
     });
 
@@ -1823,7 +1826,7 @@ multipleback(){
 
   getapprovalStats() {
     // this.approvalEmpId = null;
-
+debugger
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
@@ -1902,6 +1905,11 @@ multipleback(){
          this.getstandardapprovalStats();
 
         }
+        // prj request access aprvals
+       if(this.requestType=='Request Access'&&this.multiapproval_list.length>0){
+        this.isApprovalSection=false;
+       }
+// prj request access aprvals
 
       }
       else{
@@ -3637,7 +3645,7 @@ check_allocation() {
       this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
         subscribe((data) => {
           this._Message = (data['message']);
-          if (this._Message == 'Updated Successfully') {
+          if (this._Message == 'Updated successfully') {
             this.getPortfoliosDetails();
             this._SelectedPorts=null;
             this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
@@ -3684,7 +3692,7 @@ check_allocation() {
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showInfo("Action cancelled ", '');
       }
     });
   }
@@ -3911,7 +3919,7 @@ check_allocation() {
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-            console.log('my AttachmentList:',this.AttachmentList);
+            console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
@@ -4052,7 +4060,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+debugger
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -5977,7 +5985,7 @@ getChangeSubtaskDetais(Project_Code) {
           //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
-          if (this._Message == "Updated Successfully") {
+          if (this._Message == "Updated successfully") {
             if (this.draftid != 0) {
               this.Getdraft_datalistmeeting();
               this.draftid = 0
@@ -6283,7 +6291,7 @@ holdcontinue(Pcode:any){
   extendAndHold:boolean=false;
   isEHsectionVisible:boolean=false;
   minPrjDeadline:Date;
-  onHoldDateChanged(){ 
+  onHoldDateChanged(){
     debugger
     if(this.currentActionView===undefined){     // only for project.
       const d1=new Date(this.Holddate);
@@ -6292,9 +6300,9 @@ holdcontinue(Pcode:any){
       d1.setDate(d1.getDate()+1);
       this.minPrjDeadline=d1;
     }
-      
+
 }
-  
+
 
 
 
@@ -6305,8 +6313,8 @@ debugger
        // if holddate and remarks are provided.
 
       if(this.isEHsectionVisible){
-            if(this.extendAndHold){   
-                  
+            if(this.extendAndHold){
+
 debugger
     // 1. PRJ UPDATE     (updating project using 'newPrjDeadline' )
                    var datestrStart = moment(this.projectInfo.StartDate).format("MM/DD/YYYY");
@@ -6326,13 +6334,13 @@ debugger
                     Recurrence:this.projectInfo.Annual_date
                   }
                   const jsonvalue = JSON.stringify(jsonobj);
-              
+
                     this.approvalObj.Emp_no = this.Current_user_ID;
                     this.approvalObj.Project_Code = this.URL_ProjectCode;
                     this.approvalObj.json = jsonvalue;
                     this.approvalObj.Remarks = '';
                     this.approvalObj.isApproval = 0;
-              
+
                     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
                       console.log(data['message'], "edit response");
                       if (data['message'] == '1') {
@@ -6343,11 +6351,11 @@ debugger
                       }
                     });
 
-   // 2. PRJ HOLD 
+   // 2. PRJ HOLD
            this.holdcontinue(Pcode);
 
             }
-            else 
+            else
             {
                   Swal.fire({
                     text:'Continuing will make you accountable for project delays. Do you still want to proceed?',
@@ -6358,12 +6366,12 @@ debugger
                     icon:'warning',
                   }).then((choice1:any)=>{
                       if(choice1.value===true)
-                        this.holdcontinue(Pcode); 
+                        this.holdcontinue(Pcode);
                   });
             }
 
       }
-      else 
+      else
       this.holdcontinue(Pcode);
 
   }
@@ -6818,6 +6826,7 @@ closePanel(){
 
 
   onProject_updateSupport() {
+    debugger
 
     const commaSeparatedString = this.selectedEmpIds.join(', ');
 
@@ -6826,10 +6835,10 @@ closePanel(){
         this._Message = data['message'];
 
         if (this._Message == '2') {
-          this.notifyService.showError("Project Support team not updated", "Failed");
+          this.notifyService.showError("Project support team not updated", "Failed");
         }
         else if (this._Message == '1') {
-          this.notifyService.showSuccess("Project Support team updated successfully", "Success");
+          this.notifyService.showSuccess("Project support team updated successfully", "Success");
 
         }
         this.GetPeopleDatils();
@@ -8096,7 +8105,11 @@ rejectAllmultipleAprvs(){
 
 
 
+file = { Sourcefile: '16_05_2024' };
 
+getFormattedDate(date: string): string {
+  return date.replace(/_/g, '-');
+}
 
 }
 

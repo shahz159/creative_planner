@@ -1509,7 +1509,7 @@ left: 38%;
   left: 32%;
   } */
 
-  .in-processs, .total-project, .Delay-head,.Not-started-head,.new-project-head,.Hold_color,.complteed_color,.Delete-head,.rejected,.todo-completed-head,.todo-achieved{
+  .in-processs, .total-project, .Delay-head,.Not-started-head,.new-project-head,.Hold_color,.complteed_color,.Delete-head,.rejected,.todo-completed-head,.todo-achieved,.Completion,.Cancel-app,.Count-forward,.Count-deadline{
     position: relative;
   }
   .total-project.active-total-project::after {
@@ -1521,6 +1521,25 @@ left: 38%;
     bottom: -32%;
     left: 38%;
   }
+.Cancel-app.active-Cancel-app::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #EE4137;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+.Count-deadline.active-Count-deadline::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #EE4137;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 38%;
+}
+
 
   .in-processs.active-in-processs::after {
     content: "";
@@ -1558,6 +1577,29 @@ left: 38%;
     bottom: -32%;
     left: 38%;
   }
+
+  .Completion.active-Completion::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #b2d732;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+
+  .Count-forward.active-Count-forward::after {
+    content: "";
+    position: absolute !important;
+    border-top: 10px solid #b2d732;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -32%;
+    left: 38%;
+  }
+
+
+
   .Hold_color.active-Hold_color::after {
     content: "";
     position: absolute !important;
@@ -1704,4 +1746,21 @@ a.btn-v-icon:hover{
 a.btn-v-icon svg {
   width: 24px;
   height: 24px;
+}
+
+.Completion{
+  background-color: #b2d732;
+  color: #000;
+}
+.Cancel-app{
+  background-color: #EE4137;
+  color: white;
+}
+.Count-deadline{
+  background-color: #EE4137;
+  color: white;
+}
+.Count-forward{
+  background-color: #b2d732;
+  color: #000;
 }
