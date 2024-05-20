@@ -4927,7 +4927,7 @@
           <div id="DemoList-table" *ngIf="projectMemos&&_linkedMemos;else noDMSFound">
               <div class="demo" *ngFor="let memo of projectMemos">
                   <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
-                  <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
+                  <i class="fas fa-trash-alt p-2" title="Delete" (click)="deleteMemos(memo.MailId)"></i>
               </div>
           </div>
 
@@ -5090,7 +5090,7 @@
                               <i class="fas fa-edit invisible"></i>
                               <a
                                   (click)="DeleteProject(Pid,tezz.Portfolio_ID,_MasterCode,_ProjectName,tezz.Created_By)">
-                                  <i class="fas fa-trash-alt"></i>
+                                  <i class="fas fa-trash-alt" title="Delete"></i>
                               </a>
                           </div>
                       </div>

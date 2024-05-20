@@ -221,6 +221,7 @@ export class ActionToProjectComponent implements OnInit {
         });
 
   }
+  allocatedHour:any
 
   GetAllEmployeesForAssignDropdown() {
     let obj: any = {
@@ -241,12 +242,14 @@ export class ActionToProjectComponent implements OnInit {
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+          debugger
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
           this.owner=data["Owner_empno"];
           this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
+          this.allocatedHour= this.createproject.projectInfo.AllocatedHours
           const dateOne = new Date(this.disablePreviousDate);
           const dateTwo = new Date(this.ProjectStartDate);
           if(dateTwo > dateOne){
@@ -315,7 +318,7 @@ debugger
     }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
-    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => { debugger
       this.ProjectDeadLineDate = data["DeadLine"];
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
@@ -324,7 +327,7 @@ debugger
       const dateOne = new Date(this.disablePreviousDate);
       const dateTwo = new Date(this.ProjectStartDate);
       if(dateTwo > dateOne){
-        this.disablePreviousDate = this.ProjectStartDate;
+        this.disablePreviousDate = this.ProjectStartDate
       }
     });
 
@@ -700,7 +703,10 @@ debugger
 
 
 
-    if(this._Urlid == 5){
+
+
+    if(this._Urlid == 5 && this.allocatedHour>0){
+      debugger
       // only in project creation page.
          const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
          if(exceeds)
@@ -730,6 +736,7 @@ debugger
 
   }
 
+
   convert(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -749,6 +756,7 @@ debugger
     });
   }
   sweetAlert() {
+    debugger
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
     const dateOne = new Date(this._EndDate);

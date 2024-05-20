@@ -1733,11 +1733,13 @@ multipleback(){
 
   deleteMemos(memoId: number) {
 
+
+    const memo_name=this.projectMemos.find(item=>item.MailId==memoId);
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        mode: 'memos_Delete',
+        mode: 'delete',
         title1: 'Confirmation ',
-        //message1: "proj_Name"
+        message1: memo_name.Subject
       }
     });
     confirmDialog.afterClosed().subscribe((result: any) => {

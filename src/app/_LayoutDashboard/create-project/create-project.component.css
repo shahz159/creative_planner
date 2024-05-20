@@ -1849,7 +1849,7 @@ button.Ct-btn.head-btn-right {
 
 .Ic_ed input,
 textarea {
-  padding: 5px 5px !important;
+  padding: 0.65rem 1rem !important;
 }
 
 .Ic_ed input {

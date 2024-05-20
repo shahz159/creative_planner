@@ -1089,7 +1089,7 @@ getActionsDetails(){
     else
     this.PrjActionsInfo=[];
   });
-  console.log(this.PrjActionsInfo,"actionsssssssssssssssssssssssssssss")
+
 }
 
 
@@ -1508,7 +1508,7 @@ debugger
        text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
        showConfirmButton:true,
        showCancelButton:true,
-       confirmButtonText: 'Yes, Confirm!',
+       confirmButtonText: 'Yes, confirm',
        cancelButtonText: 'Cancel'
    })
    .then(choice=>{
@@ -1821,6 +1821,7 @@ deleteDraft(index:number){
 
 
 openDraft(index:number){
+  debugger
   console.log(this.draft_json[index]);
   this.Prjtype=this.draft_json[index].Project_Block;
   this.PrjCode=this.draft_json[index].Project_Code;
@@ -1978,13 +1979,13 @@ debugger
 // functionality to check prj allocated hr with action allocated hrs
 isExceededTotalAllocatedHr:boolean=false;
 hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
-
+debugger
    if(!this.isExceededTotalAllocatedHr){
 
           const totalhrsused=this.PrjActionsInfo.reduce((sum:any,action:any)=>{
             return sum+Number.parseInt(action.AllocatedHours);
           },0)
-          const newAlcHrs=totalhrsused+actionAllocHr;   // used hrs + new alloc
+          const newAlcHrs=totalhrsused+parseInt(actionAllocHr);   // used hrs + new alloc
           const result=newAlcHrs>this.projectInfo.AllocatedHours;
           this.isExceededTotalAllocatedHr=result;
           return  result;
