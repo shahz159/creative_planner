@@ -690,7 +690,7 @@
                                                         aria-label="Users: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> RACIS
                                                     </th>
-                                                    <ng-container  *ngIf="(StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
+                                                    <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
                                                         <th [appSort]="_ProjectDataList" data-order="desc"
                                                                 data-name="Status" tabindex="0" aria-controls="project-4"
                                                                 rowspan="1" colspan="1" class="curser-pointer"
@@ -702,7 +702,7 @@
 
                                                 </ng-container>
 
-                                                    <ng-container  *ngIf="(StatusCountFilter.length!=0&&StatusCountFilter[0].Name=='Delay')" >
+                                                    <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name=='Delay')" >
                                                         <th [appSort]="_ProjectDataList" data-order="desc"  (click)="newDelaySorting() "
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"

@@ -1265,6 +1265,7 @@ export class DashboardComponent implements OnInit {
         }
         else if (this.ScheduleType == 'Event') {
           this.GetProjectAndsubtashDrpforCalender();
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
           // this.GetMemosByEmployeeId();
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
@@ -1451,7 +1452,7 @@ export class DashboardComponent implements OnInit {
         this._EndDate = this.EventScheduledjson[0]['End_date'];
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
-        this.EventNumber = this.EventScheduledjson[0]['EventNumber']
+        this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "block";
