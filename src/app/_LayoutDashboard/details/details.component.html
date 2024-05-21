@@ -757,11 +757,47 @@
 
                                                   <div class="col text-center"
                                                       *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else submission">
-                                                      <div class="kt-info-lable-v">
-                                                          Deadline
+                                                      <div class="kt-info-lable-v deadline-main">
+                                                          <span>Deadline</span>
+                                                          <span class="deadline-count">
+                                                            <span class="deadline-count-btn">
+                                                                12
+                                                            </span>
+                                                            <div class="dropdown-menu">
+                                                             <ul class="deadline-timeline">
+                                                                <!-- loop this li part only -->
+                                                                <li class="deadline-timeline-item">
+                                                                    <div class="deadline-timeline-item-title">Project Deadline Changed 12 time</div>
+                                                                    <div class="deadline-timeline-item-by"><b>By</b> Wassem Akram</div>
+                                                                    <div class="deadline-timeline-item-from"><b>From</b> "04-05-2024" <b>To</b> "10-05-2024"</div>
+                                                                    <div class="deadline-timeline-item-on">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <span class="svg-icon">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                    <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span>15-05-2024</span>
+                                                                        </div>
+                                                                        <div class="d-flex align-items-center">
+                                                                            <span class="svg-icon">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span>8:45 AM</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                             </ul>
+                                                            </div>
+                                                      </span>
                                                       </div>
                                                       <div class="kt-project-sts-data">
-                                                          {{projectInfo.EndDate|date:'dd-MM-yyyy'}}
+                                                         {{projectInfo.EndDate|date:'dd-MM-yyyy'}}
+                                                          
                                                       </div>
                                                   </div>
                                                   <ng-template #submission>
@@ -858,7 +894,7 @@
                                                       <div class="kt-prg-progress">
                                                           <ul type="none">
                                                               <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
-                                                                      class="B-Bot P_Not-Started"></span> New Action Under Approval
+                                                                      class="B-Bot P_Not-Started"></span> New Action Approval
                                                                   <b>({{
                                                                       TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
                                                               <li *ngIf="TOTAL_ACTIONS_IN_PROCESS"><span
@@ -876,11 +912,11 @@
                                                               </li>
                                                               <li *ngIf="TOTAL_ACTIONS_IN_CUA" class="w-50P"><span
                                                                       class="B-Bot P_Completion_under_Approval w-50P"></span>
-                                                                  Completion Under Approval
+                                                                  Completion Approval
                                                                   <b>({{TOTAL_ACTIONS_IN_CUA}})</b></li>
                                                               <li *ngIf="TOTAL_ACTIONS_IN_FUA" class="w-50P"><span
                                                                       class="B-Bot P_ForwardUnderApproval w-50P"></span>
-                                                                  Forward Under Approval <b>({{TOTAL_ACTIONS_IN_FUA}})</b>
+                                                                  Forward Approval <b>({{TOTAL_ACTIONS_IN_FUA}})</b>
                                                               </li>
                                                               <li *ngIf="TOTAL_ACTIONS_DONE"><span
                                                                       class="B-Bot P_Done"></span>
@@ -962,12 +998,7 @@
                                       <div class="kt-project-type curser-pointer">
                                           <!-- *ngIf="(projectInfo&&projectInfo.Status!='Completed')" -->
                                           <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
-                                              <span class="add-act-plus-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                      width="13" height="18" fill="currentColor" class="bi bi-plus"
-                                                      viewBox="4 3 8 12">
-                                                      <path
-                                                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                                  </svg></span> Add Action
+                                              <span class="add-act-plus-icon"></span><svg _ngcontent-vam-c142="" xmlns="http://www.w3.org/2000/svg" width="13" height="18" fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus"><path _ngcontent-vam-c142="" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg> Add Action
                                           </div>
 
                                       </div>
@@ -991,7 +1022,7 @@
                                                           </g>
                                                       </svg>
                                                       <input type="search" autocomplete="off" name="search"
-                                                          placeholder="Search..."
+                                                          placeholder="Search"
                                                           class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0    "
                                                           ng-reflect-name="search" #ActionSearchTF
                                                           (input)="isActionAvailable($event)" />
@@ -1542,7 +1573,7 @@
                                       <div class="no-prjact-found ">
                                           <img class="no-prjact-found-img"
                                               src="./assets/images/noActionPresent.png" />
-                                          <h3 class="blank-txt fs-5 no-prjact-found-label">No Actions Created.</h3>
+                                          <h3 class="blank-txt fs-5 no-prjact-found-label">No actions created.</h3>
                                       </div>
                                   </ng-template>
                               </div>
@@ -1693,7 +1724,16 @@
 
 
                                       <a class="kt-inbox__icon " (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO'}"  title="Add Portfolio">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
+                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg> -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"   width="16"
+                                        height="16" class="iconify iconify--mdi" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                            <defs></defs>
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"></rect>
+                                                <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                            </g>
+                                        </svg>
                                     </a>
 
                                       <!-- <a class="kt-inbox__icon">
@@ -1765,26 +1805,26 @@
                                       </svg>
                                   </a> -->
 
-                                      <a class="kt-inbox__icon" (click)="View_timeline()"   [ngClass]="{'active':currentSidebarOpened==='TIMELINE_VIEW'}"                title="timeline">
+                                      <a class="kt-inbox__icon" (click)="View_timeline()"   [ngClass]="{'active':currentSidebarOpened==='TIMELINE_VIEW'}"                title="Timeline">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1"><path d="M271.36 276.48c0-61.44-40.96-113.664-97.28-130.048V38.4C174.08 17.408 156.672 0 135.68 0S97.28 17.408 97.28 38.4v108.032C40.96 162.816 0 215.04 0 276.48c0 61.44 41.472 113.664 97.792 130.048l1.536 209.92C41.984 632.832 0 685.056 0 747.52c0 61.44 40.96 113.664 97.28 130.048V983.04c0 20.992 17.408 38.4 38.4 38.4s38.4-17.408 38.4-38.4v-105.472c56.32-16.384 97.28-68.608 97.28-130.048 0-60.928-39.936-112.128-95.232-129.536l-1.536-211.456C230.4 389.632 271.36 337.92 271.36 276.48z m-194.56 0c0-32.256 26.624-58.88 58.88-58.88S194.56 244.224 194.56 276.48s-26.624 58.88-58.88 58.88S76.8 308.736 76.8 276.48z m117.76 471.04c0 32.256-26.624 58.88-58.88 58.88S76.8 779.776 76.8 747.52s26.624-58.88 58.88-58.88S194.56 715.264 194.56 747.52zM924.16 97.28h-496.64C372.224 97.28 327.68 141.824 327.68 197.12v158.72C327.68 411.136 372.224 455.68 427.52 455.68h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64C414.72 378.88 404.48 368.64 404.48 355.84v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72zM924.16 568.32h-496.64c-55.296 0-99.84 44.544-99.84 99.84v158.72c0 55.296 44.544 99.84 99.84 99.84h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64c-12.8 0-23.04-10.24-23.04-23.04v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72z"/></svg>
 
                                       </a>
 
                                       <!-- <div class="br-line"></div> -->
 
-                                      <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            title="Add Users">
+                                      <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            title="Add users">
                                           <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
                                           <!-- <span   class="Kt-m-count" >{{userRequestCount}}</span> -->
 
                                         </a>
 
-                                      <a class="kt-inbox__icon " (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS','event-active':MeetingCount>0}"   title="meetings">
+                                      <a class="kt-inbox__icon " (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS','event-active':MeetingCount>0}"   title="Meetings">
                                           <span class="blink"></span>
                                           <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1" fill="currentColor"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
 
                                       </a>
 
-                                      <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity Log">
+                                      <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity log">
                                           <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" fill="currentColor"></path></svg>
                                       </a>
 
@@ -2055,7 +2095,7 @@
           </svg>
           <span class="notif-msg fs-5" style="color:#00a2eb">You have
               {{myUnderApprvActions.length>1?(myUnderApprvActions.length+'
-              actions'):(myUnderApprvActions.length+' action') }} Under Approval.</span>
+            new actions'):(myUnderApprvActions.length+' new action') }} Approval.</span>
 
 
 
@@ -2339,11 +2379,11 @@
 
 
 
-  <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification stdtask-underapproval-notification">
+  <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification">
     <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
         enable-background="new 0 0 64 64" xml:space="preserve" style="
-        fill: #00a2eb;">
+        fill: #00A2EB;">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
         <g id="SVGRepo_iconCarrier">
@@ -2362,9 +2402,29 @@
             </g>
         </g>
     </svg>
-    <span class="notif-msg fs-6" style="color:#00a2eb">You have {{multiapproval_list.length}} request under approvals</span>
-    <button class="btn btn-sm stdtask-aprv-btn" (click)="MultipleApprovalSideBar()">View all</button>
+    <span class="notif-msg fs-6" style="color:#00a2eb">You have {{multiapproval_list.length}}  item pending approval.</span>
+    <button class="reqaccess-open-btn  curser-pointer " (click)="MultipleApprovalSideBar()">
+        <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path
+                    d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+                <path class="arrow"
+                    d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </svg>
+    </button>
   </div>
+
+
+
+
+
+
+
 
 
 
@@ -2488,9 +2548,9 @@
                                                               Completion</button>
 
                                                     <ng-container *ngIf="['001','002','011'].includes(projectInfo.Project_Block)">
-                                                         
-                                                        
-                                                        <button class="Ct-btn Bt-hold ml-2"
+
+
+                                                       <button class="Ct-btn Bt-hold ml-2"
                                                               *ngIf="(projectInfo.Status==='Project Hold');else prHbtn"
                                                               (click)="openPrjReleaseSideBar()">Project
                                                               Release</button>
@@ -2644,7 +2704,7 @@
 
 
                                       <!-- Request type start  -->
-                                      <ng-container *ngIf="Current_user_ID  == approvalEmpId">
+                                      <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails.length>2 ">
                                           <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled')">
                                               <div class="d-flex justify-content-between align-items-center">
 
@@ -3837,7 +3897,7 @@
                                                   </div>
 
                                                   <div *ngSwitchCase="'Under Approval'" class="kt-project-type">
-                                                      <div class="Kt-Pd-Status  new-project-under">New Action Under Approval</div>
+                                                      <div class="Kt-Pd-Status  new-project-under">New Action Approval</div>
                                                   </div>
 
                                                   <div *ngSwitchCase="'Completion Under Approval'"
@@ -3921,7 +3981,13 @@
 
                                                   <div *ngSwitchDefault class="kt-project-type">
                                                       <div class="Kt-Pd-Status Not_Started ">
-                                                          {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Approval':projectActionInfo[currentActionView].Status }} </div>
+                                                        {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Approval':
+                                                        projectActionInfo[currentActionView].Status==='Forward Under Approval'?'Forward Approval':
+                                                          projectActionInfo[currentActionView].Status=='InProcess'? 'In-Process':
+                                                          projectActionInfo[currentActionView].Status==='Completion Under Approval'?"Completion Approval":
+                                                          projectActionInfo[currentActionView].Status==='Enactive Under Approval'?'Enactive Approval':
+                                                          projectActionInfo[currentActionView].Status==='Cancellation Under Approval'?'Cancellation Approval':
+                                                          projectActionInfo[currentActionView].Status=='Not Started'? 'Draft': projectActionInfo[currentActionView].Status}} </div>
                                                   </div>
 
                                               </div>
@@ -3964,8 +4030,12 @@
                                                                   'Cancelled':projectActionInfo[currentActionView].Status==='Cancelled',
                                                                   'Hold':projectActionInfo[currentActionView].Status==='Project Hold'
                                                                   }">
-                                                              {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action  Approval':
+                                                              {{projectActionInfo[currentActionView].Status=='Under Approval'?'New Action Approval':
+                                                              projectActionInfo[currentActionView].Status==='Forward Under Approval'?'Forward Approval':
                                                                 projectActionInfo[currentActionView].Status=='InProcess'? 'In-Process':
+                                                                projectActionInfo[currentActionView].Status==='Completion Under Approval'?"Completion Approval":
+                                                                projectActionInfo[currentActionView].Status==='Enactive Under Approval'?'Enactive Approval':
+                                                                projectActionInfo[currentActionView].Status==='Cancellation Under Approval'?'Cancellation Approval':
                                                                 projectActionInfo[currentActionView].Status=='Not Started'? 'Draft': projectActionInfo[currentActionView].Status}}
                                                           </div>
                                                           <div class="Requested_user_info">
@@ -3982,7 +4052,7 @@
                                                                   </svg></span> <span class="Requested_user_name"
                                                                   title="Requested by">{{action_assignedby}}</span><span
                                                                   class="Rq_date_V"
-                                                                  title="Requested Date">{{requestDate|date:'dd-MM-yyyy'}}</span>
+                                                                  title="Requested date">{{requestDate|date:'dd-MM-yyyy'}}</span>
                                                           </div>
 
                                                       </div>
@@ -4902,7 +4972,7 @@
           <div id="DemoList-table" *ngIf="projectMemos&&_linkedMemos;else noDMSFound">
               <div class="demo" *ngFor="let memo of projectMemos">
                   <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
-                  <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
+                  <i class="fas fa-trash-alt p-2" title="Delete" (click)="deleteMemos(memo.MailId)"></i>
               </div>
           </div>
 
@@ -4910,7 +4980,7 @@
               <div class="no-DMS-found">
                   <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
                   <div class="bnk-txt mt-2 d-flex justify-content-center">
-                      <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
+                      <h3 class="blank-txt no-DMS-found-label fs-3">No memo found.</h3>
                   </div>
               </div>
           </ng-template>
@@ -4961,7 +5031,7 @@
       </li>
       <div class="d-flex align-items-end p-3" style="column-gap:10px">
           <mat-form-field class="drp-dwn-field w-100">
-              <mat-label>Select Portfolios</mat-label>
+              <mat-label>Select Portfolio(s)</mat-label>
               <mat-chip-list #selectedportfolioslist>
                   <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
                       (removed)="Portfolio_Deselect(prt)">
@@ -5065,7 +5135,7 @@
                               <i class="fas fa-edit invisible"></i>
                               <a
                                   (click)="DeleteProject(Pid,tezz.Portfolio_ID,_MasterCode,_ProjectName,tezz.Created_By)">
-                                  <i class="fas fa-trash-alt"></i>
+                                  <i class="fas fa-trash-alt" title="Delete"></i>
                               </a>
                           </div>
                       </div>
@@ -5083,7 +5153,7 @@
               <div class="m-auto">
                   <img src="./assets/images/portfolio.png" width="268" height="256" />
                   <div class="bnk-txt mt-3">
-                      <h2 class="blank-txt text-center pfl-img">No Results Found</h2>
+                      <h2 class="blank-txt text-center pfl-img">No portfolio linked.</h2>
                   </div>
               </div>
           </div>
@@ -5342,7 +5412,7 @@
                           </g>
                       </svg>
                   </span>
-                  Timeline View
+                  Timeline view
               </h4>
 
 
@@ -5363,9 +5433,9 @@
       </div>
       <div class="d-flex align-items-center justify-content-between kt-tm-hd">
           <div class="kt-total-ac-hr">
-              <h4>Total Achivement Hours :
-                  <span *ngIf="tlTotalHours>=1000">{{tlTotalHours|number:'1.2-2'.toLocaleString()}} Hrs</span>
-                  <span *ngIf="tlTotalHours<1000">{{tlTotalHours|number:'1.2-2'}} Hrs</span>
+              <h4>Total achivement hours :
+                  <span *ngIf="tlTotalHours>=1000">{{tlTotalHours|number:'1.2-2'.toLocaleString()}} hrs</span>
+                  <span *ngIf="tlTotalHours<1000">{{tlTotalHours|number:'1.2-2'}} hrs</span>
               </h4>
           </div>
           <div class="sort-view">
@@ -5580,7 +5650,7 @@
               <div class="notimeline-present">
                   <img src="./assets/images/noTimelinePresent.png" class="notimeline-present-img" />
                   <div class="bnk-txt mt-3 d-flex justify-content-center">
-                      <h3 class="blank-txt fs-3 notimeline-present-label">Timeline not found.</h3>
+                      <h3 class="blank-txt fs-3 notimeline-present-label">No timeline found.</h3>
                   </div>
               </div>
           </ng-template>
@@ -5605,7 +5675,7 @@
                                       d="M13.15 7.49998C13.15 4.66458 10.9402 1.84998 7.50002 1.84998C4.72167 1.84998 3.34849 3.9064 2.76335 5H4.5C4.77614 5 5 5.22386 5 5.5C5 5.77614 4.77614 6 4.5 6H1.5C1.22386 6 1 5.77614 1 5.5V2.5C1 2.22386 1.22386 2 1.5 2C1.77614 2 2 2.22386 2 2.5V4.31318C2.70453 3.07126 4.33406 0.849976 7.50002 0.849976C11.5628 0.849976 14.15 4.18537 14.15 7.49998C14.15 10.8146 11.5628 14.15 7.50002 14.15C5.55618 14.15 3.93778 13.3808 2.78548 12.2084C2.16852 11.5806 1.68668 10.839 1.35816 10.0407C1.25306 9.78536 1.37488 9.49315 1.63024 9.38806C1.8856 9.28296 2.17781 9.40478 2.2829 9.66014C2.56374 10.3425 2.97495 10.9745 3.4987 11.5074C4.47052 12.4963 5.83496 13.15 7.50002 13.15C10.9402 13.15 13.15 10.3354 13.15 7.49998ZM7.5 4.00001C7.77614 4.00001 8 4.22387 8 4.50001V7.29291L9.85355 9.14646C10.0488 9.34172 10.0488 9.65831 9.85355 9.85357C9.65829 10.0488 9.34171 10.0488 9.14645 9.85357L7.14645 7.85357C7.05268 7.7598 7 7.63262 7 7.50001V4.50001C7 4.22387 7.22386 4.00001 7.5 4.00001Z"
                                       fill="#a3a3a3"></path>
                               </g>
-                          </svg> </span>Activity Log</h4>
+                          </svg> </span>Activity log</h4>
                   <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                       (click)="closedarBar()">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -5911,7 +5981,7 @@
 
 
                        </span>
-                       <span class="kt-chat__title"> List of Attachments </span> <span
+                       <span class="kt-chat__title"> List of attachments </span> <span
                           class="kt-at-count" *ngIf="_TotalDocs>0">{{_TotalDocs}}</span> </h4>
                   <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                       (click)="closedarBar()">
@@ -5931,7 +6001,7 @@
               <div class="pt-2 pb-2 ">
                   <div class="d-flex-center">
                       <div class="position-relative w-100">
-                          <input type="text" autocomplete="off" name="search" placeholder="Search..."
+                          <input type="text" autocomplete="off" name="search" placeholder="Search"
                               [(ngModel)]="filterText"
                               class="form-control right-flter-bd ng-untouched ng-pristine ng-valid">
                           <span class="cancl-icon curser-pointer" *ngIf="filterSearch && filterText"
@@ -6244,7 +6314,7 @@
                                                   </span>
                                                   {{file.Remarks}}
                                               </div>
-                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}
+                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-YYYY'}}
                                               </div>
                                           </div>
                                       </div>
@@ -6254,7 +6324,7 @@
                                       <div data-toggle="modal" class="kt-notification__item-details"
                                           (click)="LoadDocument(file.Project_Code,file.IsCloud,file.Sourcefile&&file.Sourcefile,file.CompleteProofDoc,file.contenttype,file.SubmittedBy)">
                                           <div class="d-flex-center">
-                                              <div class="kt-notification__item-title fw-bold" title="{{file.Sourcefile}}"
+                                              <div class="kt-notification__item-title fw-bold" title="getFormattedDate{{file.Sourcefile}}"
                                                   *ngIf="file.Sourcefile&&file.Sourcefile.length>=28">
                                                   <!-- pexels-nubia-navarro-(nubikini)-386009.jpg -->
                                                   {{file.Sourcefile | slice:0:24}}...
@@ -6295,7 +6365,7 @@
                                                   </span>
                                                   {{file.Remarks}}
                                               </div>
-                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd/MM/YYYY'}}
+                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-YYYY'}}
                                               </div>
                                           </div>
                                       </div>
@@ -6497,7 +6567,7 @@
 
                               <ng-container *ngIf="PeopleOnProject">
                                   <div class="position-relative w-100 mb-2">
-                                      <input type="text" autocomplete="off" name="search" placeholder="Search..."
+                                      <input type="text" autocomplete="off" name="search" placeholder="Search"
                                           class="form-control right-flter-bd ng-untouched ng-pristine ng-valid"
                                           [(ngModel)]="SearchItem">
                                       <span class="cancl-icon curser-pointer" *ngIf="SearchItem"
@@ -6545,7 +6615,7 @@
                                       <img src="./assets/images/people on the project 02.png" width="268"
                                           height="256">
                                       <div class="bnk-txt mt-3">
-                                          <h3 class="blank-txt pfl-img">No People Found</h3>
+                                          <h3 class="blank-txt pfl-img">No people found</h3>
                                       </div>
                                   </div>
                               </ng-template>
@@ -6641,7 +6711,7 @@
                               aria-labelledby="kt_tab_pane_2_4">
                               <div class="matchip-drp-dwn">
                                   <mat-form-field class="drp-dwn-field ">
-                                      <mat-label>Add Support team</mat-label>
+                                      <mat-label>Add support team</mat-label>
                                       <mat-chip-list #selectedTeamMember>
                                           <mat-chip *ngFor="let s of selectedEmployees" class="Data_chip_kt"
                                               (removed)="remove(s)">
@@ -10422,7 +10492,7 @@
                               <div class="input-icon project-name_ed curser-pointer">
                                   <input type="text" class="form-control" [(ngModel)]="ProjectName"
                                    [ngClass]="{'error-border':!(this.ProjectName&&this.ProjectName.trim()!='')&&formFieldsRequired}"
-                                      placeholder="Search..." />
+                                      placeholder="Search" />
                               </div>
                               <span style="color:red" *ngIf="!(this.ProjectName&&this.ProjectName.trim()!='')&&formFieldsRequired">project name required</span>
                           </div>
@@ -10431,7 +10501,7 @@
                           <div class="form-group mb-2">
                               <label class="pe-label">Project description</label>
                               <div class="input-icon project_des_ed curser-pointer">
-                                  <textarea type="text" class="form-control" placeholder="Search..." height="60px"
+                                  <textarea type="text" class="form-control" placeholder="Search" height="60px"
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"></textarea>
                               </div>
@@ -10923,7 +10993,7 @@
                           <label class="pe-label">Action Name</label>
                           <div class="input-icon project-name_ed" >
                               <input type="text" class="form-control" [(ngModel)]="ActionName" [ngClass]="{'error-border': !ActionName&&formFieldsRequired}"
-                                  placeholder="Search..." />
+                                  placeholder="Search" />
                           </div>
                           <span style="color:red" class="fs-8" *ngIf="!ActionName&&formFieldsRequired" >action name required.</span>
                       </div>
@@ -10932,7 +11002,7 @@
                       <div class="form-group mb-2">
                           <label class="pe-label">Action description</label>
                           <div class="input-icon project_des_ed">
-                              <textarea type="text" class="form-control" placeholder="Search..." height="60px"
+                              <textarea type="text" class="form-control" placeholder="Search" height="60px"
                               [ngClass]="{'error-border': !ActionDescription&&formFieldsRequired}"
                                   [(ngModel)]="ActionDescription"></textarea>
                           </div>
@@ -12087,7 +12157,7 @@
                       <a (click)="approvalClick('NOTSELECTED');" class="accordion-button" type="button" data-toggle="collapse" [attr.data-target]="'#collapse-AprvReqm-'+i" aria-expanded="false" [attr.aria-controls]="'collapse-AprvReqm-'+i">
 
                          <div class="head-content flex-grow-1 d-flex  justify-content-between">
-                            <span>{{aprv.Type}} under approval</span>
+                            <span>{{aprv.Type == 'New Project' ? "New":aprv.type}} approval</span>
                             <span>{{aprv.Rec_Date| date:'dd-MM-yyyy'}}</span>
                          </div>
                           <div><span  class="accordion-icon">

@@ -1957,7 +1957,7 @@ if(this.SelectedAttachmentFile != undefined){
 
                 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                
             }
@@ -2177,7 +2177,7 @@ EnterSubmit(_Demotext) {
 
     document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
     this.Assigntext=''
@@ -2196,7 +2196,7 @@ EnterSubmit(_Demotext) {
 
     document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
 
@@ -2581,7 +2581,7 @@ ReshudingTaskandEvent() {
       document.getElementById("weekly_121").style.display = "none";
       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
       document.getElementById("rightbar-overlay").style.display = "block";
-      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
       this.AllDatesSDandED = [];
       var jsonData = {};
@@ -3571,7 +3571,7 @@ daysSelected: any[] = [];
     $('.bg-ovr').removeClass('d-block');
     $('.bg-ovr1').removeClass('d-block');
 
-    $('.side_view').removeClass('position-fixed');
+    // $('.side_view').removeClass('position-fixed');
     this.closefooter();
   }
 
@@ -3950,7 +3950,7 @@ daysSelected: any[] = [];
 
                     (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                     (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
@@ -4051,7 +4051,7 @@ EndMeetingSweetAlertBox(){
       this.repeatMeeting=true;
       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
       document.getElementById("rightbar-overlay").style.display = "block";
-      document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+      // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
       this.ReshudingTaskandEvent();
       // if (modal) {
       //   modal.classList.add('show'); // Show the modal

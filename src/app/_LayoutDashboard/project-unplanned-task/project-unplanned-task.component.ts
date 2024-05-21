@@ -216,17 +216,18 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   CountsJson: any;
   Clientjson:any;
   EmployeeLists:any;
-
+  loading: boolean = false;
   
 
   GetAssigned_SubtaskProjects() {
+    this.loading = true;
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this._Categoryid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-
+        this.loading = false;
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
       
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);

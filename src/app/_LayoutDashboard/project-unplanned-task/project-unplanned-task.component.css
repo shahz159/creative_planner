@@ -2344,7 +2344,7 @@ li.modal-project-list-item {
     padding: 0.65rem 1rem;
     padding-left: 14px;
     list-style: none;
-    min-height: 200px;
+    min-height: 100px;
     margin-bottom: 0px;
     position: absolute;
     z-index: 1;

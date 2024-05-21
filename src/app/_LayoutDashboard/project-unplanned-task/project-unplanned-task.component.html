@@ -508,12 +508,12 @@
                                                             class="mr-2 cursor-pointer">
                                                             <mat-icon color='primary'>delete</mat-icon>
                                                         </span>
-                                                        <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                        <!-- <span mat-icon-button [matMenuTriggerFor]="menu"
                                                             aria-label="Example icon-button with a menu" matTooltip="More"
                                                             class="cursor-pointer">
                                                             <mat-icon color="primary">more_vert</mat-icon>
-                                                        </span>
-                                                        <mat-menu #menu="matMenu" xPosition="after">
+                                                        </span> -->
+                                                        <!-- <mat-menu #menu="matMenu" xPosition="after">
 
                                                             <button mat-menu-item mat
                                                             (click)="projectmodal()">
@@ -526,7 +526,12 @@
                                                                 <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
                                                                 <span>Add Action To Project</span>
                                                             </button>
-                                                        </mat-menu>
+                                                        </mat-menu> -->
+                                                        <div class="task-actions" >                                                                        
+                                                            <mat-icon title="Assign Project"  (click)="projectmodal()" class="mr-2" color='primary'>group</mat-icon>
+                                                         
+                                                            <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
+                                                      </div>
                                                         <mat-menu #AssignTo="matMenu">
                                                             <span *ngFor="let item1 of EmployeeList">
                                                                 <button mat-menu-item
@@ -1197,6 +1202,16 @@ item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
                     </span>
                 </li>
 
+
+
+                <div class=" d-flex align-items-center  justify-content-center " *ngIf="loading" style="height:65vh">
+                    <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
+                   <span class="visually-hidden"></span>
+                   </div>
+                </div>
+               
+                   
+                 
                 <!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
                     <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
