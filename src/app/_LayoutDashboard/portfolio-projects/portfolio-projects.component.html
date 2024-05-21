@@ -36,7 +36,7 @@
                             </div>
                             <div style="font-size: smaller;font-weight: 400;" data-toggle="tooltip" title="Portfolio Owner">{{_PortfolioOwner}}</div>
                         </h3>
-                        
+
                     </div>
                     <div class="portfolio-top-action">
                         <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
- 
+
         <!--begin:: Widgets/Best Sellers->
             <-- begin::Portlet -->
         <div class="kt-portlet mt-3 mb-0">
@@ -137,21 +137,21 @@
                         <a href="javascript:void(0)" (click)="labelNewProject();onButtonClick('new-pro')" [hidden]="HideStatusDropdown"
                             class="badge New-project kt-badge--inline mr-2 btn-sm  py-10px
                             " id="new-pro">
-                            {{CountNewProject}} New Project</a>
+                            {{CountNewProject}} New project</a>
                     </ng-container>
 
                     <ng-container *ngIf="CountCompletionUA>0">
                       <a href="javascript:void(0)" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')" [hidden]="HideStatusDropdown"
                           class="badge Completion kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
                           " id="Compl-Apprv">
-                          {{CountCompletionUA}} Completion Approval</a>
+                          {{CountCompletionUA}} Completion approval</a>
                   </ng-container>
 
                   <ng-container *ngIf="CountCancellation>0" >
                     <a href="javascript:void(0)" (click)="labelCancellationapproval();onButtonClick('Cancel-app')" [hidden]="HideStatusDropdown"
                         class="badge Cancel-app kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
                         " id="Cancel-app">
-                        {{CountCancellation}} Cancellation Approval</a>
+                        {{CountCancellation}} Cancellation approval</a>
                 </ng-container>
 
 
@@ -159,7 +159,7 @@
                   <a href="javascript:void(0)" (click)="labelForward();onButtonClick('Count-forward')" [hidden]="HideStatusDropdown"
                       class="badge Count-forward kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
                       " id="Count-forward">
-                      {{CountForward}} Forward Approval</a>
+                      {{CountForward}} Forward approval</a>
               </ng-container>
 
 
@@ -167,7 +167,7 @@
                 <a href="javascript:void(0)" (click)="labelDeadline();onButtonClick('Count-deadline')" [hidden]="HideStatusDropdown"
                     class="badge Count-deadline kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
                     " id="Count-deadline">
-                    {{CountDeadLineExtendedUA}} Deadline Extended Approval</a>
+                    {{CountDeadLineExtendedUA}} Deadline extended approval</a>
             </ng-container>
 
 
@@ -177,13 +177,13 @@
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA();onButtonClick('underappr')" [hidden]="HideStatusDropdown"
                             class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px cursor-pointer" id="underappr"> {{CountAll_UA}} New
-                            Approval</a>
+                            approval</a>
                     </ng-container>
                     <ng-container *ngIf="CountProjectHold > 0">
                         <a href="javascript:void(0)" (click)="labelProjectHold();onButtonClick('pro-hold')" [hidden]="HideStatusDropdown"
                             class="badge Hold_color kt-badge--inline mr-2 btn-sm text-white py-10px" id="pro-hold"
                             >
-                            {{CountProjectHold}} Project Hold</a>
+                            {{CountProjectHold}} Project hold</a>
                     </ng-container>
                     <ng-container *ngIf="CountRejecteds > 0">
                         <a href="javascript:void(0)" (click)="labelRejecteds();onButtonClick('reject')" [hidden]="HideStatusDropdown"
@@ -194,7 +194,7 @@
                     <ng-container *ngIf="Count_ToDoCompleted > 0">
                       <a href="javascript:void(0)" (click)="labelToDoCompleted();onButtonClick('todocomp')" [hidden]="HideStatusDropdown"
                           class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px" id="todocomp">
-                          {{Count_ToDoCompleted}} ToDoCompleted</a>
+                          {{Count_ToDoCompleted}} ToDocompleted</a>
                   </ng-container>
 
 
@@ -202,12 +202,12 @@
                         <a href="javascript:void(0)" (click)="labelToDoAchieved();onButtonClick('todoachi')" [hidden]="HideStatusDropdown"
                             class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px " id="todoachi"
                             > {{Count_ToDoAchieved}} ToDo
-                            Achieved</a>
+                            achieved</a>
                     </ng-container>
                     <ng-container *ngIf="Count_ToDoAchieved > 0">
                         <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
                             class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px " > {{Count_ToDoCompleted}} ToDo
-                            Completed</a>
+                            completed</a>
                     </ng-container>
 
 
@@ -217,7 +217,7 @@
                     <ng-container>
                       <a href="javascript:void(0)" *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')" [hidden]="HideStatusDropdown"
                         class="badge Delete-head kt-badge--inline mr-2 py-10px btn-sm" id="delete"><span>{{CountDeleted}}</span>
-                        Deleted Projects </a>
+                        Deleted projects </a>
                     </ng-container>
 
 
@@ -622,7 +622,7 @@
                                                   </div>
                                                 </td>
                                               </ng-container>
-                                          
+
 
                                                     <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
                                                     </ng-template> -->
@@ -646,7 +646,7 @@
 
 
 
-                                            
+
 
 
 
@@ -683,7 +683,7 @@
                                             <div *ngIf="item1.Status=='InProcess'">
                                                 <span
                                                     class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
-                                               
+
                                                 <!-- <span *ngIf="item1.Delaydays<0"
                                                     class="text-info delayDays">
                                                     <strong>{{item1.Delaydays}} Days Left </strong>
@@ -704,12 +704,12 @@
                                             <div *ngIf="item1.Status=='Under Approval'">
                                                 <span
                                                     class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Approval' : item1.Status }}</span>
-                                             
+
                                             </div>
                                             <div *ngIf="item1.Status=='Not Started'">
                                               <span
                                                   class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
-                                              
+
                                           </div>
                                             <div *ngIf="item1.Status=='New Todo'">
                                                 <span
