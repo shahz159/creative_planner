@@ -1,22 +1,14 @@
-  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3">
 
     <div class="row">
-        <!--begin:: Widgets/Best Sellers->
-            <-- begin::Portlet -->
-        <div class="kt-portlet mt-3">
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <!-- <span class="kt-portlet__head-title mr-4">
-                        <button type="button" (click)="BackBttn()"
-                            class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2">
-                            <i class="fa fa-arrow-left mr-0" aria-hidden="true"></i>
-                        </button>
-                    </span> -->
-                        <h3 class="kt-portlet__head-title mr-3">
-                            <strong data-toggle="tooltip" title="Portfolio name">{{_PortFolio_Namecardheader}}</strong>
-                            <button id="groupportfolio" class="btn btn-outline-hover-primary btn-sm btn-icon btn-circle"
-                                data-toggle="dropdown" style="color:#5867dd" (click)="btnEdit()" [disabled]="_MessageIfNotOwner!=''">
-                                <strong><i class="fa fa-edit m-2"></i></strong>
+        <div class="col-md-12">
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
+                <div class="kt-portlet__head">
+                    <div class="heading-info">
+                        <h3 class="kt-portlet__head-title">
+                            {{_PortFolio_Namecardheader}}
+                            <button id="groupportfolio" class="btn btn-sm btn-edit"
+                                data-toggle="dropdown" style="color:#5867dd" (click)="btnEdit()" [disabled]="_MessageIfNotOwner!=''"><i class="fa fa-edit"></i>
                             </button>
                             <span class=" ml-4" [hidden]="Max50Char">
                                 <small style="color:red;" >*Only 50 characters allowed</small>
@@ -44,25 +36,50 @@
                             </div>
                             <div style="font-size: smaller;font-weight: 400;" data-toggle="tooltip" title="Portfolio Owner">{{_PortfolioOwner}}</div>
                         </h3>
-
-                    <!-- Vali Work's -->
-                    <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
-                        <div class="kt-quick-search__form">
-                            <div class="input-group">
-                                <input type="text" class="form-control kt-quick-search__input pl-3"
-                                    placeholder="Search Projects" [(ngModel)]="_SearchProjects"
-                                    style="width: 170px;height:30px">
-                                <div class="input-group-prepend"><span class="input-group-text"><i
-                                            class="flaticon2-search-1"></i></span></div>
+                        
+                    </div>
+                    <div class="portfolio-top-action">
+                        <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
+                            <div class="kt-quick-search__form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control kt-quick-search__input pl-3"
+                                        placeholder="Search Projects" [(ngModel)]="_SearchProjects"
+                                        style="width: 300px;height:30px">
+                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                class="flaticon2-search-1"></i></span></div>
+                                </div>
                             </div>
                         </div>
+                        <div class="kt-todo__details">
+                                    <a class="btn btn-label-primary-graph btn-upper btn-sm btn-bold" role="button"
+                                        (click)="ProjectsGraphsClick()">
+                                        {{Project_Graph}}
+                                    </a>
+                        </div>
+                        <div class="kt-todo__details dropdown">
+                                    <a class="btn btn-label-primary-graph btn-upper btn-sm btn-bold" role="button" type="button" id="morebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M512 256c70.4 0 128-57.6 128-128S582.4 0 512 0s-128 57.6-128 128 57.6 128 128 128z m0 128c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z m0 384c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z"/></svg>
+                                    </a>
+                                    <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="morebutton" *ngIf="_MessageIfNotOwner==''">
+                                        <div class="" [hidden]="Share_preferences">
+                                            <a type="button" (click)="populateForm()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-plus mr-2"></i>Add Project</a>
+                                            <a type="button" (click)="share_Users()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-share-alt mr-2"></i> Share</a>
+                                            <a type="button" data-toggle="modal"
+                                            data-target="#exampleModal2" [hidden]="_btnShareDetails" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-file-alt mr-2"></i>Shared Details</a>
+                                        </div>
+                                      </div>
+                        </div>
                     </div>
-                    <!-- <input type="text" name="search" class="form-control kt-quick-search__input pl-3" [(ngModel)]="_SearchProjects">
-                    <div class="input-group-prepend"><span class="input-group-text"><i
-                        class="flaticon2-search-1"></i></span></div> -->
                 </div>
+            </div>
+ 
+        <!--begin:: Widgets/Best Sellers->
+            <-- begin::Portlet -->
+        <div class="kt-portlet mt-3 mb-0">
+            <div class="kt-portlet__head" style="border-bottom: 0px solid #ebedf2;">
+
                 <!-- Labels  -->
-                <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-toolbar pt-btns flex-column flex-sm-row text-center">
                     <!-- All Projects... -->
                     <!-- <a (click)="labelAll()" [hidden]="HideStatusDropdown"
                         class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
@@ -71,12 +88,12 @@
                     <!-- <div [hidden]="HideStatusDropdown"> -->
 
 
-
+                        <ng-container *ngIf="CountInprocess>0">
                     <a href="javascript:void(0)" (click)="labelAll(); onButtonClick('tot')"  [hidden]="HideStatusDropdown"
                       class="badge total-project kt-badge--inline mr-2 py-10px btn-sm active-total-project" id="tot" tabindex="0" >
                       <span>{{TotalProjects}}</span> Total Projects
                     </a>
-
+                </ng-container>
 
 
 
@@ -188,39 +205,11 @@
                             <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
                         </a>
                     </div> -->
-                    <div class="kt-todo__details">
-                        <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
-                            <li class="nav-item">
-                                <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2" role="button"
-                                    (click)="ProjectsGraphsClick()">
-                                    {{Project_Graph}}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="kt-todo__details">
-                        <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold">
-                            <li class="dropdown nav-item">
-                                <a class="btn btn-outline-secondary btn-upper btn-sm btn-bold mr-2" role="button" type="button" id="morebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M512 256c70.4 0 128-57.6 128-128S582.4 0 512 0s-128 57.6-128 128 57.6 128 128 128z m0 128c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z m0 384c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z"/></svg>
-                                </a>
-                                <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="morebutton" *ngIf="_MessageIfNotOwner==''">
-                                    <div class="" [hidden]="Share_preferences">
-                                        <a type="button" (click)="populateForm()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-plus mr-2"></i>Add Project</a>
-                                        <a type="button" (click)="share_Users()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-share-alt mr-2"></i> Share</a>
-                                        <a type="button" data-toggle="modal"
-                                        data-target="#exampleModal2" [hidden]="_btnShareDetails" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-file-alt mr-2"></i>Shared Details</a>
-                                    </div>
-                                  </div>
-
-                            </li>
-                        </ul>
-                    </div>
                     <!-- </div> -->
                 </div>
             </div>
             <!-- Portfolio Projects -->
-            <div class="kt-portlet__body pt-3">
+            <div class="kt-portlet__body pt-3 pb-2">
                 <div class="tab-content">
                     <div class="tab-pane active" aria-expanded="true" [hidden]="HideProjects">
 
@@ -230,11 +219,11 @@
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                     <div class="row">
 
-                                        <div class="col-sm-12" *ngIf="_MessageIfNotOwner==''">
+                                        <div class="col-sm-12 table-scroll" *ngIf="_MessageIfNotOwner==''">
                                             <table class="brdr kt-pot-ttls table table-hover dataTable no-footer dtr-inline" style="border-collapse: collapse !important;">
                                                 <thead>
-                                                    <td class="icond"></td>
-                                                    <td (click)="_SortProjectList()"> <p class="kt-widget__title mb-0">
+                                                    <th class="icond" style="z-index: 12 !important;"></th>
+                                                    <th (click)="_SortProjectList()"> <p class="kt-widget__title mb-0">
                                                         <a [hidden]="Z2A" class="mr-2" data-toggle="kt-tooltip"
                                                             title="Click to sort">
                                                             <i class="fas fa-sort-alpha-up"></i>
@@ -242,21 +231,21 @@
                                                         <a [hidden]="A2Z" class="mr-2" data-toggle="kt-tooltip"
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
-                                                        </a>ProjectName</p></td>
-                                                    <td></td>
-                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></td>
-                                                    <td><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></td>
-                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></td>
-                                                    <td ><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></td>
-                                                    <td><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Last Update </span> </td>
-                                                    <td><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </td>
+                                                        </a>ProjectName</p></th>
+                                                    <th></th>
+                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></th>
+                                                    <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th>
+                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
+                                                    <th><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
+                                                    <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </th>
+                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </th>
 
-                                                    <td>
+                                                    <th>
 
                                                       <div class="mx-2 p-1"> <span class="kt-widget__other " *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>  Deleted by</span></div>
                                                      <span class="kt-widget__other tb-w-45" *ngIf="!showDeletedPrjOnly"> Actions</span>
-                                                    </td>
-                                            <td *ngIf="showDeletedPrjOnly" > <i class="fas fa-sort"></i> References</td>
+                                                    </th>
+                                            <th *ngIf="showDeletedPrjOnly" > <i class="fas fa-sort"></i> References</th>
                                                 </thead>
 
 
@@ -265,8 +254,6 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-
-
                                             <tr *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
@@ -284,7 +271,8 @@
                                                     'NewTodo':item1.Status=='New Todo'}">
 
                                                     <td class="icond">
-                                                        <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
+                                                        <div class="d-flex align-items-center">
+                                                            <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
                                                             placement="right" data-trigger="focus" title="Project Info!" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -345,6 +333,27 @@
                                                                     src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
                                                                     title="Not Linked"></a>
                                                         </ng-template>
+                                                        <div class="port-info-btn">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                                                <defs></defs>
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                                    <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                                    <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="port-info-btn-no-acive">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                                                    <defs></defs>
+                                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                                                        <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                                        <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                                                    </g>
+                                                                </svg>
+                                                        </span>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <p class="kt-widget__title mb-0 kt-project-name" title="{{item1.Project_Name}}"> {{item1.Project_Name}}
@@ -385,7 +394,7 @@
                                                     <td>
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
                                                     </td>
-<ng-container *ngIf="!showDeletedPrjOnly">
+                                                <ng-container *ngIf="!showDeletedPrjOnly">
                                                     <td>
                                                         <span class="kt-widget__other text-nowrap ng-star-inserted">
                                                             <div
@@ -396,24 +405,24 @@
                                                           </span>
 
                                                             <ng-template #Projecttype>
-                                                              <td>
+                                                              <div>
                                                                 <p class="kt-widget__other text-nowrap font">
                                                                     {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
 
                                                                     <p data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
 
-                                                                    </td>
+                                                                    </div>
                                                             </ng-template>
+                                                        </td>
                                                     <td>
                                                       <p class="kt-widget__other">
                                                         <!-- |dateAgo -->
                                                         {{item1.Project_StartDate|dateAgo}}
                                                     </p>
                                                     </td>
+                                                </ng-container>
 
-                                                  </ng-container>
-
-<ng-containter  *ngIf="showDeletedPrjOnly">
+                                                <ng-container  *ngIf="showDeletedPrjOnly">
                                                     <td>
                                                       <span class="kt-widget__other text-nowrap ng-star-inserted">
                                                           <div
@@ -424,7 +433,7 @@
                                                         </span>
 
                                                           <ng-template #Projecttype>
-                                                            <td>
+                                                            <div>
                                                               <p class="kt-widget__other text-nowrap font">
                                                                   {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
 
@@ -433,12 +442,10 @@
 
                                                                       {{item1.Project_StartDate|dateAgo}}
                                                                   </p> -->
-                                                                  </td>
+                                                                </div>
                                                           </ng-template>
-
-                                                </ng-containter>
-
-
+                                                        </td>
+                                                </ng-container>
 
 
 
@@ -447,9 +454,10 @@
 
 
 
-<ng-container *ngIf="!showDeletedPrjOnly">
-<td>
-                                                    <span class="kt-widget__other text-nowrap ng-star-inserted">
+
+
+                                            <ng-container *ngIf="!showDeletedPrjOnly">
+                                                <td>
                                                     <div *ngIf="item1.Status=='Delay'">
                                                       <span
                                                           class="Delay_color font-weight-400">{{item1.Status}}
@@ -461,7 +469,6 @@
                                                             </span>
                                                       </span>
                                                   </div>
-                                                    </span>
                                                   <div *ngIf="item1.Status=='Completed'">
                                                       <span
                                                           class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
@@ -575,15 +582,16 @@
                                                   </div>
                                                 </td>
                                               </ng-container>
-                                             <td>
+                                          
 
                                                     <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
                                                     </ng-template> -->
                                                     <!-- <ng-template #deletedbys ><td>deleting</td>  </ng-template> -->
 
                                                     <ng-container *ngIf="!showDeletedPrjOnly;else deletedby">
-                                                      <td *ngIf="viewpreference != 'View Only'">
-                                                        <div class="tb-w-45">
+                                                        <td>
+                                                      <div *ngIf="viewpreference != 'View Only'">
+                                                        <div class="">
                                                           <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
                                                           (click)="DeleteProject(item1.Project_ID,item1.Portfolio_ID,item1.Project_Code,item1.Project_Name,item1.Created_By)">
                                                           <i class="fas fa-trash-alt mr-0"
@@ -591,13 +599,14 @@
                                                        </a>
                                                         </div>
 
-                                                      </td>
+                                                      </div>
+                                                    </td>
                                                     </ng-container>
 
 
 
 
-                                             </td>
+                                            
 
 
 
@@ -606,7 +615,6 @@
 
 <ng-container *ngIf="showDeletedPrjOnly">
                                              <td>
-                                              <span class="kt-widget__other text-nowrap ng-star-inserted">
                                               <div *ngIf="item1.Status=='Delay'">
                                                 <span
                                                     class="Delay_color font-weight-400">{{item1.Status}}
@@ -618,7 +626,6 @@
                                                       </span>
                                                 </span>
                                             </div>
-                                              </span>
                                             <div *ngIf="item1.Status=='Completed'">
                                                 <span
                                                     class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
@@ -636,7 +643,7 @@
                                             <div *ngIf="item1.Status=='InProcess'">
                                                 <span
                                                     class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
-                                                <br>
+                                               
                                                 <!-- <span *ngIf="item1.Delaydays<0"
                                                     class="text-info delayDays">
                                                     <strong>{{item1.Delaydays}} Days Left </strong>
@@ -657,12 +664,12 @@
                                             <div *ngIf="item1.Status=='Under Approval'">
                                                 <span
                                                     class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Approval' : item1.Status }}</span>
-                                                <br>
+                                             
                                             </div>
                                             <div *ngIf="item1.Status=='Not Started'">
                                               <span
                                                   class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
-                                              <br>
+                                              
                                           </div>
                                             <div *ngIf="item1.Status=='New Todo'">
                                                 <span
@@ -775,7 +782,14 @@
                                     class="btn-v-icon" title="View">
                                      <ng-container *ngIf="item1.availableports && item1.availableports.length > 0; else noReference">
                                        <span>
-                                        <svg fill="currentColor" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="view"> <g> <path d="M12,21c-5,0-8.8-2.8-11.8-8.5L0,12l0.2-0.5C3.2,5.8,7,3,12,3s8.8,2.8,11.8,8.5L24,12l-0.2,0.5C20.8,18.2,17,21,12,21z M2.3,12c2.5,4.7,5.7,7,9.7,7s7.2-2.3,9.7-7C19.2,7.3,16,5,12,5S4.8,7.3,2.3,12z"></path> </g> <g> <path d="M12,17c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5S14.8,17,12,17z M12,9c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S13.7,9,12,9z"></path> </g> </g> </g></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                            <defs></defs>
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"></rect>
+                                                <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                            </g>
+                                        </svg>
                                        </span>
 
                                      </ng-container>
@@ -816,20 +830,8 @@
 
 
                                             </tr>
-
-
                                            </ng-container>
                                             </tbody>
-
-
-
-
-
-
-
-
-
-
                                           </table>
 
 
@@ -932,7 +934,7 @@
             </div>
         </div>
     </div>
-
+</div>
 </div>
     <!-- Model-Opens On Share Button  DIV FOUR-->
     <!--Begin::Row   DIV Four-->
