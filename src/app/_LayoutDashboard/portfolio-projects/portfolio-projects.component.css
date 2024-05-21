@@ -2153,3 +2153,19 @@ td:nth-child(4) {
       text-overflow: ellipsis;
   }
 }
+.Completion{
+  background-color: #b2d732;
+  color: #000;
+}
+.Cancel-app{
+  background-color: #EE4137;
+  color: white;
+}
+.Count-deadline{
+  background-color: #EE4137;
+  color: white;
+}
+.Count-forward{
+  background-color: #b2d732;
+  color: #000;
+}

@@ -68,11 +68,13 @@ export class PortfolioProjectsComponent implements OnInit {
   countnewprojecRejected: any;
   countprojectCompletelyRejected: any;
   CountForward: any;
+  CountCancellation:any
   CountCompletionUA: any;
   CountDeadLineExtendedUA: any;
   CountProjectHoldUA: any;
   CountUnderApproval: any;
   CountProjectHold: any;
+  CountCompletionapproval:any
   CountAll_UA: any;
   CountRejecteds: any;
   MaxDelays: any;
@@ -269,6 +271,13 @@ export class PortfolioProjectsComponent implements OnInit {
         if (!this.CountCompletionUA) {
           this.CountCompletionUA = 0;
         }
+
+        this.CountCancellation = rez['Cancellation Under Approval'];
+        if (!this.CountCancellation) {
+          this.CountCancellation = 0;
+        }
+
+
         this.CountDeadLineExtendedUA = rez['Deadline Extended Under Approval'];
         if (!this.CountDeadLineExtendedUA) {
           this.CountDeadLineExtendedUA = 0;
@@ -301,7 +310,7 @@ export class PortfolioProjectsComponent implements OnInit {
         if (!EnactiveUA) {
           EnactiveUA = 0;
         }
-        this.CountAll_UA = this.CountForward + this.CountCompletionUA + this.CountDeadLineExtendedUA + this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
+        this.CountAll_UA =    this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
         this.CountNewProject = this.CountNewProject;
         this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
         //console.log("rejecteds Projects Count---->",this.CountRejecteds)
@@ -368,12 +377,16 @@ export class PortfolioProjectsComponent implements OnInit {
             (this._PortProjStatus=='InProcess' && this.CountInprocess==0) ||
             (this._PortProjStatus=='Not Started' && this.CountInprocess ==0) ||
             (this._PortProjStatus=='Completed' && this.CountCompleted == 0) ||
-            (this._PortProjStatus == 'New Project' && this.CountNewProject==0) ||
+            (this._PortProjStatus == 'New Project Rejected' && this.CountNewProject==0) ||
             (this._PortProjStatus=='Rejected' && this.CountRejecteds==0) ||
             (this._PortProjStatus=='ToDo Achieved' && this.Count_ToDoAchieved==0) ||
             (this._PortProjStatus=='Under Approval' && this.CountAll_UA==0) ||
             (this._PortProjStatus=='ToDo Completed' && this.Count_ToDoCompleted==0)||
+            (this._PortProjStatus=='Completion Under Approval' && this.CountCompletionUA==0)||
+            (this._PortProjStatus=='Cancellation Under Approval' && this.CountCancellation==0)||
+            (this._PortProjStatus=='Deadline Extend Under Approval' && this.CountDeadLineExtendedUA==0)||
             (this._PortProjStatus==''&&this.showDeletedPrjOnly==true && this.CountDeleted==0)
+
          ){
         this.labelAll()
         this.onButtonClick('tot')
@@ -808,6 +821,11 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!this.CountCompletionUA) {
                 this.CountCompletionUA = 0;
               }
+
+              this.CountCancellation = rez['Cancellation Under Approval'];
+              if (!this.CountCancellation) {
+                this.CountCancellation = 0;
+              }
               this.CountDeadLineExtendedUA = rez['Deadline Extended Under Approval'];
               if (!this.CountDeadLineExtendedUA) {
                 this.CountDeadLineExtendedUA = 0;
@@ -833,7 +851,8 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!EnactiveUA) {
                 EnactiveUA = 0;
               }
-              this.CountAll_UA = this.CountForward + this.CountCompletionUA + this.CountDeadLineExtendedUA + this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
+              this.CountAll_UA =   this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
+
               this.CountNewProject = this.CountNewProject;
               this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
               // console.log("rejecteds Projects Count---->", this.CountRejecteds)
@@ -925,6 +944,10 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!this.CountCompletionUA) {
                 this.CountCompletionUA = 0;
               }
+              this.CountCancellation = rez['Cancellation Under Approval'];
+              if (!this.CountCancellation) {
+                this.CountCancellation = 0;
+              }
               this.CountDeadLineExtendedUA = rez['Deadline Extended Under Approval'];
               if (!this.CountDeadLineExtendedUA) {
                 this.CountDeadLineExtendedUA = 0;
@@ -956,7 +979,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               if (!EnactiveUA) {
                 EnactiveUA = 0;
               }
-              this.CountAll_UA = this.CountForward + this.CountCompletionUA + this.CountDeadLineExtendedUA + this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
+              this.CountAll_UA =   this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
               this.CountNewProject = this.CountNewProject;
               this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
               // console.log("rejecteds Projects Count---->", this.CountRejecteds)
@@ -1029,6 +1052,27 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this._PortProjStatus = "";
   }
 
+  labelCompletionapproval(){
+    this._PortProjStatus="Completion Under Approval"
+    this.showDeletedPrjOnly=false;
+    console.log("Completion approval",this._PortProjStatus)
+  }
+
+  labelCancellationapproval(){
+    this._PortProjStatus='Cancellation Under Approval'
+    this.showDeletedPrjOnly=false
+  }
+
+
+  labelForward(){
+    this._PortProjStatus="Forward Under Approval"
+    this.showDeletedPrjOnly=false
+  }
+
+  labelDeadline(){
+    this._PortProjStatus="Deadline Extended Under Approval"
+    this.showDeletedPrjOnly=false
+  }
 
 
   labelDelay() {
@@ -1058,7 +1102,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelRejecteds() {
-    this._PortProjStatus = "Rejected";
+    this._PortProjStatus = "New Project Rejected";
     this._PortProjStatus.includes('Rejected');
     this.showDeletedPrjOnly=false;
     //this._PortProjStatus.includes('New Project Rejected');
@@ -1077,9 +1121,11 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelUA() {
+    debugger
     this._PortProjStatus = "Under Approval";
     this._PortProjStatus.includes('Under Approval')
     this.showDeletedPrjOnly=false;
+    console.log(this._PortProjStatus,"Under Apprval")
   }
 
   labelProjectHold() {
@@ -1646,7 +1692,11 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
        'reject':'active-rejected',
        'todocomp':'active-todo-completed-head',
        'todoachi':'active-todo-achieved',
-       'new-pro':'active-new-project-head'
+       'new-pro':'active-new-project-head',
+       'Compl-Apprv':'active-Completion',
+       'Cancel-app':'active-Cancel-app',
+       'Count-forward':'active-Count-forward',
+       'Count-deadline':'active-Count-deadline'
 
     };
 

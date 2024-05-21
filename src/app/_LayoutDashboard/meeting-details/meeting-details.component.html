@@ -43,9 +43,9 @@
 
                                         
                
-                                            <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
+                                            <!-- <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
                                                 <span>{{startTime |date: 'h:mm'}}</span>
-                                            </span>
+                                            </span> -->
                                         </div> 
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
@@ -891,7 +891,9 @@
                                                        
                                                         <!-- <div class="muted-title">Date</div> -->
                                                     </div>
-                                                    <!-- <diV class="kt-metric-duration">
+
+
+                                                    <diV class="kt-metric-duration" *ngIf="meetingInProgress">
                                                         <span class="duration">
                                                             {{ formatTime(elapsedTime) }}
                                                         </span>
@@ -921,7 +923,10 @@
                                                                 </span>
                                                             </ng-container>
                                                         </span>
-                                                    </diV> -->
+                                                    </diV>
+
+
+
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -968,9 +973,11 @@
                                                             <div class="muted-title">End Time</div>
                                                         </div>
                                                     </div>
-                                                    <div class="kt-metric-time">
+                                                    <div class="kt-metric-time"  >
+                                                        <!-- <ng-container *ngIf="!meetingInProgress && !meetingStopped">
                                                         <div class="dark-title" >{{hours}} hr {{minutes}} min</div>
-                                                        <!-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> -->
+                                                    </ng-container> -->
+                                                        <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div>
                                                        
                                                         <div class="muted-title">Duration</div>
                                                     </div>
@@ -1545,7 +1552,16 @@
                                                 d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z">
                                             </path>
                                         </svg>
-                                    </a>       
+                                    </a>   
+                                    
+                                    
+                                    <a class="kt-inbox__icon" title="Assign Project " (click)="Slide_AssignTask()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" fill="currentColor" height="16"
+                                        width="16" class="iconify iconify--mdi" style="
+                                        width: 30px;
+                                        height: 30px;
+                                    "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"></path><path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" ></path><path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" ></path><path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" ></path><path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" ></path><path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" ></path></g></svg>
+                                    </a>  
                                 </div>
                                
 
@@ -1553,7 +1569,7 @@
                                 <div class="Kt-Pd-Status Done"  *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</div>
 
                                 <div style="display: flex; align-items: center; gap: 8px;">  
-                                    <div class="kt-meeting-status started">
+                                    <!-- <div class="kt-meeting-status started">
                                         <span class="kt-meeting-status-icon">
                                             <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                 version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -1585,30 +1601,45 @@
                                             <svg xmlns="http://www.w3.org/2000/svg"  width="16px" height="16px" fill="currentcolor" style="transform: rotate(140deg);" viewBox="0 0 1024 1024" version="1.1"><path d="M670.19 870.91c-24.45 0-50.53-3.21-78.33-9.6-96.61-22.19-173.3-78.8-229.32-125.64-62.52-52.29-132.62-117.97-178.5-208.74-24.27-48.02-35.55-93.81-35.48-144.03-4.36-84.8 54.81-140.17 99.78-174.49 33.02-25.23 76.49-24.12 108.15 2.77 29.49 25.05 58.71 53.9 86.83 85.74 26.99 30.56 26.72 81.98-0.62 117.06-1.99 2.55-4.09 5-6.21 7.43-1.16 1.35-2.33 2.68-3.45 4.06-24.93 30.47-24.93 30.47-4.11 60.37 47.83 68.7 104.18 111.96 172.27 132.21 5.73 1.69 6.89 0.85 9.67-2.07l3.18-3.3c7.58-7.87 14.72-15.3 21.35-23.05 18.91-22.13 44.47-35.21 71.99-36.81 26.99-1.47 53.42 8.2 74.24 27.51 20.58 19.11 41.6 39.81 62.48 61.53v0.01c39.46 41.07 42.03 91.2 7.06 137.53-46.21 61.22-105.84 91.51-180.98 91.51zM300.83 245.37c-6.41 0-12.87 2.32-18.97 6.98-56.57 43.17-80.65 82.74-78.08 128.29l0.05 0.83-0.01 0.83c-0.16 42.04 8.95 78.96 29.54 119.7 41.35 81.82 106.42 142.6 164.62 191.27 51.28 42.89 121.07 94.62 206.24 114.18 91.03 20.91 155.47 1.41 202.84-61.33 18.43-24.42 17.56-44.75-2.81-65.95-20.15-20.97-40.4-40.92-60.22-59.31-9.81-9.11-21.47-13.51-33.44-12.86-12.35 0.71-24.12 6.95-33.18 17.56-7.7 8.99-15.76 17.36-23.55 25.45l-3.14 3.26c-17.68 18.4-40.27 24.21-65.27 16.76-80.57-23.97-146.61-74.21-201.88-153.6-37.93-54.47-31.22-80.62 6.69-126.95 1.46-1.79 2.98-3.54 4.5-5.29 1.48-1.71 2.96-3.4 4.34-5.17 10.76-13.81 12.09-35.98 2.78-46.5-26.38-29.88-53.7-56.86-81.19-80.21-6.22-5.29-13.01-7.94-19.86-7.94z"/></svg>
                                         </span>
                                         <span class="kt-meeting-status-title">Leave</span>
-                                    </div>                             
-                                    <div class="kt-project-leave d-none"  *ngIf="Meetingstatuscom==Completed">                                        
+                                    </div>  -->
+
+                                    <div class="kt-project-leave "          *ngIf="Meetingstatuscom==Completed">                                        
+                                        <ng-container *ngIf="Isadmin==true">
+                                            <ng-container>
+                                                <span class="title" data-toggle="modal" data-target="#repeatModal" >Repeat meeting</span>
+                                            </ng-container>
+                                        </ng-container>
+
+
+                                        <span class="icon">
+                                            <svg width="22px" height="22px" viewBox="0 0 24 24" id="_24x24_On_Light_Session-Leave" data-name="24x24/On Light/Session-Leave" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="view-box" width="24" height="24" fill="none"></rect> <path id="Shape" d="M2.95,17.5A2.853,2.853,0,0,1,0,14.75v-12A2.854,2.854,0,0,1,2.95,0h8.8a.75.75,0,0,1,0,1.5H2.95A1.362,1.362,0,0,0,1.5,2.75v12A1.363,1.363,0,0,0,2.95,16h8.8a.75.75,0,0,1,0,1.5Zm9.269-4.219a.751.751,0,0,1,0-1.061L14.939,9.5H5.75a.75.75,0,0,1,0-1.5h9.19L12.219,5.28A.75.75,0,1,1,13.28,4.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.751.751,0,0,1-1.061,0Z" transform="translate(3.25 3.25)" fill="currentColor"></path> </g></svg>
+                                        </span>
+                                    </div>
+
+                                    
+                                    <div class="kt-project-leave "          *ngIf="Meetingstatuscom==Completed">                                        
                                         <ng-container *ngIf="Isadmin==true">
 
 
-                                            <ng-container *ngIf="!meetingInProgress && !meetingStopped">
+                                            <!-- <ng-container *ngIf="!meetingInProgress && !meetingStopped">
                                                 <span class="kt-meeting-status-title" (click)="startMeeting()">
                                                     Start Meeting
                                                 </span>
-                                            </ng-container>
+                                            </ng-container> -->
 
+                                            
 
-
-                                            <ng-container *ngIf="meetingInProgress">
-                                            <span class="title" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
+                                            <ng-container>
+                                            <span class="title" data-toggle="modal" data-target="#exampleModal" >End meeting</span>
                                            </ng-container>
                                         </ng-container>
                                            <!-- <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
                                             <span class="title" (click)="EndMeetingSweetAlertBox()">End Meeting</span>
-                                           </ng-container> -->
+                                           </ng-container>   *ngIf="meetingInProgress"--> 
 
 
                                         <ng-container *ngIf="Isadmin==false">
-                                        <span class="title" (click)="leavemeet($event)">Leave Meeting</span>
+                                        <span class="title" (click)="leavemeet($event)">Leave meeting</span>
                                        </ng-container>
         
                         
@@ -1620,12 +1651,12 @@
                                    
 
 
-                                    <!-- <ng-container *ngIf="meetingInProgress">
+                                                <!-- <ng-container *ngIf="meetingInProgress">
 
 
-                                        <span (click)="leaveMeeting()">Leave Meeting</span>
-                                    </ng-container>
-                                     <span class="text-white">|</span> -->
+                                                    <span (click)="leaveMeeting()">Leave Meeting</span>
+                                                </ng-container>
+                                                <span class="text-white">|</span> -->
 
 
 
@@ -1659,7 +1690,7 @@
                                     <div class="options event">Event</div>
                                     <div class="options monthly">{{item.Recurrence}}</div>
                                     <ng-container  *ngIf="Meetingstatuscom!='Completed'">
-                                    <!-- <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
+                                    <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
                                         <span class="title">Private Notes</span>
                                         <span class="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
@@ -1678,7 +1709,7 @@
                                                     fill="currentcolor" />
                                             </svg>
                                         </span>
-                                    </div> -->
+                                    </div>
                                 </ng-container>
                                 </div>
                             </div>
@@ -2183,7 +2214,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
                                             <span class="label-icon">
@@ -2199,12 +2230,7 @@
                                         <div class="details-form-control">
                                             <ng-container *ngIf="ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0">
                                             <div class="project"  *ngFor="let item of ActionedAssigned_Josn;let i = index">
-                                                <!-- <span class="icon">
-                                                    <img width="16"
-                                                        src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                        height="16">
-                                                </span> -->
-                                               
+                                            
                                                 <span class="title">{{i+1}}. {{item.Task_Name}}</span>
                                             </div>
                                         </ng-container>
@@ -2213,7 +2239,7 @@
                                         </ng-container>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>  -->
                                 <!-- <div class="row">
                                     <div class="col-md-3 details-bg">
                                         <div class="details-label">
@@ -2612,7 +2638,7 @@
                 data-target="#attendes_notes" aria-expanded="false"
                 aria-controls="attendes_notes">
                 <div class="head-content">
-                    <span class="accordion-heading">View All Team members notes</span>
+                    <span class="accordion-heading">View all attendees notes</span>
                     <!-- <span class="message-count"> 24 Messages</span> -->
                 </div>
                 <div>
@@ -4503,7 +4529,7 @@
                             </div>
                         </a>
                     </h2>
-                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse" *ngFor="let Agenda of meeting.AgendaDetails;let i = index"
+                    <div  id="attendes_notes{{meeting.Schedule_date}}" class="accordion-collapse collapse show" *ngFor="let Agenda of meeting.AgendaDetails;let i = index"
                         aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
                         <div class="accordion-body">
                             
@@ -4552,6 +4578,283 @@
     </div>
 </div>
 <!--  Previous Meeting Notes sidebar End -->
+
+
+<!--  Assign Project sidebar  start -->
+<div id="Assign_Project" class="previous-sidebar sideInfobar animate-right">
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <h4 class="mb-0">Assign Project
+                </h4>
+                <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                    (click)="closeAssign()">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
+                        <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+            <div class="kt-met-flr">
+                <div class="d-flex">
+                    <div class="kt-left-view">
+
+                    </div>
+                </div>
+            </div>    
+            
+            <div class="accordion accordion-attendes-notes " id="AssignTask_List">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="AssignTaskOne">
+                        <a class="accordion-button" type="button" data-toggle="collapse"
+                            data-target="#AssignTask_notes" aria-expanded="false"
+                            aria-controls="AssignTask_notes">
+                            <div class="head-content">
+                                <span class="accordion-heading" >Assign Project</span>
+                            
+                            </div>
+                            <div>
+                                <span class="accordion-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                        viewBox="0 0 15 9" fill="none">
+                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </a>
+                    </h2>
+                    <div id="AssignTask_notes" class="accordion-collapse collapse"
+                        aria-labelledby="AssignTaskOne" data-parent="#AssignTask_List">
+                        <div class="accordion-body" >
+                            <ul class="attendees-note-userlist" *ngFor="let item of AssignedTask">
+                                <li class="attendees-note-user">
+                                  
+                                     <div class="mb-2 card" >
+                                            <div class="card-body p-2 Replied_border_left_true_warning mr-2">
+                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                        <div class="kt-inbox__actions"></div>
+                                                    </div>
+                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div>
+                                                               
+                                                            </div>&nbsp; <div
+                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
+                                                                <span
+                                                                    class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                        <div class="my-2">
+                                                            <span data-toggle="tooltip" title="Created Date!"
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                <div>
+                                                                    <img src="../assets/icons/create2.png"
+                                                                        class="badge-img">
+                                                                </div>
+                                                                <div> {{item.Creation_Date|date}}</div>
+                                                            </span>
+                                                            <span
+                                                                class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
+                                                                Assigned Task/Project <mat-icon role="img" color="success"
+                                                                    class="mat-icon notranslate ml-2 mr-2 mat-success material-icons mat-ligature-font mat-icon-no-color"
+                                                                    aria-hidden="true" ng-reflect-color="success"
+                                                                    data-mat-icon-type="font">task_alt </mat-icon>
+                                                                <b> {{item.AssignedTo}}</b>
+                                                            </span>
+                                                            <span data-toggle="tooltip" title="Project Status!"
+                                                                class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
+                                                                ng-reflect-ng-class="[object Object]">
+                                                                <div> {{item.Status}}</div>
+                                                            </span>
+                                                          
+                                                        </div>
+                                                        <div class="my-1">
+                                                           
+                                                        </div>
+                                                        <div class="mt-2">
+    
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-inbox__datetime"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+
+
+
+
+                    <div class="accordion accordion-attendes-notes"   id="Assgin_lists">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="AssignOnes">
+                                <a class="accordion-button" type="button" data-toggle="collapse"
+                                    data-target="#Assign_notes" aria-expanded="false"
+                                    aria-controls="Assign_notes">
+                                    <div class="head-content">
+                                        <span class="accordion-heading">Action Project</span>
+                                     
+                                    </div>
+                                    <div>
+                                        <span class="accordion-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                                viewBox="0 0 15 9" fill="none">
+                                                <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                                    stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </a>
+                            </h2>
+                            <div id="Assign_notes" class="accordion-collapse collapse"
+                                aria-labelledby="AssignOnes" data-parent="#Assgin_lists">
+                                <div class="accordion-body">
+                                    <ul class="attendees-note-userlist"  *ngFor="let item of Actiontask">
+                                        <li class="attendees-note-user">
+                                                                                                          
+                                                <div class="mb-2 card">
+                                                    <div class="card-body p-2 Replied_border_left_true_underApprovals mr-2">
+                                                        <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+        
+                                                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                                                <div class="kt-inbox__actions">
+                                                                  
+                                                                    <span></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                                <div
+                                                                    class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
+                                                                    <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
+                                                                    data-trigger="focus"  data-toggle="tooltip" title="View Action!" >
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
+                                                                        <path d="M12.2812 0.814453H2.86279C2.33236 0.814453 1.82365 1.02517 1.44858 1.40024C1.07351 1.77531 0.862793 2.28402 0.862793 2.81445V18.8145C0.862793 19.3449 1.07351 19.8536 1.44858 20.2287C1.82365 20.6037 2.33236 20.8145 2.86279 20.8145H14.8628C15.3932 20.8145 15.9019 20.6037 16.277 20.2287C16.6521 19.8536 16.8628 19.3449 16.8628 18.8145V5.48705L12.2812 0.814453Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                        <rect x="3.06885" y="4.28076" width="6.5376" height="2.14" fill="currentColor"></rect>
+                                                                        <rect x="3.06885" y="7.14209" width="6.57373" height="2.14" fill="currentColor"></rect>
+                                                                        <rect x="11.6045" y="4.28076" width="1.50586" height="2.14" fill="currentColor"></rect>
+                                                                        <rect x="11.6045" y="7.14209" width="1.50586" height="2.14" fill="currentColor"></rect>
+                                                                        <path d="M11.5101 16.0201C11.2836 16.5558 10.9292 17.028 10.4781 17.3951C10.0269 17.7623 9.49264 18.0134 8.92202 18.1264C8.3514 18.2394 7.76178 18.211 7.20471 18.0435C6.64764 17.876 6.14008 17.5745 5.72641 17.1656C5.31274 16.7566 5.00556 16.2525 4.83171 15.6974C4.65786 15.1423 4.62264 14.553 4.72913 13.9811C4.83562 13.4093 5.08058 12.8722 5.4426 12.4169C5.80461 11.9615 6.27265 11.6018 6.8058 11.3691" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                        <path d="M11.5103 14.1641C11.5103 13.8164 11.4418 13.4721 11.3087 13.1509C11.1757 12.8297 10.9807 12.5379 10.7348 12.292C10.489 12.0462 10.1971 11.8512 9.87593 11.7181C9.55473 11.5851 9.21046 11.5166 8.86279 11.5166V14.1641H11.5103Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                        </svg>
+                                                                   </a>
+    
+                                                                    <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
+                                                                </div>
+                                                                <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
+                                                                <div class="my-2">
+    
+                                                                    <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                        <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                                        <div>
+                                                                            {{item.Creation_Date| date:'d MMM, y' }}
+                                                                        </div>
+                                                                    </span>
+                                                                    <span
+                                                                        class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                        Action Added To
+                                                                        <mat-icon color='primary' class="ml-2 mr-2">task_alt
+                                                                        </mat-icon>
+                                                                        <b>{{item.Project_Name}}</b>
+                                                                    </span>
+                                                                    <span
+                                                                        class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                        Assigned To
+                                                                        <mat-icon color='primary' class="ml-2 mr-2">task_alt
+                                                                        </mat-icon>
+                                                                        <b>{{item.Assigned_Name}}</b>
+                                                                    </span>
+                                                                    <span data-toggle="tooltip" title="Assigned Date!"
+                                                                        class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                        <div>
+                                                                            {{item.Modified_DT| date:'d MMM, y'}}
+                                                                        </div>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="">
+                                                                    <label  data-toggle="tooltip" title="Project Type!"
+                                                                    class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
+                                                                    <i class="fa fa-clone mr-2"></i>{{item.Project_type }} </label>
+        
+                                                                    <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                            class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                            [ngClass]="{
+                                                                              'kt-badge completed ': item.Status === 'Completed',
+                                                                              'kt-badge in-process': item.Status === 'InProcess',
+                                                                              'kt-badge rejecteds': item.Status === 'Rejected',
+                                                                              'kt-badge project-complete-rejected': item.Status === 'Project Complete Rejected',
+                                                                              'kt-badge new-project-reject': item.Status === 'New Project Rejected',
+        
+                                                                              ' kt-badge completion-under-approval': item.Status === 'Completion Under Approval',
+                                                                              'kt-badge deadline-extend-under-approval': item.Status === 'Deadline Extend Under Approval',
+                                                                              'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
+                                                                              'kt-badge cancelled': item.Status === 'Cancelled',
+                                                                              'kt-badge new-project-under':item.Status==='Under Approval'
+                                                                            }"> {{item.Status==='Under Approval'?'New Project Under Approval' : item.Status==='InProcess'?
+                                                                              'In-Process':item.Status}}
+                                                                        <!-- <div></div> -->
+                                                                     </span>
+                                                                     <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                            class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
+                                                                        <div> {{item.Status }} {{item.Delaydays}} days</div>
+                                                                     </span>
+                                                            
+                                                                    <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                        <div ><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                        <div > {{item.Start_Date|date:'d MMM, y'}}</div>
+                                                                    </span>
+                                                                    <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                        <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                        <div> {{item.End_Date|date:'d MMM, y'}}</div>
+                                                                    </span>
+                                                                
+                                                                </div>
+                                                                <div class="mt-1 pl-2">
+                                                                
+                                                                    <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
+                                                                        class="fas fa-file-pdf text-muted mr-1"></i>
+                                                                    <a class="text-info curser-pointer" title="Click To Open File"
+                                                                        ><b>{{item.FileName}}</b></a></span>
+                                                          
+                                                                    <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
+                                                                        <i class="fas fa-registered text-muted mr-1"></i>
+                                                                        <b>{{item.Remarks}}</b>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="kt-inbox__datetime">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                     
+                                        </li>                                      
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   
+        </div>
+    </div>
+</div>
+<!--  Assign Project sidebar End -->
+
 
 <!--  Files Attachment Working Area Start-->
 <div id="Attachment_view" class="attachment-view sideInfobar animate-right bg-slide-br">
@@ -5862,7 +6165,7 @@
   <!-- meeting End pop box start  -->
  
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+    aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-header">
@@ -5917,17 +6220,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
 
               <div class="eve-area ng-star-inserted">
                   <div class="left-icon">
@@ -6059,7 +6351,7 @@
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="closeModal()" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-info btn-sm mr-2"
-                  (click)="Insert_meetingreport()">confirm</button>
+                  (click)="Insert_meetingreport()">Confirm</button>
           </div>
       </div>
   </div>
@@ -6068,6 +6360,64 @@
 
  <!-- meeting End pop box End -->
 
+ <!-- Repeat meeting start -->
+
+ <div class="modal fade" id="repeatModal" tabindex="-1" role="dialog" aria-labelledby="repeatModalLabel"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title fs-5" id="repeatModalLabel">Repeat meeting</h5>
+              <button type="button" class="close"  (click)="closeModal()"  data-dismiss="modal" aria-label="Close">
+                  <i aria-hidden="true" class="ki ki-close"></i>
+              </button>
+          </div>
+          <div class="modal-body">
+
+              <div id="NameDate" class="main-title" *ngFor="let item of EventScheduledjson">
+                  <div class="boxcl-div">
+                      <div class="box-cl ng-star-inserted" style="background-color: #3788d8;"></div>
+                  </div>
+
+                  <div id="" class="title-right">
+                      <div class="title-area">
+                          <div class="title-main">
+                              <span id="title1">{{item.Task_Name}}</span>
+                          </div>
+
+                          <div class="d-flex">
+                              <div class="title-day">{{item.Schedule_date | date:'d EEE, MMMM YYYY'}}<span
+                                      _ngcontent-gnj-c394="">,</span><span _ngcontent-gnj-c394="">{{item.NewSt_Time}}
+                                      – </span>
+                              </div>
+                              <div class="title-day"> {{item.NewSt_Time}} </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+
+              
+              <div class="side-div ng-star-inserted">
+              </div>
+
+           
+              <div class="side-div ng-star-inserted">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="closeModal()" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-info btn-sm mr-2"
+                  (click)="Insert_meetingreport()">Confirm</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Repeat meeting end -->
 
  <div class="modal fade" id="confirmpopups">
     <div class="modal-dialog modal-dialog-centered" role="document">

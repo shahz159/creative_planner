@@ -4045,8 +4045,6 @@ span.Rq_date_V {
 
 
 
-
-
 .stdtask-aprv-btn{
   background-color: #2782df;
   color: white;
@@ -4060,15 +4058,13 @@ span.Rq_date_V {
   background-color: #d8efff;
 }
 
-.stdtask-underapproval-notification .notif-img{
+.stdtask-underapproval-notification .notif-img,.reqaccess-approval-notification .notif-img{
   align-self: center;
   min-width: 20px;
   max-width: 20px;
   min-height: 20px;
   max-height: 20px;
 }
-
-
 
 
 .overutilization-notification{
@@ -4091,9 +4087,6 @@ span.Rq_date_V {
 .notification:hover .ctrl-btns{
    opacity: 1;
 }
-
-
-
 
 
 
@@ -5386,7 +5379,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
   justify-content: flex-start;
   column-gap: 0.5em;
   animation-name: deadline-exceeded-alrt-anim;
-  animation-duration: 0.1s; 
+  animation-duration: 0.1s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   animation-delay: 0.2s;
@@ -5399,7 +5392,7 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 }
 
 
-.mydelay-action-notf .mydelayactns-open-btn,.myactions-underaprv-notif .myunderaprvactns-open-btn{
+.mydelay-action-notf .mydelayactns-open-btn,.myactions-underaprv-notif .myunderaprvactns-open-btn,.reqaccess-approval-notification .reqaccess-open-btn{
     display:none;
     border:0;
     background-color: transparent;
@@ -5410,10 +5403,10 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
    stroke-width:1.7;
    transform: rotate(90deg);
 }
-.mydelay-action-notf:hover .mydelayactns-open-btn,.myactions-underaprv-notif:hover .myunderaprvactns-open-btn{
+.mydelay-action-notf:hover .mydelayactns-open-btn,.myactions-underaprv-notif:hover .myunderaprvactns-open-btn,.reqaccess-approval-notification:hover .reqaccess-open-btn{
     display:inline;
 }
-.mydelay-action-notf:hover,.myactions-underaprv-notif:hover{
+.mydelay-action-notf:hover,.myactions-underaprv-notif:hover,.reqaccess-approval-notification:hover{
    padding:7px 0px 7px 15px;
 }
 
@@ -5453,6 +5446,32 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
    stroke:white;
    stroke-width: 2.1;
 }
+
+
+
+
+
+.reqaccess-approval-notification{
+  background-color: #d8efff;
+}
+
+
+
+
+.reqaccess-approval-notification .reqaccess-open-btn svg{
+  stroke:#00a2eb;
+  transform: rotate(90deg);
+}
+
+.reqaccess-approval-notification .reqaccess-open-btn:hover svg{
+  fill:#00a2eb;
+  stroke:#00a2eb;
+}
+.reqaccess-approval-notification .reqaccess-open-btn:hover svg path.arrow{
+  stroke:white;
+  stroke-width: 2.1;
+}
+
 
 
 /* new btn at notification & prj hold validation  end*/

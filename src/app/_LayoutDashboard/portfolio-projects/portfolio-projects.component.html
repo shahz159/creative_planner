@@ -128,7 +128,7 @@
 
 
                     <ng-container *ngIf="CountCompleted > 0">
-                        <a href="javascript:void(0)" (click)="labelCompleted();;onButtonClick('compl')" [hidden]="HideStatusDropdown"
+                        <a href="javascript:void(0)" (click)="labelCompleted();onButtonClick('compl')" [hidden]="HideStatusDropdown"
                             class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px" id="compl"> {{CountCompleted}}
                             Completed</a>
                     </ng-container>
@@ -139,6 +139,40 @@
                             " id="new-pro">
                             {{CountNewProject}} New Project</a>
                     </ng-container>
+
+                    <ng-container *ngIf="CountCompletionUA>0">
+                      <a href="javascript:void(0)" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')" [hidden]="HideStatusDropdown"
+                          class="badge Completion kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                          " id="Compl-Apprv">
+                          {{CountCompletionUA}} Completion Approval</a>
+                  </ng-container>
+
+                  <ng-container *ngIf="CountCancellation>0" >
+                    <a href="javascript:void(0)" (click)="labelCancellationapproval();onButtonClick('Cancel-app')" [hidden]="HideStatusDropdown"
+                        class="badge Cancel-app kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                        " id="Cancel-app">
+                        {{CountCancellation}} Cancellation Approval</a>
+                </ng-container>
+
+
+                <ng-container *ngIf="CountForward>0"  >
+                  <a href="javascript:void(0)" (click)="labelForward();onButtonClick('Count-forward')" [hidden]="HideStatusDropdown"
+                      class="badge Count-forward kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                      " id="Count-forward">
+                      {{CountForward}} Forward Approval</a>
+              </ng-container>
+
+
+              <ng-container *ngIf="CountDeadLineExtendedUA>0" >
+                <a href="javascript:void(0)" (click)="labelDeadline();onButtonClick('Count-deadline')" [hidden]="HideStatusDropdown"
+                    class="badge Count-deadline kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                    " id="Count-deadline">
+                    {{CountDeadLineExtendedUA}} Deadline Extended Approval</a>
+            </ng-container>
+
+
+
+
 
                     <ng-container *ngIf="CountAll_UA > 0">
                         <a href="javascript:void(0)" (click)="labelUA();onButtonClick('underappr')" [hidden]="HideStatusDropdown"
@@ -175,6 +209,10 @@
                             class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px " > {{Count_ToDoCompleted}} ToDo
                             Completed</a>
                     </ng-container>
+
+
+
+
 
                     <ng-container>
                       <a href="javascript:void(0)" *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')" [hidden]="HideStatusDropdown"
@@ -268,7 +306,9 @@
                                                     'projecthold':item1.Status=='Project Hold',
                                                     'TodoAchieved':item1.Status=='ToDo Achieved',
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
-                                                    'NewTodo':item1.Status=='New Todo'}">
+                                                    'NewTodo':item1.Status=='New Todo'
+
+                                                    }">
 
                                                     <td class="icond">
                                                         <div class="d-flex align-items-center">

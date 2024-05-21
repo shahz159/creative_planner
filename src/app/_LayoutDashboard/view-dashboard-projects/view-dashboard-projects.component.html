@@ -294,7 +294,7 @@
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 info-btn  mr-2" role="button" placement="right"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!"  (click)="newDetails(item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard"  (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                                 <g>
@@ -489,7 +489,7 @@
                                                     <td align="center">
                                                         <div class="d-flex align-items-center">
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus" title="Project Info!" (click)="openInfo(item.Master_Code,item.Project_Code);info_active_btn(item)">
+                                                            data-trigger="focus" title="Project Info" (click)="openInfo(item.Master_Code,item.Project_Code);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                                 <g>
@@ -513,7 +513,7 @@
                                                         </a>
 
                                                         <a *ngIf="(delayType==='Actions'||Mode==='AssignedActions'); else justopenprj"   tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!"  (click)="newDetails(item.Master_Code,item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard"  (click)="newDetails(item.Master_Code,item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                                 <g>
@@ -538,7 +538,7 @@
                                                         </a>
                                                       <ng-template #justopenprj>
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                        data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!"  (click)="newDetails(item.Project_Code)">
+                                                        data-trigger="focus"  data-toggle="tooltip" title="Project dashboard"  (click)="newDetails(item.Project_Code)">
                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                         viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                    <g>
