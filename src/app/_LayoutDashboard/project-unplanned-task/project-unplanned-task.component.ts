@@ -23,6 +23,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 // import { ac } from 'src/app/_LayoutDashboard/action-to-project/action-to-project.component';
 import tippy from 'node_modules/tippy.js';
 import {  ElementRef } from '@angular/core';
+import * as moment from 'moment';
 import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.component';
 
 @Component({
@@ -196,9 +197,27 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.clearFeilds();
   }
 
+
+  projectmodal(){
+    this.GetAssigned_SubtaskProjects();
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("projectmodal").style.display = "block";
+   
+  }
+  close_projectmodal(){
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("projectmodal").style.display = "none";
+    this.Assigntext=''
+  }
+  
+
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
   CountsJson: any;
+  Clientjson:any;
+  EmployeeLists:any;
+
+  
 
   GetAssigned_SubtaskProjects() {
     this._ObjCompletedProj.PageNumber = 1;
@@ -209,13 +228,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       (data) => {
 
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
-        console.log("Data---->", this.CategoryList);
+      
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-
-
+        this.Clientjson=JSON.parse(data[0]['Client_json'])
+        
+        this.EmployeeLists = JSON.parse(data[0]['EmployeeList']);
+        console.log("Data---->", this.EmployeeLists);
+        this.FiterEmployee=this.EmployeeList;
       });
   }
 
@@ -628,7 +650,114 @@ debugger
 
     $("#Project_info_slider_bar").scrollTop(0);
 
+  
   }
+
+
+
+  
+
+
+
+
+
+
+selectedAttendeesList = new Set<any>();
+
+  onCheckboxChange(event: any, employee: any) {
+    if (event.checked) {
+      this.selectedAttendeesList.add(employee);
+    } else {
+      this.selectedAttendeesList.delete(employee);
+    }
+    console.log('Selected Employees:', this.selectedAttendeesList);
+  }
+
+  listAttendees:any;
+  Assigntext:any;
+  datestrStart:any;
+  datestrEnd:any
+
+
+  addSelectedEmployees(taskName, id) {
+     
+       const selectedArray = Array.from(this.selectedAttendeesList)
+       this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
+       
+      
+       this.BsService.SetNewAssignId(id);
+       this.BsService.SetNewAssignedName(taskName);
+       let typeoftask: any = "IFRT";
+       this.BsService.setNewTypeofTask(typeoftask);
+       this.datestrStart = moment(new Date()).format();
+       this.datestrEnd = moment(new Date()).format();
+  
+       this._ObjAssigntaskDTO.AssignId = id;
+       this._ObjCompletedProj.PageNumber = 1;
+       this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+       this._ObjCompletedProj.Mode = 'AssignedTask';
+       this._ObjAssigntaskDTO.TaskName = taskName;
+       this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
+       this._ObjAssigntaskDTO.ProjectType = "";
+       this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
+      
+
+
+
+      const fd = new FormData();
+      fd.append("AssignedBy", this.CurrentUser_ID);
+      fd.append("AssignTo", this.listAttendees);
+      fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
+      fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
+      fd.append("AssignId",  id);
+      fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
+      fd.append("StartDate", this.datestrStart);
+      fd.append("EndDate", this.datestrEnd);
+      fd.append("ProjectDays",'0');
+      fd.append("Desc", "");
+      fd.append("Remarks", "");
+      fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
+  
+        
+      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      (data) => {
+        let message: string = data['Message'];
+        this.notifyService.showSuccess("Task sent to assign projects", message);
+        this.GetAssigned_SubtaskProjects()
+         document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+         document.getElementById("projectmodal").style.display = "none";
+         this.Assigntext=''
+      })
+  }
+
+
+
+
+
+  project_filter() {
+    document.getElementById("project-filter").classList.add("show");
+    document.getElementById("filter-icon").classList.add("active");
+  }
+
+  close_project_filter() {
+    document.getElementById("project-filter").classList.remove("show");
+    document.getElementById("filter-icon").classList.remove("active");
+  }
+
+  CompanyName:any;
+  FiterEmployee:any
+
+  AddCom(){
+    if(this.CompanyName){
+    this.FiterEmployee = this.EmployeeLists.filter((item) => {
+      return item.Com_No === this.CompanyName; 
+  }) 
+}else{
+    this.GetAssigned_SubtaskProjects()
+  }
+  }
+
+
 
   detailsbar() {
     document.getElementById("rightbar-overlay").style.display = "block";

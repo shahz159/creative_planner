@@ -20,7 +20,10 @@ import { ProjectsSummaryComponent } from '../projects-summary/projects-summary.c
 import { MeetingReportComponent } from '../meeting-report/meeting-report.component';
 import { DetailsComponent } from '../details/details.component';
 import { CreateProjectComponent } from '../create-project/create-project.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgSelectModule } from '@ng-select/ng-select';
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
@@ -39,7 +42,11 @@ import { MeetingDetailsComponent } from '../meeting-details/meeting-details.comp
     MatDatepickerModule,
     MatTooltipModule,
     MatSelectModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    Ng2SearchPipeModule,
+    MatCheckboxModule,
+    NgSelectModule
+    
   ],
   exports:[
     ProjectUnplannedTaskComponent, 

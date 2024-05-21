@@ -391,11 +391,12 @@ export class MeetingReportComponent implements OnInit {
   leave: boolean = false;
 
   leavemeet(event: any) {
+  
     this.StatusType=true;
     if(this.StatusType==true){
       // this.stopTimer();
       this.leave = true;
-
+     
     this.addBulletPointsOnEnter(event)
     setTimeout(() => {
       this.delayedFunction();

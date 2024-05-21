@@ -26,7 +26,7 @@
                                             </div>
                                             <span class="kt-meeting-title-name">Meeting Dashboard</span>
                                         </div>
-                                        <div class="kt-meeting-status started mt-0 mb-2">
+                                        <!-- <div class="kt-meeting-status started mt-0 mb-2"> -->
                                             <!-- <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                     version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -46,7 +46,7 @@
                                             <!-- <span class="kt-meeting-status-time" *ngIf="meetingInProgress">
                                                 <span>{{startTime |date: 'h:mm'}}</span>
                                             </span> -->
-                                        </div> 
+                                        <!-- </div>  -->
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -890,43 +890,7 @@
                                                         </div>
                                                        
                                                         <!-- <div class="muted-title">Date</div> -->
-                                                    </div>
-
-
-                                                    <diV class="kt-metric-duration" *ngIf="meetingInProgress">
-                                                        <span class="duration">
-                                                            {{ formatTime(elapsedTime) }}
-                                                        </span>
-                                                        <span class="ml-2 l-h-0">
-                                                            <ng-container *ngIf="pause">
-                                                                <span (click)="resumeMeeting()">
-
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="10"
-                                                                        height="11" viewBox="0 0 10 11" fill="none">
-                                                                        <path
-                                                                            d="M1.28955 1.12402L8.52955 5.77831L1.28955 10.4326V1.12402Z"
-                                                                            stroke="black" stroke-linecap="round"
-                                                                            stroke-linejoin="round" />
-                                                                    </svg>
-                                                                </span>
-                                                            </ng-container>
-                                                            <ng-container *ngIf="play">
-                                                                <span (click)="pauseMeeting()">
-
-                                                                    <svg ng-if="isPaused"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="10"
-                                                                        height="11" viewBox="0 0 10 11" fill="none">
-                                                                        <path d="M2 1H4V10H2V1ZM6 1H8V10H6V1Z"
-                                                                            fill="black" />
-                                                                    </svg>
-
-                                                                </span>
-                                                            </ng-container>
-                                                        </span>
-                                                    </diV>
-
-
-
+                                                    </div>                                
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -976,9 +940,14 @@
                                                     <div class="kt-metric-time"  >
                                                         <ng-container *ngIf="!meetingInProgress && !meetingStopped">
                                                         <div class="dark-title" >{{hours}} hr {{minutes}} min</div>
-                                                    </ng-container>
+                                                       </ng-container>
                                                         <!-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> -->
-                                                       
+                                                        <diV class="kt-metric-duration" *ngIf="meetingInProgress">
+                                                            <span class="duration">
+                                                                {{formatTime(elapsedTime) }}
+                                                            </span>
+                                                        </diV>
+
                                                         <div class="muted-title">Duration</div>
                                                     </div>
                                                 </div>
@@ -1089,16 +1058,18 @@
                                                 </ng-container>
                                             </div> -->
 
-                                            <div class="agenda-input-field"  *ngIf="Meetingstatuscom==Completed">
+                                            <div  [ngClass]="{'error-border': agendaInput?.length>100}" class="agenda-input-field"  *ngIf="Meetingstatuscom==Completed">
                                                 <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
-                                                <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
-                                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"
-                                                />
-                                              <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
-                                            </div>
-                                        </div>
 
+                                                <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add agenda and press 'enter key'." autofocus="true"
+                                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"/>
+
+                                              <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+
+                                            </div>       
+                                        </div>  
                                     </div>
+                                    <div *ngIf="agendaInput?.length>100" style="color:red">Sorry, agenda name is too long!</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -1489,7 +1460,7 @@
                                     </a>   
                                     
                                     
-                                    <a class="kt-inbox__icon" title="Assign Project " (click)="Slide_AssignTask()">
+                                    <a class="kt-inbox__icon" title="Assign Project" (click)="Slide_AssignTask()">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" fill="currentColor" height="16"
                                         width="16" class="iconify iconify--mdi" style="
                                         width: 30px;
@@ -1502,9 +1473,25 @@
                            
                                 <div class="Kt-Pd-Status Done"  *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</div>
 
-                                <div style="display: flex; align-items: center; gap: 8px;">  
-                                    <div class="kt-meeting-status started">
-                                        <span class="kt-meeting-status-icon">
+                                <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">  
+                                    <ng-container *ngIf="Isadmin==true">
+
+                                    <div class="kt-meeting-status hold" *ngIf="play" (click)="pauseMeeting()" >
+                                        <span class="kt-meeting-status-icon">                                           
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="14px" width="14px" viewBox="0 0 1024 1024" version="1.1"><path d="M298.666667 128c23.552 0 42.666667 21.504 42.666666 48v672C341.333333 874.496 322.218667 896 298.666667 896s-42.666667-21.504-42.666667-48V176C256 149.504 275.114667 128 298.666667 128z m426.666666 0c23.552 0 42.666667 21.504 42.666667 48v672c0 26.496-19.114667 48-42.666667 48s-42.666667-21.504-42.666666-48V176C682.666667 149.504 701.781333 128 725.333333 128z" fill="currentColor"/></svg>
+                                        </span>
+                                        <span class="kt-meeting-status-title">Hold</span>
+                                    </div> 
+                                    <div class="kt-meeting-status play" *ngIf="pause" (click)="resumeMeeting()">
+                                        <span class="kt-meeting-status-icon" >
+                                            
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M791.04 384L378.88 147.626667a145.92 145.92 0 0 0-218.88 128v474.453333A145.92 145.92 0 0 0 305.92 896a146.346667 146.346667 0 0 0 72.96-19.626667L791.04 640a145.92 145.92 0 0 0 0-252.586667z m-42.666667 178.773333l-412.16 239.786667a61.44 61.44 0 0 1-60.586666 0 60.586667 60.586667 0 0 1-30.293334-52.48V273.92a60.586667 60.586667 0 0 1 30.293334-52.48A64.426667 64.426667 0 0 1 305.92 213.333333a65.706667 65.706667 0 0 1 30.293333 8.106667l412.16 238.08a60.586667 60.586667 0 0 1 0 104.96z"/></svg>
+                                        </span>
+                                        <span class="kt-meeting-status-title">Resume</span>
+                                    </div>  
+                                  
+                                    <div class="kt-meeting-status started" *ngIf="!meetingInProgress && !meetingStopped" (click)="startMeeting()">
+                                        <span class="kt-meeting-status-icon" >
                                             <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                 version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -1516,83 +1503,36 @@
                                         </span>
                                         <span class="kt-meeting-status-title">Start</span>
                                     </div> 
-                                    <div class="kt-meeting-status hold">
-                                        <span class="kt-meeting-status-icon">
-                                            
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="14px" width="14px" viewBox="0 0 1024 1024" version="1.1"><path d="M298.666667 128c23.552 0 42.666667 21.504 42.666666 48v672C341.333333 874.496 322.218667 896 298.666667 896s-42.666667-21.504-42.666667-48V176C256 149.504 275.114667 128 298.666667 128z m426.666666 0c23.552 0 42.666667 21.504 42.666667 48v672c0 26.496-19.114667 48-42.666667 48s-42.666667-21.504-42.666666-48V176C682.666667 149.504 701.781333 128 725.333333 128z" fill="currentColor"/></svg>
-                                        </span>
-                                        <span class="kt-meeting-status-title">Hold</span>
-                                    </div>
-                                    <div class="kt-meeting-status play">
-                                        <span class="kt-meeting-status-icon">
-                                            
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M791.04 384L378.88 147.626667a145.92 145.92 0 0 0-218.88 128v474.453333A145.92 145.92 0 0 0 305.92 896a146.346667 146.346667 0 0 0 72.96-19.626667L791.04 640a145.92 145.92 0 0 0 0-252.586667z m-42.666667 178.773333l-412.16 239.786667a61.44 61.44 0 0 1-60.586666 0 60.586667 60.586667 0 0 1-30.293334-52.48V273.92a60.586667 60.586667 0 0 1 30.293334-52.48A64.426667 64.426667 0 0 1 305.92 213.333333a65.706667 65.706667 0 0 1 30.293333 8.106667l412.16 238.08a60.586667 60.586667 0 0 1 0 104.96z"/></svg>
-                                        </span>
-                                        <span class="kt-meeting-status-title">Play</span>
-                                    </div>  
-                                    <div class="kt-meeting-status leave">
-                                        <span class="kt-meeting-status-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg"  width="16px" height="16px" fill="currentcolor" style="transform: rotate(140deg);" viewBox="0 0 1024 1024" version="1.1"><path d="M670.19 870.91c-24.45 0-50.53-3.21-78.33-9.6-96.61-22.19-173.3-78.8-229.32-125.64-62.52-52.29-132.62-117.97-178.5-208.74-24.27-48.02-35.55-93.81-35.48-144.03-4.36-84.8 54.81-140.17 99.78-174.49 33.02-25.23 76.49-24.12 108.15 2.77 29.49 25.05 58.71 53.9 86.83 85.74 26.99 30.56 26.72 81.98-0.62 117.06-1.99 2.55-4.09 5-6.21 7.43-1.16 1.35-2.33 2.68-3.45 4.06-24.93 30.47-24.93 30.47-4.11 60.37 47.83 68.7 104.18 111.96 172.27 132.21 5.73 1.69 6.89 0.85 9.67-2.07l3.18-3.3c7.58-7.87 14.72-15.3 21.35-23.05 18.91-22.13 44.47-35.21 71.99-36.81 26.99-1.47 53.42 8.2 74.24 27.51 20.58 19.11 41.6 39.81 62.48 61.53v0.01c39.46 41.07 42.03 91.2 7.06 137.53-46.21 61.22-105.84 91.51-180.98 91.51zM300.83 245.37c-6.41 0-12.87 2.32-18.97 6.98-56.57 43.17-80.65 82.74-78.08 128.29l0.05 0.83-0.01 0.83c-0.16 42.04 8.95 78.96 29.54 119.7 41.35 81.82 106.42 142.6 164.62 191.27 51.28 42.89 121.07 94.62 206.24 114.18 91.03 20.91 155.47 1.41 202.84-61.33 18.43-24.42 17.56-44.75-2.81-65.95-20.15-20.97-40.4-40.92-60.22-59.31-9.81-9.11-21.47-13.51-33.44-12.86-12.35 0.71-24.12 6.95-33.18 17.56-7.7 8.99-15.76 17.36-23.55 25.45l-3.14 3.26c-17.68 18.4-40.27 24.21-65.27 16.76-80.57-23.97-146.61-74.21-201.88-153.6-37.93-54.47-31.22-80.62 6.69-126.95 1.46-1.79 2.98-3.54 4.5-5.29 1.48-1.71 2.96-3.4 4.34-5.17 10.76-13.81 12.09-35.98 2.78-46.5-26.38-29.88-53.7-56.86-81.19-80.21-6.22-5.29-13.01-7.94-19.86-7.94z"/></svg>
-                                        </span>
-                                        <span class="kt-meeting-status-title">Leave</span>
-                                    </div>                             
-                                    <div class="kt-project-leave "  *ngIf="Meetingstatuscom==Completed">                                        
-                                        <ng-container *ngIf="Isadmin==true">
 
-
-                                            <ng-container *ngIf="!meetingInProgress && !meetingStopped">
-                                                <span class="kt-meeting-status-title" (click)="startMeeting()">
-                                                    Start Meeting
-                                                </span>
-                                            </ng-container>
-
-
-
-                                            <ng-container *ngIf="meetingInProgress">
-                                            <span class="title" data-toggle="modal" data-target="#exampleModal" >End Meeting</span>
+                                    <div class="kt-project-leave " *ngIf="meetingInProgress">                                                                  <ng-container >
+                                            <span class="title" data-toggle="modal" data-target="#exampleModal" (click)="meeting_details()" >End Meeting</span>
                                            </ng-container>
-                                        </ng-container>
+                                      
                                            <!-- <ng-container *ngIf="Isadmin==true && hasStatusOne==false">
                                             <span class="title" (click)="EndMeetingSweetAlertBox()">End Meeting</span>
                                            </ng-container> -->
-
-
-                                        <ng-container *ngIf="Isadmin==false">
+                                        <!-- <ng-container *ngIf="Isadmin==false">
                                         <span class="title" (click)="leavemeet($event)">Leave Meeting</span>
-                                       </ng-container>
-        
-                        
-
-
-
-
-
-                                   
-
-
-                                    <!-- <ng-container *ngIf="meetingInProgress">
-
-
-                                        <span (click)="leaveMeeting()">Leave Meeting</span>
-                                    </ng-container>
-                                     <span class="text-white">|</span> -->
-
-
-
-
-
-
-
-
-
+                                       </ng-container>  -->
 
                                         <span class="icon">
                                             <svg width="22px" height="22px" viewBox="0 0 24 24" id="_24x24_On_Light_Session-Leave" data-name="24x24/On Light/Session-Leave" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="view-box" width="24" height="24" fill="none"></rect> <path id="Shape" d="M2.95,17.5A2.853,2.853,0,0,1,0,14.75v-12A2.854,2.854,0,0,1,2.95,0h8.8a.75.75,0,0,1,0,1.5H2.95A1.362,1.362,0,0,0,1.5,2.75v12A1.363,1.363,0,0,0,2.95,16h8.8a.75.75,0,0,1,0,1.5Zm9.269-4.219a.751.751,0,0,1,0-1.061L14.939,9.5H5.75a.75.75,0,0,1,0-1.5h9.19L12.219,5.28A.75.75,0,1,1,13.28,4.22l4,4a.749.749,0,0,1,0,1.06l-4,4a.751.751,0,0,1-1.061,0Z" transform="translate(3.25 3.25)" fill="currentColor"></path> </g></svg>
                                         </span>
+                                    </div>                              
+                                </ng-container>
+
+                                <ng-container *ngIf="Isadmin==false">
+                                    <div class="kt-meeting-status leave"  (click)="leavemeet($event)">
+                                        <span class="kt-meeting-status-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg"  width="16px" height="16px" fill="currentcolor" style="transform: rotate(140deg);" viewBox="0 0 1024 1024" version="1.1"><path d="M670.19 870.91c-24.45 0-50.53-3.21-78.33-9.6-96.61-22.19-173.3-78.8-229.32-125.64-62.52-52.29-132.62-117.97-178.5-208.74-24.27-48.02-35.55-93.81-35.48-144.03-4.36-84.8 54.81-140.17 99.78-174.49 33.02-25.23 76.49-24.12 108.15 2.77 29.49 25.05 58.71 53.9 86.83 85.74 26.99 30.56 26.72 81.98-0.62 117.06-1.99 2.55-4.09 5-6.21 7.43-1.16 1.35-2.33 2.68-3.45 4.06-24.93 30.47-24.93 30.47-4.11 60.37 47.83 68.7 104.18 111.96 172.27 132.21 5.73 1.69 6.89 0.85 9.67-2.07l3.18-3.3c7.58-7.87 14.72-15.3 21.35-23.05 18.91-22.13 44.47-35.21 71.99-36.81 26.99-1.47 53.42 8.2 74.24 27.51 20.58 19.11 41.6 39.81 62.48 61.53v0.01c39.46 41.07 42.03 91.2 7.06 137.53-46.21 61.22-105.84 91.51-180.98 91.51zM300.83 245.37c-6.41 0-12.87 2.32-18.97 6.98-56.57 43.17-80.65 82.74-78.08 128.29l0.05 0.83-0.01 0.83c-0.16 42.04 8.95 78.96 29.54 119.7 41.35 81.82 106.42 142.6 164.62 191.27 51.28 42.89 121.07 94.62 206.24 114.18 91.03 20.91 155.47 1.41 202.84-61.33 18.43-24.42 17.56-44.75-2.81-65.95-20.15-20.97-40.4-40.92-60.22-59.31-9.81-9.11-21.47-13.51-33.44-12.86-12.35 0.71-24.12 6.95-33.18 17.56-7.7 8.99-15.76 17.36-23.55 25.45l-3.14 3.26c-17.68 18.4-40.27 24.21-65.27 16.76-80.57-23.97-146.61-74.21-201.88-153.6-37.93-54.47-31.22-80.62 6.69-126.95 1.46-1.79 2.98-3.54 4.5-5.29 1.48-1.71 2.96-3.4 4.34-5.17 10.76-13.81 12.09-35.98 2.78-46.5-26.38-29.88-53.7-56.86-81.19-80.21-6.22-5.29-13.01-7.94-19.86-7.94z"/></svg>
+                                        </span>
+                                        <span class="kt-meeting-status-title">Leave</span>
                                     </div>
+                                </ng-container>
+                              
+
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div   class="card-body p-0  pt-3 h-100">
@@ -1623,7 +1563,7 @@
                                 </div>
                                 <div class="kt-project-option">
                                     <div class="options event">Event</div>
-                                    <div class="options monthly">{{item.Recurrence}}</div>
+                                    <!-- <div class="options monthly">{{item.Recurrence}}</div> -->
                                     <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                     <div *ngIf="currentAgendaView==undefined" class="kt-project-notes" (click)="View_Private_Notes()">
                                         <span class="title">Private Notes</span>
@@ -2495,7 +2435,7 @@
                                          <label class="task-name">{{item.Task_Name}}</label>
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <div class="task-actions" >                                                                        
-                                                    <mat-icon title="Assign Task/Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+                                                    <mat-icon title="Assign Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
                                                  
                                                     <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
                                         </div>
@@ -2655,16 +2595,16 @@
 
 
                  
-<!--    Assign Task/Project Start      -->
+<!--   Assign Project Start      -->
  
-    <div class="accordion accordion-attendes-notes " *ngIf="ActionedAssigned_Josn.length>0" id="Assign_List">
+    <div class="accordion accordion-attendes-notes " *ngIf="ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0" id="Assign_List">
         <div class="accordion-item">
             <h2 class="accordion-header" id="AssignOne">
                 <a class="accordion-button" type="button" data-toggle="collapse"
                     data-target="#Assign_notes" aria-expanded="false"
                     aria-controls="Assign_notes">
                     <div class="head-content">
-                        <span class="accordion-heading" >Assign Task/Project</span>
+                        <span class="accordion-heading" >Assign Project</span>
                         <!-- <span  class="message-count"> 24 Messages</span> -->
                     </div>
                     <div>
@@ -2824,7 +2764,7 @@
         </div>
     </div>
 
-<!--  Assign Task/Project End      -->
+<!--  Assign Project End      -->
 
 
 
@@ -2866,9 +2806,10 @@
                      <label class="task-name">{{item.Task_Name}}</label>
                     <ng-container >
                     <div class="task-actions" >                                                                        
-                                <mat-icon title="Assign Task/Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+                                <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects()" class="mr-2" color='primary'>group</mat-icon>
                              
-                                <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
+                                <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>  
+                                                                      
                     </div>
                 </ng-container>
                     <ng-container > 
@@ -3919,13 +3860,51 @@
 
   
                 <ul class="meeting-attendees-userlist">
-                    <li class="meeting-attendees-user" *ngFor="let item of User_Scheduledjson;let i=index">
+                    <li class="meeting-attendees-user" *ngFor="let item of orderedItems;let i=index">
                         <div class="user-info">                        
-                            <div class="kt-user-2lt kt-clr-1" > {{getInitials(item.TM_DisplayName)}}</div> 
+                            <div class="kt-user-2lt kt-clr-1" >
+                                <span >{{getInitials(item.TM_DisplayName)}}</span>
+                            
+                                
+                                    <span class="statusicn" aria-hidden="true">
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="item.Status=='Accepted'">
+                                            <path fill="#CEEAD6"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                            </path>
+                                            <path fill="none" stroke="#137333" stroke-width="1.5"
+                                                d="M3.5 6.5L6 9l5-5">
+                                            </path>
+                                        </svg>
+        
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="item.Status=='Rejected'">
+                                            <path fill="#FAD2CF"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                            </path>
+                                            <path fill="none" stroke="#B31412" stroke-width="1.5"
+                                                d="M4 10l6-6M10 10L4 4">
+                                            </path>
+                                        </svg>
+        
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="item.Status=='May be'||item.Status=='Proposed'">
+                                            <path fill="#E8EAED"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                            </path>
+                                            <path fill="none" stroke="#3C4043" stroke-width="1.5"
+                                                d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5">
+                                            </path>
+                                        </svg>
+                                    </span>
+                              
+                            
+                              
+                            
+                            </div> 
                             <span>
                                 <div class="user-name">
-                                    {{item.TM_DisplayName}}
-                                
+                                    {{item.TM_DisplayName}}         
                                 </div>
                                 <div>
                                     <span class="user-role">{{item.Designation_Name}}</span> <span
@@ -5083,7 +5062,7 @@
                     </div>
                      <div class="agenda-input-field">
                         <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
-                        <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                        <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add agenda and press 'enter key'." autofocus="true"
                           [(ngModel)]="AgendaInputEvent"   (keyup.enter)="AddAgendaEvent()"
                         />
                       <button *ngIf="AgendaInputEvent" class="btn btn-secondary add-agenda-btn" (click)="AddAgendaEvent()">Add</button>
@@ -6124,16 +6103,9 @@
                       </div>
                   </div>
               </div>
-
-
-
-
-
               <div id="project" class="eve-area ng-star-inserted">
                 <div class="left-icon">
                     <span aria-hidden="true" class="side-icns">
-
-
                        <svg _ngcontent-nli-c395="" xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g _ngcontent-nli-c395="" clip-path="url(#clip0_365_5615)"><path _ngcontent-nli-c395="" d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="black"></path><path _ngcontent-nli-c395="" d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="black"></path><path _ngcontent-nli-c395="" d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="black"></path><path _ngcontent-nli-c395="" d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="black"></path><path _ngcontent-nli-c395="" d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="black" fill-opacity="0.65"></path><path _ngcontent-nli-c395="" d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="black"></path></g><defs _ngcontent-nli-c395=""><clipPath _ngcontent-nli-c395="" id="clip0_365_5615"><rect _ngcontent-nli-c395="" width="15" height="16.1538" fill="black" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                         <!-- <i class="fab-icn fab fa-wpforms"></i> -->
                     </span>
@@ -6161,7 +6133,7 @@
                   <div class="rgt-des">
                       <div>
                           <div class="main-s"> <span class="kt-dt-cnt-view">
-                            {{Guestcount}}/{{totalguest}}
+                            {{totalguest}}/{{totalguest}}
                         </span>
                         Attendees</div>
                       </div>
@@ -6181,7 +6153,7 @@
                       <div>
                           <div class="main-s pro-nm"> <span
                                   class="kt-dt-cnt-view">
-                                  {{projectcount}}/{{totalproject}}
+                                  {{totalproject}}
                                 </span> Projects</div>
                       </div>
                   </div>
@@ -6201,7 +6173,7 @@
                       <div>
                           <div class="main-s pro-nm"> <span
                                   class="kt-dt-cnt-view">
-                                  {{portfoliocount}}/{{totalportfolios}}
+                                  {{totalportfolios}}
                                 </span> Portfolios
                           </div>
                       </div>
@@ -6227,7 +6199,7 @@
                   <div class="rgt-des">
                       <div>
                           <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">
-                            {{dmscount}}/{{totaldms}}
+                            {{totaldms}}
                         </span>
                               DMS</div>
                       </div>
@@ -6270,7 +6242,7 @@
                   <div class="rgt-des">
                       <div>
                           <div class="main-s pro-nm"><span class="kt-dt-cnt-view">
-                            {{assigncount}}/{{todocount}}
+                            {{AssignedTask.length}}/{{Todotask.length}}
                         </span>
                               Assign Project</div>
                       </div>
@@ -6418,6 +6390,105 @@
  <!-- Access denied End -->
 
 
+ <div class="modal-backdrop show" id="schedule-event-modal-backdrop" style="display: none;"></div>
+ <!-- Project Modal Start -->
+   <div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
+     <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+         <div class="modal-header  gap-1">
+                     <svg   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
+                         <path
+                             d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                         </path>
+                     </svg>
+                 
+                     <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select Participants</h5>
+           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+           <div class="modal-search">
+             <div class="search-svg">
+                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+             </div>
+             
+             <input  class="search-input" [(ngModel)]="Assigntext" type="search" placeholder="Search" aria-label="Search" />
+       
+             <div class="modal-icon mr-1 curser-pointer"  id="filter-icon" (click)="project_filter()">
+                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+             </div>
+             <div class="modal-icon curser-pointer" (click)="GetAssigned_SubtaskProjects()">
+                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
+             </div>
+           </div>
+           <div class="position-relative">
+             <div id="project-filter" class="project-filter">
+               
+              
+ 
+                 <div class="project-filter-item">
+                     <div class="item-label">Company</div>
+                     <div class="item-select">
+                         <div class="" id="div_recurrence">
+                             
+                            <ng-select placeholder="Select Company" [(ngModel)]="CompanyName"  style="max-width:360px;" >
+                                 
+                                 <ng-option *ngFor="let item of Clientjson"  [value]="item.ClientId">{{item.ClientName}}</ng-option>
+                               
+                            </ng-select>
+ 
+                         </div>
+                     </div>
+                 </div>
+ 
+
+                 <div class="project-filter-footer">
+                     <button type="button" class="btn btn-add-primary" (click)="AddCom();close_project_filter()">Submit</button>
+                     <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
+                 </div>
+             </div>
+
+             <ul class="modal-project-list" id="participant-list" >
+                 <li class="modal-project-list-item" *ngFor="let data of FiterEmployee | filter :Assigntext;let i =index">
+                     <span>
+                         <mat-checkbox  (change)="onCheckboxChange($event, data)"  color="primary"></mat-checkbox>
+                     </span>
+                     <span style="display:flex; align-items: center; gap: 5px;">
+                         <span class="project-user-image">
+                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                         </span>
+                         <span class="project-name">
+                            {{data.DisplayName}}
+                         </span>
+                     </span>
+                 </li>
+ 
+                 <!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
+                     <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                         <g id="SVGRepo_iconCarrier">
+                             <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                         </g>
+                     </svg>
+                     <span style="color:#757575" class="ml-2">No results found.</span>
+                 </div> -->
+             </ul>
+           </div>
+         </div>
+         <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
+ 
+                     <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees(item.Task_Name,item.Assign_Id)">Add</button>
+                     <button  type="button" class="btn btn-secondary" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()" >Custom</button>
+                     <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
+ 
+         </div>
+       </div>
+     </div>
+   </div>
+ <!-- Project Modal End -->
+ 
 
 
 
