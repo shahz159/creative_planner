@@ -16,6 +16,7 @@ import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { Directive, HostListener } from '@angular/core';
 
 
 
@@ -111,7 +112,7 @@ export class CreateProjectComponent implements OnInit {
   _inputAttachments:any='';
   PrjCost:number=0;
 
-
+  disablePreviousDate=new Date()
   Daily_array: any = [];
   Week_array: any = [];
   Month_array: any = [];
@@ -145,6 +146,7 @@ export class CreateProjectComponent implements OnInit {
     public approvalservice: ApprovalsService,
     ) {
       this.approvalObj = new ApprovalDTO();
+      this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
   }
 
 
@@ -332,6 +334,7 @@ export class CreateProjectComponent implements OnInit {
 
           if (data != null && data != undefined) {
               this.PrjSupport=JSON.parse(data[0]['RacisList']);
+
               console.log("draft support:",this.PrjSupport)
               this.PrjSupport=this.PrjSupport.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
               this.setRACIS();
@@ -355,7 +358,7 @@ export class CreateProjectComponent implements OnInit {
       this.maxAllocation=(Difference_In_Days+1)*10;
     }
     else
-    this._message = "Start Date/End date missing!!"
+    this._message = "Start Date/End date missing, It accept only numeric value"
 
   }
 
@@ -416,6 +419,7 @@ createSRTProject(){
 
 
  createProject(){
+
   this.Client_json.forEach(element => {
     if(element.ClientName==this.PrjClient){
       this.PrjClient=element.ClientId;
@@ -560,6 +564,7 @@ onFileChanged(event: any) {
   if (files && files.length > 0) {
     this.file = files[0];
     this.fileAttachment = this.file;
+    // this.determineFileType(this.file.name);
   } else {
     this.file = null;
     this.fileAttachment = null;
@@ -708,12 +713,13 @@ onFileChanged(event: any) {
     // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
 
 debugger
-this.isPrjNameValid=this.isValidString(this.PrjName,3);
-this.isPrjDesValid=this.isValidString(this.PrjDes,5);
+this.isPrjNameValid=this.isValidString(this.PrjName,3,50);
+this.isPrjDesValid=this.isValidString(this.PrjDes,5,50);
+
 
   if(
 
-    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid)&&(this.PrjDes&&this.isPrjDesValid))&&
+    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID')&&(this.PrjDes&&this.isPrjDesValid==='VALID'))&&
     (
       (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
       (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours)) ||
@@ -738,6 +744,7 @@ this.isPrjDesValid=this.isValidString(this.PrjDes,5);
   else{
      // when some mandatory fields are missing.
      this.notProvided=true;
+
   }
 
 
@@ -1042,6 +1049,9 @@ onRejectButtonClick(value:any,id:number){
 
 
   Project_details_edit() {
+
+    debugger
+
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -1050,6 +1060,7 @@ onRejectButtonClick(value:any,id:number){
     $("#mysideInfobar12").scrollTop(0);
   //  this.getResponsibleActions();
    this.initializeSelectedValue()
+
   }
 
  ///////////////////////////////////////// Project Edit End /////////////////////////////
@@ -1074,10 +1085,13 @@ getActionsDetails(){
     console.log("LLL:",res);
     if(res[0].Action_Json)
     this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
+
     else
     this.PrjActionsInfo=[];
   });
+
 }
+
 
 
 showActionDetails(index: number | undefined) {
@@ -1167,6 +1181,26 @@ initializeSelectedValue() {
 }
 
 projectEdit(val) {
+
+
+  debugger
+//   const d3 = new Date(this.Start_Date)
+// const d4 = new Date(this.projectInfo.StartDate)
+
+
+// if(d4>d3){
+//   Swal.fire({
+//     title:'Your Project Start Date is Greater Than Action Start Date',
+//     text:"First Change the Action Start Date",
+//     showCloseButton:true
+//   })
+//   return;
+
+// }
+
+
+
+// this.reseting()
 
   this._remarks = '';
   if (this.OGProjectType != this.ProjectType) {
@@ -1261,21 +1295,26 @@ projectEdit(val) {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
         this.notifyService.showSuccess("Updated successfully", "Success");
+        this.closeInfos();
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
+
       }
       else if (data['message'] == '5') {
         this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+        this.closeInfos();
       }
       else if (data['message'] == '6') {
         this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        this.closeInfos();
       }
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected Project owner cannot be updated", "Not updated");
+        this.closeInfos();
       }
       //this.getProjectDetails(this.URL_ProjectCode);
-      // this.closeInfo();
+
     });
   }
   // else if (val == 1) {
@@ -1392,10 +1431,76 @@ addreschange() {
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){
+debugger
+  const _prjstrtd= new Date(this.projectInfo.StartDate);
+  const _prjendd= new Date(this.projectInfo.EndDate);
+  const _curtd=new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0);
+  if(_prjstrtd<_curtd||_prjendd<_curtd){
+
+    let msg;
+    if(_prjstrtd<_curtd)
+    msg="Please select a new start date.";
+
+    if(_prjendd<_curtd)
+    msg="Please select new start date and new end date.";
+
+     Swal.fire({
+      title:'invalid Date',
+      text:msg,
+      showCloseButton:true
+     });
+     return;
+  }
 
 
-  // if(this.PrjActionsInfo.length){
-  // atleast one action must be created.
+
+
+  const inputdate = new Date(this.projectInfo.StartDate);
+
+  // Check if any action's start date is before the project start date
+  const isInvalid = this.PrjActionsInfo.some((actn) => {
+      const actdate = new Date(actn.StartDate);
+      return actdate < inputdate;
+  });
+
+  // If any action's start date is before the project start date, show the popup
+  if (isInvalid) {
+      Swal.fire({
+          showCloseButton: true,
+          title: 'Invalid Action  Date.',
+          text: "Please select a new action start date",
+          showCancelButton:true
+      });
+      return;
+  }
+
+
+
+
+
+//     if (f < g && a<g ) {
+//      Swal.fire({
+//       title:"Please Select  a new start date",
+//       text:"the  Start date and End date of project has expired",
+//       showCloseButton:true
+//      })
+// return;
+//     }
+
+
+  //   const c= new Date(this.projectInfo.StartDate)
+
+  //   // const d= new Date(this.projectInfo.EndDate)
+  //   const h= new Date(this.todayDate)
+  //     if (c<h) {
+  //      Swal.fire({
+  //       title:"Please Select  a new start date ",
+  //       text:"the  Start date of project has expired",
+  //       showCloseButton:true
+  //      })
+  // return;
+  //     }
+
 
 
    Swal.fire({
@@ -1403,7 +1508,7 @@ sendApproval(){
        text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
        showConfirmButton:true,
        showCancelButton:true,
-       confirmButtonText: 'Yes, Confirm!',
+       confirmButtonText: 'Yes, confirm',
        cancelButtonText: 'Cancel'
    })
    .then(choice=>{
@@ -1746,6 +1851,7 @@ deleteDraft(index:number){
 
 
 openDraft(index:number){
+  debugger
   console.log(this.draft_json[index]);
   this.Prjtype=this.draft_json[index].Project_Block;
   this.PrjCode=this.draft_json[index].Project_Code;
@@ -1788,8 +1894,9 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
 
 // getting file attachment name if provided in the draft project. start
   const PrjI=JSON.parse(res[0]['ProjectInfo_Json'])[0];
+  debugger
   if(PrjI.Sourcefile){
-    this.fileAttachment={name:PrjI.Sourcefile};
+    this.fileAttachment={name:PrjI.Sourcefile+'.'+PrjI.contenttype};
     this.isFileUploaded=true;
   }
   else{
@@ -1810,15 +1917,23 @@ reset(){
 
 // DRAFT PROJECT CODE END.
 
-isPrjNameValid:boolean=true;
-isPrjDesValid:boolean=true;
+isPrjNameValid:'TOOSHORT'|'TOOLONG'|'VALID'='VALID';
+isPrjDesValid:'TOOSHORT'|'TOOLONG'|'VALID'='VALID';
 
 
-isValidString(inputString: string, maxWords: number): boolean {
-  // let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
-  let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
-    const valid=rg.test(inputString);
-    return valid;
+isValidString(inputString: string, minWrds: number,maxWrds:number=1000): 'TOOSHORT'|'TOOLONG'|'VALID' {
+ if(inputString){
+ // let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
+ let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+ const x=rg.test(inputString);
+
+ const words = inputString.trim().split(/\s+/);
+ const y=words.length<=maxWrds
+
+return (x&&y)?'VALID':(x==false)?'TOOSHORT':'TOOLONG';
+ }
+
+
 }
 // isValidString(inputString: string, minWords: number): boolean {
 //   // Split the input string by spaces and special characters, but treat parentheses and their contents as single words
@@ -1894,13 +2009,13 @@ debugger
 // functionality to check prj allocated hr with action allocated hrs
 isExceededTotalAllocatedHr:boolean=false;
 hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
-
+debugger
    if(!this.isExceededTotalAllocatedHr){
 
           const totalhrsused=this.PrjActionsInfo.reduce((sum:any,action:any)=>{
             return sum+Number.parseInt(action.AllocatedHours);
           },0)
-          const newAlcHrs=totalhrsused+actionAllocHr;   // used hrs + new alloc
+          const newAlcHrs=totalhrsused+parseInt(actionAllocHr);   // used hrs + new alloc
           const result=newAlcHrs>this.projectInfo.AllocatedHours;
           this.isExceededTotalAllocatedHr=result;
           return  result;
@@ -1914,14 +2029,16 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
     ///////////////////////////////////////// Action Edit start /////////////////////////////
 
-
     Action_details_edit() {
+      debugger
       document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
       document.getElementById("Action_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
       document.getElementById("kt-bodyc").classList.add("overflow-hidden");
       document.getElementById("rightbar-overlay").style.display = "block";
       $("#mysideInfobar12").scrollTop(0);
       this.bindActionDetailsIntoForm();
+
+
     }
 
     closeAction_details_edit(){
@@ -1934,7 +2051,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
       this.notProvided=false;   // back to initial state.
     }
-
+    Sourcefile:any
     bindActionDetailsIntoForm() {
 
       // this.OGownerid = this.projectInfo['OwnerEmpNo'];
@@ -1963,11 +2080,55 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       this.End_Date = this.PrjActionsInfo[this.currentActionView].EndDate;          // action end date.
       this.ActionDuration=this.PrjActionsInfo[this.currentActionView].Duration;     // action duration.
 
+
   }
 
 
   alterAction(){
 debugger
+
+
+
+
+
+  debugger
+//   const f= new Date(this.projectInfo.EndDate)
+
+//   const isInvalid = this.PrjActionsInfo.some((actn) => {
+//     const actdate = new Date(actn.EndDate);
+//     return actdate > f;
+// });
+
+// // If any action's start date is before the project start date, show the popup
+// if (isInvalid) {
+
+//               if (isInvalid >f ) {
+//               Swal.fire({
+//                 title:"Invalid End Date",
+//                 text:"Action end date can't be greater than project end date",
+//                 showCloseButton:true
+//               })
+
+//   return;
+
+//           }}
+
+
+const dateone= new Date(this.projectInfo.EndDate)
+const datetwo= new Date(this.End_Date)
+
+if(dateone < datetwo){
+  Swal.fire({
+    title:"Invalid Action Date",
+    text:"Action date Can't be greater than project end date",
+    showCancelButton:true
+
+  })
+  return
+}
+
+
+
         // check all mandatory field are provided.
         if(!(this.ProjectName&&this.ProjectDescription&&
           this.OGowner&&this.OGresponsible&&
@@ -1978,6 +2139,36 @@ debugger
             return;
         }else this.notProvided=false;   // back to initial value.
         // check all mandatory field are provided.
+
+
+        //  const d1=new Date(this.Start_Date);
+        //  const d2=new Date(this.projectInfo.StartDate);
+        // if(d1<d2){
+        //   Swal.fire({
+        //     title:'Action start date is less than project start date',
+        //     text:'first change the project start date',
+        //     showCloseButton:true
+        //   })
+
+        //   return;
+        // }
+
+
+
+// const d5= new Date(this.End_Date)
+// const d6= new Date(this.projectInfo.EndDate)
+//         if(d5>d6){
+//           Swal.fire({
+//             title:'Action Deadline is Greater than Project Deadline',
+//             text:"First Change the Project Deadline",
+//             showCloseButton:true
+//           })
+//           return;
+//         }
+
+
+
+
 
 
       const datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
@@ -2005,6 +2196,12 @@ debugger
       this.approvalObj.Remarks = this._remarks?this._remarks:'';   // remark provided.
 
 
+// test
+
+
+
+      // test
+
       if (dateOne < dateTwo) {
         Swal.fire({
           title: 'Action deadline is greater than main project deadline ?',
@@ -2019,6 +2216,7 @@ debugger
               if (data['message'] == '1') {
                 this.notifyService.showSuccess("Updated successfully", "Success");
                 this.getActionsDetails();
+                this.closeAction_details_edit();
               }
               else if (data['message'] == '2') {
                 this.notifyService.showError("Not updated", "Failed");
@@ -2026,15 +2224,18 @@ debugger
               else if (data['message'] == '5') {
                 this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
                 this.getActionsDetails();
+                this.closeAction_details_edit();
               }
               else if (data['message'] == '6') {
                 this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
                 this.getActionsDetails();
+                this.closeAction_details_edit();
               }
               else if (data['message'] == '8') {
                 this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+                this.closeAction_details_edit();
+
               }
-              this.closeAction_details_edit();
 
               // this.getProjectDetails(this.URL_ProjectCode);
               // this.closeInfo();
@@ -2056,6 +2257,7 @@ debugger
           if (data['message'] == '1') {
             this.notifyService.showSuccess("Updated successfully", "Success");
             this.getActionsDetails();
+            this.closeAction_details_edit();
           }
           else if (data['message'] == '2') {
             this.notifyService.showError("Not updated", "Failed");
@@ -2063,15 +2265,18 @@ debugger
           else if (data['message'] == '5') {
             this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
             this.getActionsDetails();
+            this.closeAction_details_edit();
           }
           else if (data['message'] == '6') {
             this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
             this.getActionsDetails();
+            this.closeAction_details_edit();
           }
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+            this.closeAction_details_edit();
           }
-          this.closeAction_details_edit();
+
           // this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
           // this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           // this.closeInfo();
@@ -2129,12 +2334,141 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
    ///////////////////////////////////////// Action Edit End /////////////////////////////
 
+  //  onPrjStrtDateChanged() {
+  //   debugger
+  //   const inputdate=new Date(this.Start_Date);
+  //   const isvalid=this.PrjActionsInfo.every((actn:any)=>{
+  //         const actdate=new Date(actn.StartDate);
+  //          actdate<inputdate;
+  //         Swal.fire({
+  //           showCloseButton:true,
+  //           title:'Invalid Project Start Date.',
+  //           text:"Please ensure that the project start date is set correctly as actions cannot start before the project's start date.."
+  //        });
+  //  return
+  //   });
+  //   if(!isvalid){
+  //     setTimeout(()=>{
+  //       this.Start_Date=this.projectInfo.StartDate;
+  //     },10);
+
+
+  //   }
+
+
+  //   }
+
+  // onPrjStrtDateChanged() {
+    // debugger;
 
 
 
 
+    onPrjDeadlineChanged(){
+      debugger
+      const inputdate=new Date(this.End_Date);
+      const isvalid=this.PrjActionsInfo.every(actns=>{
+          const actenddate=new Date(actns.EndDate);
+          return inputdate>=actenddate
+      });
+      if(!isvalid){
+        setTimeout(()=>{
+          this.End_Date=this.projectInfo.EndDate;
+        },10)
+
+        Swal.fire({
+          showCloseButton:true,
+          title:'Invalid end date.',
+          text:"Please ensure that the project end date is set appropriately, as actions cannot end after the project's end date."
+       });
+
+      }
+    }
+
+
+//     reseting() {
+
+// debugger
+//       const f= new Date(this.projectInfo.StartDate)
+
+//       const a= new Date(this.projectInfo.EndDate)
+//       const g= new Date(this.todayDate)
+//         if (f < g && a<g  || a<g || f<g) {
+//          Swal.fire({
+//           title:"Project Start Date And Deadline Has Expired",
+//           text:"Please Select A New Start Date And Deadline For Project To Start",
+//           showCloseButton:true
+//          })
+
+// return;
+
+//         }
+//       }
+
+
+
+// actionPastDate() {
+
+// debugger
+// const f= new Date(this.Start_Date)
+
+// const a= new Date(this.End_Date)
+// const g= new Date(this.todayDate)
+//         if (f < g && a<g  || a<g || f<g) {
+//          Swal.fire({
+//           title:"Project Start Date, Deadline And Action Start Date, Deadline Has Expired",
+//           text:"Please Select A New Start Date And Deadline For Project And Action To Start",
+//           showCloseButton:true
+//          })
+
+// return;
+
+//         }
+//       }
+
+
+
+
+      isNumeric(value: string): boolean {
+        return /^[0-9]*$/.test(value);
+      }
+
+      // limitWords(event) {
+      //   const maxWords = 25;
+      //   const words = event.target.value.trim().split(/\s+/);
+      //   if (words.length > maxWords) {
+      //       // Prevent entering more than 25 words
+      //       event.target.value = words.slice(0, maxWords).join(' ');
+      //   }
+
+
+    // }
+
+
+
+    fileType: string; // Assuming fileType is a variable to store the file format
+
+
+    determineFileType(fileName: string): void {
+
+      if (fileName.endsWith('.pdf')) {
+        this.fileType = 'pdf';
+      } else if (fileName.endsWith('.jpg') || fileName.endsWith('.jpeg')) {
+        this.fileType = 'jpg';
+      } else {
+        this.fileType = '';
+      }
+    }
+
+
+    text(){debugger
+      this.Prjstartdate=  this.Prjstartdate<this.todayDate?null:this.Prjstartdate
+    }
 
   }
+
+
+
 
 
 

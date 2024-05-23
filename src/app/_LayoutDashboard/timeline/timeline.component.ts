@@ -327,7 +327,7 @@ getTimelineProjects(){
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-    this.projectList=JSON.parse(data[0]['ProjectList']); 
+    this.projectList=JSON.parse(data[0]['ProjectList']);
   });
 }
 
@@ -339,7 +339,7 @@ onTypeChanged(){
          this.showAction=false;
          this.master_code=null;    // Project code.
          this.project_code=null;   // Action code.
-     } 
+     }
 }
 
 
@@ -505,9 +505,9 @@ submitDar() {
   if(['lunch','personal'].includes(this.project_type)){ // when Timeline is for lunch or personal.
       if(this.project_type==='lunch')
          this.objProjectDto.Master_code='0';
-      else if(this.project_type==='personal') 
-         this.objProjectDto.Master_code='1'; 
-        
+      else if(this.project_type==='personal')
+         this.objProjectDto.Master_code='1';
+
       this.objProjectDto.Project_Code = null;
   }
   else{  // when Timeline is for project or action ( core or standard )
@@ -557,7 +557,7 @@ submitDar() {
                   this._Message = (JSON.parse(myJSON).body).Message;
                   if(this._Message==='Success')
                   {
-                    this.notifyService.showSuccess("Successfully Updated", 'Action completed.');
+                    this.notifyService.showSuccess("Successfully updated", 'Action completed.');
                     //  the action is successfully completed
                   }
                   else

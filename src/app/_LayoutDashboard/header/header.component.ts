@@ -172,8 +172,18 @@ export class HeaderComponent implements OnInit {
     document.getElementById("main-section_header").classList.toggle("d-none");
 
   }
-
-
+  applyleave(){
+    document.getElementById("apply-leave").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+  }
+  closeleave(){
+    document.getElementById("apply-leave").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+  }
   closeInfo() {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";

@@ -81,6 +81,7 @@ export class ActionToProjectComponent implements OnInit {
   //selected_Employee: any[];
   dropdownSettings_EMP = {};
   disablePreviousDate = new Date();
+  todayDate=new Date();
   disableAssignedField:boolean=false;
   public task_id: number = null;
   public _taskName: string;
@@ -114,7 +115,8 @@ export class ActionToProjectComponent implements OnInit {
   Resp_empno:string;
   Autho_empno:string;
   pcode:any;
-
+  _actbefore:boolean;
+  // _actafter:boolean;
 
   CurrentUser_ID: string;
   _EmployeeListForDropdown = [];
@@ -129,6 +131,7 @@ export class ActionToProjectComponent implements OnInit {
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
     public router: Router,public _meetingreport: MeetingReportComponent,
+    private notification:NotificationService,
     public _details: DetailsComponent,
     public createproject: CreateProjectComponent,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
@@ -224,6 +227,7 @@ export class ActionToProjectComponent implements OnInit {
         });
 
   }
+  allocatedHour:any
 
   GetAllEmployeesForAssignDropdown() {
     let obj: any = {
@@ -244,12 +248,14 @@ export class ActionToProjectComponent implements OnInit {
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+          debugger
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
           this.owner=data["Owner_empno"];
           this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
+          this.allocatedHour= this.createproject.projectInfo.AllocatedHours
           const dateOne = new Date(this.disablePreviousDate);
           const dateTwo = new Date(this.ProjectStartDate);
           if(dateTwo > dateOne){
@@ -285,13 +291,13 @@ export class ActionToProjectComponent implements OnInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
       (data) => {
-    
+
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
         console.log(this.allUsers,"groupby");
         console.log()
-      
+
       });
   }
 
@@ -310,7 +316,7 @@ export class ActionToProjectComponent implements OnInit {
   selectedProjectCode: any;
 
   ProjectOnSelect() {
-
+debugger
     let obj: any = {
       pagenumber: 1,
       Emp_No: this.CurrentUser_ID,
@@ -318,7 +324,7 @@ export class ActionToProjectComponent implements OnInit {
     }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
-    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => { debugger
       this.ProjectDeadLineDate = data["DeadLine"];
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
@@ -327,7 +333,7 @@ export class ActionToProjectComponent implements OnInit {
       const dateOne = new Date(this.disablePreviousDate);
       const dateTwo = new Date(this.ProjectStartDate);
       if(dateTwo > dateOne){
-        this.disablePreviousDate = this.ProjectStartDate;
+        this.disablePreviousDate = this.ProjectStartDate
       }
     });
 
@@ -461,22 +467,37 @@ export class ActionToProjectComponent implements OnInit {
 
 
 
+
   OnSubmit() {
 debugger
+
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
       // return false;
     }else this._projcode=false;
 
-    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
-      this._subname = true;
-      // return false;
-    }else this._subname=false;
 
-    if (this._Description == "" || this._Description == null || this._Description == undefined) {
+
+
+    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
+      // this.Sub_ProjectName==="VALID"
+      this._subname = true;
+
+
+    }else this._subname=false;
+    if (this.isPrjNameValid !== 'VALID') {
+      // Don't proceed with form submission if input is invalid
+      return;
+  }
+
+
+    if (this._Description == "" || this._Description == null || this._Description == undefined ) {
       this._desbool = true;
       // return false;
     }else this._desbool = false;
+    if(this.isPrjDesValid !=='VALID'){
+      return
+    }
 
     if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
       this._selectemp = true;
@@ -498,9 +519,16 @@ debugger
       // return false;
     }else  this._alchr=false;
 
+    if(this._Urlid==5){
+       const d1=new Date(this.ProjectStartDate);
+       const d2=new Date(this.ProjectDeadLineDate);
+       this._actbefore=this._StartDate<d1;
+      //  this._actafter=this._EndDate>d2;
+      //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
+    }
 
 
-   const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._alchr].some(item=>item);
+   const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
    if(fieldsRequired)
    return false;        // please provide all mandatory fields value.
 
@@ -526,6 +554,7 @@ debugger
     // console.log(this.owner,"selected owner")
 
     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+
       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
       this.EmpNo_Autho = data['Team_Autho'];
       this.ProjectBlock = data['ProjectBlock'];
@@ -537,7 +566,7 @@ debugger
         this.task_id = 0;
       }
 
-      this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName;
+      this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName.trim();
       this.ObjSubTaskDTO.SubtaskDescription = this._Description;
       this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
       this.ObjSubTaskDTO.StartDate = this._StartDate;
@@ -553,9 +582,9 @@ debugger
       this.ObjSubTaskDTO.Remarks = this._remarks;
       this.ObjSubTaskDTO.Duration = this._allocated;
       // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-
-      if (this._inputAttachments.length > 0) {
-        this.ObjSubTaskDTO.Attachments = this._inputAttachments[0].Files;
+      console.log( this.fileAttachment)
+     if (this.fileAttachment&& this.fileAttachment.length > 0) {
+        this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
       }
 
       var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
@@ -568,16 +597,16 @@ debugger
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Team_Autho", this.EmpNo_Autho);
       // fd.append('file', this._inputAttachments[0].Files);
-      if (this._inputAttachments.length > 0) {
+      if ( this.fileAttachment) {
         fd.append("Attachment", "true");
-        fd.append('file', this._inputAttachments[0].Files);
+        fd.append('file',  this.fileAttachment);
       }
       else {
         fd.append("Attachment", "false");
         fd.append('file', "");
       }
       fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
-      fd.append("SubtaskName", this.Sub_ProjectName);
+      fd.append("SubtaskName", this.Sub_ProjectName.trim());
       fd.append("Desc", this._Description);
       fd.append("Projectblock", this.ProjectBlock);
       fd.append("StartDate", datestrStart);
@@ -680,7 +709,10 @@ debugger
 
 
 
-    if(this._Urlid == 5){   
+
+
+    if(this._Urlid == 5 && this.allocatedHour>0){
+      debugger
       // only in project creation page.
          const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
          if(exceeds)
@@ -694,21 +726,22 @@ debugger
                   title:'Exceeds project allocated hrs.'
                }).then(choice=>{
                    if(choice.isConfirmed)
-                    continueNext();   
+                    continueNext();
                })
           }
-          else 
+          else
            continueNext();
     }
     else
     {  // details page, runway ...
-        continueNext();  
+        continueNext();
     }
 
 
-  
-  
+
+
   }
+
 
   convert(str) {
     var date = new Date(str),
@@ -729,6 +762,7 @@ debugger
     });
   }
   sweetAlert() {
+    debugger
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
     const dateOne = new Date(this._EndDate);
@@ -888,6 +922,7 @@ debugger
 
 
 selectFile() {
+
   this.fileInput.nativeElement.click();
 }
 
@@ -906,6 +941,17 @@ onFileChanged(event: any) {
 }
 
 
+onInputChange(value: string) {
+  this.Sub_ProjectName = value.trim();
+
+}
+
+onDescriptionChange(value:string){
+  this._Description=value.trim()
+
+}
+
+ _curtd=new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)
 // @ViewChildren(MatAutocompleteTrigger) autocompletes: QueryList<MatAutocompleteTrigger>;
 //  openAutocompleteDrpDwn(Acomp: string) {
 //    const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
@@ -945,6 +991,20 @@ onFileChanged(event: any) {
 //   }
 // }
 
+isPrjNameValid:'TOOLONG'|'VALID'='VALID';
+isPrjDesValid:'TOOLONG'|'VALID'='VALID'
+
+isValidString(inputString: string,maxWrds:number=1000): 'TOOLONG'|'VALID' {
+  if(inputString.trim()){
+    // let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+    // const x=rg.test(inputString);
+    const words = inputString.trim().split(/\s+/);
+    const y=words.length<=maxWrds
+
+    return (y === true) ? 'VALID' : (y === false) ? 'TOOLONG' : 'TOOLONG';
+
+    }
+  }
 
 
 
