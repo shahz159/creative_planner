@@ -672,7 +672,7 @@ ul.muted-title {
 .project .user-name {
     color: #4F4F4F;
     font-size: 13px;
-    margin-left: 8px;
+    margin-left: 4px;
 }
 .agenda .user-name {
     color: #4F4F4F;
@@ -1016,8 +1016,8 @@ ul.meeting-attendees-userlist {
 }
 
 .details-form-control .user-icon img {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
 }
 
@@ -4308,4 +4308,11 @@ span.kt-dt-cnt-view {
 .kt-meeting-content h2 {
     max-height: 80px;
     overflow: hidden;
+}
+#exampleModal .modal-header, #repeatModal .modal-header {
+    padding: 0.8rem 1rem;
+}
+#exampleModal .modal-footer, #repeatModal .modal-footer {
+    padding: 0.5rem 1rem;
+    justify-content: flex-start;
 }

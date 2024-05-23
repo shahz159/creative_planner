@@ -1726,6 +1726,11 @@ left: 38%;
 .new-project-head,
 .Hold_color,
 .complteed_color,
+.New-project,
+.Completion,
+.Cancel-app,
+.Count-forward,
+.Count-deadline,
 .Delete-head,
 .rejected,
 .todo-completed-head,
@@ -2168,4 +2173,40 @@ td:nth-child(4) {
 .Count-forward{
   background-color: #b2d732;
   color: #000;
+}
+.Count-forward.active-Count-forward::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #b2d732;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 45%;
+}
+.Count-deadline.active-Count-deadline::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #EE4137;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 45%;
+}
+.Cancel-app.active-Cancel-app::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #EE4137;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 45%;
+}
+.Completion.active-Completion::after {
+  content: "";
+  position: absolute !important;
+  border-top: 10px solid #b2d732;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  bottom: -32%;
+  left: 45%;
 }
