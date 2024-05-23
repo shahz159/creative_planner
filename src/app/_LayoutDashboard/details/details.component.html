@@ -2557,7 +2557,7 @@
                                                           <ng-template #prHbtn>
                                                               <button class="Ct-btn Bt-hold ml-2"
                                                                   (click)="openPrjHoldSideBar()"
-                                                                  *ngIf="projectInfo.Status==='InProcess'">Project
+                                                                  *ngIf="projectInfo.Status==='InProcess' || projectInfo.Status==='Delay'">Project
                                                                   Hold</button>
                                                           </ng-template>
 
