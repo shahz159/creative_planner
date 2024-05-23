@@ -129,7 +129,7 @@ export class ActionToAssignComponent implements OnInit {
     this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
       (data) => {
         this.PortfolioList = data as PortfolioDTO;
-        console.log(this.PortfolioList,"portfolios");
+        console.log(this.PortfolioList,"portfoliosubn;");
       }
     )
 
@@ -394,7 +394,7 @@ TEsb.addEventListener('scroll', (ac:any) => {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
-        console.log(this.EmployeeList);
+        console.log(this.EmployeeList,'EmployeeList');
         this.dropdownSettings_Employee = {
           singleSelection: true,
           idField: 'Emp_No',
