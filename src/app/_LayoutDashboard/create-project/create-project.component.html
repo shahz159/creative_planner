@@ -1707,7 +1707,7 @@
                                         <div class="dropzone-item p-3 m-0 border br-0">
                                           <div class="dropzone-file">
                                             <div class="dropzone-filename">
-                                              <span>{{fileAttachment.name}}</span>
+                                              <span (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">{{fileAttachment.name}}</span>
                                               <span class="dropzone-delete">
                                                 <i class="flaticon2-cross" (click)="fileAttachment=null;     "></i>
                                               </span>

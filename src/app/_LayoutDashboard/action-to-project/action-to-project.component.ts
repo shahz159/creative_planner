@@ -149,12 +149,7 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_projectCode.subscribe(p => this.pcode=p);
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
     this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
-     setTimeout(() => {
-      this.BsService.bs_TaskName.subscribe(t => {
-        this.Sub_ProjectName = t
-        console.log(this.Sub_ProjectName,'======>')
-      });
-     }, 100);
+   
 
     this._inputAttachments = [];
     this._projcode = false;
@@ -198,16 +193,25 @@ export class ActionToProjectComponent implements OnInit {
 
 
 
-      this.BsService.bs_templAction.subscribe(ta=>{
+        this.BsService.bs_templAction.subscribe(ta=>{
            this.Sub_ProjectName=ta.name;
            this._Description=ta.description;
             if(ta.assignedTo!==''){
                    this.selectedEmpNo=ta.assignedTo;
                    this.disableAssignedField=true;
             }
-
-
          })
+
+         
+          this.BsService.bs_TaskName.subscribe(t => {
+            if(t){
+              this.Sub_ProjectName = t
+            }
+            console.log(this.Sub_ProjectName,'======>')
+          });
+        
+
+
 
          tippy('#actattach', {
           content: "If you select this checkbox, you need to attach a file when completing the action.",
