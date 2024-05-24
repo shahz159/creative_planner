@@ -112,7 +112,7 @@
                     <!-- <h4>Preventive Maintenance plan for Equipment, RO and RC for month of june 2023</h4> -->
                     <h4 class="mb-0"> {{item.Project_Name}}</h4>
                 </div>
-                <ng-conatiner *ngIf="!isRequest">
+                <ng-container *ngIf="!isRequest">
                     <div class="kt-project-info-body" *ngFor="let item of ProjectStatesJson">
                         <div class="kt-info-box-tittle d-flex align-items-center justify-content-between w-100">
 
@@ -136,7 +136,7 @@
                                                         'Cancelled': item.Status=='Cancelled',
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold'}">
-                                        <ng-container *ngIf="item.Status!='Project Hold'"> {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
+                                        <ng-container *ngIf="item.Status!='Project Hold'"> {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                                         </ng-container>
                                         <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
                                     </div>
@@ -146,7 +146,7 @@
 
                         </div>
                     </div>
-                </ng-conatiner>
+                </ng-container>
             </div>
             <div class="kt-project-desc">
                 <!-- <p>This report solidifies the current available candidates for the final interview session to be conducted by the Chairman</p> -->
@@ -188,7 +188,7 @@
                                                 >
                                                  <ng-container *ngIf="item.Status !== 'Project Hold'">
                                                   <span class=" font-weight-400 ">
-                                                    {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
+                                                    {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                                                  </span>
                                                   </ng-container>
 
@@ -201,14 +201,14 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg></span> <span class="Requested_user_name"
                                     title="Requested by">{{item.requestby}}</span><span class="Rq_date_V"
-                                    title="Requested Date">{{item.requestDate|date:'dd-MM-yyyy'}}</span>
+                                    title="Requested date">{{item.requestDate|date:'dd-MM-yyyy'}}</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="pending_approval_form">
                         <div class="Paf_info">
-                            <label>Pending Approval</label>
+                            <label>Pending approval</label>
                             <p><span class="Dote_red"></span> {{Approver_Name}}</p>
                         </div>
                     </div>
@@ -275,7 +275,7 @@
                                                 'Delay':item.Status=='Delay',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}" >
-                            {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
+                            {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                         </div>
 
                         <div class="Requested_user_info">
@@ -286,7 +286,7 @@
                                     <circle cx="12" cy="7" r="4"></circle>
                                 </svg></span> <span class="Requested_user_name"
                                 title="Requested by">{{Submitted_By}}</span><span class="Rq_date_V"
-                                title="Requested Date">{{requestDate|date:'dd-MM-yyyy'}}</span>
+                                title="Requested date">{{requestDate|date:'dd-MM-yyyy'}}</span>
                         </div>
                     </div>
                 </div>
@@ -307,7 +307,7 @@
                         <div *ngIf="requestType=='Project Complete'">
                             <button
                                 [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                (click)="approvalClick('CONDITIONAL')">Conditional Accept</button>
+                                (click)="approvalClick('CONDITIONAL')">Conditional accept</button>
                         </div>
                         <div>
                             <button
@@ -377,7 +377,7 @@
             <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
                 <div class="kt-pdv">
                     <div *ngIf="isRejectOptionsVisible">
-                        Reject Type*
+                        Reject type*
                         <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
                             id="rej_type" [(ngModel)]="rejectType" (change)="rejectApproval()">
                             <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
@@ -389,7 +389,7 @@
                         <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
                             <div class="exs-cmts card">
                                 <div class="card-header" *ngIf="rejectlength>0">
-                                    <h6 class="mb-0">Existing Comments</h6>
+                                    <h6 class="mb-0">Existing comments</h6>
                                 </div>
                                 <div class="crd-bdy scroll-y">
                                     <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
@@ -420,17 +420,17 @@
                         </div>
                     </div>
                     <ng-container *ngIf="rejectType">
-                        Enter Comments*
+                        Enter comments*
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
                     <ng-container *ngIf="selectedType == '2'">
-                        Enter Comments*
+                        Enter comments*
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
                     <ng-container *ngIf="selectedType == '1'">
-                        Enter Comments
+                        Enter comments
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="6"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
@@ -509,7 +509,7 @@
                 </div>
 
                 <div class="col-lg-12 mb-2" *ngIf="requestType=='Task Complete' && completedoc">
-                    <div class="kt-info-lable-v">Task Attachment</div>
+                    <div class="kt-info-lable-v">Task attachment</div>
 
                     <div class="curser-pointer">
                         <div class="attachment-view">
@@ -962,7 +962,7 @@
                         </div>
                         <div class="kt-project-type">
                             <div class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">
-                                Completion Approval</div>
+                                Completion approval</div>
                             <div class="Requested_user_info">
                                 <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -970,7 +970,7 @@
                                         class="feather feather-user icon">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
-                                    </svg></span> <span class="Requested_user_name"> Md Waseem Akram</span><span
+                                    </svg></span> <span class="Requested_user_name"> Md waseem akram</span><span
                                     class="Rq_date_V">12-12-2023</span>
                             </div>
                         </div>
@@ -992,7 +992,7 @@
                             <div *ngIf="requestType=='Project Complete'">
                                 <button
                                     [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                    (click)="approvalClick('CONDITIONAL')">Conditional Accept</button>
+                                    (click)="approvalClick('CONDITIONAL')">Conditional accept</button>
                             </div>
                             <div>
                                 <button
@@ -1066,7 +1066,7 @@
                 <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
                     <div class="kt-pdv">
                         <div *ngIf="isRejectOptionsVisible">
-                            Reject Type*
+                            Reject type*
                             <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
                                 id="rej_type" [(ngModel)]="rejectType" (change)="rejectApproval()">
                                 <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
@@ -1078,7 +1078,7 @@
                             <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
                                 <div class="exs-cmts card">
                                     <div class="card-header" *ngIf="rejectlength>0">
-                                        <h6 class="mb-0">Existing Comments</h6>
+                                        <h6 class="mb-0">Existing comments</h6>
                                     </div>
                                     <div class="crd-bdy scroll-y">
                                         <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
@@ -1111,17 +1111,17 @@
                             </div>
                         </div>
                         <ng-container *ngIf="rejectType">
-                            Enter Comments*
+                            Enter comments*
                             <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                                 [(ngModel)]="comments"></textarea>
                         </ng-container>
                         <ng-container *ngIf="selectedType == '2'">
-                            Enter Comments*
+                            Enter comments*
                             <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                                 [(ngModel)]="comments"></textarea>
                         </ng-container>
                         <ng-container *ngIf="selectedType == '1'">
-                            Enter Comments
+                            Enter comments
                             <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                                 [(ngModel)]="comments"></textarea>
                         </ng-container>
@@ -1377,19 +1377,19 @@
                         <div class="kt-prg-progress">
                             <ul>
                               <li *ngIf="Under_Approval > 0" >
-                                <span class="B-Bot P_Not_Started  new-project "></span> <span class=""> New Approval</span>
+                                <span class="B-Bot P_Not_Started  new-project "></span> <span class=""> New approval</span>
                                 <b>({{Under_Approval}})</b>
                             </li>
-                                <li *ngIf="inprogress>0"><span class="B-Bot P_In_Progress"></span>In-Processs
+                                <li *ngIf="inprogress>0"><span class="B-Bot P_In_Progress"></span>In-processs
                                     <b>({{inprogress}})</b></li>
                                 <li *ngIf="delay>0"><span class="B-Bot P_Delay"></span> Delay <b>({{delay}})</b></li>
                                 <li class="w-50P" *ngIf="Rejected>0"><span
-                                        class="B-Bot P_New_Project_Rejected w-50P"></span> New Project Rejected
+                                        class="B-Bot P_New_Project_Rejected w-50P"></span> New project rejected
                                     <b>({{Rejected}})</b></li>
                                 <li class="w-50P" *ngIf="Completion_Under>0 "><span
-                                        class="B-Bot P_Completion_under_Approval w-50P"></span> Completion Approval <b>({{Completion_Under}})</b></li>
+                                        class="B-Bot P_Completion_under_Approval w-50P"></span> Completion approval <b>({{Completion_Under}})</b></li>
                                 <li class="w-50P" *ngIf="Forward_Under>0 "><span
-                                        class="B-Bot P_ForwardUnderApproval w-50P"></span> Forward Approval
+                                        class="B-Bot P_ForwardUnderApproval w-50P"></span> Forward approval
                                     <b>({{Forward_Under}})</b></li>
                                 <li *ngIf="completed>0"><span class="B-Bot P_Done"></span> Completed
                                     <b>({{completed}})</b></li>
@@ -1488,14 +1488,14 @@
                     </div>
                     <div class="kt-project-type">
                         <div class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">
-                            Completion Approval</div>
+                            Completion approval</div>
                         <div class="Requested_user_info">
                             <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
-                                </svg></span> <span class="Requested_user_name"> Md Waseem Akram</span><span
+                                </svg></span> <span class="Requested_user_name"> Md waseem akram</span><span
                                 class="Rq_date_V">12-12-2023</span>
                         </div>
                     </div>
@@ -1517,7 +1517,7 @@
                         <div *ngIf="requestType=='Project Complete'">
                             <button
                                 [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                (click)="approvalClick('CONDITIONAL')">Conditional Accept</button>
+                                (click)="approvalClick('CONDITIONAL')">Conditional accept</button>
                         </div>
                         <div>
                             <button
@@ -1591,7 +1591,7 @@
             <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
                 <div class="kt-pdv">
                     <div *ngIf="isRejectOptionsVisible">
-                        Reject Type*
+                        Reject type*
                         <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
                             id="rej_type" [(ngModel)]="rejectType" (change)="rejectApproval()">
                             <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
@@ -1603,7 +1603,7 @@
                         <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
                             <div class="exs-cmts card">
                                 <div class="card-header" *ngIf="rejectlength>0">
-                                    <h6 class="mb-0">Existing Comments</h6>
+                                    <h6 class="mb-0">Existing comments</h6>
                                 </div>
                                 <div class="crd-bdy scroll-y">
                                     <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
@@ -1634,17 +1634,17 @@
                         </div>
                     </div>
                     <ng-container *ngIf="rejectType">
-                        Enter Comments*
+                        Enter comments*
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
                     <ng-container *ngIf="selectedType == '2'">
-                        Enter Comments*
+                        Enter comments*
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
                     <ng-container *ngIf="selectedType == '1'">
-                        Enter Comments
+                        Enter comments
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>

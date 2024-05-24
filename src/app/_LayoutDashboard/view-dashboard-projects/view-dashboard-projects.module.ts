@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewDashboardProjectsRoutingModule } from './view-dashboard-projects-routing.module';
 import { ViewDashboardProjectsComponent } from './view-dashboard-projects.component';
@@ -12,14 +12,16 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import{ViewDateAgo}from './view-date-ago'
 import { SortDirective } from './sort.directive';
 //import {  SharedProjectsDetailComponent} from "src/app/Shared/shared-projects-detail/shared-projects-detail.component";
-
+import { CreateProjectComponent } from '../create-project/create-project.component'
+import { CreateprojectService } from 'src/app/_Services/createproject.service';
 
 @NgModule({
   declarations: [
     ViewDashboardProjectsComponent,
     ViewDateAgo,
+
     //ProjectInfoComponent,
-   
+
     SortDirective
     //SharedProjectsDetailComponent
     //DateFormatPipePipe,
@@ -33,7 +35,13 @@ import { SortDirective } from './sort.directive';
     FormsModule,
     ReactiveFormsModule,
     NgMultiSelectDropDownModule
+
+
     //,ProjectInfoComponent
-  ]
+  ],
+  providers:[CreateProjectComponent,DatePipe ]
+
 })
+
+
 export class ViewDashboardProjectsModule { }

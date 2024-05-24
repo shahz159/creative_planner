@@ -8,7 +8,7 @@
                         <h3 class="kt-portlet__head-title mr-2">
                             <i class="fab fa-buffer mr-2 text-primary"></i>
                             <!-- <i class="kt-menu__link-icon fas fa-clipboard-check mr-2 text-primary"></i> -->
-                            <strong>Assigned Tasks</strong>
+                            <strong>Assigned tasks</strong>
                         </h3>
                         <h6 class="text-muted mt-2">{{FilteredText}}</h6>
                     </div>
@@ -16,7 +16,7 @@
 
                         <div class="kt-widget19__stats text-center px-4 m-auto">
                             <button class="btn btn-primary btn-sm btn-bold cust-btn" (click)="ShowForm()">
-                                <i class="fas fa-plus mr-2"></i> Add Task
+                                <i class="fas fa-plus mr-2"></i> Add task
                             </button>
                         </div>
 
@@ -26,13 +26,13 @@
                                     aria-expanded="true" data-toggle="dropdown"><i
                                         class="fas fa-ellipsis-v  mr-2"></i></button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <span class="dropdown-header"><i class="fas fa-filter mr-2"></i>Filter Tasks
+                                    <span class="dropdown-header"><i class="fas fa-filter mr-2"></i>Filter tasks
                                         :</span>
                                     <a class="dropdown-item" (click)="GetAssignTask()">
                                         <div><span
                                                 class="kt-badge kt-badge--primary kt-badge--inline mr-2">{{countAssigned}}</span>
                                         </div>
-                                        <span class="kt-drop-text">Total Assigned</span>
+                                        <span class="kt-drop-text">Total assigned</span>
                                     </a>
                                     <a class="dropdown-item" (click)="GetAccepted()">
                                         <div><span
@@ -267,7 +267,7 @@
                 <!-- [hidden]="DisplayProject_Det" -->
             </div>
             <!-- Demo Version -->
-            <h4 [hidden]="_DemoVersion">EP Development</h4>
+            <h4 [hidden]="_DemoVersion">EP development</h4>
             <div class="scrollbar" [hidden]="_DemoVersion">
 
                 <div class="assigned_task d-flex justify-content-between" *ngFor="let item of DemoTasksList">
@@ -312,10 +312,10 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Responsible name</h5>
                         </div>
                         <div class="modal-body">
-                            <p>Coming Soon</p>
+                            <p>Coming soon</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -332,13 +332,13 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Responsible Name</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Responsible name</h5>
                         </div>
                         <div class="modal-body">
                             <ul>
                                 <li>
                                     <a href="#">
-                                        <i class="la la-angle-right"></i> Creative Solutions
+                                        <i class="la la-angle-right"></i> Creative solutions
                                     </a>
                                 </li>
                                 <li>
@@ -348,7 +348,7 @@
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="la la-angle-right"></i> dr.CAFE Coffee
+                                        <i class="la la-angle-right"></i> dr.CAFE coffee
                                     </a>
                                 </li>
                             </ul>

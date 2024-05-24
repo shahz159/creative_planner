@@ -77,24 +77,24 @@
                     <h6 class="mb-0" *ngIf="Status=='Under Approval'">New project under approval with -
                         {{item.Emp_Name}}
                     </h6>
-                    <h6 class="mb-0" *ngIf="Status=='Completion Under Approval'">The project is Completion Under
-                        Approval with -
+                    <h6 class="mb-0" *ngIf="Status=='Completion Under Approval'">The project is Completion under
+                        approval with -
                         {{item.Emp_Name}}
                     </h6>
-                    <h6 class="mb-0" *ngIf="Status=='Forward Under Approval'">The project is Forward Under Approval with
+                    <h6 class="mb-0" *ngIf="Status=='Forward Under Approval'">The project is Forward under approval with
                         -
                         {{item.Emp_Name}}
                     </h6>
-                    <h6 class="mb-0" *ngIf="Status=='Deadline Extend Under Approval'">The project is Deadline Extend
-                        Under Approval with -
+                    <h6 class="mb-0" *ngIf="Status=='Deadline Extend Under Approval'">The project is Deadline extend
+                        under approval with -
                         {{item.Emp_Name}}
                     </h6>
-                    <h6 class="mb-0" *ngIf="Status=='Enactive Under Approval'">The project is Enactive Under Approval
+                    <h6 class="mb-0" *ngIf="Status=='Enactive Under Approval'">The project is Enactive under approval
                         with -
                         {{item.Emp_Name}}
                     </h6>
-                    <h6 class="mb-0" *ngIf="Status=='Cancellation Under Approval'">The project is Cancellation Under
-                        Approval with -
+                    <h6 class="mb-0" *ngIf="Status=='Cancellation Under Approval'">The project is Cancellation under
+                        approval with -
                         {{item.Emp_Name}}
                     </h6>
                 </div>
@@ -494,7 +494,7 @@
                                         </span>
                                     </div>
                                     <div class="action-content">
-                                        <h6 class="txtm-cus pt-1">Project Duration</h6>
+                                        <h6 class="txtm-cus pt-1">Project duration</h6>
                                         <ng-container
                                             *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks'); then othertask;">
                                         </ng-container>
@@ -524,7 +524,7 @@
                                                         class="dropdown-menu dropdown-menu-right dropdown-menu-fit date-drop1 z-1k">
                                                         <ul class="kt-nav pb-0" (click)="$event.stopPropagation();">
                                                             <li class="kt-nav__head py-0">
-                                                                <div>Deadline Extend</div>
+                                                                <div>Deadline extend</div>
                                                             </li>
                                                             <!-- [min]="EndDate1" -->
                                                             <li class="kt-nav__separator"></li>
@@ -610,7 +610,7 @@
                                             <h6 class="txtm-cus pt-1">Allocated</h6>
                                             <h5 class="mt-1"
                                                 *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks'">
-                                                {{maxDuration}} Hrs
+                                                {{maxDuration}} hrs
                                             </h5>
                                             <h5 class="mt-1"
                                                 *ngIf="ProjectBlockName == 'Standard Tasks' || ProjectBlockName=='Routine Tasks'">
@@ -810,7 +810,7 @@
                         <div class="col-md-4 project-duration d-none">
                             <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                 <div class="kt-portlet__body p-3">
-                                    <h6 class="mb-2">Project Duration</h6>
+                                    <h6 class="mb-2">Project duration</h6>
                                     <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate}}</h5>
                                     <progress value="50" max="100" class="project-duration-bar"></progress>
                                 </div>
@@ -819,7 +819,7 @@
                         <div class="col-md-4 project-budget d-none">
                             <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                 <div class="kt-portlet__body p-3">
-                                    <h6 class="mb-2">Project Budget</h6>
+                                    <h6 class="mb-2">Project budget</h6>
                                     <h5 class="mb-3"> <span>{{Cost|currency:'SAR '}}</span></h5>
                                     <progress value="50" max="100" class="project-budget-bar"></progress>
                                 </div>
@@ -849,7 +849,7 @@
                         <div class="col-md-3 project-duration">
                             <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                 <div class="kt-portlet__body p-3">
-                                    <h6 class="mb-2">Project Type</h6>
+                                    <h6 class="mb-2">Project type</h6>
                                     <h5 class="mb-3">{{ProjectBlockName}}</h5>
                                 </div>
                             </div>
@@ -857,7 +857,7 @@
                         <div class="col-md-3 project-duration">
                             <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                 <div class="kt-portlet__body p-3">
-                                    <h6 class="mb-2">Project Duration</h6>
+                                    <h6 class="mb-2">Project duration</h6>
                                     <!-- |date:'dd-MM-yyyy' -->
                                     <h5 class="mb-3">{{StartDate|date:'dd-MM-yyyy'}} / {{EndDate}}</h5>
                                     <progress value="50" max="100" class="project-duration-bar"></progress>
@@ -867,7 +867,7 @@
                         <div class="col-md-3 project-budget">
                             <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                 <div class="kt-portlet__body p-3">
-                                    <h6 class="mb-2">Project Budget</h6>
+                                    <h6 class="mb-2">Project budget</h6>
                                     <h5 class="mb-3"> <span>{{Cost|currency:'SAR '}}</span></h5>
                                     <progress value="50" max="100" class="project-budget-bar"></progress>
                                 </div>
@@ -910,7 +910,7 @@
                             <div class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                 <div class="kt-portlet__body p-3">
                                     <h6 class="mb-2">Category</h6>
-                                    <h5 class="mb-3">Software Support</h5>
+                                    <h5 class="mb-3">Software support</h5>
                                 </div>
                             </div>
                         </div>
@@ -1027,10 +1027,10 @@
                                                             <div
                                                                 class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                                 <div class="kt-portlet__body px-3">
-                                                                    <h5><strong>DAR Summary</strong></h5>
-                                                                    <h6>Total Max Duration : <span
+                                                                    <h5><strong>DAR summary</strong></h5>
+                                                                    <h6>Total max duration : <span
                                                                             *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName != 'Routine Tasks'"><b>{{maxDuration}}
-                                                                                Hrs</b></span>
+                                                                                hrs</b></span>
                                                                         <span
                                                                             *ngIf="ProjectBlockName == 'Standard Tasks' || ProjectBlockName == 'Routine Tasks'"><b>{{standardDuration}}</b></span>
                                                                     </h6>
@@ -1064,7 +1064,7 @@
                                                                 class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                                 <div class="kt-portlet__body px-3">
                                                                     <h5><strong>Milestones</strong></h5>
-                                                                    <p>Breakdown Achievement for Project</p>
+                                                                    <p>Breakdown achievement for project</p>
 
                                                                     <div class="progress_bar">
                                                                         <div class="pro-bar">
@@ -1108,12 +1108,12 @@
                                                     <!-- Row 2 -->
                                                     <div class="row">
                                                         <div class="col-lg-8">
-                                                            <h5><strong>All Tasks</strong></h5><br>
-                                                            <h4>Project Trend</h4>
+                                                            <h5><strong>All tasks</strong></h5><br>
+                                                            <h4>Project trend</h4>
                                                             <div
                                                                 class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                                 <div class="kt-portlet__body px-3">
-                                                                    <h5><strong>Project Trend Graph</strong></h5>
+                                                                    <h5><strong>Project trend graph</strong></h5>
                                                                     <div id="ProjectTrendchart"
                                                                         style="width: 80%; height: 400px">
                                                                     </div>
@@ -1264,13 +1264,13 @@
                                         </div>
                                         <div class="tab-pane fade" id="Activity" role="tabpanel"
                                             aria-labelledby="act-tab-1">
-                                            <h3>Standard Charts</h3>
+                                            <h3>Standard charts</h3>
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div
                                                         class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid">
                                                         <div class="kt-portlet__body px-3">
-                                                            <h5><strong>Project Monthly Summary</strong></h5>
+                                                            <h5><strong>Project monthly summary</strong></h5>
                                                             <div id="StandardChart" style="width: 100%; height: 400px">
                                                             </div>
 
@@ -1310,7 +1310,7 @@
                                 </li>
                                 <li class="nav-item" *ngIf="underapprovalcount!=0 ">
                                     <a class="nav-link" id="tasks-5" data-toggle="tab" href="#tasks_5">
-                                        <span class="nav-text">New Project Under Approval</span>
+                                        <span class="nav-text">New project under approval</span>
                                     </a>
                                 </li>
                                 <li class="nav-item" *ngIf="inProcessCount!=0 ">
@@ -1367,7 +1367,7 @@
                                                 *ngIf="(subTaskCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
+                                                    class="fas fa-plus mr-2"></i>New action</button>
                                         </div>
                                         <div class=" ribbon-box my-3" *ngIf="Subtask_List">
                                             <div class="srch-actns mb-3" *ngIf="subTaskCount!=0">
@@ -1714,7 +1714,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <div class="mb-0 d-flex align-items-center">
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Start Date!">{{item.StartDate
@@ -1773,7 +1773,7 @@
 
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Action Cost!">
-                                                                                    {{item.SubtaskAllocated}} Hrs</h5>
+                                                                                    {{item.SubtaskAllocated}} hrs</h5>
 
                                                                                 <div class="dropdown show"
                                                                                     *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && item.SubProject_Status!='Completed'  && Status!='Cancelled'">
@@ -1975,7 +1975,7 @@
                                                 *ngIf="(underapprovalcount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
+                                                    class="fas fa-plus mr-2"></i>New action</button>
 
                                             <!-- (click)="OnAddTaskClick()" -->
                                             <!-- <button
@@ -2316,7 +2316,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <div class="mb-0 d-flex align-items-center">
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Start Date!">{{item.StartDate
@@ -2567,7 +2567,7 @@
                                                 *ngIf="(inProcessCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
+                                                    class="fas fa-plus mr-2"></i>New action</button>
 
                                             <!-- (click)="OnAddTaskClick()" -->
                                             <!-- <button
@@ -2900,7 +2900,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <div class="mb-0 d-flex align-items-center">
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Start Date!">{{item.StartDate
@@ -3151,7 +3151,7 @@
                                                 *ngIf="(delaycount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
+                                                    class="fas fa-plus mr-2"></i>New action</button>
 
                                             <!-- (click)="OnAddTaskClick()" -->
                                             <!-- <button
@@ -3484,7 +3484,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <div class="mb-0 d-flex align-items-center">
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Start Date!">{{item.StartDate
@@ -3543,7 +3543,7 @@
 
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Action Cost!">
-                                                                                    {{item.SubtaskAllocated}} Hrs</h5>
+                                                                                    {{item.SubtaskAllocated}} hrs</h5>
 
                                                                                 <div class="dropdown show"
                                                                                     *ngIf="item.SubtaskAllocated == 0 && (Current_user_ID=='2000' || Current_user_ID==item.Team_Res || Current_user_ID==item.Project_Owner || Current_user_ID==item.Team_Autho) && Status!='Cancelled'">
@@ -3722,7 +3722,7 @@
                                                 *ngIf="(rejectcount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
+                                                    class="fas fa-plus mr-2"></i>New action</button>
                                         </div>
                                         <div class=" ribbon-box my-3" *ngIf="Reject_List">
                                             <div class="srch-actns mb-3" *ngIf="rejectcount!=0">
@@ -4034,7 +4034,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <div class="mb-0 d-flex align-items-center">
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Start Date!">{{item.StartDate
@@ -4581,7 +4581,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <div class="mb-0 d-flex align-items-center">
                                                                                 <h5 class="" data-toggle="tooltip"
                                                                                     title="Start Date!">{{item.StartDate
@@ -4831,7 +4831,7 @@
                                                 *ngIf="(completedCount!=0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                                 (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                                 class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                                    class="fas fa-plus mr-2"></i>New Action</button>
+                                                    class="fas fa-plus mr-2"></i>New action</button>
 
                                             <!-- (click)="OnAddTaskClick()" -->
                                             <!-- <button
@@ -5056,7 +5056,7 @@
                                                                             </svg>
                                                                         </span>
                                                                         <div class="w-100">
-                                                                            <h6 class="txtm-cus">Action Duration</h6>
+                                                                            <h6 class="txtm-cus">Action duration</h6>
                                                                             <h5 class="" data-toggle="tooltip"
                                                                                 title="Project Duration">
                                                                                 {{item.StartDate
@@ -5082,7 +5082,7 @@
                                                                             <h6 class="txtm-cus">Allocated</h6>
                                                                             <h5 class="" data-toggle="tooltip"
                                                                                 title="Action Cost!">
-                                                                                {{item.SubtaskAllocated}} Hrs</h5>
+                                                                                {{item.SubtaskAllocated}} hrs</h5>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -5249,7 +5249,7 @@
                                             <div
                                                 class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid bg-none shadow-none">
                                                 <div class="kt-portlet__body px-3">
-                                                    <h5><strong>Subtask Hour and Percentage</strong></h5>
+                                                    <h5><strong>Subtask hour and Percentage</strong></h5>
                                                     <!-- <div id="SummaryChart" style="width: 100%; height: 500px">
                             </div> -->
                                                     <!-- <h5><strong>Hybrid Graph</strong></h5>-->
@@ -5265,7 +5265,7 @@
                                             <div
                                                 class="kt-portlet kt-portlet--bordered-semi kt-portlet--height-fluid bg-none shadow-none">
                                                 <div class="kt-portlet__body px-3">
-                                                    <h5><strong>Subtask Summary</strong></h5>
+                                                    <h5><strong>Subtask summary</strong></h5>
                                                     <div id="SummaryChart" style="width: 100%; height: 500px">
                                                     </div>
                                                     <!-- <h5><strong>Hybrid Graph</strong></h5>
@@ -5283,7 +5283,7 @@
                                         *ngIf="(subTaskCount==0) && ((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                         (click)="sweetAlert()" [hidden]="actionButton" title="Create New Action"
                                         class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold mr-1"><i
-                                            class="fas fa-plus mr-2"></i>New Action</button>
+                                            class="fas fa-plus mr-2"></i>New action</button>
                                 </div>
                                 <div *ngIf="subTaskCount!=0 || cancelcount!=0; else noResultsFound">
                                 </div>
@@ -5336,7 +5336,7 @@
                                 <div class="text-right">
                                     <button type="button" class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold"
                                         *ngIf="Status!='Cancelled'" (click)="AddPortfolio()">
-                                        <i class="fa fa-chart-bar"></i>Link Portfolio
+                                        <i class="fa fa-chart-bar"></i>Link portfolio
                                     </button>
                                 </div>
 
@@ -5384,7 +5384,7 @@
                                                                 </span>
                                                                 <span
                                                                     class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge.kt-badge-light-bold kt-badge--inline">Total
-                                                                    {{tezz.Count}} Project(s)</span>
+                                                                    {{tezz.Count}} project(s)</span>
                                                                 <!-- <span class="kt-inbox__label kt-badge kt-badge--unified-success kt-badge.kt-badge-light-bold kt-badge--inline"> Active </span> -->
                                                             </div>
                                                         </div>
@@ -6105,7 +6105,7 @@
                             <div class="text-right d-flex-cen justify-content-end mb-3">
                                 <div class="mr-2">
                                     <h6 class="mb-0">
-                                        <strong>Total Achievement Hours - {{totalHours |
+                                        <strong>Total achievement hours - {{totalHours |
                                             number:'1.2-2'.toLocaleString()}} Hrs</strong>
                                     </h6>
                                 </div>
@@ -6114,7 +6114,7 @@
                                     class="btn22 btn btn-label-primary btn-pill btn-sm btn-bold"
                                     *ngIf="((Current_user_ID=='2000' || Current_user_ID == Owner_EmpNo || Current_user_ID == Responsible_EmpNo || Current_user_ID == Authority_EmpNo ||  Current_user_ID == Coor_EmpNo || Current_user_ID == Inform_EmpNo || supp==true || isHierarchy==true))"
                                     (click)="darcreate(); getResponsibleActions();">
-                                    Create Timeline
+                                    Create timeline
                                 </button>
                             </div>
 
@@ -6135,7 +6135,7 @@
                                                         <th style="width: 280px;">Employee</th>
                                                         <th style="width: 280px;"
                                                             *ngIf="ProjectBlockName != 'Standard Tasks' && ProjectBlockName !='Routine Tasks'">
-                                                            Action Name</th>
+                                                            Action name</th>
                                                         <th>Achievement</th>
                                                         <th style="width: 80px;">Start</th>
                                                         <th style="width: 80px;">End</th>
@@ -6160,7 +6160,7 @@
                                                         <td>{{dar.WorkAchieved}}</td>
                                                         <td>{{dar.starttime}}</td>
                                                         <td>{{dar.endtime}}</td>
-                                                        <td>{{dar.Duration}} Hrs</td>
+                                                        <td>{{dar.Duration}} hrs</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -6175,7 +6175,7 @@
                                             <div class="">
                                                 <ul class="time-totals-list">
                                                     <li class="totals-list--item">
-                                                        <span><strong>Total Hours: </strong></span>
+                                                        <span><strong>Total hours: </strong></span>
                                                         <span>{{item.TotalDuration}}</span>
                                                     </li>
                                                 </ul>
@@ -6189,7 +6189,7 @@
                                     <div style="text-align:center"> <button class="btn btn-info loadMore"
                                             (click)="CurrentPageNo = CurrentPageNo + 1; loadMore()"
                                             [hidden]="_CurrentpageRecords<10">
-                                            Load More!</button>
+                                            Load more!</button>
                                     </div>
                                 </div>
                             </div>
@@ -6617,7 +6617,7 @@
                             </defs>
                         </svg>
                         <div class="bnk-txt mt-3">
-                            <h3 class="blank-txt">No Results Found</h3>
+                            <h3 class="blank-txt">No results found</h3>
                         </div>
                     </div>
                 </div>
@@ -6637,7 +6637,7 @@
             <h1 class="text-primary main_acc">Access denied 503 !</h1>
             <h5 class="acc-desc ng-star-inserted">Unfortunately, this page is not in use.</h5>
             <div class="mt-4"><button class="btn btn-info mr-3">
-                Login to Stream Planner</button>
+                Login to Stream planner</button>
             </div>
         </div>
     </div>
@@ -6664,7 +6664,7 @@
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
                 <h4 class="m-0" *ngIf="(ProjectBlockName != 'Standard Tasks' && ProjectBlockName!='Routine Tasks')">
-                    Project Submission</h4>
+                    Project submission</h4>
                 <h4 class="m-0" *ngIf="(ProjectBlockName=='Standard Tasks')">Task Submission</h4>
                 <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeInfoProject()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -6759,7 +6759,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-active-primary text-hover-primary font-bolder fs-125 mr-4 py-3"
-                                data-toggle="tab" href="#edit-pro" (click)="changeStandard()">Not Achieve</a>
+                                data-toggle="tab" href="#edit-pro" (click)="changeStandard()">Not achieve</a>
                         </li>
                     </ul>
                 </div>
@@ -6829,7 +6829,7 @@
 <div id="mysideInfobar_Update" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"> Action Completion </h4>
+            <h4 class="font-weight-bold m-0"> Action completion </h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -7092,7 +7092,7 @@
                         <div class="action-content d-flex align-items-center gap-1 curser-pointer"
                             *ngIf="requestType=='Task Complete' && completedoc">
                             <div class="left-w">
-                                <h6 class="txtm-cus pt-1">Task Attachment</h6>
+                                <h6 class="txtm-cus pt-1">Task attachment</h6>
                                 <a
                                     (click)="openPDF_Standard(sidno,emp,iscloud,repdate,completedoc,contenttype,submitby)">
                                     <h6 class="mt-1" data-toggle="tooltip" title="{{completedoc}}"><u>{{completedoc |
@@ -7178,7 +7178,7 @@
                                         <label class="form-check-label lbl-war btn-app">
                                             <input id="rdbButtons_1" type="radio" class="form-check-input"
                                                 name="rdbButtons" value="2" [(ngModel)]="selectedType">Conditional
-                                            Accept
+                                            accept
                                         </label>
                                     </div>
                                     <div class="form-check-inline" (click)="typeChange()">
@@ -7200,7 +7200,7 @@
                                 <div class="col-md-12 checked-rad pl-1 pt-3">
                                     <div class="appr-comts">
                                         <div class="form-group" *ngIf="selectedType=='3'">
-                                            <label class="mb-2">Reject Type</label><span style="color:red">*</span>
+                                            <label class="mb-2">Reject type</label><span style="color:red">*</span>
                                             <ng-select required #action="ngModel" name="rej_type"
                                                 placeholder="Select Reject Type" id="rej_type" [(ngModel)]="rejectType"
                                                 (change)="rejectApproval()">
@@ -7215,9 +7215,9 @@
                                         </div>
                                         <div class="form-group"
                                             *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
-                                            <label class="mb-2" *ngIf="rejectType && selectedType=='3'">Select From
+                                            <label class="mb-2" *ngIf="rejectType && selectedType=='3'">Select from
                                                 Existing
-                                                Comments</label>
+                                                comments</label>
                                             <!-- <ng-select required #action="ngModel" name="comment_reject"
                                                 placeholder="Select Comment" id="comment_reject" [(ngModel)]="commentSelected">
                                                 <ng-option [value]="item.Req_Coments" *ngFor="let item of rejectcommentsList">
@@ -7262,12 +7262,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'">
-                                            <label class="mb-2">Enter Comments</label>
+                                            <label class="mb-2">Enter comments</label>
                                             <!-- <span style="color:red">*</span> -->
                                             <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
                                         </div>
                                         <div class="form-group" *ngIf="rejectType && selectedType=='3'">
-                                            <label class="mb-2">Enter Comments</label><span style="color:red">*</span>
+                                            <label class="mb-2">Enter comments</label><span style="color:red">*</span>
                                             <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
                                         </div>
                                         <!-- <div class="form-group" *ngIf="selectedType=='1' || selectedType=='2'"
@@ -7302,7 +7302,7 @@
                                 </div>
                                 <div class="none-checked margin-auto">
                                     <img src="assets/images/bg-no.jpg" height="300px" alt="select project actions">
-                                    <div class="text-black h5 mt-3">To Manage Project , select Project Actions</div>
+                                    <div class="text-black h5 mt-3">To manage project , select project actions</div>
                                 </div>
                             </div>
                         </div>
@@ -7369,7 +7369,7 @@
 <div id="LinkSideBar1" class="sideInfobar shadow-0 animate-right">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link Portfolio</h4>
+            <h4 class="font-weight-bold m-0"><i class="fa fa-link mr-1"></i> Link portfolio</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                 (click)="closeLinkSideBar()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -7420,7 +7420,7 @@
 
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-                <h4 class="m-0"><i class="fa fa-link mr-1"></i>Timeline Submission</h4>
+                <h4 class="m-0"><i class="fa fa-link mr-1"></i>Timeline submission</h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="closedarBar()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -7449,7 +7449,7 @@
                         atleast one action to submit timeline</span>
                 </div>
                 <div class="form-group">
-                    <label>Work Description<span class="text-danger">*</span></label>
+                    <label>Work description<span class="text-danger">*</span></label>
                     <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes"
                         placeholder="Define your achievement here."></textarea>
                 </div>
@@ -7471,7 +7471,7 @@
                 </div>
                 <div class="d-flex gap-1">
                     <div class="form-group w-100">
-                        <label>Start Time<span class="text-danger">*</span></label>
+                        <label>Start time<span class="text-danger">*</span></label>
                         <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"
                             [(ngModel)]="starttime">
                             <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
@@ -7483,7 +7483,7 @@
                     </div>
 
                     <div class="form-group w-100">
-                        <label>End Time<span class="text-danger">*</span></label>
+                        <label>End time<span class="text-danger">*</span></label>
                         <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
                             (click)="getDarTime()" [(ngModel)]="endtime">
                             <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
@@ -7493,7 +7493,7 @@
                             </ng-option>
                         </ng-select>
                         <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than
-                            Start
+                            start
                             time!!</span>
                     </div>
                 </div>

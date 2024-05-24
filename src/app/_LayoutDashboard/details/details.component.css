@@ -4194,7 +4194,7 @@ span.Kt-m-count {
   height: 20px;
 }
 .info-card-body .kt-inbox__icon:hover {
-  background-color: #f2f3f7!important;
+  background-color: #f2f3f7;
   transition: all .3s ease;
   color: inherit;
   text-decoration: none;
@@ -4663,12 +4663,18 @@ background-color: #e2e8f0c9;
    color:#000;
 }
 .kt-inbox__icon.event-active {
-  background-color: #ecf2ff !important;
+  /* background-color: #ecf2ff !important; */
   position: relative;
 }
 .kt-inbox__icon.event-active svg{
   fill: #6388e3;
 }
+
+.kt-inbox__icon.event-active:hover{
+  background-color: #ecf2ff !important;
+}
+
+
 /* .event-active .blink {
   position: absolute;
   border-radius: 50%;
@@ -5392,7 +5398,9 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
 }
 
 
-.mydelay-action-notf .mydelayactns-open-btn,.myactions-underaprv-notif .myunderaprvactns-open-btn,.reqaccess-approval-notification .reqaccess-open-btn{
+.mydelay-action-notf .mydelayactns-open-btn,.myactions-underaprv-notif .myunderaprvactns-open-btn,.reqaccess-approval-notification .reqaccess-open-btn,
+.stdtask-underapproval-notification .stdtaskaprv-open-btn
+{
     display:none;
     border:0;
     background-color: transparent;
@@ -5403,10 +5411,12 @@ svg > g[class^="raphael-group-fjUjWDEW"] > text{
    stroke-width:1.7;
    transform: rotate(90deg);
 }
-.mydelay-action-notf:hover .mydelayactns-open-btn,.myactions-underaprv-notif:hover .myunderaprvactns-open-btn,.reqaccess-approval-notification:hover .reqaccess-open-btn{
+.mydelay-action-notf:hover .mydelayactns-open-btn,.myactions-underaprv-notif:hover .myunderaprvactns-open-btn,.reqaccess-approval-notification:hover .reqaccess-open-btn,
+.stdtask-underapproval-notification:hover .stdtaskaprv-open-btn
+{
     display:inline;
 }
-.mydelay-action-notf:hover,.myactions-underaprv-notif:hover,.reqaccess-approval-notification:hover{
+.mydelay-action-notf:hover,.myactions-underaprv-notif:hover,.reqaccess-approval-notification:hover,.stdtask-underapproval-notification:hover{
    padding:7px 0px 7px 15px;
 }
 
@@ -5584,3 +5594,77 @@ li.deadline-timeline-item:after {
 li.deadline-timeline-item:first-child:after {
   display: none;
 }
+
+
+
+.stdtask-underapproval-notification .stdtaskaprv-open-btn svg{
+  stroke:#00a2eb;
+  transform: rotate(90deg);
+}
+
+.stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg{
+  fill:#00a2eb;
+  stroke:#00a2eb;
+}
+
+.stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg path.arrow{
+  stroke:white;
+  stroke-width: 2.1;
+}
+
+
+
+
+/* new btn at notification & prj hold validation  end*/
+
+.sidebar-content-loading{
+  padding-top: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+/* css for std task aprv pagination part start*/
+
+
+.stdarpvs-pagntr span.arpvs-span{
+  font-family: Lucida Sans Unicode;
+  font-weight: bold;
+  color: #646c9a;
+  font-size: 11px;
+}
+
+.stdarpvs-pagntr div.stdaprvs-pagntr-btns button{
+  border: 1px solid #9d9d9d36;
+  padding: 0.5em 1em 0.5em 1em;
+  border-radius: 5px;
+  background-color: transparent;
+  color: #8080809e;
+}
+.stdarpvs-pagntr div.stdaprvs-pagntr-btns button:hover{
+    background-color: #a5a4a41c;
+    border: 1px solid #a5a4a41c;
+    transition-duration: 0.3s;
+    color: #5867dd;
+}
+.stdarpvs-pagntr div.stdaprvs-pagntr-btns button:active{
+  transform: scale(0.988);
+  transition-duration:0.3s;
+}
+
+.stdarpvs-pagntr div.stdaprvs-pagntr-btns button:disabled{
+  color: #808080b8;
+  opacity: 0.4;
+}
+
+
+/* css for std task aprv pagination part end*/
+
+
+
+

@@ -15,13 +15,13 @@
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                <strong *ngIf="sendtype=='Req'">Project Approval</strong>
+                <strong *ngIf="sendtype=='Req'">Project approval</strong>
                 <strong *ngIf="sendtype=='Res'">Information</strong>
               </h3>
               <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
                 <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
                   (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
-                  Project Approval <span class="noti-cus">{{WScount}}</span>
+                  Project approval <span class="noti-cus">{{WScount}}</span>
                 </a>
 
                 <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Res' && selectedDropdown === 'Information') }"
@@ -36,7 +36,7 @@
                 <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
               </div>
               <div *ngIf="sendtype=='Res' && selectedItems.length >0">
-                <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear Responses</button>
+                <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear responses</button>
               </div>
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
@@ -134,7 +134,7 @@
                     <div (click)="$event.stopPropagation();">
                       <div class="row">
                         <div class="col-md-10">
-                          <h5><strong>Total Projects - </strong>
+                          <h5><strong>Total projects - </strong>
                             <h5 class="d-inline-block">
                               <strong>{{_totalProjectsCount}}</strong>
                             </h5>
@@ -156,7 +156,7 @@
                       <div class="row">
                         <div class="col-md-4">
                           <div class="count-height">
-                            <p><strong>Project Type</strong></p>
+                            <p><strong>Project type</strong></p>
                             <div class="d-flex justify-content-between"
                               *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
                               <ng-container *ngIf="item.Count !=0">
@@ -173,7 +173,7 @@
                         </div>
                         <div class="col-md-4">
                           <div class="count-height">
-                            <p><strong>Request Type</strong></p>
+                            <p><strong>Request type</strong></p>
                             <div class="d-flex justify-content-between"
                               *ngFor="let item of RequestCountFilter |filter:txtSearch">
                               <label class="kt-checkbox mb-3">
@@ -238,10 +238,10 @@
         </div>
       </div>
       <div class="not-title">
-        <h5 id="titlepro" style="display: block;">Project Approval</h5>
+        <h5 id="titlepro" style="display: block;">Project approval</h5>
         <h5 id="titleinfo" style="display: none;">Information</h5>
-        <h5 id="titlereq" style="display: none;">Leave Request</h5>
-        <h5 id="titleres" style="display: none;">Leave Response</h5>
+        <h5 id="titlereq" style="display: none;">Leave request</h5>
+        <h5 id="titleres" style="display: none;">Leave response</h5>
       </div>
 
       <div class="kt-portlet">
@@ -280,12 +280,12 @@
                           <a [hidden]="A2Z1" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
                             <i class="fa fa-sort-alpha-down-alt"></i>
                           </a>
-                          Project Name
+                          Project name
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="Exec_BlockName" tabindex="0"
                           class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                           aria-label="Project Type: activate to sort column ascending">
-                          <i class="fas fa-sort"></i> Project Type
+                          <i class="fas fa-sort"></i> Project type
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Cost" tabindex="0"
                           class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
@@ -295,7 +295,7 @@
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="SubmittedBy" tabindex="0"
                           class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                           aria-label="User Name: activate to sort column ascending">
-                          <i class="fas fa-sort"></i> Submitted By
+                          <i class="fas fa-sort"></i> Submitted by
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="DeadLine" tabindex="0"
                           class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
@@ -311,7 +311,7 @@
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="RequestType" tabindex="0"
                           aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer"
                           aria-label="Category: activate to sort column ascending">
-                          <i class="fas fa-sort"></i> Request Type
+                          <i class="fas fa-sort"></i> Request type
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="RACIS" tabindex="0"
                           aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer"
@@ -471,7 +471,7 @@
                           <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
                           <span class="kt-widget__other d-block st-line" title="category"
                             *ngIf="item.Category">{{item.Category}}</span>
-                          <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No Category</span>
+                          <span class="kt-widget__other d-block st-line" *ngIf="!item.Category">No category</span>
                         </td>
                         <td>
                           <span class="kt-widget__other" *ngIf="item.Project_Cost">{{item.Project_Cost | currency: 'SAR'}}</span>
@@ -617,14 +617,14 @@
                         <tr role="row">
 
                           <th>View</th>
-                          <th>Leave Type</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
-                          <th>Days Applied</th>
-                          <th>Request Type</th>
-                          <th>Company Name</th>
-                          <th>Employee Name</th>
-                          <th>Requested On</th>
+                          <th>Leave type</th>
+                          <th>Start date</th>
+                          <th>End date</th>
+                          <th>Days applied</th>
+                          <th>Request type</th>
+                          <th>Company name</th>
+                          <th>Employee name</th>
+                          <th>Requested on</th>
                           <th></th>
 
                         </tr>
@@ -657,12 +657,12 @@
                       <thead>
                         <tr role="row">
                           <th>View</th>
-                          <th>Leave Type</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
+                          <th>Leave type</th>
+                          <th>Start date</th>
+                          <th>End date</th>
                           <th>Status</th>
                           <th>Name</th>
-                          <th>Received On</th>
+                          <th>Received on</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -823,7 +823,7 @@
                     </g>
                   </g>
                 </switch>
-              </svg></span></div> Leave Requisition Details
+              </svg></span></div> Leave requisition details
         </div>
       </div>
       <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -837,7 +837,7 @@
       </a>
     </div>
     <div class="mb-3 mt-3 px-3">
-      <div class="leave-title">Team Member Information</div>
+      <div class="leave-title">Team member information</div>
       <div class="grid px-3 pt-3">
         <div class="col text-center cnt-ovrl">
           <div class="kt-info-lable-v">
@@ -882,11 +882,11 @@
       </div>
     </div>
     <div class="mb-3 px-3">
-      <div class="leave-title">Leave Details</div>
+      <div class="leave-title">Leave details</div>
       <div class="grid px-3 pt-3">
         <div class="col text-center cnt-ovrl">
           <div class="kt-info-lable-v">
-            Leave Type
+            Leave type
           </div>
           <div class="kt-info-data-v">
             {{LeaveDetail&&LeaveDetail[0].LeaveType}}
@@ -940,7 +940,7 @@
       <div class="">
         <div class="cnt-ovrl">
           <div class="kt-info-data-v">
-            Please Approve my leave request
+            Please approve my leave request
           </div>
         </div>
       </div>
@@ -1032,7 +1032,7 @@
 <div id="rejectbar" class="sideInfobar animate-right">
   <div class="kt-portlet mb-0">
     <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
-      <h4 class="m-0">Reject Projects</h4>
+      <h4 class="m-0">Reject projects</h4>
       <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
           <path fill="none" d="M0 0h24v24H0z"></path>
@@ -1050,7 +1050,7 @@
 
           <div class="card card-mid flex-1">
             <div class="card-header">
-              <h5 clas="card-title"> Projects List </h5>
+              <h5 clas="card-title"> Projects list </h5>
             </div>
             <div class="card-body p-0">
               <div class=" cus-scroll scroll-y">
@@ -1087,7 +1087,7 @@
                           data-toggle="tooltip" title="Project Status!">
 
 
- {{item.Status=='Under Approval'?'New Approval':item.Status=='Enactive Under Approval'?'Enactive Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval"   :item.Status== "Completion Under Approval" ? "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval" :item.Status=='InProcess'?'In-Process':item.Status}}
+ {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
 
                         </h6>
                         <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
@@ -1110,7 +1110,7 @@
                                                     'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
                                                     || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
                                                     }" data-toggle="tooltip" title="Request type">
-                          {{item.Req_Type=="New Project"?"New Approval":item.Req_Type}}
+                          {{item.Req_Type=="New Project"?"New approval":item.Req_Type}}
                         </h6>
                       </div>
                       <span class="mr-2 showv">|</span>
@@ -1227,12 +1227,12 @@
         <div class="card-body" id="comts1">
           <div class="crd-hdr">
             <div class="crd-title">
-              <h5>Reject Comments</h5>
+              <h5>Reject comments</h5>
             </div>
           </div>
           <div class="col-md-12 checked-rad pl-1 pt-3">
             <div class="form-group">
-              <label class="mb-2">Reject Type</label><span style="color:red">*</span>
+              <label class="mb-2">Reject type</label><span style="color:red">*</span>
               <ng-select required name="rej_type" placeholder="Select Reject Type" [(ngModel)]="rejectType"
                 (change)="rejectApproval()">
                 <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
@@ -1245,12 +1245,12 @@
             </div>
 
             <label class="mb-2" *ngIf="rejectType && rejectcomments>0">Select From
-              Existing Comments</label>
+              Existing comments</label>
             <div class="appr-comts" *ngIf="rejectType && rejectcomments>0">
 
               <div class="exs-cmts card">
                 <div class="card-header">
-                  <h6 class="mb-0">Existing Comments</h6>
+                  <h6 class="mb-0">Existing comments</h6>
                 </div>
                 <div class="crd-bdy scroll-y">
                   <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
@@ -1283,7 +1283,7 @@
 
 
             <div class="form-group" *ngIf="rejectType">
-              <label class="mb-2">Enter Comments</label><span style="color:red">*</span>
+              <label class="mb-2">Enter comments</label><span style="color:red">*</span>
               <!-- <div [innerHTML]="comments"></div> -->
               <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
             </div>
@@ -1348,7 +1348,7 @@
                     </g>
                   </g>
                 </switch>
-              </svg></span></div> Leave Requisition Details
+              </svg></span></div> Leave requisition details
         </div>
       </div>
       <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -1362,7 +1362,7 @@
       </a>
     </div>
     <div class="mb-3 mt-3 px-3">
-      <div class="leave-title">Team Member Information</div>
+      <div class="leave-title">Team member information</div>
       <div class="grid px-3 pt-3">
         <div class="col text-center cnt-ovrl">
           <div class="kt-info-lable-v">
@@ -1409,11 +1409,11 @@
       </div>
     </div>
     <div class="mb-3 px-3">
-      <div class="leave-title">Leave Details</div>
+      <div class="leave-title">Leave details</div>
       <div class="grid px-3 pt-3">
         <div class="col text-center cnt-ovrl">
           <div class="kt-info-lable-v">
-            Leave Type
+            Leave type
           </div>
           <div class="kt-info-data-v">
             {{LeaveDetail&&LeaveDetail[0].LeaveType}}
@@ -1567,7 +1567,7 @@
       <div>
         <div class="row px-3">
           <div class="col-md-8">
-            <h1 class="head-title">Leave Requistion Form</h1>
+            <h1 class="head-title">Leave requistion form</h1>
             <h4 class="head-date">22-03-2023</h4>
           </div>
           <div class="col-md-4">
@@ -1576,7 +1576,7 @@
                 <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
               </div>
               <div class="company-details">
-                <p>Riyadh, Saudi Arabia - Head Office:</p>
+                <p>Riyadh, Saudi Arabia - Head office:</p>
                 <p> P.O.Box 331799, Riyadh 11373</p>
                 <p>Kingdom of Saudi Arabia</p>
               </div>
@@ -1654,17 +1654,17 @@
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
-                    <span class="label"> Leave Status</span><span
+                    <span class="label"> Leave status</span><span
                       class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Accepted Dates</span><span class="data">05-04-2018 - 05-04-2018</span>
+                    <span class="label">Accepted dates</span><span class="data">05-04-2018 - 05-04-2018</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">No of Days</span><span class="data">1</span>
+                    <span class="label">No of days</span><span class="data">1</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Approved By</span><span
+                    <span class="label">Approved by</span><span
                       class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
                   </div>
                   <div class="mb-2 d-flex">
@@ -1683,20 +1683,20 @@
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
-                    <span class="label">Leave Status</span><span
+                    <span class="label">Leave status</span><span
                       class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
                   </div>
 
                   <div class="mb-2">
-                    <span class="label">Accepted Dates</span>
+                    <span class="label">Accepted dates</span>
                     {{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date | date:'dd-MM-yyyy'}}-{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date |
                     date:'dd-MM-yyyy'}}
                   </div>
                   <div class="mb-2">
-                    <span class="label">No of Days</span><span class="data">1</span>
+                    <span class="label">No of days</span><span class="data">1</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Approved By</span><span
+                    <span class="label">Approved by</span><span
                       class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
                   </div>
                   <div class="mb-2 d-flex">

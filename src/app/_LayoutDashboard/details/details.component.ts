@@ -169,6 +169,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   bothActTlSubm:boolean=false;
   ProjDto:ProjectDetailsDTO|undefined;
   formFieldsRequired:boolean=false;
+  isLoadingData:boolean|undefined;
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -190,7 +191,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     private notifyService: NotificationService,
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
-    private createProjectService:CreateprojectService
+    private createProjectService:CreateprojectService,
 
   ) {
 
@@ -1009,7 +1010,7 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+debugger
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddddddddddddddddddddddddddddd")
@@ -1019,9 +1020,12 @@ this.prjPIECHART.render();
 
           this.newArray = uniqueNamesArray.slice(3);
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-          this.firstRecords=this.firstthreeRecords[0][0].split(' ')[0]
-          this.secondRecords= this.firstthreeRecords[1][0].split(' ')[0]
-          this.thirdRecords= this.firstthreeRecords[2][0].split(' ')[0]
+          
+            this.firstRecords=this.firstthreeRecords[0]?this.firstthreeRecords[0][0].split(' ')[0]:'';
+            this.secondRecords=this.firstthreeRecords[1]?this.firstthreeRecords[1][0].split(' ')[0]:'';
+            this.thirdRecords=this.firstthreeRecords[2]?this.firstthreeRecords[2][0].split(' ')[0]:'';
+          
+       
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
@@ -1176,13 +1180,15 @@ this.prjPIECHART.render();
     $(document).ready(() => this.drawStatisticsNew());
     this.showActionDetails(undefined);
     this.getapprovalStats();
+    this.clearFilterConfigs();
   }
 
   showActionDetails(index: number | undefined) {
+    debugger
     this.requestType = null;
     this.currentActionView = index;
-    this.actionCost = index && this.projectActionInfo[this.currentActionView].Project_Cost;
-    if (index && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
+    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+    if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
     if(index!=undefined){
@@ -1423,6 +1429,7 @@ multipleback(){
     this.selectedFile=null;
     this._inputAttachments='';
     this.formFieldsRequired=false;
+    this.isLoadingData=undefined;
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1607,6 +1614,7 @@ multipleback(){
     document.getElementById("newdetails").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
     this.currentSidebarOpened='NOT_OPENED';
+    this.isLoadingData=undefined;
 
   }
 
@@ -1640,8 +1648,10 @@ multipleback(){
 
 
   GetDMS_Memos() {
+    this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data: any) => {
+        
         console.log("inside GetDMS_Memos:", data);
         if (data && data.length > 0) { // if data is not [] means there will be atleast one memo present in the project.
           this._LinkService._GetMemosSubject(data[0]['JsonData']).
@@ -1665,8 +1675,9 @@ multipleback(){
                 console.log("this memosOptions:", this.memosOptions)
 
               }
-              console.log("get memo subject:", this.projectMemos);
 
+              console.log("get memo subject:", this.projectMemos);
+              this.isLoadingData=false;
             });
         }
         else {   // if data is [] and length is 0.   means if there is not even one memo present in the project.
@@ -1852,14 +1863,14 @@ multipleback(){
   repdate:any;
   contenttype: any;
   submitby:any;
-  multiapproval_list:any[]
+  multiapproval_list:any=[];
 
   getapprovalStats() {
     // this.approvalEmpId = null;
 debugger
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -1867,7 +1878,7 @@ debugger
         this.requestType = (this.requestDetails[0]['Request_type']);
 
 
-        this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']))
+        this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
         console.log('multiapproval_list',this.multiapproval_list)
 
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -1941,6 +1952,16 @@ debugger
        }
 // prj request access aprvals
 
+// prj request access aprvals
+       if(this.requestType=='Request Access'&&this.multiapproval_list.length>0){
+        this.isApprovalSection=false;
+       }
+// prj request access aprvals
+
+
+
+
+
       }
       else{
         // if there is no requests
@@ -1950,6 +1971,7 @@ debugger
 
         // if there are no std task aprv request
          this.standardjson=[];
+         this.totalStdTskApvs=0;
          this.multiapproval_list=[]
          this.currentStdAprView=undefined;
          this.closeApprovalSideBar();
@@ -1966,11 +1988,12 @@ standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
+      debugger
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
       this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
-
+      this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
 
       // if(this.standardjson.length>0){
       //     this.isApprovalSection=true;
@@ -2125,45 +2148,54 @@ currentStdAprView:number|undefined;
   }
 
   allStdAprSelected:boolean=false;
-  selectedStdAprvs:any=[];
+  selectedStdAprvs:any=[];    // selected std task aprvs ids.
+  selectedStdAprvsObjs:any=[]; // selected std task aprvs objs.
   acceptAllStdApprReq(){
     if(this.selectedStdAprvs.length===0){
       this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
       return;
     }
-
-
-
-    const stdtasktoApprove=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
-    if(stdtasktoApprove.length==0){
-      this.notifyService.showInfo("Please select atleast one task to approve","Note:");
-    }
     else{
-      const x=this.standardjson.length-stdtasktoApprove.length;   // decides whether the sidebar remain open or should close.
-      this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{
-      console.log(data,"accept-data");
-       if(x===0)
-        this.closeApprovalSideBar();
-
-       this.notifyService.showSuccess("Standard Task complete approved.",'Success');
-       this.selectedStdAprvs=[];
-       this.getapprovalStats();
-       this.allStdAprSelected=false;
-
+      const stdtasktoApprove=this.selectedStdAprvsObjs;
+      this.approvalservice.NewUpdateAcceptApprovalsService(stdtasktoApprove).subscribe(data =>{  console.log(data,"selected tasks are approved.");
+        const x=this.totalStdTskApvs-this.selectedStdAprvsObjs.length;                            // decides whether the sidebar remain open or should close.
+          if(x===0)
+          this.closeApprovalSideBar();
+        this.notifyService.showSuccess("Standard Task complete approved.",'Success');
+        this.selectedStdAprvs=[];
+        this.selectedStdAprvsObjs=[];
+        this.getapprovalStats();
+        this.allStdAprSelected=false;
       });
-    }
+   }
+
 
   }
 
   onStdAprvSelected(e,aprvls){
-
     aprvls.forEach(aprv=>{
           if(e.target.checked){
                 if(!this.selectedStdAprvs.includes(aprv.SNo))
-                this.selectedStdAprvs.push(aprv.SNo);
+                { 
+                  this.selectedStdAprvs.push(aprv.SNo);     // storing only SNo of selected aprvl.
+                  this.selectedStdAprvsObjs.push(aprv);    // storing selected aprvls obj.
+
+                  if(e.target.id!=='selectall-stdapr-requests'){
+                    const accordion_button:any=document.getElementById('stdtskaprv-'+aprv.SNo);
+                    accordion_button.click();
+
+                    // for select all check box status.
+                    this.allStdAprSelected=this.standardjson.every((apr:any)=>{
+                        return this.selectedStdAprvs.includes(apr.SNo);
+                    });
+                    // for select all check box status.
+                  }  
+                }
           }else{
                 const x=this.selectedStdAprvs.indexOf(aprv.SNo);
                 this.selectedStdAprvs.splice(x,1);
+                this.selectedStdAprvsObjs.splice(x,1);
+                this.allStdAprSelected=false;
           }
     });
 
@@ -2333,10 +2365,12 @@ currentStdAprView:number|undefined;
 
 
   getPortfoliosDetails() {
+    this.isLoadingData=true;
     this.service.getPortfolios(this.URL_ProjectCode).subscribe((res) => {
       if (res != null && res != undefined) {
         this._portfoliolist = JSON.parse(res[0].Portfolio_json);
         this.getPortfolios()
+        this.isLoadingData=false;
       }
     });
   }
@@ -3759,9 +3793,14 @@ check_allocation() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
-      // console.log(data,"appact");
-      if (data[0]['actiondetails'] != '[]' || data[0]['approvaldetails'] != '[]') {
-        if (data[0]['actiondetails'] != '[]') {
+      // console.log(data,"appact");   
+      debugger
+
+      const isactiondetails:boolean=(data[0]['actiondetails']!='[]'&&data[0]['actiondetails'].length>0);
+      const isapprovaldetails:boolean=(data[0]['approvaldetails']!='[]'&&data[0]['approvaldetails'].length>0);
+
+      if (isactiondetails || isapprovaldetails) {
+        if (isactiondetails) {
           let action_details = JSON.parse(data[0]['actiondetails']);
 
           this.mainDeadline = action_details[0]['mainDeadline'];
@@ -3771,9 +3810,8 @@ check_allocation() {
           this.mainMastercode = action_details[0]['Master_Code'];
           this.isAction = true;
         }
-        if (data[0]['approvaldetails'] != '[]')
-          this.approve_details = JSON.parse(data[0]['approvaldetails']);
-
+        if (isapprovaldetails)
+        this.approve_details = JSON.parse(data[0]['approvaldetails']);
       }
     });
   }
@@ -4155,9 +4193,11 @@ debugger
 
 
   GetApproval(code) {
+    debugger
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+      debugger
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
@@ -4311,7 +4351,7 @@ debugger
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = null;
     this.ObjSubTaskDTO.enddate = null;
-
+    this.isLoadingData=true;
     this.service._GetMeetingList(this.ObjSubTaskDTO)
       .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
@@ -4385,6 +4425,8 @@ debugger
         this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
         console.log(this.olderMeetings,"olderrr meetings")    // format them.
 
+        this.isLoadingData=false;
+         
       });
 
 
@@ -4445,7 +4487,7 @@ debugger
     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
     this.oldMtgCnt = 0;  // Older Meetings Count
     //
-
+    
     this.backMainMeetings();
   }
 
@@ -7857,7 +7899,7 @@ rejectAllStdTaskAprvs(){
 
 
 
-    let selectedStdApprovals=this.standardjson.filter(item=>this.selectedStdAprvs.includes(item.SNo));
+    let selectedStdApprovals=this.selectedStdAprvsObjs;
     selectedStdApprovals=selectedStdApprovals.map(item=>({
               SNo: item.SNo,
               Type: item.Type,
@@ -7875,23 +7917,22 @@ rejectAllStdTaskAprvs(){
 
       this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedStdApprovals).
         subscribe((data) => {
+          debugger
           this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
-
-          if(this.standardjson.length-this.selectedStdAprvs.length!==0){
-              this.backmainapproval();
-          }  // back to approvals list.
-
+          const x=this.totalStdTskApvs-this.selectedStdAprvs.length;
+          if(x===0)
+            this.closeApprovalSideBar();  // close aprv sidebar.
+          else
+            this.backmainapproval();   // back to approvals list.
+        
+          this.selectedStdAprvs=[];
+          this.selectedStdAprvsObjs=[];
+          this.allStdAprSelected=false;
 
           this.getapprovalStats();
           this.getProjectDetails(this.URL_ProjectCode);
           this.getRejectType();
-
-
-
         });
-
-
-
 
     }
   }
@@ -8133,8 +8174,29 @@ rejectAllmultipleAprvs(){
   }
 }
 
+// pagination inside the std task aprvls start
+totalStdTskApvs:number=0;
+stdTskPageno:number=1;
+stdTskPagesz:number=10;    // limit of aprvs per page.
+reqPgno:number;
+getStdTskAprvsBy(pageno:number){
+      this.isLoadingData=true; 
+      this.approvalservice.GetStandardApprovals(this.URL_ProjectCode,pageno,this.stdTskPagesz).subscribe((data) => {
+      this.isLoadingData=false;
+      this.standardjson=JSON.parse(data[0]['standardJson']);   // new data
+      this.totalStdTskApvs=JSON.parse(data[0]['totalcount']);
+      this.stdTskPageno=this.reqPgno;     // page no of the data.
+      
+      // for select all check box status.
+      this.allStdAprSelected=this.standardjson.every((apr:any)=>{
+        return this.selectedStdAprvs.includes(apr.SNo);
+      });  // for select all check box status.
 
+      console.log("new std json:",this.standardjson);
+    });
+}
 
+// pagination inside the std task aprvls end
 file = { Sourcefile: '16_05_2024' };
 
 getFormattedDate(date: string): string {

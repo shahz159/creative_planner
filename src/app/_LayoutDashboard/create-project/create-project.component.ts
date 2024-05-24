@@ -17,7 +17,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Directive, HostListener } from '@angular/core';
-
+import { Location } from '@angular/common';
 
 
 export const MY_DATE_FORMATS = {
@@ -134,7 +134,7 @@ export class CreateProjectComponent implements OnInit {
   notificationMsg:number=0;
 
 
-  constructor(private router: Router,
+  constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
     private datepipe:DatePipe,private notification:NotificationService,
     public BsService: BsServiceService,
@@ -151,6 +151,14 @@ export class CreateProjectComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
+
+    if (navigatingToCreateProject === 'true') {
+    this.Assigned_projects()
+    localStorage.removeItem('navigatingToCreateProject');
+  }
+
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
@@ -161,7 +169,9 @@ export class CreateProjectComponent implements OnInit {
 
 
     this.route.paramMap.subscribe(params => {
+      console.log(this.route,"url")
       var pcode = params.get('projectcode');
+
       this.URL_ProjectCode = pcode;
       // this._MasterCode = pcode;
     });
@@ -170,12 +180,12 @@ export class CreateProjectComponent implements OnInit {
       this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
 
 
-      this.ProjectDto.Emp_No='400172';
-      this.ProjectDto.Hours="20";
-      this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:any)=>{
+      // this.ProjectDto.Emp_No='400172';
+      // this.ProjectDto.Hours="20";
+      // this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:any)=>{
 
-          console.log('prj cost here:',res);
-      })
+      //     console.log('prj cost here:',res);
+      // })
 
 
 
@@ -693,7 +703,7 @@ onFileChanged(event: any) {
   }
 
   Assigned_projects(){
-    $('.Assigned-projects-list').removeClass('d-none');
+     $('.Assigned-projects-list').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
   }
 
@@ -1022,7 +1032,10 @@ onRejectButtonClick(value:any,id:number){
 
 
     this.BsService.SetNewPojectCode(this.PrjCode);
+
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
+
+
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
@@ -1623,8 +1636,9 @@ removeTemplate(templateCode:string){
 // template open for new project creation start
 PrjTemplActions:any=[];
 
-openTemplate(template:any){
+openTemplate(template:any){ 
   console.log("template:",template);
+
   this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
 
     const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -1642,10 +1656,10 @@ openTemplate(template:any){
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
-   this.PrjCrdtr='';
+  //  this.PrjCrdtr='';
    this.PrjAuditor='';
-   this.PrjInformer='';
-   this.PrjSupport=[];
+  //  this.PrjInformer='';
+  //  this.PrjSupport=[];
    this.Allocated_Hours=null;
    //  this.fileAttachment=new File()
 
@@ -1660,6 +1674,35 @@ openTemplate(template:any){
 
 
   })
+
+  this.service.NewProjectService(template.Project_Code).subscribe(
+    (data) => {
+      debugger
+      if (data != null && data != undefined) {
+          this.PrjSupport=JSON.parse(data[0]['RacisList']);
+          console.log('****template support***',this.PrjSupport);
+          let _prjsupport=[];
+          let _prjcoordntr;
+          let _prjinfrmr;
+
+          this.PrjSupport.forEach((item:any)=>{
+                   if(item.Role==="Support")
+                    _prjsupport.push({ Emp_No:item.Emp_No, Emp_Name:item.RACIS});
+
+                   if(item.Role==="Coordinator")
+                    _prjcoordntr=item;
+
+                   if(item.Role==='Informer')
+                   _prjinfrmr=item;
+          });
+        
+          this.PrjCrdtr=_prjcoordntr.Emp_No;
+          this.PrjInformer=_prjinfrmr.Emp_No;
+          this.PrjSupport=_prjsupport;
+          this.setRACIS();
+      }
+   });    // for geeting the support members.
+
 
 }
 
@@ -2258,6 +2301,7 @@ if(dateone < datetwo){
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -2298,6 +2342,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
     myWindow.focus();
   }
 }
+
 
 
    ///////////////////////////////////////// Action Edit End /////////////////////////////
@@ -2429,9 +2474,21 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
     }
 
 
-    text(){debugger
-      this.Prjstartdate=  this.Prjstartdate<this.todayDate?null:this.Prjstartdate
-    }
+    // text(){debugger
+    //   this.Prjstartdate=  this.Prjstartdate<this.todayDate?null:this.Prjstartdate
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
 
   }
 

@@ -417,8 +417,12 @@ NewUpdateUndoCompleteAgenda(obj:CalenderDTO){
 }
 
 
-NewGetProjectandsubtaskDrp(prjName:string){
+NewGetProjectandsubtaskDrp(prjName:string,filtertype:any=undefined){
+  // prjName is mandatory.  filtertype is optional.
      this.obj_CalenderDTO.Search_text=prjName.trim();
+     this.obj_CalenderDTO.filterbyCompany=filtertype['bycompany']?filtertype['bycompany']:null;
+     this.obj_CalenderDTO.filterbyUser=filtertype['byuser']?filtertype['byuser']:null;
+     this.obj_CalenderDTO.filterbyStatus=filtertype['bystatus']?filtertype['bystatus']:null;
      return this.http.post(this.rootUrl+"CalenderAPI/NewGetProjectandsubtaskDrp",this.obj_CalenderDTO);
 }
 

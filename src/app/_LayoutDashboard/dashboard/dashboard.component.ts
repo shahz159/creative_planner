@@ -1472,6 +1472,13 @@ export class DashboardComponent implements OnInit {
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Last day of the month') {
+          document.getElementById("div_endDate").style.display = "block";
+          this.selectedrecuvalue = '5';
+          this._labelName = "Schedule Date";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("Recurrence_hide").style.display = "none";
+        }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
@@ -1701,6 +1708,30 @@ export class DashboardComponent implements OnInit {
       }
   }
 
+  getLastDaysOfEachMonth() {
+    const allDates = this.AllDatesSDandED;
+    const lastDays = [];
+
+    const groupedByMonth = allDates.reduce((acc, date) => {
+      const month = moment(date.Date).format('YYYY-MM');
+      if (!acc[month]) {
+        acc[month] = [];
+      }
+      acc[month].push(date);
+      return acc;
+    }, {});
+
+    Object.keys(groupedByMonth).forEach(month => {
+      const datesInMonth = groupedByMonth[month];
+      const lastDay = datesInMonth.reduce((latest, current) => {
+        return moment(current.Date).isAfter(moment(latest.Date)) ? current : latest;
+      });
+      lastDays.push(lastDay);
+    });
+
+    return lastDays;
+  }
+
   OnSubmitSchedule() {
     
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -1760,6 +1791,12 @@ export class DashboardComponent implements OnInit {
           this.daysSelectedII = this.daysSelectedII.concat(newArray);
         }
       }
+    }
+    // else if (this.selectedrecuvalue === "4") {
+    //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
+    // }
+    else if (this.selectedrecuvalue === "5") {
+      this.daysSelectedII = this.getLastDaysOfEachMonth();
     }
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
@@ -4809,7 +4846,6 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
-   debugger
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe

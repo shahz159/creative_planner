@@ -11,6 +11,7 @@ import { LinkService } from 'src/app/_Services/link.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import * as _ from 'underscore';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 @Component({
   selector: 'app-view-dashboard-projects',
@@ -70,7 +71,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
-    private router: Router, private activatedRoute: ActivatedRoute) {
+    private router: Router, private activatedRoute: ActivatedRoute,
+    public createproject: CreateProjectComponent
+
+  ) {
     this.ObjUserDetails = new UserDetailsDTO();
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
@@ -1012,6 +1016,57 @@ getAssignedActions(type:'BYME'|'TOME'){
 }
 
 
-// assigned action by me, to me end
+// Assigned_projects(){
+//   alert("hello")
+//   $('.Assigned-projects-list').removeClass('d-none');
+//  $('.np-step-1').addClass('d-none');
+// }
+
+
+
+openAssignedProject(assignId:string) {
+
+  let name = `/backend/createproject`;
+  // var url = document.baseURI + name;
+  // var myurl = `${url}`;
+  let url = `${window.location.origin}/backend/createproject`;
+  if (window.opener) {
+    window.opener.location.href = url;
+    this.createproject.Assigned_projects();
+    window.close();// Redirect the opener window to the new URL
+    localStorage.setItem('navigatingToCreateProject', 'true');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  // this.router.navigateByUrl(myurl);
+
+//   var myWindow = window.open(myurl,'_self');
+//   myWindow.focus();
+}
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

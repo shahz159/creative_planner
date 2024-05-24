@@ -11,8 +11,8 @@
                                {{Type}} Summary
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1)">RACIS Projects Summary</a>
-                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2)">ALL Projects Summary</a>
+                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1)">RACIS projects summary</a>
+                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2)">ALL projects summary</a>
                             </div>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="count-height">
-                                                        <p><strong>Project Type</strong></p>
+                                                        <p><strong>Project type</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
                                                             <label class="kt-checkbox"  >
@@ -172,7 +172,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                  [(ngModel)]="item.checked" [checked]="item">
-                                                                 {{item.Name=='Under Approval'?'New Approval' :item.Name=="Cancellation Under Approval"?"Cancellation Approval": item.Name=="Deadline Extend Under Approval" ? "Deadline Extend Approval" :item.Name== "Completion Under Approval" ? "Completion Approval" :item.Name=='Forward Under Approval'? "Forward Approval" :item.Name=='InProcess'?'In-Process':item.Name =="Not Started"?"Draft":item.Name}}
+                                                                 {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval": item.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name =="Not Started"?"Draft":item.Name}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -279,7 +279,7 @@
                             <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
                                 <ul  class="kt-nav">
                                     <li class="kt-nav__head d-flex justify-content-between">
-                                        <div>User Filters</div>
+                                        <div>User filters</div>
                                     </li>
                                     <li class="kt-nav__separator"></li>
                                     <li class="kt-nav__item px-3 mb-2">
@@ -288,31 +288,31 @@
                                     <li (click)="$event.stopPropagation();" class="kt-nav__item px-4 pt-2">
                                         <div class="row">
                                             <div class="col-lg-4">
-                                                <h6 class="mb-0">Project Type</h6>
+                                                <h6 class="mb-0">Project type</h6>
 
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Core Tasks
+                                                        Core tasks
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Routine Tasks
+                                                        Routine tasks
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Secondary Tasks
+                                                        Secondary tasks
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Standard Tasks
+                                                        Standard tasks
                                                         <span></span>
                                                     </label>
                                                 </div>
@@ -322,7 +322,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                Core Tasks
+                                                                Core tasks
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -340,7 +340,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                Routine Tasks
+                                                                Routine tasks
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -371,13 +371,13 @@
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Completion Approval
+                                                        Completion approval
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        In-Process
+                                                        In-process
                                                         <span></span>
                                                     </label>
 
@@ -411,7 +411,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                In-Process
+                                                                In-process
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -529,7 +529,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">New Projects</h5>
+                                <h5 class="mb-0">New projects</h5>
                                 <h4 class="mb-0">12</h4>
                             </div>
                         </div>
@@ -563,7 +563,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">New Approval</h5>
+                                <h5 class="mb-0">New approval</h5>
                                 <h4 class="mb-0">5</h4>
                             </div>
                         </div>
@@ -637,7 +637,7 @@
                                                         aria-sort="ascending"
                                                         aria-label=": activate to sort column descending">
                                                     </th>
-                                                    
+
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Project_Name" tabindex="0" aria-controls="project-4"
                                                         class="curser-pointer" rowspan="1" colspan="1"
@@ -651,7 +651,7 @@
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>
-                                                        ProjectName
+                                                        Projectname
                                                     </th>
                                                     <th>
                                                      </th>
@@ -659,7 +659,7 @@
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Project Type: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> ProjectType
+                                                        <i class="fas fa-sort"></i> Projecttype
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="ReportType" tabindex="0" aria-controls="project-4"
@@ -683,7 +683,7 @@
                                                         data-name="DeadLine" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="End Date: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> Last Update
+                                                        <i class="fas fa-sort"></i> Last update
                                                     </th>
                                                     <th data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
@@ -725,7 +725,7 @@
                                                     <td align="center">
                                                         <div class="d-flex align-items-center ">
                                                             <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer" role="button" placement="right"
-                                                            data-trigger="focus" data-toggle="tooltip" title="Project Info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
+                                                            data-trigger="focus" data-toggle="tooltip" title="Project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                             <g>
@@ -924,7 +924,7 @@
                                                             <span class="text-danger font-weight-400">Delay</span>
                                                         </div> -->
                                                         <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="Under_Approval_color font-weight-400">New Approval</span>
+                                                            <span class="Under_Approval_color font-weight-400">New approval</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
                                                             <span class=" font-weight-400"></span>
@@ -935,20 +935,20 @@
                                                         </div>
                                                         <!-- Other Status -->
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="InProcess_color font-weight-400">In-Process</span>
+                                                            <span class="InProcess_color font-weight-400">In-process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="TODOinprocess font-weight-400">ToDo
-                                                                InProcess</span>
+                                                                Inprocess</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project'">
                                                             <span class="NEWPROJECT font-weight-400">New
-                                                                Project</span>
+                                                                project</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project Rejected'">
                                                             <span class="New_Project_Rejected_color font-weight-400">New
-                                                                Project
-                                                                Rejected</span>
+                                                                project
+                                                                rejected</span>
                                                         </div>
 
                                                         <div *ngIf="item.Status=='Project Hold'">
@@ -957,18 +957,18 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Completed'">
                                                             <span class="ToDo_Completed_color font-weight-400">ToDo
-                                                                Completed</span>
+                                                                completed</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Todo'">
-                                                            <span class="New_Todo_color font-weight-400">New Todo
+                                                            <span class="New_Todo_color font-weight-400">New todo
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion Approval
+                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancellation Under Approval'">
-                                                            <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation Approval
+                                                            <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancelled'">
@@ -981,17 +981,17 @@
 
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
-                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward Approval
+                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Complete Rejected'">
                                                             <span class="Project_Complete_Rejected_color font-weight-400">Project
-                                                                Complete
-                                                                Rejected
+                                                                complete
+                                                                rejected
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive Approval
+                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
                                                             </span>
                                                         </div>
 
@@ -1000,7 +1000,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline Extend Approval
+                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
@@ -1010,11 +1010,11 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
                                                             <span class="Project_Hold_Under_Approval font-weight-400"
-                                                              >Hold Approval
+                                                              >Hold approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Achieved'">
-                                                            <span class="ToDo_Achieved_color font-weight-400">ToDo Achieved
+                                                            <span class="ToDo_Achieved_color font-weight-400">ToDo achieved
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Not Started'">
@@ -1022,7 +1022,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Standardtask Enactive Hold'">
-                                                            <span class="text-danger font-weight-400">Standardtask Enactive Hold
+                                                            <span class="text-danger font-weight-400">Standardtask enactive hold
                                                             </span>
                                                         </div>
                                                     </td>
@@ -1080,7 +1080,7 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked Memos
+                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 
@@ -1234,7 +1234,7 @@
             <a href="javascript:void(0)" class="closebtn pull-right text-white" (click)="_CloseDARSideBar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    DAR Achievements
+                    DAR achievements
                 </h5>
                 <!-- <p>{{_DARProjectName}}</p> -->
             </div>
@@ -1272,7 +1272,7 @@
          <div class="modal-dialog modal-xl">
            <div class="modal-content">
             <div class="d-flex men-tlv">
-             <h2 class="prj-ttl">New Project Creation Guidelines</h2>
+             <h2 class="prj-ttl">New project creation guidelines</h2>
              <button type="button" class="close close-btn-gd" data-dismiss="modal" aria-label="Close">
                  <span aria-hidden="true">
                      <svg _ngcontent-wgp-c395="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc"><path _ngcontent-wgp-c395="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-wgp-c395="" d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path></svg>
@@ -1286,7 +1286,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="coretasks_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#coretasks">
-                                <i class="flaticon2-hourglass-1 icon-nm"></i> Core Tasks
+                                <i class="flaticon2-hourglass-1 icon-nm"></i> Core tasks
                              </div>
                          </div>
                          <div id="coretasks" class="collapse" data-parent="#accordionExample5">
@@ -1300,14 +1300,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Enhancement of Transportation and Distribiution Division through GPS Technology</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: The task is created on the advice from the President to enhance the transportation & distribution division through GPS technology and developing transportation KPIs tracking report on weekly & monthly basis</p>
                                      </div>
 
@@ -1317,7 +1317,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1326,7 +1326,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1334,7 +1334,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1396,13 +1396,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Secondary_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Secondary">
-                                 <i class="flaticon-list-3"></i> Secondary Tasks
+                                 <i class="flaticon-list-3"></i> Secondary tasks
                              </div>
                          </div>
                          <div id="Secondary" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Secondary Task</h4>
+                                     <h4>Secondary task</h4>
                                      <p>Any contribution tasks linked with other department or external parties, or indirect related department responsibility such as; committee independent tasks and participation in other department's tasks or specific project that add value to company vision.
                                      </p>
 
@@ -1411,14 +1411,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Printing and Packaging Development for RAC</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Printing and Packaging development for RAC</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: The task is created to co-ordinate with RAC GDC and packaging Supplier to develop all standard packaging to meet the corporate requirements</p>
                                      </div>
 
@@ -1428,7 +1428,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1437,7 +1437,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1445,7 +1445,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1477,8 +1477,8 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
-                                         <p>select Starting Date & Time and the expected Ending Date & Time of the given project.
+                                         <h4>Sub section:</h4>
+                                         <p>Select starting date & time and the expected Ending Date & Time of the given project.
                                               A team member cannot select the DPG (Date of Project Given) which is less than the current date.
                                                You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
@@ -1494,7 +1494,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template :</h4>
+                                         <h4>Do you want to save as template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
 
@@ -1509,15 +1509,15 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Standard_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Standard_Tasks">
-                                 <i class="flaticon-app"></i> Standard Tasks
+                                 <i class="flaticon-app"></i> Standard tasks
                              </div>
                          </div>
                          <div id="Standard_Tasks" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Standard Task</h4>
+                                     <h4>Standard task</h4>
                                      <p>
-                                         Standard Task is a type of task which requires report submission, such as “Sales report, Minutes of meeting, Inventory report etc.” Standard task comes with different types (daily, weekly, Monthly, Quarterly, half yearly and annually), each standard task has its time budget to be use and report submission time.
+                                         Standard task is a type of task which requires report submission, such as “Sales report, Minutes of meeting, Inventory report etc.” Standard task comes with different types (daily, weekly, Monthly, Quarterly, half yearly and annually), each standard task has its time budget to be use and report submission time.
                                      </p>
 
                                      <div class="Guidelines_info_text">
@@ -1525,14 +1525,14 @@
                                          <p>The team member has to select the client’s name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Globus Business Plan and Sales Target Analysis</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Globus business plan and sales target analysis</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project Description should be more than 5 words and please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Globus business plan and target has to be analysed for Business Clients and necessary actions has to be taken to achieve the Business Plan & sales target</p>
                                      </div>
 
@@ -1542,7 +1542,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1551,7 +1551,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1559,7 +1559,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1591,7 +1591,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
+                                         <h4>Sub section:</h4>
                                          <div class="table-scrollable">
                                              <table class="table table-striped table-bordered table-hover">
                                                  <thead>
@@ -1652,7 +1652,7 @@
 
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template :</h4>
+                                         <h4>Do you want to save as template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
 
@@ -1667,13 +1667,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Revenue_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Revenue">
-                                 <i class="flaticon-diagram"></i> Revenue Generation
+                                 <i class="flaticon-diagram"></i> Revenue generation
                              </div>
                          </div>
                          <div id="Revenue" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Revenue Generation</h4>
+                                     <h4>Revenue generation</h4>
                                      <p>Tracking and listing of revenue generating projects and efforts during the previous week by re-entering the goals or targets and continuously upgrading the actual data.
                                      </p>
 
@@ -1682,14 +1682,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Creat monthly 5% footprint month on month for external customer</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Bt hiring additional WH in order to be able to creat the targetted additional income by making a contract with outside client and target a min. 5% pallet spaces of the total capacity month on momnth .</p>
                                      </div>
 
@@ -1699,7 +1699,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1708,7 +1708,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1716,7 +1716,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1748,12 +1748,12 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
-                                         <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
+                                         <h4>Sub section:</h4>
+                                         <p>select starting date & time and the expected ending date & time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template :</h4>
+                                         <h4>Do you want to save as template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
 
@@ -1768,13 +1768,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Cost_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Cost">
-                                 <i class="flaticon-clock"></i> Cost Reduction
+                                 <i class="flaticon-clock"></i> Cost reduction
                              </div>
                          </div>
                          <div id="Cost" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Cost Reduction</h4>
+                                     <h4>Cost reduction</h4>
                                      <p>Tracking and listing of expenditure and cost reduction projects and efforts during the previous week by re-entering the goals or targets and continuously upgrading the actual data.
                                      </p>
 
@@ -1784,13 +1784,13 @@
                                      </div>
                                      <div class="Guidelines_info_text">
                                          <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Globus Logistics Warehousing Rent Cost Optimisation</p>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Globus logistics Warehousing Rent Cost Optimisation</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Warehousing rental cost has to be optimized by 1. Re-arranging or enhancing the storage condition of stocks in warehouse and creating additional pallet positions 2. Relocating some of the assets to cheaper location (such as Qassim) to reduce the rent while Globus strategic plan.</p>
                                      </div>
 
@@ -1800,7 +1800,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1809,7 +1809,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1817,7 +1817,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1849,7 +1849,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
+                                         <h4>Sub section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
 
@@ -2003,15 +2003,15 @@
                                          </div>
                                           </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Measuring Unit:</h4>
+                                         <h4>Measuring unit:</h4>
                                          <p>Select measuring unit of given task Ex: SR,KG,Litre,Unit,Report,Manual etc.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
                                          <h4>Quantity:</h4>
-                                         <p>Depends on Measuring Unit please enter the quantity. Ex: 100 SR,2 KG,10 Reports etc.</p>
+                                         <p>Depends on measuring Unit please enter the quantity. Ex: 100 SR,2 KG,10 Reports etc.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template:</h4>
+                                         <h4>Do you want to save as template:</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
@@ -2026,13 +2026,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="To_Do_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#To_Do">
-                                 <i class="flaticon-signs-1"></i> To Do
+                                 <i class="flaticon-signs-1"></i> To do
                              </div>
                          </div>
                          <div id="To_Do" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>To-do Task</h4>
+                                     <h4>To-do task</h4>
                                      <p>For Unplanned task which will complete in minutes of time or which will complete in less than two to three days.
                                      </p>
 
@@ -2041,14 +2041,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Visit to Agility Logistics with Group FC and GM YRSS</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Need to visit Agility logistics to meet and discuss the ongoing issue to release the BL for the consignment came from USA and hold by Agility.</p>
                                      </div>
 
@@ -2058,7 +2058,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -2067,7 +2067,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -2075,7 +2075,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -2107,7 +2107,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
+                                         <h4>Sub section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept. In ToDo list duration shouldn't more than 3 days</p>
                                      </div>
 
@@ -2128,7 +2128,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Routine_task_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Routine_task">
-                                 <i class="flaticon-layers"></i> Routine Tasks
+                                 <i class="flaticon-layers"></i> Routine tasks
                              </div>
                          </div>
                          <div id="Routine_task" class="collapse" data-parent="#accordionExample5">
@@ -2145,13 +2145,13 @@
                                      </div>
                                      <div class="Guidelines_info_text">
                                          <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Checking Emails and send response</p>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Checking emails and send response</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Daily Checking Emails and send response to respected customers</p>
                                      </div>
 
@@ -2170,7 +2170,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -2178,7 +2178,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
