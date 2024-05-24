@@ -3006,38 +3006,26 @@
 
                                             <div class="d-flex" *ngIf="selectedrecuvalue=='2'">
 
-                                                <ng-container *ngFor="let item of dayArr">
-                                                    <div
-                                                        [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                                                        <input (change)="selectedDay($event)" id="{{item.value}}"
-                                                            type="checkbox" name="DaysChk" value="{{item.value}}"
-                                                            class="rep-chk" />
-                                                        {{item.Day}}
-                                                    </div>
-                                                </ng-container>
+                                              <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                              <ng-container *ngIf="mtgOnDays.length>1&&mtgOnDays.length<=3">
+                                                  <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                     {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                  </ng-container>
+                                              </ng-container>
+                                              <ng-container *ngIf="mtgOnDays.length>3">
+                                                   {{mtgOnDays[0]}} to {{mtgOnDays[mtgOnDays.length-1]}} 
+                                              </ng-container>
 
                                             </div>
 
 
                                             <div class="d-flex flex-wrap" *ngIf="selectedrecuvalue=='3'">
-
                                                 <ng-container *ngFor="let item of MonthArr">
-                                                    <div
-                                                        [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                                                        <input (change)="selectmonthlydays($event)" id="{{item.value}}"
-                                                            type="checkbox" name="monthChk" value="{{item.value}}"
-                                                            class="rep-chk" />
+                                                     <div *ngIf="item.checked" class="repeat-day active">
                                                         {{item.Day}}
-                                                    </div>
+                                                    </div> 
                                                 </ng-container>
-
-
                                             </div>
-
-
-
-
-
 
 
                                 </div>
@@ -3135,32 +3123,7 @@
                                     </div>
                                </div>
                             </li>
-                            <li>
-                                <div class="schedule-select-user-list-item">
-                                     <div class="user-info">
-                                         <div class="user-image">
-                                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
-                                         </div>
-                                         <div class="user-name">Abdelelah Mohammed Ghayid (Receptionist/ dr.CAFE KSA )</div>
-                                     </div>
-                                     <div>
-                                         <span class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
-                                     </div>
-                                </div>
-                             </li>
-                             <li>
-                                <div class="schedule-select-user-list-item">
-                                     <div class="user-info">
-                                         <div class="user-image">
-                                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
-                                         </div>
-                                         <div class="user-name">Abdul Rahim Iqbal (Multi Unit Manager/ dr.CAFE KSA )</div>
-                                     </div>
-                                     <div>
-                                         <span class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
-                                     </div>
-                                </div>
-                             </li>
+                           
                         </ul>
                     </div>
                 </div>
@@ -3325,27 +3288,6 @@
                                </div>
                                <div class="schedule-select-list-user">Md Waseem Akram</div>
                             </li>
-                            <li>
-                                <div class="schedule-select-list-item">
-                                 <span class="schedule-select-list-title">Old Ep and New EP issue-Standard Tasks</span>
-                                 <span class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
-                                </div>
-                                <div class="schedule-select-list-user">Md Waseem Akram</div>
-                             </li>
-                             <li>
-                                <div class="schedule-select-list-item">
-                                 <span class="schedule-select-list-title">Old Ep and New EP issue-Standard Tasks</span>
-                                 <span class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
-                                </div>
-                                <div class="schedule-select-list-user">Md Waseem Akram</div>
-                             </li>
-                             <li>
-                                <div class="schedule-select-list-item">
-                                 <span class="schedule-select-list-title">Old Ep and New EP issue-Standard Tasks</span>
-                                 <span class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
-                                </div>
-                                <div class="schedule-select-list-user">Md Waseem Akram</div>
-                             </li>
                         </ul>
                     </div>
                 </div>

@@ -5813,13 +5813,14 @@ onProjectSearch(inputtext:any){
 
  
   customrecurrencemodal() {
+    debugger
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
     this.selectedrecuvalue1=this.selectedrecuvalue;
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
     this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
-    this._EndDate1=this._EndDate;
+    this._EndDate1=moment(this._EndDate);
 
     if(this.selectedrecuvalue1=='2')
       document.getElementById("weekly_121_new").style.display = "block";
@@ -5828,7 +5829,6 @@ onProjectSearch(inputtext:any){
     
     if(this.selectedrecuvalue1!='0')
       document.getElementById("div_endDate_new").style.display = "block";
-
 
   }
   close_customrecurrencemodal() {
@@ -5842,7 +5842,7 @@ onProjectSearch(inputtext:any){
     this.selectedrecuvalue1='0';
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
     this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
-    this._EndDate1=undefined;
+    this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
 
 
@@ -6343,6 +6343,8 @@ selectedrecuvalue1:string='0';
 dayArr1:any=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
 MonthArr1:any=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
 _EndDate1:any;
+mtgOnDays:any=[];  // list of day name on which mtg is present.
+mtgOnMonth:any=[];  // list of date number on which mtg is present.
 onRecurrenceTypeChange(val:any){
   
     this.selectedrecuvalue1 = val.value.toString();
@@ -6379,13 +6381,24 @@ onRecurrenceTypeChange(val:any){
 
 
 bindCustomRecurrenceValues(){ 
-  debugger
+  debugger 
    //inserting values into these selectedrecuvalue, dayArr, MonthArr, _EndDate.
 this.selectedrecuvalue=this.selectedrecuvalue1;
 this.dayArr=[...this.dayArr1];
-this.MonthArr=[...this.MonthArr];
+this.MonthArr=[...this.MonthArr1];
 this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
 this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
+
+this.mtgOnDays=[];
+this.dayArr.forEach((item:any)=>{
+       if(item.checked){
+          let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':['T','Th'].includes(item.Day)?'sday':item.Day==='W'?'nesday':'urday');
+          this.mtgOnDays.push(d_name);
+       }
+});
+
+
+
 
 
 if (this.selectedrecuvalue == '0') {
@@ -6447,8 +6460,6 @@ if (this.selectedrecuvalue == '0') {
 
 this.close_customrecurrencemodal();  
 }
-
-
 
 
 
