@@ -417,6 +417,8 @@ export class MeetingDetailsComponent implements OnInit {
   meetingAdmin: boolean|undefined;
   Actiontask:any
   AssignedTask:any
+  Todotask:any;
+  orderedItems:any;
 
 meeting_details(){ 
 
@@ -424,10 +426,18 @@ meeting_details(){
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{ 
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+
+    this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
+      const statusOrder = { "Accepted": 1,"Pending":2, "May be": 3, "Rejected": 4 };
+      return statusOrder[a.Status] - statusOrder[b.Status];
+  });
+
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
-    this.Actiontask=this.EventScheduledjson[0].Actiontasks;
+    this.Actiontask=this.EventScheduledjson[0].Actiontasks;  
     this.AssignedTask=this.EventScheduledjson[0].AssignedTasks;
-     console.log('meeting_details--->',this.EventScheduledjson)
+    this.Todotask=this.EventScheduledjson[0].Todotasks;
+
+     console.log('meeting_details--->',this.orderedItems)
     if(this.EmpNo==this.Current_user_ID){
       this.meetingAdmin =true
     }else{
@@ -499,6 +509,7 @@ meeting_details(){
     this.projectcount = this.checkedproject.length;
 
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
+    console.log('kkkkkkkkkkk',this.Isadmin)
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
     this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
     
@@ -557,6 +568,7 @@ meeting_details(){
     this.GetcompletedMeeting_data();
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+      // console.log('time',this.elapsedTime)
       if (this.elapsedTime >= this.duration) {
         this.stopMeeting();
       }
@@ -1519,7 +1531,8 @@ agendasAdded:number=0;
 
 addAgenda(){
 
-  if(this.agendaInput&&this.agendaInput.trim().length>0){
+  if(this.agendaInput&&this.agendaInput?.trim().length<100){
+  if(this.agendaInput&&this.agendaInput.trim().length>0 ){
     this.agendasAdded+=1;
     const agenda={
         id:this.agendasAdded,
@@ -1543,27 +1556,35 @@ addAgenda(){
     })
     this.agendaInput=undefined;
   }
+}else if (this.agendaInput&&this.agendaInput?.trim().length>100){
+  this.notifyService.showWarning("Sorry, agenda name is too long.",'Please shorten it.');
+}
 }
 
 
 
 
 updateAgenda1(index:number){
+
       const tf:any=document.getElementById(`agenda-text-field-${index}`);
       const newname=tf.value;
 
-
-      this.Schedule_ID = this.Scheduleid;
-      this._calenderDto.Schedule_ID = this.Schedule_ID;
-      this._calenderDto.flagid=2;
-      this._calenderDto.Emp_No = this.Current_user_ID;
-      this._calenderDto.json=JSON.stringify({ id:this.Agendas_List[index].AgendaId, name:newname });
-
-      this.CalenderService.NewEditsAgendas(this._calenderDto).subscribe
-      (data => {
-        this.meeting_details();
-        this.notifyService.showSuccess("Rename successfully ", '');
-      })
+      if(newname?.length<100){
+        this.Schedule_ID = this.Scheduleid;
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+        this._calenderDto.flagid=2;
+        this._calenderDto.Emp_No = this.Current_user_ID;
+        this._calenderDto.json=JSON.stringify({ id:this.Agendas_List[index].AgendaId, name:newname });
+  
+        this.CalenderService.NewEditsAgendas(this._calenderDto).subscribe
+        (data => {
+          this.meeting_details();
+          this.notifyService.showSuccess("Rename successfully ", '');
+        })
+      }else {
+        this.notifyService.showWarning("Sorry, agenda name is too long.",'Please shorten it.');
+      }
+    
 }
 
 AgendasName: string;
@@ -1601,18 +1622,18 @@ deleteAgenda(AgendaId: number) {
   this._calenderDto.json = mtgAgendas;
    this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = 3;
-
-    if (result === true) {
-
+ debugger
+    if (result === true && this.currentAgendaView>0) {
       this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
        this.meeting_details()
        this.notifyService.showSuccess("Deleted successfully ", '');
-       
+        this.currentAgendaView=this.currentAgendaView-1
       });
-    }
-    else{
+    }else if (this.currentAgendaView==0){
+      this.notifyService.showWarning("At least one Agenda is mandatory in the meeting ", '');
+    }else {
       this.notifyService.showError("Action Cancelled ", '');
-    }
+    } 
   });
 }
 
@@ -1693,6 +1714,7 @@ leave: boolean = false;
 StatusType: boolean = true;
 
 leavemeet(event: any) {
+
   this.StatusType=true;
   if(this.StatusType==true){
     this.leave = true;
@@ -1700,7 +1722,6 @@ leavemeet(event: any) {
   this.addBulletPointsOnEnter(event)
   setTimeout(() => {
     this.delayedFunction();
-
   }, 2000);
   this.notifyService.showSuccess("Meeting left", "Success");
   // this.InsertstartandendTimerMeeting('Leave');
@@ -1730,7 +1751,7 @@ GetNotedata() {
 addBulletPointsOnEnter(event: any) {
   if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
       // Replace newline characters with <br> tags
-      this.Notes_Type = this.Notes_Type.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
+      this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -2002,7 +2023,7 @@ GetcompletedMeeting_data() {
     } else{
       this.interval = setInterval(() => {
         this.GetAttendeesnotes();
-      }, 3000);
+      }, 4000);
     }
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
@@ -2041,7 +2062,7 @@ EnterSubmit(_Demotext) {
       (data) => {
         //console.log("Data---->", data);
         this._TodoList = JSON.parse(data['Todomeeting']);
-
+        console.log(this._TodoList,'_TodoList')
         this.todocount = this._TodoList.length;
 
         let message: string = data['Message'];
@@ -2055,6 +2076,79 @@ EnterSubmit(_Demotext) {
       });
 
   }}
+
+
+  selectedAttendeesList = new Set<any>();
+
+  onCheckboxChange(event: any, employee: any) {
+    if (event.checked) {
+      this.selectedAttendeesList.add(employee);
+    } else {
+      this.selectedAttendeesList.delete(employee);
+    }
+    console.log('Selected Employees:', this.selectedAttendeesList);
+  }
+
+  listAttendees:any;
+  Assigntext:any;
+  datestrStart:any;
+  datestrEnd:any
+
+
+  addSelectedEmployees(taskName, id) {
+     
+       const selectedArray = Array.from(this.selectedAttendeesList)
+       this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
+       
+      
+       this.BsService.SetNewAssignId(id);
+       this.BsService.SetNewAssignedName(taskName);
+       let typeoftask: any = "IFRT";
+       this.BsService.setNewTypeofTask(typeoftask);
+       this.datestrStart = moment(new Date()).format();
+       this.datestrEnd = moment(new Date()).format();
+  
+       this._ObjAssigntaskDTO.AssignId = id;
+       this._ObjCompletedProj.PageNumber = 1;
+       this._ObjCompletedProj.Emp_No = this.Current_user_ID;
+       this._ObjCompletedProj.Mode = 'AssignedTask';
+       this._ObjAssigntaskDTO.TaskName = taskName;
+       this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
+       this._ObjAssigntaskDTO.ProjectType = "";
+       this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
+      
+
+
+
+      const fd = new FormData();
+      fd.append("AssignedBy", this.Current_user_ID);
+      fd.append("AssignTo", this.listAttendees);
+      fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
+      fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
+      fd.append("AssignId",  id);
+      fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
+      fd.append("StartDate", this.datestrStart);
+      fd.append("EndDate", this.datestrEnd);
+      fd.append("ProjectDays",'0');
+      fd.append("Desc", "");
+      fd.append("Remarks", "");
+      fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
+  
+        
+      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      (data) => {
+        let message: string = data['Message'];
+        this.notifyService.showSuccess("Task sent to assign projects", message);
+        this.GetAssigned_SubtaskProjects()
+         document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+         document.getElementById("projectmodal").style.display = "none";
+         this.Assigntext='';
+         this.selectedAttendeesList.clear();
+      })
+  }
+
+
+
 
   _taskName: any;
   task_id: any;
@@ -2086,6 +2180,7 @@ EnterSubmit(_Demotext) {
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
+    this.Assigntext=''
   }
 
 
@@ -2109,6 +2204,22 @@ EnterSubmit(_Demotext) {
   }
 
   _CompletedList = [];
+  EmployeeList:any;
+  Clientjson:any;
+  CompanyName:any;
+  FiterEmployee:any
+
+AddCom(){
+  if(this.CompanyName){
+    this.FiterEmployee = this.EmployeeList.filter((item) => {
+      return item.Com_No === this.CompanyName;
+  })
+  }else{
+    this.GetAssigned_SubtaskProjects()
+  }
+ 
+}
+
 
 
 GetAssigned_SubtaskProjects() {
@@ -2123,19 +2234,24 @@ GetAssigned_SubtaskProjects() {
   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
     (data) => {
    
- 
       // this.CategoryList = JSON.parse(data[0]['CategoryList']);
       this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
       this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-   
       
       this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+      this.Clientjson=JSON.parse(data[0]['Client_json'])
+      console.log(this.ActionedAssigned_Josn,"ActionedAssigned_Josn");
+      console.log(this.Clientjson,"Clientjson")
       this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-       console.log(this.ActionedSubtask_Json,"ActionedAssigned_Josn")
+      
 
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-      // console.log("the sss", this._TodoList)
+
+
+      this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
+      this.FiterEmployee=this.EmployeeList;
+      console.log(this.EmployeeList,'EmployeeList')
     });
 
 }
@@ -2226,6 +2342,7 @@ GetAttendeesnotes(){
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
   this._calenderDto.Emp_No=this.Current_user_ID
+
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
@@ -4065,8 +4182,23 @@ onProjectSearch(inputtext:any){
 
 
 
-
-
+projectmodal(){
+  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+  document.getElementById("projectmodal").style.display = "block";
+}
+close_projectmodal(){
+  document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+  document.getElementById("projectmodal").style.display = "none";
+  this.Assigntext=''
+}
+project_filter() {
+  document.getElementById("project-filter").classList.add("show");
+  document.getElementById("filter-icon").classList.add("active");
+}
+close_project_filter() {
+  document.getElementById("project-filter").classList.remove("show");
+  document.getElementById("filter-icon").classList.remove("active");
+}
 
 
 

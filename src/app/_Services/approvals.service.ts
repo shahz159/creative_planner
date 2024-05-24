@@ -30,8 +30,10 @@ export class ApprovalsService {
   }
 
 
-  GetStandardApprovals(pcode :string){
-    this.obj_approvalDTO.Project_Code=pcode
+  GetStandardApprovals(pcode :string,pgno:number=1,pgsz:number=10){
+    this.obj_approvalDTO.Project_Code=pcode;
+    this.obj_approvalDTO.PageNumber=pgno;
+    this.obj_approvalDTO.RowsOfPage=pgsz;
     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetStandardApprovals",this.obj_approvalDTO)
   }
 

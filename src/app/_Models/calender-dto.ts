@@ -51,6 +51,9 @@ export class CalenderDTO {
     type:number;
     AgendaId:any;
     DraftAgendas:any;
+    filterbyCompany:string;
+    filterbyUser:string;
+    filterbyStatus:string;
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;
