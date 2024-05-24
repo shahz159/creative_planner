@@ -14,8 +14,8 @@
                                Delay {{delayType}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="delayType=='Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="getDelayProjects(delayType1)">Delay Projects</a>
-                                <a [ngClass]="delayType=='Actions' ? 'dropdown-item active' : 'dropdown-item'" (click)="getDelayProjects(delayType2)">Delay Actions</a>
+                                <a [ngClass]="delayType=='Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="getDelayProjects(delayType1)">Delay projects</a>
+                                <a [ngClass]="delayType=='Actions' ? 'dropdown-item active' : 'dropdown-item'" (click)="getDelayProjects(delayType2)">Delay actions</a>
                             </div>
                         </div>
                         <div class="dropdown"  *ngIf="Mode=='AssignedTask'">
@@ -23,8 +23,8 @@
                                Projects {{Type}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="Type=='Assigned by me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)">Projects Assigned By Me</a>
-                                <a [ngClass]="Type=='Assigned to me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)">Projects Assigned To Me</a>
+                                <a [ngClass]="Type=='Assigned by me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type1)">Projects assigned by me</a>
+                                <a [ngClass]="Type=='Assigned to me' ? 'dropdown-item active' : 'dropdown-item'"  *ngIf="Mode=='AssignedTask'" (click)="getAssignedProjects(type2)">Projects assigned to me</a>
                             </div>
                         </div>
 
@@ -33,8 +33,8 @@
                                &nbsp;{{actionAssignedType==='TOME'?'to Me':'by Me'}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" [ngClass]="{'active':actionAssignedType==='TOME'}" (click)="getAssignedActions('TOME')" >Actions Assigned to Me</a>
-                                <a class="dropdown-item" [ngClass]="{'active':actionAssignedType==='BYME'}" (click)="getAssignedActions('BYME')" >Actions Assigned by Me</a>
+                                <a class="dropdown-item" [ngClass]="{'active':actionAssignedType==='TOME'}" (click)="getAssignedActions('TOME')" >Actions assigned to me</a>
+                                <a class="dropdown-item" [ngClass]="{'active':actionAssignedType==='BYME'}" (click)="getAssignedActions('BYME')" >Actions assigned by me</a>
                             </div>
                         </div>
 
@@ -114,7 +114,7 @@
                                         <div (click)="$event.stopPropagation();">
                                             <div class="row">
                                                 <div class="col-md-8">
-                                                    <h5><strong>Total Projects - </strong>
+                                                    <h5><strong>Total projects - </strong>
                                                         <h5 class="d-inline-block">
                                                             <strong>{{_totalProjectsCount}}</strong>
                                                         </h5>
@@ -133,7 +133,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="count-height">
-                                                        <p><strong>Project Type</strong></p>
+                                                        <p><strong>Project type</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
                                                             <label class="kt-checkbox">
@@ -154,10 +154,10 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Status=='Under Approval'?'New Approval' :item.Status=="Cancellation Under Approval"?"Cancellation Approval":
-                                                                    item.Status=="Deadline Extend Under Approval" ? "Deadline Extend Approval" :item.Status== "Completion Under Approval" ?
-                                                                    "Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval"
-                                                                    :item.Status=="Enactive Under Approval"?"Enactive Approval":item.Status=='InProcess'?'In-Process':item.Status =="Not Started"?"Draft":item.Status}}
+                                                                    {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval":
+                                                                    item.Status=="Deadline Extend Under Approval" ? "Deadline extend approval" :item.Status== "Completion Under Approval" ?
+                                                                    "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval"
+                                                                    :item.Status=="Enactive Under Approval"?"Enactive approval":item.Status=='InProcess'?'In-process':item.Status =="Not Started"?"Draft":item.Status}}
                                                                     <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -251,13 +251,13 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 100px;    z-index: 12 !important;"> </th>
-                                                    <th>Task Name</th>
+                                                    <th>Task name</th>
                                                     <th>Description</th>
                                                     <th>Type</th>
                                                     <th>Employee</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Last Update</th>
+                                                    <th>Start date</th>
+                                                    <th>End date</th>
+                                                    <th>Last update</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -341,7 +341,7 @@
                                                         <span class="kt-widget__other mb-0">{{item.Creation_Date|dateAgo1}}</span>
                                                         </td>
                                                         <td>
-                                                            
+
                                                           <span class="kt-widget__other mb-0" [ngClass]="{
                                                             'rejected font-weight-400': item.Status === 'Rejected',
                                                             'accepted font-weight-400': item.Status === 'Accepted',
@@ -353,7 +353,9 @@
 
                                                       </td>
                                                       <td>
-                                                        <a class="port-info-btn">
+
+                                                        <a class="port-info-btn"  *ngIf="item.Status==='Pending'"
+                                                     (click)="openAssignedProject(item.Assign_Id) ">
                                                             <svg style="width: 34px; height: 34px;" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve" class="kt-menu__link-icon"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"></path><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"></path></g></g></svg>
                                                         </a>
                                                       </td>
@@ -382,7 +384,7 @@
                                                         aria-sort="ascending"
                                                         aria-label=": activate to sort column descending">
                                                     </th>
-                                                    
+
                                                     <th [appSort]="_ProjectDataList" data-order="desc" *ngIf="Mode!='DelayActions'&&Mode!='AssignedActions'"
                                                         data-name="Project_Name" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" style="width: 0px;"
@@ -396,7 +398,7 @@
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>
-                                                        Project Name
+                                                        Project name
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc" *ngIf="Mode=='DelayActions'"
                                                         data-name="Project_Name" tabindex="0" aria-controls="project-4"
@@ -411,7 +413,7 @@
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>
-                                                        Action Name
+                                                        Action name
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc" *ngIf="Mode=='AssignedActions'"
                                                     data-name="Project_Name" tabindex="0" aria-controls="project-4"
@@ -426,7 +428,7 @@
                                                         title="Click to sort">
                                                         <i class="fa fa-sort-alpha-down-alt"></i>
                                                     </a>
-                                                    Action Name
+                                                    Action name
                                                    </th>
 
 
@@ -436,7 +438,7 @@
                                                         class="curser-pointer"
                                                         aria-label="Project Type: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
-                                                        Project Type
+                                                        Project type
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="ReportType" tabindex="0" aria-controls="project-4"
@@ -452,7 +454,7 @@
                                                         aria-label="User Name: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
                                                         Employee
-                                                        Name
+                                                        name
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="DeadLine" tabindex="0" aria-controls="project-4"
@@ -460,14 +462,14 @@
                                                         aria-label="End Date: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
                                                         End
-                                                        Date
+                                                        date
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
-                                                        Last Update
+                                                        Last update
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
@@ -564,14 +566,14 @@
                                                       </ng-template>
 
 
-                                                   
-                                                        
+
+
                                                             <span *ngIf="item.Link_Status==1;else not_Linked">
                                                                 <a class="curser-pointer ml-2"
                                                                 (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img width="19px"
                                                                         src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
                                                                         title="Linked"></a>
-    
+
                                                             </span>
                                                             <ng-template #not_Linked>
                                                                 <a><img width="19px" class="black-white ml-2"
@@ -644,7 +646,7 @@
                                                     </td> -->
                                                     <td>
                                                         <div *ngIf="item.Status=='Under Approval'" >
-                                                            <span class="new-project  font-weight-400" > New Approval</span>
+                                                            <span class="new-project  font-weight-400" > New approval</span>
                                                             <!-- <span class="bg-success">{{item.Status}}</span> -->
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'">
@@ -653,20 +655,20 @@
                                                         </div>
                                                         <!-- Other Status #ed6b75 -->
                                                         <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="in-process font-weight-400">In-Process</span>
+                                                            <span class="in-process font-weight-400">In-process</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo InProcess'">
                                                             <span class="text-primary font-weight-400">ToDo
-                                                                InProcess</span>
+                                                                Inprocess</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project'">
                                                             <span class="New-project font-weight-400">New
-                                                                Project</span>
+                                                                project</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Project Rejected'">
                                                             <span class="New_Project_Rejected_color font-weight-400">New
-                                                                Project
-                                                                Rejected</span>
+                                                                project
+                                                                rejected</span>
                                                         </div>
 
                                                         <div *ngIf="item.Status=='Not Started'">
@@ -681,14 +683,14 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='ToDo Completed'">
                                                             <span class="ToDo_Completed_color font-weight-400">ToDo
-                                                                Completed</span>
+                                                                completed</span>
                                                         </div>
                                                         <div *ngIf="item.Status=='New Todo'">
-                                                            <span class="New_Todo_color font-weight-400">New Todo
+                                                            <span class="New_Todo_color font-weight-400">New todo
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion Approval
+                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Completed'">
@@ -696,17 +698,17 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
-                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward Approval
+                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Complete Rejected'">
                                                             <span class="Project_Complete_Rejected_color font-weight-400">Project
-                                                                Complete
-                                                                Rejected
+                                                                complete
+                                                                rejected
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive Approval
+                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
                                                             </span>
                                                         </div>
 
@@ -715,7 +717,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline Extend Approval
+                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
@@ -725,7 +727,7 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
                                                             <span class="font-weight-400"
-                                                                style="color: #c0b5dc;">Hold Approval
+                                                                style="color: #c0b5dc;">Hold approval
                                                             </span>
                                                         </div>
                                                     </td>
@@ -775,7 +777,7 @@
                     (click)="closeLinkSideBar()">&times;</a>
                 <h5 class="title-sidebar mb-0 text-white">
                     <i class="fa fa-link"></i>
-                    Link Project
+                    Link project
                 </h5>
             </div>
         </div>
@@ -816,7 +818,7 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked Memos
+                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 

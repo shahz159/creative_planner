@@ -622,7 +622,7 @@ debugger
       }
 
       this.service._InsertNewSubtask(fd).subscribe(event => {
-
+debugger
         if (event.type === HttpEventType.Response){
           var myJSON = JSON.stringify(event);
           this._Message = (JSON.parse(myJSON).body).Message;

@@ -24,7 +24,7 @@
         <!--begin: Notifications -->
         <div class="kt-header__topbar-item dropdown">
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
-               
+
                 <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i class="flaticon2-bell-alarm-symbol"></i></span>
                 <span class="kt-hidden kt-badge kt-badge--danger"></span>
             </div>
@@ -37,7 +37,7 @@
                             &nbsp;
                             <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">23 new</span>
                         </h3>
-                        
+
                         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand  kt-notification-item-padding-x mt-0" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link show active" data-toggle="tab" href="#topbar_notifications_notifications" role="tab" aria-selected="true">Alerts</a>
@@ -223,7 +223,7 @@
                 <!--begin: Head -->
                 <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
                     <div class="kt-user-card__name">
-                      <span style="color:#22b9ff;">Welcome </span> 
+                      <span style="color:#22b9ff;">Welcome </span>
                     </div>
                 </div>
                 <!--end: Head -->
@@ -248,7 +248,7 @@
                         </div>
                         <div class="kt-notification__item-details">
                             <div class="kt-notification__item-title kt-font-bold">
-                                My Messages
+                                My messages
                             </div>
                             <div class="kt-notification__item-time">
                                 Inbox and tasks
@@ -261,7 +261,7 @@
                         </div>
                         <div class="kt-notification__item-details">
                             <div class="kt-notification__item-title kt-font-bold">
-                                My Activities
+                                My activities
                             </div>
                             <div class="kt-notification__item-time">
                                 Logs and notifications
@@ -274,7 +274,7 @@
                         </div>
                         <div class="kt-notification__item-details">
                             <div class="kt-notification__item-title kt-font-bold">
-                                My Tasks
+                                My tasks
                             </div>
                             <div class="kt-notification__item-time">
                                 latest tasks and projects
@@ -282,7 +282,7 @@
                         </div>
                     </a>
                     <div class="kt-notification__custom kt-space-between">
-                        <a  target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                        <a  target="_blank" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign out</a>
                     </div>
                 </div>
                 <!--end: Navigation -->
@@ -300,7 +300,7 @@
     <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
         <div class="d-flex align-items-stretch my-2 ml-3">
             <button class="btn-menu btn" (click)="menutoggle()"><i class="fas fa-bars"></i></button>
-            <h4 class="my-3">Stream Planner</h4>
+            <h4 class="my-3">Stream planner</h4>
         </div>
     </div>
     <!-- end: Header Menu -->
@@ -313,7 +313,7 @@
             </span>
         </div>
         <div class="kt-header__topbar-item">
-            <span 
+            <span
                 class="kt-header__topbar-icon kt-header__topbar-icon--success mr-2"  (click)="applyleave()">
                 <svg  fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"  version="1.1" x="0px" y="0px" viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve" style="width: 26px; height: 24px;">
                     <g>
@@ -376,10 +376,10 @@
                                                 {{noti.Project_Name}}
                                             </div>
                                             <div class="kt-notification__item-title">
-                                                Request Type: {{noti.Req_Type}}
+                                                Request type: {{noti.Req_Type}}
                                             </div>
                                             <div class="kt-notification__item-time">
-                                                Requested On: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
+                                                Requested on: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
                                             </div>
                                             <!-- <div class="kt-notification__item-time">
                                                 Comments: {{noti.Req_Coments}}
@@ -390,21 +390,21 @@
                                         </div>
                                     </ng-container>
 
-                                    
+
                                 </a>
                             </div>
                             <div *ngIf="notilength==0" class="kt-notification kt-margin-t-10 kt-margin-b-10"
                                 style="color: lightgrey">
-                                <h5>No Notifications available</h5>
+                                <h5>No notifications available</h5>
                             </div>
                             <div class="py-3 text-center border-top">
                                 <!-- *ngIf="notilength>5" -->
                                 <a (click)="notification()" class="btn btn-label btn-label-info btn-sm btn-bold">View
-                                    All</a>
+                                    all</a>
                             </div>
                         </div>
 
-                        
+
                     </div>
                 </form>
             </div>
@@ -429,7 +429,7 @@
                         </div>
                         <div class="kt-notification__item-details">
                             <div class="kt-notification__item-title kt-font-bold">
-                                My Profile
+                                My profile
                             </div>
                             <div class="kt-notification__item-time">
                                 Account settings and more
@@ -442,7 +442,7 @@
                         </div>
                         <div class="kt-notification__item-details">
                             <div class="kt-notification__item-title kt-font-bold">
-                                User Policy
+                                User policy
                             </div>
                             <div class="kt-notification__item-time">
                                 Terms and conditions
@@ -463,7 +463,7 @@
                         </div>
                     </a> -->
                     <div class="kt-notification__custom kt-space-between">
-                        <a  (click)="logout()" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                        <a  (click)="logout()" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign out</a>
                     </div>
                 </div>
                 <!--end: Navigation -->
@@ -484,7 +484,7 @@
     <div class="kt-portlet mb-0">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
-                <h4 class="m-0">Timeline Log</h4>
+                <h4 class="m-0">Timeline log</h4>
                 <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeevearea2()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                         fill="currentColor">
@@ -500,13 +500,13 @@
                 <li class="nav-item">
                     <a id="mytime-1" data-toggle="tab" href="#mytime_1"
                         [ngClass]="timelineType==type1 ? 'nav-link active' : 'nav-link'" (click)="timelineLog(type1)">
-                        <span class="nav-text">My Timeline</span>
+                        <span class="nav-text">My timeline</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="racis-1" data-toggle="tab" href="#racis_1"
                         [ngClass]="timelineType==type2 ? 'nav-link active' : 'nav-link'" (click)="timelineLog(type2)">
-                        <span class="nav-text">RACIS Timeline</span>
+                        <span class="nav-text">RACIS timeline</span>
                     </a>
                 </li>
             </ul>
@@ -600,9 +600,9 @@
 
             </div>
             <div id="hrs-tippy" class="d-none">
-                Total Achievement Hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total Allocated Hours - 8Hrs
+                Total achievement hours - {{timelineDuration | number:'1.2-2'}}hrs <br> Total allocated hours - 8hrs
             </div>
-            <span class="timeli-hrs tippy" id="hrs-tippy">Total Achievement Hours - {{timelineDuration |
+            <span class="timeli-hrs tippy" id="hrs-tippy">Total achievement hours - {{timelineDuration |
                 number:'1.2-2'}}hrs</span>
         </div>
         <div class="kt-portlet__body kt-portlet__body_scroll p-0">
@@ -613,7 +613,7 @@
                     </div>
 
                     <div >
-                       
+
                             <ng-container *ngFor="let timeline of timelineList; let i=index">
                                 <div class="timeline-header sticky-header">
                                     <span class="header-text header-date">
@@ -640,7 +640,7 @@
                                                 </div>
                                             </div>
                                             <div class="timeline-content time-line-cnt">
-        
+
                                                 <div class="kt-tm-user">
                                                     <div class="d-flex align-items-center justify-content-between w-100">
                                                         <div class="user-vw d-flex align-items-center ">
@@ -648,14 +648,14 @@
                                                                 <img alt="img"
                                                                     src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/672189_anounce1.jpg"
                                                                     class="ng-star-inserted">
-        
+
                                                             </div>
                                                             <div class="user-kt-n">{{item.EmpName}}</div>
                                                         </div>
-        
-        
+
+
                                                         <div class="kt-task-head">
-        
+
                                                             <div class="user-kt-time"> <span class="svg-time-icon"> <svg
                                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                         width="16px" height="16px" viewBox="0 0 24 24"
@@ -668,7 +668,7 @@
                                                                     AM</span>
                                                                 <span class="mdl-line-h"></span><span
                                                                     class="tmv-tm">{{item.endtime}} PM</span> <span
-                                                                    class="total-time-kt">{{item.Duration}} Hrs</span>
+                                                                    class="total-time-kt">{{item.Duration}} hrs</span>
                                                             </div>
                                                             <div class="date-view-rt">
                                                                 <div class="time-line-date">
@@ -678,7 +678,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-        
+
                                                 <div class="kt-task-cnt">
                                                     <div class="action-name">
                                                         {{item.ActionName}}
@@ -687,15 +687,15 @@
                                                         <p>{{item.WorkAchieved}}</p>
                                                     </div>
                                                 </div>
-        
+
                                             </div>
                                         </div>
                                     </div>
-                               
-        
+
+
                             </ng-container>
-        
-                      
+
+
                         <ng-template #noTimelinePresent>
                             <div class="notimeline-present">
                                 <img src="./assets/images/noTimelinePresent.png" class="notimeline-present-img" />
@@ -706,7 +706,7 @@
                         </ng-template>
                     </div>
 
-                    
+
                     <!--  old timeline Start
 
                         <div class="timeline" *ngFor="let item of timelineList;let i=index">
@@ -722,7 +722,7 @@
                                         {{item1.Initial}}
                                     </span>
                                 </div>
-                            </div>         
+                            </div>
                             <div class="timeline-content mb-10 mt-n2">
                                 <div class="overflow-auto pt-2">
                                     <div class="d-flex-between">
@@ -852,7 +852,7 @@
         <div class="kt-portlet__foot py-2">
             <div class="text-center">
                 <button class="btn-info btn btn-sm" (click)="viewTimeline()">
-                    View All
+                    View all
                 </button>
             </div>
         </div>
@@ -902,13 +902,13 @@
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="daytyperadio" id="firsthalf" value="option2">
                             <label class="form-check-label" for="firsthalf">
-                              First Half
+                              First half
                             </label>
                           </div>
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="daytyperadio" id="secondhalf" value="option3">
                             <label class="form-check-label" for="secondhalf">
-                              Second Half
+                              Second half
                             </label>
                           </div>
                     </div>
@@ -938,7 +938,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="traveltyperadio" id="withfamily" value="option1" checked>
                             <label class="form-check-label" for="withfamily">
-                              With Family
+                              With family
                             </label>
                           </div>
                           <div class="form-check">
@@ -1022,12 +1022,12 @@
             <div class="feature-content-hero">
                 <div class="feature-bg-img"></div>
                 <div class="feature-headline-parent">
-                    <h1 class="feature-headline">What’s New</h1>
-                    <p class="feature-headline-p">Stream Planner</p>
+                    <h1 class="feature-headline">What’s new</h1>
+                    <p class="feature-headline-p">Stream planner</p>
                 </div>
                 <div class="feature-hero-card">
                     <div class="heading">
-                        <p>Stream Planner New Features</p>
+                        <p>Stream planner new features</p>
                     </div>
                 </div>
                 <div class="feature-hero-icon">
@@ -1039,35 +1039,35 @@
             <div class="feature-content">
                 <div class="feature-grid">
                     <div class="feature-info">
-                        <h2 class="feature-heading">Create Project</h2>
-                        <p class="feature-lead">To create a new project in the Stream Planner, follow these steps.</p>
+                        <h2 class="feature-heading">Create project</h2>
+                        <p class="feature-lead">To create a new project in the stream planner, follow these steps.</p>
                         <ol class="feature-ol">
                             <li class="feature-li">Navigate to the sidebar on the left-hand side of the screen.</li>
-                            <li class="feature-li">Look for the 'New Project' button within the sidebar.</li>
-                            <li class="feature-li">Click on the 'New Project' button to proceed with project creation. Once clicked, follow the on-screen prompts to complete the project setup."</li>
+                            <li class="feature-li">Look for the 'New project' button within the sidebar.</li>
+                            <li class="feature-li">Click on the 'New project' button to proceed with project creation. Once clicked, follow the on-screen prompts to complete the project setup."</li>
                         </ol>
                     </div>
                     <div class="feature-image">
                         <img src="assets/features/create-project.png" role="img" alt="Add User">
 
                     </div>
-                </div> 
+                </div>
                 <div class="feature-grid">
                     <div class="feature-info">
-                        <h2 class="feature-heading">Create Project</h2>
+                        <h2 class="feature-heading">Create project</h2>
                         <p class="feature-lead">To create a project, you can choose from the following four options.</p>
                         <ol class="feature-ol">
-                            <li class="feature-li">Start from Scratch: Begin a new project with a blank slate, allowing for full creativity and customization from the ground up.</li>
-                            <li class="feature-li">My Drafts: Revisit and continue developing projects from your existing drafts, utilizing previously outlined ideas and concepts.</li>
-                            <li class="feature-li">Assigned/Conditional Projects: Tackle projects assigned by others or triggered under specific conditions, which come with predefined objectives and may require collaboration.</li>
-                            <li class="feature-li">Saved Templates: Quickly start projects using pre-existing templates that provide a structured format and require minimal initial setup.</li>
+                            <li class="feature-li">Start from scratch: Begin a new project with a blank slate, allowing for full creativity and customization from the ground up.</li>
+                            <li class="feature-li">My drafts: Revisit and continue developing projects from your existing drafts, utilizing previously outlined ideas and concepts.</li>
+                            <li class="feature-li">Assigned/Conditional projects: Tackle projects assigned by others or triggered under specific conditions, which come with predefined objectives and may require collaboration.</li>
+                            <li class="feature-li">Saved templates: Quickly start projects using pre-existing templates that provide a structured format and require minimal initial setup.</li>
                         </ol>
                     </div>
                     <div class="feature-image">
                         <img src="assets/features/create-options.png" role="img" alt="Add User">
 
                     </div>
-                </div> 
+                </div>
 
 
             </div>

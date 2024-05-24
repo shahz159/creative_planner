@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <div class="kt-portlet__head-label mt-3">
                 <h4 class="kt-portlet__head-title">
-                    <strong  id="tippy1">Runway Tasks</strong>
+                    <strong  id="tippy1">Runway tasks</strong>
                 </h4>
 
             </div>
@@ -19,7 +19,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">Total Categories</h5>
+                                <h5 class="mb-0">Total categories</h5>
                                 <h4 class="mb-0">{{catcount}}</h4>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">Total Tasks</h5>
+                                <h5 class="mb-0">Total tasks</h5>
                                 <h4 class="mb-0">{{procount}}</h4>
                             </div>
                         </div>
@@ -175,9 +175,9 @@
                         <div class="kt-portlet__head-toolbar">
 
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
-                            <span class="count">{{catcount}}</span> Total Categories </label>
+                            <span class="count">{{catcount}}</span> Total categories </label>
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
-                                <span class="count">{{procount}}</span> Total Tasks </label>
+                                <span class="count">{{procount}}</span> Total tasks </label>
                           <!-- <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
                             <span class="count">0</span> Task </label> kt-portlet--height-fluid
                           <label class="badge bdg-new kt-badge--inline mr-2 py-8px btn-sm">
@@ -206,7 +206,7 @@
                                 <div (click)="$event.stopPropagation();">
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <h5><strong>Total Tasks - </strong>
+                                            <h5><strong>Total tasks - </strong>
                                                 <h5 class="d-inline-block">
                                                     <strong>{{procount}}</strong>
                                                 </h5>
@@ -385,11 +385,11 @@
                         <div class="count-list p-1 bg-white rounded-xl my-2">
                             <div class="kt-portlet__head-toolbar">
                               <button class="badge total-project kt-badge--inline mr-2 py-8px btn-sm"  >  <span class="total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}
-                              </span> Total Projects</button>
-                              <button class="badge task  mr-2 py-8px btn-sm"  (click)="scrollTo('taskdd')"  *ngIf='_TodoList.length>0' >  <span class="task">{{_TodoList.length}}</span> UnassignTask</button>
+                              </span> Total projects</button>
+                              <button class="badge task  mr-2 py-8px btn-sm"  (click)="scrollTo('taskdd')"  *ngIf='_TodoList.length>0' >  <span class="task">{{_TodoList.length}}</span> Unassign task</button>
                               <button class="badge done kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('Completed')" *ngIf='_CompletedList&&_CompletedList.length>0' >  <span class="done">{{_CompletedList&&_CompletedList.length}}</span> Completed</button>
-                              <button class="badge action-to-project kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('ActionToProjects')"  *ngIf='ActionedSubtask_Json&&ActionedSubtask_Json.length>0' >  <span class="action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span> Action To Projects</button>
-                              <button class="badge assigned-task assigned-task mr-2 py-8px btn-sm" (click)="scrollTo('AssignedTask')" *ngIf='ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0'>  <span class="assigned-task  ">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span> Assigned Task</button>
+                              <button class="badge action-to-project kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('ActionToProjects')"  *ngIf='ActionedSubtask_Json&&ActionedSubtask_Json.length>0' >  <span class="action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span> Action to projects</button>
+                              <button class="badge assigned-task assigned-task mr-2 py-8px btn-sm" (click)="scrollTo('AssignedTask')" *ngIf='ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0'>  <span class="assigned-task  ">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span> Assigned task</button>
                               <button class="badge accepted  kt-badge--inline mr-2 btn-sm py-8px" (click)="scrollTo('AssignedTask')" *ngIf='CountsAccepted>0'> <span  class="accepted">{{CountsAccepted}}</span> Accepted</button>
                               <button class="badge pending  kt-badge--inline mr-2 btn-sm py-8px"  (click)="scrollTo('AssignedTask')" *ngIf='CountsPending>0'> <span class="pending">{{CountsPending}}</span> Pending</button>
                               <button class="badge rejected  kt-badge--inline mr-2 btn-sm py-8px" (click)="scrollTo('AssignedTask')" *ngIf='CountsRejected>0'> <span class="rejected">{{CountsRejected}}</span> Rejected</button>
@@ -406,10 +406,10 @@
                                 <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{_CompletedList&&_CompletedList.length}}</span>Completed</div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>Action To Projects</div>
+                                <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>Action to projects</div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
-                                <div class="lead"><span class="kt-badge assigned-task kt-badge--inline mr-2 count-num">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>Assigned Task</div>
+                                <div class="lead"><span class="kt-badge assigned-task kt-badge--inline mr-2 count-num">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>Assigned task</div>
                             </label>
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white">
                                 <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num" >{{CountsAccepted}}</span>Accepted</div>
@@ -430,7 +430,7 @@
                         <div class="row" >
                             <div class="col-lg-12" >
                                 <div class="p-2 scrollbar1">
-                                    <h5 id="taskdd" *ngIf="_TodoList.length>0">UnassignTask</h5>
+                                    <h5 id="taskdd" *ngIf="_TodoList.length>0">Unassign task</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
                                         <div class="mb-2 card" *ngFor="let item of _TodoList; let i=index">
                                             <div class="card-body p-2 Replied_border_left_true_NewProject mr-2">
@@ -487,7 +487,7 @@
                                                             </span> -->
                                                             <span *ngIf="item.TypeOfTask=='SUBTASK'"
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                Action Added To
+                                                                Action added to
                                                                 <mat-icon color='primary' class="ml-2">task_alt</mat-icon>
                                                             </span>
                                                         </div>
@@ -524,7 +524,7 @@
                                                             <button mat-menu-item mat
                                                                 (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
                                                                 <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
-                                                                <span>Add Action To Project</span>
+                                                                <span>Add action to project</span>
                                                             </button>
                                                         </mat-menu>
                                                         <mat-menu #AssignTo="matMenu">
@@ -579,7 +579,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h5 id='ActionToProjects' *ngIf="((ActionedSubtask_Json.length) > 0)">Action To Projects</h5>
+                                    <h5 id='ActionToProjects' *ngIf="((ActionedSubtask_Json.length) > 0)">Action to projects</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
                                         <!-- Action Subtask -->
                                         <div class="mb-2 card" *ngFor="let item of ActionedSubtask_Json">
@@ -634,14 +634,14 @@
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                Action Added To
+                                                                Action added to
                                                                 <mat-icon color='primary' class="ml-2 mr-2">task_alt
                                                                 </mat-icon>
                                                                 <b>{{item.Project_Name}}</b>
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                Assigned To
+                                                                Assigned to
                                                                 <mat-icon color='primary' class="ml-2 mr-2">task_alt
                                                                 </mat-icon>
                                                                 <b>{{item.Assigned_Name}}</b>
@@ -673,11 +673,11 @@
                                                                       'kt-badge cancelled': item.Status === 'Cancelled',
                                                                       'kt-badge new-project-under':item.Status==='Under Approval'
                                                                     }">
-{{item.Status=='Under Approval'?'New Approval':item.Status=='Enactive Under Approval'?'Enactive Approval'
-:item.Status=="Cancellation Under Approval"?"Cancellation Approval" :item.Status== "Completion Under Approval" ?
-"Completion Approval" :item.Status=='Forward Under Approval'? "Forward Approval" :item.Status=='Not Started'?'Draft':
-item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
-:item.Status=='InProcess'?'In-Process':item.Status}}
+{{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval'
+:item.Status=="Cancellation Under Approval"?"Cancellation approval" :item.Status== "Completion Under Approval" ?
+"Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':
+item.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
+:item.Status=='InProcess'?'In-process':item.Status}}
                                                                 <!-- <div></div> -->
                                                              </span>
                                                              <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
@@ -765,7 +765,7 @@ item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
                                                                 <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> {{item.Creation_Date}}</div>
                                                             </span> -->
-                                                            <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                            <span data-toggle="tooltip" title="Created date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                 <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                                 <div>
                                                                     {{item.Creation_Date|  date:'d MMM, y'}}
@@ -800,10 +800,10 @@ item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
                                                         </span> -->
                                                         </div>
                                                         <div class="my-1  d-flex" >
-                                                            <label data-toggle="tooltip" title="Project Type!" *ngIf="item.Project_type"
+                                                            <label data-toggle="tooltip" title="Project type!" *ngIf="item.Project_type"
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
                                                                 class="fa fa-clone mr-2"></i>
-                                                            {{item.Project_type==='Under Approval'?'New Project Under Approval':item.Project_type}}</label>
+                                                            {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</label>
                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
                                                                     class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline"
                                                                     [ngClass]="{
@@ -819,14 +819,14 @@ item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
                                                                       'kt-badge cancelled': item.Project_status === 'Cancelled',
                                                                       'kt-badge new-project-under':item.Project_status==='Under Approval'
                                                                     }">
-                                                                    <div>{{item.Project_status=='Under Approval'?'New Approval':item.Project_status=='Enactive Under Approval'?'Enactive Approval'
-                                                                      :item.Project_status=="Cancellation Under Approval"?"Cancellation Approval" :item.Project_status== "Completion Under Approval" ?
-                                                                      "Completion Approval" :item.Project_status=='Forward Under Approval'? "Forward Approval" :item.Project_status=='Not Started'?'Draft':
+                                                                    <div>{{item.Project_status=='Under Approval'?'New approval':item.Project_status=='Enactive Under Approval'?'Enactive approval'
+                                                                      :item.Project_status=="Cancellation Under Approval"?"Cancellation approval" :item.Project_status== "Completion Under Approval" ?
+                                                                      "Completion approval" :item.Project_status=='Forward Under Approval'? "Forward approval" :item.Project_status=='Not Started'?'Draft':
                                                                       item.Project_status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
-                                                                      :item.Project_status=='InProcess'?'In-Process':item.Project_status}}
+                                                                      :item.Project_status=='InProcess'?'In-process':item.Project_status}}
                                                                     </div>
                                                              </span>
-                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
+                                                             <span data-toggle="tooltip" title="Project status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                     <div> {{item.Project_status}} {{item.Delaydays}} days</div>
                                                              </span>
@@ -840,7 +840,7 @@ item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
                                                                 <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> {{item.Status}}</div>
                                                             </span> -->
-                                                                <span *ngIf="item.Start_Date" data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                <span *ngIf="item.Start_Date" data-toggle="tooltip" title="Start date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                     <div><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                                     <div> {{item.Start_Date|date : 'd MMM, y'}}</div>
                                                                 </span>
@@ -891,7 +891,7 @@ item.Status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
                 <div class="add_assigned_task-removeforcss mt-2 pr-1">
                     <div class="form-group mb-0">
                         <a class="btn btn-sm btn-info font-weight-bold mr-2 py-2 px-3 px-xxl-5 text-white my-1 float-right d-none"
-                            id="addbtn"><i class="la la-plus text-white mr-2"></i>Add Task</a>
+                            id="addbtn"><i class="la la-plus text-white mr-2"></i>Add task</a>
                         <div class="input-group" id="addtsk">
                             <div class="input-group-prepend">
                                 <button class="btn btn-info btn-sm lh-25" id="basic-addon1" id="tippy3"

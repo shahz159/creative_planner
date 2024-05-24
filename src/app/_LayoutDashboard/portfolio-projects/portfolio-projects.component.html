@@ -17,7 +17,7 @@
                                 <!--begin::Nav-->
                                 <ul class="kt-nav">
                                     <li class="kt-nav__head d-block">
-                                        <p class="mb-0"><strong>Rename Portfolio</strong></p>
+                                        <p class="mb-0"><strong>Rename portfolio</strong></p>
                                         <div class="kt-nav__separator"></div>
                                     </li>
                                     <li class="kt-nav__item px-4">
@@ -29,7 +29,7 @@
                                     <li class="kt-nav__foot">
                                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-3"
                                             (click)="RenamePortfolio()" [disabled]="Rename_PortfolioName==''">Update
-                                            Portfolio</button>
+                                            portfolio</button>
                                     </li>
                                 </ul>
                                 <!--end:: Nav-->
@@ -43,7 +43,7 @@
                             <div class="kt-quick-search__form">
                                 <div class="input-group">
                                     <input type="text" class="form-control kt-quick-search__input pl-3"
-                                        placeholder="Search Projects" [(ngModel)]="_SearchProjects"
+                                        placeholder="Search projects" [(ngModel)]="_SearchProjects"
                                         style="width: 300px;height:30px">
                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                 class="flaticon2-search-1"></i></span></div>
@@ -62,10 +62,10 @@
                                     </a>
                                     <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="morebutton" *ngIf="_MessageIfNotOwner==''">
                                         <div class="" [hidden]="Share_preferences">
-                                            <a type="button" (click)="populateForm()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-plus mr-2"></i>Add Project</a>
+                                            <a type="button" (click)="populateForm()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-plus mr-2"></i>Add project</a>
                                             <a type="button" (click)="share_Users()" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-share-alt mr-2"></i> Share</a>
                                             <a type="button" data-toggle="modal"
-                                            data-target="#exampleModal2" [hidden]="_btnShareDetails" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-file-alt mr-2"></i>Shared Details</a>
+                                            data-target="#exampleModal2" [hidden]="_btnShareDetails" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-file-alt mr-2"></i>Shared details</a>
                                         </div>
                                       </div>
                         </div>
@@ -91,7 +91,7 @@
                         <ng-container *ngIf="CountInprocess>0">
                     <a href="javascript:void(0)" (click)="labelAll(); onButtonClick('tot')"  [hidden]="HideStatusDropdown"
                       class="badge total-project kt-badge--inline mr-2 py-10px btn-sm active-total-project" id="tot" tabindex="0" >
-                      <span>{{TotalProjects}}</span> Total Projects
+                      <span>{{TotalProjects}}</span> Total projects
                     </a>
                 </ng-container>
 
@@ -106,7 +106,7 @@
                             {{CountInprocess}} InProcess </a> -->
                         <a href="javascript:void(0)" (click)="labelInprocess();onButtonClick('inn')" [hidden]="HideStatusDropdown"
                             class="badge in-processs kt-badge--inline mr-2 btn-sm py-10px" id="inn"> {{CountInprocess}}
-                            In-Process</a>
+                            In-process</a>
 
                     </ng-container>
                     <ng-container *ngIf="CountDelay>0">
@@ -157,7 +157,7 @@
 
                 <ng-container *ngIf="CountForward>0"  >
                   <a href="javascript:void(0)" (click)="labelForward();onButtonClick('Count-forward')" [hidden]="HideStatusDropdown"
-                      class="badge Count-forward kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                      class="badge foward-color kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
                       " id="Count-forward">
                       {{CountForward}} Forward approval</a>
               </ng-container>
@@ -271,11 +271,11 @@
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>ProjectName</p></th>
                                                     <th></th>
-                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> ProjectType</span></th>
+                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Projecttype</span></th>
                                                     <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th>
                                                     <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
                                                     <th><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
-                                                    <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last Update </span> </th>
+                                                    <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
                                                     <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </th>
 
                                                     <th>
@@ -292,7 +292,8 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                            <tr *ngIf="(item1.Status=== _PortProjStatus||_PortProjStatus=='')"
+                                            class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -313,7 +314,7 @@
                                                     <td class="icond">
                                                         <div class="d-flex align-items-center">
                                                             <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
-                                                            placement="right" data-trigger="focus" title="Project Info!" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
+                                                            placement="right" data-trigger="focus" title="Project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                        <g>
@@ -337,7 +338,7 @@
                                                         <!-- <img src="assets/images/Info1.png" width="25px"> InfoContent2 -->
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard!" (click)="newDetails(item1.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard" (click)="newDetails(item1.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                          <g>
@@ -360,30 +361,65 @@
 
                                                          </svg>
                                                         </a>
-                                                        <span *ngIf="item1.Link_Status==1;else not_Linked">
-                                                            <a class="curser-pointer mr-2"
+                                                        <!-- <span *ngIf="item1.Link_Status==1;else not_Linked"> -->
+                                                            <!-- <a class="curser-pointer mr-2"
                                                                 (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name)"><img
                                                                     width="19px"
                                                                     src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                                    title="Linked"></a>
+                                                                    title="Linked"></a> -->
 
-                                                        </span>
-                                                        <ng-template #not_Linked>
+                                                        <!-- </span> -->
+                                                        <!-- <ng-template #not_Linked>
                                                             <a class="mr-2"><img width="19px" class="black-white"
                                                                     src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                                    title="Not Linked"></a>
-                                                        </ng-template>
-                                                        <div class="port-info-btn">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
-                                                                <defs></defs>
-                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                                    <rect x="0" y="0" width="24" height="24"></rect>
-                                                                    <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
-                                                                    <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
-                                                                </g>
+                                                                    title="Not linked"></a>
+                                                        </ng-template> -->
+
+                                                  <ng-container  *ngIf="!showDeletedPrjOnly">
+                                                        <a (click)="Openportfoliosidebar()"  class="btn-v-icon"
+                                                          title="View">
+                                                          <div class="port-info-btn">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                              viewBox="0 0 24 24" version="1.1">
+                                                              <defs></defs>
+                                                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24"></rect>
+                                                                <path
+                                                                  d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z"
+                                                                  fill="currentColor"></path>
+                                                                <path
+                                                                  d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z"
+                                                                  fill="currentColor"></path>
+                                                              </g>
                                                             </svg>
-                                                        </div>
-                                                        <span class="port-info-btn-no-acive">
+                                                          </div>
+                                                        </a></ng-container>
+
+
+
+
+                                                        <span *ngIf="item1.Link_Status==1;else not_Linked">
+                                                          <a class="curser-pointer mr-2"
+                                                              (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name)"><img
+                                                                  width="19px"
+                                                                  src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                  title="Linked"></a>
+
+                                                      </span>
+                                                      <ng-template #not_Linked>
+                                                          <a class="mr-2"><img width="19px" class="black-white"
+                                                                  src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                  title="Not linked"></a>
+                                                      </ng-template>
+
+
+
+
+
+
+
+
+                                                        <span class="port-info-btn-no-acive d-none">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                     <defs></defs>
                                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -525,7 +561,7 @@
                                                   </div>
                                                   <div *ngIf="item1.Status=='InProcess'">
                                                       <span
-                                                          class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
+                                                          class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-process':item1.status}}</span>
                                                       <br>
                                                       <!-- <span *ngIf="item1.Delaydays<0"
                                                           class="text-info delayDays">
@@ -546,7 +582,7 @@
                                                   </div>
                                                   <div *ngIf="item1.Status=='Under Approval'">
                                                       <span
-                                                          class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Approval' : item1.Status }}</span>
+                                                          class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New approval' : item1.Status }}</span>
                                                       <br>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Not Started'">
@@ -562,13 +598,13 @@
                                                   <div *ngIf="item1.Status=='Completion Under Approval'">
                                                       <!-- <h2>Mubeen</h2> -->
                                                       <span
-                                                          class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion Approval":item1.Status}}
+                                                          class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion approval":item1.Status}}
                                                       </span>
 
                                                   </div>
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                       <span
-                                                          class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation Approval":item1.Status}}
+                                                          class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
                                                       </span>
 
                                                   </div>
@@ -580,7 +616,7 @@
                                                   </div>
                                                   <div *ngIf="item1.Status=='Forward Under Approval'">
                                                       <span
-                                                          class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward Approval":item1.Status}}
+                                                          class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='New Project'">
@@ -595,19 +631,19 @@
                                                   <div
                                                       *ngIf="item1.Status=='Deadline Extend Under Approval'">
                                                       <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
-                                                         >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline Extend Approval" :item1.Status}}
+                                                         >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline extend approval" :item1.Status}}
 
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Enactive Under Approval'">
                                                       <span class="font-weight-400 Enactive_Under_Approval_color"
-                                                     >{{item1.Status=="Enactive Under Approval"? "Enactive Approval":item1.Status}}
+                                                     >{{item1.Status=="Enactive Under Approval"? "Enactive approval":item1.Status}}
                                                       </span>
                                                   </div>
                                                   <div
                                                       *ngIf="item1.Status=='Project Hold Under Approval'">
                                                       <span class="font-weight-400"
-                                                          style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold Approval" : item1.Status}}
+                                                          style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold approval" : item1.Status}}
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='ToDo Achieved'">
@@ -682,7 +718,7 @@
                                             </div>
                                             <div *ngIf="item1.Status=='InProcess'">
                                                 <span
-                                                    class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-Process':item1.status}}</span>
+                                                    class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-process':item1.status}}</span>
 
                                                 <!-- <span *ngIf="item1.Delaydays<0"
                                                     class="text-info delayDays">
@@ -703,7 +739,7 @@
                                             </div>
                                             <div *ngIf="item1.Status=='Under Approval'">
                                                 <span
-                                                    class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New Approval' : item1.Status }}</span>
+                                                    class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New approval' : item1.Status }}</span>
 
                                             </div>
                                             <div *ngIf="item1.Status=='Not Started'">
@@ -719,13 +755,13 @@
                                             <div *ngIf="item1.Status=='Completion Under Approval'">
                                                 <!-- <h2>Mubeen</h2> -->
                                                 <span
-                                                    class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion Approval":item1.Status}}
+                                                    class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion approval":item1.Status}}
                                                 </span>
 
                                             </div>
                                             <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                 <span
-                                                    class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation Approval":item1.Status}}
+                                                    class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
                                                 </span>
 
                                             </div>
@@ -737,7 +773,7 @@
                                             </div>
                                             <div *ngIf="item1.Status=='Forward Under Approval'">
                                                 <span
-                                                    class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward Approval":item1.Status}}
+                                                    class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
                                                 </span>
                                             </div>
                                             <div *ngIf="item1.Status=='New Project'">
@@ -752,19 +788,19 @@
                                             <div
                                                 *ngIf="item1.Status=='Deadline Extend Under Approval'">
                                                 <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
-                                                   >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline Extend Approval" :item1.Status}}
+                                                   >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline extend approval" :item1.Status}}
 
                                                 </span>
                                             </div>
                                             <div *ngIf="item1.Status=='Enactive Under Approval'">
                                                 <span class="font-weight-400 Enactive_Under_Approval_color"
-                                               >{{item1.Status=="Enactive Under Approval"? "Enactive Approval":item1.Status}}
+                                               >{{item1.Status=="Enactive Under Approval"? "Enactive approval":item1.Status}}
                                                 </span>
                                             </div>
                                             <div
                                                 *ngIf="item1.Status=='Project Hold Under Approval'">
                                                 <span class="font-weight-400"
-                                                    style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold Approval" : item1.Status}}
+                                                    style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold approval" : item1.Status}}
                                                 </span>
                                             </div>
                                             <div *ngIf="item1.Status=='ToDo Achieved'">
@@ -835,10 +871,10 @@
                                      </ng-container>
 
                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant" style="cursor: pointer;" *ngIf="item1.availableports && item1.availableports.length > 0">
-                                         <div *ngFor="let availablePort of item1.availableports"
+                                         <div *ngFor="let availablePort of item1.availableports; let i=index"
                                               (click)="OnCardClick(availablePort.Portfolio_ID, availablePort.Portfolio_Name, item1.CreatedName, item1.Created_DT)"
                                               class="dropdown-item">
-                                             {{ availablePort.Portfolio_Name }}
+                                             {{i+1}}. {{ availablePort.Portfolio_Name }}
                                          </div>
                                      </div>
 
@@ -947,7 +983,7 @@
                                                 <i class="la la-gear"></i>
                                             </span>
                                             <h3 class="kt-portlet__head-title">
-                                                Projects Vs Team Member(s)
+                                                Projects Vs Team member(s)
                                             </h3>
                                         </div>
                                         <div class="kt-portlet__head-toolbar">
@@ -984,7 +1020,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
-                        Share Portfolio</h5>
+                        Share portfolio</h5>
                     <button type="button" class="close" data-dismiss="modal" #closebutton aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -1002,8 +1038,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div>
-                        <h5 class="modal-title" id="exampleModalLabel"><strong>Shared Details</strong></h5>
-                        <h6 class="text-dark">Portfolio Owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
+                        <h5 class="modal-title" id="exampleModalLabel"><strong>Shared details</strong></h5>
+                        <h6 class="text-dark">Portfolio owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
                         </h6>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1013,9 +1049,9 @@
                 <div class="modal-body min-scroll">
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>Shared To</th>
-                            <th>Shared By</th>
-                            <th>Preference Type</th>
+                            <th>Shared to</th>
+                            <th>Shared by</th>
+                            <th>Preference type</th>
                             <th>Delete</th>
                         </tr>
                         <tr *ngFor="let item of _ShareDetailsList">
@@ -1061,9 +1097,12 @@
     <!-- dms memos sidebar-->
     <div id="MemosSideBar" class="sideInfobar animate-right">
         <div class="kt-portlet__head p-3 bg-primary">
-            <div class="kt-portlet__head-label">
-                <a href="javascript:void(0)" class="closebtn pull-right text-white"
-                    (click)="_CloseMemosidebar()">&times;</a>
+            <div class="kt-portlet__head-label"  style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        ">
+
                 <div class="title-sidebar mb-0 text-white">
                     <h5 class="curser-pointer">
                         <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked
@@ -1072,6 +1111,8 @@
                     <span class="text-small text-white">{{_displayProjName}}</span>
 
                 </div>
+                <a href="javascript:void(0)" class="close-btn text-white"
+                (click)="_CloseMemosidebar()"><i class="fas fa-times"></i></a>
                 <!-- <p class="text-small text-white">{{_displayProjName}}</p> -->
             </div>
         </div>
@@ -1103,7 +1144,7 @@
 <div id="shareBar" class="sideInfobar offcanvas animate-right">
     <div class="px-4 pt-4 pb-1">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"> Share Portfolio </h4>
+            <h4 class="font-weight-bold m-0"> Share portfolio </h4>
             <a href="javascript:void(0)" (click)="_CloseshareBar()" class="closebtn btn btn-xs btn-icon btn-hover-primary mt-2">
                 <i class="fa fa-times"></i>
             </a>
@@ -1114,7 +1155,7 @@
             <div class="card-body multi">
                 <form>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Select Company</label>
+                        <label for="exampleInputEmail1">Select company</label>
                         <div>
                             <ng-multiselect-dropdown [placeholder]="' Company '" class="mutlidropdown-set"
                                 name="CompanyDropdown" [(ngModel)]="ngCompanyDropdown"
@@ -1125,7 +1166,7 @@
                         <p class="text-danger"><b>{{this._ErrorMessage_comp}}</b></p>
                     </div>
                     <div class="form-group">
-                        <label>Select User</label>
+                        <label>Select user</label>
                         <div>
                             <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
                                 name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
@@ -1151,14 +1192,14 @@
                                 <label class="form-check-label">
                                     <input type="radio" class="form-check-input" [(ngModel)]="preferences"
                                         (change)="Radio_View_fullaccess($event.target.value)" value="View Only"
-                                        name="optradio">View Only
+                                        name="optradio">View only
                                 </label>
                             </div>
                             <div class="form-check-inline">
                                 <label class="form-check-label">
                                     <input type="radio" class="form-check-input" [(ngModel)]="preferences"
                                         (change)="Radio_View_fullaccess($event.target.value)" value="Full Access"
-                                        name="optradio">Full Access
+                                        name="optradio">Full access
                                 </label>
                             </div>
                         </div>
@@ -1213,3 +1254,41 @@
 
     </div>
 </div> -->
+<!-- portfolio sidebar-->
+    <div id="portfoliosideBar" class="sideInfobar animate-right">
+      <div class="kt-portlet__head p-3 bg-primary">
+          <div class="kt-portlet__head-label" style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      ">
+
+              <div class="title-sidebar mb-0 text-white">
+                  <h5 class="curser-pointer">
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1"><defs ></defs><g  stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect  x="0" y="0" width="24" height="24"></rect><path  d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path  d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
+                     Linked portfolios
+                  </h5>
+
+              </div>
+              <a href="javascript:void(0)" class="close-btn text-white" (click)="Closeportfoliosidebar()"><i class="fas fa-times"></i></a>
+          </div>
+      </div>
+      <div class="kt-portlet__body p-3">
+          <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+              <div class="card-body">
+                  <div class="kt-widget1 kt-widget1--fit">
+                      <div class="kt-widget1__item"  *ngFor="let item of Availableport; let i = index">
+                          <div class="kt-widget1__info kt-align-left">
+                              <h5 (click)="openUrl(item.Url)" class="curser-pointer">
+                                  <div  (click)="OnCardClick(item.Portfolio_ID, item.Portfolio_Name, item.CreatedName, item.Created_DT)">
+                                    {{i+1}}. {{item.Portfolio_Name}}
+                                  </div>
+                              </h5>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- portfolio sidebar -->

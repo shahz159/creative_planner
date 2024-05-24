@@ -186,6 +186,7 @@ export class PortfolioProjectsComponent implements OnInit {
   lastProject:any;
   Deletedproject:any
   availablereport:any
+  Availableport:any
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -213,16 +214,17 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
-        this.createdBy= this._PortfolioDetailsById[0]['Created_By'];
+        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-        this.lastProject=this._ProjectsListBy_Pid.length;
+        this.lastProject = this._ProjectsListBy_Pid.length;
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
-        this.Deletedproject=JSON.parse(data[0]['PortfolioDeletedProjects']);
+        this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
         console.log(" this.Deletedproject", this.Deletedproject)
-        //  this.availablereport=this.Deletedproject.availablereport
-        // console.log(this.availablereport,'eeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+        this.Availableport = this._ProjectsListBy_Pid[0].availableports
+        console.log(this.Availableport,"availableportsavailableportsavailableports")
+
         this.CountDeleted=this.Deletedproject.length
         // this.LoadingBar_state.stop();
         this.TotalProjects = this._ProjectsListBy_Pid.length;
@@ -1480,6 +1482,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this._ProjectsListBy_Pid.forEach(item => item.active = false);
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    document.getElementById("portfoliosideBar").classList.remove("active");
     // $('.project-list_AC').removeClass('active');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -1695,7 +1698,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
        'new-pro':'active-new-project-head',
        'Compl-Apprv':'active-Completion',
        'Cancel-app':'active-Cancel-app',
-       'Count-forward':'active-Count-forward',
+       'Count-forward':'active-foward-color',
        'Count-deadline':'active-Count-deadline'
 
     };
@@ -1754,6 +1757,16 @@ triger(){
 
     });
 
+  }
+  Openportfoliosidebar(){
+    document.getElementById("portfoliosideBar").classList.add("active");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  }
+  Closeportfoliosidebar(){
+    document.getElementById("portfoliosideBar").classList.remove("active");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
 }
 /// <!-- <ng-select [placeholder]="' Company '" [(ngModel)]="ngCompanyDropdown" (click)="OnCompanySelect()">
