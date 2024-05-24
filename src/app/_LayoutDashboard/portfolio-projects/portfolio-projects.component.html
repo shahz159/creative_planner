@@ -55,6 +55,336 @@
                                         (click)="ProjectsGraphsClick()">
                                         {{Project_Graph}}
                                     </a>
+                                    <a class="kt-todo__icon" title="Graph" >
+                                        <i class="fas fa-chart-pie"></i>
+                                    </a>
+                                    <a class="kt-todo__icon" title="Shared" >
+                                        <i class="fas fa-share-alt"></i>
+                                    </a>
+                                    <a class="kt-todo__icon" title="Add Project" >
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                    <a class="kt-todo__icon" title="Shared Details" >
+                                        <i class="fas fa-file-alt"></i>
+                                    </a>
+                                    
+                                    <div class="dropdown">
+                                        <a class="kt-todo__icon" data-toggle="dropdown"  title="Filter">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
+                                            
+                                            <ul class="drop-ul">
+                                                <li class="dropdown-header">Filter by</li>
+                                                <li>
+                                                    <button class="btn btn-filtr active">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">171</span>
+                                                            <div class="fil-lbl">Total Projects</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">31</span>
+                                                            <div class="fil-lbl">In Process</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li> 
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">11</span>
+                                                            <div class="fil-lbl">Delay</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">30</span>
+                                                            <div class="fil-lbl">Draft</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">72</span>
+                                                            <div class="fil-lbl">Delay</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">51</span>
+                                                            <div class="fil-lbl">Completed</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">1</span>
+                                                            <div class="fil-lbl">New project</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">17</span>
+                                                            <div class="fil-lbl">Completion Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">11</span>
+                                                            <div class="fil-lbl">Cancelation Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">44</span>
+                                                            <div class="fil-lbl">Forward Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">9</span>
+                                                            <div class="fil-lbl">Deadline Extended Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">15</span>
+                                                            <div class="fil-lbl">New Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">1</span>
+                                                            <div class="fil-lbl">Project Hold</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">11</span>
+                                                            <div class="fil-lbl">Rejected</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">11</span>
+                                                            <div class="fil-lbl">ToDo Completed</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">22</span>
+                                                            <div class="fil-lbl">ToDo Achived</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count">1</span>
+                                                            <div class="fil-lbl">Deleted Projects</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                         </div>
                         <div class="kt-todo__details dropdown">
                                     <a class="btn btn-label-primary-graph btn-upper btn-sm btn-bold" role="button" type="button" id="morebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -893,7 +893,7 @@
                                                     </div>                                
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12 actualtime-div">
                                                 <div class="d-flex align-items-center justify-content-between pt-2">
                                                     <div class="kt-metric-duration-time">
                                                         <div class="kt-metric-time start">
@@ -946,65 +946,31 @@
                                                         <div class="muted-title">Duration</div>
                                                     </div>
                                                 </div>
-                                                <div class="kt-metric-day mt-2">
-                                                        <div class="dark-title">Actual Time
+                                                <div class="dropdown-menu">
+                                                    <h6 class="actual-title"><span class="actual-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
+                                                        </svg>
+                                                    </span>Actual Time</h6>
+                                                    <ul class="actualtime">
+                                                       <li class="actualtime-item">
+                                                           <div class="actualtime-item-title start">Start Time</div>
+                                                           <div class="actualtime-item-stardot"></div>
+                                                           <div class="actualtime-item-time">05:30 PM</div>
+                                                       </li>
+                                                       <li class="actualtime-item">
+                                                        <div class="actualtime-item-title end">End Time</div>
+                                                        <div class="actualtime-item-enddot"></div>
+                                                        <div class="actualtime-item-time">06:30 PM</div>
+                                                    </li>
+                                                    <div class="duration">
+                                                        <div style="font-size: 14px;font-weight: 500;color: #000;">0:15 min</div>
+                                                        <!-- <div style="color: #8b8b8b;">Duration</div> -->
                                                     </div>
-                                                </div>
-                                                <div class="d-flex align-items-center justify-content-between pt-2">
-                                                    <div class="kt-metric-duration-time">
-                                                        <div class="kt-metric-time start">
-                                                            <div class="dark-title">{{item.St_Time}}</div>
-                                                            <div class="muted-title">Start Time</div>
-                                                        </div>
-                                                        <div class="kt-metric-timeline">
-                                                            <div class="z-index-1 d-flex">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="17"
-                                                                    height="18" viewBox="0 0 17 18" fill="none">
-                                                                    <g id="Group 1000004424">
-                                                                        <circle id="Ellipse 542" cx="8.4276"
-                                                                            cy="9.32115" r="7.89" fill="white"
-                                                                            stroke="#6772FE" />
-                                                                        <circle id="Ellipse 548" cx="8.4274"
-                                                                            cy="9.32169" r="5.02432" fill="#6772FE" />
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                            <div class="text-center">
-                                                                <div class="timeline-up">{{hours}} hr {{minutes}} min </div>
-                                                                <div class="timeline-down">Average attendances time
-                                                                </div>
-                                                            </div>
-                                                            <div class="z-index-1 d-flex">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="18"
-                                                                    height="18" viewBox="0 0 18 18" fill="none">
-                                                                    <g id="Group 1000004425">
-                                                                        <circle id="Ellipse 542" cx="8.8607"
-                                                                            cy="9.32115" r="7.89" fill="white"
-                                                                            stroke="#646c9a" />
-                                                                        <circle id="Ellipse 548" cx="8.8605"
-                                                                            cy="9.32169" r="5.02432" fill="#646c9a" />
-                                                                            <!-- #FB6C59 -->
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                        <div class="kt-metric-time end">
-                                                            <div class="dark-title">{{item.Ed_Time}}</div>
-                                                            <div class="muted-title">End Time</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kt-metric-time">
-                                                        <div class="dark-title" >{{hours}} hr {{minutes}} min</div>
-                                                        <!-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> -->
-                                                        <diV class="kt-metric-duration" *ngIf="meetingInProgress">
-                                                            <span class="duration">
-                                                                {{formatTime(elapsedTime) }}
-                                                            </span>
-                                                        </diV>
-
-                                                        <div class="muted-title">Duration</div>
-                                                    </div>
-                                                </div>
+                                                    </ul>
+                                                   </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
