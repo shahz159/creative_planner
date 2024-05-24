@@ -4500,3 +4500,6 @@ li.modal-project-list-item {
     max-height: 80px;
     overflow: hidden;
 }
+.Custom-button{
+    padding: 0.4em 1.5em;
+}

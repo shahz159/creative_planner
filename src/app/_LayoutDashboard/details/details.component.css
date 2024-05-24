@@ -5526,7 +5526,7 @@ ul.deadline-timeline {
   padding-left: 2rem;
   padding-right: 10px;
   min-height: 93px;
-  max-height: 400px;
+  max-height: 300px;
   overflow: auto;
 }
 ul.deadline-timeline::-webkit-scrollbar {

@@ -861,6 +861,9 @@ this.prjPIECHART.render();
   }
 
   requestaccessList:any=[];
+  deadlineExtendlist:any;
+  totaldeadlineExtend:any
+
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
@@ -889,6 +892,31 @@ this.prjPIECHART.render();
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
+      var deadlineExtend=JSON.parse(this.projectInfo['deadlineExtendlist']);
+      this.deadlineExtendlist=Object.values(deadlineExtend);
+      this.totaldeadlineExtend=this.deadlineExtendlist.length;
+
+
+
+
+
+      let count:number=0;
+      this.deadlineExtendlist.map((actv:any)=>{
+    
+        if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+           {   // actv.count : 2,3,4....
+            debugger
+               let updatecount=(actv.count-count);
+               let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+               actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Time)`);
+               count+=1;
+           }
+          return actv;
+      });
+
+
+
+      console.log(this.deadlineExtendlist,'deadlineExtendlist')
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -906,7 +934,7 @@ this.prjPIECHART.render();
       });
 
      if(this.filteremployee)
-     {  debugger
+     {  
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
@@ -1060,7 +1088,7 @@ this.prjPIECHART.render();
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=`Project Deadline Change (${updatecount+x} Change)`;
+                   actv.Value=`Project Deadline Change (${updatecount+x} Time)`;
                    count+=1;
                }
               return actv;
@@ -1095,17 +1123,17 @@ this.prjPIECHART.render();
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
-        debugger
+       
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
           let count:number=0;
           this.ActionActivity_List.map((actv:any)=>{
-            debugger
+          
             if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Change)`);
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Time)`);
                    count+=1;
                }
               return actv;
@@ -1185,7 +1213,7 @@ this.prjPIECHART.render();
 
 
   sendRequest(): void {
-    debugger
+  
     if (!this.Usercomment){
       this.formFieldsRequired=true;
       return
@@ -6294,7 +6322,7 @@ holdcontinue(Pcode:any){
   isEHsectionVisible:boolean=false;
   minPrjDeadline:Date;
   onHoldDateChanged(){
-    debugger
+   
     if(this.currentActionView===undefined){     // only for project.
       const d1=new Date(this.Holddate);
       const d2=new Date(this.projectInfo.EndDate);
@@ -6828,7 +6856,7 @@ closePanel(){
 
 
   onProject_updateSupport() {
-    debugger
+  
 
     const commaSeparatedString = this.selectedEmpIds.join(', ');
 
@@ -7037,7 +7065,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -8053,7 +8081,7 @@ onMultipleAprvSel(e,aprvls){
 
 
 rejectAllmultipleAprvs(){
-  debugger
+ 
   if (this.selectedType == '3') {
     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
       this.noRejectType = true;

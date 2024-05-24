@@ -885,7 +885,7 @@
                                                         <!-- <div class="dark-title">21 Thu, January 2024</div> -->
                                                         <!-- <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}} -->
                                                
-                                                            <div class="dark-title">{{item.Schedule_date | date:'d EEE,MMMM YYYY'}}
+                                                            <div class="dark-title">{{item.Schedule_date | date:'EEEE,MMMM d, YYYY'}}
                                                           
                                                         </div>
                                                        
@@ -946,7 +946,19 @@
                                                         <div class="muted-title">Duration</div>
                                                     </div>
                                                 </div>
-                                                <div class="kt-metric-day mt-2">
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <!--            <div class="kt-metric-day mt-2">
                                                         <div class="dark-title">Actual Time
                                                     </div>
                                                 </div>
@@ -983,7 +995,7 @@
                                                                             stroke="#646c9a" />
                                                                         <circle id="Ellipse 548" cx="8.8605"
                                                                             cy="9.32169" r="5.02432" fill="#646c9a" />
-                                                                            <!-- #FB6C59 -->
+                                                                          
                                                                     </g>
                                                                 </svg>
                                                             </div>
@@ -995,7 +1007,7 @@
                                                     </div>
                                                     <div class="kt-metric-time">
                                                         <div class="dark-title" >{{hours}} hr {{minutes}} min</div>
-                                                        <!-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> -->
+                                                        <-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> ->
                                                         <diV class="kt-metric-duration" *ngIf="meetingInProgress">
                                                             <span class="duration">
                                                                 {{formatTime(elapsedTime) }}
@@ -1004,7 +1016,9 @@
 
                                                         <div class="muted-title">Duration</div>
                                                     </div>
-                                                </div>
+                                                </div> -->
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -1381,7 +1395,7 @@
                                     <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
                                         <ng-container *ngIf="_linkedMemos>0">
                                         <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                            height="29" title="Link DMS">
+                                            height="29" title="View or link SM">
 
                                         </ng-container >
                                         <ng-container *ngIf="_linkedMemos==0">
@@ -1395,7 +1409,7 @@
 
                                     <!-- <div class="br-line"></div> -->
 
-                                    <a class="kt-inbox__icon" (click)="AddPortfolio()" title="Add Portfolio">
+                                    <a class="kt-inbox__icon" (click)="AddPortfolio()" title="View or link Portfolio">
                                         <svg xmlns="http://www.w3.org/2000/svg"   width="16"
                                         height="16" class="iconify iconify--mdi" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                             <defs></defs>
@@ -1414,7 +1428,7 @@
 
 
 
-                                    <a class="kt-inbox__icon" title="Projects" (click)="AddProjects()">
+                                    <a class="kt-inbox__icon" title="View or link Projects" (click)="AddProjects()">
                                         <i _ngcontent-pre-c394="" class="fab fa-wpforms "
                                             style="font-size: 1.4em;"></i>
                                     </a>
@@ -1447,9 +1461,7 @@
                                     </a> -->
 
                                     <!-- <div class="br-line"></div> -->
-                                    <a (click)="Attachment_views()" class="kt-inbox__icon " title="Attachments">
-
-
+                                    <a (click)="Attachment_views()" class="kt-inbox__icon " title="View or link Attachments">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
                                             height="16" fill="currentColor" class="iconify iconify--mdi">
                                             <path
@@ -1558,7 +1570,7 @@
                                         <span class="kt-meeting-status-title">Resume</span>
                                     </div>  
                                   
-                                    <div class="kt-meeting-status started" *ngIf="!meetingInProgress && !meetingStopped" (click)="startMeeting()">
+                                    <div class="kt-meeting-status started d-none" *ngIf="!meetingInProgress && !meetingStopped" (click)="startMeeting()">
                                         <span class="kt-meeting-status-icon" >
                                             <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                 version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -1572,7 +1584,8 @@
                                         <span class="kt-meeting-status-title">Start</span>
                                     </div> 
 
-                                    <div class="kt-project-leave " *ngIf="meetingInProgress">                                                                  <ng-container >
+                                    <!-- <div class="kt-project-leave " *ngIf="meetingInProgress"> -->
+                                        <div class="kt-project-leave " >                                                                      <ng-container >
                                             <span class="title" data-toggle="modal" data-target="#exampleModal" (click)="meeting_details()" >End Meeting</span>
                                            </ng-container>
                                       
@@ -2440,7 +2453,9 @@
                                 </ng-container>
                              </ng-container>
                                 
-                                 <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null;">
+                                 <!-- <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&(Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null)"> -->
+                                    <div class="action-section mt-3" *ngIf="Meetingstatuscom!='Completed'&&(Agendas_List[currentAgendaView].Status==0 || Agendas_List[currentAgendaView].Status==null)">
+                                    
                                     <div class="kt-meeting-title mt-0 mb-2">
                                         <div class="kt-meeting-title-icon">
                                             <svg _ngcontent-wfn-c395="" xmlns="http://www.w3.org/2000/svg" width="19" height="18" fill="white" viewBox="0 0 1024 1024" version="1.1"><path _ngcontent-wfn-c395="" d="M419.037 287.953h413.124c17.673 0 32-14.327 32-32s-14.327-32-32-32H419.037c-17.673 0-32 14.327-32 32s14.327 32 32 32z m-0.009 255.217h411.608c17.673 0 32-14.327 32-32s-14.327-32-32-32H419.028c-17.673 0-32 14.327-32 32s14.327 32 32 32z m413.133 192.632H419.037c-17.673 0-32 14.327-32 32s14.327 32 32 32h413.124c17.673 0 32-14.327 32-32s-14.327-32-32-32zM192.037 255.953a64 64 0 1 0 128 0 64 64 0 1 0-128 0zM192.037 510.787a64 64 0 1 0 128 0 64 64 0 1 0-128 0zM192.037 767.621a64 64 0 1 0 128 0 64 64 0 1 0-128 0z"></path></svg>
@@ -3497,7 +3512,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container >
+            <ng-container *ngIf="Meetingstatuscom==Completed" >
             <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                 <div class="matchip-drp-dwn">
                     <mat-form-field class="drp-dwn-field ">
@@ -3512,9 +3527,9 @@
                             </mat-chip>
                         </mat-chip-list>
                         <div class="d-flex">
-                            <input #fruitInputs class="flex-1" [matChipInputFor]="selectedTeamMembers"
+                            <input #dms_Inputfield class="flex-1" [matChipInputFor]="selectedTeamMembers"
                                 [matAutocomplete]="TeamMemberDrpDwns" (input)="filterEmployeesDMs($event.target.value)"
-                                #SupportTF />
+                                 />
                             <button *ngIf="isDMSDrpDwnOpen" class="bg-transparent border-0 "><mat-icon class="close-icon save-mat-selection  "
                                     (click)=" this.isDMSDrpDwnOpen=false;  
                                      closeAutocompleteDrpDwn_DMS('supportDrpDwnDMS');">done</mat-icon></button>
@@ -3526,7 +3541,7 @@
                             (optionSelected)="selectedChip_DMS($event); SupportTF.value=''; "
                             (opened)="isDMSDrpDwnOpen=true" (closed)="isDMSDrpDwnOpen=false;">
                             
-                            <mat-option class="mat-font" *ngFor="let item of Memos_List " [value]="item.MailId">
+                            <mat-option class="mat-font" *ngFor="let item of (Memos_List|filter:dms_Inputfield.value).slice(0,500)" [value]="item.MailId">
                                 <mat-checkbox color="primary" [checked]="selectedEmploy_DMS.indexOf(item)!==-1"
                                     (change)="selectedChip_DMS($event)"></mat-checkbox>
                                 {{item.Subject}}
@@ -3562,7 +3577,7 @@
                        
                         <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                         <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
-                        <ng-container >
+                        <ng-container *ngIf="Meetingstatuscom==Completed">
                         <ng-container *ngIf="Isadmin==true">
                         <ng-container *ngFor="let item of EventScheduledjson">         
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -3600,6 +3615,15 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <svg xmlns="http://www.w3.org/2000/svg"   width="16"
+                height="16" class="iconify iconify--mdi mr-2" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                    <defs></defs>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                        <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                    </g>
+                </svg>
                 <h4 class="m-0">
                     Link Portfolio
                 </h4>
@@ -3627,7 +3651,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  > 
+            <ng-container  *ngIf="Meetingstatuscom==Completed"> 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -3716,7 +3740,7 @@
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> --> 
-                                    <ng-container  >  
+                                    <ng-container *ngIf="Meetingstatuscom==Completed" >  
                                      <ng-container *ngIf="Isadmin==true">
                                      <ng-container *ngFor="let item of EventScheduledjson">         
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -3770,6 +3794,12 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16"
+                xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi mr-2">
+                <path
+                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
+                </path>
+            </svg>
                 <h4 class="m-0">Meeting Attendees
                     <span class="head-muted">{{User_Scheduledjson.length}}
                     </span>
@@ -4246,6 +4276,8 @@
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
                 <h4 class="mb-0">
+                    <i _ngcontent-pre-c394="" class="fab fa-wpforms mr-2 "
+                    style="font-size: 1.4em;"></i>
                         <span class="kt-chat__title"> Projects </span>
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -4272,7 +4304,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  > 
+            <ng-container *ngIf="Meetingstatuscom==Completed" > 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
 
 
@@ -4361,7 +4393,7 @@
                                     <a (click)="DeleteProject(item.stringval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> -->
-                                    <ng-container > 
+                                    <ng-container *ngIf="Meetingstatuscom==Completed"> 
                                     <ng-container *ngIf="Isadmin==true">
                                     <ng-container *ngFor="let data of EventScheduledjson">         
                                         <ng-container *ngIf="data.Recurrence==='Do not repeat'">
@@ -4410,6 +4442,20 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                 
+                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                    viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16"
+                    width="16" class="iconify iconify--mdi mr-2">
+                    <path
+                        d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z">
+                    </path>
+                    <rect x="16.37" y="37.13" width="44.1" height="8"></rect>
+                    <rect x="16.37" y="53.09" width="30.8" height="8"></rect>
+                    <rect x="16.37" y="22.13" width="44.1" height="8"></rect>
+                    <path
+                        d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z">
+                    </path>
+                </svg>                                
                 <h4 class="mb-0">Previous Meeting Notes
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -4476,7 +4522,7 @@
                     <h2 class="accordion-header" id="headingOne">
                         <a class="accordion-button" type="button" data-toggle="collapse"
                                         
-                            (click)="toggleAccordion(pause)" [attr.aria-expandeds]="meeting.expandeds ? 'true' : 'false'"
+                            (click)="toggleAccordion(pause)" [attr.aria-expanded]="meeting.expandeds ? 'false' : 'true'"
                                         [attr.data-target]="'#attendes_notes' + meeting.Schedule_date" 
                                         [attr.data-target]="'#attendes_notes' + meeting.Schedule_date"                           
                             >
@@ -4551,6 +4597,11 @@
     <div class="kt-portlet">
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" fill="currentColor" height="16"
+                width="16" class="iconify iconify--mdi" style="
+                width: 30px;
+                height: 30px;">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"></path><path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" ></path><path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" ></path><path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" ></path><path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" ></path><path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" ></path></g></svg>
                 <h4 class="mb-0">Assign Project
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -4828,16 +4879,21 @@
         <div class="kt-portlet__head">
             <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
                 <h4 id="attach_heading" class="m-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
+                 height="16" fill="currentColor" class="iconify iconify--mdi mr-1">
+                   <path
+                   d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z">
+                    </path>
+                   </svg>
                     <span class="kt-chat__title"> List of Attachments </span> <span
                         class="kt-at-count">{{_TotalAttachment}}</span>
                 </h4>
-
                 <h4 id="upload_heading" class="m-0" style="display: none;">
                     <span class="kt-chat__title"> Quick Upload </span>
                 </h4>
 
                 <div class="d-flex align-items-center">
-                    <ng-container> 
+                    <ng-container *ngIf="Meetingstatuscom==Completed"> 
                     <button id="upload_btn" class="btn-silvr" (click)="upload_btn()">
                         <!-- *ngIf="Isadmin==true"   -->
                         <span>
@@ -6595,7 +6651,7 @@
          <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
  
                      <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees(item.Task_Name,item.Assign_Id)">Add</button>
-                     <button  type="button" class="btn btn-secondary" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()" >Custom</button>
+                     <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()">Custom</button>
                      <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
  
          </div>

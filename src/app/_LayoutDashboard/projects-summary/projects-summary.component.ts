@@ -455,7 +455,9 @@ $(document).ready(function(){
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
-         console.log("Summary Data---->", this._ProjectDataList);
+         console.log("Summary Data---->",this._ProjectDataList);
+
+
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
         this.cancelcount=this.ActualDataList[0]['cancelcount'];
@@ -1068,6 +1070,7 @@ $(document).ready(function(){
   _DBMemosIDList: any;
 
   _OpenMemosInfo(_projectCode, _projectName) {
+    if(_projectCode !=undefined && _projectName != undefined){
     this._dbMemoIdList = [];
     this._displayProjName = _projectName;
     this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
@@ -1099,11 +1102,51 @@ $(document).ready(function(){
       });
     //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
+    document.getElementById("prtfloSideBar").style.width = "0";
+  }else{
+    document.getElementById("MemosSideBar").style.width = "0";
+    document.getElementById("prtfloSideBar").style.width = "0";
+    this.notifyService.showInfo("",'No dms link in this project')
+  }
   }
 
   _CloseMemosidebar() {
     document.getElementById("MemosSideBar").style.width = "0";
+    document.getElementById("prtfloSideBar").style.width = "0";
   }
+
+
+  portfolio_List:any;
+  _displayprtflioName:any;
+
+  _OpenfortfolioInfo(index:number,Project_Name) {
+   if(index!=undefined &&Project_Name!=undefined){
+    this._displayprtflioName=Project_Name
+    this.portfolio_List=JSON.parse(this._ProjectDataList[index]['availableports']);
+   
+     //Displaying Right Side Bar...
+     document.getElementById("prtfloSideBar").style.width = "350px";
+     document.getElementById("MemosSideBar").style.width = "0";
+   }else{
+        document.getElementById("prtfloSideBar").style.width = "0";
+        document.getElementById("MemosSideBar").style.width = "0";
+      this.notifyService.showInfo("",'No portfolio link in this project')
+   }
+  
+  }
+
+
+  OnCardClick(P_id: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
+
+
+
 
   Mode: string;
   // LoadingBar = this.loadingBar.useRef('http');

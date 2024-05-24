@@ -1589,8 +1589,10 @@ updateAgenda1(index:number){
 
 AgendasName: string;
 AgendaListRedirect:any = 1
+isFirstAgendaIdMatch: boolean; 
 
 deleteAgenda(AgendaId: number) {
+  this.isFirstAgendaIdMatch = this.Agendas_List.length > 0 && this.Agendas_List[0].AgendaId === AgendaId;
 
   const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
   if (AgendasNames) {
@@ -1622,16 +1624,23 @@ deleteAgenda(AgendaId: number) {
   this._calenderDto.json = mtgAgendas;
    this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = 3;
- debugger
-    if (result === true && this.currentAgendaView>0) {
+
+  var count =this.Agendas_List.length
+    if (result === true && count>1 ) {
       this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
        this.meeting_details()
-       this.notifyService.showSuccess("Deleted successfully ", '');
-        this.currentAgendaView=this.currentAgendaView-1
+       this.notifyService.showSuccess("Deleted successfully ", '');  
+       if(this.isFirstAgendaIdMatch){
+        this.currentAgendaView=0
+       }else{
+         this.currentAgendaView= this.currentAgendaView-1
+       }
       });
-    }else if (this.currentAgendaView==0){
+    }else if (count==1){   
+      
       this.notifyService.showWarning("At least one Agenda is mandatory in the meeting ", '');
-    }else {
+    }
+    else {
       this.notifyService.showError("Action Cancelled ", '');
     } 
   });
@@ -1999,14 +2008,9 @@ GetcompletedMeeting_data() {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
-      console.log(data,'CompletedMeeting_notes')
+     
 
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-
-    
-
-
-
     
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
@@ -2023,7 +2027,7 @@ GetcompletedMeeting_data() {
     } else{
       this.interval = setInterval(() => {
         this.GetAttendeesnotes();
-      }, 4000);
+      }, 3000);
     }
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
@@ -2339,6 +2343,7 @@ AllAttendees_notes:any=[]
 Employeeslist:any;
 
 GetAttendeesnotes(){
+  
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
   this._calenderDto.Emp_No=this.Current_user_ID
