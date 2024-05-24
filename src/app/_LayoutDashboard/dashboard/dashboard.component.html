@@ -546,10 +546,10 @@
                 <div class="result-card kt-portlet__body_scroll">
                     <div class="list-1">
 
-                        <div _ngcontent-gjg-c397="" class="position-relative m-1 w-95">
-                            <div _ngcontent-gjg-c397="" class="prjact-search-field">
-                                <svg _ngcontent-gjg-c397="" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-gjg-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-gjg-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-gjg-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-gjg-c397="" fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
-                                <input _ngcontent-gjg-c397=""   [(ngModel)]="SearchOfDraftItem" type="search" autocomplete="off" name="search" placeholder="Search..." ng-reflect-name="search" class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched border-0">
+                        <div class="position-relative m-1 w-95">
+                            <div class="prjact-search-field">
+                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
+                                <input [(ngModel)]="SearchOfDraftItem" type="search" autocomplete="off" name="search" placeholder="Search..." ng-reflect-name="search" class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched border-0">
                             </div>
                         </div>
                         <ng-container *ngIf="draftdata_meet">
@@ -1170,7 +1170,7 @@
 
 
                     <div class="icons-right" data-toggle="tooltip" title="Close">
-                        <span class="tool-span" (click)="closeevearea()">
+                        <span class="tool-span" (click)="closeevearea();">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
@@ -2186,7 +2186,7 @@
 
                             <div class="d-flex align-items-center justify-content-end gap-1">
                                 <button class="btn btn-sm btn-info btn-pill footbtns" data-toggle="collapse"
-                                    href="#propse" (click)="proposenewtime()">Sumbit</button>
+                                    href="#propse" (click)="proposenewtime()">Submit</button>
                                 <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
                                     href="#propse">Cancel</button>
                             </div>
@@ -2224,19 +2224,126 @@
                 </div>
 
             </div>
-            <div class="foot-main overflow-hidden" style="display: block;" id=""
+            <!-- <div class="foot-main overflow-hidden" style="display: block;" id=""
                 *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">
                 <div class="foot-body foot-contain pt-3" id="ft_body">
                     <div class="foot-leftsec">
                         <div class="d-flex align-items-center gap-1">
+                          
+                            <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                               href="#propse" role="button" aria-expanded="false" aria-controls="propse">Repeat</button>
+
+
                             <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="sweet_end()">End
-                                now</button>
+                                now</button> 
                         </div>
+
                     </div>
-
                 </div>
+            </div> -->
 
+            <div class="foot-main " style="display: block;" id=""
+               *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">
+                <div class="foot-body br-top secfootr" id="secfootr555">
+                    <div class="ftbtns flex-1">
+                        <div class="d-flex align-items-center justify-content-end gap-1">
+                           <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse" 
+                               href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">
+                               Repeat
+                           </button>
+                           <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="sweet_end()">End now</button> 
+            
+                        </div>
+                        <div class="mt-1 collapse" id="propse11">
+                            
+                            <label class="text-muted">Date</label>
+                            <div class="form-group dt">
+                                <div class="schedule-dt" (click)="date_menu('date-menu-1')">
+                                    <div class="dt-tm-icon">
+                                        <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 612 612" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M612,463.781c0-70.342-49.018-129.199-114.75-144.379c-10.763-2.482-21.951-3.84-33.469-3.84 c-3.218,0-6.397,0.139-9.562,0.34c-71.829,4.58-129.725,60.291-137.69,131.145c-0.617,5.494-0.966,11.073-0.966,16.734 c0,10.662,1.152,21.052,3.289,31.078C333.139,561.792,392.584,612,463.781,612C545.641,612,612,545.641,612,463.781z M463.781,561.797c-54.133,0-98.016-43.883-98.016-98.016s43.883-98.016,98.016-98.016s98.016,43.883,98.016,98.016 S517.914,561.797,463.781,561.797z"></path> <polygon points="482.906,396.844 449.438,396.844 449.438,449.438 396.844,449.438 396.844,482.906 482.906,482.906 482.906,449.438 482.906,449.438 "></polygon> <path d="M109.969,0c-9.228,0-16.734,7.507-16.734,16.734v38.25v40.641c0,9.228,7.506,16.734,16.734,16.734h14.344 c9.228,0,16.734-7.507,16.734-16.734V54.984v-38.25C141.047,7.507,133.541,0,124.312,0H109.969z"></path> <path d="M372.938,0c-9.228,0-16.734,7.507-16.734,16.734v38.25v40.641c0,9.228,7.507,16.734,16.734,16.734h14.344 c9.228,0,16.734-7.507,16.734-16.734V54.984v-38.25C404.016,7.507,396.509,0,387.281,0H372.938z"></path> <path d="M38.25,494.859h236.672c-2.333-11.6-3.572-23.586-3.572-35.859c0-4.021,0.177-7.999,0.435-11.953H71.719 c-15.845,0-28.688-12.843-28.688-28.688v-229.5h411.188v88.707c3.165-0.163,6.354-0.253,9.562-0.253 c11.437,0,22.61,1.109,33.469,3.141V93.234c0-21.124-17.126-38.25-38.25-38.25h-31.078v40.641c0,22.41-18.23,40.641-40.641,40.641 h-14.344c-22.41,0-40.641-18.231-40.641-40.641V54.984H164.953v40.641c0,22.41-18.231,40.641-40.641,40.641h-14.344 c-22.41,0-40.641-18.231-40.641-40.641V54.984H38.25C17.126,54.984,0,72.111,0,93.234v363.375 C0,477.733,17.126,494.859,38.25,494.859z"></path> <circle cx="134.774" cy="260.578" r="37.954"></circle> <circle cx="248.625" cy="260.578" r="37.954"></circle> <circle cx="362.477" cy="260.578" r="37.954"></circle> <circle cx="248.625" cy="375.328" r="37.953"></circle> <circle cx="134.774" cy="375.328" r="37.953"></circle> </g> </g> </g></svg>
+                                    </div>
+                                    <div class="schedule-dt-tm">
+                                        <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
+                                        <span class="schedule-dt-muted">|</span>
+                                        <span>{{Startts}}</span>
+                                        <span class="schedule-dt-muted">-</span>
+                                        <span>{{Endtms}}</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="date-menu" id="date-menu-1"   style=" min-width: 33rem; top: 38px; left: -5px;">
+                                    <div class="date-menu-item">
+                                        <div class="date-menu-close" (click)="date_menu_close('date-menu-1')">Close</div>
+                                        <div class="date-menu-calender">
+                                            <mat-card class="demo-inline-calendar-card">
+                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                                              </mat-card>
+                                        </div>
+                                        <div class="date-menu-time">
+                                            <div class="mb-2">
+                                                <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                                                <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
+                                                <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                                    placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                                    <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                                        {{item}}</ng-option>
+                                                </ng-select>
+                                                <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                                            </div>
+                                            <div class="">
+                                                <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                                                <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                                    [(ngModel)]="Endtms">
+                                                    <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                        {{item1}} 
+                                                        ({{   
+                                                            Startts|timeDiff:item1
+                                                        }})      
+                                                    </ng-option>
+                                                </ng-select>
+                                                <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-end gap-1 mt-5">
+                                <button class="btn btn-sm btn-info btn-pill footbtns" data-toggle="collapse"
+                                    href="#propse11" (click)="submitEventToRepeat()">Submit</button>
+                                    <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                                    href="#propse11" (click)="onCustomBtnClicked()">Custom</button>
+                                <button id='closeRepeatDialog_btn' class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                                    href="#propse11">Cancel</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
     </div>
 </div>
@@ -2427,7 +2534,7 @@
 
 
                         <div class="d-flex align-items-center justify-content-end gap-1">
-                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" >Sumbit</button>
+                            <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitaction()" >Submit</button>
                             <button class="btn btn-sm btn-secondary btn-pill footbtns" data-toggle="collapse"
                                 href="#secfootr1" (click)="closefooter()"    >Cancel</button>
                         </div>
@@ -2831,35 +2938,33 @@
                             <div class="row">
                                 <div class="col-md-6 schedule-br">
                                     <div class="form-group dt">
-                                        <div class="" (click)="date_menu()">
+                                        <div class="" (click)="date_menu('date-menu')">
                                             <div class="schedule-dt-tm">
                                                 <div>
-                                                    <span>Thursday, April 18</span>
+                                                    <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
                                                 </div>
                                                 <div>
-                                                    <span>1:30pm</span>
+                                                    <span>{{Startts}}</span>
                                                     <span class="schedule-dt-muted">-</span>
-                                                    <span>2:30pm</span>
+                                                    <span>{{Endtms}}</span>
                                                 </div>
                                             </div>
-                                            <div class="schedule-dt-text">
+                                            <div class="schedule-dt-text" *ngIf="_StartDate&&Startts&&Endtms">
                                                 <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                                <span>This event will take place on april 18,2024 from 1:30PM until 2:30pm</span>
+                                                <span>This event will take place on {{_StartDate|date:'MMMM d,y'}} from {{Startts}} until {{Endtms}}</span>
                                             </div>
                                         </div>
                                         <div class="date-menu" id="date-menu">
                                             <div class="date-menu-item">
-                                                <div class="date-menu-close" (click)="date_menu_close()">Close</div>
+                                                <div class="date-menu-close" (click)="date_menu_close('date-menu')">Close</div>
                                                 <div class="date-menu-calender">
                                                     <mat-card class="demo-inline-calendar-card">
-                                                        <mat-calendar [(selected)]="selected" [minDate]="minDate"></mat-calendar>
+                                                        <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
                                                       </mat-card>
-                                                      <!-- <p>Selected date: {{selected}}</p> -->
                                                 </div>
                                                 <div class="date-menu-time">
                                                     <div class="mb-2">
-                                                        <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                                        <!-- <ng-select  class="kt-input form-control" style="cursor:pointer;" (open)="onfocus($event)" -->
+                                                        <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label> 
                                                         <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
                                                             placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
                                                             <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
@@ -2876,11 +2981,6 @@
                                                                 ({{   
                                                                     Startts|timeDiff:item1
                                                                 }})  
-                                                                
-                                                                <!-- ((StartTimearr.indexOf(item1)-StartTimearr.indexOf(Startts))*5)<60?
-                                                                    (StartTimearr.indexOf(item1)-StartTimearr.indexOf(Startts))*5+' mins'
-                                                                    :((StartTimearr.indexOf(item1)-StartTimearr.indexOf(Startts))*5/60).toFixed(2)+' hrs' -->
-                                                            
                                                             </ng-option>
                                                         </ng-select>
                                                         <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
@@ -2893,11 +2993,53 @@
                                 </div>
                                 <div class="col-md-3 schedule-br">
                                             <div class="repeat" (click)="customrecurrencemodal()">
-                                                <div>Does not repeat</div>
+                                                <div *ngIf="selectedrecuvalue">
+                                                    <span *ngIf="selectedrecuvalue=='0'">Do not repeat</span>
+                                                    <span *ngIf="selectedrecuvalue=='1'">Daily</span>
+                                                    <span *ngIf="selectedrecuvalue=='2'">Weekly</span>
+                                                    <span *ngIf="selectedrecuvalue=='3'">Monthly</span>
+                                                </div>
                                                 <div class="repeat-icon">
                                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 10L12 15L17 10" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                 </div>
                                             </div>
+
+                                            <div class="d-flex" *ngIf="selectedrecuvalue=='2'">
+
+                                                <ng-container *ngFor="let item of dayArr">
+                                                    <div
+                                                        [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                        <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                            type="checkbox" name="DaysChk" value="{{item.value}}"
+                                                            class="rep-chk" />
+                                                        {{item.Day}}
+                                                    </div>
+                                                </ng-container>
+
+                                            </div>
+
+
+                                            <div class="d-flex flex-wrap" *ngIf="selectedrecuvalue=='3'">
+
+                                                <ng-container *ngFor="let item of MonthArr">
+                                                    <div
+                                                        [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                        <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                                            type="checkbox" name="monthChk" value="{{item.value}}"
+                                                            class="rep-chk" />
+                                                        {{item.Day}}
+                                                    </div>
+                                                </ng-container>
+
+
+                                            </div>
+
+
+
+
+
+
+
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check schedule-check">
@@ -2976,7 +3118,7 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div class="schedule-select project"  type="button" (click)="projectmodal()">
+                        <div class="schedule-select project"  type="button" (click)="projectmodal('PARTICIPANT')">
                             <div class="title">Add participants</div>
                         </div>
                         <ul class="schedule-select-user-list">
@@ -3172,7 +3314,7 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div class="schedule-select project"  type="button" (click)="projectmodal()">
+                        <div class="schedule-select project"  type="button" (click)="projectmodal('PROJECT')">
                             <div class="title">Add project</div>
                         </div>
                         <ul class="schedule-select-list">
@@ -3214,7 +3356,7 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div class="schedule-select project"  type="button" (click)="projectmodal()">
+                        <div class="schedule-select project"  type="button" (click)="projectmodal('PORTFOLIO')">
                             <div class="title">Add portfolio</div>
                         </div>
                         <ul class="schedule-select-list">
@@ -3256,7 +3398,7 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div class="schedule-select project"  type="button" (click)="projectmodal()">
+                        <div class="schedule-select project"  type="button" (click)="projectmodal('DMS')">
                             <div class="title">Add dms</div>
                         </div>
                         <ul class="schedule-select-list">
@@ -4369,8 +4511,20 @@
   <div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="projectmodalLabel">Select Project</h5>
+        <div class="modal-header  gap-1">
+           <ng-container *ngIf="projectmodaltype">
+                    <img *ngIf="projectmodaltype==='DMS'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                    <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
+                        <path
+                            d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                        </path>
+                    </svg>
+                    <i  *ngIf="projectmodaltype==='PROJECT'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
+
+                    <i *ngIf="projectmodaltype==='PORTFOLIO'" class="fas-icn fas fa-list mt-2 mb-2"></i>
+                
+                    <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype.toLowerCase()}}</h5>
+          </ng-container>
           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -4380,108 +4534,195 @@
             <div class="search-svg">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
-            <input class="search-input" type="search" placeholder="Search" aria-label="Search">
-            <div class="modal-icon mr-1" id="filter-icon" (click)="project_filter()">
+            
+            <input [ngClass]="{'d-none':projectmodaltype!=='PROJECT'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" aria-label="Search" />
+            
+            <input [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearch class="search-input" type="search" placeholder="Search" aria-label="Search" />
+
+
+
+            <div class="modal-icon mr-1 curser-pointer" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
-            <div class="modal-icon">
+            <div class="modal-icon curser-pointer" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearch.value=null; ">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
             </div>
           </div>
           <div class="position-relative">
             <div id="project-filter" class="project-filter">
-                <div class="project-filter-item">
-                    <div class="item-label">Users</div>
-                    <div class="item-select">
-                        <div class="" id="div_recurrence">
-                            <mat-select name="Select Type" placeholder="Do not repeat"
-                                [(value)]="selectedrecuvalue" class="form-control"
-                                (selectionChange)="SelectDropDown($event)">
-                                <mat-option value="0">Ramesh</mat-option>
-                                <mat-option value="1">Suresh</mat-option>
-                            </mat-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-filter-item">
+              
+             
+                <div *ngIf="projectmodaltype!=='DMS'" class="project-filter-item">
                     <div class="item-label">Company</div>
                     <div class="item-select">
                         <div class="" id="div_recurrence">
-                            <mat-select name="Select Type" placeholder="Do not repeat"
-                                [(value)]="selectedrecuvalue" class="form-control"
-                                (selectionChange)="SelectDropDown($event)">
-                                <mat-option value="0">Devbox Software Pvt Ltd</mat-option>
-                            </mat-select>
+                            <ng-select [(ngModel)]="basedOnFilter.bycompany" placeholder="Select company" (change)=" this.basedOnFilter.byuser=null">
+                                <ng-option *ngFor="let company of companies_Arr" [value]="company.ClientId">{{company.ClientName.trim()}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                 </div>
-                <div class="project-filter-item">
+                <div *ngIf="projectmodaltype!=='PARTICIPANT'" class="project-filter-item">
+                    <div class="item-label">Users</div>
+                    <div class="item-select">
+                        <div class="" id="div_recurrence">
+                            
+                           <ng-select [(ngModel)]="basedOnFilter.byuser" placeholder="Select user"  style="max-width:360px;" >
+                                <ng-container *ngFor="let user of _EmployeeListForDropdown">
+                                <ng-option *ngIf="(user.Emp_Comp_No===basedOnFilter.bycompany)||!basedOnFilter.bycompany"  [value]="user.Emp_No">{{user.DisplayName}}</ng-option>
+                                </ng-container>
+                           </ng-select>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="projectmodaltype==='PROJECT'" class="project-filter-item">
                     <div class="item-label">Status</div>
                     <div class="item-select">
                         <div class="" id="div_recurrence">
-                            <mat-select name="Select Type" placeholder="Do not repeat"
-                                [(value)]="selectedrecuvalue" class="form-control"
-                                (selectionChange)="SelectDropDown($event)">
-                                <mat-option value="0">In Process</mat-option>
-                            </mat-select>
+                             <ng-select [(ngModel)]="basedOnFilter.bystatus"  placeholder="Select status">
+                                <ng-option value="inprocess">In-Process</ng-option>
+                                <ng-option value="delay">Delay</ng-option>
+                                <ng-option value="completed">Completed</ng-option>
+                                <ng-option value="underapproval">Under Approval</ng-option>
+                             </ng-select>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+
                 <div class="project-filter-footer">
-                    <button type="button" class="btn btn-add-primary">Submit</button>
-                  <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
+                    <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value)" >Submit</button>
+                    <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter()">Submit</button>
+                    <button *ngIf="projectmodaltype==='DMS'" type="button" class="btn btn-add-primary" (click)="onDMSFilter()">Submit</button>
+                    <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter()">Submit</button>
+                    <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
                 </div>
             </div>
-            <ul class="modal-project-list" id="project-list">
-                <li class="modal-project-list-item">
+
+
+         
+            <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='PROJECT'">
+                <ng-container *ngIf="searchingResult;else gotresult">
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="spinner-border" style="color: #6388e3; width:40px; height:40px " role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                        </div>
+                </ng-container>
+                <ng-template #gotresult>
+                    <li *ngFor="let prj of ProjectListArray" class="modal-project-list-item">
+                        <span>
+                            <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)"></mat-checkbox>
+                        </span>
+                        <span class="project-name">
+                              {{prj.BlockNameProject}}
+                        </span>
+                    </li>
+                    <div *ngIf="ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                            </g>
+                        </svg>
+                        <span style="color:#757575" class="ml-2">No results found.</span>
+                    </div>
+
+
+
+                </ng-template>
+                 
+                
+            </ul>
+    
+            <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
+                <li *ngFor="let prtf of FilteredResults|filter:InputSearch.value" class="modal-project-list-item">
                     <span>
-                        <input type="checkbox" aria-label="Checkbox for following text input">
+                        <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)"></mat-checkbox>
                     </span>
                     <span class="project-name">
-                        Stream Planner work scheduling - Md Waseem Akram
+                        {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
                     </span>
                 </li>
+
+
+                <div *ngIf="(FilteredResults|filter:InputSearch.value).length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                        </g>
+                    </svg>
+                    <span style="color:#757575" class="ml-2">No results found.</span>
+                </div>
+
             </ul>
-            <ul class="modal-project-list" id="portfolio-list" style="display: none">
-                <li class="modal-project-list-item">
+            <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='DMS'">
+
+                <li *ngFor="let memo of FilteredResults|filter:InputSearch.value"  class="modal-project-list-item">
                     <span>
-                        <input type="checkbox" aria-label="Checkbox for following text input">
+                        <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)"></mat-checkbox>
                     </span>
-                    <span class="project-name">
-                        Redirect Test Back Portfolio-Shaik Mohammad Rafi
-                    </span>
+                    <label class="project-name">
+                       {{memo.Subject}}-{{memo.DisplayName}}
+                    </label>
                 </li>
+
+                <div *ngIf="(FilteredResults|filter:InputSearch.value).length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                        </g>
+                    </svg>
+                    <span style="color:#757575" class="ml-2">No results found.</span>
+                </div>
+
             </ul>
-            <ul class="modal-project-list" id="dms-list" style="display: none">
-                <li class="modal-project-list-item">
+            <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
+                <li *ngFor="let emp of FilteredResults|filter:InputSearch.value" class="modal-project-list-item">
                     <span>
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                    </span>
-                    <span class="project-name">
-                        Issues while testing Stream Planner Web Application - Zafar Alam
-                    </span>
-                </li>
-            </ul>
-            <ul class="modal-project-list" id="participant-list" style="display: none">
-                <li class="modal-project-list-item">
-                    <span style="line-height: 0.1;">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
+                        <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
                     </span>
                     <span style="display:flex; align-items: center; gap: 5px;">
                         <span class="project-user-image">
                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
                         </span>
                         <span class="project-name">
-                            Abdulbasith Hashim 
+                            {{emp.DisplayName}}
                         </span>
                     </span>
                 </li>
+
+                <div *ngIf="(FilteredResults|filter:InputSearch.value).length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                        </g>
+                    </svg>
+                    <span style="color:#757575" class="ml-2">No results found.</span>
+                </div>
+
             </ul>
+
+
+
+
+
           </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-add-primary">Add</button>
-          <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
+            <ng-container *ngIf="projectmodaltype">
+                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearch.value=''; ">Close</button>
+            </ng-container>
         </div>
       </div>
     </div>
@@ -4495,7 +4736,75 @@
           <h5 class="modal-title" id="customrecurrenceLabel">Custom recurrence</h5>
         </div>
         <div class="modal-body">
-            <div class="d-flex align-items-center mb-5">
+
+            <div class="form-group flex-1" id="div_recurrence">
+                <label>Repeat</label>
+                <mat-select name="Select Type" placeholder="Do not repeat"
+                    [(value)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
+                    <mat-option value="0">Do not repeat</mat-option>
+                    <mat-option value="1">Daily</mat-option>
+                    <mat-option value="2">Weekly</mat-option>
+                    <mat-option value="3">Monthly</mat-option>
+                </mat-select>
+            </div>
+
+
+            <div>
+                <div class="ml-0 form-group" style="display: none;" id="weekly_121_new">
+                    <label class="">Days</label>
+                    <div class="pt-1">
+                        <div class="d-flex">
+                            <ng-container *ngFor="let item of dayArr1">
+                                <div
+                                    [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                    <input (change)="selectedDay($event)" id="{{item.value}}"
+                                        type="checkbox" name="DaysChk" value="{{item.value}}"
+                                        class="rep-chk" />
+                                    {{item.Day}}
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-0 form-group" style="display: none;" id="Monthly_121_new">
+                    <label class="">Day</label>
+                    <div class="pt-1">
+                        <div class="d-flex flex-wrap">
+                            <ng-container *ngFor="let item of MonthArr1">
+                                <div
+                                    [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                    <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                        type="checkbox" name="monthChk" value="{{item.value}}"
+                                        class="rep-chk" />
+                                    {{item.Day}}
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+       
+            <div class="mb-2" id="div_endDate_new">
+                    <label>End Date</label>
+                    <div class="endtill-date">
+                        <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="_StartDate"
+                                [(ngModel)]="_EndDate1"  placeholder="End Date"
+                                class="form-control" style="padding-left: 4rem !important;">
+                            <span class="endtill-date-icon">
+                                <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
+                                <mat-datepicker #div_endDatepicker></mat-datepicker>
+                            </span>
+                    </div>
+                    <div class="schedule-dt-text">
+                        <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                        <span>End till {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
+                    </div>
+            </div>
+           
+
+            <!--new plan-->
+            <!-- <div class="d-flex align-items-center mb-5">
                 <div class="cr-label">Repeat Every</div>
                 <div class="cr-every">
                     <div class="cr-every-number">
@@ -4573,10 +4882,11 @@
                 <div class="cr-summary">
                     Montly on the second Tuesday, until Jan 25,2025
                 </div>
-            </div>
+            </div> -->
+              <!--new plan-->
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-add-primary">Done</button>
+          <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
           <button type="button" class="btn btn-close-secondary" (click)="close_customrecurrencemodal()">Cancel</button>
         </div>
       </div>

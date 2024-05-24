@@ -299,7 +299,6 @@ Prj_Code:any;
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
-
         console.log(data, "data")
         if (data != null && data != undefined) {
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
@@ -1361,7 +1360,6 @@ Prj_Code:any;
       this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
         this.requestDetails = data as [];
         console.log(this.requestDetails, "approval")
-  debugger
         if (this.requestDetails.length > 0) {
           this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
           this.requestType = (this.requestDetails[0]['Request_type']);

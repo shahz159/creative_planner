@@ -26,5 +26,6 @@ export class ApprovalDTO {
     Leave_Code:any;
     From_Date:any;
     End_Date:any;
-
+    PageNumber:number;
+    RowsOfPage:number;
 }

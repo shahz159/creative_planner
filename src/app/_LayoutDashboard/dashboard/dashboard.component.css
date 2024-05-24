@@ -3938,11 +3938,11 @@ span.meeting-icon {
     background-color: #ebebeb;
     align-items: center;
 }
-
 .schedule-event.modal .modal-header .modal-title {
     font-weight: 500;
     font-size: 1.2rem;
     color: #000000;
+    text-transform: capitalize;
 }
 
 .schedule-event.modal .modal-header .close {
@@ -4014,13 +4014,13 @@ span.meeting-icon {
     border-radius: 4px;
     cursor: pointer;
 }
-
-.modal-icon:hover {
-    background: #e5e1e1;
+.modal-icon:hover{
+    /* background: #e5e1e1; */
+    background-color: #cbcbcb36;
 }
-
-#filter-icon.active {
-    background: #e5e1e1;
+#filter-icon.active{
+    /* background: #e5e1e1; */
+    background-color: #c3c3c35c;
 }
 
 .modal-icon svg {
@@ -4060,9 +4060,10 @@ ul.modal-project-list {
 li.modal-project-list-item {
     color: #000;
     display: flex;
-    align-items: center;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 8px;
     font-weight: 400;
+    margin-top: 1.5em;
 }
 
 .project-filter {
@@ -4074,6 +4075,7 @@ li.modal-project-list-item {
     min-height: 200px;
     margin-bottom: 0px;
     position: absolute;
+    z-index: 1;
     width: 100%;
     background-color: #fff;
     box-shadow: 0px 0px 6px #dbdbdb;
@@ -4461,3 +4463,25 @@ span.project-name {
     font-weight: normal;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+
+
+
+
+
+
+
+
+.prjact-search-field:focus-within svg{
+    stroke:#6388e3;
+    transform:scale(1.3);
+    transition-duration:0.4s;
+ }
+ .prjact-search-field:focus-within{
+   box-shadow:0 0 3px #cad9ff;
+ }
+ .prjact-search-field:not(.prjact-search-field:focus-within) svg{
+   stroke: rgb(192, 192, 192);
+   transform:scale(1);
+   transition-duration:0.2s;
+ }

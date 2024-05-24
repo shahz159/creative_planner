@@ -1623,8 +1623,9 @@ removeTemplate(templateCode:string){
 // template open for new project creation start
 PrjTemplActions:any=[];
 
-openTemplate(template:any){
+openTemplate(template:any){ 
   console.log("template:",template);
+
   this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
 
     const PInfo=JSON.parse(res[0].ProjectInfo_Json)[0];
@@ -1642,10 +1643,10 @@ openTemplate(template:any){
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
-   this.PrjCrdtr='';
+  //  this.PrjCrdtr='';
    this.PrjAuditor='';
-   this.PrjInformer='';
-   this.PrjSupport=[];
+  //  this.PrjInformer='';
+  //  this.PrjSupport=[];
    this.Allocated_Hours=null;
    //  this.fileAttachment=new File()
 
@@ -1660,6 +1661,35 @@ openTemplate(template:any){
 
 
   })
+
+  this.service.NewProjectService(template.Project_Code).subscribe(
+    (data) => {
+      debugger
+      if (data != null && data != undefined) {
+          this.PrjSupport=JSON.parse(data[0]['RacisList']);
+          console.log('****template support***',this.PrjSupport);
+          let _prjsupport=[];
+          let _prjcoordntr;
+          let _prjinfrmr;
+
+          this.PrjSupport.forEach((item:any)=>{
+                   if(item.Role==="Support")
+                    _prjsupport.push({ Emp_No:item.Emp_No, Emp_Name:item.RACIS});
+
+                   if(item.Role==="Coordinator")
+                    _prjcoordntr=item;
+
+                   if(item.Role==='Informer')
+                   _prjinfrmr=item;
+          });
+        
+          this.PrjCrdtr=_prjcoordntr.Emp_No;
+          this.PrjInformer=_prjinfrmr.Emp_No;
+          this.PrjSupport=_prjsupport;
+          this.setRACIS();
+      }
+   });    // for geeting the support members.
+
 
 }
 
@@ -2258,6 +2288,7 @@ if(dateone < datetwo){
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -2298,6 +2329,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
     myWindow.focus();
   }
 }
+
 
 
    ///////////////////////////////////////// Action Edit End /////////////////////////////
