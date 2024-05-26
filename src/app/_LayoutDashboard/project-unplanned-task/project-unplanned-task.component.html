@@ -508,15 +508,15 @@
                                                             class="mr-2 cursor-pointer">
                                                             <mat-icon color='primary'>delete</mat-icon>
                                                         </span>
-                                                        <!-- <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                        <span mat-icon-button [matMenuTriggerFor]="menu"
                                                             aria-label="Example icon-button with a menu" matTooltip="More"
                                                             class="cursor-pointer">
                                                             <mat-icon color="primary">more_vert</mat-icon>
-                                                        </span> -->
-                                                        <!-- <mat-menu #menu="matMenu" xPosition="after">
+                                                        </span>
+                                                        <mat-menu #menu="matMenu" xPosition="after">
 
-                                                            <button mat-menu-item mat
-                                                            (click)="projectmodal()">
+                                                            <button mat-menu-item mat (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+                                                            <!-- (click)="projectmodal()"> -->
                                                                 <mat-icon class="mr-2" color='primary'>group</mat-icon>
                                                                 <span>Assign Task/Project</span>
                                                             </button>
@@ -526,12 +526,12 @@
                                                                 <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
                                                                 <span>Add action to project</span>
                                                             </button>
-                                                        </mat-menu> -->
-                                                        <div class="task-actions" >                                                                        
+                                                        </mat-menu>
+                                                        <!-- <div class="task-actions curser-pointer" >                                                                        
                                                             <mat-icon title="Assign Project"  (click)="projectmodal()" class="mr-2" color='primary'>group</mat-icon>
                                                          
                                                             <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
-                                                      </div>
+                                                      </div> -->
                                                         <mat-menu #AssignTo="matMenu">
                                                             <span *ngFor="let item1 of EmployeeList">
                                                                 <button mat-menu-item
@@ -1140,7 +1140,7 @@ item.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
                         </path>
                     </svg>
                 
-                    <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select Participants</h5>
+                    <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users to assign</h5>
           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

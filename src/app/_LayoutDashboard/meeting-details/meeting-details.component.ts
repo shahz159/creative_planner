@@ -2103,52 +2103,56 @@ EnterSubmit(_Demotext) {
      
        const selectedArray = Array.from(this.selectedAttendeesList)
        this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
-       
-      
-       this.BsService.SetNewAssignId(id);
-       this.BsService.SetNewAssignedName(taskName);
-       let typeoftask: any = "IFRT";
-       this.BsService.setNewTypeofTask(typeoftask);
-       this.datestrStart = moment(new Date()).format();
-       this.datestrEnd = moment(new Date()).format();
-  
-       this._ObjAssigntaskDTO.AssignId = id;
-       this._ObjCompletedProj.PageNumber = 1;
-       this._ObjCompletedProj.Emp_No = this.Current_user_ID;
-       this._ObjCompletedProj.Mode = 'AssignedTask';
-       this._ObjAssigntaskDTO.TaskName = taskName;
-       this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
-       this._ObjAssigntaskDTO.ProjectType = "";
-       this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
-      
-
-
-
-      const fd = new FormData();
-      fd.append("AssignedBy", this.Current_user_ID);
-      fd.append("AssignTo", this.listAttendees);
-      fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
-      fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
-      fd.append("AssignId",  id);
-      fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
-      fd.append("StartDate", this.datestrStart);
-      fd.append("EndDate", this.datestrEnd);
-      fd.append("ProjectDays",'0');
-      fd.append("Desc", "");
-      fd.append("Remarks", "");
-      fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
-  
+       if(this.listAttendees.length>0){
+          this.BsService.SetNewAssignId(id);
+          this.BsService.SetNewAssignedName(taskName);
+          let typeoftask: any = "IFRT";
+          this.BsService.setNewTypeofTask(typeoftask);
+          this.datestrStart = moment(new Date()).format();
+          this.datestrEnd = moment(new Date()).format();
+    
+          this._ObjAssigntaskDTO.AssignId = id;
+          this._ObjCompletedProj.PageNumber = 1;
+          this._ObjCompletedProj.Emp_No = this.Current_user_ID;
+          this._ObjCompletedProj.Mode = 'AssignedTask';
+          this._ObjAssigntaskDTO.TaskName = taskName;
+          this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
+          this._ObjAssigntaskDTO.ProjectType = "";
+          this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
         
-      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
-      (data) => {
-        let message: string = data['Message'];
-        this.notifyService.showSuccess("Task sent to assign projects", message);
-        this.GetAssigned_SubtaskProjects()
-         document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-         document.getElementById("projectmodal").style.display = "none";
-         this.Assigntext='';
-         this.selectedAttendeesList.clear();
-      })
+  
+  
+  
+        const fd = new FormData();
+        fd.append("AssignedBy", this.Current_user_ID);
+        fd.append("AssignTo", this.listAttendees);
+        fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
+        fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
+        fd.append("AssignId",  id);
+        fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
+        fd.append("StartDate", this.datestrStart);
+        fd.append("EndDate", this.datestrEnd);
+        fd.append("ProjectDays",'0');
+        fd.append("Desc", "");
+        fd.append("Remarks", "");
+        fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
+    
+          
+        this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+        (data) => {
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.GetAssigned_SubtaskProjects()
+            document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+            document.getElementById("projectmodal").style.display = "none";
+            this.Assigntext='';
+            this.selectedAttendeesList.clear();
+        });
+       }
+       else{
+        this.notifyService.showInfo("Please select atleast one user to assign",'');
+       }
+      
   }
 
 
