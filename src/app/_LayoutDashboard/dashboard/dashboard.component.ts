@@ -1472,13 +1472,13 @@ export class DashboardComponent implements OnInit {
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Last day of the month') {
-          document.getElementById("div_endDate").style.display = "block";
-          this.selectedrecuvalue = '5';
-          this._labelName = "Schedule Date";
-          // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("Recurrence_hide").style.display = "none";
-        }
+        // else if ((this.EventScheduledjson[0]['Recurrence']) == 'Last day of the month') {
+        //   document.getElementById("div_endDate").style.display = "block";
+        //   this.selectedrecuvalue = '5';
+        //   this._labelName = "Schedule Date";
+        //   // document.getElementById("div_endDate").style.display = "none";
+        //   document.getElementById("Recurrence_hide").style.display = "none";
+        // }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
@@ -1795,9 +1795,9 @@ export class DashboardComponent implements OnInit {
     // else if (this.selectedrecuvalue === "4") {
     //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
     // }
-    else if (this.selectedrecuvalue === "5") {
-      this.daysSelectedII = this.getLastDaysOfEachMonth();
-    }
+    // else if (this.selectedrecuvalue === "5") {
+    //   this.daysSelectedII = this.getLastDaysOfEachMonth();
+    // }
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
@@ -4928,17 +4928,17 @@ let is12am:boolean=(end.getHours()==0&&end.getMinutes()==0&&end.getSeconds()==0)
     //  this.Portfolio=this.draft_arry[0]["portfolio_id"]
     this.SelectDms = [];
     this.SelectDms1 = [];
-    let arr3 = [];
-    var str = (this.draft_arry[0]['dms_id']);
-    arr3 = str.split(",");
-    for (var i = 0; i < arr3.length; i++) {
-      this.Memos_List.forEach(element => {
-        if (element.MailId == arr3[i]) {
-          this.SelectDms.push(element.MailId);
-        }
-      });
-    }
-    //  this.SelectDms=this.draft_arry[0]["dms_id"]
+    // let arr3 = [];
+    // var str = (this.draft_arry[0]['dms_id']);
+    // arr3 = str.split(",");
+    // for (var i = 0; i < arr3.length; i++) {
+    //   this.Memos_List.forEach(element => {
+    //     if (element.MailId == arr3[i]) {
+    //       this.SelectDms.push(element.MailId);
+    //     }
+    //   });
+    // }
+     this.SelectDms=this.draft_arry[0]["dms_id"]
 
     this.ngEmployeeDropdown = [];
     this.ngEmployeeDropdown1 = [];

@@ -2112,6 +2112,7 @@ EnterSubmit(_Demotext) {
        const selectedArray = Array.from(this.selectedAttendeesList)
        this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
     
+       if(this.listAttendees.length>0){
        this.BsService.SetNewAssignId(this.AssignID);
        this.BsService.SetNewAssignedName(this.Task_name);
        let typeoftask: any = "IFRT";
@@ -2129,8 +2130,6 @@ EnterSubmit(_Demotext) {
        this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
       
 
-
-
       const fd = new FormData();
       fd.append("AssignedBy", this.Current_user_ID);
       fd.append("AssignTo", this.listAttendees);
@@ -2145,17 +2144,22 @@ EnterSubmit(_Demotext) {
       fd.append("Remarks", "");
       fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
   
-        
-      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
-      (data) => {
-        let message: string = data['Message'];
-        this.notifyService.showSuccess("Task sent to assign projects", message);
-        this.GetAssigned_SubtaskProjects()
-         document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-         document.getElementById("projectmodal").style.display = "none";
-         this.Assigntext='';
-         this.selectedAttendeesList.clear();
-      })
+          
+        this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+        (data) => {
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.GetAssigned_SubtaskProjects()
+            document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+            document.getElementById("projectmodal").style.display = "none";
+            this.Assigntext='';
+            this.selectedAttendeesList.clear();
+        });
+       }
+       else{
+        this.notifyService.showInfo("Please select atleast one user to assign",'');
+       }
+      
   }
 
 
