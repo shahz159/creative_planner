@@ -2813,7 +2813,7 @@
                      <label class="task-name">{{item.Task_Name}}</label>
                     <ng-container >
                     <div class="task-actions" >
-                                <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects()" class="mr-2" color='primary'>group</mat-icon>
+                                <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
                                 <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
 
@@ -6578,13 +6578,22 @@
              </ul>
            </div>
          </div>
-         <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
+         <!-- <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
 
                      <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees(item.Task_Name,item.Assign_Id)">Add</button>
                      <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()">Custom</button>
                      <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
 
-         </div>
+         </div> -->
+
+
+         <div class="modal-footer">
+
+            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees()">Add</button>
+            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodal()">Custom</button>
+            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
+
+</div>
        </div>
      </div>
    </div>
