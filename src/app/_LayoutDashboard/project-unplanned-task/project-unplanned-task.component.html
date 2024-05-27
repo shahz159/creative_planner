@@ -508,16 +508,16 @@
                                                             class="mr-2 cursor-pointer">
                                                             <mat-icon color='primary'>delete</mat-icon>
                                                         </span>
-                                                        <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                        <!-- <span mat-icon-button [matMenuTriggerFor]="menu"
                                                             aria-label="Example icon-button with a menu" matTooltip="More"
                                                             class="cursor-pointer">
                                                             <mat-icon color="primary">more_vert</mat-icon>
                                                         </span>
-                                                        <mat-menu #menu="matMenu" xPosition="after">
+                                                        <mat-menu #menu="matMenu"  xPosition="after">
 
                                                             <button mat-menu-item mat (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-                                                            <!-- (click)="projectmodal()"> -->
-                                                                <mat-icon class="mr-2" color='primary'>group</mat-icon>
+                                                          
+                                                                <mat-icon class="mr-2 " color='primary'>group</mat-icon>
                                                                 <span>Assign Task/Project</span>
                                                             </button>
 
@@ -526,8 +526,8 @@
                                                                 <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
                                                                 <span>Add action to project</span>
                                                             </button>
-                                                        </mat-menu> 
-                                                        <div class="task-actions" >                                                                        
+                                                        </mat-menu>  -->
+                                                        <div class="task-actions"  class="cursor-pointer" >                                                                        
                                                             <mat-icon title="Assign Project"  (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
                                                          
                                                             <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
@@ -678,11 +678,11 @@
                                                                       'kt-badge cancelled': item.Status === 'Cancelled',
                                                                       'kt-badge new-project-under':item.Status==='Under Approval'
                                                                     }">
-{{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval'
-:item.Status=="Cancellation Under Approval"?"Cancellation approval" :item.Status== "Completion Under Approval" ?
-"Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':
-item.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
-:item.Status=='InProcess'?'In-process':item.Status}}
+                                                                        {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval'
+                                                                        :item.Status=="Cancellation Under Approval"?"Cancellation approval" :item.Status== "Completion Under Approval" ?
+                                                                        "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':
+                                                                        item.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
+                                                                        :item.Status=='InProcess'?'In-process':item.Status}}
                                                                 <!-- <div></div> -->
                                                              </span>
                                                              <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
