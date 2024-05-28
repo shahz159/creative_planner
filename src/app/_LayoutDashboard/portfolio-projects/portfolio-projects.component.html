@@ -533,8 +533,8 @@
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>ProjectName</p></th>
                                                     <th></th>
-                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Projecttype</span></th>
-                                                    <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th>
+                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Project type</span></th>
+                                                    <!-- <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th> -->
                                                     <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
                                                     <th><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
                                                     <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
@@ -714,21 +714,22 @@
                                                                   class="kt-widget__other"  title="Category" >{{item1.ReportType}}</p> -->
                                                           </ng-template>
                                                           </ng-container>
+                                                          <ng-container *ngIf="!showDeletedPrjOnly">
+                                                            <div> <div *ngIf="item1.ReportType==null;else ReportType">
+                                                              <p class="kt-widget__other" >Developemt</p>
+                                                          </div>
+                                                          <ng-template #ReportType>
+                                                              <p
+                                                                  class="kt-widget__other"  >{{item1.ReportType}}</p>
+                                                          </ng-template></div>
+                                                        </ng-container>
                                                       </td>
 
 
-                                                      <ng-container *ngIf="!showDeletedPrjOnly">
-                                                      <td> <div *ngIf="item1.ReportType==null;else ReportType">
-                                                        <p class="kt-widget__other" >Developemt</p>
-                                                    </div>
-                                                    <ng-template #ReportType>
-                                                        <p
-                                                            class="kt-widget__other"  >{{item1.ReportType}}</p>
-                                                    </ng-template></td>
-                                                  </ng-container>
+                                                      
 
 
-<td *ngIf="showDeletedPrjOnly" ></td>
+<!-- <td *ngIf="showDeletedPrjOnly" ></td> -->
                                                     <td>
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
                                                     </td>
@@ -807,14 +808,15 @@
                                                             </span>
                                                       </span>
                                                   </div>
-                                                  <div *ngIf="item1.Status=='Completed'">
+                                                  <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                       <span
-                                                          class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
-                                                          <div class="d-flex align-items-center justify-content-start">
-                                                            <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
-
-                                                          <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                          </div>
+                                                          class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                          <span class="attach-tippy">
+                                                            <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                        <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                           <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div> 
+                                                            <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                        </span>
 
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
@@ -964,15 +966,15 @@
                                                       </span>
                                                 </span>
                                             </div>
-                                            <div *ngIf="item1.Status=='Completed'">
+                                            <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                 <span
-                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
-                                                    <div class="d-flex align-items-center justify-content-start">
-                                                      <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
-
-                                                    <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                    </div>
-
+                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                    <span class="attach-tippy">
+                                                        <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                    <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                       <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div> 
+                                                        <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                    </span>
                                                     <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
 
@@ -1094,16 +1096,24 @@
 
 
 
-                <td *ngIf="showDeletedPrjOnly">    <span class="Delay_color curser-pointer" > Deleted </span>
-                         <div class="d-flex align-items-center justify-content-start">
+                <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">    
+                    <span class="Delay_color curser-pointer">Deleted </span>
+                         <!-- <div class="d-flex align-items-center justify-content-start">
 
                      <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
                       <ng-container *ngIf="item1.Deleted_by">
                         {{ item1.Deleted_by }} |
                       </ng-container>
                       {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
-                                   </div>
-                                 </td>
+                                   </div> -->
+                <span class="attach-tippy">
+                    <b class="fa fa-trash text-info attachment" ></b>
+                <span class="st-line">
+                    <div style="width: max-content;">Deleted by: <h6>{{item1.Deleted_by}} </h6></div> 
+                    <div>on: {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}</div></span>
+                </span>
+                                   
+                </td>
 
 
 
