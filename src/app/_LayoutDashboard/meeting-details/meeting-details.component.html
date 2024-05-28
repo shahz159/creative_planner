@@ -2811,7 +2811,7 @@
                    </ng-container>
                      <label class="task-name">{{item.Task_Name}}</label>
                     <ng-container >
-                    <div class="task-actions" >
+                    <div class="task-actions curser-pointer">
                                 <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
                                 <mat-icon title="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
@@ -6587,7 +6587,7 @@
 
          <div class="modal-footer">
 
-            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees()">Add</button>
+            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees()">Assign</button>
             <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodal()">Custom</button>
             <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
 
