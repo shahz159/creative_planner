@@ -3,9 +3,9 @@ export class SubTaskDTO {
   Project_Code:string;
   SubProject_Name :string;
   StartDate :Date;
-  Start_Date: Date; 
+  Start_Date: Date;
   Title:string;
-  
+  portfolio_id:any;
   End_Date: Date;
   Modified_DT: Date;
   SubProject_DeadLine:Date;
@@ -27,7 +27,7 @@ export class SubTaskDTO {
   Formdata:FormData;
   Attachments2:string;
   Remarks:string;
-  
+
   SubtaskDescription:string;
   Duration:number;
   Emp_No:string;

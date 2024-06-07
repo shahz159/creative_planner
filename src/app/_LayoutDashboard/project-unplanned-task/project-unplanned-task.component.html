@@ -381,19 +381,110 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3>{{_CategoryName}}</h3>
-                        <div class="count-list p-1 bg-white rounded-xl my-2">
-                            <div class="kt-portlet__head-toolbar">
-                              <button class="badge total-project kt-badge--inline mr-2 py-8px btn-sm"  >  <span class="total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}
-                              </span> Total projects</button>
-                              <button class="badge task  mr-2 py-8px btn-sm"  (click)="scrollTo('taskdd')"  *ngIf='_TodoList.length>0' >  <span class="task">{{_TodoList.length}}</span> Unassign task</button>
-                              <button class="badge done kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('Completed')" *ngIf='_CompletedList&&_CompletedList.length>0' >  <span class="done">{{_CompletedList&&_CompletedList.length}}</span> Completed</button>
-                              <button class="badge action-to-project kt-badge--inline mr-2 py-8px btn-sm" (click)="scrollTo('ActionToProjects')"  *ngIf='ActionedSubtask_Json&&ActionedSubtask_Json.length>0' >  <span class="action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span> Action to projects</button>
-                              <button class="badge assigned-task assigned-task mr-2 py-8px btn-sm" (click)="scrollTo('AssignedTask')" *ngIf='ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0'>  <span class="assigned-task  ">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span> Assigned task</button>
-                              <button class="badge accepted  kt-badge--inline mr-2 btn-sm py-8px" (click)="scrollTo('AssignedTask')" *ngIf='CountsAccepted>0'> <span  class="accepted">{{CountsAccepted}}</span> Accepted</button>
-                              <button class="badge pending  kt-badge--inline mr-2 btn-sm py-8px"  (click)="scrollTo('AssignedTask')" *ngIf='CountsPending>0'> <span class="pending">{{CountsPending}}</span> Pending</button>
-                              <button class="badge rejected  kt-badge--inline mr-2 btn-sm py-8px" (click)="scrollTo('AssignedTask')" *ngIf='CountsRejected>0'> <span class="rejected">{{CountsRejected}}</span> Rejected</button>
-                            </div>
+                          <div class="d-flex align-items-center justify-content-between px-2 mb-3">
+                            <h3>{{_CategoryName}}</h3>
+
+                          <div class="dropdown">
+                            <a class="kt-todo__icon" data-toggle="dropdown"  title="Filter">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
+
+                                <ul class="drop-ul">
+                                    <li class="dropdown-header">Filter by</li>
+                                    <li>
+                                        <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects')">
+                                            <div class="d-flex align-items-center">
+                                                <span class="count">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
+                                                <div class="fil-lbl" (click)="totalproject()"   >Total Projects</div>
+                                                <span class="chck-icn">
+                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor" class="bi bi-check2"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                               </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li  *ngIf="_TodoList.length>0" >
+                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList')"  >
+                                            <div    class="d-flex align-items-center">
+                                                <span class="count">{{_TodoList.length}}</span>
+                                                <div  (click)="taskside()" class="fil-lbl">Unassign task</div>
+                                                <span class="chck-icn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor" class="bi bi-check2"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li  *ngIf="_CompletedList.length>0">
+                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed')" >
+                                            <div class="d-flex align-items-center">
+                                                <span class="count">{{_CompletedList&&_CompletedList.length}}</span>
+                                                <div (click)="completed()" class="fil-lbl">Completed</div>
+                                                <span class="chck-icn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor" class="bi bi-check2"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li *ngIf="ActionedSubtask_Json.length>0"  >
+                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask')">
+                                            <div class="d-flex align-items-center">
+                                                <span class="count">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
+                                                <div   class="fil-lbl"  (click)="showactprj()"  >Action to projects</div>
+                                                <span class="chck-icn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor" class="bi bi-check2"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li *ngIf="ActionedAssigned_Josn.length>0"  >
+                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned')" >
+                                            <div class="d-flex align-items-center">
+                                                <span class="count">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
+                                                <div class="fil-lbl" (click)="showassign()"  >Assign task</div>
+                                                <span class="chck-icn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor" class="bi bi-check2"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                              </ul>
+                              </div>
+                          </div>
                           </div>
                         <div class="count-list p-3 grid gap-1 grid-template-columns-7 bg-gray-400 rounded-xl my-2 d-none">
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white" >
@@ -430,7 +521,8 @@
                         <div class="row" >
                             <div class="col-lg-12" >
                                 <div class="p-2 scrollbar1">
-                                    <h5 id="taskdd" *ngIf="_TodoList.length>0">Unassign task</h5>
+                                  <div id="taskdd" class="d-none">
+                                    <h5  *ngIf="_TodoList.length>0">Unassign task</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
                                         <div class="mb-2 card" *ngFor="let item of _TodoList; let i=index">
                                             <div class="card-body p-2 Replied_border_left_true_NewProject mr-2">
@@ -516,7 +608,7 @@
                                                         <mat-menu #menu="matMenu"  xPosition="after">
 
                                                             <button mat-menu-item mat (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-                                                          
+
                                                                 <mat-icon class="mr-2 " color='primary'>group</mat-icon>
                                                                 <span>Assign Task/Project</span>
                                                             </button>
@@ -527,11 +619,11 @@
                                                                 <span>Add action to project</span>
                                                             </button>
                                                         </mat-menu>  -->
-                                                        <div class="task-actions"  class="cursor-pointer" >                                                                        
+                                                        <div class="task-actions"  class="cursor-pointer" >
                                                             <mat-icon title="Assign Project"  (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
-                                                         
-                                                            <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>                                              
-                                                      </div> 
+
+                                                            <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
+                                                      </div>
                                                         <mat-menu #AssignTo="matMenu">
                                                             <span *ngFor="let item1 of EmployeeList">
                                                                 <button mat-menu-item
@@ -542,9 +634,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div></div>
+
                                     <!-- Completed -->
-                                    <h5 *ngIf="_CompletedList&&_CompletedList.length>0" id="Completed">Completed</h5>
+                                    <div id="Completed" class="d-none">
+                                    <h5 *ngIf="_CompletedList&&_CompletedList.length>0" >Completed</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
                                         <!-- Completed  -->
                                         <div class="card mb-2" *ngFor="let item of _CompletedList">
@@ -584,10 +678,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h5 id='ActionToProjects' *ngIf="((ActionedSubtask_Json.length) > 0)">Action to projects</h5>
-                                    <div data-type="inbox" class="kt-inbox__items">
+                                  </div>
+                                  <div id='ActionToProjects' class="d-none">
+                                    <h5  *ngIf="((ActionedSubtask_Json.length) > 0)">Action to projects</h5>
+                                    <div   data-type="inbox" class="kt-inbox__items">
                                         <!-- Action Subtask -->
-                                        <div class="mb-2 card" *ngFor="let item of ActionedSubtask_Json">
+                                        <div    class="mb-2 card" *ngFor="let item of ActionedSubtask_Json">
                                             <div class="card-body p-2 Replied_border_left_true_underApprovals mr-2">
                                                 <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
 
@@ -735,10 +831,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h5  id="AssignedTask"  *ngIf="ActionedAssigned_Josn.length>0">Assigned Task/Project</h5>
-                                    <div data-type="inbox" class="kt-inbox__items">
+                                  </div>
+                                    <div id="AssignedTask" class="d-none">
+                                    <h5    *ngIf="ActionedAssigned_Josn.length>0">Assigned Task/Project</h5>
+                                    <div    data-type="inbox" class="kt-inbox__items">
                                         <!-- Action Assigned Tasks -->
-                                        <div class="mb-2 card" *ngFor="let item of ActionedAssigned_Josn">
+
+                                        <div   class="mb-2 card" *ngFor="let item of ActionedAssigned_Josn">
                                             <!-- <div class="overlay-card"   ></div> -->
                                             <div class="card-body p-2 Replied_border_left_true_warning mr-2">
                                                 <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
@@ -889,6 +988,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -944,7 +1044,7 @@
 
 
 
-    
+
 
 
 
@@ -1139,7 +1239,7 @@
                             d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
                         </path>
                     </svg>
-                
+
                     <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users to assign</h5>
           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -1150,9 +1250,9 @@
             <div class="search-svg">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
-            
+
             <input  class="search-input" [(ngModel)]="Assigntext" type="search" placeholder="Search" aria-label="Search" />
-      
+
             <div class="modal-icon mr-1 curser-pointer"  id="filter-icon" (click)="project_filter()">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
@@ -1162,18 +1262,18 @@
           </div>
           <div class="position-relative">
             <div id="project-filter" class="project-filter">
-              
-             
+
+
 
                 <div class="project-filter-item">
                     <div class="item-label">Company</div>
                     <div class="item-select">
                         <div class="" id="div_recurrence">
-                            
+
                            <ng-select placeholder="Select Company" [(ngModel)]="CompanyName"  style="max-width:360px;" >
-                             
+
                             <ng-option *ngFor="let item of Clientjson"  [value]="item.ClientId">{{item.ClientName}}</ng-option>
-                             
+
                            </ng-select>
 
                         </div>
@@ -1209,9 +1309,9 @@
                    <span class="visually-hidden"></span>
                    </div>
                 </div>
-               
-                   
-                 
+
+
+
                 <!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
                     <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

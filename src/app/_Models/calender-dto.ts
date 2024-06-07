@@ -48,6 +48,7 @@ export class CalenderDTO {
     Scheduledsearchlist:string;
     previousmeet_data:string;
     AdminMeeting_Status:string;
+    attendeesList:string;
     type:number;
     AgendaId:any;
     DraftAgendas:any;

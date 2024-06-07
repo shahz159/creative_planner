@@ -623,6 +623,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewMeeting_Viewsinmores", this.ObjSubTaskDTO);
   }
 
+
+  _GetMeetingListportfolio(obj: SubTaskDTO) {
+    this.ObjSubTaskDTO.portfolio_id = obj.portfolio_id;
+    this.ObjSubTaskDTO.startdate = obj.startdate;
+    this.ObjSubTaskDTO.enddate = obj.enddate;
+    return this.http.post(this.rootUrl + "TestAPI/NewMeeting_ViewsinPortfolio", this.ObjSubTaskDTO);
+  }
+
   _GetUserName(empno) {
     this.ObjSubTaskDTO.Emp_No = empno;
     return this.http.post(this.rootUrl + "TestAPI/NewGetUserName", this.ObjSubTaskDTO);

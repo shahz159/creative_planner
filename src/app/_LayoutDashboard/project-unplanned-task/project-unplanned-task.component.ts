@@ -89,6 +89,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+    this.totalproject()
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
@@ -202,14 +203,14 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.GetAssigned_SubtaskProjects();
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
-   
+
   }
   close_projectmodal(){
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("projectmodal").style.display = "none";
     this.Assigntext=''
   }
-  
+
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
@@ -217,7 +218,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   Clientjson:any;
   EmployeeLists:any;
   loading: boolean = false;
-  
+
 
   GetAssigned_SubtaskProjects() {
     this.loading = true;
@@ -229,16 +230,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       (data) => {
         this.loading = false;
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
-      
+
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         console.log('sdcssd',this._TodoList)
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         this.Clientjson=JSON.parse(data[0]['Client_json'])
-        
+
         this.EmployeeLists = JSON.parse(data[0]['EmployeeList']);
-      
+
         this.FiterEmployee=this.EmployeeList;
         console.log("Data---->", this.FiterEmployee);
       });
@@ -543,6 +544,7 @@ debugger
           // this.CategoryList = JSON.parse(data['CategoryList']);
           let message: string = data['Message'];
           this.notifyService.showSuccess("Successfully", message);
+
           // this.Mdl_CategoryName = "";
         });
     }
@@ -571,6 +573,7 @@ debugger
     this.BsService.setNewCategoryName(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
     this._CategoryActive = true;
+
     this.IfNoTaskFound = "";
     this._Categoryid = C_id;
     this._CategoryName = C_Name;
@@ -588,7 +591,7 @@ debugger
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
-      
+
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -613,6 +616,7 @@ debugger
         // console.log(this.CountsAccepted);
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      this.totalproject()
   }
 
 
@@ -654,12 +658,12 @@ debugger
 
     $("#Project_info_slider_bar").scrollTop(0);
 
-  
+
   }
 
 
 
-  
+
 
 
 
@@ -692,10 +696,10 @@ selectedAttendeesList = new Set<any>();
 
 
   addSelectedEmployees() {
-     
+
        const selectedArray = Array.from(this.selectedAttendeesList);
        this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',');
-       
+
        if(this.listAttendees.length>0){
        this.BsService.SetNewAssignId( this.AssignID);
        this.BsService.SetNewAssignedName(this.Task_name);
@@ -703,7 +707,7 @@ selectedAttendeesList = new Set<any>();
        this.BsService.setNewTypeofTask(typeoftask);
        this.datestrStart = moment(new Date()).format();
        this.datestrEnd = moment(new Date()).format();
-  
+
        this._ObjAssigntaskDTO.AssignId = this.AssignID;
        this._ObjCompletedProj.PageNumber = 1;
        this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -712,7 +716,7 @@ selectedAttendeesList = new Set<any>();
        this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
        this._ObjAssigntaskDTO.ProjectType = "";
        this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
-      
+
 
 
 
@@ -729,8 +733,8 @@ selectedAttendeesList = new Set<any>();
       fd.append("Desc", "");
       fd.append("Remarks", "");
       fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
-  
-        
+
+
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
       (data) => {
         let message: string = data['Message'];
@@ -767,8 +771,8 @@ selectedAttendeesList = new Set<any>();
   AddCom(){
     if(this.CompanyName){
     this.FiterEmployee = this.EmployeeLists.filter((item) => {
-      return item.Com_No === this.CompanyName; 
-  }) 
+      return item.Com_No === this.CompanyName;
+  })
 }else{
     this.GetAssigned_SubtaskProjects()
   }
@@ -1102,6 +1106,55 @@ selectedAttendeesList = new Set<any>();
 //       }
 //     }
 // }
+
+isTotalProjectsActive = true;
+totalproject(){
+  document.getElementById('taskdd').classList.remove('d-none')
+  document.getElementById('Completed').classList.remove('d-none')
+  document.getElementById('ActionToProjects').classList.remove('d-none')
+  document.getElementById('AssignedTask').classList.remove('d-none')
+  this.isTotalProjectsActive = true;
+}
+
+
+taskside(){
+  debugger
+  document.getElementById('taskdd').classList.remove('d-none')
+  document.getElementById('Completed').classList.add('d-none')
+  document.getElementById('ActionToProjects').classList.add('d-none')
+  document.getElementById('AssignedTask').classList.add('d-none')
+
+}
+
+completed(){
+  debugger
+  document.getElementById('Completed').classList.remove('d-none')
+  document.getElementById('taskdd').classList.add('d-none')
+  document.getElementById('ActionToProjects').classList.add('d-none')
+  document.getElementById('AssignedTask').classList.add('d-none')
+
+}
+
+showactprj(){
+  document.getElementById('ActionToProjects').classList.remove('d-none')
+  document.getElementById('Completed').classList.add('d-none')
+  document.getElementById('taskdd').classList.add('d-none')
+  document.getElementById('AssignedTask').classList.add('d-none')
+
+}
+
+showassign(){
+  document.getElementById('AssignedTask').classList.remove('d-none')
+  document.getElementById('ActionToProjects').classList.add('d-none')
+  document.getElementById('Completed').classList.add('d-none')
+  document.getElementById('taskdd').classList.add('d-none')
+}
+
+activeButton: string = 'totalProjects';
+
+setActiveButton(buttonName: string) {
+  this.activeButton = buttonName;
+}
 
 }
 

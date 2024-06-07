@@ -1857,11 +1857,16 @@ mat-icon {
     font-weight: 500;
 }
 span.count {
-    background: #9886eb;
-    padding: 0px 4px;
-    color: #ffffff;
-    cursor: auto;
-    border-radius: 3px;
+  cursor: auto;
+  background: #717171;
+  color: #fff;
+  border-radius: 3px;
+  margin-right: 4px;
+  padding: 0px 2px;
+  font-size: 11px;
+  width: 24px;
+  height: 24px;
+  line-height: 2.2;
 }
 .bdg-suc{
     background-color: rgb(104 238 198 / 15%);
@@ -2064,13 +2069,7 @@ border-radius: 2px
     gap: 10px;
     margin-bottom: 1rem;
 }
-span.count {
-    background: #9886eb;
-    padding: 0 4px;
-    color: #fff;
-    cursor: auto;
-    border-radius: 3px;
-  }
+
 
   .ticks-grad {
     background-image: linear-gradient(to left, #f9a8d4, #d8b4fe, #818cf8);
@@ -2267,7 +2266,7 @@ span.count {
     width: 100%;
     height: calc(1.5em + 1.3rem + 6px);
     padding: 0.65rem 0.55rem;
-    margin-bottom: 0.5rem; 
+    margin-bottom: 0.5rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -2392,4 +2391,61 @@ li.modal-project-list-item {
     text-overflow: ellipsis;
     overflow: hidden;
     width: 350px;
+}
+.chck-icn {
+  display: none;
+}
+.active .chck-icn {
+  display: block;
+}
+.fil-lbl {
+  flex: 1;
+  text-align: left;
+}
+.dropdown-menu.dropdown-filter {
+  float: left;
+  width: 250px;
+  min-width: 160px;
+  padding: 7px 0 0 0 !important;
+  margin: 2px 0 0;
+  z-index: 1002;
+}
+.drop-ul {
+  list-style: none;
+  padding-left: 0;
+}
+.btn-filtr {
+  width: 100%;
+  font-weight: 400;
+}
+.btn-filtr.active {
+  color: #2786fb;
+  background: rgba(39, 134, 251, 0.1) !important;
+}
+.btn-filtr.active span.count{
+  background: #2786fb;
+}
+.kt-todo__icon {
+  border: 0;
+  background: none;
+  font-size: 16px;
+  outline: none !important;
+  box-shadow: none;
+  outline: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  padding: 0.5rem 1rem;
+  background-color: #f5f6fc;
+  border: 1px solid #b3bcff;
+  color: #5867dd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 0 8px 0 0;
+  border-radius: 4px;
+}
+.kt-todo__icon:hover {
+  background-color: #5867dd;
+  color: #fff;
 }

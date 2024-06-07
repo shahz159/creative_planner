@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule ,DatePipe} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -11,6 +11,9 @@ import { PortfolioProjectsRoutingModule } from './portfolio-projects-routing.mod
 import { PortfolioProjectsComponent } from './portfolio-projects.component';
 import { SortDirective } from './sort.directive';
 import { DateFormatPipePipe } from 'src/app/Shared/date-format-pipe.pipe';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { angularEditorConfig } from '@kolkov/angular-editor/lib/config';
 
 
 @NgModule({
@@ -22,16 +25,18 @@ import { DateFormatPipePipe } from 'src/app/Shared/date-format-pipe.pipe';
   ],
   imports: [
     CommonModule,
+    GooglePlaceModule,
     PortfolioProjectsRoutingModule,
     NgMultiSelectDropDownModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularEditorModule,
     NgSelectModule,
     ToastrModule,
     MaterialModule,
     Ng2SearchPipeModule,
     NgxPaginationModule
   ],
-
+  providers: [ DatePipe  ],
 })
 export class PortfolioProjectsModule { }

@@ -615,7 +615,7 @@ export class DashboardComponent implements OnInit {
           myDiv.removeClass('d-block');
           $('.side_view').removeClass('position-fixed');
           $('#propse11').removeClass('show');
-         
+
           // document.getElementById("fltrs-drop").classList.remove("show-flts");
         }
       }
@@ -757,7 +757,7 @@ export class DashboardComponent implements OnInit {
 
     this.date_menu_close('date-menu-1');
     $('#propse11').removeClass('show');
-   
+
     this.closefooter();
   }
   // Scheduling Work
@@ -1284,7 +1284,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if (this.ScheduleType == 'Event') {
-         
+
           this.GetProjectAndsubtashDrpforCalender();
           this.allAgendas = this.EventScheduledjson[0]['Agendas'].map(item => ({ index: item.AgendaId, name: item.Agenda_Name }));
           // this.GetMemosByEmployeeId();
@@ -1377,14 +1377,14 @@ export class DashboardComponent implements OnInit {
           if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
           {
               const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-              const index:number=this.StartTimearr.findIndex((item:any)=>{ 
-                  const t=moment(item,'h:mm A'); 
+              const index:number=this.StartTimearr.findIndex((item:any)=>{
+                  const t=moment(item,'h:mm A');
                   const result=t>=ct;
                   return result;
               });
               this.validStartTimearr=this.StartTimearr.slice(index);
           }
-          else 
+          else
           this.validStartTimearr=[...this.StartTimearr];
 
 
@@ -1423,7 +1423,6 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1542,6 +1541,7 @@ debugger
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+          debugger
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
@@ -1559,7 +1559,7 @@ debugger
               }
             });
           }
-          
+
           this.dayArr.forEach((item:any)=>{
             if(item.checked){
                 let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
@@ -1586,12 +1586,12 @@ debugger
               }
             });
           }
-          
+
           this.MonthArr.forEach((item:any)=>{
             if(item.checked){
                const d_no=Number.parseInt(item.value);
                this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-            }    
+            }
           });
 
         }
@@ -1602,6 +1602,7 @@ debugger
           this.EventScheduledjson[0]['Ed_Time']
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+
           this.MasterCode = (this.MasterCode[0].stringval);
 
           document.getElementById("subtaskid").style.display = "flex";
@@ -1703,14 +1704,14 @@ debugger
           if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
           {
               const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-              const index:number=this.StartTimearr.findIndex((item:any)=>{ 
-                  const t=moment(item,'h:mm A'); 
+              const index:number=this.StartTimearr.findIndex((item:any)=>{
+                  const t=moment(item,'h:mm A');
                   const result=t>=ct;
                   return result;
               });
               this.validStartTimearr=this.StartTimearr.slice(index);
           }
-          else 
+          else
           this.validStartTimearr=[...this.StartTimearr];
 
 
@@ -1816,7 +1817,7 @@ debugger
       if ((!this.Title_Name)||this.Title_Name.trim().length<3||this.Title_Name.trim().length>100)
         document.getElementById('dsb-evt-titleName').focus();
       else if (this.ScheduleType === 'Event' && this.allAgendas.length === 0) { const agf: any = document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
-    
+
       this.notProvided = true;
     }
   }
@@ -1862,7 +1863,7 @@ debugger
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-   
+
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -1997,7 +1998,7 @@ debugger
 
 
         var vLink_Details = "Link_Details";
-        let linkobj:any={  
+        let linkobj:any={
             link:this.Link_Details?this.Link_Details:'',
             meetingId:this.mtgUserId===undefined?'':this.mtgUserId.trim(),
             meetingPassword:this.mtgPassword===undefined?'':this.mtgPassword.trim()
@@ -2025,7 +2026,7 @@ debugger
         const mtgAgendas = JSON.stringify(this.allAgendas.length > 0 ? this.allAgendas : []);
         element[vAgendas] = mtgAgendas;
 
-        // 
+        //
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -2359,7 +2360,7 @@ debugger
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
           var vLink_Details = "Link_Details";
-          let linkobj:any={  
+          let linkobj:any={
               link:this.Link_Details?this.Link_Details:'',
               meetingId:this.mtgUserId===undefined?'':this.mtgUserId.trim(),
               meetingPassword:this.mtgPassword===undefined?'':this.mtgPassword.trim()
@@ -2488,7 +2489,7 @@ debugger
             //   this.evesrchclose();
             // this.GetScheduledJson();
 
-            // 2. sol   
+            // 2. sol
             if (this.showsearch)
               this.Search_byname();
             else
@@ -2686,7 +2687,7 @@ debugger
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
-   
+
     document.getElementById("div_recurrence").style.display = "block";
     document.getElementById("weekly_121_new").style.display = "none";
     document.getElementById("div_endDate_new").style.display = "none";
@@ -2695,7 +2696,7 @@ debugger
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
-    
+
 
     this.clearallfields();
     this.daysSelected = [];
@@ -2734,7 +2735,7 @@ debugger
       this.GetProjectAndsubtashDrpforCalender();
       this.GetMemosByEmployeeId();
 
-     
+
       document.getElementById("subtaskid").style.display = "none";
       // document.getElementById("Link_Name").style.display = "block";
       document.getElementById("Guest_Name").style.display = "flex";
@@ -2745,8 +2746,8 @@ debugger
       document.getElementById("core_viw222").style.display = "flex";
       document.getElementById("core_Dms").style.display = "flex";
       document.getElementById("online-add").style.display = "block";
-    
-  
+
+
       const TEsb = document.getElementById('TaskEvent-Sidebar');
       TEsb.addEventListener('scroll', () => {
         this.autocompletes.forEach((ac) => {
@@ -2775,7 +2776,7 @@ debugger
     console.log(this.daysSelectedII, "default")
     // this.Project_Code = "4001176";
 
-  } 
+  }
 
 
   changeScheduleType(val:number){
@@ -2822,7 +2823,7 @@ debugger
 
   subtask_loading:boolean=false;
   GetSubtasklistfromProject(MasterCode) {
-    
+
 
     this.ProjectListArray.forEach(element => {
 
@@ -2986,8 +2987,8 @@ debugger
     if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
     {
         const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-        const index:number=this.StartTimearr.findIndex((item:any)=>{ 
-            const t=moment(item,'h:mm A'); 
+        const index:number=this.StartTimearr.findIndex((item:any)=>{
+            const t=moment(item,'h:mm A');
             const result=t>=ct;
             return result;
         });
@@ -3006,7 +3007,7 @@ debugger
    // verify whether starttime and endtime are valid or not. end
 
     }
-    else 
+    else
     this.validStartTimearr=[...this.StartTimearr];
     // valid starttimearr setting end.
 
@@ -3240,7 +3241,7 @@ debugger
   //   this._calenderDto.Scheduled_date = this.doubleclickdate;
   //   this.CalenderService.NewGetScheduledtime(this._calenderDto).subscribe
   //     ((data) => {
-  //       
+  //
   //       this.Avaliabletime = JSON.parse(data["AvailableSlotsJson"]);
   //       // this._total = this.Avaliabletime[0].SlotsJson.length;
   //       this.timeslotsavl = [];
@@ -3273,7 +3274,7 @@ debugger
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         this.companies_Arr=JSON.parse(data['Client_json']);
-     
+
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
         console.log("ProjectListArray:",this.ProjectListArray);
@@ -3311,13 +3312,13 @@ debugger
           this.Alltimes.push(element.TSStart);
         });
 
-      
+
 
       // provide valid starttiming and endtimearr.    start
       let _currentdate=moment();
       const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-      const index:number=this.StartTimearr.findIndex((item:any)=>{ 
-        const t=moment(item,'h:mm A'); 
+      const index:number=this.StartTimearr.findIndex((item:any)=>{
+        const t=moment(item,'h:mm A');
         const result=t>=ct;
         return result;
       });
@@ -3357,7 +3358,7 @@ debugger
   }
 
 currentTime:any;
-  
+
   addstarttime() {
 debugger
     this.Alltimes = [];
@@ -3687,7 +3688,7 @@ debugger
     }
   }
 
-  SelectDropDown(val) {  
+  SelectDropDown(val) {
     this.selectedrecuvalue = val.value.toString();
     // alert(this.selectedrecuvalue)
     if (this.selectedrecuvalue == '0') {
@@ -3696,7 +3697,7 @@ debugger
     else {
       this._PopupConfirmedValue = 2;
     }
-    this._labelName = "Start Date";   // based on repeat type setting label to 'start date' or 'schedule date'.  
+    this._labelName = "Start Date";   // based on repeat type setting label to 'start date' or 'schedule date'.
     document.getElementById("div_endDate_new").style.display = "block";
     for (let index = 0; index < this.dayArr.length; index++) {
       this.dayArr[index].checked = false;
@@ -4236,6 +4237,7 @@ debugger
 
     this.Title_Name = this.delayDetails['Project_Name'];
     this.MasterCode = this.delayDetails['Master_Code'];
+
     this.Subtask = this.delayDetails['Project_Code'];
 
 
@@ -4463,7 +4465,7 @@ debugger
     //     event.setProp('title', newTitle);
     //   }
     // }
-    // 
+    //
     let is12am: boolean = (end.getHours() == 0 && end.getMinutes() == 0 && end.getSeconds() == 0);
     if (eventIsWithinView && (startMidnight !== endMidnight) && !is12am) {
 
@@ -4576,7 +4578,7 @@ debugger
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
-  closeInfo() { 
+  closeInfo() {
     // document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
@@ -5302,7 +5304,7 @@ debugger
     this._onlinelink = this.draft_arry[0]["online"];
     this.Location_Type = this.draft_arry[0]["location"];
     $('#Descrip_Name12').css('display',this._onlinelink?'flex':'none');
-    
+
   }
   closeschd() {
 
@@ -5312,7 +5314,7 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-    
+
 
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
@@ -5921,7 +5923,7 @@ debugger
 
   // isPortfolioDrpDwnOpen: boolean = false;
   // onPortfolioSelected(e: any) {
-    
+
   //   const portfolioChoosed: any = this.Portfoliolist_1.find((p: any) => p.portfolio_id === e.option.value);
   //   console.log(portfolioChoosed);
   //   if (portfolioChoosed) {
@@ -5977,10 +5979,10 @@ debugger
   //     const index = this.MasterCode.indexOf(prjChoosed.Project_Code);
   //     if (index === -1) {
   //       // if not present then add it
-  //       this.MasterCode.push(prjChoosed.Project_Code);   
+  //       this.MasterCode.push(prjChoosed.Project_Code);
   //       this.projectsSelected.push({
-  //         Project_Code:prjChoosed.Project_Code,  
-  //         Project_Name:prjChoosed.Project_Name,  
+  //         Project_Code:prjChoosed.Project_Code,
+  //         Project_Name:prjChoosed.Project_Name,
   //         BlockNameProject:prjChoosed.BlockNameProject
   //       });
   //     }
@@ -6013,7 +6015,7 @@ debugger
 
   //     let T1=moment(time1,'YYYY-MM-DD hh:mm a');
   //     let T2=moment(time2,'YYYY-MM-DD hh:mm a');
-  //     const result=Math.abs(T1.diff(T2,'minute'));  
+  //     const result=Math.abs(T1.diff(T2,'minute'));
   //     return result<60?(result+' mins'):
   //               (result/60).toFixed(2)+' hrs';
 
@@ -6028,11 +6030,11 @@ onProjectSearch(inputtext:any){
     this.CalenderService.NewGetProjectandsubtaskDrp(inputtext,filterobj).subscribe((res:any)=>{
         console.log(res);
         if(res){
-          this.ProjectListArray=JSON.parse(res['Projectlist']); 
+          this.ProjectListArray=JSON.parse(res['Projectlist']);
            console.log("project name searched result:",this.ProjectListArray);
           this.searchingResult=false;
         }
-      
+
     })
   }
 
@@ -6046,7 +6048,7 @@ onProjectSearch(inputtext:any){
     document.getElementById("filter-icon").classList.remove("active");
   }
 
- 
+
   customrecurrencemodal() {
     debugger
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
@@ -6061,7 +6063,7 @@ onProjectSearch(inputtext:any){
       document.getElementById("weekly_121_new").style.display = "block";
     else if(this.selectedrecuvalue1=='3')
       document.getElementById("Monthly_121_new").style.display = "block";
-    
+
     if(this.selectedrecuvalue1!='0')
       document.getElementById("div_endDate_new").style.display = "block";
 
@@ -6076,7 +6078,7 @@ onProjectSearch(inputtext:any){
 
     this.selectedrecuvalue1='0';
     this.dayArr1=[];
-    this.MonthArr1=[]; 
+    this.MonthArr1=[];
     this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
 
@@ -6113,7 +6115,7 @@ close_projectmodal(){
   document.getElementById("projectmodal").style.display = "none";
   this.choosedItems=[];   // clear selections.
   this.isFilteredOn=false;
-  this.basedOnFilter.byuser=null;     
+  this.basedOnFilter.byuser=null;
   this.basedOnFilter.bycompany=null;    // clear filter applied.
   this.FilteredResults=[];             // clear filtered result.
   this.projectmodaltype=undefined; // no model open.
@@ -6159,10 +6161,10 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
      };break;
      default:{};
   }
- 
+
 }
 
-keepChoosedItems(){ 
+keepChoosedItems(){
   switch(this.projectmodaltype)
   {
       case 'PROJECT':{
@@ -6173,7 +6175,7 @@ keepChoosedItems(){
         this.projectsSelected=[...this.projectsSelected,...this.choosedItems.map(item=>({ Project_Code:item.Project_Code, Project_Name:item.Project_Name, BlockNameProject:item.BlockNameProject, TM_DisplayName:item.TM_DisplayName }))]; // selected prj objs
         this.close_projectmodal();
       };break;
-       
+
       case 'PORTFOLIO':{
             if (!this.Portfolio)   // if Portfolio is null,undefined,''
             this.Portfolio = [];
@@ -6185,7 +6187,7 @@ keepChoosedItems(){
      case 'DMS':{
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
- 
+
           this.SelectDms=[...this.SelectDms,...this.choosedItems];   // array of all selected dms id.
           this.close_projectmodal();
      };break;
@@ -6197,11 +6199,11 @@ keepChoosedItems(){
         this.ngEmployeeDropdown=[...this.ngEmployeeDropdown,...this.choosedItems];
         this.close_projectmodal();
      };break;
-    
+
   }
 
 }
- 
+
 onItemChoosed(choosed:any,choosedItem:any){
     if(choosed){
       this.choosedItems.push(choosedItem);
@@ -6217,7 +6219,7 @@ onItemChoosed(choosed:any,choosedItem:any){
             if(j>-1){
               this.MasterCode.splice(j,1);
               this.projectsSelected.splice(j,1);
-            }  
+            }
       }
       else{
         const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
@@ -6239,7 +6241,7 @@ onPortfolioFilter(){
     this.isFilteredOn=true;
 }
 
-onDMSFilter(){ 
+onDMSFilter(){
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
            if(!this.basedOnFilter.byuser)
@@ -6300,7 +6302,7 @@ repeatEvent() {
   document.getElementById("Schenddate").style.display = "none";
 
   this.editTask = false;
-  this.copyTask = false; 
+  this.copyTask = false;
   this.create = false;
   this.eventRepeat=true;
 
@@ -6313,7 +6315,7 @@ repeatEvent() {
       this.Schedule_ID = 0;   // schedule id.
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
       this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-   
+
       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
       this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
@@ -6321,12 +6323,12 @@ repeatEvent() {
       this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
       this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
-  
+
       // if (this._FutureEventTasksCount > 0) {
-       
+
       // }
       // else if (this._FutureEventTasksCount == 0) {
-     
+
       // }
       document.getElementById("div_recurrence").style.display = "block";
       document.getElementById("Monthly_121_new").style.display = "none";
@@ -6352,8 +6354,8 @@ repeatEvent() {
       }
       this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
 
-     
-  
+
+
        if (this.ScheduleType == 'Event') {
         this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
         this.GetProjectAndsubtashDrpforCalender();
@@ -6378,7 +6380,7 @@ repeatEvent() {
           this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
         });
 
-      
+
         this.SelectDms = [];
         this.SelectDms1 = [];
 
@@ -6399,7 +6401,7 @@ repeatEvent() {
 
         });
 
-        
+
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
@@ -6472,7 +6474,7 @@ if(input_date<current_date){
       else{
         var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
       }
-     
+
       var dd = moment(date3).add(diffInDays, 'days')
       console.log(dd,date3,diffInDays,date2,this._SEndDate,"update edit")
       var SEndDates = "SEndDate";
@@ -6497,7 +6499,7 @@ if(input_date<current_date){
       element[vRecurrence] = "0";
 
       var vRecurrence_value = "Recurrence_values";
-      element[vRecurrence_value] = "";   
+      element[vRecurrence_value] = "";
 
       var vEmp_No = "Emp_No";
       element[vEmp_No] = this.Current_user_ID;
@@ -6536,7 +6538,7 @@ if(input_date<current_date){
       element[vSubtask] = "";
 
       var vEventNumber = "EventNumber";
-      element[vEventNumber] = this.EventScheduledjson[0].EventNumber;   
+      element[vEventNumber] = this.EventScheduledjson[0].EventNumber;
 
       var vPortfolio_name = "Portfolio_name";
       element[vPortfolio_name] = this.portfolio_Scheduledjson.map(ptf=>ptf.numberval).join(',');
@@ -6547,7 +6549,7 @@ if(input_date<current_date){
       var vAgendas = "Meeting_Agendas";
       const mtgAgendas=JSON.stringify(this.EventScheduledjson[0].Agendas.map(agd=>({index:agd.AgendaId, name:agd.Agenda_Name})));
       element[vAgendas] = mtgAgendas;
-      // 
+      //
     });
 
     this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
@@ -6580,7 +6582,7 @@ if(input_date<current_date){
         this.closeevearea();
 
       });
-    
+
   }
   else {
     alert('Please Select Valid Date and Time');
@@ -6600,19 +6602,19 @@ mtgOnDays:any=[];  // list of day name on which mtg is present.
 notProvided1:any;
 
 onRecurrenceTypeChange(val:any){
-  
+
     this.selectedrecuvalue1 = val.value.toString();
-    this._labelName = "Start Date"; 
-   
+    this._labelName = "Start Date";
+
     for (let index = 0; index < this.dayArr1.length; index++) {
           this.dayArr1[index].checked = false;
     }
     for (let index = 0; index < this.MonthArr1.length; index++) {
           this.MonthArr1[index].checked = false;
     }
-    
 
-    document.getElementById("div_endDate_new").style.display = "block";  
+
+    document.getElementById("div_endDate_new").style.display = "block";
     if (val.value == 0) {
       this._labelName = "Schedule Date";
       document.getElementById("div_endDate_new").style.display = "none";
@@ -6634,7 +6636,7 @@ onRecurrenceTypeChange(val:any){
 }
 
 
-bindCustomRecurrenceValues(){ 
+bindCustomRecurrenceValues(){
 
 
 if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
@@ -6660,7 +6662,7 @@ this.MonthArr=[...this.MonthArr1];
 this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
 this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
 
-this.mtgOnDays=[];   
+this.mtgOnDays=[];
 if(this.selectedrecuvalue==='2'){
   this.dayArr.forEach((item:any)=>{
     if(item.checked){
@@ -6674,7 +6676,7 @@ else if(this.selectedrecuvalue==='3'){
      if(item.checked){
         const d_no=Number.parseInt(item.value);
         this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-     }    
+     }
    });
 }
 
@@ -6737,7 +6739,7 @@ if (this.selectedrecuvalue == '0') {
 }
 
 
-this.close_customrecurrencemodal();  
+this.close_customrecurrencemodal();
 }
 
 // new eventsidebar design code end
