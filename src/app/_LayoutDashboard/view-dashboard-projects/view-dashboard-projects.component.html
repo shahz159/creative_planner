@@ -259,7 +259,7 @@
                                                     <th>End date</th>
                                                     <th>Last update</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th *ngIf="Type==type2">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -354,7 +354,7 @@
                                                       </td>
                                                       <td>
 
-                                                        <a class="port-info-btn"  *ngIf="item.Status==='Pending'"
+                                                        <a class="port-info-btn"  *ngIf="item.Status==='Pending' && Type==type2"
                                                      (click)="openAssignedProject(item.Assign_Id) ">
                                                             <svg style="width: 34px; height: 34px;" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve" class="kt-menu__link-icon"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"></path><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"></path></g></g></svg>
                                                         </a>
@@ -566,21 +566,14 @@
                                                       </ng-template>
 
 
+                                                   
+                                                            <ng-container *ngIf="ActionhiddenIcon==true && Mode!='AssignedActions'">
+                                                           
+                                                     
 
 
-                                                            <span *ngIf="item.Link_Status==1;else not_Linked">
-                                                                <a class="curser-pointer ml-2"
-                                                                (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img width="19px"
-                                                                        src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                                        title="Linked"></a>
-
-                                                            </span>
-                                                            <ng-template #not_Linked>
-                                                                <a><img width="19px" class="black-white ml-2"
-                                                                        src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                                        title="Not Linked"></a>
-                                                            </ng-template>
-                                                            <span class="port-info-btn ml-2">
+                                                            <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
+                                                            <span class="port-info-btn ml-2"  title="Linked"  (click)="_OpenfortfolioInfo(i,item.Project_Name)">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                     <defs></defs>
                                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -590,7 +583,9 @@
                                                                     </g>
                                                                 </svg>
                                                             </span>
-                                                            <span class="port-info-btn-no-acive ml-2 d-none">
+                                                        </ng-containeer>
+                                                        <ng-template #prtfolio>
+                                                            <span class="port-info-btn-no-acive ml-2"  title="Not Linked" (click)="_OpenfortfolioInfo(i,item.Project_Name)" >
                                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                         <defs></defs>
                                                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -600,6 +595,32 @@
                                                                         </g>
                                                                     </svg>
                                                             </span>
+                                                        </ng-template>
+
+                                                        <span *ngIf="item.Link_Status==1;else not_Linked">
+                                                            <a class="curser-pointer ml-2"
+                                                                   (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img width="19px"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Linked"></a>
+
+                                                        </span>
+                                                        <ng-template #not_Linked>
+                                                                  <a (click)="_OpenMemosInfo()"><img width="19px" class="black-white ml-2"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Not Linked"></a>
+                                                        </ng-template>
+
+
+
+
+
+
+
+
+
+
+
+                                                        </ng-container>
                                                         </div>
                                                     </td>
 
@@ -810,7 +831,7 @@
     <!-- <app-project-info></app-project-info> -->
     <!-- <app-shared-projects-detail></app-shared-projects-detail> -->
 
-<!-- dms memos sidebar-->
+<!-- dms memos sidebar start-->
 <div id="MemosSideBar" class="sideInfobar animate-right">
     <div class="kt-portlet__head p-3 bg-primary">
         <div class="kt-portlet__head-label">
@@ -885,5 +906,59 @@
     </div>
 </div>
 
+<!-- dms memos sidebar End-->
 
+
+
+
+
+
+
+
+
+
+<!--  Fortfolio sidebar start-->
+<div id="portfloSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                (click)="_Closeportflosidebar()">&times;</a>
+            <div class="title-sidebar mb-0 text-white">
+                <h5 class="curser-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                        <defs></defs>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"></rect>
+                            <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                            <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                        </g>
+                    </svg>   Linked Portfolio
+                </h5>
+                <span class="text-small text-white">{{_displayPrtName}}</span>
+
+            </div>
+           
+        </div>
+    </div>
+    <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body">
+                <div class="kt-widget1 kt-widget1--fit">
+                    <div class="kt-widget1__item" *ngFor="let item of portfolio_List; let i=index">
+                        <div class="kt-widget1__info kt-align-left" >
+                         <h5 (click)="OnCardClick(item.Portfolio_ID)" class="curser-pointer">
+                               
+                             
+                                 {{i+1}}. {{item.Portfolio_Name}} 
+                               
+                           </h5>
+                        </div>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
+<!--  Fortfolio sidebar End-->

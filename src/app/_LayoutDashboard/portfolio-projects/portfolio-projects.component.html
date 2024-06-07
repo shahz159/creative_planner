@@ -51,20 +51,24 @@
                             </div>
                         </div>
                         <div class="kt-todo__details">
-                                    <a class="btn btn-label-primary-graph btn-upper btn-sm btn-bold" role="button"
+                                    <!-- <a class="btn btn-label-primary-graph btn-upper btn-sm btn-bold" role="button"
                                         (click)="ProjectsGraphsClick()">
                                         {{Project_Graph}}
-                                    </a>
-                                    <a class="kt-todo__icon" title="Graph" >
+                                    </a> -->
+                                    <a class="kt-todo__icon" title="{{Project_Graph}}" *ngIf="Project_Graph=='Graphs'" (click)="ProjectsGraphsClick()">
                                         <i class="fas fa-chart-pie"></i>
                                     </a>
-                                    <a class="kt-todo__icon" title="Shared" >
-                                        <i class="fas fa-share-alt"></i>
+                                    <a class="kt-todo__icon" title="Back to {{Project_Graph}}" *ngIf="Project_Graph=='Projects'" (click)="ProjectsGraphsClick()">
+                                        <i class="fab fa-wpforms"></i>
                                     </a>
-                                    <a class="kt-todo__icon" title="Add Project" >
+                                    <a class="kt-todo__icon" title="Add project" *ngIf="Project_Graph=='Graphs'" (click)="populateForm()">
                                         <i class="fas fa-plus"></i>
                                     </a>
-                                    <a class="kt-todo__icon" title="Shared Details" >
+                                    <a class="kt-todo__icon" title="Share" *ngIf="Project_Graph=='Graphs'" (click)="share_Users()">
+                                        <i class="fas fa-share-alt"></i>
+                                    </a>
+                                    <a class="kt-todo__icon" title="Shared details" data-toggle="modal" *ngIf="Project_Graph=='Graphs'"
+                                    data-target="#exampleModal2" [hidden]="_btnShareDetails" href="javascript:void(0)">
                                         <i class="fas fa-file-alt"></i>
                                     </a>
 
@@ -84,11 +88,11 @@
 
                                             <ul class="drop-ul">
                                                 <li class="dropdown-header">Filter by</li>
-                                                <li>
-                                                    <button class="btn btn-filtr active">
+                                                <li *ngIf="CountInprocess>0" (click)="labelAll(); onButtonClick('tot')">
+                                                    <button id="tot" class="btn btn-filtr active">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count tot">171</span>
-                                                            <div class="fil-lbl">Total Projects</div>
+                                                            <span class="count tot">{{TotalProjects}}</span>
+                                                            <div class="fil-lbl">Total projects</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -102,10 +106,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountInprocess>0" (click)="labelInprocess();onButtonClick('inn')">
+                                                    <button  id="inn" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count in-pro">31</span>
+                                                            <span class="count in-pro"> {{CountInprocess}}</span>
                                                             <div class="fil-lbl">In Process</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -120,10 +124,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountDelay>0" (click)="labelDelay();onButtonClick('del')">
+                                                    <button  id="del" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count del">11</span>
+                                                            <span class="count del"> {{CountDelay}} </span>
                                                             <div class="fil-lbl">Delay</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -138,10 +142,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountNotStarted > 0" (click)="labelDraft();onButtonClick('draft')">
+                                                    <button id="draft" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count draf">30</span>
+                                                            <span class="count draf">{{CountNotStarted}}</span>
                                                             <div class="fil-lbl">Draft</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -156,28 +160,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <!-- <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountCompleted > 0" (click)="labelCompleted();onButtonClick('compl')">
+                                                    <button id="compl" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count">72</span>
-                                                            <div class="fil-lbl">Delay</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </button>
-                                                </li> -->
-                                                <li>
-                                                    <button class="btn btn-filtr">
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="count com">51</span>
+                                                            <span class="count com">{{CountCompleted}}</span>
                                                             <div class="fil-lbl">Completed</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -192,11 +178,11 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountNewProject > 0" (click)="labelNewProject();onButtonClick('new-pro')">
+                                                    <button  id="new-pro" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count new-pro">1</span>
-                                                            <div class="fil-lbl">New Approval</div>
+                                                            <span class="count new-pro">{{CountNewProject}}</span>
+                                                            <div class="fil-lbl">New project</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -210,28 +196,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                  <button class="btn btn-filtr">
-                                                      <div class="d-flex align-items-center">
-                                                          <span class="count can-app">11</span>
-                                                          <div class="fil-lbl">Cancelation Approval</div>
-                                                          <span class="chck-icn">
-                                                              <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  width="16" height="16"
-                                                                  fill="currentColor" class="bi bi-check2"
-                                                                  viewBox="0 0 16 16">
-                                                                  <path
-                                                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                  </path>
-                                                              </svg>
-                                                          </span>
-                                                      </div>
-                                                  </button>
-                                              </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountCompletionUA>0" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')">
+                                                    <button id="Compl-Apprv" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count com-appr">17</span>
+                                                            <span class="count com-appr">{{CountCompletionUA}}</span>
                                                             <div class="fil-lbl">Completion Approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -246,12 +214,46 @@
                                                         </div>
                                                     </button>
                                                 </li>
-
-
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountCancellation>0" (click)="labelCancellationapproval();onButtonClick('Cancel-app')">
+                                                    <button id="Cancel-app"class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count dead-ext">9</span>
+                                                            <span class="count can-app">{{CountCancellation}}</span>
+                                                            <div class="fil-lbl">Cancellation Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li *ngIf="CountForward>0" (click)="labelForward();onButtonClick('Count-forward')">
+                                                    <button id="Count-forward" class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count for-app">{{CountForward}}</span>
+                                                            <div class="fil-lbl">Forward Approval</div>
+                                                            <span class="chck-icn">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-check2"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li *ngIf="CountDeadLineExtendedUA>0" (click)="labelDeadline();onButtonClick('Count-deadline')">
+                                                    <button id="Count-deadline" class="btn btn-filtr">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="count dead-ext">{{CountDeadLineExtendedUA}}</span>
                                                             <div class="fil-lbl">Deadline Extended Approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -266,10 +268,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <!-- <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountAll_UA > 0" (click)="labelUA();onButtonClick('underappr')">
+                                                    <button id="underappr" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count ">15</span>
+                                                            <span class="count new-pro">{{CountAll_UA}}</span>
                                                             <div class="fil-lbl">New Approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -283,29 +285,11 @@
                                                             </span>
                                                         </div>
                                                     </button>
-                                                </li> -->
-                                                <li>
-                                                  <button class="btn btn-filtr">
-                                                      <div class="d-flex align-items-center">
-                                                          <span class="count for-app">44</span>
-                                                          <div class="fil-lbl">Forward Approval</div>
-                                                          <span class="chck-icn">
-                                                              <svg xmlns="http://www.w3.org/2000/svg"
-                                                                  width="16" height="16"
-                                                                  fill="currentColor" class="bi bi-check2"
-                                                                  viewBox="0 0 16 16">
-                                                                  <path
-                                                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                  </path>
-                                                              </svg>
-                                                          </span>
-                                                      </div>
-                                                  </button>
-                                              </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                </li>
+                                                <li *ngIf="CountProjectHold > 0"  (click)="labelProjectHold();onButtonClick('pro-hold')">
+                                                    <button id="pro-hold" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count pro-hold">1</span>
+                                                            <span class="count pro-hold">{{CountProjectHold}}</span>
                                                             <div class="fil-lbl">Project Hold</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -320,10 +304,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountRejecteds > 0" (click)="labelRejecteds();onButtonClick('reject')">
+                                                    <button id="reject" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count rej">11</span>
+                                                            <span class="count rej">{{CountRejecteds}}</span>
                                                             <div class="fil-lbl">Rejected</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -338,10 +322,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="Count_ToDoCompleted > 0" (click)="labelToDoCompleted();onButtonClick('todocomp')">
+                                                    <button id="todocomp" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count todo-com">11</span>
+                                                            <span class="count todo-com">{{Count_ToDoCompleted}}</span>
                                                             <div class="fil-lbl">ToDo Completed</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -356,10 +340,10 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="Count_ToDoAchieved > 0" (click)="labelToDoAchieved();onButtonClick('todoachi')">
+                                                    <button id="todoachi" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count todo-ach">22</span>
+                                                            <span class="count todo-ach">{{Count_ToDoAchieved}}</span>
                                                             <div class="fil-lbl">ToDo Achived</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -374,11 +358,11 @@
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="btn btn-filtr">
+                                                <li *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')">
+                                                    <button id="delete" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count del">1</span>
-                                                            <div class="fil-lbl ">Deleted Projects</div>
+                                                            <span class="count del">{{CountDeleted}}</span>
+                                                            <div class="fil-lbl">Deleted Projects</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -396,7 +380,7 @@
                                         </div>
                                     </div>
                         </div>
-                        <div class="kt-todo__details dropdown">
+                        <!-- <div class="kt-todo__details dropdown">
                                     <a class="btn btn-label-primary-graph btn-upper btn-sm btn-bold" role="button" type="button" id="morebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M512 256c70.4 0 128-57.6 128-128S582.4 0 512 0s-128 57.6-128 128 57.6 128 128 128z m0 128c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z m0 384c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z"/></svg>
                                     </a>
@@ -408,7 +392,7 @@
                                             data-target="#exampleModal2" [hidden]="_btnShareDetails" class="dropdown-item" href="javascript:void(0)"><i class="fas fa-file-alt mr-2"></i>Shared details</a>
                                         </div>
                                       </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -416,176 +400,122 @@
         <!--begin:: Widgets/Best Sellers->
             <-- begin::Portlet -->
         <div class="kt-portlet mt-3 mb-0">
-            <div class="kt-portlet__head" style="border-bottom: 0px solid #ebedf2;">
+            <!-- <div class="kt-portlet__head" style="border-bottom: 0px solid #ebedf2;"> -->
 
-                <!-- Labels  -->
-                <div class="kt-portlet__head-toolbar pt-btns flex-column flex-sm-row text-center">
-                    <!-- All Projects... -->
+                <!-- Labels  --> <!-- All Projects... -->
                     <!-- <a (click)="labelAll()" [hidden]="HideStatusDropdown"
                         class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
                         role="button">
                         {{TotalProjects}} Projects </a> -->
                     <!-- <div [hidden]="HideStatusDropdown"> -->
 
+                <!-- <div class="kt-portlet__head-toolbar pt-btns flex-column flex-sm-row text-center">
 
-                        <ng-container *ngIf="CountInprocess>0">
-                    <a href="javascript:void(0)" (click)="labelAll(); onButtonClick('tot')"  [hidden]="HideStatusDropdown"
-                      class="badge total-project kt-badge--inline mr-2 py-10px btn-sm active-total-project" id="tot" tabindex="0" >
-                      <span>{{TotalProjects}}</span> Total projects
-                    </a>
-                </ng-container>
-
-
-
-
-                    <!-- End -->
                     <ng-container *ngIf="CountInprocess>0">
-                        <!-- <a (click)="labelInprocess()" [hidden]="HideStatusDropdown"
-                            class="kt-inbox__label kt-badge kt-badge--unified-warning kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
-                            role="button">
-                            {{CountInprocess}} InProcess </a> -->
-                        <a href="javascript:void(0)" (click)="labelInprocess();onButtonClick('inn')" [hidden]="HideStatusDropdown"
-                            class="badge in-processs kt-badge--inline mr-2 btn-sm py-10px" id="inn"> {{CountInprocess}}
-                            In-process</a>
-
-                    </ng-container>
-                    <ng-container *ngIf="CountDelay>0">
-                        <!-- <a (click)="labelDelay()" [hidden]="HideStatusDropdown"
-                            class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline mr-4 btn-sm"
-                            role="button">
-                            {{CountDelay}} Delay
-                        </a> -->
-                        <a href="javascript:void(0)" (click)="labelDelay();onButtonClick('del')" [hidden]="HideStatusDropdown"
-                            class="badge Delay-head kt-badge--inline mr-2 btn-sm py-10px" id="del"> {{CountDelay}} Delay</a>
-                    </ng-container>
-
-                    <ng-container *ngIf="CountNotStarted > 0">
-                    <a href="javascript:void(0)" (click)="labelDraft();onButtonClick('draft')" [hidden]="HideStatusDropdown"
-                    class="badge Not-started-head kt-badge--inline mr-2 btn-sm py-10px" id="draft"> {{CountNotStarted}} Draft</a>
-            </ng-container>
-
-
-
-
-                    <ng-container *ngIf="CountCompleted > 0">
-                        <a href="javascript:void(0)" (click)="labelCompleted();onButtonClick('compl')" [hidden]="HideStatusDropdown"
-                            class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px" id="compl"> {{CountCompleted}}
-                            Completed</a>
-                    </ng-container>
-
-                    <ng-container *ngIf="CountNewProject > 0">
-                        <a href="javascript:void(0)" (click)="labelNewProject();onButtonClick('new-pro')" [hidden]="HideStatusDropdown"
-                            class="badge New-project kt-badge--inline mr-2 btn-sm  py-10px
-                            " id="new-pro">
-                            {{CountNewProject}} New project</a>
-                    </ng-container>
-
-                    <ng-container *ngIf="CountCompletionUA>0">
-                      <a href="javascript:void(0)" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')" [hidden]="HideStatusDropdown"
-                          class="badge Completion kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
-                          " id="Compl-Apprv">
-                          {{CountCompletionUA}} Completion approval</a>
-                  </ng-container>
-
-                  <ng-container *ngIf="CountCancellation>0" >
-                    <a href="javascript:void(0)" (click)="labelCancellationapproval();onButtonClick('Cancel-app')" [hidden]="HideStatusDropdown"
-                        class="badge Cancel-app kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
-                        " id="Cancel-app">
-                        {{CountCancellation}} Cancellation approval</a>
-                </ng-container>
-
-
-                <ng-container *ngIf="CountForward>0"  >
-                  <a href="javascript:void(0)" (click)="labelForward();onButtonClick('Count-forward')" [hidden]="HideStatusDropdown"
-                      class="badge foward-color kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
-                      " id="Count-forward">
-                      {{CountForward}} Forward approval</a>
-              </ng-container>
-
-
-              <ng-container *ngIf="CountDeadLineExtendedUA>0" >
-                <a href="javascript:void(0)" (click)="labelDeadline();onButtonClick('Count-deadline')" [hidden]="HideStatusDropdown"
-                    class="badge Count-deadline kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
-                    " id="Count-deadline">
-                    {{CountDeadLineExtendedUA}} Deadline extended approval</a>
-            </ng-container>
-
-
-
-
-
-                    <ng-container *ngIf="CountAll_UA > 0">
-                        <a href="javascript:void(0)" (click)="labelUA();onButtonClick('underappr')" [hidden]="HideStatusDropdown"
-                            class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px cursor-pointer" id="underappr"> {{CountAll_UA}} New
-                            approval</a>
-                    </ng-container>
-                    <ng-container *ngIf="CountProjectHold > 0">
-                        <a href="javascript:void(0)" (click)="labelProjectHold();onButtonClick('pro-hold')" [hidden]="HideStatusDropdown"
-                            class="badge Hold_color kt-badge--inline mr-2 btn-sm text-white py-10px" id="pro-hold"
-                            >
-                            {{CountProjectHold}} Project hold</a>
-                    </ng-container>
-                    <ng-container *ngIf="CountRejecteds > 0">
-                        <a href="javascript:void(0)" (click)="labelRejecteds();onButtonClick('reject')" [hidden]="HideStatusDropdown"
-                            class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px" id="reject">
-                            {{CountRejecteds}} Rejected</a>
-                    </ng-container>
-
-                    <ng-container *ngIf="Count_ToDoCompleted > 0">
-                      <a href="javascript:void(0)" (click)="labelToDoCompleted();onButtonClick('todocomp')" [hidden]="HideStatusDropdown"
-                          class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px" id="todocomp">
-                          {{Count_ToDoCompleted}} ToDocompleted</a>
-                  </ng-container>
-
-
-                    <ng-container *ngIf="Count_ToDoAchieved > 0">
-                        <a href="javascript:void(0)" (click)="labelToDoAchieved();onButtonClick('todoachi')" [hidden]="HideStatusDropdown"
-                            class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px " id="todoachi"
-                            > {{Count_ToDoAchieved}} ToDo
-                            achieved</a>
-                    </ng-container>
-                    <ng-container *ngIf="Count_ToDoAchieved > 0">
-                        <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
-                            class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px " > {{Count_ToDoCompleted}} ToDo
-                            completed</a>
-                    </ng-container>
-
-
-
-
-
-                    <ng-container>
-                      <a href="javascript:void(0)" *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')" [hidden]="HideStatusDropdown"
-                        class="badge Delete-head kt-badge--inline mr-2 py-10px btn-sm" id="delete"><span>{{CountDeleted}}</span>
-                        Deleted projects </a>
-                    </ng-container>
-
-
-
-
-
-                    <!-- </div> -->
-                    <!-- <div class="kt-portlet__head-toolbar"> -->
-                    <!-- <div [hidden]="HideStatusDropdown" class="mr-3">
-                            <ng-multiselect-dropdown [placeholder]="'All' " class="mutlidropdown-set"
-                                [settings]="dropdownSettings_Status" [data]="_StatusCountDB"
-                                [(ngModel)]="ngStatusDrpDwn" (onSelect)="StatusSelect($event)"
-                                (onDeSelect)="StatusDeselect()">
-                            </ng-multiselect-dropdown>
-                        </div> -->
-                    <!-- <div [hidden]="HideStatusDropdown" class="mr-2">
-                        <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
-                            data-toggle="kt-tooltip" title="Click to sort Asc">
-                            <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
+                        <a href="javascript:void(0)" (click)="labelAll(); onButtonClick('tot')"  [hidden]="HideStatusDropdown"
+                        class="badge total-project kt-badge--inline mr-2 py-10px btn-sm active-total-project" id="tot" tabindex="0" >
+                        <span>{{TotalProjects}}</span> Total projects
                         </a>
-                        <a [hidden]="A2Z" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
-                            data-toggle="kt-tooltip" title="Click to sort Desc">
-                            <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
-                        </a>
-                    </div> -->
-                    <!-- </div> -->
-                </div>
-            </div>
+                    </ng-container>
+                        <ng-container *ngIf="CountInprocess>0">
+                            <a href="javascript:void(0)" (click)="labelInprocess();onButtonClick('inn')" [hidden]="HideStatusDropdown"
+                                class="badge in-processs kt-badge--inline mr-2 btn-sm py-10px"> {{CountInprocess}}
+                                In-process</a>
+
+                        </ng-container>
+                        <ng-container *ngIf="CountDelay>0">
+                            <a href="javascript:void(0)" (click)="labelDelay();onButtonClick('del')" [hidden]="HideStatusDropdown"
+                                class="badge Delay-head kt-badge--inline mr-2 btn-sm py-10px" id="del"> {{CountDelay}} Delay</a>
+                        </ng-container>
+
+                        <ng-container *ngIf="CountNotStarted > 0">
+                        <a href="javascript:void(0)" (click)="labelDraft();onButtonClick('draft')" [hidden]="HideStatusDropdown"
+                        class="badge Not-started-head kt-badge--inline mr-2 btn-sm py-10px" id="draft"> {{CountNotStarted}} Draft</a>
+                    </ng-container>
+
+                        <ng-container *ngIf="CountCompleted > 0">
+                            <a href="javascript:void(0)" (click)="labelCompleted();onButtonClick('compl')" [hidden]="HideStatusDropdown"
+                                class="badge complteed_color kt-badge--inline mr-2 btn-sm py-10px" id="compl"> {{CountCompleted}}
+                                Completed</a>
+                        </ng-container>
+
+                        <ng-container *ngIf="CountNewProject > 0">
+                            <a href="javascript:void(0)" (click)="labelNewProject();onButtonClick('new-pro')" [hidden]="HideStatusDropdown"
+                                class="badge New-project kt-badge--inline mr-2 btn-sm  py-10px
+                                " id="new-pro">
+                                {{CountNewProject}} New project</a>
+                        </ng-container>
+
+                        <ng-container *ngIf="CountCompletionUA>0">
+                        <a href="javascript:void(0)" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')" [hidden]="HideStatusDropdown"
+                            class="badge Completion kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                            " id="Compl-Apprv">
+                            {{CountCompletionUA}} Completion approval</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="CountCancellation>0" >
+                        <a href="javascript:void(0)" (click)="labelCancellationapproval();onButtonClick('Cancel-app')" [hidden]="HideStatusDropdown"
+                            class="badge Cancel-app kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                            " id="Cancel-app">
+                            {{CountCancellation}} Cancellation approval</a>
+                    </ng-container>
+
+                    <ng-container *ngIf="CountForward>0"  >
+                    <a href="javascript:void(0)" (click)="labelForward();onButtonClick('Count-forward')" [hidden]="HideStatusDropdown"
+                        class="badge foward-color kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                        " id="Count-forward">
+                        {{CountForward}} Forward approval</a>
+                        </ng-container>
+
+                        <ng-container *ngIf="CountDeadLineExtendedUA>0" >
+                            <a href="javascript:void(0)" (click)="labelDeadline();onButtonClick('Count-deadline')" [hidden]="HideStatusDropdown"
+                                class="badge Count-deadline kt-badge--inline mr-2 btn-sm  py-10px cursor-pointer
+                                " id="Count-deadline">
+                                {{CountDeadLineExtendedUA}} Deadline extended approval</a>
+                        </ng-container>
+
+                        <ng-container *ngIf="CountAll_UA > 0">
+                            <a href="javascript:void(0)" (click)="labelUA();onButtonClick('underappr')" [hidden]="HideStatusDropdown"
+                                class="badge new-project-head kt-badge--inline mr-2 btn-sm py-10px cursor-pointer" id="underappr"> {{CountAll_UA}} New
+                                approval</a>
+                        </ng-container>
+                        <ng-container *ngIf="CountProjectHold > 0">
+                            <a href="javascript:void(0)" (click)="labelProjectHold();onButtonClick('pro-hold')" [hidden]="HideStatusDropdown"
+                                class="badge Hold_color kt-badge--inline mr-2 btn-sm text-white py-10px" id="pro-hold"
+                                >
+                                {{CountProjectHold}} Project hold</a>
+                        </ng-container>
+                        <ng-container *ngIf="CountRejecteds > 0">
+                            <a href="javascript:void(0)" (click)="labelRejecteds();onButtonClick('reject')" [hidden]="HideStatusDropdown"
+                                class="badge rejected kt-badge--inline mr-2 btn-sm  py-10px" id="reject">
+                                {{CountRejecteds}} Rejected</a>
+                        </ng-container>
+
+                        <ng-container *ngIf="Count_ToDoCompleted > 0">
+                        <a href="javascript:void(0)" (click)="labelToDoCompleted();onButtonClick('todocomp')" [hidden]="HideStatusDropdown"
+                            class="badge todo-completed-head kt-badge--inline mr-2 btn-sm  py-10px" id="todocomp">
+                            {{Count_ToDoCompleted}} ToDocompleted</a>
+                        </ng-container>
+                        <ng-container *ngIf="Count_ToDoAchieved > 0">
+                            <a href="javascript:void(0)" (click)="labelToDoAchieved();onButtonClick('todoachi')" [hidden]="HideStatusDropdown"
+                                class="badge todo-achieved kt-badge--inline mr-2 btn-sm py-10px " id="todoachi"
+                                > {{Count_ToDoAchieved}} ToDo
+                                achieved</a>
+                        </ng-container>
+                        <ng-container *ngIf="Count_ToDoCompleted > 0">
+                            <a href="javascript:void(0)" (click)="labelToDoCompleted()" [hidden]="HideStatusDropdown"
+                                class="badge  todo-completed kt-badge--inline mr-2 btn-sm py-10px " > {{Count_ToDoCompleted}} ToDo
+                                completed</a>
+                        </ng-container>
+
+                        <ng-container>
+                        <a href="javascript:void(0)" *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')" [hidden]="HideStatusDropdown"
+                            class="badge Delete-head kt-badge--inline mr-2 py-10px btn-sm" id="delete"><span>{{CountDeleted}}</span>
+                            Deleted projects </a>
+                        </ng-container>
+
+                </div> -->
+            <!-- </div> -->
             <!-- Portfolio Projects -->
             <div class="kt-portlet__body pt-3 pb-2">
                 <div class="tab-content">
@@ -611,8 +541,8 @@
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>ProjectName</p></th>
                                                     <th></th>
-                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Projecttype</span></th>
-                                                    <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th>
+                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Project type</span></th>
+                                                    <!-- <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th> -->
                                                     <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
                                                     <th><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
                                                     <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
@@ -792,21 +722,22 @@
                                                                   class="kt-widget__other"  title="Category" >{{item1.ReportType}}</p> -->
                                                           </ng-template>
                                                           </ng-container>
+                                                          <ng-container *ngIf="!showDeletedPrjOnly">
+                                                            <div> <div *ngIf="item1.ReportType==null;else ReportType">
+                                                              <p class="kt-widget__other" >Developemt</p>
+                                                          </div>
+                                                          <ng-template #ReportType>
+                                                              <p
+                                                                  class="kt-widget__other"  >{{item1.ReportType}}</p>
+                                                          </ng-template></div>
+                                                        </ng-container>
                                                       </td>
 
 
-                                                      <ng-container *ngIf="!showDeletedPrjOnly">
-                                                      <td> <div *ngIf="item1.ReportType==null;else ReportType">
-                                                        <p class="kt-widget__other" >Developemt</p>
-                                                    </div>
-                                                    <ng-template #ReportType>
-                                                        <p
-                                                            class="kt-widget__other"  >{{item1.ReportType}}</p>
-                                                    </ng-template></td>
-                                                  </ng-container>
 
 
-<td *ngIf="showDeletedPrjOnly" ></td>
+
+<!-- <td *ngIf="showDeletedPrjOnly" ></td> -->
                                                     <td>
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
                                                     </td>
@@ -885,14 +816,15 @@
                                                             </span>
                                                       </span>
                                                   </div>
-                                                  <div *ngIf="item1.Status=='Completed'">
+                                                  <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                       <span
-                                                          class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
-                                                          <div class="d-flex align-items-center justify-content-start">
-                                                            <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
-
-                                                          <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                          </div>
+                                                          class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                          <span class="attach-tippy">
+                                                            <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                        <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                           <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
+                                                            <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                        </span>
 
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
@@ -1042,15 +974,15 @@
                                                       </span>
                                                 </span>
                                             </div>
-                                            <div *ngIf="item1.Status=='Completed'">
+                                            <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                 <span
-                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>   <br/>
-                                                    <div class="d-flex align-items-center justify-content-start">
-                                                      <span *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attach px-0 mr-1" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)" ></span>
-
-                                                    <span class="kt-widget__other d-block st-line" title="Approved by and completed date" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">{{item1.Approvedby}} | {{item1.completedate | date: 'dd-MM-yyyy'}}  </span>
-                                                    </div>
-
+                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                    <span class="attach-tippy">
+                                                        <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                    <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                       <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
+                                                        <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                    </span>
                                                     <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
 
 
@@ -1172,16 +1104,24 @@
 
 
 
-                <td *ngIf="showDeletedPrjOnly">    <span class="Delay_color curser-pointer" > Deleted </span>
-                         <div class="d-flex align-items-center justify-content-start">
+                <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
+                    <span class="Delay_color curser-pointer">Deleted </span>
+                         <!-- <div class="d-flex align-items-center justify-content-start">
 
                      <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
                       <ng-container *ngIf="item1.Deleted_by">
                         {{ item1.Deleted_by }} |
                       </ng-container>
                       {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
-                                   </div>
-                                 </td>
+                                   </div> -->
+                <span class="attach-tippy">
+                    <b class="fa fa-trash text-info attachment" ></b>
+                <span class="st-line">
+                    <div style="width: max-content;">Deleted by: <h6>{{item1.Deleted_by}} </h6></div>
+                    <div>on: {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}</div></span>
+                </span>
+
+                </td>
 
 
 
@@ -1606,9 +1546,9 @@
               <div class="title-sidebar mb-0 text-white">
                   <h5 class="curser-pointer">
                     <svg  xmlns="http://www.w3.org/2000/svg" width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1"><defs ></defs><g  stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect  x="0" y="0" width="24" height="24"></rect><path  d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path  d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
-                     Linked portfolios
+                     Linked portfolio(s)
                   </h5>
-
+                  <!-- <span class="text-small text-white">{{_displayprtflioName}}</span> -->
               </div>
               <a href="javascript:void(0)" class="close-btn text-white" (click)="Closeportfoliosidebar()"><i class="fas fa-times"></i></a>
           </div>

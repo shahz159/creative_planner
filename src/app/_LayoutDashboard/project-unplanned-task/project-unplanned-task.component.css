@@ -2226,7 +2226,7 @@ border-radius: 2px
     font-weight: 500;
     font-size: 1.2rem;
     color: #000000;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 }
 .schedule-event.modal .modal-header .close {
     color: #493c3c;

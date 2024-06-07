@@ -87,7 +87,6 @@ export class CalenderService {
   NewGet_previousMeetingNotes(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_previousMeetingNotes", this.obj_CalenderDTO);
   }
 
@@ -338,6 +337,20 @@ NewGetAttendeesMeetingnotes(obj: CalenderDTO){
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetAttendeesMeetingnotes", this.obj_CalenderDTO);
 
 }
+
+
+
+GetInsertAttendeeMeetingTime(obj:CalenderDTO){
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Status=obj.Status;
+  this.obj_CalenderDTO.StartTime=obj.StartTime;
+  this.obj_CalenderDTO.EndTime=obj.EndTime;
+
+
+  return this.http.post(this.rootUrl+"CalenderAPI/NewInsertAttendeeMeetingTime",this.obj_CalenderDTO);
+}
+
 
 NewinsertDMS_meetingreport(obj: CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;

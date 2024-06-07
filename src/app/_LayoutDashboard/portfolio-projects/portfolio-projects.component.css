@@ -1316,7 +1316,7 @@ span.count2 {
   line-height: 20px;
   background: #deecf8;
   color: #2786fb;
-  border-radius: 50%;
+  border-radius: 5px;
   font-size: 0.9rem;
   display: inline-flex;
   align-items: center;
@@ -2159,22 +2159,23 @@ td:first-child {
   background-color: #fff;
 }
 
+.table-hover tbody tr:hover td:first-child{
+  background-color: #fafbfc;
+}
+
 td:nth-child(2) {
   position: sticky;
   left: 0px;
-  background-color: #fff;
 }
 
 td:nth-child(3) {
   position: sticky;
   left: 0px;
-  background-color: #fff;
 }
 
 td:nth-child(4) {
   position: sticky;
   left: 0px;
-  background-color: #fff;
 }
 
 .kt-portlet .kt-portlet__head .kt-portlet__head-toolbar.pt-btns {
@@ -3532,4 +3533,39 @@ small.tlv-df {
   background-position: center center;
   background-size: cover;
   border-radius: 0.475rem;
+}
+
+.attachment {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.attach-tippy{
+  position: relative;
+}
+.attach-tippy .st-line{
+  min-width: 13rem;
+  padding: 1rem 1rem;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(-110px, 23px, 0px);
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+  border-radius: .25rem;
+  transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: none;
+  z-index: 1;
+}
+.attach-tippy-div:hover .st-line{
+  display: block;
+}
+.attach-tippy:hover .st-line{
+  display: block;
 }

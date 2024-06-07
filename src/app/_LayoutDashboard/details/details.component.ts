@@ -768,6 +768,7 @@ this.prjPIECHART.render();
   Pid: any;
 
   calculateProjectActions() {
+    debugger
     if (this.projectActionInfo) {
       // all must be zero before calculation.
       this.TOTAL_ACTIONS_DONE = 0;
@@ -789,7 +790,7 @@ this.prjPIECHART.render();
           case 'New Project Rejected': this.TOTAL_ACTIONS_REJECTED += 1; break;
           case 'Completion Under Approval': this.TOTAL_ACTIONS_IN_CUA += 1; break;
           case 'Forward Under Approval': this.TOTAL_ACTIONS_IN_FUA += 1; break;
-          case 'Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
+          case 'Project Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
           default: { };
         }
       })
@@ -862,12 +863,15 @@ this.prjPIECHART.render();
   }
 
   requestaccessList:any=[];
+  deadlineExtendlist:any;
+  totaldeadlineExtend:any
+
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -886,17 +890,41 @@ this.prjPIECHART.render();
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
+
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
+      if(this.ProjectType != 'Standard Tasks' && this.ProjectType != 'Standard Tasks' ){
+        var deadlineExtend=JSON.parse(this.projectInfo['deadlineExtendlist']);
+        this.deadlineExtendlist=Object.values(deadlineExtend);
+        this.totaldeadlineExtend=this.deadlineExtendlist.length;
+
+        let count:number=0;
+        this.deadlineExtendlist.map((actv:any)=>{
+
+          if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+             {   // actv.count : 2,3,4....
+              debugger
+                 let updatecount=(actv.count-count);
+                 let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                 actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                 count+=1;
+             }
+            return actv;
+        });
+
+        console.log(this.deadlineExtendlist,'deadlineExtendlist')
+      }
+
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
-        console.log('Now After Sorting:',this.projectActionInfo);
+
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+        console.log('Now After Sorting:',this.filterstatus);
       }
       this.calculateProjectActions();    // calculate project actions details.
 
@@ -1051,6 +1079,7 @@ this.prjPIECHART.render();
   activitiesOf:'ACTION-ACTIVITIES'|'PROJECT-ACTIVITIES'='PROJECT-ACTIVITIES';
   firstFiveRecords: any[] = [];
   GetActivityDetails() {
+    console.log('GetActivityDetails is called.');
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -1066,7 +1095,7 @@ this.prjPIECHART.render();
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=`Project Deadline Change (${updatecount+x} Time)`;
+                   actv.Value=`Project Deadline changed ${updatecount+x} Time`;
                    count+=1;
                }
               return actv;
@@ -1091,7 +1120,7 @@ this.prjPIECHART.render();
 
         }
         this.activitiesLoading=false;  // end the loading.
-      })
+      });
   }
 
 
@@ -1111,7 +1140,7 @@ this.prjPIECHART.render();
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Change)`);
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
                    count+=1;
                }
               return actv;
@@ -1161,7 +1190,10 @@ this.prjPIECHART.render();
 
     this.requestType = null;
     this.currentActionView = index;
+
+    if(index!=undefined)
     this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
@@ -1169,6 +1201,7 @@ this.prjPIECHART.render();
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
     }
+
   }
 
   prostate(pstate){
@@ -1365,7 +1398,8 @@ this.prjPIECHART.render();
   closeApprovalSideBar(){
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("newdetails").classList.remove("position-fixed");
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#newdetails').removeClass('position-fixed');
   }
 
   closeMultipleSideBar(){
@@ -1803,6 +1837,7 @@ multipleback(){
   Accept_active: boolean = false;
   Conditional_Active: boolean = false;
   Reject_active: boolean = false;
+  Transfer_active:boolean=false;
   rejDesc: any;
   noRejectType: boolean = false;
   exist_comment: any[] = [];
@@ -1932,10 +1967,6 @@ multipleback(){
        }
 // prj request access aprvals
 
-
-
-
-
       }
       else{
         // if there is no requests
@@ -1988,6 +2019,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Transfer_active=false;
         // this.getapprovalStats();
         //    this.getProjectDetails(this.URL_ProjectCode);
 
@@ -1999,6 +2031,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = true;
         this.Reject_active = false;
+        this.Transfer_active=false;
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
@@ -2007,6 +2040,16 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
+        this.Transfer_active=false;
+      };break;
+      case 'TRANSFER':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = '5';
+        this.rejectType = undefined;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.Transfer_active=true;
       };break;
       case 'NOTSELECTED':{
         this.isRejectOptionsVisible = false;
@@ -2015,6 +2058,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Transfer_active=false;
         this.isTextAreaVisible = false;
       }
       default: { }
@@ -4359,7 +4403,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-
+debugger
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
         this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
@@ -5808,8 +5852,6 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-debugger
-
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -6347,6 +6389,7 @@ holdcontinue(Pcode:any){
   extendAndHold:boolean=false;
   isEHsectionVisible:boolean=false;
   minPrjDeadline:Date;
+
   onHoldDateChanged(){
 
     if(this.currentActionView===undefined){     // only for project.

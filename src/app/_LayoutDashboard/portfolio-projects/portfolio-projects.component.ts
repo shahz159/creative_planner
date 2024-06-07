@@ -1158,6 +1158,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelInprocess() {
     this._PortProjStatus = "InProcess";
     this.showDeletedPrjOnly=false;
+    
   }
 
 
@@ -1795,37 +1796,77 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
   onButtonClick(buttonId: string) {
 
-    const elements = {
-      'tot': 'active-total-project',
-      'inn': 'active-in-processs',
-      'del': 'active-Delay-head',
-      'draft': 'active-Not-started-head',
-      'underappr': 'active-new-project-head',
-      'pro-hold':'active-Hold_color',
-      'compl' : 'active-complteed_color',
-       'delete':'active-Delete-head',
-       'reject':'active-rejected',
-       'todocomp':'active-todo-completed-head',
-       'todoachi':'active-todo-achieved',
-       'new-pro':'active-new-project-head',
-       'Compl-Apprv':'active-Completion',
-       'Cancel-app':'active-Cancel-app',
-       'Count-forward':'active-foward-color',
-       'Count-deadline':'active-Count-deadline'
+    // const elements = {
+    //   'tot': 'active-total-project',
+    //   'inn': 'active-in-processs',
+    //   'del': 'active-Delay-head',
+    //   'draft': 'active-Not-started-head',
+    //   'underappr': 'active-new-project-head',
+    //   'pro-hold':'active-Hold_color',
+    //   'compl' : 'active-complteed_color',
+    //    'delete':'active-Delete-head',
+    //    'reject':'active-rejected',
+    //    'todocomp':'active-todo-completed-head',
+    //    'todoachi':'active-todo-achieved',
+    //    'new-pro':'active-new-project-head',
+    //    'Compl-Apprv':'active-Completion',
+    //    'Cancel-app':'active-Cancel-app',
+    //    'Count-forward':'active-foward-color',
+    //    'Count-deadline':'active-Count-deadline'
 
-    };
+    // };
 
-    for (const id in elements) {
-      const element = document.getElementById(id);
-      if (element) {
-        if (buttonId === id) {
-          this.renderer.addClass(element, elements[id]);
-        } else {
-          this.renderer.removeClass(element, elements[id]);
-        }
-      }
+    // for (const id in elements) {
+    //   const element = document.getElementById(id);
+    //   if (element) {
+    //     if (buttonId === id) {
+    //       this.renderer.addClass(element, elements[id]);
+    //     } else {
+    //       this.renderer.removeClass(element, elements[id]);
+    //     }
+    //   }
+    // }
+    const elements = document.getElementsByClassName('btn-filtr');
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].classList.remove('active');
     }
+    
+
+    if(buttonId=='tot')
+      document.getElementById('tot').classList.add('active');
+    else if(buttonId=='inn')
+      document.getElementById('inn').classList.add('active');
+    else if(buttonId=='del')
+      document.getElementById('del').classList.add('active');
+    else if(buttonId=='draft')
+      document.getElementById('draft').classList.add('active');
+    else if(buttonId=='compl')
+      document.getElementById('compl').classList.add('active');
+    else if(buttonId=='new-pro')
+      document.getElementById('new-pro').classList.add('active');
+    else if(buttonId=='Compl-Apprv')
+      document.getElementById('Compl-Apprv').classList.add('active');
+    else if(buttonId=='Cancel-app')
+      document.getElementById('Cancel-app').classList.add('active');
+    else if(buttonId=='Count-forward')
+      document.getElementById('Count-forward').classList.add('active');
+    else if(buttonId=='Count-deadline')
+      document.getElementById('Count-deadline').classList.add('active');
+    else if(buttonId=='underappr')
+      document.getElementById('underappr').classList.add('active');
+    else if(buttonId=='pro-hold')
+      document.getElementById('pro-hold').classList.add('active');
+    else if(buttonId=='reject')
+      document.getElementById('reject').classList.add('active');
+    else if(buttonId=='todocomp')
+      document.getElementById('todocomp').classList.add('active');
+    else if(buttonId=='todoachi')
+      document.getElementById('todoachi').classList.add('active');
+    else if(buttonId=='delete')
+      document.getElementById('delete').classList.add('active');
+
   }
+
   OnCardClick(P_id: any, P_Name: string, CreatedName: string) {
     sessionStorage.setItem('portfolioId', P_id);
     sessionStorage.setItem('portfolioname', P_Name);
