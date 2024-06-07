@@ -1480,6 +1480,7 @@ export class DashboardComponent implements OnInit {
         //   document.getElementById("Recurrence_hide").style.display = "none";
         // }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+          debugger
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate").style.display = "block";

@@ -8402,9 +8402,9 @@
 
                                 <div data-toggle="collapse" aria-expanded="false"
                                     class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
-                                    [attr.data-target]="'#today-mtg-'+i">
-                                    <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{tmeetings.date|date:'MMM d y'}}</span>
-                                    <span class="Kt-replay-time"> Total meetings :<small class="tlv-df" *ngIf="tmeetings.totalmeetings" >{{tmeetings.totalmeetings.length}}</small> </span>
+                                    [attr.data-target]="'#last7d-mtg-'+i">
+                                    <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmeetings.date|date:'MMM d y'}}</span>
+                                    <span class="Kt-replay-time"> Total meetings :<small class="tlv-df" *ngIf="lmeetings.totalmeetings" >{{lmeetings.totalmeetings.length}}</small> </span>
                                 </div>
 
                                 <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
