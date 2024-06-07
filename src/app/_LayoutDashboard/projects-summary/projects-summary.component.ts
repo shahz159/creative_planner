@@ -86,6 +86,7 @@ $(document).ready(function(){
     $('.card').removeClass("active");
     $(this).addClass("active");
 });
+
 });
 
 
@@ -874,7 +875,6 @@ $(document).ready(function(){
   Emp_No:any
   Project_Code:any
   LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string,Pcode:string,tauth:string,tresp:string) {
-    debugger
     this.Project_Code=Pcode;
     this.Team_Autho=tauth;
     this.Emp_No=tresp;

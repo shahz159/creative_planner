@@ -462,9 +462,14 @@ createSRTProject(){
            DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
            Remarks:this._remarks,
-           Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0
+           Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0,
+           Conditional_Project:this.conditionalList?this.conditionalList[0].Project_Code:'0'
 
      };
+
+
+
+
     //  alert(this.Allocated_Hours)
      console.log("PRJ INFORMATION :",projectInfo);
      this.ProjectDto.Status=JSON.stringify(projectInfo);
@@ -932,7 +937,7 @@ onProjectOwnerChanged(){
       });
 
 
-      console.log(this.assigntask_json,'--------------->')
+      console.log(this.conditional_List,'--conditional prjs------------->')
  });
   }
 
@@ -1008,15 +1013,15 @@ onRejectButtonClick(value:any,id:number){
 
 
 
-  conditionalList:any
-
+  conditionalList:any;   // selected conditional project will be in this variable.
+ 
   getConditional(value:any){
-    this.conditionalList = [value]
+    this.conditionalList = [value];
     this.PrjName=this.conditionalList[0].Project_Name;
     this.Prjstartdate=this.conditionalList[0].DPG;
     this.Prjenddate=this.conditionalList[0].DeadLine;
     this.PrjDes=this.conditionalList[0].Project_Description;
-    this.Prjtype=this.conditionalList[0].ProjectType;
+    this.Prjtype=this.conditionalList[0].Project_Block;
 
   }
 

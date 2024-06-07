@@ -696,7 +696,7 @@ selectedAttendeesList = new Set<any>();
        const selectedArray = Array.from(this.selectedAttendeesList);
        this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',');
        
-      
+       if(this.listAttendees.length>0){
        this.BsService.SetNewAssignId( this.AssignID);
        this.BsService.SetNewAssignedName(this.Task_name);
        let typeoftask: any = "IFRT";
@@ -739,7 +739,12 @@ selectedAttendeesList = new Set<any>();
          document.getElementById("schedule-event-modal-backdrop").style.display = "none";
          document.getElementById("projectmodal").style.display = "none";
          this.Assigntext=''
-      })
+      });
+    }
+    else{
+      this.notifyService.showInfo("Please select atleast one user to assign",'');
+     }
+
   }
 
 
