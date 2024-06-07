@@ -11,7 +11,7 @@
                 <div class="card h-100">
                     <div class="card-body p-3 min-height-30">
                         <div class="kt-meeting-main" >
-                            <div class="kt-meeting-main-active p-2" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject();GetMeetingnotes_data()">
+                            <div class="kt-meeting-main-active p-2 curser-pointer" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject();GetMeetingnotes_data()">
                                 <div class="kt-meeting-box">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div class="kt-meeting-title mt-0 mb-2">
@@ -938,15 +938,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="kt-metric-time"  >
-                                                        <!-- <ng-container *ngIf="!meetingInProgress && !meetingStopped">
+                                                    <ng-container *ngIf="!meetingInProgress && !meetingStopped">
                                                         <div class="dark-title" >{{hours}} hr {{minutes}} min</div>
-                                                    </ng-container> -->
-                                                        <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div>
+                                                    </ng-container>
+                                                        <!-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> -->
 
                                                         <div class="muted-title">Duration</div>
                                                     </div>
                                                 </div>
-                                                <div class="dropdown-menu">
+                                                <!-- <div class="dropdown-menu">
                                                     <h6 class="actual-title"><span class="actual-icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                                             <path fill="none" d="M0 0h24v24H0z"></path>
@@ -966,10 +966,9 @@
                                                     </li>
                                                     <div class="duration">
                                                         <div style="font-size: 14px;font-weight: 500;color: #000;">0:15 min</div>
-                                                        <!-- <div style="color: #8b8b8b;">Duration</div> -->
                                                     </div>
                                                     </ul>
-                                                   </div>
+                                                   </div> -->
 
                                             </div>
                                         </div>
@@ -1492,7 +1491,7 @@
                                     </a>
 
 
-                                    <a class="kt-inbox__icon" title="Assign Project" (click)="Slide_AssignTask()">
+                                    <a class="kt-inbox__icon" title="Assign project" (click)="Slide_AssignTask()">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" fill="currentColor" height="16"
                                         width="16" class="iconify iconify--mdi" style="
                                         width: 30px;
@@ -2393,7 +2392,7 @@
                                             <svg _ngcontent-wfn-c395="" xmlns="http://www.w3.org/2000/svg" width="19" height="18" fill="white" viewBox="0 0 1024 1024" version="1.1"><path _ngcontent-wfn-c395="" d="M419.037 287.953h413.124c17.673 0 32-14.327 32-32s-14.327-32-32-32H419.037c-17.673 0-32 14.327-32 32s14.327 32 32 32z m-0.009 255.217h411.608c17.673 0 32-14.327 32-32s-14.327-32-32-32H419.028c-17.673 0-32 14.327-32 32s14.327 32 32 32z m413.133 192.632H419.037c-17.673 0-32 14.327-32 32s14.327 32 32 32h413.124c17.673 0 32-14.327 32-32s-14.327-32-32-32zM192.037 255.953a64 64 0 1 0 128 0 64 64 0 1 0-128 0zM192.037 510.787a64 64 0 1 0 128 0 64 64 0 1 0-128 0zM192.037 767.621a64 64 0 1 0 128 0 64 64 0 1 0-128 0z"></path></svg>
 
                                         </div>
-                                        <span class="kt-meeting-title-name">Assign Task </span>
+                                        <span class="kt-meeting-title-name">Assign task/project </span>
                                     </div>
                                     <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                     <div class="todo-main">
@@ -2442,9 +2441,9 @@
                                          <label class="task-name">{{item.Task_Name}}</label>
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <div class="task-actions" >
-                                                    <mat-icon title="Assign Project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+                                                    <mat-icon title="Assign project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
-                                                    <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
+                                                    <mat-icon title="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
                                         </div>
                                     </ng-container>
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
@@ -2611,7 +2610,7 @@
                     data-target="#Assign_notes" aria-expanded="false"
                     aria-controls="Assign_notes">
                     <div class="head-content">
-                        <span class="accordion-heading" >Assign Project</span>
+                        <span class="accordion-heading" >Assign project</span>
                         <!-- <span  class="message-count"> 24 Messages</span> -->
                     </div>
                     <div>
@@ -2665,7 +2664,7 @@
                                                     </span>
                                                     <span
                                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                        Assigned Task/Project <mat-icon role="img" color="success"
+                                                        Assigned project <mat-icon role="img" color="success"
                                                             class="mat-icon notranslate ml-2 mr-2 mat-success material-icons mat-ligature-font mat-icon-no-color"
                                                             aria-hidden="true" ng-reflect-color="success"
                                                             data-mat-icon-type="font">task_alt </mat-icon>
@@ -2786,7 +2785,7 @@
                 data-target="#UssignTask_notes" aria-expanded="false"
                 aria-controls="UssignTask_notes">
                 <div class="head-content">
-                    <span class="accordion-heading" >Unassigned Tasks</span>
+                    <span class="accordion-heading" >Unassigned tasks</span>
 
                 </div>
                 <div>
@@ -2808,15 +2807,14 @@
                 <div class="task-item" *ngFor="let item of _TodoList; let i=index;">
                     <ng-container>
                         <!-- *ngIf="Meetingstatuscom!='Completed'" -->
-                    <input class="task-status"  (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
+                    <input class="task-status curser-pointer" (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
                    </ng-container>
                      <label class="task-name">{{item.Task_Name}}</label>
                     <ng-container >
-                    <div class="task-actions" >
-                                <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects()" class="mr-2" color='primary'>group</mat-icon>
+                    <div class="task-actions curser-pointer">
+                                <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
-                                <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
-
+                                <mat-icon title="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
                     </div>
                 </ng-container>
                     <ng-container >
@@ -2851,7 +2849,7 @@
                 data-target="#AssignTask_notes" aria-expanded="false"
                 aria-controls="AssignTask_notes">
                 <div class="head-content">
-                    <span class="accordion-heading" >Completed Tasks</span>
+                    <span class="accordion-heading" >Completed tasks</span>
 
                 </div>
                 <div>
@@ -3732,7 +3730,7 @@
                     d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
                 </path>
             </svg>
-                <h4 class="m-0">Meeting Attendees
+                <h4 class="m-0">Meeting attendees
                     <span class="head-muted">{{User_Scheduledjson.length}}
                     </span>
                 </h4>
@@ -3753,7 +3751,7 @@
             <div *ngIf="Isadmin==true" class="meeting-search">
                 <div class="input-group mt-2">
                     <mat-form-field class="drp-dwn-field ">
-                        <mat-label>Add Support team</mat-label>
+                        <mat-label>Add attendees</mat-label>
                         <mat-chip-list #selectedTeamMember>
                             <mat-chip *ngFor="let data of selectedEmployees" class="Data_chip_kt"
                                 (removed)="remove(data)">
@@ -3786,7 +3784,7 @@
                     </mat-form-field>
                 </div>
                 <div>
-                    <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">invite</button>
+                    <button class="meeting-button mb-2" (click)="Adduser_meetingreport()">Invite</button>
 
                     <!-- <ng-container *ngFor="let item of EventScheduledjson">
 
@@ -4534,7 +4532,7 @@
                 width: 30px;
                 height: 30px;">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"></path><path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" ></path><path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" ></path><path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" ></path><path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" ></path><path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" ></path></g></svg>
-                <h4 class="mb-0">Assign Project
+                <h4 class="mb-0">Assign project
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="closeAssign()">
@@ -4564,7 +4562,7 @@
                             data-target="#AssignTask_notes" aria-expanded="false"
                             aria-controls="AssignTask_notes">
                             <div class="head-content">
-                                <span class="accordion-heading" >Assign Project</span>
+                                <span class="accordion-heading" >Assign project</span>
 
                             </div>
                             <div>
@@ -4613,7 +4611,7 @@
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                                Assigned Task/Project <mat-icon role="img" color="success"
+                                                                Assigned project <mat-icon role="img" color="success"
                                                                     class="mat-icon notranslate ml-2 mr-2 mat-success material-icons mat-ligature-font mat-icon-no-color"
                                                                     aria-hidden="true" ng-reflect-color="success"
                                                                     data-mat-icon-type="font">task_alt </mat-icon>
@@ -6289,7 +6287,7 @@
                           <div class="main-s pro-nm"><span class="kt-dt-cnt-view">
                             {{AssignedTask.length}}/{{Todotask.length}}
                         </span>
-                              Assign Project</div>
+                              Assign project</div>
                       </div>
                   </div>
               </div>
@@ -6503,7 +6501,7 @@
                          </path>
                      </svg>
 
-                     <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select Participants</h5>
+                     <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users to assign</h5>
            <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
              <span aria-hidden="true">&times;</span>
            </button>
@@ -6578,13 +6576,22 @@
              </ul>
            </div>
          </div>
-         <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
+         <!-- <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
 
                      <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees(item.Task_Name,item.Assign_Id)">Add</button>
                      <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()">Custom</button>
                      <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
 
-         </div>
+         </div> -->
+
+
+         <div class="modal-footer">
+
+            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees()">Assign</button>
+            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodal()">Custom</button>
+            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
+
+</div>
        </div>
      </div>
    </div>

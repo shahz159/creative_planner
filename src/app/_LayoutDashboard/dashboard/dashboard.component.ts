@@ -1903,9 +1903,9 @@ debugger
     // else if (this.selectedrecuvalue === "4") {
     //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
     // }
-    else if (this.selectedrecuvalue === "5") {
-      this.daysSelectedII = this.getLastDaysOfEachMonth();
-    }
+    // else if (this.selectedrecuvalue === "5") {
+    //   this.daysSelectedII = this.getLastDaysOfEachMonth();
+    // }
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
@@ -5279,16 +5279,9 @@ debugger
     //  this.Portfolio=this.draft_arry[0]["portfolio_id"]
     this.SelectDms = [];
     this.SelectDms1 = [];
-    let arr3 = [];
-    var str = (this.draft_arry[0]['dms_id']);
-    if(str){
-       arr3 = str.split(",");
-       for (let i = 0; i < arr3.length; i++){
-         if(arr3[i].trim())
-         this.SelectDms.push(arr3[i].trim());  
-       } 
-    }
-   
+    // let arr3 = [];
+    // var str = (this.draft_arry[0]['dms_id']);
+    // arr3 = str.split(",");
     // for (var i = 0; i < arr3.length; i++) {
     //   this.Memos_List.forEach(element => {
     //     if (element.MailId == arr3[i]) {
@@ -5296,7 +5289,7 @@ debugger
     //     }
     //   });
     // }
-    //  this.SelectDms=this.draft_arry[0]["dms_id"]
+     this.SelectDms=this.draft_arry[0]["dms_id"]
 
     this.ngEmployeeDropdown = [];
     this.ngEmployeeDropdown1 = [];

@@ -1631,9 +1631,11 @@ deleteAgenda(AgendaId: number) {
        this.meeting_details()
        this.notifyService.showSuccess("Deleted successfully ", '');  
        if(this.isFirstAgendaIdMatch){
-        this.currentAgendaView=0
+        this.currentAgendaView=0;
+       
        }else{
          this.currentAgendaView= this.currentAgendaView-1
+         this.GetAssigned_SubtaskProjects()
        }
       });
     }else if (count==1){   
@@ -2096,40 +2098,44 @@ EnterSubmit(_Demotext) {
   listAttendees:any;
   Assigntext:any;
   datestrStart:any;
-  datestrEnd:any
+  datestrEnd:any;
+  AssignID:any;
+  Task_name:any;
 
+  GetAssignName_id(taskName, id){
+      this.AssignID=id;
+      this.Task_name=taskName
+  }
 
-  addSelectedEmployees(taskName, id) {
-     
+  addSelectedEmployees() {
+   debugger
        const selectedArray = Array.from(this.selectedAttendeesList)
        this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
-       
-      
-       this.BsService.SetNewAssignId(id);
-       this.BsService.SetNewAssignedName(taskName);
+    
+       if(this.listAttendees.length>0){
+       this.BsService.SetNewAssignId(this.AssignID);
+       this.BsService.SetNewAssignedName(this.Task_name);
        let typeoftask: any = "IFRT";
        this.BsService.setNewTypeofTask(typeoftask);
        this.datestrStart = moment(new Date()).format();
        this.datestrEnd = moment(new Date()).format();
   
-       this._ObjAssigntaskDTO.AssignId = id;
+       this._ObjAssigntaskDTO.AssignId = this.AssignID;
        this._ObjCompletedProj.PageNumber = 1;
        this._ObjCompletedProj.Emp_No = this.Current_user_ID;
        this._ObjCompletedProj.Mode = 'AssignedTask';
-       this._ObjAssigntaskDTO.TaskName = taskName;
+       this._ObjAssigntaskDTO.TaskName =this.Task_name;
        this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
        this._ObjAssigntaskDTO.ProjectType = "";
        this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
       
-
-
 
       const fd = new FormData();
       fd.append("AssignedBy", this.Current_user_ID);
       fd.append("AssignTo", this.listAttendees);
       fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
       fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
-      fd.append("AssignId",  id);
+      fd.append("AssignId",  this.AssignID);
       fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
       fd.append("StartDate", this.datestrStart);
       fd.append("EndDate", this.datestrEnd);
@@ -2138,17 +2144,22 @@ EnterSubmit(_Demotext) {
       fd.append("Remarks", "");
       fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
   
-        
-      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
-      (data) => {
-        let message: string = data['Message'];
-        this.notifyService.showSuccess("Task sent to assign projects", message);
-        this.GetAssigned_SubtaskProjects()
-         document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-         document.getElementById("projectmodal").style.display = "none";
-         this.Assigntext='';
-         this.selectedAttendeesList.clear();
-      })
+          
+        this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+        (data) => {
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.GetAssigned_SubtaskProjects()
+            document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+            document.getElementById("projectmodal").style.display = "none";
+            this.Assigntext='';
+            this.selectedAttendeesList.clear();
+        });
+       }
+       else{
+        this.notifyService.showInfo("Please select atleast one user to assign",'');
+       }
+      
   }
 
 
@@ -2157,10 +2168,11 @@ EnterSubmit(_Demotext) {
   _taskName: any;
   task_id: any;
 
-  GetProjectTypeList(taskName, id) {
+  GetProjectTypeList() {
    
-    this._taskName = taskName;
-    this.task_id = id;
+    this._taskName = this.Task_name;
+    this.task_id = this.AssignID;
+   
 
     this.router.navigate(["Meeting-Details/" + this.Scheduleid + "/ActionToAssign/3"]);
     this.BsService.SetNewAssignId(this.task_id);
@@ -2255,7 +2267,7 @@ GetAssigned_SubtaskProjects() {
 
       this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
       this.FiterEmployee=this.EmployeeList;
-      console.log(this.EmployeeList,'EmployeeList')
+      console.log(this._TodoList,'EmployeeListswsd')
     });
 
 }

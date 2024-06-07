@@ -890,35 +890,33 @@ this.prjPIECHART.render();
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
+      
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
-      var deadlineExtend=JSON.parse(this.projectInfo['deadlineExtendlist']);
-      this.deadlineExtendlist=Object.values(deadlineExtend);
-      this.totaldeadlineExtend=this.deadlineExtendlist.length;
-
-
-
-
-
-      let count:number=0;
-      this.deadlineExtendlist.map((actv:any)=>{
-    
-        if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
-           {   // actv.count : 2,3,4....
-            debugger
-               let updatecount=(actv.count-count);
-               let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-               actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Time)`);
-               count+=1;
-           }
-          return actv;
-      });
-
-
-
-      console.log(this.deadlineExtendlist,'deadlineExtendlist')
+      if(this.ProjectType != 'Standard Tasks' && this.ProjectType != 'Standard Tasks' ){
+        var deadlineExtend=JSON.parse(this.projectInfo['deadlineExtendlist']);
+        this.deadlineExtendlist=Object.values(deadlineExtend);
+        this.totaldeadlineExtend=this.deadlineExtendlist.length;
+  
+        let count:number=0;
+        this.deadlineExtendlist.map((actv:any)=>{
+      
+          if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+             {   // actv.count : 2,3,4....
+              debugger
+                 let updatecount=(actv.count-count);
+                 let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                 actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                 count+=1;
+             }
+            return actv;
+        });
+  
+        console.log(this.deadlineExtendlist,'deadlineExtendlist')
+      }
+      
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1094,7 +1092,7 @@ debugger
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=`Project Deadline Change (${updatecount+x} Time)`;
+                   actv.Value=`Project Deadline changed ${updatecount+x} Time`;
                    count+=1;
                }
               return actv;
@@ -1139,7 +1137,7 @@ debugger
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Time)`);
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
                    count+=1;
                }
               return actv;

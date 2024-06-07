@@ -760,7 +760,7 @@
                                                       *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else submission">
                                                       <div class="kt-info-lable-v deadline-main">
                                                           <span>Deadline</span>
-                                                          <span class="deadline-count">
+                                                          <span class="deadline-count" *ngIf="totaldeadlineExtend>0">
                                                             <span class="deadline-count-btn">
                                                                {{totaldeadlineExtend}}
                                                             </span>
@@ -2760,7 +2760,7 @@
 
 
                                       <!-- Request type start  -->
-                                      <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails.length>2 ">
+                                      <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails&&requestDetails.length>2 ">
                                           <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled')">
                                               <div class="d-flex justify-content-between align-items-center">
 

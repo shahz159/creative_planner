@@ -231,14 +231,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
       
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        console.log('sdcssd',this._TodoList)
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         this.Clientjson=JSON.parse(data[0]['Client_json'])
         
         this.EmployeeLists = JSON.parse(data[0]['EmployeeList']);
-        console.log("Data---->", this.EmployeeLists);
+      
         this.FiterEmployee=this.EmployeeList;
+        console.log("Data---->", this.FiterEmployee);
       });
   }
 
@@ -296,7 +298,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         // console.log(this.ActionedAssigned_Josn)
-        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
@@ -586,6 +588,7 @@ debugger
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+      
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -624,10 +627,10 @@ debugger
   selectedProjectType: string;
   public task_id: number;
 
-  GetProjectTypeList(taskName, id) {
+  GetProjectTypeList() {
     // debugger
-    this._taskName = taskName;
-    this.task_id = id;
+    this._taskName =this.Task_name;
+    this.task_id = this.AssignID;
     this.router.navigate(["UnplannedTask/ActionToAssign/1"]);
     this.BsService.SetNewAssignId(this.task_id);
     this.BsService.SetNewAssignedName(this._taskName);
@@ -679,25 +682,33 @@ selectedAttendeesList = new Set<any>();
   datestrStart:any;
   datestrEnd:any
 
+  AssignID:any;
+  Task_name:any;
 
-  addSelectedEmployees(taskName, id) {
+  GetAssignName_id(taskName, id){
+    this.AssignID=id;
+    this.Task_name=taskName
+}
+
+
+  addSelectedEmployees() {
      
-       const selectedArray = Array.from(this.selectedAttendeesList)
-       this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
+       const selectedArray = Array.from(this.selectedAttendeesList);
+       this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',');
        
-      
-       this.BsService.SetNewAssignId(id);
-       this.BsService.SetNewAssignedName(taskName);
+       if(this.listAttendees.length>0){
+       this.BsService.SetNewAssignId( this.AssignID);
+       this.BsService.SetNewAssignedName(this.Task_name);
        let typeoftask: any = "IFRT";
        this.BsService.setNewTypeofTask(typeoftask);
        this.datestrStart = moment(new Date()).format();
        this.datestrEnd = moment(new Date()).format();
   
-       this._ObjAssigntaskDTO.AssignId = id;
+       this._ObjAssigntaskDTO.AssignId = this.AssignID;
        this._ObjCompletedProj.PageNumber = 1;
        this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
        this._ObjCompletedProj.Mode = 'AssignedTask';
-       this._ObjAssigntaskDTO.TaskName = taskName;
+       this._ObjAssigntaskDTO.TaskName =  this.Task_name;
        this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
        this._ObjAssigntaskDTO.ProjectType = "";
        this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
@@ -710,7 +721,7 @@ selectedAttendeesList = new Set<any>();
       fd.append("AssignTo", this.listAttendees);
       fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
       fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
-      fd.append("AssignId",  id);
+      fd.append("AssignId",  this.AssignID);
       fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
       fd.append("StartDate", this.datestrStart);
       fd.append("EndDate", this.datestrEnd);
@@ -728,7 +739,12 @@ selectedAttendeesList = new Set<any>();
          document.getElementById("schedule-event-modal-backdrop").style.display = "none";
          document.getElementById("projectmodal").style.display = "none";
          this.Assigntext=''
-      })
+      });
+    }
+    else{
+      this.notifyService.showInfo("Please select atleast one user to assign",'');
+     }
+
   }
 
 
