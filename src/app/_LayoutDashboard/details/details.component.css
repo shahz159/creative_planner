@@ -940,7 +940,18 @@ button.Kt-Approval-btns {
   .Btn_Accpet:hover {
     background-color: #8ab991 !important;color: #fff !important;
   }
-  .Btn_Conditional_Accept {
+
+
+.Btn_Transfer{
+  background-color: #00008b2e;
+  color: #6363ff;
+  padding-top: 3px;
+  padding-bottom: 4px;
+}
+
+
+
+  /* .Btn_Conditional_Accept {
     border-color: #407f4c !important;
     }
 .Btn_Conditional_Accept.active {
@@ -949,7 +960,7 @@ button.Kt-Approval-btns {
 }
 .Btn_Conditional_Accept:hover {
   background-color: #407f4c !important;color: #fff !important;
-}
+} */
 
 .Btn_Reject {
   border-color: #cf8e66 !important;
@@ -4583,6 +4594,12 @@ p.kt-dt-l {
   background-color: #777171!important;
   color: #fff!important;
 }
+.Btn_Conditional_Accept.active{
+  background-color: #777171!important;
+  color: #fff!important;
+}
+
+
 .Btn_Reject{
   background-color: #ffd2d2!important;
   color: #cc0b0b!important;
@@ -5666,5 +5683,16 @@ li.deadline-timeline-item:first-child:after {
 /* css for std task aprv pagination part end*/
 
 
+
+
+.upgraded-type-prj{
+    position: absolute;
+    right: 16px;
+    top: 52px;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    border-radius: 2px;
+    background-color: #85676778;
+    color: white;
+}
 
 

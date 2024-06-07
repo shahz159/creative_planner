@@ -92,7 +92,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = type;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
-      (data) => {
+      (data) => { debugger
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
@@ -533,7 +533,7 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  isTypeChecked(item) {
+  isTypeChecked(item) {  debugger
     let arr = [];
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
@@ -601,7 +601,11 @@ export class NotificationComponent implements OnInit {
     this.applyFilters();
   }
 
+
   applyFilters() {
+    
+    debugger
+
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -626,28 +630,79 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
-      .subscribe(data => {
+      .subscribe(data => {   debugger
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+
+        
+
+
         //Emp
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
         }
         else {
-          this.EmpCountInFilter = this.selectedItem_Emp[0];
+          let _empjsonnew=JSON.parse(data[0]['Employee_json']);
+          
+// new
+          let _updateddata=_empjsonnew.filter(item=>item.Emp_No==this.selectedItem_Emp[0][0].Emp_No);
+          if(_updateddata.length>0){
+              _updateddata[0].checked=true;
+              this.EmpCountInFilter = _updateddata;
+          } 
+          else if(_updateddata.length==0){
+             this.EmpCountInFilter=_empjsonnew;
+             this.selectedItem_Emp.length=0;
+          }
+// new            
+
         }
          //Request
          if (this.selectedItem_Request.length == 0) {
           this.RequestCountFilter = JSON.parse(data[0]['Request_json']);
         }
         else {
-          this.RequestCountFilter = this.selectedItem_Request[0];
+          // this.RequestCountFilter = this.selectedItem_Request[0];
+
+
+// new
+          const reqjsonnew=JSON.parse(data[0]['Request_json']);
+          let _updateddata=reqjsonnew.filter(item=>item.Name==this.selectedItem_Request[0][0].Name);
+          if(_updateddata.length>0){
+             _updateddata[0].checked=true;
+             this.RequestCountFilter=_updateddata;
+          }
+          else if(_updateddata.length==0){
+             this.RequestCountFilter=reqjsonnew;
+             this.selectedItem_Request.length=0;
+          }
+// new
+
+
+
         }
         //Type
         if (this.selectedItem_Type.length == 0) {
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
         }
         else {
-          this.TypeContInFilter = this.selectedItem_Type[0];
+          // this.TypeContInFilter = this.selectedItem_Type[0];
+
+// new
+          const prjtypejson=JSON.parse(data[0]['ProjectType_json']);
+          let _updateddata=prjtypejson.filter(item=>item.Block_No==this.selectedItem_Type[0][0].Block_No);
+          if(_updateddata.length>0){
+             _updateddata[0].checked=true;
+             this.TypeContInFilter=_updateddata;
+          }
+          else if(_updateddata.length==0){
+             this.TypeContInFilter=prjtypejson;
+             this.selectedItem_Type.length=0;
+          }
+
+// new
+
+
+
         }
         //Status
         if (this.selectedItem_Status.length == 0) {
@@ -682,7 +737,22 @@ export class NotificationComponent implements OnInit {
           this._filtersMessage2 = "";
           this.emptyspace=true;
         }
+
+
+
+        if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
+          && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+          this.edited = false;
+        }
+        else {
+          this.edited = true;
+        }
+
+
+
       });
+
+      
   }
 
   search_Type: any[];
@@ -856,22 +926,37 @@ isSelected(item: any): boolean {
   return this.selectedItems.includes(item);
 }
 
+
+prjtypeCount:number=-1;
+reqtypeCount:number=-1;
+
+
 acceptSelectedValues() {
 
     console.log(this.selectedItems,"accept");
 
-
-
   if( this.selectedItems.length > 0){
-    debugger
+
      this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
-      this.applyFilters();
+        const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+        checkbox.checked = false;
+        this.notifyService.showSuccess("Project(s) approved successfully",'Success');
+
+        this.applyFilters();
+
+        this.selectedItems=[];
+        this.selectedItem_Emp=[];
+        if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
+          && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+          this.edited = false;
+        }
+        else {
+          this.edited = true;
+        }
+        
     });
-    const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-    checkbox.checked = false;
-    this.selectedItems=[];
-    this.notifyService.showSuccess("Project(s) approved successfully",'Success');
+    
   }
   else{
     this.notifyService.showInfo("Please select atleast one project to approve",'');
@@ -987,6 +1072,16 @@ acceptSelectedValues() {
         console.log(data,"reject-data");
 
         this.applyFilters();
+        this.selectedItems=[];
+        this.selectedItem_Emp=[];
+        if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
+          && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+          this.edited = false;
+        }
+        else {
+          this.edited = true;
+        }
+
       });
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
       checkbox.checked = false;
@@ -1111,6 +1206,7 @@ onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
 
 
 // leave requests approval end
+
 
 
 }
