@@ -919,10 +919,11 @@ this.prjPIECHART.render();
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
-        console.log('Now After Sorting:',this.projectActionInfo);
+      
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+        console.log('Now After Sorting:',this.filterstatus);
       }
       this.calculateProjectActions();    // calculate project actions details.
 
