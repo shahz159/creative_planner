@@ -161,7 +161,7 @@
                               *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
                               <ng-container *ngIf="item.Count !=0">
                                 <label class="kt-checkbox">
-                                  <input type="checkbox" (change)="isTypeChecked(item)" [(ngModel)]="item.checked">
+                                  <input type="checkbox" (change)=" isTypeChecked(item)" [(ngModel)]="item.checked">
                                   {{item.Name}}
                                   <span></span>
                                 </label>
@@ -177,7 +177,7 @@
                             <div class="d-flex justify-content-between"
                               *ngFor="let item of RequestCountFilter |filter:txtSearch">
                               <label class="kt-checkbox mb-3">
-                                <input type="checkbox" (change)="isRequestChecked(item)" [(ngModel)]="item.checked">
+                                <input type="checkbox" (change)=" isRequestChecked(item);" [(ngModel)]="item.checked">
                                 {{item.Name =='Project Cancel'?'Cancellation Approval':item.Name =='Project Complete'?'Completion Approval':item.Name=='Request Access'?'Access Approval':item.Name=='New Project'?'New Approval':item.Name=='Project Forward'?'Forward Approval':item.Name}}
                                 <span></span>
                               </label>

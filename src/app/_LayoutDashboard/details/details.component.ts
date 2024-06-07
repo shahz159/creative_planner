@@ -768,6 +768,7 @@ this.prjPIECHART.render();
   Pid: any;
 
   calculateProjectActions() {
+    debugger
     if (this.projectActionInfo) {
       // all must be zero before calculation.
       this.TOTAL_ACTIONS_DONE = 0;
@@ -789,7 +790,7 @@ this.prjPIECHART.render();
           case 'New Project Rejected': this.TOTAL_ACTIONS_REJECTED += 1; break;
           case 'Completion Under Approval': this.TOTAL_ACTIONS_IN_CUA += 1; break;
           case 'Forward Under Approval': this.TOTAL_ACTIONS_IN_FUA += 1; break;
-          case 'Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
+          case 'Project Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
           default: { };
         }
       })
@@ -870,7 +871,7 @@ this.prjPIECHART.render();
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -1077,6 +1078,7 @@ debugger
   activitiesOf:'ACTION-ACTIVITIES'|'PROJECT-ACTIVITIES'='PROJECT-ACTIVITIES';
   firstFiveRecords: any[] = [];
   GetActivityDetails() {
+    console.log('GetActivityDetails is called.');
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -1117,7 +1119,7 @@ debugger
 
         }
         this.activitiesLoading=false;  // end the loading.
-      })
+      });
   }
 
 
@@ -1187,7 +1189,10 @@ debugger
     debugger
     this.requestType = null;
     this.currentActionView = index;
+
+    if(index!=undefined)
     this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+    
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
@@ -1195,6 +1200,7 @@ debugger
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
     }
+  
   }
 
   prostate(pstate){
@@ -1391,7 +1397,8 @@ debugger
   closeApprovalSideBar(){
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("newdetails").classList.remove("position-fixed");
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#newdetails').removeClass('position-fixed');
   }
 
   closeMultipleSideBar(){
@@ -1829,6 +1836,7 @@ multipleback(){
   Accept_active: boolean = false;
   Conditional_Active: boolean = false;
   Reject_active: boolean = false;
+  Transfer_active:boolean=false;
   rejDesc: any;
   noRejectType: boolean = false;
   exist_comment: any[] = [];
@@ -1958,10 +1966,6 @@ debugger
        }
 // prj request access aprvals
 
-
-
-
-
       }
       else{
         // if there is no requests
@@ -2014,6 +2018,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Transfer_active=false;
         // this.getapprovalStats();
         //    this.getProjectDetails(this.URL_ProjectCode);
 
@@ -2025,6 +2030,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = true;
         this.Reject_active = false;
+        this.Transfer_active=false;
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
@@ -2033,6 +2039,16 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
+        this.Transfer_active=false;
+      };break;
+      case 'TRANSFER':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = '5';
+        this.rejectType = undefined;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.Transfer_active=true;
       };break;
       case 'NOTSELECTED':{
         this.isRejectOptionsVisible = false;
@@ -2041,6 +2057,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Transfer_active=false;
         this.isTextAreaVisible = false;
       }
       default: { }
@@ -4385,7 +4402,7 @@ debugger
 
 
 
-
+debugger
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
         this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
