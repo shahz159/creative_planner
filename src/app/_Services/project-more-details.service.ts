@@ -55,5 +55,16 @@ export class ProjectMoreDetailsService {
       return this.http.post(this.rootUrl+'CalenderAPI/NewLinkMeetingInProjectDetails',this.ObjSubTaskDTO);
   }
 
+  NewLinkMeetingInPortfolio(EventNumber:string,Emp_No:string,portfolio_id:string){
+    this.ObjSubTaskDTO.Emp_No=Emp_No;
+    this.ObjSubTaskDTO.portfolio_id= portfolio_id;
+    this.ObjSubTaskDTO.EventNumber=EventNumber;
+    return this.http.post(this.rootUrl+'CalenderAPI/NewLinkMeetingInPortfolio',this.ObjSubTaskDTO);
+}
+
+
+
+
+
 
 }

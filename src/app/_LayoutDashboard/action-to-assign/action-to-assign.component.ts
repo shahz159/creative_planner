@@ -192,14 +192,32 @@ TEsb.addEventListener('scroll', (ac:any) => {
   }
 
   OnAssignTask_Submit() {
+debugger
+this.isPrjNameValid = this.isValidString(this._taskName,3);
+this.isPrjDesValid = this.isValidString(this._description, 5)
+
+if(this.isPrjNameValid ==="VALID"&&this._taskName.length<=100&&this.isPrjDesValid==="VALID"&&this._description.length<=200){
+  this.formFieldsRequired = false
+}
+else {
+  this.formFieldsRequired =true
+  return
+}
+
+
+
 
     // check whether all mandatory fields provided
     if(!((this._taskName)&&this.SelectedEmplList)){
       this.formFieldsRequired=true;
       return;
     }
-    else this.formFieldsRequired=false; 
+    else this.formFieldsRequired=false;
     // check whether all mandatory fields provided
+
+
+
+
 
 
 
@@ -448,15 +466,16 @@ TEsb.addEventListener('scroll', (ac:any) => {
   }
 
 
-  isPrjNameValid:boolean=true;
-isPrjDesValid:boolean=true;
+//   isPrjNameValid:boolean=true;
+// isPrjDesValid:boolean=true;
 
-  isValidString(inputString: string, maxWords: number): boolean {
+//   isValidString(inputString: string, maxWords: number): boolean {
 
-    let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
-    const valid=rg.test(inputString);
-    return valid;
-}
+//     let rg=new RegExp('(\\b\\w+\\b\\s+){' + (maxWords - 1) + '}\\b\\w+\\b');
+//     const valid=rg.test(inputString);
+//     return valid;
+// }
+
   todo() {
     if (this.selectedProjectType == '011') {
       this._EndDate = null
@@ -549,8 +568,20 @@ isPrjDesValid:boolean=true;
     }
   }
 
+  isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
+  isPrjDesValid:'TOOSHORT'|'VALID'='VALID';
 
 
+  isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
+   if(inputString){
+
+   let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+   const x=rg.test(inputString);
+
+  return x ? 'VALID' : 'TOOSHORT';
+   }
+  return 'TOOSHORT'
+  }
 
 }
 

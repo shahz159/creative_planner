@@ -226,6 +226,7 @@ export class HomeComponent implements OnInit {
   Employeelist_Json: any;
 
   ngOnInit() {
+    this.Companylist_Json
     this._raciDetails = true;
     this.A2Z = true;
     this.Z2A = false;
@@ -282,8 +283,11 @@ export class HomeComponent implements OnInit {
         this.NoOfRecordsPerPage = this._ListProjStat.length;
         // this.AllPortfolioslist = this._ListProjStat;
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
+        console.log(this.Companylist_Json,'aaaaaaaaaaaaaaaaaaaaaaaa')
         this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
+        console.log(this.Employeelist_Json,"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
         this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
+        console.log(this.Statuslist_Json,'sssssssssssssssssssssssssssss')
         // this._ActualPortfolioList_ForShare = JSON.parse(data[0]['PortfolioList_Json']);
         // this._ActualPListFor_All = JSON.parse(data[0]['PortfolioList_Json']);
         this.countAll = data[0]['Total'];
@@ -368,6 +372,7 @@ export class HomeComponent implements OnInit {
 
   //Function Reset Filters
   resetFilters() {
+    // this.getNewFilterResult()
     this.searchText = "";
     this.search_Type = [];
     this.Portfolio_CurrentPage = 1;
@@ -391,6 +396,9 @@ export class HomeComponent implements OnInit {
   }
 
   resetAll() {
+    this.selectedCompanies = []
+    this.selectedEmployees = []
+    this.selectedStatus = []
     this.txtSearch = '';
     this.selectedItem_Company.length = 0;
     this.selectedItem_Status.length = 0;
@@ -527,7 +535,7 @@ export class HomeComponent implements OnInit {
     let arr2 = [];
     this.Statuslist_Json.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
         return arr2.push(item);
       }
     });
@@ -560,7 +568,7 @@ export class HomeComponent implements OnInit {
     let arr2 = [];
     this.Companylist_Json.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
         return arr2.push(item);
       }
     });
@@ -593,7 +601,7 @@ export class HomeComponent implements OnInit {
     let arr2 = [];
     this.Employeelist_Json.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
         return arr2.push(item);
       }
     });
@@ -628,15 +636,15 @@ export class HomeComponent implements OnInit {
 
   applyFilters() {
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
-      return select.Employee;
+      return select.Name;
     }).join(',');
     // console.log("Emp--->",this.selectedEmp_String);
     this.selectedCom_String = this.checkedItems_Company.map(select => {
-      return select.Company;
+      return select.Name;
     }).join(',');
     // console.log("Comp--->",this.selectedType_String);
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
-      return select.Status;
+      return select.Name;
     }).join(',');
 
     //console.log("Status--->",this.selectedStatus_String);
@@ -951,6 +959,7 @@ export class HomeComponent implements OnInit {
             // this.LoadingBar_state.start();
             this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
             this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
+            console.log(   this.Companylist_Json,'ssssssssssssssssssssssssssssssssss')
             this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
             this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
             this._PortFolio_Namecardheader = _Pname;
@@ -2033,4 +2042,60 @@ export class HomeComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
   }
+
+
+
+  selectedCompanies = []
+  onCompanySelected(selected: boolean, selectedItem: any) {
+    if (selected) {
+      this.selectedCompanies.push(selectedItem)
+    }
+
+    else {
+      const index: number = this.selectedCompanies.findIndex(obj => obj === selectedItem)
+      if (index > -1) {
+        this.selectedCompanies.splice(index, 1)
+      }
+    }
+  }
+
+
+selectedEmployees = []
+
+onEmployeesSelected(selected:boolean,selectedItem:any){
+  if(selected)
+    this.selectedEmployees.push(selectedItem)
+else{
+  const index:number = this.selectedEmployees.findIndex(obj => obj ===selectedItem)
+  if (index > -1){
+    this.selectedEmployees.splice(index, 1)
+  }
+}
+}
+
+
+selectedStatus = []
+
+onStatusSelected(selected:boolean,selectedItem:any){
+  if(selected)
+    this.selectedStatus.push(selectedItem)
+  else{
+    const index : number = this.selectedStatus.findIndex(obj=> obj === selectedItem)
+    if (index > -1)
+      this.selectedStatus.splice(index, 1)
+  }
+}
+
+
+getNewFilterResult(){
+  this.checkedItems_Emp = this.Employeelist_Json.filter(item=>this.selectedEmployees.includes(item.Name))
+  this.checkedItems_Company = this.Companylist_Json.filter(item=>this.selectedCompanies.includes(item.Name))
+  this.checkedItems_Status = this.Statuslist_Json.filter(item=>this.selectedStatus.includes(item.Name))
+  this.applyFilters()
+  this.edited = true
+}
+
+
+
+
 }

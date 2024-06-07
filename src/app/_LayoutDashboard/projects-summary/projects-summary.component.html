@@ -127,18 +127,15 @@
                                     <div class="dropdown-menu mega-dropdown-menu">
                                         <div (click)="$event.stopPropagation();">
                                             <div class="row">
-                                                <div class="col-md-10">
+                                                <div class="col-md-12">
                                                     <h5><strong>Total Projects - </strong>
                                                         <h5 class="d-inline-block">
                                                             <strong>{{_totalProjectsCount}}</strong>
                                                         </h5>
                                                     </h5>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <!-- Empty Column -->
-                                                </div>
                                             </div>
-                                            <hr />
+
 
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -149,29 +146,118 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="count-height">
-                                                        <p><strong>Project type</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox"  >
-                                                                <input type="checkbox" (change)="isTypeChecked(item)"
-                                                                    [(ngModel)]="item.checked">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
-                                                    </div>
+
+
+                                              <div class="col-md-3 bd-right">
+                                                <p><strong>Company</strong></p>
+                                                  <div class="count-height">
+
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
+                                                          <label class="kt-checkbox mb-3">
+                                                              <input type="checkbox"
+                                                                  [checked]="selectedCompanies.includes(item.Company_No)"(change)="onCompanySelected($event.target.checked,item.Company_No)">
+                                                              {{item.Name}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+                                                  <div    class="selected-options">
+                                                    <ng-container *ngFor="let item of CompanyCountFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedCompanies.includes(item.Company_No)">
+                                                        {{ item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onCompanySelected(false,item.Company_No)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
+
+                                                  </div>
+                                              </div>
+
+
+
+
+                                              <div class="col-md-3 bd-right">
+                                                <p><strong>Employees</strong></p>
+                                                  <div class="count-height">
+
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
+                                                          <label class="kt-checkbox mb-3">
+                                                              <input type="checkbox"
+                                                                  [checked]="selectedEmp.includes(item.Emp_No)" (change)="onEmpSelected($event.target.checked,item.Emp_No)">
+                                                              {{item.Name}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+                                                  <div    class="selected-options">
+                                                    <ng-container *ngFor="let item of EmpCountInFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedEmp.includes(item.Emp_No)">
+                                                        {{item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onEmpSelected(false,item.Emp_No)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
+
+                                                  </div>
+                                              </div>
+
+
+
+
+
+                                              <div class="col-md-3 bd-right">
+                                                <p><strong>Project type</strong></p>
+                                                  <div class="count-height">
+
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                          <label class="kt-checkbox">
+                                                              <input type="checkbox"
+                                                                  [checked]="selectedTypes.includes(item.Block_No)" (change)="onTypeSelected($event.target.checked,item.Block_No)">
+                                                              {{item.Name}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="selected-options">
+                                                    <ng-container *ngFor="let item of TypeContInFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedTypes.includes(item.Block_No)">
+                                                        {{item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onTypeSelected(false,item.Block_No)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
                                                 </div>
-                                                <div class="col-md-3">
+                                              </div>
+
+
+
+
+
+
+                                                <div class="col-md-3 bd-right">
+                                                  <p><strong>Status</strong></p>
                                                     <div class="count-height">
-                                                        <p><strong>Status</strong></p>
+
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of StatusCountFilter|filter:txtSearch">
                                                             <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isStatusChecked(item)"
-                                                                 [(ngModel)]="item.checked" [checked]="item">
+                                                                <input type="checkbox"
+                                                                [checked]="selectedStatus.includes(item.Name)" (change)="onStatusSelected($event.target.checked,item.Name)" >
                                                                  {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval": item.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name =="Not Started"?"Draft":item.Name}}
                                                                 <span></span>
                                                             </label>
@@ -196,37 +282,22 @@
                                                             <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
                                                         </div> -->
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="count-height">
-                                                        <p><strong>Company</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
-                                                            <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isCompanyChecked(item)"
-                                                                    [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
+                                                    <div    class="selected-options">
+                                                      <ng-container *ngFor="let item of StatusCountFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedStatus.includes(item.Name)" >
+                                                        {{item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onStatusSelected(false,item.Name)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="count-height">
-                                                        <p><strong>Employees</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
-                                                            <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isEmpChecked(item)"
-                                                                    [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
+
+
                                             </div>
                                             <br>
 
@@ -237,7 +308,7 @@
                                             <div class="col-md-10">
                                                 <button
                                                     class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="submit_Data()">Submit</button>
+                                                    data-toggle="dropdown" (click)="getNewFilterResult()">Submit</button>
                                                 <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
                                                     (click)="resetAll()">Reset
                                                 </button>

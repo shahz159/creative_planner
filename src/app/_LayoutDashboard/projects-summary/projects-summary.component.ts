@@ -405,6 +405,7 @@ $(document).ready(function(){
     // alert(this.isChecked);
   }
     GetProjectsByUserName(type) {
+      debugger
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
 
@@ -488,6 +489,7 @@ $(document).ready(function(){
   lastPagerecords:number;
 
   getDropdownsDataFromDB() {
+
     if(this.Type=='ALL Projects'){
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -505,7 +507,7 @@ $(document).ready(function(){
     this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
       .subscribe((data) => {
         //Emp
-        console.log("company data",data)
+        // console.log("company data",data)
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
         }
@@ -570,7 +572,7 @@ $(document).ready(function(){
       this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO)
         .subscribe((data) => {
           //Emp
-          console.log("company data",data)
+          // console.log("company data",data)
           if (this.selectedItem_Emp.length == 0) {
             this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
           }
@@ -631,6 +633,7 @@ $(document).ready(function(){
   selectedItem_Company = [];
 
   isStatusChecked(item) {
+
     let arr = [];
     this.edited = true;
     this.canceledit = true;
@@ -643,7 +646,7 @@ $(document).ready(function(){
     let arr2 = [];
     this.StatusCountFilter.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
         return arr2.push(item);
       }
     });
@@ -664,9 +667,24 @@ $(document).ready(function(){
     }
   }
 
+
+
+  //   submit() {
+  //     debugger
+  //     // Filter the data based on the selected filters
+  //     const coreFilter = this.TypeContInFilter.find(item => item.Name === 'Core Tasks' && item.checked);
+
+  //       if (coreFilter) {
+  //           // Filter the data based on the "Core" filter
+  //           const filteredData = this.TypeContInFilter.filter(item => item.Type === 'Core');
+  //           console.log(filteredData); // Output the filtered data
+  // }
+
+
   selectedItem_Type = [];
 
   isTypeChecked(item) {
+
     let arr = [];
     this.edited = true;
     this.canceledit = true;
@@ -680,7 +698,7 @@ $(document).ready(function(){
     let arr2 = [];
     this.TypeContInFilter.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
         return arr2.push(item);
       }
     });
@@ -689,6 +707,7 @@ $(document).ready(function(){
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
         this.resetFilters();
+
       }
     });
     if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
@@ -713,8 +732,10 @@ $(document).ready(function(){
     let arr2 = [];
     this.CompanyCountFilter.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
+        console.log(arr2,'companyyyyyyyyyyyy')
         return arr2.push(item);
+
       }
     });
     this.selectedItem_Company.push(arr2);
@@ -722,6 +743,7 @@ $(document).ready(function(){
       if (element.checked == false) {
         this.selectedItem_Company.length = 0;
         this.resetFilters();
+        console.log(this.selectedItem_Company,'selectedItem_Company')
       }
     });
     if(this.selectedItem_Type.length==0 && this.selectedItem_Status.length==0 && this.selectedItem_Emp.length==0 && this.selectedItem_Company.length==0){
@@ -748,7 +770,7 @@ $(document).ready(function(){
     let arr2 = [];
     this.EmpCountInFilter.filter((item) => {
       if (item.checked == true) {
-        this.applyFilters();
+        // this.applyFilters();
         return arr2.push(item);
       }
     });
@@ -783,6 +805,7 @@ $(document).ready(function(){
   }
 
   applyFilters() {
+
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -790,7 +813,7 @@ $(document).ready(function(){
       return select.Block_No;
     }).join(',');
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
-      return select.Status;
+      return select.Name;
     }).join(',');
     this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
       return select.Company_No;
@@ -864,7 +887,7 @@ $(document).ready(function(){
             this.emptyspace=true;
           }
         });
-    this.getDropdownsDataFromDB();
+     this.getDropdownsDataFromDB();  //akh testing
     }
   }
 
@@ -872,7 +895,7 @@ $(document).ready(function(){
   Emp_No:any
   Project_Code:any
   LoadDocument(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string,Pcode:string,tauth:string,tresp:string) {
-    debugger
+
     this.Project_Code=Pcode;
     this.Team_Autho=tauth;
     this.Emp_No=tresp;
@@ -933,6 +956,7 @@ $(document).ready(function(){
   }
 
   resetFilters() {
+    // this.getDropdownsDataFromDB()
     this.searchText = "";
     this.search_Type = [];
     this.CurrentPageNo = 1;
@@ -955,6 +979,7 @@ $(document).ready(function(){
     }
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
     this.applyFilters();
+    // this.getNewFilterResult()
   }
 
   submit_Data(){
@@ -962,7 +987,18 @@ $(document).ready(function(){
   }
   Cancelled: any[] = [{ name: 'Cancelled' }];
 
+
+
   resetAll() {
+    debugger;
+
+  // const type: string='RACIS Projects'
+  //   this.GetProjectsByUserName(type);
+  // this.getDropdownsDataFromDB()
+    this.selectedEmp=[]
+    this.selectedCompanies=[]
+    this.selectedStatus = []
+    this.selectedTypes = []
     this.searchResult=false;
     this.txtSearch = '';
     this.searchText= '';
@@ -1277,4 +1313,189 @@ $(document).ready(function(){
 
 
   limit =  35;
+
+
+
+
+
+// new filter functionality start.
+selectedCompanies = [];
+selectedEmp = [];
+selectedTypes=[];
+selectedStatus=[];
+
+
+onTypeSelected(selected:boolean,selectedItem:any){
+
+      if(selected){
+        this.selectedTypes.push(selectedItem);
+
+      }
+      else
+       {
+          const index:number=this.selectedTypes.findIndex(obj=>obj===selectedItem);
+          if(index>-1)
+          this.selectedTypes.splice(index,1);
+
+       }
+}
+
+onStatusSelected(selected:boolean,selectedItem:any){
+  if(selected){
+    this.selectedStatus.push(selectedItem);
+
+  }
+  else
+   {
+      const index:number=this.selectedStatus.findIndex(obj=>obj===selectedItem);
+      if(index>-1)
+      this.selectedStatus.splice(index,1);
+
+   }
+}
+
+onCompanySelected(selected:boolean,selectedItem:any){
+  if(selected){
+    this.selectedCompanies.push(selectedItem);
+
+  }
+  else
+   {
+      const index:number=this.selectedCompanies.findIndex(obj=>obj===selectedItem);
+      if(index>-1)
+      this.selectedCompanies.splice(index,1);
+
+   }
+}
+
+onEmpSelected(selected:boolean,selectedItem:any){
+  if(selected){
+    this.selectedEmp.push(selectedItem);
+
+  }
+  else
+   {
+      const index:number=this.selectedEmp.findIndex(obj=>obj===selectedItem);
+      if(index>-1)
+      this.selectedEmp.splice(index,1);
+
+   }
+}
+
+getNewFilterResult(){
+
+  this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.selectedEmp.includes(item.Emp_No));
+  this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.selectedCompanies.includes(item.Company_No));
+  this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.selectedTypes.includes(item.Block_No));
+  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.selectedStatus.includes(item.Name));
+  this.edited=true
+  console.log(this.checkedItems_Emp,'employee')
+  console.log(this.checkedItems_Cmp,'company')
+  console.log(this.checkedItems_Type,'type')
+  console.log(this.checkedItems_Status,'status')
+  this.applyFilters();
+}
+
+
+
+
+
+
+// updateSelected(item){
+//   if(item.checked){
+//     this.SelectedItems.push(item)
+//     // const Selectedcomma = this.SelectedItems.join(',')
+//  const   Selectedcomma =  this.SelectedItems.map(SelectedItem => SelectedItem.Name).join(', ')
+//  console.log(Selectedcomma)
+//   }else{
+//     this.SelectedItems=this.SelectedItems.filter(SelectedItem => SelectedItem !== item)
+
+//   }
+// }
+// removeSelected(item){
+//   item.checked=false
+//   this.SelectedItems=this.SelectedItems.filter(SelectedItem => SelectedItem !== item)
+//   const Selectedcomma = this.SelectedItems.map(selectedItem => selectedItem.Name).join(', ')
+//   console.log(Selectedcomma)
+// }
+
+
+
+// updateStatus(item) {
+//   if (item.checked) {
+//     this.selectedStatus.push(item)
+//     const statusComma = this.selectedStatus.map(selectedStatu => selectedStatu.Name).join(', ')
+//     console.log(statusComma)
+//   } else {
+//     this.selectedStatus = this.selectedStatus.filter(selectedStatu => selectedStatu !== item)
+
+//   }
+// }
+// removeStau(item) {
+//   item.checked = false
+//   this.selectedStatus = this.selectedStatus.filter(selectedStatu => selectedStatu !== item)
+//   const statusComma = this.selectedStatus.map(selectedStatu => selectedStatu.Name).join(', ')
+//   console.log(statusComma)
+
+// }
+
+
+// updateCompany(item) {
+//   if (item.checked) {
+//     this.companyArr.push(item)
+//     const comapayComma = this.companyArr.map(companyarr => companyarr.Name).join(', ')
+//     console.log(comapayComma)
+//   } else {
+//     this.companyArr = this.companyArr.filter(companyarr => companyarr !== item)
+//   }
+// }
+
+// removeCompany(item) {
+//   item.checked = false
+//   this.companyArr = this.companyArr.filter(companyarr => companyarr !== item)
+//   const companyComma = this.companyArr.map(companyarr => companyarr.Name).join(', ')
+//   console.log(companyComma)
+// }
+
+
+
+// updateEmployes(item) {
+//   if (item.checked) {
+//     this.employeeArr.push(item)
+//     const employeeComma = this.employeeArr.map(employeearr => employeearr.Name).join(', ')
+//     console.log(employeeComma)
+//   } else {
+
+//     this.employeeArr = this.employeeArr.filter(employeearr => employeearr !== item)
+
+//   }
+
+// }
+
+// removeEmployee(item) {
+//   item.checked = false
+//   this.employeeArr = this.employeeArr.filter(employeearr => employeearr !== item)
+//   const employeeComma = this.employeeArr.map(employeearr => employeearr.Name).join(', ')
+//   console.log(employeeComma)
+// }
+
+// new filter functionality end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
