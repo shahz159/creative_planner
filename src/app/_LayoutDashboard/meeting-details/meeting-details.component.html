@@ -6460,11 +6460,15 @@
                                     <span></span>
                                 </label>
                               </div>     -->
-                        <div class="kt-notification__item no-after position-relative ng-star-inserted">
-                            <span class="mr-4" title="Click to download">
+                            <!-- <span class="mr-4" title="Click to download">
                                 <input type="checkbox" (change)="onCheckboxChanges($event, item.url, item.File_Name)">
-                            </span>
-                          
+                            </span> -->
+                            <div class="attach-check">
+                                <label class="checkbox checkbox-outline checkbox-success mb-0 mr-2">
+                                    <input type="checkbox" name="Checkboxes15" (change)="onCheckboxChanges($event, item.url, item.File_Name)">
+                                    <span></span>
+                                </label>
+                              </div> 
                             <div data-toggle="modal" class="kt-notification__item-icon">
                                 <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"
                                     class="asseticn corol-icn memo_attachment_img">
@@ -6499,13 +6503,17 @@
                                   <div class="kt-notification__item-title fw-bold">
                                     <a target=”_blank” href="{{item.url}}"> {{item.File_Name}}</a>
                                   </div>
+                                  <div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-icon-round" style="width: 25px; height: 25px;">
+                                                <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">M</span>
+                                        </div>
+                                        <div class="text-muted ml-2 fs-7">User Name</div>
+                                    </div>
+                                    <div class="text-muted ml-1 fs-7 text-right">01-03-2024</div>
+                                </div>
                                 </div>
                               </div>
-
-
-
-
-                        </div>
                         </a>
                     </div>
                     <ng-container *ngIf="_TotalAttachment===0">
