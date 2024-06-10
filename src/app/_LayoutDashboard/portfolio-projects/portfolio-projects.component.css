@@ -2282,3 +2282,15 @@ td:nth-child(4) {
 .active .chck-icn {
   display: block;
 }
+.table-card.brdr{
+  border-left: 4px solid #2786fb;
+  border-radius: 0px !important;
+  display: block;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.table-card.brdr.UnderApprovals {
+  border-left: 4px solid #b2d732;
+}

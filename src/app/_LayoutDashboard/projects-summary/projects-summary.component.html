@@ -127,19 +127,14 @@
                                     <div class="dropdown-menu mega-dropdown-menu">
                                         <div (click)="$event.stopPropagation();">
                                             <div class="row">
-                                                <div class="col-md-10">
+                                                <div class="col-md-12">
                                                     <h5><strong>Total Projects - </strong>
                                                         <h5 class="d-inline-block">
                                                             <strong>{{_totalProjectsCount}}</strong>
                                                         </h5>
                                                     </h5>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <!-- Empty Column -->
-                                                </div>
                                             </div>
-                                            <hr />
-
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
@@ -149,9 +144,10 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-3 bd-right">
+                                                    <p><strong>Project Type</strong></p>
                                                     <div class="count-height">
-                                                        <p><strong>Project Type</strong></p>
+                                                        
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
                                                             <label class="kt-checkbox"  >
@@ -163,10 +159,53 @@
                                                             <span class="count-btn">{{item.Count}}</span>
                                                         </div>
                                                     </div>
+                                                    <div class="selected-options">
+                                                        <div class="selected-options-item">
+                                                            Core Tasks
+                                                            <span class="selected-options-item-remove">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                        <div class="selected-options-item">
+                                                            Secondary Tasks
+                                                            <span class="selected-options-item-remove">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                        <div class="selected-options-item">
+                                                            Standard Tasks
+                                                            <span class="selected-options-item-remove">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                        <div class="selected-options-item">
+                                                            Routine Tasks
+                                                            <span class="selected-options-item-remove">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                        <div class="selected-options-item">
+                                                            To do List
+                                                            <span class="selected-options-item-remove">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-3 bd-right">
+                                                    <p><strong>Status</strong></p>
                                                     <div class="count-height">
-                                                        <p><strong>Status</strong></p>
+                                                       
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of StatusCountFilter|filter:txtSearch">
                                                             <label class="kt-checkbox mb-3">
@@ -197,9 +236,10 @@
                                                         </div> -->
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-3 bd-right">
+                                                    <p><strong>Company</strong></p>
                                                     <div class="count-height">
-                                                        <p><strong>Company</strong></p>
+                                                        
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
                                                             <label class="kt-checkbox mb-3">
@@ -213,8 +253,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
+                                                    <p><strong>Employees</strong></p>
                                                     <div class="count-height">
-                                                        <p><strong>Employees</strong></p>
+                                                        
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
                                                             <label class="kt-checkbox mb-3">

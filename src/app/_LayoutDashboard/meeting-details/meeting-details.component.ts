@@ -347,6 +347,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("LinkSideBar").classList.remove("kt-quick-panel--on");
     document.getElementById("Previous_sidebar").classList.remove("kt-quick-panel--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("History_sidebar").classList.remove("kt-quick-active--on");
     // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -4200,11 +4201,23 @@ close_project_filter() {
   document.getElementById("filter-icon").classList.remove("active");
 }
 
+agendaside(){
+  document.getElementById("agendalist").classList.toggle("active");
+  document.getElementById("agendaarrow").classList.toggle("rotate");
+}
 
-
-
-
-
+History_meeting() {
+  document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+  document.getElementById("History_sidebar").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+ this.GetPreviousdate_meetingdata()
+}
+closeHistoryInfo() {
+  document.getElementById("History_sidebar").classList.remove("kt-quick-panel--on");
+  // document.getElementById("meetingdetails").classList.remove("position-fixed");
+  document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+  document.getElementById("rightbar-overlay").style.display = "none";
+}
 
 
 

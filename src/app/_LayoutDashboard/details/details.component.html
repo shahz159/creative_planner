@@ -1784,7 +1784,7 @@
                                       <!-- <div class="br-line"></div> -->
 
 
-                                      <a class="kt-inbox__icon kt_Comments event-active"  [ngClass]="{'active':currentSidebarOpened==='COMMENTS'}"  (click)="View_Comments()" title="Comments">
+                                      <a class="kt-inbox__icon kt_Comments"  [ngClass]="{'active':currentSidebarOpened==='COMMENTS'}"  (click)="View_Comments()" title="Comments">
                                           <svg xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16" height="16" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M767.424 130.032 256.576 130.032c-70.4 0-128 57.6-128 128l0 335.632c0 70.4 57.6 128 128 128l118.352 0 0 172.288 213.328-172.288 179.152 0c70.4 0 128-57.6 128-128L895.408 258.032C895.424 187.632 837.824 130.032 767.424 130.032zM815.424 593.664c0 26.016-21.984 48-48 48L588.272 641.664 560 641.664l-22 17.76-83.056 67.088 0-4.848 0-80-80 0-118.352 0c-26.016 0-48-21.984-48-48L208.592 258.032c0-26.016 21.984-48 48-48l510.848 0c26.016 0 48 21.984 48 48L815.44 593.664z"/><path d="M347.888 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/><path d="M512 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/><path d="M676.096 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z"/></svg>
                                       </a>
 
@@ -1811,7 +1811,7 @@
 
                                       <!-- <div class="br-line"></div> -->
 
-                                      <a class="kt-inbox__icon event-active" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            title="Add Users">
+                                      <a class="kt-inbox__icon" (click)="View_User_list()"  [ngClass]="{'active':currentSidebarOpened==='PEOPLES'}"            title="Add Users">
                                           <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
                                           <!-- <span   class="Kt-m-count" >{{userRequestCount}}</span> -->
 
@@ -1823,7 +1823,7 @@
 
                                       </a>
 
-                                      <a class="kt-inbox__icon ac-activity event-active" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity Log">
+                                      <a class="kt-inbox__icon ac-activity" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity Log">
                                           <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" ></path></svg>
                                       </a>
 
@@ -2757,31 +2757,34 @@
 
 
                                                       </div> -->
-                                                      <div class=" align-items-center justify-content-end g-10 d-flex">
-                                                          <!-- remove d-none add d-flex-->
-                                                          <!-- <div class="col">
-                                                      <div class="kt-info-lable-v">Approval*</div>
-                                                  </div> -->
-                                                          <div>
-                                                              <button
-                                                                  [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
-                                                                  (click)="approvalClick('ACCEPT')">Accept</button>
-                                                          </div>
+                                                      <div class=" align-items-center justify-content-end d-flex">
+                                                          
+                                                          
                                                           <!-- <div class="col" id="editaccept">
                                                       <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
                                                           (click)="approvalClick('EDIT')">Edit & Accept</button>
                                                   </div> -->
-                                                          <div *ngIf="requestType=='Project Complete'">
-                                                              <button
-                                                                  [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                                                  (click)="approvalClick('CONDITIONAL')">Conditional
-                                                                  Accept</button>
-                                                          </div>
-                                                          <div>
-                                                              <button
-                                                                  [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
-                                                                  (click)="approvalClick('REJECT')">Reject</button>
-                                                          </div>
+                                                  <div class="kt-detail-link">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
+                                                  <span class="kt-detail-iconname">Project Audit</span></div>
+                                                          <div
+                                                  [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'"
+                                                  (click)="approvalClick('ACCEPT')">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
+                                                  <span class="kt-detail-iconname">Accept</span></div>
+                                          
+                                              <div *ngIf="requestType=='Project Complete'"
+                                                  [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
+                                                  (click)="approvalClick('CONDITIONAL')">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em; height: 1.2em;vertical-align: middle;fill: #007c05;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"/><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"/><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"/><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"/></svg>
+                                                  <span class="kt-detail-iconname">Conditional
+                                                    Accept</span></div>
+                                         
+                                              <div
+                                                  [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
+                                                  (click)="approvalClick('REJECT')">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #e81000;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"/></svg>
+                                                  <span class="kt-detail-iconname">Reject</span></div>
                                                           <!---------- Reject Type html---------------->
 
                                                       </div>
@@ -2790,6 +2793,93 @@
                                               </div>
                                               <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
                                                   <div class="kt-pdv mt-2">
+                                                    <!-- Project Audit -->
+                                                    <div class="d-none mt-2">
+                                                        <div class="mb-2">
+                                                            <label>Select User<span class="text-danger">*</span></label>
+                                                        <ng-select required #action="ngModel" name="rej_type"
+                                                            placeholder="Select User" id="rej_type"
+                                                            [(ngModel)]="rejectType" (change)="rejectApproval()">
+                                                            <ng-option [value]="item.TypeID"
+                                                                *ngFor="let item of reject_list">
+                                                                {{item.RejectType}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                        </div>
+                                                        <div>
+                                                            <label>Enter Comments<span class="text-danger">*</span></label>
+                                                            <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Conditional Assign-->
+                                                    <div class="d-none mt-2">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="mb-2">
+                                                                    <label>Select Project Type<span class="text-danger">*</span></label>
+                                                                <ng-select required #action="ngModel" name="rej_type"
+                                                                    placeholder="Select Project Type" id="rej_type"
+                                                                    [(ngModel)]="rejectType" (change)="rejectApproval()">
+                                                                    <ng-option [value]="item.TypeID"
+                                                                        *ngFor="let item of reject_list">
+                                                                        {{item.RejectType}}
+                                                                    </ng-option>
+                                                                </ng-select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-2">
+                                                                    <label>Select User<span class="text-danger">*</span></label>
+                                                                <ng-select required #action="ngModel" name="rej_type"
+                                                                    placeholder="Select User" id="rej_type"
+                                                                    [(ngModel)]="rejectType" (change)="rejectApproval()">
+                                                                    <ng-option [value]="item.TypeID"
+                                                                        *ngFor="let item of reject_list">
+                                                                        {{item.RejectType}}
+                                                                    </ng-option>
+                                                                </ng-select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+
+                                                        <div class="row mb-2">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                                    <label>Start date<span class="text-danger">*</span></label>
+                                                                    <div class="d-flex date-border">
+                                                                      <input class="form-control ng-pristine curser-pointer" name="date" [(ngModel)]="Prjstartdate" (input)="text()"    (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
+                                                                        id="d-date" placeholder="Select start date" [matDatepicker]="picker2"
+                                                                        (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
+                                                                        #SrtDate="ngModel" />
+                                                                      <div class="input-group-text p-0">
+                                                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #picker2></mat-datepicker>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                                    <label>End date<span class="text-danger">*</span></label>
+                                                                    <div class="d-flex date-border">
+                                                                      <input class="form-control ng-pristine curser-pointer" [(ngModel)]="Prjenddate"  id="end-date"
+                                                                        placeholder="Select end date" [matDatepicker]="picker3" (click)="picker3.open();"
+                                                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null;findProjectType();Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null"/>
+                                                                      <div class="input-group-text p-0">
+                                                                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #picker3></mat-datepicker>
+                                                                      </div>
+                                                                    </div>
+                                                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date</span>
+                                                                  </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label>Enter Comments<span class="text-danger">*</span></label>
+                                                            <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
+                                                        </div>
+                                                    </div>
                                                       <div *ngIf="isRejectOptionsVisible">
                                                           <label>Reject Type<span class="text-danger">*</span></label>
                                                           <ng-select required #action="ngModel" name="rej_type"
@@ -2903,7 +2993,7 @@
                                                                       </span>
                                                                       <button type="button" data-to="#pills-3-tab"
                                                                           (click)="removeCommit();Close_Comments()"
-                                                                          class="btn btn-project-stv mr-3 ">Close</button>
+                                                                          class="btn btn-project-stv Bt-close ml-2 mr-3 ">Close</button>
                                                                   </div>
                                                               </div>
                                                           </div>
