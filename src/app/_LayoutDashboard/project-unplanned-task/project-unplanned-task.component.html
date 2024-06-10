@@ -395,7 +395,7 @@
                                     <li>
                                         <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects')">
                                             <div class="d-flex align-items-center">
-                                                <span class="count">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
+                                                <span class="count ">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
                                                 <div class="fil-lbl" (click)="totalproject()"   >Total Projects</div>
                                                 <span class="chck-icn">
                                                   <svg xmlns="http://www.w3.org/2000/svg"
@@ -465,7 +465,7 @@
                                         </button>
                                     </li>
                                     <li *ngIf="ActionedAssigned_Josn.length>0"  >
-                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned')" >
+                                        <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned')" >
                                             <div class="d-flex align-items-center">
                                                 <span class="count">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
                                                 <div class="fil-lbl" (click)="showassign()"  >Assign task</div>
