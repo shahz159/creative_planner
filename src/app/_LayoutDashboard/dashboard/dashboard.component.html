@@ -1385,11 +1385,13 @@
                             </div>
                         </div> -->
                         <div class="rgt-des">
-                            <div class="">
-                                <div class="main-s" [innerHTML]="item.Link_Details"></div>
+                            <div class="" *ngIf="item.Link_Details">
+                                <div class="main-s" [innerHTML]="item.Link_Details.link"></div>
                             </div>
+                            <span>{{item.Link_Details.meetingId}}</span><br/>
+                            <span>{{item.Link_Details.meetingPassword}}</span>
                         </div>
-                    </div>
+                    </div> 
                     <div id="desc" class="eve-area py-2" *ngIf="item.Description">
                         <div class="left-icon">
                             <span class="side-icns" aria-hidden="true">

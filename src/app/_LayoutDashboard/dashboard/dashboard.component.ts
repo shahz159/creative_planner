@@ -1449,7 +1449,15 @@ export class DashboardComponent implements OnInit {
         // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
-        this.Link_Details = this.EventScheduledjson[0]['Link_Details']
+        const link_detailsstr = this.EventScheduledjson[0]['Link_Details'];
+        if(link_detailsstr){
+          const obj=JSON.parse(link_detailsstr);
+          this.Link_Details=obj.link;
+          this.mtgUserId=obj.meetingId;
+          this.mtgPassword=obj.meetingPassword;
+        }
+       
+
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
 
         if (this._FutureEventTasksCount > 0) {
@@ -2351,15 +2359,6 @@ export class DashboardComponent implements OnInit {
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
-
-          var vLink_Details = "Link_Details";
-          const link_detials=this.Link_Details===undefined?'':this.Link_Details.trim();
-          const _user_id=this.mtgUserId===undefined?'':this.mtgUserId.trim();
-          const _user_pswd=this.mtgPassword===undefined?'':this.mtgPassword.trim();
-          element[vLink_Details] = this._onlinelink?(link_detials+','+_user_id+','+_user_pswd):'';
-
-
-
           var vLink_Details = "Link_Details";
           let linkobj:any={
               link:this.Link_Details?this.Link_Details:'',
@@ -2368,11 +2367,6 @@ export class DashboardComponent implements OnInit {
           };
           linkobj=JSON.stringify(linkobj);
           element[vLink_Details]=this._onlinelink?linkobj:'';
-
-
-
-
-
 
           var vDescription = "Description";
           element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -3849,7 +3843,7 @@ debugger
   Isadmin: boolean;
   loading: boolean = false;
 
-  GetClickEventJSON_Calender(arg) {
+  GetClickEventJSON_Calender(arg) {  debugger
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3884,7 +3878,13 @@ debugger
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
+        
+        const linkdetails_str=this.EventScheduledjson[0].Link_Details;
+        if(linkdetails_str&&this.EventScheduledjson[0].Onlinelink)
+        this.EventScheduledjson[0].Link_Details=JSON.parse(linkdetails_str);
 
+
+        
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
