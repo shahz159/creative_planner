@@ -6,10 +6,10 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-4">
-                            <strong *ngIf="activeClassAll==true">All Portfolio List</strong>
-                            <strong *ngIf="activeClassFav==true">Favorite Portfolio List</strong>
-                            <strong *ngIf="activeClassOwners==true">Owner Portfolio List</strong>
-                            <strong *ngIf="activeClassShare==true">Shared Portfolio List</strong>
+                            <strong *ngIf="activeClassAll==true">All portfolio list</strong>
+                            <strong *ngIf="activeClassFav==true">Favorite portfolio list</strong>
+                            <strong *ngIf="activeClassOwners==true">Owner portfolio list</strong>
+                            <strong *ngIf="activeClassShare==true">Shared portfolio list</strong>
                             <!-- <strong> Portfolio List</strong> -->
                         </h3>
                         <span *ngIf="searchResult == true" style="color:gray"> About (<b>{{_CurrentpageRecords}}</b>) results
@@ -107,7 +107,7 @@
                                             <div (click)="$event.stopPropagation();">
                                                 <div class="row">
                                                     <div class="col-md-10">
-                                                        <h5><strong>Total Portfolios - </strong>
+                                                        <h5><strong>Total portfolios - </strong>
                                                             <span class="d-inline-block">
                                                                 <strong *ngIf="countAll>=1000">{{countAll.toLocaleString()}}</strong>
                                                                 <strong *ngIf="countAll<1000">{{countAll}}</strong>
@@ -128,23 +128,7 @@
                                                 </div>
                                                 <br>
                                                 <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="count-height">
-                                                            <p><strong>Status</strong></p>
-                                                            <p class="text-danger"></p>
-                                                            <div class="d-flex justify-content-between"
-                                                                *ngFor="let item of Statuslist_Json |filter:txtSearch;let i=index">
-                                                                <label class="kt-checkbox">
-                                                                    <input type="checkbox"
-                                                                        (change)="isStatusChecked(item)"
-                                                                        [(ngModel)]="item.checked">
-                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Cancellation Under Approval"?"Cancellation Approval"   :item.Name== "Completion Under Approval" ? "Completion Approval" :item.Name=='Forward Under Approval'? "Forward Approval" :(item.Name=='InProcess'?'In-Process':item.Name)}}
-                                                                    <span></span>
-                                                                </label>
-                                                                <span class="count-btn">{{item.Count}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
                                                     <div class="col-md-4">
                                                         <div class="count-height">
                                                             <p><strong>Company</strong></p>
@@ -153,31 +137,104 @@
                                                                 <label class="kt-checkbox">
                                                                     <!-- (change)="isCompanychecked(item)" -->
                                                                     <input type="checkbox"
-                                                                        (change)="isCompanychecked(item)"
-                                                                        [(ngModel)]="item.checked">
+
+                                                                        [checked]="selectedCompanies.includes(item.Name)"   (change)="onCompanySelected($event.target.checked,item.Name)" >
                                                                     {{item.Name}}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
                                                             </div>
                                                         </div>
+                                                        <div    class="selected-options">
+                                                          <ng-container *ngFor="let item of Companylist_Json">
+                                                            <div  class="selected-options-item" *ngIf="selectedCompanies.includes(item.Name)">
+                                                              {{ item.Name}}
+                                                                <span class="selected-options-item-remove" (click)="onCompanySelected(false,item.Name)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                        <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                    </svg>
+                                                                </span>
+                                                            </div>
+                                                          </ng-container>
+
+                                                        </div>
                                                     </div>
-                                                    
+
                                                     <div class="col-md-4">
                                                         <div class="count-height">
                                                             <p><strong>Employees</strong></p>
                                                             <div class="d-flex justify-content-between"
                                                                 *ngFor="let item of Employeelist_Json |filter:txtSearch;let i=index">
                                                                 <label class="kt-checkbox">
-                                                                    <input type="checkbox" (change)="isEmpChecked(item)"
-                                                                        [(ngModel)]="item.checked">
+                                                                    <input type="checkbox"
+                                                                   [checked]="selectedEmployees.includes(item.Name)"      (change)="onEmployeesSelected($event.target.checked,item.Name)"                        >
                                                                     {{item.Name}}
                                                                     <span></span>
                                                                 </label>
                                                                 <span class="count-btn">{{item.Count}}</span>
                                                             </div>
                                                         </div>
+
+                                                        <div    class="selected-options">
+                                                          <ng-container *ngFor="let item of Employeelist_Json">
+                                                            <div  class="selected-options-item" *ngIf="selectedEmployees.includes(item.Name)">
+                                                              {{ item.Name}}
+                                                                <span class="selected-options-item-remove"    (click)="onEmployeesSelected(false,item.Name)"  >
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                        <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                    </svg>
+                                                                </span>
+                                                            </div>
+                                                          </ng-container>
+
+                                                        </div>
+
+
+
                                                     </div>
+
+
+
+                                                    <div class="col-md-4">
+                                                      <div class="count-height">
+                                                          <p><strong>Status</strong></p>
+                                                          <p class="text-danger"></p>
+                                                          <div class="d-flex justify-content-between"
+                                                              *ngFor="let item of Statuslist_Json |filter:txtSearch;let i=index">
+                                                              <label class="kt-checkbox">
+                                                                  <input type="checkbox"
+                                                                      (change)="onStatusSelected($event.target.checked,item.Name)"
+                                                               [checked]="selectedStatus.includes(item.Name)"                            >
+                                                                  {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval"   :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :(item.Name=='InProcess'?'In-process':item.Name)}}
+                                                                  <span></span>
+                                                              </label>
+                                                              <span class="count-btn">{{item.Count}}</span>
+                                                          </div>
+                                                      </div>
+
+                                                      <div    class="selected-options">
+                                                        <ng-container *ngFor="let item of Statuslist_Json">
+                                                          <div  class="selected-options-item"     *ngIf="selectedStatus.includes(item.Name)" >
+                                                            {{ item.Name}}
+                                                              <span class="selected-options-item-remove"  (click)="onStatusSelected(false,item.Name)"    >
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                      <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                  </svg>
+                                                              </span>
+                                                          </div>
+                                                        </ng-container>
+
+                                                      </div>
+
+
+
+
+
+
+
+
+
+                                                  </div>
 
                                                 </div>
                                                 <br>
@@ -187,7 +244,7 @@
                                                 <div class="col-md-10">
                                                     <button
                                                         class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                        data-toggle="dropdown">Submit
+                                                        data-toggle="dropdown" (click)="getNewFilterResult()"   >Submit
                                                     </button>
                                                     <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
                                                         (click)="resetAll()">Reset
@@ -279,10 +336,10 @@
 
                                             <li class="kt-nav__item px-3">
 
-                                                <strong>Create New Portfolio</strong>
+                                                <strong>Create new portfolio</strong>
 
                                                 <div class="kt-nav__separator"></div>
-                                                <p>Enter the Portfolio Name you wish to create,it can be editable
+                                                <p>Enter the portfolio name you wish to create,it can be editable
                                                     anytime
                                                     later.</p>
                                                 <!-- <p>Enter the Portfolio Name you wish to create, it can be editable
@@ -333,11 +390,11 @@
             <div class="accordion accordion-solid" id="accordionExample6">
                 <!-- Messages for Empty List -->
                 <div *ngIf="messageForEmpty==true">
-                    <h4 [hidden]="messageForEmpty" style="color: lightgrey;text-align: center;">No Portfolio's
+                    <h4 [hidden]="messageForEmpty" style="color: lightgrey;text-align: center;">No portfolio's
                         has created</h4>
-                    <h4 [hidden]="NoSharedmsg" style="color: lightgrey;text-align: center;">No Shared
+                    <h4 [hidden]="NoSharedmsg" style="color: lightgrey;text-align: center;">No shared
                     </h4>
-                    <h4 [hidden]="Nofavmsg" style="color: lightgrey;text-align: center;">No Favourites
+                    <h4 [hidden]="Nofavmsg" style="color: lightgrey;text-align: center;">No favourites
                     </h4>
                 </div>
                 <!-- {{_ItemsPerpage}} -->
@@ -545,7 +602,7 @@
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge completion-under-approval kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                                {{item.Status== "Completion Under Approval" ? "Completion Approval":item.status}}
+                                                                {{item.Status== "Completion Under Approval" ? "Completion approval":item.status}}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -614,7 +671,7 @@
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge new-project-under kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                                {{item.Status==='Under Approval'? "New Approval" :item.status=='Forward Under Approval'? "Forward Approval" :(item.Status=='InProcess'?'In-Process':item.Status)}}
+                                                                {{item.Status==='Under Approval'? "New approval" :item.status=='Forward Under Approval'? "Forward approval" :(item.Status=='InProcess'?'In-process':item.Status)}}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -688,7 +745,7 @@
                                                             </span>
                                                             <span
                                                                 class="kt-inbox__label kt-badge kt-badge Forward_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                                {{item.Status == "Forward Under Approval" ? "Forward Approval" :item.status}}
+                                                                {{item.Status == "Forward Under Approval" ? "Forward approval" :item.status}}
                                                             </span>
                                                         </div>
                                                     </div>

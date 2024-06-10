@@ -1866,11 +1866,16 @@ mat-icon {
 }
 
 span.count {
-    background: #9886eb;
-    padding: 0px 4px;
-    color: #ffffff;
-    cursor: auto;
-    border-radius: 3px;
+  cursor: auto;
+  background: #717171;
+  color: #fff;
+  border-radius: 3px;
+  margin-right: 4px;
+  padding: 0px 2px;
+  font-size: 11px;
+  width: 24px;
+  height: 24px;
+  line-height: 2.2;
 }
 
 .bdg-suc {
@@ -2285,7 +2290,7 @@ span.count2 {
     font-weight: 500;
     font-size: 1.2rem;
     color: #000000;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 }
 
 .schedule-event.modal .modal-header .close {
@@ -2498,4 +2503,61 @@ a.info-btn svg {
 
 span.kt-inbox__subject.h5 {
     color: #424242;
+}
+.chck-icn {
+  display: none;
+}
+.active .chck-icn {
+  display: block;
+}
+.fil-lbl {
+  flex: 1;
+  text-align: left;
+}
+.dropdown-menu.dropdown-filter {
+  float: left;
+  width: 250px;
+  min-width: 160px;
+  padding: 7px 0 0 0 !important;
+  margin: 2px 0 0;
+  z-index: 1002;
+}
+.drop-ul {
+  list-style: none;
+  padding-left: 0;
+}
+.btn-filtr {
+  width: 100%;
+  font-weight: 400;
+}
+.btn-filtr.active {
+  color: #2786fb;
+  background: rgba(39, 134, 251, 0.1) !important;
+}
+.btn-filtr.active span.count{
+  background: #2786fb;
+}
+.kt-todo__icon {
+  border: 0;
+  background: none;
+  font-size: 16px;
+  outline: none !important;
+  box-shadow: none;
+  outline: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  padding: 0.5rem 1rem;
+  background-color: #f5f6fc;
+  border: 1px solid #b3bcff;
+  color: #5867dd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 0 8px 0 0;
+  border-radius: 4px;
+}
+.kt-todo__icon:hover {
+  background-color: #5867dd;
+  color: #fff;
 }

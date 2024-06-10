@@ -15,7 +15,7 @@ export class CalenderService {
   }
   readonly rootUrl = this.commonUrl.apiurl;
   GetCalenderProjectandsubList(obj: CalenderDTO) {
-   
+
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
@@ -59,7 +59,7 @@ export class CalenderService {
   NewGetcompleted_meeting(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
- 
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetcomplte_meeting", this.obj_CalenderDTO);
   }
 
@@ -80,14 +80,13 @@ export class CalenderService {
   NewPrevious_meetingreport(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-   
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_prevmeetingbinddata", this.obj_CalenderDTO);
   }
 
   NewGet_previousMeetingNotes(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-    
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_previousMeetingNotes", this.obj_CalenderDTO);
   }
 
@@ -119,7 +118,7 @@ export class CalenderService {
   //   this.obj_CalenderDTO.Scheduled_date=obj.Scheduled_date;
   //  this.obj_CalenderDTO.EventNumber=obj.EventNumber;
    this.obj_CalenderDTO.User_Type=obj.User_Type;
-   
+
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsert_timerrecordco", this.obj_CalenderDTO);
   }
   NewGetMeeting_notes(obj:CalenderDTO){
@@ -139,39 +138,39 @@ export class CalenderService {
     this.obj_CalenderDTO.Meeting_notes = obj.Meeting_notes;
     this.obj_CalenderDTO.AgendaId=obj.AgendaId
     this.obj_CalenderDTO.Status_type = obj.Status_type;
-  
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertAgendameeting_notes", this.obj_CalenderDTO);
   }
 
 
   NewAddAgendas(obj:CalenderDTO){
-  
+
     this.obj_CalenderDTO.json = obj.json;
     this.obj_CalenderDTO.flagid=obj.flagid;
     this.obj_CalenderDTO.Emp_No=obj.Emp_No;
     this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID
- 
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
   }
 
   NewEditsAgendas(obj:CalenderDTO){
-   
+
     this.obj_CalenderDTO.json = obj.json;
     this.obj_CalenderDTO.flagid=obj.flagid;
     this.obj_CalenderDTO.Emp_No=obj.Emp_No;
     this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID
-   
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
   }
 
 
   NewDeleteAgendas(obj:CalenderDTO){
-   
+
     this.obj_CalenderDTO.flagid = obj.flagid;
     this.obj_CalenderDTO.json = obj.json;
     this.obj_CalenderDTO.Emp_No=obj.Emp_No;
     this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID
- 
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewAddMeetingAgendas", this.obj_CalenderDTO);
   }
 
@@ -201,7 +200,7 @@ export class CalenderService {
     this.obj_CalenderDTO.User_list = obj.User_list;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
     this.obj_CalenderDTO.DraftAgendas = obj.DraftAgendas;
-    
+
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){
@@ -233,7 +232,7 @@ export class CalenderService {
   }
   NewGetEvent_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-  
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetEvent_request", this.obj_CalenderDTO);
   }
   NewDelete_table(obj:CalenderDTO){
@@ -279,7 +278,7 @@ NewPending_table(obj:CalenderDTO){
   }
 
   NewUpdateCalender(obj: CalenderDTO){
-    
+
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.flagid = obj.flagid;
@@ -291,7 +290,7 @@ NewPending_table(obj:CalenderDTO){
   NewGetcheckdateandtime(obj: CalenderDTO){
     this.obj_CalenderDTO.json=obj.json;
     this.obj_CalenderDTO.EmpNo=obj.EmpNo;
-   
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetcheckdatetimetable", this.obj_CalenderDTO);
 
 }
@@ -302,7 +301,7 @@ NewGetScheduledtime(obj: CalenderDTO){
 
 }
 NewGetMeetingdata_notes(obj: CalenderDTO){
-  
+
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetMeetingnotes_datas", this.obj_CalenderDTO);
@@ -311,7 +310,7 @@ NewGetMeetingdata_notes(obj: CalenderDTO){
 
 
   GetAgendaMeetingnotes_data(obj: CalenderDTO){
-  
+
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.AgendaId=obj.AgendaId;
@@ -321,7 +320,7 @@ NewGetMeetingdata_notes(obj: CalenderDTO){
 
 
 NewGetMeetingnote_comp(obj: CalenderDTO){
-  
+
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
 
@@ -338,6 +337,20 @@ NewGetAttendeesMeetingnotes(obj: CalenderDTO){
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetAttendeesMeetingnotes", this.obj_CalenderDTO);
 
 }
+
+
+
+GetInsertAttendeeMeetingTime(obj:CalenderDTO){
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Status=obj.Status;
+  this.obj_CalenderDTO.StartTime=obj.StartTime;
+  this.obj_CalenderDTO.EndTime=obj.EndTime;
+
+
+  return this.http.post(this.rootUrl+"CalenderAPI/NewInsertAttendeeMeetingTime",this.obj_CalenderDTO);
+}
+
 
 NewinsertDMS_meetingreport(obj: CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;

@@ -152,7 +152,7 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_projectCode.subscribe(p => this.pcode=p);
     this.BsService.bs_ProjectName.subscribe(N => this._MainPrjectName = N);
     this.BsService.bs_AssignId.subscribe(id => this.task_id = id);
-   
+
 
     this._inputAttachments = [];
     this._projcode = false;
@@ -205,14 +205,14 @@ export class ActionToProjectComponent implements OnInit {
             }
          })
 
-         
+
           this.BsService.bs_TaskName.subscribe(t => {
             if(t){
               this.Sub_ProjectName = t
             }
             console.log(this.Sub_ProjectName,'======>')
           });
-        
+
 
 
 
@@ -485,11 +485,13 @@ debugger
 
 
     }else this._subname=false;
-    if (this.isPrjNameValid !== 'VALID') {
-      // Don't proceed with form submission if input is invalid
+    if (this.isPrjNameValid !== 'VALID'  ) {
+      // Don't proceed with form submision if input is invalid
       return;
   }
-
+if(this.Sub_ProjectName.length>100){
+return
+}
 
     if (this._Description == "" || this._Description == null || this._Description == undefined ) {
       this._desbool = true;
@@ -498,6 +500,12 @@ debugger
     if(this.isPrjDesValid !=='VALID'){
       return
     }
+
+
+if(this._Description.length>200){
+return
+}
+
 
     if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
       this._selectemp = true;
@@ -628,7 +636,7 @@ debugger
       }
 
       this.service._InsertNewSubtask(fd).subscribe(event => {
-
+debugger
         if (event.type === HttpEventType.Response){
           var myJSON = JSON.stringify(event);
           this._Message = (JSON.parse(myJSON).body).Message;
@@ -991,21 +999,21 @@ onDescriptionChange(value:string){
 //   }
 // }
 
-isPrjNameValid:'TOOLONG'|'VALID'='VALID';
-isPrjDesValid:'TOOLONG'|'VALID'='VALID'
+isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
+isPrjDesValid:'TOOSHORT'|'VALID'='VALID'
 
-isValidString(inputString: string,maxWrds:number=1000): 'TOOLONG'|'VALID' {
-  if(inputString.trim()){
-    // let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
-    // const x=rg.test(inputString);
-    const words = inputString.trim().split(/\s+/);
-    const y=words.length<=maxWrds
+isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
+  if(inputString){
 
-    return (y === true) ? 'VALID' : (y === false) ? 'TOOLONG' : 'TOOLONG';
+  let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+  const x=rg.test(inputString);
 
-    }
+ return x ? 'VALID' : 'TOOSHORT';
+
   }
+ return 'TOOSHORT'
 
+ }
 
 
 

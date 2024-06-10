@@ -17,7 +17,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Directive, HostListener } from '@angular/core';
-
+import { Location } from '@angular/common';
 
 
 export const MY_DATE_FORMATS = {
@@ -134,7 +134,7 @@ export class CreateProjectComponent implements OnInit {
   notificationMsg:number=0;
 
 
-  constructor(private router: Router,
+  constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
     private datepipe:DatePipe,private notification:NotificationService,
     public BsService: BsServiceService,
@@ -151,6 +151,14 @@ export class CreateProjectComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
+
+    if (navigatingToCreateProject === 'true') {
+    this.Assigned_projects()
+    localStorage.removeItem('navigatingToCreateProject');
+  }
+
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.fileAttachment=null;
@@ -161,7 +169,9 @@ export class CreateProjectComponent implements OnInit {
 
 
     this.route.paramMap.subscribe(params => {
+      console.log(this.route,"url")
       var pcode = params.get('projectcode');
+
       this.URL_ProjectCode = pcode;
       // this._MasterCode = pcode;
     });
@@ -170,12 +180,12 @@ export class CreateProjectComponent implements OnInit {
       this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
 
 
-      this.ProjectDto.Emp_No='400172';
-      this.ProjectDto.Hours="20";
-      this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:any)=>{
+      // this.ProjectDto.Emp_No='400172';
+      // this.ProjectDto.Hours="20";
+      // this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:any)=>{
 
-          console.log('prj cost here:',res);
-      })
+      //     console.log('prj cost here:',res);
+      // })
 
 
 
@@ -452,9 +462,14 @@ createSRTProject(){
            DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
            Remarks:this._remarks,
-           Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0
+           Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0,
+           Conditional_Project:this.conditionalList?this.conditionalList[0].Project_Code:'0'
 
      };
+
+
+
+
     //  alert(this.Allocated_Hours)
      console.log("PRJ INFORMATION :",projectInfo);
      this.ProjectDto.Status=JSON.stringify(projectInfo);
@@ -693,7 +708,7 @@ onFileChanged(event: any) {
   }
 
   Assigned_projects(){
-    $('.Assigned-projects-list').removeClass('d-none');
+     $('.Assigned-projects-list').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
   }
 
@@ -713,13 +728,13 @@ onFileChanged(event: any) {
     // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
 
 debugger
-this.isPrjNameValid=this.isValidString(this.PrjName,3,50);
-this.isPrjDesValid=this.isValidString(this.PrjDes,5,50);
+this.isPrjNameValid=this.isValidString(this.PrjName,3);
+this.isPrjDesValid=this.isValidString(this.PrjDes,5);
 
 
   if(
 
-    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID')&&(this.PrjDes&&this.isPrjDesValid==='VALID'))&&
+    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=200))&&
     (
       (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
       (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours)) ||
@@ -922,7 +937,7 @@ onProjectOwnerChanged(){
       });
 
 
-      console.log(this.assigntask_json,'--------------->')
+      console.log(this.conditional_List,'--conditional prjs------------->')
  });
   }
 
@@ -998,15 +1013,15 @@ onRejectButtonClick(value:any,id:number){
 
 
 
-  conditionalList:any
-
+  conditionalList:any;   // selected conditional project will be in this variable.
+ 
   getConditional(value:any){
-    this.conditionalList = [value]
+    this.conditionalList = [value];
     this.PrjName=this.conditionalList[0].Project_Name;
     this.Prjstartdate=this.conditionalList[0].DPG;
     this.Prjenddate=this.conditionalList[0].DeadLine;
     this.PrjDes=this.conditionalList[0].Project_Description;
-    this.Prjtype=this.conditionalList[0].ProjectType;
+    this.Prjtype=this.conditionalList[0].Project_Block;
 
   }
 
@@ -1022,7 +1037,10 @@ onRejectButtonClick(value:any,id:number){
 
 
     this.BsService.SetNewPojectCode(this.PrjCode);
+
     this.router.navigate(["./backend/createproject/ActionToProject/5"]);
+
+
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
@@ -1147,8 +1165,8 @@ selectedOwnResp:any
 selectedcategory:any
 selectedclient:any
 ActionDuration:any;
-
-
+ProjeditName:any
+ProjeditDescription:any
 
 
 initializeSelectedValue() {
@@ -1171,8 +1189,8 @@ initializeSelectedValue() {
     this.OGclient = this.projectInfo.Client
     this.Submission_Name = this.projectInfo.SubmissionName
     this.OGSubmission = this.projectInfo.SubmissionName
-    this.ProjectName = this.projectInfo.Project_Name
-    this.ProjectDescription = this.projectInfo.Project_Description
+    this.ProjeditName = this.projectInfo.Project_Name
+    this.ProjeditDescription = this.projectInfo.Project_Description
     this.Start_Date = this.projectInfo.StartDate
     this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
     this.Allocated = this.projectInfo.AllocatedHours
@@ -1184,23 +1202,57 @@ projectEdit(val) {
 
 
   debugger
-//   const d3 = new Date(this.Start_Date)
-// const d4 = new Date(this.projectInfo.StartDate)
+
+  this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
+  this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
 
 
-// if(d4>d3){
-//   Swal.fire({
-//     title:'Your Project Start Date is Greater Than Action Start Date',
-//     text:"First Change the Action Start Date",
-//     showCloseButton:true
-//   })
-//   return;
+if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100){
+  this.notProvided=false
 
-// }
+} else{
+this.notProvided=true;
+return;
+}
 
+if(this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=200){
+  this.notProvided=false
+} else{
+  this.notProvided=true;
+  return;
+}
+if(this.selectedOwnResp){
+  this.notProvided=false
+}
+ else{
+  this.notProvided=true
+  return
+ }
 
+ if(this.selectedcategory){
+  this.notProvided=false
+}
+ else{
+  this.notProvided=true
+  return
+ }
 
-// this.reseting()
+ if(this.selectedclient){
+  this.notProvided=false
+}
+ else{
+  this.notProvided=true
+  return
+ }
+
+ if(this.Start_Date&&this.End_Date){
+  this.notProvided=false
+}
+ else{
+  this.notProvided=true
+  return
+ }
+
 
   this._remarks = '';
   if (this.OGProjectType != this.ProjectType) {
@@ -1268,8 +1320,8 @@ projectEdit(val) {
 
   const jsonobj = {
     Project_Type: type,
-    Project_Name: this.ProjectName,
-    Project_Description: this.ProjectDescription,
+    Project_Name: this.ProjeditName,
+    Project_Description: this.ProjeditDescription,
     Owner: owner,
     Responsible: resp,
     Category: category,
@@ -1623,7 +1675,7 @@ removeTemplate(templateCode:string){
 // template open for new project creation start
 PrjTemplActions:any=[];
 
-openTemplate(template:any){ 
+openTemplate(template:any){
   console.log("template:",template);
 
   this.projectMoreDetailsService.getProjectMoreDetails(template.Project_Code).subscribe((res:any)=>{
@@ -1682,7 +1734,7 @@ openTemplate(template:any){
                    if(item.Role==='Informer')
                    _prjinfrmr=item;
           });
-        
+
           this.PrjCrdtr=_prjcoordntr.Emp_No;
           this.PrjInformer=_prjinfrmr.Emp_No;
           this.PrjSupport=_prjsupport;
@@ -1917,22 +1969,28 @@ reset(){
 
 // DRAFT PROJECT CODE END.
 
-isPrjNameValid:'TOOSHORT'|'TOOLONG'|'VALID'='VALID';
-isPrjDesValid:'TOOSHORT'|'TOOLONG'|'VALID'='VALID';
+isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
+isPrjDesValid:'TOOSHORT'|'VALID'='VALID';
 
 
-isValidString(inputString: string, minWrds: number,maxWrds:number=1000): 'TOOSHORT'|'TOOLONG'|'VALID' {
+
+isPrjNameValids:'TOOSHORT'|'VALID'='VALID';
+isPrjDesValids:'TOOSHORT'|'VALID'='VALID';
+
+
+
+isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
  if(inputString){
- // let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
+
  let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
  const x=rg.test(inputString);
-
- const words = inputString.trim().split(/\s+/);
- const y=words.length<=maxWrds
-
-return (x&&y)?'VALID':(x==false)?'TOOSHORT':'TOOLONG';
+ // let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
+//  const words = inputString.trim().split(/\s+/);
+//  const y=words.length<=maxWrds
+return x ? 'VALID' : 'TOOSHORT';
+// return (x&&y)?'VALID':(x==false)?'TOOSHORT':'TOOLONG';
  }
-
+return 'TOOSHORT'
 
 }
 // isValidString(inputString: string, minWords: number): boolean {
@@ -2091,7 +2149,6 @@ debugger
 
 
 
-  debugger
 //   const f= new Date(this.projectInfo.EndDate)
 
 //   const isInvalid = this.PrjActionsInfo.some((actn) => {
@@ -2126,11 +2183,14 @@ if(dateone < datetwo){
   })
   return
 }
+this.isPrjNameValid=this.isValidString(this.ProjectName,2);
+this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
+
 
 
 
         // check all mandatory field are provided.
-        if(!(this.ProjectName&&this.ProjectDescription&&
+        if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=200&&
           this.OGowner&&this.OGresponsible&&
           this.selectedcategory&&this.selectedclient&&
           this.Start_Date&&this.End_Date&&
@@ -2461,9 +2521,21 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
     }
 
 
-    text(){debugger
-      this.Prjstartdate=  this.Prjstartdate<this.todayDate?null:this.Prjstartdate
-    }
+    // text(){debugger
+    //   this.Prjstartdate=  this.Prjstartdate<this.todayDate?null:this.Prjstartdate
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
 
   }
 

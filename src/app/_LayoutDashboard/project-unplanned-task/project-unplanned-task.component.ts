@@ -89,6 +89,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+    this.totalproject()
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
@@ -202,14 +203,14 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.GetAssigned_SubtaskProjects();
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
-   
+
   }
   close_projectmodal(){
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("projectmodal").style.display = "none";
     this.Assigntext=''
   }
-  
+
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
@@ -217,7 +218,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   Clientjson:any;
   EmployeeLists:any;
   loading: boolean = false;
-  
+
 
   GetAssigned_SubtaskProjects() {
     this.loading = true;
@@ -229,16 +230,18 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       (data) => {
         this.loading = false;
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
-      
+
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        console.log('sdcssd',this._TodoList)
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         this.Clientjson=JSON.parse(data[0]['Client_json'])
-        
+
         this.EmployeeLists = JSON.parse(data[0]['EmployeeList']);
-        console.log("Data---->", this.EmployeeLists);
+
         this.FiterEmployee=this.EmployeeList;
+        console.log("Data---->", this.FiterEmployee);
       });
   }
 
@@ -296,7 +299,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         // console.log(this.ActionedAssigned_Josn)
-        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
@@ -541,6 +544,7 @@ debugger
           // this.CategoryList = JSON.parse(data['CategoryList']);
           let message: string = data['Message'];
           this.notifyService.showSuccess("Successfully", message);
+
           // this.Mdl_CategoryName = "";
         });
     }
@@ -569,6 +573,7 @@ debugger
     this.BsService.setNewCategoryName(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
     this._CategoryActive = true;
+
     this.IfNoTaskFound = "";
     this._Categoryid = C_id;
     this._CategoryName = C_Name;
@@ -586,6 +591,7 @@ debugger
       (data) => {
         //this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -610,6 +616,7 @@ debugger
         // console.log(this.CountsAccepted);
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+      this.totalproject()
   }
 
 
@@ -624,10 +631,10 @@ debugger
   selectedProjectType: string;
   public task_id: number;
 
-  GetProjectTypeList(taskName, id) {
+  GetProjectTypeList() {
     // debugger
-    this._taskName = taskName;
-    this.task_id = id;
+    this._taskName =this.Task_name;
+    this.task_id = this.AssignID;
     this.router.navigate(["UnplannedTask/ActionToAssign/1"]);
     this.BsService.SetNewAssignId(this.task_id);
     this.BsService.SetNewAssignedName(this._taskName);
@@ -651,12 +658,12 @@ debugger
 
     $("#Project_info_slider_bar").scrollTop(0);
 
-  
+
   }
 
 
 
-  
+
 
 
 
@@ -679,29 +686,37 @@ selectedAttendeesList = new Set<any>();
   datestrStart:any;
   datestrEnd:any
 
+  AssignID:any;
+  Task_name:any;
 
-  addSelectedEmployees(taskName, id) {
-     
-       const selectedArray = Array.from(this.selectedAttendeesList)
-       this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
-       
-      
-       this.BsService.SetNewAssignId(id);
-       this.BsService.SetNewAssignedName(taskName);
+  GetAssignName_id(taskName, id){
+    this.AssignID=id;
+    this.Task_name=taskName
+}
+
+
+  addSelectedEmployees() {
+
+       const selectedArray = Array.from(this.selectedAttendeesList);
+       this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',');
+
+       if(this.listAttendees.length>0){
+       this.BsService.SetNewAssignId( this.AssignID);
+       this.BsService.SetNewAssignedName(this.Task_name);
        let typeoftask: any = "IFRT";
        this.BsService.setNewTypeofTask(typeoftask);
        this.datestrStart = moment(new Date()).format();
        this.datestrEnd = moment(new Date()).format();
-  
-       this._ObjAssigntaskDTO.AssignId = id;
+
+       this._ObjAssigntaskDTO.AssignId = this.AssignID;
        this._ObjCompletedProj.PageNumber = 1;
        this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
        this._ObjCompletedProj.Mode = 'AssignedTask';
-       this._ObjAssigntaskDTO.TaskName = taskName;
+       this._ObjAssigntaskDTO.TaskName =  this.Task_name;
        this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
        this._ObjAssigntaskDTO.ProjectType = "";
        this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
-      
+
 
 
 
@@ -710,7 +725,7 @@ selectedAttendeesList = new Set<any>();
       fd.append("AssignTo", this.listAttendees);
       fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
       fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
-      fd.append("AssignId",  id);
+      fd.append("AssignId",  this.AssignID);
       fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
       fd.append("StartDate", this.datestrStart);
       fd.append("EndDate", this.datestrEnd);
@@ -718,8 +733,8 @@ selectedAttendeesList = new Set<any>();
       fd.append("Desc", "");
       fd.append("Remarks", "");
       fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
-  
-        
+
+
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
       (data) => {
         let message: string = data['Message'];
@@ -728,7 +743,12 @@ selectedAttendeesList = new Set<any>();
          document.getElementById("schedule-event-modal-backdrop").style.display = "none";
          document.getElementById("projectmodal").style.display = "none";
          this.Assigntext=''
-      })
+      });
+    }
+    else{
+      this.notifyService.showInfo("Please select atleast one user to assign",'');
+     }
+
   }
 
 
@@ -751,8 +771,8 @@ selectedAttendeesList = new Set<any>();
   AddCom(){
     if(this.CompanyName){
     this.FiterEmployee = this.EmployeeLists.filter((item) => {
-      return item.Com_No === this.CompanyName; 
-  }) 
+      return item.Com_No === this.CompanyName;
+  })
 }else{
     this.GetAssigned_SubtaskProjects()
   }
@@ -1086,6 +1106,55 @@ selectedAttendeesList = new Set<any>();
 //       }
 //     }
 // }
+
+isTotalProjectsActive = true;
+totalproject(){
+  document.getElementById('taskdd').classList.remove('d-none')
+  document.getElementById('Completed').classList.remove('d-none')
+  document.getElementById('ActionToProjects').classList.remove('d-none')
+  document.getElementById('AssignedTask').classList.remove('d-none')
+  this.isTotalProjectsActive = true;
+}
+
+
+taskside(){
+  debugger
+  document.getElementById('taskdd').classList.remove('d-none')
+  document.getElementById('Completed').classList.add('d-none')
+  document.getElementById('ActionToProjects').classList.add('d-none')
+  document.getElementById('AssignedTask').classList.add('d-none')
+
+}
+
+completed(){
+  debugger
+  document.getElementById('Completed').classList.remove('d-none')
+  document.getElementById('taskdd').classList.add('d-none')
+  document.getElementById('ActionToProjects').classList.add('d-none')
+  document.getElementById('AssignedTask').classList.add('d-none')
+
+}
+
+showactprj(){
+  document.getElementById('ActionToProjects').classList.remove('d-none')
+  document.getElementById('Completed').classList.add('d-none')
+  document.getElementById('taskdd').classList.add('d-none')
+  document.getElementById('AssignedTask').classList.add('d-none')
+
+}
+
+showassign(){
+  document.getElementById('AssignedTask').classList.remove('d-none')
+  document.getElementById('ActionToProjects').classList.add('d-none')
+  document.getElementById('Completed').classList.add('d-none')
+  document.getElementById('taskdd').classList.add('d-none')
+}
+
+activeButton: string = 'totalProjects';
+
+setActiveButton(buttonName: string) {
+  this.activeButton = buttonName;
+}
 
 }
 

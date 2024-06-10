@@ -11,8 +11,8 @@
                                {{Type}} Summary
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1)">RACIS Projects Summary</a>
-                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2)">ALL Projects Summary</a>
+                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1)">RACIS projects summary</a>
+                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2)">ALL projects summary</a>
                             </div>
                         </div>
                     </div>
@@ -135,6 +135,8 @@
                                                     </h5>
                                                 </div>
                                             </div>
+
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
@@ -144,74 +146,119 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-3 bd-right">
-                                                    <p><strong>Project Type</strong></p>
-                                                    <div class="count-height">
-                                                        
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox"  >
-                                                                <input type="checkbox" (change)="isTypeChecked(item)"
-                                                                    [(ngModel)]="item.checked">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="selected-options">
-                                                        <div class="selected-options-item">
-                                                            Core Tasks
-                                                            <span class="selected-options-item-remove">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="selected-options-item">
-                                                            Secondary Tasks
-                                                            <span class="selected-options-item-remove">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="selected-options-item">
-                                                            Standard Tasks
-                                                            <span class="selected-options-item-remove">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="selected-options-item">
-                                                            Routine Tasks
-                                                            <span class="selected-options-item-remove">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                        <div class="selected-options-item">
-                                                            To do List
-                                                            <span class="selected-options-item-remove">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+
+
+                                              <div class="col-md-3 bd-right">
+                                                <p><strong>Company</strong></p>
+                                                  <div class="count-height">
+
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
+                                                          <label class="kt-checkbox mb-3">
+                                                              <input type="checkbox"
+                                                                  [checked]="selectedCompanies.includes(item.Company_No)"(change)="onCompanySelected($event.target.checked,item.Company_No)">
+                                                              {{item.Name}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+                                                  <div    class="selected-options">
+                                                    <ng-container *ngFor="let item of CompanyCountFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedCompanies.includes(item.Company_No)">
+                                                        {{ item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onCompanySelected(false,item.Company_No)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
+
+                                                  </div>
+                                              </div>
+
+
+
+
+                                              <div class="col-md-3 bd-right">
+                                                <p><strong>Employees</strong></p>
+                                                  <div class="count-height">
+
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
+                                                          <label class="kt-checkbox mb-3">
+                                                              <input type="checkbox"
+                                                                  [checked]="selectedEmp.includes(item.Emp_No)" (change)="onEmpSelected($event.target.checked,item.Emp_No)">
+                                                              {{item.Name}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+                                                  <div    class="selected-options">
+                                                    <ng-container *ngFor="let item of EmpCountInFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedEmp.includes(item.Emp_No)">
+                                                        {{item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onEmpSelected(false,item.Emp_No)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
+
+                                                  </div>
+                                              </div>
+
+
+
+
+
+                                              <div class="col-md-3 bd-right">
+                                                <p><strong>Project type</strong></p>
+                                                  <div class="count-height">
+
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                          <label class="kt-checkbox">
+                                                              <input type="checkbox"
+                                                                  [checked]="selectedTypes.includes(item.Block_No)" (change)="onTypeSelected($event.target.checked,item.Block_No)">
+                                                              {{item.Name}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="selected-options">
+                                                    <ng-container *ngFor="let item of TypeContInFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedTypes.includes(item.Block_No)">
+                                                        {{item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onTypeSelected(false,item.Block_No)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
                                                 </div>
+                                              </div>
+
+
+
+
+
+
                                                 <div class="col-md-3 bd-right">
-                                                    <p><strong>Status</strong></p>
+                                                  <p><strong>Status</strong></p>
                                                     <div class="count-height">
-                                                       
+
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of StatusCountFilter|filter:txtSearch">
                                                             <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isStatusChecked(item)"
-                                                                 [(ngModel)]="item.checked" [checked]="item">
-                                                                 {{item.Name=='Under Approval'?'New Approval' :item.Name=="Cancellation Under Approval"?"Cancellation Approval": item.Name=="Deadline Extend Under Approval" ? "Deadline Extend Approval" :item.Name== "Completion Under Approval" ? "Completion Approval" :item.Name=='Forward Under Approval'? "Forward Approval" :item.Name=='InProcess'?'In-Process':item.Name =="Not Started"?"Draft":item.Name}}
+                                                                <input type="checkbox"
+                                                                [checked]="selectedStatus.includes(item.Name)" (change)="onStatusSelected($event.target.checked,item.Name)" >
+                                                                 {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval": item.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name =="Not Started"?"Draft":item.Name}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -235,39 +282,22 @@
                                                             <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
                                                         </div> -->
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3 bd-right">
-                                                    <p><strong>Company</strong></p>
-                                                    <div class="count-height">
-                                                        
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of CompanyCountFilter|filter:txtSearch" >
-                                                            <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isCompanyChecked(item)"
-                                                                    [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
+                                                    <div    class="selected-options">
+                                                      <ng-container *ngFor="let item of StatusCountFilter">
+                                                      <div  class="selected-options-item" *ngIf="selectedStatus.includes(item.Name)" >
+                                                        {{item.Name}}
+                                                          <span class="selected-options-item-remove" (click)="onStatusSelected(false,item.Name)">
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <p><strong>Employees</strong></p>
-                                                    <div class="count-height">
-                                                        
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of EmpCountInFilter|filter:txtSearch" >
-                                                            <label class="kt-checkbox mb-3">
-                                                                <input type="checkbox" (change)="isEmpChecked(item)"
-                                                                    [(ngModel)]="item.checked" [checked]="item">
-                                                                {{item.Name}}
-                                                                <span></span>
-                                                            </label>
-                                                            <span class="count-btn">{{item.Count}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
+
+
                                             </div>
                                             <br>
 
@@ -278,7 +308,7 @@
                                             <div class="col-md-10">
                                                 <button
                                                     class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="submit_Data()">Submit</button>
+                                                    data-toggle="dropdown" (click)="getNewFilterResult()">Submit</button>
                                                 <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
                                                     (click)="resetAll()">Reset
                                                 </button>
@@ -320,7 +350,7 @@
                             <div id="div_filters" class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-width-700 drop-posn filts-dr">
                                 <ul  class="kt-nav">
                                     <li class="kt-nav__head d-flex justify-content-between">
-                                        <div>User Filters</div>
+                                        <div>User filters</div>
                                     </li>
                                     <li class="kt-nav__separator"></li>
                                     <li class="kt-nav__item px-3 mb-2">
@@ -329,31 +359,31 @@
                                     <li (click)="$event.stopPropagation();" class="kt-nav__item px-4 pt-2">
                                         <div class="row">
                                             <div class="col-lg-4">
-                                                <h6 class="mb-0">Project Type</h6>
+                                                <h6 class="mb-0">Project type</h6>
 
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Core Tasks
+                                                        Core tasks
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Routine Tasks
+                                                        Routine tasks
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Secondary Tasks
+                                                        Secondary tasks
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Standard Tasks
+                                                        Standard tasks
                                                         <span></span>
                                                     </label>
                                                 </div>
@@ -363,7 +393,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                Core Tasks
+                                                                Core tasks
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -381,7 +411,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                Routine Tasks
+                                                                Routine tasks
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -412,13 +442,13 @@
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        Completion Approval
+                                                        Completion approval
                                                         <span></span>
                                                     </label>
 
                                                     <label class="kt-checkbox kt-checkbox--info">
                                                         <input type="checkbox" name="companychk" value="">
-                                                        In-Process
+                                                        In-process
                                                         <span></span>
                                                     </label>
 
@@ -452,7 +482,7 @@
                                                     <div class="selectd-opts">
                                                         <div class="slt-div">
                                                             <div class="opt-txt">
-                                                                In-Process
+                                                                In-process
                                                             </div>
                                                         </div>
                                                         <div class="removeButton" aria-hidden="true">
@@ -570,7 +600,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">New Projects</h5>
+                                <h5 class="mb-0">New projects</h5>
                                 <h4 class="mb-0">12</h4>
                             </div>
                         </div>
@@ -604,7 +634,7 @@
                                 </span>
                             </div>
                             <div class="">
-                                <h5 class="mb-0">New Approval</h5>
+                                <h5 class="mb-0">New approval</h5>
                                 <h4 class="mb-0">5</h4>
                             </div>
                         </div>
@@ -678,7 +708,7 @@
                                                         aria-sort="ascending"
                                                         aria-label=": activate to sort column descending">
                                                     </th>
-                                                    
+
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Project_Name" tabindex="0" aria-controls="project-4"
                                                         class="curser-pointer" rowspan="1" colspan="1"
@@ -692,7 +722,7 @@
                                                             title="Click to sort">
                                                             <i class="fa fa-sort-alpha-down-alt"></i>
                                                         </a>
-                                                        ProjectName
+                                                        Project name
                                                     </th>
                                                     <th>
                                                      </th>
@@ -700,14 +730,14 @@
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Project Type: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> ProjectType
+                                                        <i class="fas fa-sort"></i> Project type
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                    <!-- <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="ReportType" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Category: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Category
-                                                    </th>
+                                                    </th> -->
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
@@ -721,16 +751,12 @@
                                                         <i class="fas fa-sort"></i> Deadline
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
-                                                        data-name="DeadLine" tabindex="0" aria-controls="project-4"
+                                                        data-name="LastUpdate" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="End Date: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> Last Update
+                                                        <i class="fas fa-sort"></i> Last update
                                                     </th>
-                                                    <th data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
-                                                        rowspan="1" colspan="1" class="curser-pointer"
-                                                        aria-label="Users: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> RACIS
-                                                    </th>
+                                                    
                                                     <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
                                                         <th [appSort]="_ProjectDataList" data-order="desc"
                                                                 data-name="Status" tabindex="0" aria-controls="project-4"
@@ -751,7 +777,11 @@
                                                         <i class="fas fa-sort"></i> Status
                                                         </th>
                                                     </ng-container>
-
+                                                    <th data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
+                                                    rowspan="1" colspan="1" class="curser-pointer"
+                                                    aria-label="Users: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> RACIS
+                                                </th>
                                                     <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Status: activate to sort column ascending">
                                                         Link
@@ -766,27 +796,27 @@
                                                     <td align="center">
                                                         <div class="d-flex align-items-center ">
                                                             <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer" role="button" placement="right"
-                                                            data-trigger="focus" data-toggle="tooltip" title="Project Info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
+                                                            data-trigger="focus" data-toggle="tooltip" title="Project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-<g>
-	<circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
-	<g>
-		<path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
-			c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
-		<path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
-			c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
-		<path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
-			c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
-	</g>
-	<path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
-		c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
-	<path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
-		c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
-	<path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
-		C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
-</g>
-</svg>
+                                                                viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                                                            <g>
+                                                                <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
+                                                                <g>
+                                                                    <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
+                                                                        c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
+                                                                    <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
+                                                                        c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
+                                                                    <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
+                                                                        c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
+                                                                </g>
+                                                                <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
+                                                                    c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
+                                                                <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
+                                                                    c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
+                                                                <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
+                                                                    C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
+                                                            </g>
+                                                            </svg>
                                                         </a>
 
                                                         <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
@@ -818,20 +848,8 @@
                                                          </svg>
                                                         </a>
                                                         
-                                                            <div *ngIf="item.Link_Status==1;else not_Linked">
-                                                                <a class="curser-pointer ml-2"
-                                                                    (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
-                                                                        width="19px"
-                                                                        src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                                        title="Linked"></a>
-    
-                                                            </div>
-                                                            <ng-template #not_Linked>
-                                                                <a><img width="19px" class="black-white ml-2"
-                                                                        src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                                        title="Not Linked"></a>
-                                                            </ng-template>
-                                                            <div class="port-info-btn ml-2">
+                                                            <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
+                                                            <div class="port-info-btn ml-2"  title="Linked" (click)="_OpenfortfolioInfo(i,item.Project_Name)">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                     <defs></defs>
                                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -841,7 +859,9 @@
                                                                     </g>
                                                                 </svg>
                                                             </div>
-                                                            <span class="port-info-btn-no-acive ml-2 d-none">
+                                                        </ng-containeer>
+                                                        <ng-template #prtfolio>
+                                                            <span class="port-info-btn-no-acive ml-2" title="Not Linked" (click)="_OpenfortfolioInfo()">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                         <defs></defs>
                                                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -851,6 +871,21 @@
                                                                         </g>
                                                                     </svg>
                                                             </span>
+                                                        </ng-template>
+
+                                                        <div *ngIf="item.Link_Status==1;else not_Linked">
+                                                            <a class="curser-pointer ml-2"
+                                                                (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
+                                                                    width="19px"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Linked"></a>
+
+                                                        </div>
+                                                        <ng-template #not_Linked>
+                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" class="black-white ml-2"
+                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    title="Not Linked"></a>
+                                                        </ng-template>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -861,21 +896,22 @@
                                                         </p>
                                                     </td>
                                                     <td>
-                                                      <span class="count2" title="Completed/All" *ngIf="item.CompletedActioncount&&item.Actioncount > 0">
-                                                  {{item.CompletedActioncount}}/{{ item.Actioncount }}
+                                                      <span class="count2" title="Completed/All" *ngIf="item.Actioncount > 0">
+                                                            {{item.CompletedActioncount}}/{{ item.Actioncount }}
                                                       </span>
                                                     </td>
                                                     <td>
-                                                        <span class="kt-widget__other">{{item.Exec_BlockName}}</span>
-                                                    </td>
-                                                    <td>
+                                                        <div style="display: flex; flex-direction: column; ">
+                                                            <div class="kt-widget__other">{{item.Exec_BlockName}}</div>
                                                         <div *ngIf="item.ReportType==null;else ReportType">
                                                             <span class="kt-widget__other">No category</span>
                                                         </div>
                                                         <ng-template #ReportType>
-                                                            <span class="kt-widget__other">{{item.ReportType}}</span>
+                                                            <div class="kt-widget__other">{{item.ReportType}}</div>
                                                         </ng-template>
+                                                        </div>
                                                     </td>
+                                                   
                                                     <td><span class="kt-widget__other">{{item.Team_Res}}</span>
                                                     </td>
                                                     <td>
@@ -891,6 +927,131 @@
                                                         title="{{item.LastUpdate|date:'medium'}}">
                                                         <span class="kt-widget__other text-info">
                                                             {{item.LastUpdate|dateAgo}}</span>
+                                                    </td>
+                                                    <td class="stat-td">
+                                                        <!-- <div *ngIf="_MainProjectStatus=='Delay'">
+                                                            <span class="text-danger font-weight-400">Delay</span>
+                                                        </div> -->
+                                                        <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status=='InProcess'">
+                                                            <div>
+                                                                <span class="InProcess_color font-weight-400" *ngIf=" item.Status=='InProcess'">In-process</span>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
+                                                            <span class="Delay_color font-weight-400" *ngIf=" item.Status!='InProcess' && item.Status!='Completed'">{{item.Status}}</span>
+                                                            <span class="Completed_color font-weight-400" *ngIf="item.Status=='Completed'">{{item.Status}}</span>
+                                                        </ng-container>
+                                                        <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
+                                                            <div *ngIf="item.Status=='Under Approval'">
+                                                                <span class="Under_Approval_color font-weight-400">New approval</span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Delay'">
+                                                                <span class=" font-weight-400"></span>
+                                                                <span *ngIf="item.Delaydays>=0"
+                                                                    class="Delay_color ">
+                                                                    <strong>{{item.Delaydays}} days Delay </strong>
+                                                                </span>
+                                                            </div>
+                                                            <!-- Other Status -->
+                                                            
+                                                            <div *ngIf="item.Status=='InProcess'">
+                                                                <span class="InProcess_color font-weight-400">In-process</span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='ToDo InProcess'">
+                                                                <span class="TODOinprocess font-weight-400">ToDo
+                                                                    Inprocess</span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='New Project'">
+                                                                <span class="NEWPROJECT font-weight-400">New
+                                                                    project</span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='New Project Rejected'">
+                                                                <span class="New_Project_Rejected_color font-weight-400">New
+                                                                    project
+                                                                    rejected</span>
+                                                            </div>
+    
+                                                            <div *ngIf="item.Status=='Project Hold'">
+                                                                <span class="Hold_color font-weight-400">
+                                                                    Hold</span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='ToDo Completed'">
+                                                                <span class="ToDo_Completed_color font-weight-400">ToDo
+                                                                    completed</span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='New Todo'">
+                                                                <span class="New_Todo_color font-weight-400">New todo
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Completion Under Approval'">
+                                                                <span class="Completion_Under_Approval_color font-weight-400">Completion approval
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Cancellation Under Approval'">
+                                                                <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Cancelled'">
+                                                                <span class="Cancelled_color font-weight-400">Cancelled
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Completed'" class="attach-tippy-div">
+                                                                <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span> 
+                                                                <span class="attach-tippy">
+                                                                    <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                                                                <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                   <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div> 
+                                                                    <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                                </span>
+    
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Forward Under Approval'">
+                                                                <span class="Forward_Under_Approval_color font-weight-400">Forward approval
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Project Complete Rejected'">
+                                                                <span class="Project_Complete_Rejected_color font-weight-400">Project
+                                                                    complete
+                                                                    rejected
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Enactive Under Approval'">
+                                                                <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
+                                                                </span>
+                                                            </div>
+    
+                                                            <div *ngIf="item.Status=='Version'">
+                                                                <span class="text-danger font-weight-400">Version
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                                                <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Project Holded'">
+                                                                <span class="Hold_color   font-weight-400"
+                                                                      >Hold
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                                                <span class="Project_Hold_Under_Approval font-weight-400"
+                                                                  >Hold approval
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='ToDo Achieved'">
+                                                                <span class="ToDo_Achieved_color font-weight-400">ToDo achieved
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Not Started'">
+                                                                <span class="Not_Started font-weight-400">Draft
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item.Status=='Standardtask Enactive Hold'">
+                                                                <span class="text-danger font-weight-400">Standardtask enactive hold
+                                                                </span>
+                                                            </div>
+                                                        </ng-container>
+                                                        
                                                     </td>
                                                     <td data-toggle="tooltip" data-placement="top"
                                                         title="RACIS">
@@ -955,113 +1116,7 @@
                                                             </span>
                                                           </div>
                                                     </td>
-                                                    <td class="stat-td">
-                                                        <!-- <div *ngIf="_MainProjectStatus=='Delay'">
-                                                            <span class="text-danger font-weight-400">Delay</span>
-                                                        </div> -->
-                                                        <div *ngIf="item.Status=='Under Approval'">
-                                                            <span class="Under_Approval_color font-weight-400">New Approval</span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Delay'">
-                                                            <span class=" font-weight-400"></span>
-                                                            <span *ngIf="item.Delaydays>=0"
-                                                                class="Delay_color ">
-                                                                <strong>{{item.Delaydays}} days Delay </strong>
-                                                            </span>
-                                                        </div>
-                                                        <!-- Other Status -->
-                                                        <div *ngIf="item.Status=='InProcess'">
-                                                            <span class="InProcess_color font-weight-400">In-Process</span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='ToDo InProcess'">
-                                                            <span class="TODOinprocess font-weight-400">ToDo
-                                                                InProcess</span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='New Project'">
-                                                            <span class="NEWPROJECT font-weight-400">New
-                                                                Project</span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='New Project Rejected'">
-                                                            <span class="New_Project_Rejected_color font-weight-400">New
-                                                                Project
-                                                                Rejected</span>
-                                                        </div>
-
-                                                        <div *ngIf="item.Status=='Project Hold'">
-                                                            <span class="Hold_color font-weight-400">
-                                                                Hold</span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='ToDo Completed'">
-                                                            <span class="ToDo_Completed_color font-weight-400">ToDo
-                                                                Completed</span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='New Todo'">
-                                                            <span class="New_Todo_color font-weight-400">New Todo
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Completion Under Approval'">
-                                                            <span class="Completion_Under_Approval_color font-weight-400">Completion Approval
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Cancellation Under Approval'">
-                                                            <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation Approval
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Cancelled'">
-                                                            <span class="Cancelled_color font-weight-400">Cancelled
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Completed'">
-                                                            <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed </span> <b *ngIf="item.FileUrl"    class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
-                                                            <span class="kt-widget__other d-block st-line" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"title="Approved by and completed date">{{item.Approvedby}} | {{item.completedate | date: 'dd-MM-yyyy'}}</span>
-
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Forward Under Approval'">
-                                                            <span class="Forward_Under_Approval_color font-weight-400">Forward Approval
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Project Complete Rejected'">
-                                                            <span class="Project_Complete_Rejected_color font-weight-400">Project
-                                                                Complete
-                                                                Rejected
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                            <span class="Enactive_Under_Approval_color font-weight-400">Enactive Approval
-                                                            </span>
-                                                        </div>
-
-                                                        <div *ngIf="item.Status=='Version'">
-                                                            <span class="text-danger font-weight-400">Version
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                            <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline Extend Approval
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Project Holded'">
-                                                            <span class="Hold_color   font-weight-400"
-                                                                  >Hold
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Project Hold Under Approval'">
-                                                            <span class="Project_Hold_Under_Approval font-weight-400"
-                                                              >Hold Approval
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='ToDo Achieved'">
-                                                            <span class="ToDo_Achieved_color font-weight-400">ToDo Achieved
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Not Started'">
-                                                            <span class="Not_Started font-weight-400">Draft
-                                                            </span>
-                                                        </div>
-                                                        <div *ngIf="item.Status=='Standardtask Enactive Hold'">
-                                                            <span class="text-danger font-weight-400">Standardtask Enactive Hold
-                                                            </span>
-                                                        </div>
-                                                    </td>
+                                                    
                                                     <!-- <td (click)="_onRowClick(item.Project_Code,item.Project_Name)"
                                                         class="curser-pointer">
                                                         <a><i class="fa fa-link text-primary"></i></a>
@@ -1116,7 +1171,7 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked Memos
+                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 
@@ -1219,7 +1274,50 @@
         <li class="kt-nav__foot"></li>
     </ul>
 </div> -->
+<!-- portfolio sidebar start-->
+<div id="prtfloSideBar" class="sideInfobar animate-right">
+    <div class="kt-portlet__head p-3 bg-primary">
+        <div class="kt-portlet__head-label">
+            <a href="javascript:void(0)" class="closebtn pull-right text-white"
+                (click)="_CloseMemosidebar()">&times;</a>
+            <div class="title-sidebar mb-0 text-white">
+                <h5 class="curser-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                        <defs></defs>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"></rect>
+                            <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                            <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                        </g>
+                    </svg> Linked portfolio(s)
+                </h5>
+                <span class="text-small text-white">{{_displayprtflioName}}</span>
 
+            </div>
+          
+        </div>
+    </div>
+    <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body">
+                <div class="kt-widget1 kt-widget1--fit">
+                    <div class="kt-widget1__item" *ngFor="let item of portfolio_List; let i=index">
+                        <div class="kt-widget1__info kt-align-left" >
+                         <h5 (click)="OnCardClick(item.Portfolio_ID)" class="curser-pointer">
+                               
+                             
+                                 {{i+1}}. {{item.Portfolio_Name}} 
+                               
+                           </h5>
+                        </div>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Link portfolio Template End-->
 <!-- DAR Achievements Side Bar -->
 <div id="DARSideBar" class="sideInfobar animate-right">
     <div class="kt-portlet__head p-3 bg-primary">
@@ -1227,7 +1325,7 @@
             <a href="javascript:void(0)" class="closebtn pull-right text-white" (click)="_CloseDARSideBar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    DAR Achievements
+                    DAR achievements
                 </h5>
                 <!-- <p>{{_DARProjectName}}</p> -->
             </div>
@@ -1265,7 +1363,7 @@
          <div class="modal-dialog modal-xl">
            <div class="modal-content">
             <div class="d-flex men-tlv">
-             <h2 class="prj-ttl">New Project Creation Guidelines</h2>
+             <h2 class="prj-ttl">New project creation guidelines</h2>
              <button type="button" class="close close-btn-gd" data-dismiss="modal" aria-label="Close">
                  <span aria-hidden="true">
                      <svg _ngcontent-wgp-c395="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc"><path _ngcontent-wgp-c395="" fill="none" d="M0 0h24v24H0z"></path><path _ngcontent-wgp-c395="" d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path></svg>
@@ -1279,7 +1377,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="coretasks_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#coretasks">
-                                <i class="flaticon2-hourglass-1 icon-nm"></i> Core Tasks
+                                <i class="flaticon2-hourglass-1 icon-nm"></i> Core tasks
                              </div>
                          </div>
                          <div id="coretasks" class="collapse" data-parent="#accordionExample5">
@@ -1293,14 +1391,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Enhancement of Transportation and Distribiution Division through GPS Technology</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: The task is created on the advice from the President to enhance the transportation & distribution division through GPS technology and developing transportation KPIs tracking report on weekly & monthly basis</p>
                                      </div>
 
@@ -1310,7 +1408,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1319,7 +1417,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1327,7 +1425,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1389,13 +1487,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Secondary_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Secondary">
-                                 <i class="flaticon-list-3"></i> Secondary Tasks
+                                 <i class="flaticon-list-3"></i> Secondary tasks
                              </div>
                          </div>
                          <div id="Secondary" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Secondary Task</h4>
+                                     <h4>Secondary task</h4>
                                      <p>Any contribution tasks linked with other department or external parties, or indirect related department responsibility such as; committee independent tasks and participation in other department's tasks or specific project that add value to company vision.
                                      </p>
 
@@ -1404,14 +1502,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Printing and Packaging Development for RAC</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Printing and Packaging development for RAC</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: The task is created to co-ordinate with RAC GDC and packaging Supplier to develop all standard packaging to meet the corporate requirements</p>
                                      </div>
 
@@ -1421,7 +1519,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1430,7 +1528,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1438,7 +1536,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1470,8 +1568,8 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
-                                         <p>select Starting Date & Time and the expected Ending Date & Time of the given project.
+                                         <h4>Sub section:</h4>
+                                         <p>Select starting date & time and the expected Ending Date & Time of the given project.
                                               A team member cannot select the DPG (Date of Project Given) which is less than the current date.
                                                You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
@@ -1487,7 +1585,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template :</h4>
+                                         <h4>Do you want to save as template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
 
@@ -1502,15 +1600,15 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Standard_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Standard_Tasks">
-                                 <i class="flaticon-app"></i> Standard Tasks
+                                 <i class="flaticon-app"></i> Standard tasks
                              </div>
                          </div>
                          <div id="Standard_Tasks" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Standard Task</h4>
+                                     <h4>Standard task</h4>
                                      <p>
-                                         Standard Task is a type of task which requires report submission, such as “Sales report, Minutes of meeting, Inventory report etc.” Standard task comes with different types (daily, weekly, Monthly, Quarterly, half yearly and annually), each standard task has its time budget to be use and report submission time.
+                                         Standard task is a type of task which requires report submission, such as “Sales report, Minutes of meeting, Inventory report etc.” Standard task comes with different types (daily, weekly, Monthly, Quarterly, half yearly and annually), each standard task has its time budget to be use and report submission time.
                                      </p>
 
                                      <div class="Guidelines_info_text">
@@ -1518,14 +1616,14 @@
                                          <p>The team member has to select the client’s name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Globus Business Plan and Sales Target Analysis</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Globus business plan and sales target analysis</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project Description should be more than 5 words and please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Globus business plan and target has to be analysed for Business Clients and necessary actions has to be taken to achieve the Business Plan & sales target</p>
                                      </div>
 
@@ -1535,7 +1633,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1544,7 +1642,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1552,7 +1650,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1584,7 +1682,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
+                                         <h4>Sub section:</h4>
                                          <div class="table-scrollable">
                                              <table class="table table-striped table-bordered table-hover">
                                                  <thead>
@@ -1645,7 +1743,7 @@
 
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template :</h4>
+                                         <h4>Do you want to save as template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
 
@@ -1660,13 +1758,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Revenue_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Revenue">
-                                 <i class="flaticon-diagram"></i> Revenue Generation
+                                 <i class="flaticon-diagram"></i> Revenue generation
                              </div>
                          </div>
                          <div id="Revenue" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Revenue Generation</h4>
+                                     <h4>Revenue generation</h4>
                                      <p>Tracking and listing of revenue generating projects and efforts during the previous week by re-entering the goals or targets and continuously upgrading the actual data.
                                      </p>
 
@@ -1675,14 +1773,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Creat monthly 5% footprint month on month for external customer</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Bt hiring additional WH in order to be able to creat the targetted additional income by making a contract with outside client and target a min. 5% pallet spaces of the total capacity month on momnth .</p>
                                      </div>
 
@@ -1692,7 +1790,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1701,7 +1799,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1709,7 +1807,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team member who only can execute any kind Modifications, Alterations and changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1741,12 +1839,12 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
-                                         <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
+                                         <h4>Sub section:</h4>
+                                         <p>select starting date & time and the expected ending date & time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template :</h4>
+                                         <h4>Do you want to save as template :</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
 
@@ -1761,13 +1859,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Cost_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Cost">
-                                 <i class="flaticon-clock"></i> Cost Reduction
+                                 <i class="flaticon-clock"></i> Cost reduction
                              </div>
                          </div>
                          <div id="Cost" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>Cost Reduction</h4>
+                                     <h4>Cost reduction</h4>
                                      <p>Tracking and listing of expenditure and cost reduction projects and efforts during the previous week by re-entering the goals or targets and continuously upgrading the actual data.
                                      </p>
 
@@ -1777,13 +1875,13 @@
                                      </div>
                                      <div class="Guidelines_info_text">
                                          <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Globus Logistics Warehousing Rent Cost Optimisation</p>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Globus logistics Warehousing Rent Cost Optimisation</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Warehousing rental cost has to be optimized by 1. Re-arranging or enhancing the storage condition of stocks in warehouse and creating additional pallet positions 2. Relocating some of the assets to cheaper location (such as Qassim) to reduce the rent while Globus strategic plan.</p>
                                      </div>
 
@@ -1793,7 +1891,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -1802,7 +1900,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1810,7 +1908,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -1842,7 +1940,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
+                                         <h4>Sub section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept.</p>
                                      </div>
 
@@ -1996,15 +2094,15 @@
                                          </div>
                                           </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Measuring Unit:</h4>
+                                         <h4>Measuring unit:</h4>
                                          <p>Select measuring unit of given task Ex: SR,KG,Litre,Unit,Report,Manual etc.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
                                          <h4>Quantity:</h4>
-                                         <p>Depends on Measuring Unit please enter the quantity. Ex: 100 SR,2 KG,10 Reports etc.</p>
+                                         <p>Depends on measuring Unit please enter the quantity. Ex: 100 SR,2 KG,10 Reports etc.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Do you want to save as Template:</h4>
+                                         <h4>Do you want to save as template:</h4>
                                          <p>If you select then this project will add in templates list.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
@@ -2019,13 +2117,13 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="To_Do_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#To_Do">
-                                 <i class="flaticon-signs-1"></i> To Do
+                                 <i class="flaticon-signs-1"></i> To do
                              </div>
                          </div>
                          <div id="To_Do" class="collapse" data-parent="#accordionExample5">
                              <div class="card-body">
                                  <div class="Guidelines_info-view">
-                                     <h4>To-do Task</h4>
+                                     <h4>To-do task</h4>
                                      <p>For Unplanned task which will complete in minutes of time or which will complete in less than two to three days.
                                      </p>
 
@@ -2034,14 +2132,14 @@
                                          <p>The team member has to select the client's name to whom the project belongs to.</p>
                                      </div>
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project name:</h4>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Visit to Agility Logistics with Group FC and GM YRSS</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Need to visit Agility logistics to meet and discuss the ongoing issue to release the BL for the consignment came from USA and hold by Agility.</p>
                                      </div>
 
@@ -2051,7 +2149,7 @@
                                      </div>
 
                                      <div class="Mina_Section">
-                                         <h5>Team Section:</h5>
+                                         <h5>Team section:</h5>
                                      </div>
 
                                      <div class="mt-3 mb-3">
@@ -2060,7 +2158,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -2068,7 +2166,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -2100,7 +2198,7 @@
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Sub Section:</h4>
+                                         <h4>Sub section:</h4>
                                          <p>select Starting Date & Time and the expected Ending Date & Time of the given project. A team member cannot select the DPG (Date of Project Given) which is less than the current date. You should not select the past date as a deadline. System will not accept. In ToDo list duration shouldn't more than 3 days</p>
                                      </div>
 
@@ -2121,7 +2219,7 @@
                      <div class="card dvx-cd">
                          <div class="card-header" id="Routine_task_t">
                              <div class="card-title collapsed p-0" data-toggle="collapse" data-target="#Routine_task">
-                                 <i class="flaticon-layers"></i> Routine Tasks
+                                 <i class="flaticon-layers"></i> Routine tasks
                              </div>
                          </div>
                          <div id="Routine_task" class="collapse" data-parent="#accordionExample5">
@@ -2138,13 +2236,13 @@
                                      </div>
                                      <div class="Guidelines_info_text">
                                          <h4>Project Name:</h4>
-                                         <p>Project Name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
-                                         <p>Ex: Checking Emails and send response</p>
+                                         <p>Project name should be more than 3 words and Please try to avoid using special characters like  {{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <p>Ex: Checking emails and send response</p>
                                      </div>
 
                                      <div class="Guidelines_info_text">
-                                         <h4>Project Description:</h4>
-                                         <p>Project Description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
+                                         <h4>Project description:</h4>
+                                         <p>Project description should be more than 5 words and Please try to avoid using special characters like -{{ '@' }} {{ '#' }} {{ '$' }} {{ '%' }} {{ '&' }} {{ '*' }} {{ '!' }} {{ '(' }} {{ ')' }} {{ ';' }} {{ ',' }} {{ '.' }} {{ '.' }} {{ '.' }} {{ '.' }}Etc.</p>
                                          <p>Ex: Daily Checking Emails and send response to respected customers</p>
                                      </div>
 
@@ -2163,7 +2261,7 @@
                                                  <span>R</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Responsible, The Team Member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
+                                                 <p>Responsible, The team member who is totally responsible for the successful completion of the undertaken project type and also its sub-tasks on or before the agreed deadline.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">
@@ -2171,7 +2269,7 @@
                                                  <span>A</span>
                                              </div>
                                              <div class="team_lt_info">
-                                                 <p>Authority, The Authorized Team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
+                                                 <p>Authority, The authorized team Member who only can execute any kind Modifications, Alterations and Changes by his own or through the superiors instruction or direction.</p>
                                              </div>
                                          </div>
                                          <div class="teams_s_tab">

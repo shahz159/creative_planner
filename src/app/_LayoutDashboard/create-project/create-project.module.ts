@@ -43,8 +43,13 @@ import { MeetingDetailsComponent } from '../meeting-details/meeting-details.comp
     FormsModule,
     GooglePlaceModule
   ],
-  providers: [ProjectsSummaryComponent,MeetingReportComponent,DetailsComponent,DatePipe,ProjectUnplannedTaskComponent,ToDoProjectsComponent,MoreDetailsComponent,MeetingDetailsComponent  ]
+  exports: [
+    CreateProjectComponent,  // Export if you need to use it in other modules
+  ],
+  providers: [ProjectsSummaryComponent,MeetingReportComponent,DetailsComponent,DatePipe,
+    ProjectUnplannedTaskComponent,ToDoProjectsComponent,MoreDetailsComponent,MeetingDetailsComponent]
 })
+
 export class CreateProjectModule { }
 
 

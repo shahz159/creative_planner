@@ -3062,6 +3062,7 @@ span.kt-dashboard-delay-cnt {
     overflow: hidden;
     cursor: pointer;
     margin-left: 8px;
+    display: none;
 }
 
 .remove-agenda-btn svg {
@@ -3158,9 +3159,16 @@ span.kt-dashboard-delay-cnt {
     align-items: center;
 }
 
+.agenda-item:hover .agenda-ctrl-btns .edit-agendaname-btn, .agenda-item:hover .agenda-ctrl-btns .remove-agenda-btn{
+    display:inline;
+}
+
+
 .edit-agendaname-btn {
+    display: none;
     border: 0;
     background-color: transparent;
+    cursor: pointer;
 }
 
 .edit-agendaname-btn svg {
@@ -3189,7 +3197,7 @@ span.kt-dashboard-delay-cnt {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    cursor: pointer;
 }
 
 .editing-cancel svg {
@@ -3204,21 +3212,23 @@ span.kt-dashboard-delay-cnt {
 
 .editing-save {
     border: 0;
+    border-radius: 50%;
     background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     padding-right: 0;
+    cursor: pointer;
 }
 
 .editing-save svg {
-    fill: none;
-    stroke: #d3d3d3;
+    fill: transparent;
+    stroke: #d5d5d5;
+    background: transparent;
 }
-
 .editing-save:hover svg {
     fill: none;
-    stroke: #9b9b9b;
+    stroke: #73db76;
 }
 
 /*agenda css end*/
@@ -3370,6 +3380,13 @@ mat-icon.mat-icon.notranslate.curser-pointer {
 ::ng-deep .error-vd .ng-select-container {
     border: 1px solid #F44336 !important;
 }
+
+
+.error-borderbottom{
+    border-bottom: 2px solid #ff6256 !important;
+}
+
+
 
 .prjact-search-field {
     box-shadow: 0 0 2px #d9d8d8;
@@ -4341,7 +4358,8 @@ span.project-name {
 }
 
 .schedule-badge {
-    background: #f6f6f6;
+    /* background: #f6f6f6; */
+    background-color: transparent;
     color: #929292;
     padding: 0.15rem 0.75rem;
     border-radius: 4px;
@@ -4352,6 +4370,11 @@ span.project-name {
     background: #ebeff6;
     color: #2e88fc;
 }
+.schedule-badge:hover {
+  background-color: #f6f6f68c; 
+  transition-duration:0.5s;
+}
+
 
 .customrecurrence.modal .modal-header {
     background-color: #ebeff6;
@@ -4491,4 +4514,28 @@ span.project-name {
 }
 #cal-events .schedule-dt-tm {
     font-size: 12px;
+
+}
+ .picktime-box{
+    border: 1px solid #d3d3d3e0;
+    border-radius: 7px;
+    display: inline-block;
+    min-width: 65px;
+    padding: 0.07em 0.5em;
+ }
+
+
+::ng-deep .ng-select#task-selectprjfield .ng-select-container,::ng-deep .ng-select#task-selectactionfield .ng-select-container {
+    border: 0px solid #ccc;
+    border-bottom: 1px solid #a5a5a5;
+    border-radius: 0px;
+}
+
+.actns-ldr{
+    position: absolute;
+    top: 10px;
+    right: 40px;
+    font-size: 8px;
+    width: 20px;
+    height: 20px;
 }

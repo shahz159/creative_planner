@@ -768,6 +768,7 @@ this.prjPIECHART.render();
   Pid: any;
 
   calculateProjectActions() {
+    debugger
     if (this.projectActionInfo) {
       // all must be zero before calculation.
       this.TOTAL_ACTIONS_DONE = 0;
@@ -789,7 +790,7 @@ this.prjPIECHART.render();
           case 'New Project Rejected': this.TOTAL_ACTIONS_REJECTED += 1; break;
           case 'Completion Under Approval': this.TOTAL_ACTIONS_IN_CUA += 1; break;
           case 'Forward Under Approval': this.TOTAL_ACTIONS_IN_FUA += 1; break;
-          case 'Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
+          case 'Project Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
           default: { };
         }
       })
@@ -862,12 +863,15 @@ this.prjPIECHART.render();
   }
 
   requestaccessList:any=[];
+  deadlineExtendlist:any;
+  totaldeadlineExtend:any
+
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       this.Submission = JSON.parse(res[0].submission_json);
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -886,17 +890,41 @@ this.prjPIECHART.render();
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
+
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
+      if(this.ProjectType != 'Standard Tasks' && this.ProjectType != 'Standard Tasks' ){
+        var deadlineExtend=JSON.parse(this.projectInfo['deadlineExtendlist']);
+        this.deadlineExtendlist=Object.values(deadlineExtend);
+        this.totaldeadlineExtend=this.deadlineExtendlist.length;
+
+        let count:number=0;
+        this.deadlineExtendlist.map((actv:any)=>{
+
+          if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+             {   // actv.count : 2,3,4....
+              debugger
+                 let updatecount=(actv.count-count);
+                 let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                 actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                 count+=1;
+             }
+            return actv;
+        });
+
+        console.log(this.deadlineExtendlist,'deadlineExtendlist')
+      }
+
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
-        console.log('Now After Sorting:',this.projectActionInfo);
+
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+        console.log('Now After Sorting:',this.filterstatus);
       }
       this.calculateProjectActions();    // calculate project actions details.
 
@@ -907,7 +935,7 @@ this.prjPIECHART.render();
       });
 
      if(this.filteremployee)
-     {  debugger
+     {
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
@@ -965,6 +993,8 @@ this.prjPIECHART.render();
     setTimeout(()=>this.drawStatisticsNew(),3000);
     });
   }
+
+
   uniqueName:any
   uniqueNamesArray:any
   firstthreeRecords:any
@@ -982,27 +1012,27 @@ this.prjPIECHART.render();
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-debugger
+
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
-          console.log(this.Project_List,"dddddddddddddddddddddddddddddddd")
+          console.log(this.Project_List,"dddddd")
 
           this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
           const uniqueNamesArray = [...this.uniqueName];
 
           this.newArray = uniqueNamesArray.slice(3);
           this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-          
+
             this.firstRecords=this.firstthreeRecords[0]?this.firstthreeRecords[0][0].split(' ')[0]:'';
             this.secondRecords=this.firstthreeRecords[1]?this.firstthreeRecords[1][0].split(' ')[0]:'';
             this.thirdRecords=this.firstthreeRecords[2]?this.firstthreeRecords[2][0].split(' ')[0]:'';
-          
-       
+
+
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
-            console.log(this.PeopleOnProject,"sssssssssssssssssssssssssssssssssssssss")
+            console.log(this.PeopleOnProject,"sssssssss")
           //   const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
           //   if(p)
           //    obj.contribution=p.RespDuration;
@@ -1049,6 +1079,7 @@ debugger
   activitiesOf:'ACTION-ACTIVITIES'|'PROJECT-ACTIVITIES'='PROJECT-ACTIVITIES';
   firstFiveRecords: any[] = [];
   GetActivityDetails() {
+    console.log('GetActivityDetails is called.');
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
@@ -1064,7 +1095,7 @@ debugger
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=`Project Deadline Change (${updatecount+x} Time)`;
+                   actv.Value=`Project Deadline changed ${updatecount+x} Time`;
                    count+=1;
                }
               return actv;
@@ -1089,7 +1120,7 @@ debugger
 
         }
         this.activitiesLoading=false;  // end the loading.
-      })
+      });
   }
 
 
@@ -1099,17 +1130,17 @@ debugger
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
-        debugger
+
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
           let count:number=0;
           this.ActionActivity_List.map((actv:any)=>{
-            debugger
+
             if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
                {   // actv.count : 2,3,4....
                    let updatecount=(actv.count-count);
                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed (${updatecount+x} Change)`);
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
                    count+=1;
                }
               return actv;
@@ -1156,10 +1187,13 @@ debugger
   }
 
   showActionDetails(index: number | undefined) {
-    debugger
+
     this.requestType = null;
     this.currentActionView = index;
+
+    if(index!=undefined)
     this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
@@ -1167,6 +1201,7 @@ debugger
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
     }
+
   }
 
   prostate(pstate){
@@ -1191,7 +1226,7 @@ debugger
 
 
   sendRequest(): void {
-    debugger
+
     if (!this.Usercomment){
       this.formFieldsRequired=true;
       return
@@ -1363,7 +1398,8 @@ debugger
   closeApprovalSideBar(){
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("newdetails").classList.remove("position-fixed");
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#newdetails').removeClass('position-fixed');
   }
 
   closeMultipleSideBar(){
@@ -1623,7 +1659,7 @@ multipleback(){
     this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data: any) => {
-        
+
         console.log("inside GetDMS_Memos:", data);
         if (data && data.length > 0) { // if data is not [] means there will be atleast one memo present in the project.
           this._LinkService._GetMemosSubject(data[0]['JsonData']).
@@ -1801,6 +1837,7 @@ multipleback(){
   Accept_active: boolean = false;
   Conditional_Active: boolean = false;
   Reject_active: boolean = false;
+  Transfer_active:boolean=false;
   rejDesc: any;
   noRejectType: boolean = false;
   exist_comment: any[] = [];
@@ -1839,10 +1876,10 @@ multipleback(){
 
   getapprovalStats() {
     // this.approvalEmpId = null;
-debugger
+
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -1930,10 +1967,6 @@ debugger
        }
 // prj request access aprvals
 
-
-
-
-
       }
       else{
         // if there is no requests
@@ -1960,7 +1993,7 @@ standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
-      debugger
+
       console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
       this.requestDetails = data as [];
       console.log(this.requestDetails,"task approvals");
@@ -1986,6 +2019,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Transfer_active=false;
         // this.getapprovalStats();
         //    this.getProjectDetails(this.URL_ProjectCode);
 
@@ -1997,6 +2031,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = true;
         this.Reject_active = false;
+        this.Transfer_active=false;
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
@@ -2005,6 +2040,16 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
+        this.Transfer_active=false;
+      };break;
+      case 'TRANSFER':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = '5';
+        this.rejectType = undefined;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.Transfer_active=true;
       };break;
       case 'NOTSELECTED':{
         this.isRejectOptionsVisible = false;
@@ -2013,6 +2058,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Transfer_active=false;
         this.isTextAreaVisible = false;
       }
       default: { }
@@ -2148,7 +2194,7 @@ currentStdAprView:number|undefined;
     aprvls.forEach(aprv=>{
           if(e.target.checked){
                 if(!this.selectedStdAprvs.includes(aprv.SNo))
-                { 
+                {
                   this.selectedStdAprvs.push(aprv.SNo);     // storing only SNo of selected aprvl.
                   this.selectedStdAprvsObjs.push(aprv);    // storing selected aprvls obj.
 
@@ -2161,7 +2207,7 @@ currentStdAprView:number|undefined;
                         return this.selectedStdAprvs.includes(apr.SNo);
                     });
                     // for select all check box status.
-                  }  
+                  }
                 }
           }else{
                 const x=this.selectedStdAprvs.indexOf(aprv.SNo);
@@ -2848,7 +2894,7 @@ currentStdAprView:number|undefined;
 // check all mandatory fields are provided or not
 
 
-debugger
+
 
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
@@ -3072,7 +3118,7 @@ debugger
             return;
     }else this.formFieldsRequired=false;   // back to initial value.
 // check all mandatory field are provided.
-debugger
+
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -3765,8 +3811,8 @@ check_allocation() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
-      // console.log(data,"appact");   
-      debugger
+      // console.log(data,"appact");
+
 
       const isactiondetails:boolean=(data[0]['actiondetails']!='[]'&&data[0]['actiondetails'].length>0);
       const isapprovaldetails:boolean=(data[0]['approvaldetails']!='[]'&&data[0]['approvaldetails'].length>0);
@@ -4100,7 +4146,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-debugger
+
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -4165,11 +4211,11 @@ debugger
 
 
   GetApproval(code) {
-    debugger
+
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-      debugger
+
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
@@ -4357,7 +4403,7 @@ debugger
 
 
 
-
+debugger
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
         this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
@@ -4398,7 +4444,7 @@ debugger
         console.log(this.olderMeetings,"olderrr meetings")    // format them.
 
         this.isLoadingData=false;
-         
+
       });
 
 
@@ -4413,14 +4459,6 @@ debugger
 
   openMeetingSidebar() {
 
-
-
-    // window.addEventListener('scroll',()=>{
-    //   this.autocompletes.forEach((ac)=>{
-    //           if(ac.panelOpen)
-    //           ac.updatePosition();
-    //   });
-    // },true);
 
 
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
@@ -4459,7 +4497,7 @@ debugger
     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
     this.oldMtgCnt = 0;  // Older Meetings Count
     //
-    
+
     this.backMainMeetings();
   }
 
@@ -4781,12 +4819,13 @@ config: AngularEditorConfig = {
 
 
 Task_type(value:number){
+
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
   this.selectedrecuvalue = "0";
   this._PopupConfirmedValue = 1;
-  this.MinLastNameLength = true;
+  // this.MinLastNameLength = true;
   this._subname = false;
   this._calenderDto = new CalenderDTO;
   this.BlockNameProject1 = [];
@@ -5065,6 +5104,7 @@ Task_type(value:number){
 
 
   GetProjectAndsubtashDrpforCalender() {
+
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
         this.ProjectListArray = JSON.parse(data['Projectlist']);
@@ -5816,6 +5856,15 @@ getChangeSubtaskDetais(Project_Code) {
       this._subname1 = true;
       return false;
     }
+
+  // if(this.agendaInput == ''|| this.agendaInput == null || this.agendaInput == undefined){
+  //   this.MinLastNameLength =true;
+  //   return }
+  //   else
+  //     this.MinLastNameLength =false;
+
+
+
     if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
       this._subname = true;
       return false;
@@ -5958,6 +6007,11 @@ getChangeSubtaskDetais(Project_Code) {
         var vDMS_Name = "DMS_Name";
         element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
 
+         var vAgendas = "Meeting_Agendas";
+        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+        element[vAgendas] = mtgAgendas;
+
+
       });
 
 
@@ -6034,14 +6088,14 @@ getChangeSubtaskDetais(Project_Code) {
               this.Getdraft_datalistmeeting();
               this.draftid = 0
             }
-            this.notifyService.showSuccess(this._Message, "Success");
+            this.notifyService.showError(this._Message, "Failed");
 
 
 
 
           }
           else {
-            this.notifyService.showError(this._Message, "Failed");
+            this.notifyService.showSuccess(this._Message, "Success");
           }
 
 
@@ -6335,8 +6389,9 @@ holdcontinue(Pcode:any){
   extendAndHold:boolean=false;
   isEHsectionVisible:boolean=false;
   minPrjDeadline:Date;
+
   onHoldDateChanged(){
-    debugger
+
     if(this.currentActionView===undefined){     // only for project.
       const d1=new Date(this.Holddate);
       const d2=new Date(this.projectInfo.EndDate);
@@ -6352,14 +6407,14 @@ holdcontinue(Pcode:any){
 
 
   onProject_Hold(id, Pcode) {
-debugger
+
   if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
        // if holddate and remarks are provided.
 
       if(this.isEHsectionVisible){
             if(this.extendAndHold){
 
-debugger
+
     // 1. PRJ UPDATE     (updating project using 'newPrjDeadline' )
                    var datestrStart = moment(this.projectInfo.StartDate).format("MM/DD/YYYY");
                    var datestrEnd = moment(this.newPrjDeadline).format("MM/DD/YYYY");
@@ -6870,7 +6925,7 @@ closePanel(){
 
 
   onProject_updateSupport() {
-    debugger
+
 
     const commaSeparatedString = this.selectedEmpIds.join(', ');
 
@@ -7079,7 +7134,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -7789,6 +7844,7 @@ NewAddUserCountFeature() {
 }
 
 showRecallMeetingsView() {
+
   document.getElementById("recall-meeting").style.display = "block";
   document.getElementById("main-meeting").style.display = "none";
 }
@@ -7889,14 +7945,14 @@ rejectAllStdTaskAprvs(){
 
       this.approvalservice.NewUpdateSingleRejectApprovalsService(selectedStdApprovals).
         subscribe((data) => {
-          debugger
+
           this.notifyService.showSuccess("Approvals Rejected successfully by - " + this._fullname, "Success");
           const x=this.totalStdTskApvs-this.selectedStdAprvs.length;
           if(x===0)
             this.closeApprovalSideBar();  // close aprv sidebar.
           else
             this.backmainapproval();   // back to approvals list.
-        
+
           this.selectedStdAprvs=[];
           this.selectedStdAprvsObjs=[];
           this.allStdAprSelected=false;
@@ -7946,6 +8002,7 @@ LinkableMtgsList:any;
 selectedMtgs2Link:any=[];
 
 getLinkableMtgsList(){
+
     this.projectMoreDetailsService.NewGetEmployeeMeetings(this.Current_user_ID,this.URL_ProjectCode).subscribe((res:any)=>{
            this.LinkableMtgsList=JSON.parse(res['AvailableSlotsJson']);
            console.log("LinkableMtgsList:",this.LinkableMtgsList);
@@ -7974,6 +8031,7 @@ onMtgForLinkSelected(e:any){
 
 
  getSelectedMtgName(eventno:string){
+
   if(this.LinkableMtgsList){
    const M=this.LinkableMtgsList.find(m=>m.EventNumber.trim()==eventno.trim());
    return M?M.Task_Name:'';
@@ -8033,7 +8091,7 @@ updatePortfolioPage(){
 allMUlAprSelected:boolean=false;
 selectedmulAprvs:any=[];
 acceptAllMulApprReq(){
-debugger
+
   if(this.selectedmulAprvs.length===0){
     this.notifyService.showError('Please choose atleast one approval.','No Approval Selected.');
     return;
@@ -8094,7 +8152,7 @@ onMultipleAprvSel(e,aprvls){
 
 
 rejectAllmultipleAprvs(){
-  debugger
+
   if (this.selectedType == '3') {
     if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
       this.noRejectType = true;
@@ -8152,13 +8210,13 @@ stdTskPageno:number=1;
 stdTskPagesz:number=10;    // limit of aprvs per page.
 reqPgno:number;
 getStdTskAprvsBy(pageno:number){
-      this.isLoadingData=true; 
+      this.isLoadingData=true;
       this.approvalservice.GetStandardApprovals(this.URL_ProjectCode,pageno,this.stdTskPagesz).subscribe((data) => {
       this.isLoadingData=false;
       this.standardjson=JSON.parse(data[0]['standardJson']);   // new data
       this.totalStdTskApvs=JSON.parse(data[0]['totalcount']);
       this.stdTskPageno=this.reqPgno;     // page no of the data.
-      
+
       // for select all check box status.
       this.allStdAprSelected=this.standardjson.every((apr:any)=>{
         return this.selectedStdAprvs.includes(apr.SNo);
@@ -8174,6 +8232,91 @@ file = { Sourcefile: '16_05_2024' };
 getFormattedDate(date: string): string {
   return date.replace(/_/g, '-');
 }
+
+// agenda in event creation start
+agendaInput: string | undefined;
+allAgendas: any = [];
+agendasAdded: number = 0;
+totalcountofagenda:any
+addAgenda() {
+  if (this.agendaInput && this.agendaInput.trim().length > 0) {
+    this.agendasAdded += 1;
+    const agenda = {
+      index: this.agendasAdded,
+      name: this.agendaInput
+    };
+    this.allAgendas.push(agenda);
+    this.agendaInput = undefined;
+  }
+  this.totalcountofagenda = this.allAgendas.length;
+  console.log("allAgendas:", this.allAgendas);
+}
+
+deleteAgenda(index: number) {
+  if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
+    Swal.fire({
+      title: 'Remove this Agenda ?',
+      text: this.allAgendas[index].name,
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then(option => {
+      if (option.isConfirmed) {
+        this.allAgendas.splice(index, 1);
+      }
+      this.totalcountofagenda = this.allAgendas.length;
+    });
+
+  }
+  console.log("allAgendas:", this.allAgendas);
+}
+
+
+editAgenda(index: number) {
+  $(`#agenda-label-${index}`).addClass('d-none');
+  $(`#agenda-text-field-${index}`).removeClass('d-none');
+  $(`#agenda-text-field-${index}`).focus();
+
+  $(`#edit-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).removeClass('d-none');   // save btn is visible.
+
+  $(`#edit-agendaname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
+  $(`#remove-agenda-btn-${index}`).addClass('d-none');   // delete btn is invisible.
+
+}
+
+cancelAgendaEdit(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  tf.value = this.allAgendas[index].name;
+
+  $(`#agenda-label-${index}`).removeClass('d-none');   // label is visible.
+  $(`#agenda-text-field-${index}`).addClass('d-none');   // textfield is invisible.
+  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+}
+
+
+updateAgenda(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  this.allAgendas[index].name = tf.value;
+
+  $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
+  $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
+  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+
+
+  console.log('all agendas after updating:', this.allAgendas);
+}
+// agenda in event creation end
+
+
+
+
+
 
 }
 

@@ -149,8 +149,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.GetTimeslabfordate();
       this.GetcompletedMeeting_data();
       this.GetAttendeesnotes();
-    
-
+      this.GetPreviousdate_meetingdata()
+      
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -420,11 +420,20 @@ export class MeetingDetailsComponent implements OnInit {
   AssignedTask:any
   Todotask:any;
   orderedItems:any;
+  totalCountAssign:any;
+  totalAssign:any;
+  totalActiontask:any
+  totalCompletedAgenda:any
+
+  meeting_details_1(){
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
 
 meeting_details(){ 
 
     this._calenderDto.Schedule_ID=this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{ 
+   
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
@@ -436,9 +445,11 @@ meeting_details(){
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
     this.Actiontask=this.EventScheduledjson[0].Actiontasks;  
     this.AssignedTask=this.EventScheduledjson[0].AssignedTasks;
+    this.totalAssign=this.AssignedTask.length;
+    this.totalActiontask=this.Actiontask.length;
     this.Todotask=this.EventScheduledjson[0].Todotasks;
-
-     console.log('meeting_details--->',this.orderedItems)
+    this.totalCountAssign=this.totalAssign + this.totalActiontask
+   
     if(this.EmpNo==this.Current_user_ID){
       this.meetingAdmin =true
     }else{
@@ -451,7 +462,12 @@ meeting_details(){
     }
   
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
+    console.log(this.Agendas_List,'Agenda List')
+    this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+    this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
     
+
+  
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
         this.hasStatusOne = true;
       }else{
@@ -459,7 +475,10 @@ meeting_details(){
       }
 
     this.totalAgendaList=this.Agendas_List.length;
-    this.completedAgendaList=this.Agendas_List.filter(item=>item.Status==1)
+    this.completedAgendaList =this.Agendas_List.filter(item=>item.Status==1)
+    this.totalCompletedAgenda=this.completedAgendaList.length;
+
+    //console.log(this.totalAgendaList,'sdfb') 
 
     var x =this.Agendas_List.length
 
@@ -493,15 +512,12 @@ meeting_details(){
     this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
     this._TotalAttachment=this.Attachments_ary.length;
-
+    //console.log('Project_code',this._TotalAttachment);
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
     this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code);
-
-    // console.log('Project_code',this.Project_code);
-    
     this.totalproject = this.Project_code.length;
-
+  
     this.Project_code.forEach(element => {
       element.isChecked = true;
       this.checkedproject.push(element.stringval);
@@ -510,7 +526,7 @@ meeting_details(){
     this.projectcount = this.checkedproject.length;
 
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-    console.log('kkkkkkkkkkk',this.Isadmin)
+    
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
     this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
     
@@ -549,10 +565,11 @@ meeting_details(){
     this.hours = Math.floor(duration.asHours());
     this.minutes = duration.minutes();
     this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
+    //console.log(this.hours,'sdcscd')
    });
 
 
-  
+
 }
 
  getInitials(name) {
@@ -561,21 +578,28 @@ meeting_details(){
   return initials;
 }
 
-  startMeeting() {
+status_Type:string;
 
+
+
+  startMeeting() {
+   
     this.play=true;
+    this.status_Type='Start';
     this.startTime = new Date();
     this.meetingInProgress = true;
     this.GetcompletedMeeting_data();
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTime.getTime();
-      // console.log('time',this.elapsedTime)
+      
       if (this.elapsedTime >= this.duration) {
         this.stopMeeting();
       }
     }, 1000);
+
     // console.log(this.startTime,'ijfbviabfvbsvskjvbzsib')
   }
+
 
   pauseMeeting() {
     this.play=false;
@@ -583,27 +607,23 @@ meeting_details(){
     clearInterval(this.timer);
     this.meetingPaused = true;
   }
+  startTimes:any
+  endTime: Date;
 
   resumeMeeting() {
     this.play=true;
     this.pause=false;
-    this.startTime = new Date(new Date().getTime() - this.elapsedTime);
+    //69 this.startTimes
+    this.startTimes = new Date(new Date().getTime() - this.elapsedTime);
     this.meetingPaused = false;
     this.timer = setInterval(() => {
-      this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+      this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
       if (this.elapsedTime >= this.duration) {
         this.stopMeeting();
       }
     }, 1000);
   }
 
-  stopMeeting() {
-    clearInterval(this.timer);
-    this.meetingInProgress = false;
-    this.meetingStopped = true;
-
-   
-  }
 
   leaveMeeting() {
     this.play=false;
@@ -622,18 +642,112 @@ meeting_details(){
     this.meetingStopped = false;
   }
 
+  durationTimeOfMeeting:any
+
+  stopMeeting() {
+    clearInterval(this.timer);
+    this.meetingInProgress = false;
+    this.meetingStopped = true;
+    this.status_Type='End';
+    this.endTime = new Date(); // Capture the end time
+   
+    this.durationTimeOfMeeting=this.formatTime(this.elapsedTime);
+    //console.log(this.formatTime(this.elapsedTime), 'Meeting ended');
+    this.GetcompletedMeeting_data() 
+
+  }
+
   formatTime(ms: number): string {
-    const hours = Math.floor(ms / (1000 * 60 * 60));
-    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
-    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+    const formattedHours = hours > 0 ? this.pad(hours) + 'h' : '';
+    const formattedMinutes = this.pad(minutes);
+    const formattedSeconds = this.pad(seconds);
+
+    return `${formattedHours} ${formattedMinutes}m ${formattedSeconds}s`;
   }
 
-  private pad(value: number): string {
-    return value < 10 ? `0${value}` : `${value}`;
+  pad(num: number): string {
+    return num < 10 ? '0' + num : num.toString();
   }
 
+
+  actualTime_S:any;
+  actualTime_E:any;
+  actualDuration:any;
+
+
+InsertAttendeeMeetingTime(){
+
+  const formatTime = time => time ? new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : null;
+
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.Schedule_ID=this.Scheduleid;
+  this._calenderDto.Status=this.status_Type;
+  this._calenderDto.StartTime=this.startTime==undefined?null:formatTime(this.startTime);
+  this._calenderDto.EndTime=this.endTime==undefined?null:formatTime(this.endTime)
+  console.log(this._calenderDto,'time of meeting');
+  this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
+  ((data)=>{
+   
+    
+    }
+  )
+}
+
+
+
+
+
+startMeetingOfAttendees() {
+
+  this.meetingOfAttendees=false;
+ this.play=true;
+  this.status_Type='Start';
+  this.startTime = new Date();
+//  console.log(this.startTime,'sAtm')
+  this.meetingInProgress = true;
+  this.GetcompletedMeeting_data();
+  this.timer = setInterval(() => {
+    this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+    console.log()
+    if (this.elapsedTime >= this.duration) {
+      this.stopMeetingAttendees();
+    }
+  }, 1000);
+
+  // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
+}
+
+endTimeAtd:any
+
+stopMeetingAttendees() {
+
+  clearInterval(this.timer);
+  this.meetingInProgress = false;
+ // this.meetingStopped = true;
+  this.status_Type='End';
+  this.endTime = new Date(); // Capture the end time
+ // console.log(this.endTime,'EAtm')
+  this.durationTimeOfMeeting=this.formatTime(this.elapsedTime);
+  //console.log(this.formatTime(this.elapsedTime), 'Meeting ended');
+  this.GetcompletedMeeting_data() 
+}
+
+meetingOfAttendees:boolean=false;
+
+controlAttendees(){
+  this.meetingOfAttendees=true;
+  
+  if(this.meetingOfAttendees==true){
+    this.stopMeetingAttendees();
+    this.InsertAttendeeMeetingTime();
+  }
+  
+}
 
 /////////////////////////////////////////// DMS Side-Bar Start /////////////////////////////////////////////////////////
 
@@ -663,9 +777,8 @@ addNewDMS() {
   }
 
   GetDMSList(){
-
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
-    
+   
       if(data){
         this._MemosSubjectList = JSON.parse(data['JsonData']);
        
@@ -692,11 +805,12 @@ addNewDMS() {
         this._linkedMemos= this.Memos_List.length
      
         if(this._MemosSubjectList){
-          var recordDMS =this._MemosSubjectList.map(item=>item.MailId)
+          var recordDMS =this._MemosSubjectList.map(item=>item.MailId);
+         
         }
         this.Memos_List = this.Memos_List.filter(subject =>!recordDMS.includes( subject.MailId ));
         this.originalDMSList=this.Memos_List;
-        // console.log(this.Memos_List, "DMS");
+      
       });
   }
 
@@ -1397,7 +1511,7 @@ openAutocompleteDrpDwn_Project(Acomp:string){
 
 
 Addproject_meetingreport() {
-  alert('projects')
+
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1501,19 +1615,77 @@ closeInfo() {
   document.getElementById("rightbar-overlay").style.display = "none";
 }
 
+Emp_Number:any
+fiterDataOfEmployee:boolean=false;
+
+
+
+getPreviousdate_ByFilter(emp_Number){
+  this.Emp_Number=emp_Number;
+  this.GetPreviousdate_meetingdata();
+  this.fiterDataOfEmployee=true
+  
+}
+
+
+
+filterconfig:{
+    filterby:'Agenda'|'Attendees'|'All',
+    sortby:string
+}={filterby:'Agenda',sortby:'All'};
+
+setFilterInfo(filterby:'Agenda'|'Attendees'|'All',sortby:string|undefined){
+   this.filterconfig.filterby=filterby;
+   this.filterconfig.sortby=sortby;
+   this.clearNotify=true;
+}
+
+
+clearNotify:boolean;
+
+Clear_Filters(){
+
+document.getElementById("dropd").classList.remove("show");
+this.setFilterInfo('Agenda',this.filterconfig.sortby);
+this.GetPreviousdate_meetingdata();
+this.toggleDropdown()
+this.clearNotify=false;
+}
+
 
 Previousdata_meeting: any = [];
-
+totalPreviousdata_meeting:any;
+attendeesLists:any;
+resultFound:boolean;
 
 GetPreviousdate_meetingdata() {
+
+  this.fiterDataOfEmployee=false
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
-  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.Emp_No =this.Emp_Number ===undefined ? 0: this.Emp_Number;
 
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
-    (data => {
-      this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
-      console.log(this.Previousdata_meeting,'Previousdata_meeting')
+    (data => {   
+      
+       if(data['previousmeet_data']){
+        this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);      
+        this.totalPreviousdata_meeting=this.Previousdata_meeting.length;
+        this.resultFound=true
+      }else{
+        this.resultFound=false
+      }
+      
+       
+      
+     
+
+        console.log(this.totalPreviousdata_meeting,'Previousdata_meeting');
+
+        this.attendeesLists=JSON.parse(data['attendeesList'])
+        // console.log(this.attendeesLists,'attendeesLists')
+       
+        this.Emp_Number=0
     });
 }
 
@@ -1582,16 +1754,18 @@ updateAgenda1(index:number){
           this.meeting_details();
           this.notifyService.showSuccess("Rename successfully ", '');
         })
-      }else {
-        this.notifyService.showWarning("Sorry, agenda name is too long.",'Please shorten it.');
+      } else {
+        this.notifyService.showWarning("Maximum 100 characters are allowed",'Please shorten it.');
       }
     
 }
 
 AgendasName: string;
 AgendaListRedirect:any = 1
+isFirstAgendaIdMatch: boolean; 
 
 deleteAgenda(AgendaId: number) {
+  this.isFirstAgendaIdMatch = this.Agendas_List.length > 0 && this.Agendas_List[0].AgendaId === AgendaId;
 
   const AgendasNames = this.Agendas_List.find(element => element.AgendaId === AgendaId);
   if (AgendasNames) {
@@ -1623,16 +1797,25 @@ deleteAgenda(AgendaId: number) {
   this._calenderDto.json = mtgAgendas;
    this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = 3;
- debugger
-    if (result === true && this.currentAgendaView>0) {
+
+  var count =this.Agendas_List.length
+    if (result === true && count>1 ) {
       this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
        this.meeting_details()
-       this.notifyService.showSuccess("Deleted successfully ", '');
-        this.currentAgendaView=this.currentAgendaView-1
+       this.notifyService.showSuccess("Deleted successfully ", '');  
+       if(this.isFirstAgendaIdMatch){
+        this.currentAgendaView=0;
+       
+       }else{
+         this.currentAgendaView= this.currentAgendaView-1
+         this.GetAssigned_SubtaskProjects()
+       }
       });
-    }else if (this.currentAgendaView==0){
+    }else if (count==1){   
+      
       this.notifyService.showWarning("At least one Agenda is mandatory in the meeting ", '');
-    }else {
+    }
+    else {
       this.notifyService.showError("Action Cancelled ", '');
     } 
   });
@@ -1643,9 +1826,9 @@ AgendaId:any
 
 
 showAgendaDetails(item,index){
-  this.AgendaId=item.AgendaId
-  this.currentAgendaView=index
-  this.GetAssigned_SubtaskProjects()
+    this.AgendaId=item.AgendaId
+    this.currentAgendaView=index
+    this.GetAssigned_SubtaskProjects()
 }
 
 
@@ -1783,8 +1966,8 @@ GetMeetingnotes_data() {
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
 
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe
-    (data => {
-   
+    (data => {    
+      console.log(data,'dsadcafrfr')  
       this.Meetingnotes_time = JSON.parse(data['Checkdatetimejson']);
      
         if(this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined){
@@ -1984,7 +2167,7 @@ _TodoList: any = [];
 todocount: number;
 text: any = [];
 _Demotext: any;
-CompletedMeeting_notes: string;
+CompletedMeeting_notes: any;
 Meetingstatuscom: string;
 // Meetingnotescom: string;
 // isCheckboxDisabled: boolean = false;
@@ -1993,24 +2176,31 @@ Meetingstatuscom: string;
 // unsubscribe: boolean = false;
 
 GetcompletedMeeting_data() {
-
-  
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
-      console.log(data,'CompletedMeeting_notes')
-
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-
-    
-
-
-
-    
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
+
+
+          this.actualTime_S=this.CompletedMeeting_notes[0].Actual_Start;
+          this.actualTime_E=this.CompletedMeeting_notes[0].Actual_End;
+    
+          const startTime = moment(this.actualTime_S, 'hh:mm A');
+          const endTime = moment(this.actualTime_E, 'hh:mm A');
+          const duration = moment.duration(endTime.diff(startTime));
+          const durationInMinutes = duration.asMinutes();
+    
+        // Convert duration to HH:mm format
+        const hours = Math.floor(durationInMinutes / 60);
+        const minutes = durationInMinutes % 60;
+        this.actualDuration = moment({ hour: hours, minute: minutes }).format('HH:mm');
+       // console.log(duration.asMinutes(), 'duration in minutes');
+
+
 
           // if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {  
           //     this.interval = setInterval(() => {
@@ -2024,7 +2214,9 @@ GetcompletedMeeting_data() {
     } else{
       this.interval = setInterval(() => {
         this.GetAttendeesnotes();
-      }, 4000);
+        // console.log('1')
+       
+      }, 1000);
     }
       // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
       // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
@@ -2049,34 +2241,33 @@ assigncount: number;
 
 EnterSubmit(_Demotext) {
 
-  if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
-    this._ObjAssigntaskDTO.CategoryId = 2411;
-    this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
-    this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
-    this._ObjAssigntaskDTO.TaskName = _Demotext;
-    this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
-    this._ObjAssigntaskDTO.Agenda_Id = this.AgendaId;
-
-    // this.text.push(this._Demotext);
-    // this._Demotext = "";
-    this.ProjectTypeService._NewInsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
-      (data) => {
-        //console.log("Data---->", data);
-        this._TodoList = JSON.parse(data['Todomeeting']);
-        console.log(this._TodoList,'_TodoList')
-        this.todocount = this._TodoList.length;
-
-        let message: string = data['Message'];
-        // console.log("Data---->", this._TodoList);
-        this._Demotext = "";
-        this.selectedText="";
-        // this.editorFocused=false;
-        //this.GetAssignTask();
-        this.notifyService.showSuccess("Successfully", "Added");
-        // this.closeInfo();
-      });
-
-  }}
+   if(_Demotext.length<=100){
+    if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
+      this._ObjAssigntaskDTO.CategoryId = 2411;
+      this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
+      this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+      this._ObjAssigntaskDTO.TaskName = _Demotext;
+      this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
+      this._ObjAssigntaskDTO.Agenda_Id = this.AgendaId;
+  
+      this.ProjectTypeService._NewInsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {      
+          this._TodoList = JSON.parse(data['Todomeeting']);
+          console.log(this._TodoList,'_TodoList')
+          this.todocount = this._TodoList.length;
+          let message: string = data['Message'];
+          this._Demotext = "";
+          this.selectedText="";
+          // this.editorFocused=false;
+          //this.GetAssignTask();
+          this.notifyService.showSuccess("Successfully", "Added");   
+        });
+    }
+   }else{
+    this.notifyService.showWarning("Maximum 100 characters are allowed",'Please shorten it.');
+   }
+ 
+}
 
 
   selectedAttendeesList = new Set<any>();
@@ -2093,40 +2284,44 @@ EnterSubmit(_Demotext) {
   listAttendees:any;
   Assigntext:any;
   datestrStart:any;
-  datestrEnd:any
+  datestrEnd:any;
+  AssignID:any;
+  Task_name:any;
 
+  GetAssignName_id(taskName, id){
+      this.AssignID=id;
+      this.Task_name=taskName
+  }
 
-  addSelectedEmployees(taskName, id) {
-     
+  addSelectedEmployees() {
+  
        const selectedArray = Array.from(this.selectedAttendeesList)
        this.listAttendees=selectedArray.map((item)=>item.Emp_No).join(',')
-       
-      
-       this.BsService.SetNewAssignId(id);
-       this.BsService.SetNewAssignedName(taskName);
+    
+       if(this.listAttendees.length>0){
+       this.BsService.SetNewAssignId(this.AssignID);
+       this.BsService.SetNewAssignedName(this.Task_name);
        let typeoftask: any = "IFRT";
        this.BsService.setNewTypeofTask(typeoftask);
        this.datestrStart = moment(new Date()).format();
        this.datestrEnd = moment(new Date()).format();
   
-       this._ObjAssigntaskDTO.AssignId = id;
+       this._ObjAssigntaskDTO.AssignId = this.AssignID;
        this._ObjCompletedProj.PageNumber = 1;
        this._ObjCompletedProj.Emp_No = this.Current_user_ID;
        this._ObjCompletedProj.Mode = 'AssignedTask';
-       this._ObjAssigntaskDTO.TaskName = taskName;
+       this._ObjAssigntaskDTO.TaskName =this.Task_name;
        this._ObjAssigntaskDTO.TypeOfTask = 'IFRT';
        this._ObjAssigntaskDTO.ProjectType = "";
        this._ObjAssigntaskDTO.AssignTo = this.listAttendees;
       
-
-
 
       const fd = new FormData();
       fd.append("AssignedBy", this.Current_user_ID);
       fd.append("AssignTo", this.listAttendees);
       fd.append("TaskName", this._ObjAssigntaskDTO.TaskName);
       fd.append("CreatedBy", this._ObjAssigntaskDTO.CreatedBy);
-      fd.append("AssignId",  id);
+      fd.append("AssignId",  this.AssignID);
       fd.append("ProjectType", this._ObjAssigntaskDTO.ProjectType);
       fd.append("StartDate", this.datestrStart);
       fd.append("EndDate", this.datestrEnd);
@@ -2135,17 +2330,22 @@ EnterSubmit(_Demotext) {
       fd.append("Remarks", "");
       fd.append("TypeofTask", this._ObjAssigntaskDTO.TypeOfTask );
   
-        
-      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
-      (data) => {
-        let message: string = data['Message'];
-        this.notifyService.showSuccess("Task sent to assign projects", message);
-        this.GetAssigned_SubtaskProjects()
-         document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-         document.getElementById("projectmodal").style.display = "none";
-         this.Assigntext='';
-         this.selectedAttendeesList.clear();
-      })
+          
+        this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+        (data) => {
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.GetAssigned_SubtaskProjects()
+            document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+            document.getElementById("projectmodal").style.display = "none";
+            this.Assigntext='';
+            this.selectedAttendeesList.clear();
+        });
+       }
+       else{
+        this.notifyService.showInfo("Please select atleast one user to assign",'');
+       }
+      
   }
 
 
@@ -2154,10 +2354,11 @@ EnterSubmit(_Demotext) {
   _taskName: any;
   task_id: any;
 
-  GetProjectTypeList(taskName, id) {
+  GetProjectTypeList() {
    
-    this._taskName = taskName;
-    this.task_id = id;
+    this._taskName = this.Task_name;
+    this.task_id = this.AssignID;
+   
 
     this.router.navigate(["Meeting-Details/" + this.Scheduleid + "/ActionToAssign/3"]);
     this.BsService.SetNewAssignId(this.task_id);
@@ -2188,7 +2389,7 @@ EnterSubmit(_Demotext) {
 
   _AssignId: any;
   ActionToProject_Click(taskName, Assignid) {
-    //debugger
+  
     this._taskName = taskName;
     this._AssignId = Assignid;
     this.router.navigate(["Meeting-Details/" + this.Schedule_ID + "/ActionToProject/7"]);
@@ -2248,11 +2449,11 @@ GetAssigned_SubtaskProjects() {
 
       this.assigncount = this.ActionedAssigned_Josn.length;
       this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-
+ 
 
       this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
       this.FiterEmployee=this.EmployeeList;
-      console.log(this.EmployeeList,'EmployeeList')
+      console.log(this._TodoList,'EmployeeListswsd')
     });
 
 }
@@ -2294,7 +2495,7 @@ _Deletetask(id, name) {
 
 
 On_Uncheck(id) {
-   debugger
+ 
   this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
   this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
   this._ObjAssigntaskDTO.AssignId = id;
@@ -2338,29 +2539,87 @@ OnRadioClick(id) {
 
 AllAttendees_notes:any=[]
 Employeeslist:any;
+meetingStarted:boolean;
+
+hasMeetingStarted: boolean;
+hasMeetingEnd: boolean ;
+NotesCount:any;
+TaskCount:any
+
+taskcount:any=[];
+notescount:any=[];
 
 GetAttendeesnotes(){
+  
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
   this._calenderDto.Emp_No=this.Current_user_ID
-
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
+  
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
+   
+    this.notescount.forEach(item=>item.count=0);  //1. clear previous notes count data.
+    this.taskcount.forEach(item=>item.count=0);   //1. clear previous task count data.
+
+    this.NotesCount=JSON.parse(data['NotesCount']);    
+    this.NotesCount.forEach(item=>{
+      const i=this.notescount.findIndex(item1=>item1.agendaid==item.AgendaId);
+      this.notescount[i].count+=1; 
+    });    // 2. update new notes count data. 
+   
+
+
+   debugger
+    this.TaskCount=JSON.parse(data['TaskCount']);
+    this.TaskCount.forEach(item=>{
+      const i=this.taskcount.findIndex(item1=>item1.agendaid==item.Agenda_Id);
+      this.taskcount[i].count+=1; 
+    });    // 2. update new task count data. 
+
+
+
+ 
+
+   
   
-    if(data['Checkdatetimejson']){
+
+
+
+
+
+
+
+    
+    console.log(this.NotesCount,this.TaskCount,'NotesCount')
+
+
+    this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false 
+
+
+
+    if(this.meetingStarted || this.meetingStarted!=true){
+     if(data['Checkdatetimejson']){
       this.AllAttendees_notes=JSON.parse(data['Checkdatetimejson']);
+     } 
+
+
+      if(this.meetingStarted==true && !this.hasMeetingStarted){  
+        this.startMeetingOfAttendees();
+        this.InsertAttendeeMeetingTime()
+        this.hasMeetingStarted = true;
+        this.hasMeetingEnd=false;
+      } else if(this.meetingStarted!=true && !this.hasMeetingEnd &&  this.meetingOfAttendees==false){
+        this.stopMeetingAttendees();
+        this.InsertAttendeeMeetingTime();
+        this.hasMeetingEnd=true
+      }  
     }else{
       this.AllAttendees_notes=[]
     }
-    
-   
-
     // const objectsWithEmployees  = this.AllAttendees_notes.filter(obj => obj.hasOwnProperty('Employees'));
     
     // this.Employeeslist=objectsWithEmployees[0].Employees;
-
-    // console.log(this.Employeeslist,'Meeting_notes_lists2');
   });
   // this.meeting_details();
 }
@@ -3258,7 +3517,7 @@ selectStartDate(event) {
 
 
 onfocus(val) {
-  console.log(val, "ttt");
+//  console.log(val, "ttt");
 }
 
 _arrayObj: any;
@@ -4110,7 +4369,7 @@ Insert_meetingreport() {
   // console.log(this._calenderDto,"dto")
   this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
     (data => {
-      this.notifyService.showSuccess("Successfully", "Completed");
+     // this.notifyService.showSuccess("Successfully", "Completed");
       // window.close();
       this.GetcompletedMeeting_data();
       if (this.Meetingstatuscom == 'Completed') {
@@ -4137,6 +4396,7 @@ Insert_meetingreport() {
     this.refreshSubscription.unsubscribe();
   }
   this.notifyService.showSuccess("Meeting completed successfully", "Success");
+  document.getElementById("rightbar-overlay").style.display = "none";
 }
 
 
@@ -4218,7 +4478,53 @@ closeHistoryInfo() {
   document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
   document.getElementById("rightbar-overlay").style.display = "none";
 }
+searchUser:any
+
+showDropdown = false;
+
+toggleDropdown() {
+  this.showDropdown = !this.showDropdown;
+}
+
+previous_filter(){
+  document.getElementById("dropd").classList.toggle("show");
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+onCheckboxChanges(event: Event, url: string, fileName: string) {
+  const checkbox = event.target as HTMLInputElement;
+  if (checkbox.checked) {
+    this.downloadFile(url, fileName);
+    // Uncheck the checkbox after triggering the download
+    checkbox.checked = false;
+  }
+}
+
+downloadFile(url: string, fileName: string) {
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+   
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error downloading file:', error));
+}
 } 

@@ -2,7 +2,7 @@
 <div class="kt-portlet">
     <div class="kt-portlet__head">
         <div class="offcanvas-header d-flex align-items-center justify-content-between flex-1">
-            <h4 class="m-0">Action To Project</h4>
+            <h4 class="m-0">Action to project</h4>
             <a href="javascript:void(0)" class="btn btn-icon btn-hover-info" (click)="closeInfo()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                     fill="currentColor">
@@ -16,7 +16,7 @@
     <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
 
     <div class="form-group" [hidden]="ProjectsDropdownBoolean">
-        <label>Select Project :<span class="text-danger">*</span></label>
+        <label>Select project :<span class="text-danger">*</span></label>
         <!-- <ng-multiselect-dropdown; required [placeholder]="'Select Project'" [settings]="dropdownSettings_Projects"
             [data]="_ProjectDataList" [(ngModel)]="selectedProjectCodelist" (onSelect)="ProjectOnSelect($event)"
             (onDeSelect)="ProjectOnDeselect($event)" > -->
@@ -31,20 +31,22 @@
     </div>
     <div class="form-group">
         <label> Action name :<span class="text-danger">*</span></label>
-        <input #name="ngModel" required type="text" class="form-control" [ngClass]="{'error-border': _subname == true&&(name&&!Sub_ProjectName)}" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName"   (ngModelChange)="_subname=!Sub_ProjectName;onInputChange($event);isPrjNameValid=isValidString(Sub_ProjectName.trim(),100)" />
+        <input #name="ngModel" required type="text" class="form-control" [ngClass]="{'error-border': _subname == true&&(name&&!Sub_ProjectName)}" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName"   (ngModelChange)="_subname=!Sub_ProjectName;onInputChange($event);isPrjNameValid=isValidString(Sub_ProjectName.trim(),2)" />
 
-
-        <span  style="color:red" *ngIf ="_subname&&!Sub_ProjectName">Please enter action name, Maximum 100 Words allowed</span>
+        <span style="color:rgb(217,48,37)" class=""  *ngIf="!Sub_ProjectName&&_subname">Please enter action name </span>
+        <span  style="color:red" *ngIf ="Sub_ProjectName&&isPrjNameValid==='TOOSHORT'">Please enter atleast 2 words, Maximum 100 characters are allowed</span>
         <!-- <span *ngIf;="isPrjNameValid==='TOOSHORT'";  style="color:rgb(217,48,37)">Maximum; 3; Words; are; allowed</span> -->
-        <span *ngIf="isPrjNameValid==='TOOLONG'"  style="color:rgb(217,48,37)">Maximum 100 Words allowed</span>
+        <span *ngIf="Sub_ProjectName&&Sub_ProjectName.length>100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed</span>
 
     </div>
     <div class="form-group">
         <label>Description :<span class="text-danger">*</span></label>
-        <textarea #description="ngModel" required class="form-control" [ngClass]="{'error-border': _desbool == true&&(description&&!_Description)}" placeholder="Enter action description" [(ngModel)]="_Description" (ngModelChange)="_desbool=!_Description;onDescriptionChange($event);isPrjDesValid=isValidString(_Description.trim(),200)" style="height: 100px"></textarea>
-        <span *ngIf ="_desbool&&!_Description" style="color:red">Please enter description Maximum 200 Words allowed</span>
-        <span *ngIf="isPrjDesValid==='TOOLONG'"  style="color:rgb(217,48,37)">Maximum 200 Words allowed</span>
+        <textarea #description="ngModel" required class="form-control" [ngClass]="{'error-border': _desbool == true&&(description&&!_Description)}" placeholder="Enter action description" [(ngModel)]="_Description" (ngModelChange)="_desbool=!_Description;onDescriptionChange($event);isPrjDesValid=isValidString(_Description.trim(),3)" style="height: 100px"></textarea>
+        <span style="color:rgb(217,48,37)" class=""  *ngIf="!_Description&&_desbool">Please enter description name </span>
 
+        <!-- <span *ngIf ="_desbool&&!_Description" style="color:red">Please enter description Maximum 200 characters are allowed</span> -->
+        <span *ngIf="_Description&&isPrjDesValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 200 characters are allowed</span>
+       <span *ngIf="_Description&&_Description.length>200" style="color:rgb(217,48,37)">Maximum 200 characters are allowed</span>
       </div>
     <!-- <div; class="form-group">
         <label> Assign; To <span class="text-danger">*</span> : <strong></strong></label>
@@ -315,7 +317,7 @@
 
     <div class="form-group">
       <div class="custom-file pl-1">
-          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose File</button>
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
           <span *ngIf="file" class="selected-file">{{ file.name }}</span>
           <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
           <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none" (change)="onFileChanged($event)" />

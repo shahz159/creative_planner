@@ -11,6 +11,7 @@ import { LinkService } from 'src/app/_Services/link.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import * as _ from 'underscore';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 @Component({
   selector: 'app-view-dashboard-projects',
@@ -70,7 +71,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
-    private router: Router, private activatedRoute: ActivatedRoute) {
+    private router: Router, private activatedRoute: ActivatedRoute,
+    public createproject: CreateProjectComponent
+
+  ) {
     this.ObjUserDetails = new UserDetailsDTO();
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
@@ -122,13 +126,15 @@ export class ViewDashboardProjectsComponent implements OnInit {
   TotalWork_Hours: any;
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
+
   openInfo(prjCode:string,actCode:string) {
+    debugger
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     if(prjCode&&actCode)
       this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
     else
-    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode, "3"]);
+    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", actCode, "3"]);
 
     //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -153,6 +159,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
   _CloseMemosidebar() {
     document.getElementById("MemosSideBar").style.width = "0";
   }
+  _Closeportflosidebar() {
+    document.getElementById("portfloSideBar").style.width = "0";
+  }
+
   projectsDataTable: boolean;
   AssignedTask: boolean;
   _AssignedProjectsList: any;
@@ -202,6 +212,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ProjectDataList = [];
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe((data) => {
+        
           if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
@@ -209,7 +220,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this._CurrentpageRecords = 0;
           }
           else {
-            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);  console.log("_ProjectDataList:",this._ProjectDataList);
+            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']); 
+            console.log(this._ProjectDataList,'_ProjectDataList')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
@@ -219,6 +231,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
         });
     }
   }
+  ActionhiddenIcon:boolean=true;
+  portfolio_List:any
+  _totalfortfolio:any
 
 
   getDelayProjects(type) {
@@ -227,9 +242,12 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.delayType=type;
     if(type=='Projects'){
       this.Mode='DelayProjects';
+      this.ActionhiddenIcon=true
+      console.log("_ProjectDataList:",this._ProjectDataList);
     }
     else{
       this.Mode='DelayActions';
+      this.ActionhiddenIcon=false
     }
     let EmpNo = this.Current_user_ID;
     let Pgno: number = this.CurrentPageNo;
@@ -252,6 +270,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ProjectDataList = [];
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe((data) => {
+          console.log(data,'data2')
           if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in Delay" + type;
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
@@ -265,7 +284,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
-            console.log(this._ProjectDataList,"delay actions")
+            // this.portfolio_List=JSON.parse(this._ProjectDataList['availableports'])
+            
+             console.log(this._ProjectDataList,"portfolio_List")
           }
         });
   }
@@ -313,7 +334,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
 
-            console.log(this._AssignedProjectsList, this.TypeContInFilter, this.StatusCountFilter, this.EmpCountInFilter, "test assign");
+            console.log(this._AssignedProjectsList, "test assign");
           }
         });
     }
@@ -473,6 +494,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe(data => {
+        
           this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
@@ -631,7 +653,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this._LinkService._GetMemosSubject(this._JsonString).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              // console.log("Subject Name ------------>", this._MemosSubjectList);
+             
             });
         }
         else {
@@ -821,6 +843,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this._LinkService._GetMemosSubject(this._JsonString).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
+           
             });
         }
         else {
@@ -831,6 +854,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   }
 
   _OpenMemosInfo(_projectCode, _projectName) {
+    if(_projectCode!=undefined && _projectName!=undefined){
     this._dbMemoIdList = [];
     this._displayProjName = _projectName;
     this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
@@ -852,7 +876,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
             subscribe((data) => {
               // console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              //console.log("Subject Name ------------>", this._MemosSubjectList);
+             
+              console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
         else {
@@ -861,8 +886,44 @@ export class ViewDashboardProjectsComponent implements OnInit {
         }
       });
     //Displaying Right Side Bar...
-    document.getElementById("MemosSideBar").style.width = "350px";
+      document.getElementById("MemosSideBar").style.width = "350px";
+      document.getElementById("portfloSideBar").style.width = "0";
+    }else{
+      document.getElementById("MemosSideBar").style.width = "0";
+      document.getElementById("portfloSideBar").style.width = "0";
+      this.notifyService.showInfo("",'No dms link in this project')
+    }
+    
   }
+
+  _displayPrtName:any
+  _OpenfortfolioInfo(index:number,Project_Name) {
+   
+     this._displayPrtName=Project_Name
+    this.portfolio_List=JSON.parse(this._ProjectDataList[index]['availableports']);
+    if(this.portfolio_List!=null){
+      document.getElementById("portfloSideBar").style.width = "350px";
+      document.getElementById("MemosSideBar").style.width = "0";
+    }else{
+      document.getElementById("portfloSideBar").style.width = "0";
+      document.getElementById("MemosSideBar").style.width = "0";
+      this.notifyService.showInfo("",'No portfolio link in this project')
+    }
+   }
+
+   
+ 
+   OnCardClick(P_id: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
+
+
+
 
   moreDetails(pcode) {
     let name: string = 'MoreDetails';
@@ -935,7 +996,6 @@ getAssignedActions(type:'BYME'|'TOME'){
 
     this.service._GetCompletedProjects(this._ObjCompletedProj)
       .subscribe((data) => {
-        debugger
         if (JSON.parse(data[0]['JsonData_Json']).length == 0) {    console.log('no list present');
           this.notSelectedAnything_msg = `No Actions found Assigned ${type==='BYME'?'By You':'To You'}`;
           this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
@@ -956,6 +1016,57 @@ getAssignedActions(type:'BYME'|'TOME'){
 }
 
 
-// assigned action by me, to me end
+// Assigned_projects(){
+//   alert("hello")
+//   $('.Assigned-projects-list').removeClass('d-none');
+//  $('.np-step-1').addClass('d-none');
+// }
+
+
+
+openAssignedProject(assignId:string) {
+
+  let name = `/backend/createproject`;
+  // var url = document.baseURI + name;
+  // var myurl = `${url}`;
+  let url = `${window.location.origin}/backend/createproject`;
+  if (window.opener) {
+    window.opener.location.href = url;
+    this.createproject.Assigned_projects();
+    window.close();// Redirect the opener window to the new URL
+    localStorage.setItem('navigatingToCreateProject', 'true');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  // this.router.navigateByUrl(myurl);
+
+//   var myWindow = window.open(myurl,'_self');
+//   myWindow.focus();
+}
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

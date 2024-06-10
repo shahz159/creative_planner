@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
     this.OrganizationId=localStorage.getItem('OrganizationId');
     this._CompNo=sessionStorage.getItem("EmpCompNo");
 
-    $(document).ready(function() {  
+    $(document).ready(function() {
       // import('../../../assets/js/test.js');
       $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
     });
@@ -66,7 +66,7 @@ export class SidebarComponent implements OnInit {
       animation: 'scale-extreme',
       theme: 'gradient',
       animateFill: true,
-      inertia: true,  
+      inertia: true,
       placement:'right'
     });
     tippy('#timeline', {
@@ -79,7 +79,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#New_Project', {
-      content: "New Project",
+      content: "New project",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
@@ -153,7 +153,7 @@ export class SidebarComponent implements OnInit {
 
   }
   // AfterViewInit():void{
-  //   alert('ok');  
+  //   alert('ok');
   // }
   // ngAfterViewInit() {
     //We loading the player script on after view is loaded
@@ -162,7 +162,7 @@ export class SidebarComponent implements OnInit {
   //  import('../../../assets/js/test.js');
    // alert("test");
   // }
-  menuopen(){ 
+  menuopen(){
     document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open-dropdown");
     document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--hover");
     document.getElementById("kt-menu__item--submenu1").classList.toggle("kt-menu__item--open");
@@ -174,10 +174,10 @@ export class SidebarComponent implements OnInit {
     this.authService.logout();
     sessionStorage.clear();
     localStorage.clear();
-    // console.log(this.authService.logout()); 
+    // console.log(this.authService.logout());
     this.router.navigate(['login']);
     // window.sessionStorage.clear();
-    
+
     //localStorage.removeItem('EmpNo');
     //window.localStorage.clear();
     //console.log("local Storage----->", localStorage.getItem('EmpNo'));
@@ -201,9 +201,9 @@ export class SidebarComponent implements OnInit {
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
-  
+
   Btn_Moreinfo() {
-    let name: string = "Details/4001234"; 
+    let name: string = "Details/4001234";
     var url = document.baseURI + name;
     var myurl = `${url}`;
     var myWindow = window.open(myurl);
@@ -214,8 +214,8 @@ export class SidebarComponent implements OnInit {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 
-  
-  menutoggle(){    
+
+  menutoggle(){
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
