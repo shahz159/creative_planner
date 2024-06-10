@@ -2570,7 +2570,7 @@ GetAttendeesnotes(){
    
 
 
-   debugger
+
     this.TaskCount=JSON.parse(data['TaskCount']);
     this.TaskCount.forEach(item=>{
       const i=this.taskcount.findIndex(item1=>item1.agendaid==item.Agenda_Id);
