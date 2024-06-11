@@ -4489,7 +4489,7 @@
 <ngx-guided-tour></ngx-guided-tour>
 <div class="modal-backdrop fade show" id="schedule-event-modal-backdrop" style="display: none;"></div>
 <!-- Project Modal Start -->
-  <div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
+<div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header  gap-1">
@@ -4518,14 +4518,14 @@
             
             <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='PROJECT'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
             
-            <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearch class="search-input" type="search" placeholder="Search" />
+            <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
 
 
 
             <div class="modal-icon mr-1 curser-pointer" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
-            <div class="modal-icon curser-pointer" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearch.value=null; ">
+            <div class="modal-icon curser-pointer" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearchRef.value=null; ">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
             </div>
           </div>
@@ -4610,90 +4610,82 @@
                         </svg>
                         <span style="color:#757575" class="ml-2">No results found.</span>
                     </div>
-
-
-
                 </ng-template>
                  
                 
             </ul>
     
             <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
-                <li *ngFor="let prtf of FilteredResults|filter:InputSearch.value" class="modal-project-list-item">
-                    <span>
-                        <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)"></mat-checkbox>
-                    </span>
-                    <span class="project-name">
-                        {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
-                    </span>
-                </li>
-
-
-                <div *ngIf="(FilteredResults|filter:InputSearch.value).length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
-                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
-                        </g>
-                    </svg>
-                    <span style="color:#757575" class="ml-2">No results found.</span>
-                </div>
-
-            </ul>
-            <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='DMS'">
-
-                <li *ngFor="let memo of FilteredResults|filter:InputSearch.value"  class="modal-project-list-item">
-                    <span>
-                        <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)"></mat-checkbox>
-                    </span>
-                    <label class="project-name">
-                       {{memo.Subject}}-{{memo.DisplayName}}
-                    </label>
-                </li>
-
-                <div *ngIf="(FilteredResults|filter:InputSearch.value).length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
-                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
-                        </g>
-                    </svg>
-                    <span style="color:#757575" class="ml-2">No results found.</span>
-                </div>
-
-            </ul>
-            <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
-                <li *ngFor="let emp of FilteredResults|filter:InputSearch.value" class="modal-project-list-item">
-                    <span>
-                        <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
-                    </span>
-                    <span style="display:flex; align-items: center; gap: 5px;">
-                        <span class="project-user-image">
-                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                    <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
+                        <span>
+                            <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)"></mat-checkbox>
                         </span>
                         <span class="project-name">
-                            {{emp.DisplayName}}
+                            {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
                         </span>
-                    </span>
-                </li>
-
-                <div *ngIf="(FilteredResults|filter:InputSearch.value).length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
-                    <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
-                        </g>
-                    </svg>
-                    <span style="color:#757575" class="ml-2">No results found.</span>
-                </div>
-
+                    </li>
+                    <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                            </g>
+                        </svg>
+                        <span style="color:#757575" class="ml-2">No results found.</span>
+                    </div>
             </ul>
+            <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='DMS'">
+               
+             
+                    <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
+                        <span>
+                            <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)"></mat-checkbox>
+                        </span>
+                        <label class="project-name">
+                           {{memo.Subject}}-{{memo.DisplayName}}
+                        </label>
+                    </li>
+    
+                    <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                            </g>
+                        </svg>
+                        <span style="color:#757575" class="ml-2">No results found.</span>
+                    </div>
+              
+            </ul>
+            <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
+             
+                    <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
+                        <span>
+                            <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
+                        </span>
+                        <span style="display:flex; align-items: center; gap: 5px;">
+                            <span class="project-user-image">
+                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                            </span>
+                            <span class="project-name">
+                                {{emp.DisplayName}}
+                            </span>
+                        </span>
+                    </li>
 
-
-
+                    <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                            </g>
+                        </svg>
+                        <span style="color:#757575" class="ml-2">No results found.</span>
+                    </div>
+            </ul>
 
 
           </div>
@@ -4701,8 +4693,8 @@
         <div class="modal-footer">
             <ng-container *ngIf="projectmodaltype">
                     <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                    <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearch.value=''; ">Close</button>
+                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
             </ng-container>
         </div>
       </div>

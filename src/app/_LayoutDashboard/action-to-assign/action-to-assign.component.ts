@@ -527,7 +527,6 @@ else {
 
 
   getObjOf(arr, id, idName) {
-    debugger
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }

@@ -477,7 +477,7 @@ export class DashboardComponent implements OnInit {
   }
   onKeyPress() {
     // Check if the input field is empty
-    if (this.agendaInput.trim() === '') {
+    if (this.agendaInput===undefined||this.agendaInput.trim() === '') {
       // If input field is empty, remove the class
       this.isClassAdded = false;
     } else {
@@ -6036,6 +6036,31 @@ onProjectSearch(inputtext:any){
         }
 
     })
+  }
+
+
+  onInputSearch(inputText:any){  
+    let keyname;
+    let arrtype;
+    if(this.projectmodaltype=='PARTICIPANT')
+     {
+       keyname='DisplayName';
+       arrtype=this._EmployeeListForDropdown;
+     }
+    else if(this.projectmodaltype=='PORTFOLIO')
+    {
+       keyname='Portfolio_Name';
+       arrtype=this.Portfoliolist_1;
+    }
+    else if(this.projectmodaltype=='DMS')
+    {
+      keyname='Subject';
+      arrtype=this.Memos_List;
+    }
+    const result=arrtype.filter(item=>{
+        return item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+    })
+    this.FilteredResults=result;
   }
 
 
