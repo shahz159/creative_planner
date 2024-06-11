@@ -521,7 +521,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" aria-expanded="true" [hidden]="HideProjects">
 
-                        <div class="card projects-list no-border kt-portlet__body_scroll kt-portlet__body_scroll1">
+                        <div class="card projects-list no-border">
                             <div class="card-body pt-0">
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -562,8 +562,11 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr *ngIf="(item1.Status=== _PortProjStatus||_PortProjStatus=='')"
-                                            class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                            <tr>
+
+                                                    <td class="icond">
+                                                        <span *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                           
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -579,9 +582,7 @@
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
                                                     'NewTodo':item1.Status=='New Todo'
 
-                                                    }">
-
-                                                    <td class="icond">
+                                                    }"></span>
                                                         <div class="d-flex align-items-center">
                                                             <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
                                                             placement="right" data-trigger="focus" title="Project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
