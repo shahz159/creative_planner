@@ -4510,8 +4510,13 @@ span.project-name {
    transition-duration:0.2s;
  }
 
+::ng-deep #cal-events .ng-dropdown-panel .ng-dropdown-panel-items {
+    max-height: 200px;
+}
+#cal-events .schedule-dt-tm {
+    font-size: 12px;
 
-
+}
  .picktime-box{
     border: 1px solid #d3d3d3e0;
     border-radius: 7px;

@@ -6020,31 +6020,31 @@ onProjectSearch(inputtext:any){
 
   
 
-onInputSearch(inputText:any){  debugger
-  let keyname;
-  let arrtype;
-  if(this.projectmodaltype=='PARTICIPANT')
-   {
-     keyname='DisplayName';   
-     arrtype=this._EmployeeListForDropdown;
-   } 
-  else if(this.projectmodaltype=='PORTFOLIO')
-  {
-     keyname='Portfolio_Name';
-     arrtype=this.Portfoliolist_1;
-  } 
-  else if(this.projectmodaltype=='DMS')
-  {
-    keyname='Subject';
-    arrtype=this.Memos_List;
-  } 
 
-  const result=arrtype.filter(item=>{
-      return item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
-  })
-  this.FilteredResults=result;
-}
 
+  onInputSearch(inputText:any){  
+    let keyname;
+    let arrtype;
+    if(this.projectmodaltype=='PARTICIPANT')
+     {
+       keyname='DisplayName';
+       arrtype=this._EmployeeListForDropdown;
+     }
+    else if(this.projectmodaltype=='PORTFOLIO')
+    {
+       keyname='Portfolio_Name';
+       arrtype=this.Portfoliolist_1;
+    }
+    else if(this.projectmodaltype=='DMS')
+    {
+      keyname='Subject';
+      arrtype=this.Memos_List;
+    }
+    const result=arrtype.filter(item=>{
+        return item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+    })
+    this.FilteredResults=result;
+  }
 
 
   project_filter() {
