@@ -875,6 +875,7 @@ input[type="file"] {
 .rep-chk {
     position: absolute;
     opacity: 0;
+    cursor: pointer;
 }
 
 .gap-15 {
