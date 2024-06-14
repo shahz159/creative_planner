@@ -436,14 +436,14 @@ meeting_details(){
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{ 
    
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-    console.log('oooooooooooooop',this.EventScheduledjson)
+
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
     this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
       const statusOrder = { "Accepted": 1,"Pending":2, "May be": 3, "Rejected": 4 };
       return statusOrder[a.Status] - statusOrder[b.Status];
   });
-
+ 
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
     this.Actiontask=this.EventScheduledjson[0].Actiontasks;  
     this.AssignedTask=this.EventScheduledjson[0].AssignedTasks;
@@ -515,7 +515,7 @@ meeting_details(){
     this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
     this._TotalAttachment=this.Attachments_ary.length;
-    console.log('Attachments_ary',this.Attachments_ary);
+    //console.log('Attachments_ary',this.Attachments_ary);
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
     this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -529,7 +529,7 @@ meeting_details(){
     this.projectcount = this.checkedproject.length;
 
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-    
+    //.log(this.Isadmin,'isadmin')
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
     this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
     
@@ -692,7 +692,7 @@ InsertAttendeeMeetingTime(){
   this._calenderDto.Status=this.status_Type;
   this._calenderDto.StartTime=this.startTime==undefined?null:formatTime(this.startTime);
   this._calenderDto.EndTime=this.endTime==undefined?null:formatTime(this.endTime)
-  console.log(this._calenderDto,'time of meeting');
+ // console.log(this._calenderDto,'time of meeting');
   this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
   ((data)=>{
    
@@ -716,7 +716,7 @@ startMeetingOfAttendees() {
   this.GetcompletedMeeting_data();
   this.timer = setInterval(() => {
     this.elapsedTime = new Date().getTime() - this.startTime.getTime();
-    console.log()
+   
     if (this.elapsedTime >= this.duration) {
       this.stopMeetingAttendees();
     }
@@ -2015,15 +2015,15 @@ completeSelectedAgenda(){
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe((data:any)=> {
        if(data){
            const Mtgnotes_time=JSON.parse(data['Checkdatetimejson']);
-           if(Mtgnotes_time&&Mtgnotes_time.length>0){
+          //  if(Mtgnotes_time&&Mtgnotes_time.length>0){
              this.completeAgenda();
-           }
-           else{
-            const chkbox:any=document.getElementById(data.AgendaId+'ckbox');
-            chkbox.checked=false;
-             this.notifyService.showWarning('Please provide notes for this agenda.','Notes missing.');
-              // selected agenda has no notes
-           }
+          //  }
+          //  else{
+          //   const chkbox:any=document.getElementById(data.AgendaId+'ckbox');
+          //   chkbox.checked=false;
+          //    this.notifyService.showWarning('Please provide notes for this agenda.','Notes missing.');
+          //     // selected agenda has no notes
+          //  }
        }
   });
 }
@@ -2201,12 +2201,14 @@ Meetingstatuscom: string;
 // unsubscribe: boolean = false;
 
 GetcompletedMeeting_data() {
+  
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
+      this.meeting_details();
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
@@ -2261,13 +2263,22 @@ GetcompletedMeeting_data() {
 ActionedAssigned_Josn: any = [];
 ActionedSubtask_Json: any=[];
 assigncount: number;
+isSubmitting: boolean = false;
 
+onInputChange() {
+  // Here you can reset the isSubmitting flag if needed based on input change
+  this.isSubmitting = false;
+}
 
 
 EnterSubmit(_Demotext) {
 
+  if (this.isSubmitting) return;
+
+
    if(_Demotext.length<=100){
     if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
+      this.isSubmitting = true;
       this._ObjAssigntaskDTO.CategoryId = 2411;
       this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
       this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
@@ -2282,6 +2293,7 @@ EnterSubmit(_Demotext) {
           this.todocount = this._TodoList.length;
           let message: string = data['Message'];
           this._Demotext = "";
+          this.isSubmitting = false;
           this.selectedText="";
           // this.editorFocused=false;
           //this.GetAssignTask();
@@ -2580,24 +2592,65 @@ GetAttendeesnotes(){
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
   this._calenderDto.Emp_No=this.Current_user_ID;
-  this._calenderDto.Status_type='agenda';
+  this._calenderDto.Status_type=this.status_type==undefined?null:this.status_type;
+
+  // console.log( this._calenderDto.Status_type,'====2===>')
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
-  //  console.log(this._calenderDto,'agenda')
+    
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
-    
+  
     this.agendasList=JSON.parse(data['Agendas']);
-    
-    if(this.Agendas_List.length>0){
-        if(this.agendasList.length!=this.Agendas_List.length){
-        this.Agendas_List=this.agendasList;
-        console.log(this.agendasList,'status');
+    console.log(this.agendasList,'====3==>'); 
+
+
+   if(this.agendasList.length!=0){
+       this.meeting_details();
+       // console.log(this.agendasList,'status');
         this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
         this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
-      
         this.notifyService.showInfo('New agenda added', "")   
-        }
+        this.status_type=undefined;     
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // if(this.Agendas_List.length>0){
+    //     if(this.agendasList.length!=this.Agendas_List.length){
+    //     this.Agendas_List=this.agendasList;
+    //     console.log(this.agendasList,'status');
+    //     this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+    //     this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+      
+    //     this.notifyService.showInfo('New agenda added', "")   
+    //     }
+    // }
    
     
     
@@ -4419,6 +4472,7 @@ Insert_meetingreport() {
     this.refreshSubscription.unsubscribe();
   }
   this.notifyService.showSuccess("Meeting completed successfully", "Success");
+  document.getElementById("exampleModal").style.display = "none";
   document.getElementById("rightbar-overlay").style.display = "none";
 }
 

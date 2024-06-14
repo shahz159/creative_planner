@@ -3371,6 +3371,19 @@ span.admin-check-svg {
     gap: 5px;
 }
 
+.admin-hovers {
+    color: #090be8;
+    background: #ededff;
+    /* box-shadow: 2px 2px 3px #d7d5d5; */
+}
+
+.meeting-attendees-user .admin-hovers {
+    display: inline-flex;
+    transition: all .5s;
+    align-items: center;
+    gap: 5px;
+}
+
 .meeting-attendees-user:hover {
     transform: translateX(-4px);
     transition: all .5s;
