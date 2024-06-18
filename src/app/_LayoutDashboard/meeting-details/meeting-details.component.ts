@@ -423,6 +423,7 @@ export class MeetingDetailsComponent implements OnInit {
   totalCountAssign:any;
   totalAssign:any;
   totalActiontask:any
+  totalTodotask:any
   totalCompletedAgenda:any
 
   meeting_details_1(){
@@ -435,20 +436,22 @@ meeting_details(){
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{ 
    
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
     this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
       const statusOrder = { "Accepted": 1,"Pending":2, "May be": 3, "Rejected": 4 };
       return statusOrder[a.Status] - statusOrder[b.Status];
   });
-
+ 
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
     this.Actiontask=this.EventScheduledjson[0].Actiontasks;  
     this.AssignedTask=this.EventScheduledjson[0].AssignedTasks;
     this.totalAssign=this.AssignedTask.length;
     this.totalActiontask=this.Actiontask.length;
     this.Todotask=this.EventScheduledjson[0].Todotasks;
-    this.totalCountAssign=this.totalAssign + this.totalActiontask
+    this.totalTodotask=this.Todotask.length
+    this.totalCountAssign=this.totalAssign + this.totalActiontask + this.totalTodotask
    
     if(this.EmpNo==this.Current_user_ID){
       this.meetingAdmin =true
@@ -512,7 +515,7 @@ meeting_details(){
     this.portfoliocount = this.checkedportfolio.length;
     this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
     this._TotalAttachment=this.Attachments_ary.length;
-    //console.log('Project_code',this._TotalAttachment);
+    //console.log('Attachments_ary',this.Attachments_ary);
 
     this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
     this.Project_code=JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -526,7 +529,7 @@ meeting_details(){
     this.projectcount = this.checkedproject.length;
 
     this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-    
+    //.log(this.Isadmin,'isadmin')
     this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
     this.Meeting_status=this.EventScheduledjson[0].Meeting_status;
     
@@ -689,7 +692,7 @@ InsertAttendeeMeetingTime(){
   this._calenderDto.Status=this.status_Type;
   this._calenderDto.StartTime=this.startTime==undefined?null:formatTime(this.startTime);
   this._calenderDto.EndTime=this.endTime==undefined?null:formatTime(this.endTime)
-  console.log(this._calenderDto,'time of meeting');
+ // console.log(this._calenderDto,'time of meeting');
   this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
   ((data)=>{
    
@@ -713,7 +716,7 @@ startMeetingOfAttendees() {
   this.GetcompletedMeeting_data();
   this.timer = setInterval(() => {
     this.elapsedTime = new Date().getTime() - this.startTime.getTime();
-    console.log()
+   
     if (this.elapsedTime >= this.duration) {
       this.stopMeetingAttendees();
     }
@@ -1621,10 +1624,11 @@ fiterDataOfEmployee:boolean=false;
 
 
 getPreviousdate_ByFilter(emp_Number){
+  
   this.Emp_Number=emp_Number;
   this.GetPreviousdate_meetingdata();
-  this.fiterDataOfEmployee=true
-  
+  this.fiterDataOfEmployee=true;;
+
 }
 
 
@@ -1644,7 +1648,6 @@ setFilterInfo(filterby:'Agenda'|'Attendees'|'All',sortby:string|undefined){
 clearNotify:boolean;
 
 Clear_Filters(){
-
 document.getElementById("dropd").classList.remove("show");
 this.setFilterInfo('Agenda',this.filterconfig.sortby);
 this.GetPreviousdate_meetingdata();
@@ -1663,28 +1666,21 @@ GetPreviousdate_meetingdata() {
   this.fiterDataOfEmployee=false
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
-  this._calenderDto.Emp_No =this.Emp_Number ===undefined ? 0: this.Emp_Number;
+  this._calenderDto.Emp_No =this.Emp_Number===undefined ? 0: this.Emp_Number;
 
   this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
     (data => {   
-      
+  
        if(data['previousmeet_data']){
-        this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);      
+        this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);   
+        console.log(this.Previousdata_meeting,'Previousdata_meeting');     
         this.totalPreviousdata_meeting=this.Previousdata_meeting.length;
-        this.resultFound=true
+        this.resultFound=true 
       }else{
         this.resultFound=false
       }
-      
        
-      
-     
-
-        console.log(this.totalPreviousdata_meeting,'Previousdata_meeting');
-
         this.attendeesLists=JSON.parse(data['attendeesList'])
-        // console.log(this.attendeesLists,'attendeesLists')
-       
         this.Emp_Number=0
     });
 }
@@ -1694,6 +1690,25 @@ toggleAccordion(pause: any) {
   // Your implementation here
 }
 
+activeAgenda: any = null; 
+Employees:any
+
+sortbyAgendaList(index,agendaDetails){
+
+  this.activeAgenda = agendaDetails;
+  this.Employees=agendaDetails.Employees
+ // this.Employees=agendaDetails
+}
+AgendaNotes:any
+activeAgendasList:any
+
+sortbyFilterList(index,agendaDetails){
+  this.activeAgendasList=agendaDetails
+  this.AgendaNotes=agendaDetails.AgendaNotes
+
+
+}
+
 /////////////////////////////////////////// Previous Meeting Notes Side-Bar End /////////////////////////////////////////////////////////
 
 /////////////////////////////////////////// Agenda Start /////////////////////////////////////////////////////////
@@ -1701,6 +1716,8 @@ toggleAccordion(pause: any) {
 agendaInput:string|undefined;
 allAgendas:any=[];
 agendasAdded:number=0;
+status_type:any;
+
 
 addAgenda(){
 
@@ -1724,8 +1741,10 @@ addAgenda(){
     this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
     (data => {
        this.meeting_details();
+       this.status_type='agenda';
+       this.GetAttendeesnotes();
        this.notifyService.showSuccess("Agenda added successfully ", '');
-
+       
     })
     this.agendaInput=undefined;
   }
@@ -1826,9 +1845,15 @@ AgendaId:any
 
 
 showAgendaDetails(item,index){
-    this.AgendaId=item.AgendaId
-    this.currentAgendaView=index
-    this.GetAssigned_SubtaskProjects()
+    if(this.meetingInProgress==true){
+      this.AgendaId=item.AgendaId
+      this.currentAgendaView=index
+      this.GetAssigned_SubtaskProjects()
+    }else if(this.Meetingstatuscom!='Completed'){
+      this.notifyService.showInfo("The meeting hasn't started yet","")
+    }
+ 
+
 }
 
 
@@ -1990,15 +2015,15 @@ completeSelectedAgenda(){
   this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe((data:any)=> {
        if(data){
            const Mtgnotes_time=JSON.parse(data['Checkdatetimejson']);
-           if(Mtgnotes_time&&Mtgnotes_time.length>0){
+          //  if(Mtgnotes_time&&Mtgnotes_time.length>0){
              this.completeAgenda();
-           }
-           else{
-            const chkbox:any=document.getElementById(data.AgendaId+'ckbox');
-            chkbox.checked=false;
-             this.notifyService.showWarning('Please provide notes for this agenda.','Notes missing.');
-              // selected agenda has no notes
-           }
+          //  }
+          //  else{
+          //   const chkbox:any=document.getElementById(data.AgendaId+'ckbox');
+          //   chkbox.checked=false;
+          //    this.notifyService.showWarning('Please provide notes for this agenda.','Notes missing.');
+          //     // selected agenda has no notes
+          //  }
        }
   });
 }
@@ -2176,12 +2201,14 @@ Meetingstatuscom: string;
 // unsubscribe: boolean = false;
 
 GetcompletedMeeting_data() {
+  
   this.Schedule_ID = this.Scheduleid;
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
+      this.meeting_details();
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
@@ -2236,13 +2263,22 @@ GetcompletedMeeting_data() {
 ActionedAssigned_Josn: any = [];
 ActionedSubtask_Json: any=[];
 assigncount: number;
+isSubmitting: boolean = false;
 
+onInputChange() {
+  // Here you can reset the isSubmitting flag if needed based on input change
+  this.isSubmitting = false;
+}
 
 
 EnterSubmit(_Demotext) {
 
+  if (this.isSubmitting) return;
+
+
    if(_Demotext.length<=100){
     if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
+      this.isSubmitting = true;
       this._ObjAssigntaskDTO.CategoryId = 2411;
       this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
       this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
@@ -2257,6 +2293,7 @@ EnterSubmit(_Demotext) {
           this.todocount = this._TodoList.length;
           let message: string = data['Message'];
           this._Demotext = "";
+          this.isSubmitting = false;
           this.selectedText="";
           // this.editorFocused=false;
           //this.GetAssignTask();
@@ -2544,7 +2581,8 @@ meetingStarted:boolean;
 hasMeetingStarted: boolean;
 hasMeetingEnd: boolean ;
 NotesCount:any;
-TaskCount:any
+TaskCount:any;
+agendasList:any
 
 taskcount:any=[];
 notescount:any=[];
@@ -2553,56 +2591,94 @@ GetAttendeesnotes(){
   
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
-  this._calenderDto.Emp_No=this.Current_user_ID
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.Status_type=this.status_type==undefined?null:this.status_type;
+
+  // console.log( this._calenderDto.Status_type,'====2===>')
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
-  
+    
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
+  
+    this.agendasList=JSON.parse(data['Agendas']);
+    console.log(this.agendasList,'====3==>'); 
+
+
+   if(this.agendasList.length!=0){
+       this.meeting_details();
+       // console.log(this.agendasList,'status');
+        this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+        this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+        this.notifyService.showInfo('New agenda added', "")   
+        this.status_type=undefined;     
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // if(this.Agendas_List.length>0){
+    //     if(this.agendasList.length!=this.Agendas_List.length){
+    //     this.Agendas_List=this.agendasList;
+    //     console.log(this.agendasList,'status');
+    //     this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+    //     this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+      
+    //     this.notifyService.showInfo('New agenda added', "")   
+    //     }
+    // }
    
+    
+    
+    
+
     this.notescount.forEach(item=>item.count=0);  //1. clear previous notes count data.
     this.taskcount.forEach(item=>item.count=0);   //1. clear previous task count data.
-
+    this.status_type='';
     this.NotesCount=JSON.parse(data['NotesCount']);    
     this.NotesCount.forEach(item=>{
       const i=this.notescount.findIndex(item1=>item1.agendaid==item.AgendaId);
+      if(i>-1)
       this.notescount[i].count+=1; 
     });    // 2. update new notes count data. 
    
 
-
-
     this.TaskCount=JSON.parse(data['TaskCount']);
     this.TaskCount.forEach(item=>{
       const i=this.taskcount.findIndex(item1=>item1.agendaid==item.Agenda_Id);
+      if(i>-1)
       this.taskcount[i].count+=1; 
     });    // 2. update new task count data. 
 
-
-
- 
-
-   
-  
-
-
-
-
-
-
-
-    
-    console.log(this.NotesCount,this.TaskCount,'NotesCount')
-
-
     this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false 
-
-
-
     if(this.meetingStarted || this.meetingStarted!=true){
      if(data['Checkdatetimejson']){
       this.AllAttendees_notes=JSON.parse(data['Checkdatetimejson']);
      } 
-
 
       if(this.meetingStarted==true && !this.hasMeetingStarted){  
         this.startMeetingOfAttendees();
@@ -4396,6 +4472,7 @@ Insert_meetingreport() {
     this.refreshSubscription.unsubscribe();
   }
   this.notifyService.showSuccess("Meeting completed successfully", "Success");
+  document.getElementById("exampleModal").style.display = "none";
   document.getElementById("rightbar-overlay").style.display = "none";
 }
 
@@ -4461,10 +4538,22 @@ close_project_filter() {
   document.getElementById("filter-icon").classList.remove("active");
 }
 
-agendaside(){
-  document.getElementById("agendalist").classList.toggle("active");
-  document.getElementById("agendaarrow").classList.toggle("rotate");
+// agendaside(){
+//   document.getElementById("agendalist").classList.toggle("active");
+//   document.getElementById("agendaarrow").classList.toggle("rotate");
+// }
+
+agendaside(index: number) {
+  const agendaListElement = document.getElementById(`agendalist-${index}`);
+  const agendaArrowElement = document.getElementById(`agendaarrow-${index}`);
+
+  if (agendaListElement && agendaArrowElement) {
+      agendaListElement.classList.toggle("active");
+      agendaArrowElement.classList.toggle("rotate");
+  }
 }
+
+
 
 History_meeting() {
   document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -4502,29 +4591,80 @@ previous_filter(){
 
 
 
+// onCheckboxChanges(event: Event, url: string, fileName: string) {
+//   const checkbox = event.target as HTMLInputElement;
+//   if (checkbox.checked) {
+//     this.downloadFile(url, fileName);
+//     // Uncheck the checkbox after triggering the download
+//     checkbox.checked = false;
+//   }
+// }
+
+// downloadFile(url: string, fileName: string) {
+//   fetch(url)
+//     .then(response => response.blob())
+//     .then(blob => {
+   
+//       const url = window.URL.createObjectURL(blob);
+//       const a = document.createElement('a');
+//       a.href = url;
+//       a.download = fileName;
+//       document.body.appendChild(a);
+//       a.click();
+//       a.remove();
+//       window.URL.revokeObjectURL(url);
+//     })
+//     .catch(error => console.error('Error downloading file:', error));
+// }
+
+
+
+selectedFiles: { url: string, fileName: string }[] = [];
+
 onCheckboxChanges(event: Event, url: string, fileName: string) {
   const checkbox = event.target as HTMLInputElement;
   if (checkbox.checked) {
-    this.downloadFile(url, fileName);
-    // Uncheck the checkbox after triggering the download
-    checkbox.checked = false;
+    this.selectedFiles.push({ url, fileName });
+  } else {
+    this.selectedFiles = this.selectedFiles.filter(file => file.url !== url);
   }
+}
+
+downloadSelectedFiles() {
+  this.selectedFiles.forEach(file => {
+    this.downloadFile(file.url, file.fileName);
+  });
+
+  this.clearSelectedCheckboxes();
+  this.selectedFiles = [];  // Clear selected files after download
 }
 
 downloadFile(url: string, fileName: string) {
   fetch(url)
     .then(response => response.blob())
     .then(blob => {
-   
-      const url = window.URL.createObjectURL(blob);
+      const fileURL = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = fileURL;
       a.download = fileName;
       document.body.appendChild(a);
       a.click();
       a.remove();
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(fileURL);
     })
     .catch(error => console.error('Error downloading file:', error));
 }
-} 
+
+clearSelectedCheckboxes() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"][name="Checkboxes15"]');
+  checkboxes.forEach((checkbox: HTMLInputElement) => {
+    checkbox.checked = false;
+  });
+}
+
+
+
+
+
+
+ } 

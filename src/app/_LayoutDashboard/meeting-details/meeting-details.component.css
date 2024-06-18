@@ -1149,7 +1149,7 @@ ul.meeting-attendees-userlist {
 ul.attendees-note-userlist {
     padding: 0px;
     list-style: none;
-    max-height: 400px;
+    max-height: 497px;
     overflow: auto;
     scrollbar-width: thin;
     padding-right: 10px;
@@ -3371,6 +3371,19 @@ span.admin-check-svg {
     gap: 5px;
 }
 
+.admin-hovers {
+    color: #090be8;
+    background: #ededff;
+    /* box-shadow: 2px 2px 3px #d7d5d5; */
+}
+
+.meeting-attendees-user .admin-hovers {
+    display: inline-flex;
+    transition: all .5s;
+    align-items: center;
+    gap: 5px;
+}
+
 .meeting-attendees-user:hover {
     transform: translateX(-4px);
     transition: all .5s;
@@ -4805,7 +4818,7 @@ li.actualtime-item:first-child:before {
 }
 @media screen and (min-width: 1400px) {
     #Previous_sidebar.kt-quick-panel--on, #History_sidebar.kt-quick-panel--on {
-        width: 50% !important;
+        width: 58% !important;
     } 
 }
 /*--new sidebar--*/
@@ -5922,5 +5935,29 @@ span.time-value {
 }
 
 .text_Assign{
+    margin-left: 10em;
 }
 
+
+
+.menu-sub.active {
+    display: block;
+}
+
+.menu-sub {
+    display: none;
+}
+
+.menu-arrow.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.menu-arrow {
+    transition: transform 0.3s ease;
+}
+
+
+.kt-inbox__datetimes{
+    font-size: 15px !important;
+}
