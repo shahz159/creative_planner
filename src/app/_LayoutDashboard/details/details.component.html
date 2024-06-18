@@ -1053,6 +1053,7 @@
 
                                                               <ul class="drop-ul p-1 filtr-config-option ">
                                                                   <li class="dropdown-header">Filter by</li>
+                                                                <div class="actns-filtr-scroll">
                                                                   <li>
                                                                       <button class="btn btn-filtr"
                                                                           (click)="onFilterConfigChanged({filterBy:'All',sortBy:filterConfig.sortby})"
@@ -1242,6 +1243,7 @@
                                                                           </div>
                                                                       </button>
                                                                   </li>
+                                                                </div>
                                                                   <!-- <li>
                                                           <button class="btn btn-filtr">
                                                               <div class="d-flex align-items-center">
@@ -1303,7 +1305,7 @@
                                                       </li> -->
                                                                   <li role="separator" class="divider"></li>
                                                                   <li class="dropdown-header">Sort by employee</li>
-
+                                                            <div class="actns-filtr-scroll">
                                                                   <li>
                                                                       <button class="btn btn-filtr"
                                                                           (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'All'}) "
@@ -1438,7 +1440,7 @@
                                                                           </div>
                                                                       </button>
                                                                   </li>
-
+                                                            </div>
                                                               </ul>
                                                           </div>
                                                       </div>
@@ -2745,7 +2747,30 @@
                                                 </div>
                                               </div> -->
 
+
+
+                                          <ng-container *ngSwitchDefault>
+                                            <div  *ngIf="projectInfo&&projectInfo.Project_Block=='003'"  class="kt-project-type ">
+                                                <div class="Kt-Pd-Status Delay">{{projectInfo.Status}}
+                                                   </div>
+                                             </div>
+                                          </ng-container>
+
+
+
+
+
+
+
+
+
                                               </div>
+
+
+
+                                           
+                                         
+
 
                                       </div>
                                       <div class="kt-project-desc w-80">
@@ -2827,6 +2852,8 @@
                                               </div>
                                               <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
                                                   <div class="kt-pdv mt-2">
+
+
                                                     <!-- Project Audit -->
                                                     <div class="d-none mt-2">
                                                         <div class="mb-2">
@@ -2914,6 +2941,11 @@
                                                             <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
                                                         </div>
                                                     </div>
+
+
+
+                                                    
+
                                                       <div *ngIf="isRejectOptionsVisible">
                                                           <label>Reject type<span class="text-danger">*</span></label>
                                                           <ng-select required #action="ngModel" name="rej_type"
@@ -3924,7 +3956,7 @@
                                               *ngIf="(
                                               Current_user_ID == projectActionInfo[currentActionView].Project_Owner ||
                                               Current_user_ID == projectActionInfo[currentActionView].Team_Res ||
-                                              Current_user_ID == projectInfo.Project_Owner||
+                                              Current_user_ID == projectInfo.OwnerEmpNo||
                                               Current_user_ID == projectInfo.ResponsibleEmpNo||
                                               isHierarchy==true
                                               ) &&
@@ -7473,8 +7505,8 @@
                           </div>
 
                           <div class="form-group mb-1">
-                              <button type="submit" class="btn btn-info"
-                                  (click)="achieveStandard()" >Submit</button>
+                              <button [disabled]="processingStd" type="submit" class="btn btn-info"
+                                  (click)="achieveStandard()">Submit</button>
                                   <!-- [disabled]="(_remarks=='')||(selectedFile==null)" -->
                           </div>
                       </div>
@@ -7491,7 +7523,7 @@
                           </div>
 
                           <div class="form-group mb-0">
-                              <button type="submit" class="btn btn-info"
+                              <button [disabled]="processingStd" type="submit" class="btn btn-info"
                                   (click)="notachieveStandard()"  >Submit</button>
                                   <!--[disabled]="(_remarks=='')" -->
                           </div>
@@ -7652,6 +7684,7 @@
                       <div class="form-group mb-0">
                           <button type="submit"
                           class="btn btn-info w-110  ml-2"
+                          [disabled]="HprocessDone>0"
                           (click)="onProject_Hold(Pid,currentActionView===undefined?_MasterCode:projectActionInfo[currentActionView].Project_Code)">Submit</button>
                           <!-- [disabled]="!Holddate || !hold_remarks"-->
                           <button type="submit" class="btn w-110 btn-secondary  ml-2"
@@ -7767,7 +7800,7 @@
 
                                       <div class="col-lg-12 mt-3 p-0">
                                           <div class="form-group">
-                                              <button type="submit"
+                                              <button [disabled]="HprocessDone>0" type="submit"
                                               class="btn btn-info w-110 ml-2"
                                               (click)="holdreleaseProject()">Submit</button>
                                               <!-- [disabled]="!hold_remarks" -->
@@ -7895,10 +7928,10 @@
                       </div>
                       <div class="form-group mb-1">
                           <label>Remarks<span class="text-danger">*</span></label>
-                          <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20" [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
+                          <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20" [ngClass]="{'error-border': (!hold_remarks||hold_remarks.trim()=='')&&formFieldsRequired}"
                               placeholder="Define your exact reason to cancel the project."
                               style="height:150px;"></textarea>
-                          <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
+                          <span *ngIf="(!hold_remarks||hold_remarks.trim()=='')&&formFieldsRequired" style="color:red">Please provide remarks</span>
                       </div>
                   </div>
                   <!-- <li class="kt-nav__separator"></li> -->
@@ -11728,7 +11761,7 @@
                           <path
                               d="M8.90381 1.22518L8.90381 2.68394C8.90381 3.24399 8.90381 3.52401 9.0128 3.73793C9.10868 3.92609 9.26166 4.07907 9.44982 4.17494C9.66373 4.28394 9.94376 4.28394 10.5038 4.28394L11.9626 4.28394"
                               stroke="#a3a3a3"></path>
-                      </svg> </span><span class="kt-chat__title"> New project reject release</span>
+                      </svg> </span><span class="kt-chat__title">New Project Release</span>
               </h4>
               <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                   (click)="closeNewPrjReleaseSideBar()">
@@ -11759,10 +11792,64 @@
 
 
 
-                                              <div class="form-group mb-1 d-flex"><b>Project:</b>
-                                                  <span>{{projectInfo&&projectInfo.Project_Name}}</span>
-                                              </div>
-                                              <div class="form-group mb-1">
+                                            <div style="
+                                            margin-bottom: 18px;
+                                        ">
+                                                <div style="
+                                        ">
+                                                <span style="
+                                            margin: 0;
+                                        ">from Aquib shahbaz</span>
+                                                
+                                                </div>
+                                                
+                                                <div style="
+                                            font-weight: 500;
+                                            border: 1px solid #f5f6fc;
+                                            padding: 0.5em 1em;
+                                            background-color: #f5f6fc;
+                                            border-radius: 0px;
+                                            font-size: 12px;
+                                            display: flex;
+                                            flex-direction: column;
+                                        ">
+                                            <span style="
+                                            background-color: #f5f6fc;
+                                            color: #646c9a;
+                                            font-family: Lucida Sans Unicode;
+                                            font-size: 8px;
+                                            align-self: flex-end;
+                                            padding: 2px;
+                                            font-weight: bold;
+                                        ">Reject comments</span>
+                                                   
+                                                  <ng-container *ngFor="let item of lastactivity">
+                                                    <!-- <h6 class="mb-1"
+                                                        *ngIf="activity=='New Project Rejected' || activity=='New Action Rejected'">
+                                                        {{activity}} for "{{item.rejectType}}".
+                                                    </h6> -->
+                                                    <span>{{item.Req_Coments}}</span>
+                                                </ng-container>
+                                        </div>
+                                                
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                              <!-- <div class="form-group mb-1 d-flex"><b>Project:</b>
+                                                   <span>{{projectInfo&&projectInfo.Project_Name}}</span>
+                                              </div> -->
+                                              <!-- <div class="form-group mb-1">
 
                                                   <ng-container *ngFor="let item of lastactivity">
                                                       <h6 class="mb-1"
@@ -11772,14 +11859,15 @@
                                                       <h6> <strong>Reject comments:</strong>
                                                           {{item.Req_Coments}}</h6>
                                                   </ng-container>
-                                              </div>
+                                              </div> -->
 
                                               <div class="form-group mb-1">
                                                   <label>Remarks<span class="text-danger">*</span></label>
-                                                  <textarea class="form-control" placeholder="" rows="2"
+                                                  <textarea [ngClass]="{'error-border':(!hold_remarks||!hold_remarks.trim())&&notProvided}" class="form-control" placeholder="" rows="2"
                                                       cols="20" style="height:90px;"
                                                       placeholder="Define your exact hold reason here. e.g: Waiting for store license"
                                                       [(ngModel)]="hold_remarks"></textarea>
+                                                  <span *ngIf="(!hold_remarks||!hold_remarks.trim())&&notProvided" style="color:red;">remarks required.</span>
                                               </div>
                                           </div>
                                       </div>
@@ -11787,14 +11875,14 @@
                                   </ul>
                                   <div class="col-lg-12 mt-3 p-0">
                                       <div class="form-group">
-                                          <button type="submit"  [disabled]="!hold_remarks"
+                                          <button type="submit" [disabled]="newPrjreleasing" 
                                           class="btn btn-info w-110 ml-2"
                                           (click)="releasenewProject()">Submit</button>
-                                          <!---->
+                                          <!--[disabled]="!hold_remarks"-->
 
                                           <button type="submit"
                                               class="btn w-110 btn-secondary  ml-2"
-                                              (click)="closePrjHoldSideBar()">Cancel</button>
+                                              (click)="closeNewPrjReleaseSideBar()">Cancel</button>
 
 
                                       </div>

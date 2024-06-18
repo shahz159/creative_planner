@@ -510,7 +510,7 @@ export class DashboardComponent implements OnInit {
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: ''
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
       themeSystem: "solar",
       weekNumbers: true,
@@ -2772,7 +2772,7 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_viw121").style.display = "none";
        document.getElementById("core_viw222").style.display = "none";
        document.getElementById("core_Dms").style.display = "none";
-       document.getElementById("online-add").style.display = "none";
+       document.getElementById("meeting-online-add").style.display = "none";
 
      }
      else if(val==2)
@@ -2790,7 +2790,7 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_viw123").style.display = "none";
        document.getElementById("core_viw222").style.display = "flex";
        document.getElementById("core_Dms").style.display = "flex";
-       document.getElementById("online-add").style.display = "flex";
+       document.getElementById("meeting-online-add").style.display = "flex";
      }
      this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
   }
@@ -3245,9 +3245,12 @@ debugger
     });
   }
 
+  subtashDrpLoading:boolean=false;
   GetProjectAndsubtashDrpforCalender() {
+    this.subtashDrpLoading=true;
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
+        this.subtashDrpLoading=false;
         console.log(" Result of GetProjectAndsubtashDrpforCalender:", data);
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
@@ -3821,7 +3824,7 @@ debugger
   Isadmin: boolean;
   loading: boolean = false;
 
-  GetClickEventJSON_Calender(arg) {  debugger
+  GetClickEventJSON_Calender(arg) { 
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3829,7 +3832,7 @@ debugger
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => {    debugger
         this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
@@ -4345,7 +4348,7 @@ debugger
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: ''
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
 
           themeSystem: "solar",
@@ -4942,10 +4945,12 @@ debugger
   }
 
   GetMemosByEmployeeId() {
+    this.loading=true;
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
         this.Memos_List = JSON.parse(data['JsonData']);
         console.log(this.Memos_List, "test iiii");
+        this.loading=false;
       });
   }
 
@@ -5358,6 +5363,8 @@ debugger
     this._onlinelink=false;
     this._meetingroom=false;
     this.Link_Details = null;
+    this.subtashDrpLoading=false;
+    this.loading=false;
 
   }
 
@@ -5431,6 +5438,8 @@ debugger
     this.mtgOnDays=[]; 
     this.notProvided = false;
     this.subtask_loading=false;
+    this.subtashDrpLoading=false;
+    this.loading=false;
   }
 
   sweet_pending() {

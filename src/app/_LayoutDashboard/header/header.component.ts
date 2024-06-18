@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
   timeTo: any;
   notilength: number;
   _NotificationActivity: [];
+  isNotificationsLoading:boolean=false;
   urlcomponent:any;
   newfeaturetippy:any;
   ngOnInit(): void {
@@ -119,10 +120,12 @@ export class HeaderComponent implements OnInit {
 
   getDashboardnotifications() {
     this.notificationDTO.Emp_No = this.Current_user_ID;
+    this.isNotificationsLoading=true;
     this.service.GetDashboardnotifications(this.notificationDTO).subscribe(
       (data) => {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         this.notilength = (data[0]['notificationcount']);
+        this.isNotificationsLoading=false;
         console.log(data, 'Notif');
       });
   }

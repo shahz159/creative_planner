@@ -6687,3 +6687,22 @@ div#User_list_View.kt-quick-active--on {
   height: 36px;
   line-height: 36px;
 }
+
+
+
+
+.actns-filtr-scroll{
+    display:list-item;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.actns-filtr-scroll::-webkit-scrollbar{
+   width:5px;
+}
+
+.actns-filtr-scroll::-webkit-scrollbar-thumb{
+  background-color: #eaeaea;
+  border-radius:5px;
+}
+

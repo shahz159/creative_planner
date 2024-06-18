@@ -353,59 +353,68 @@
                     <div class="kt-head kt-head--skin-light kt-head--fit-x kt-head--fit-b pt-3">
                         <h3 class="kt-head__title">
                             Notifications
-                            <span class=" noti-cus" *ngIf="notilength!=0">{{notilength}}</span>
+                            <span class=" noti-cus" *ngIf="isNotificationsLoading==false&&notilength!=0">{{notilength}}</span>
                         </h3>
                     </div>
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
-                            <div *ngIf="notilength!=0"
-                                class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325"
-                                data-scroll="true" data-height="300" data-mobile-height="200">
-                                <a class="kt-notification__item" *ngFor="let noti of _NotificationActivity">
-                                    <div class="kt-notification__item-icon">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="#fb6b9e" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-                                            </svg>
-                                        </span>
+                        
+                            <div *ngIf="isNotificationsLoading;else NotificationsLoaded" class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325   d-flex  align-items-center  justify-content-center  "
+                            data-scroll="true" data-height="300" data-mobile-height="200">
+                                    <div class="spinner-border text-info" role="status" style="color: #9886eb !important;">
+                                        <span class="sr-only">Loading...</span>
                                     </div>
-                                    <ng-container >
-                                        <div class="kt-notification__item-details" (click)="openDetails(noti.Master_Code,noti.Project_Code)">
-                                            <div class="kt-notification__item-title">
-                                                {{noti.Project_Name}}
-                                            </div>
-                                            <div class="kt-notification__item-title">
-                                                Request type: {{noti.Req_Type}}
-                                            </div>
-                                            <div class="kt-notification__item-time">
-                                                Requested on: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
-                                            </div>
-                                            <!-- <div class="kt-notification__item-time">
-                                                Comments: {{noti.Req_Coments}}
-                                            </div> -->
-                                            <div class="kt-notification__item-details">
-                                                By: {{noti.SubmittedBy}}
-                                            </div>
+                            </div>
+                            <ng-template #NotificationsLoaded>
+                                    <div *ngIf="notilength!=0"
+                                    class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325"
+                                    data-scroll="true" data-height="300" data-mobile-height="200">
+                                    <a class="kt-notification__item" *ngFor="let noti of _NotificationActivity">
+                                        <div class="kt-notification__item-icon">
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="#fb6b9e" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
+                                                </svg>
+                                            </span>
                                         </div>
-                                    </ng-container>
+                                        <ng-container >
+                                            <div class="kt-notification__item-details" (click)="openDetails(noti.Master_Code,noti.Project_Code)">
+                                                <div class="kt-notification__item-title">
+                                                    {{noti.Project_Name}}
+                                                </div>
+                                                <div class="kt-notification__item-title">
+                                                    Request type: {{noti.Req_Type}}
+                                                </div>
+                                                <div class="kt-notification__item-time">
+                                                    Requested on: {{noti.Rec_Date | date:'dd-MM-yyyy'}}
+                                                </div>
+                                                <!-- <div class="kt-notification__item-time">
+                                                    Comments: {{noti.Req_Coments}}
+                                                </div> -->
+                                                <div class="kt-notification__item-details">
+                                                    By: {{noti.SubmittedBy}}
+                                                </div>
+                                            </div>
+                                        </ng-container>
 
 
-                                </a>
-                            </div>
-                            <div *ngIf="notilength==0" class="kt-notification kt-margin-t-10 kt-margin-b-10"
-                                style="color: lightgrey">
-                                <h5>No notifications available</h5>
-                            </div>
-                            <div class="py-3 text-center border-top">
-                                <!-- *ngIf="notilength>5" -->
-                                <a (click)="notification()" class="btn btn-label btn-label-info btn-sm btn-bold">View
-                                    all</a>
-                            </div>
+                                    </a>
+                                </div>
+                                <div *ngIf="notilength==0" class="kt-notification kt-margin-t-10 kt-margin-b-10"
+                                    style="color: lightgrey">
+                                    <h5>No notifications available</h5>
+                                </div>
+                                <div class="py-3 text-center border-top">
+                                    <!-- *ngIf="notilength>5" -->
+                                    <a (click)="notification()" class="btn btn-label btn-label-info btn-sm btn-bold">View
+                                        all</a>
+                                </div>
+                            </ng-template>
+                   
                         </div>
-
 
                     </div>
                 </form>
