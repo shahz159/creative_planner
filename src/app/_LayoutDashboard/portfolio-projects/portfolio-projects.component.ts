@@ -4239,7 +4239,7 @@ NewAddUserCountFeature() {
 
 
 loadGanttChart(){
-
+debugger
   console.log(">pr>",this._ProjectsListBy_Pid);
   
   const all_status={
@@ -4264,7 +4264,7 @@ loadGanttChart(){
 
 
       const data_ar=[{ 
-        x:prj.Project_Name, 
+        x:`${prj.Project_Name} (${prj.Project_Code})`, 
         y:[new Date(prj.Project_StartDate).getTime(),new Date(prj.DeadLine).getTime()], 
         fillColor:color, 
         index:_index
@@ -4272,13 +4272,13 @@ loadGanttChart(){
 
       const data_ar1=[
         { 
-            x:prj.Project_Name, 
+          x:`${prj.Project_Name} (${prj.Project_Code})`,
             y:[new Date(prj.Project_StartDate).getTime(),new Date(prj.DeadLine).getTime()], 
             fillColor:'#0089FB', 
             index:_index
         },
         {
-          x:prj.Project_Name, 
+          x:`${prj.Project_Name} (${prj.Project_Code})`,
           y:[new Date(prj.DeadLine).getTime(),new Date().getTime()], 
           fillColor:'#EE4137', 
           index:_index,
@@ -4300,7 +4300,9 @@ loadGanttChart(){
 // Desired height per row in pixels
 const rowHeight = 40; 
 const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
-const chartHeight = rowHeight * dataPoints;
+let chartHeight = rowHeight * dataPoints;
+chartHeight=chartHeight<100?120:chartHeight;
+
 
 var options = {
   series: _series,
@@ -4365,9 +4367,9 @@ var options = {
  const data = w.config.series[seriesIndex].data[dataPointIndex];
  const index=data.index;
  const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
- const prj_start=moment(this._ProjectsListBy_Pid[index].Project_StartDate).format('YYYY-MM-DD');
+ const prj_start=moment(this._ProjectsListBy_Pid[index].Created_Dt).format('YYYY-MM-DD');
  const prj_end=moment(this._ProjectsListBy_Pid[index].DeadLine).format('YYYY-MM-DD');
- const daydiff=moment(this._ProjectsListBy_Pid[index].Project_StartDate).diff(moment(this._ProjectsListBy_Pid[index].DeadLine),'days');
+ const daydiff=moment(this._ProjectsListBy_Pid[index].Created_Dt).diff(moment(this._ProjectsListBy_Pid[index].DeadLine),'days');
  const prj_totalactions=this._ProjectsListBy_Pid[index].Actioncount;
  const completed_actions=this._ProjectsListBy_Pid[index].CompletedActioncount;
  const prj_status=this._ProjectsListBy_Pid[index].Status;
