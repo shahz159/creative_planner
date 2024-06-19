@@ -711,6 +711,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   ngCompanyDropdown: any;
 
   share_Users() {
+
     document.getElementById("shareBar").style.width = "400px";
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
@@ -1158,7 +1159,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelInprocess() {
     this._PortProjStatus = "InProcess";
     this.showDeletedPrjOnly=false;
-    
+
   }
 
 
@@ -1830,7 +1831,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     for (let i = 0; i < elements.length; i++) {
       elements[i].classList.remove('active');
     }
-    
+
 
     if(buttonId=='tot')
       document.getElementById('tot').classList.add('active');
@@ -4234,8 +4235,58 @@ NewAddUserCountFeature() {
       document.getElementById("feature-modal-backdrop").classList.remove("show");
 }
 
+// share and shared comibines side bar
+View_User_list() {
+  document.getElementById("User_list_View").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+  this.currentSidebarOpened="PEOPLES";
+
+}
+closedarBar() {
+  // document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+  // document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
+  // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  // document.getElementById("Timeline_view").classList.remove("kt-quick-panel--on");
+  // document.getElementById("newdetails").classList.remove("position-fixed");
+  // document.getElementById("rightbar-overlay").style.display = "none";
+  this.closeInfo();
+
+  document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
+  document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+  document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
+  document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  document.getElementById("Timeline_view").classList.remove("kt-timeline-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementById("newdetails").classList.remove("position-fixed");
 
 
 
+  document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+  document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
+
+  // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
+  // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
+
+  // document.getElementById('kt_tab_pane_user-request_approver').classList.remove("show","active");
+  // document.querySelector("a[href='#kt_tab_pane_user-request_approver']").classList.remove("active");
+
+  $('#kt_tab_pane_2_4').removeClass("show active");
+  $('a[href="#kt_tab_pane_2_4"]').removeClass("active");   // ADD SUPPORTS TAB.
+
+  $('#kt_tab_pane_user-request_approver').removeClass("show active");
+  $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");
+
+  // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
+  // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
+
+
+  // USER REQUESTS TAB.
+  // back to 1st 'People on the project' tab.
+
+
+}
+
+// shared and shared details side bar end
 
 }

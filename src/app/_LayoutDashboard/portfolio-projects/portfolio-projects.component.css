@@ -3569,3 +3569,7 @@ small.tlv-df {
 .attach-tippy:hover .st-line{
   display: block;
 }
+.kt-quick-active--on{
+  width: 50% !important;
+  background-color: rgba(255, 255, 255, 1);
+}

@@ -194,9 +194,9 @@ TEsb.addEventListener('scroll', (ac:any) => {
   OnAssignTask_Submit() {
 debugger
 this.isPrjNameValid = this.isValidString(this._taskName,3);
-this.isPrjDesValid = this.isValidString(this._description, 5)
+// this.isPrjDesValid = this.isValidString(this._description, 5)
 
-if(this.isPrjNameValid ==="VALID"&&this._taskName.length<=100&&this.isPrjDesValid==="VALID"&&this._description.length<=200){
+if(this.isPrjNameValid ==="VALID"&&this._taskName.length<=100&&this._description.length<=200){
   this.formFieldsRequired = false
 }
 else {
@@ -314,9 +314,10 @@ else {
       if (this.task_id != null) {
         fd.append("AssignId", this.task_id.toString());
       }
-      fd.append("AssignedBy", this.CurrentUser_ID); debugger
+      fd.append("AssignedBy", this.CurrentUser_ID);
+
       if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
-        this.port_id=this.port_id;
+        this.port_id =  this.port_id
       }
       else{
         this.port_id=0;
@@ -498,8 +499,10 @@ else {
 
   // Portfolio: any = [];
   isPortfolioDrpDwnOpen: boolean = false;
+  port_id_string:any
+
   onPortfolioSelected(e: any) {
-    debugger
+debugger
     const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
     console.log(portfolioChoosed);
     if (portfolioChoosed) {
@@ -508,11 +511,13 @@ else {
       const index = this.port_id.indexOf(portfolioChoosed.Portfolio_ID);
       if (index === -1) {
         // if not present then add it
-        this.port_id.push(portfolioChoosed.Portfolio_ID);
+         this.port_id.push(portfolioChoosed.Portfolio_ID);
+
       }
       else { //  if item choosed is already selected then remove it.
         this.port_id.splice(index, 1);
       }
+
     }
     this.openAutocompleteDrpDwn('PortfolioDrpDwn');
   }
@@ -527,7 +532,7 @@ else {
 
 
   getObjOf(arr, id, idName) {
-    debugger
+
     const obj = arr.find(item => item[idName] == id);
     return obj;
   }

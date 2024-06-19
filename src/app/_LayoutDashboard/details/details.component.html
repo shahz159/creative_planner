@@ -2614,7 +2614,7 @@
                                                               <button class="Ct-btn Bt-hold ml-2"
                                                                   (click)="openPrjHoldSideBar()"
                                                                   *ngIf="projectInfo.Status==='InProcess' || projectInfo.Status==='Delay'">Project
-                                                                  Hold</button>
+                                                                  hold</button>
                                                           </ng-template>
 
 
@@ -4929,7 +4929,7 @@
                   title="Not Linked">
 
                </ng-container>
-              </a> Link DMS
+              </a> View or link SM
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar() ">
@@ -5086,7 +5086,7 @@
           <h4 class="font-weight-bold m-0 d-flex">
               <a class="kt-inbox__icon  pb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
-              </a>Link portfolio
+              </a>View or link portfolio
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar()">
@@ -7149,7 +7149,7 @@
               </div>
           </div>
           <div class="form-group mt-3">
-              <label>Attachments<span class="text-danger" *ngIf="proState==true" >*</span></label>
+              <label>Attachment<span class="text-danger" *ngIf="proState==true" >*</span></label>
               <div class="input-group mb-3" [ngClass]="{'error-border': proState&&(!selectedFile)&&formFieldsRequired}"#uploadFile>
                   <div class="input-group-prepend">
                       <span class="input-group-text">
@@ -7173,10 +7173,23 @@
         </label>
 
     </div>
+
+    <!-- <div class="form-group">
+      <div class="custom-file pl-1">
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+          <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+          <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+          <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none" (change)="onFileChanged($event)" />
+      </div>
+  </div> -->
+
+
+
+
               </div>
                 <div class="d-flex flex-column  ">
-                   <ng-container *ngIf="proState"><span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">please provide attachment.</span></ng-container>
-                    <span class="text-info"> *Accept only pdf files</span>
+                   <ng-container *ngIf="proState"><span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment</span></ng-container>
+                    <span class="text-info">Accept any type of file</span>
                 </div>
           </div>
 
@@ -7190,10 +7203,10 @@
       </div>
        -->
           <div class="form-group">
-              <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-              <textarea [ngClass]="{'error-border': !_remarks&&formFieldsRequired}" class="form-control" aria-label="With textarea" placeholder="Define your exact reason here."
+              <label for="exampleFormControlFile1">Remark<span class="text-danger">*</span> </label>
+              <textarea [ngClass]="{'error-border': !_remarks&&formFieldsRequired}" class="form-control" aria-label="With textarea" placeholder="Enter action remark if any"
                   [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
-              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">remarks required</span>
+              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
           </div>
           <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
           <div class="form-group">
@@ -7257,10 +7270,10 @@
               </div>
               <!-- <div class="form-group mt-3" *ngIf="projectInfo.Project_Type!='To do List'" > -->
               <div class="form-group mt-3">
-                  <label>Attachments</label>
+                  <label>Attachment</label>
 
                   <span *ngIf="isAction==false&&projectInfo.Project_Type!='To do List'"
-                      class="text-danger">*</span>
+                      class="text-danger"> *</span>
 
 
 
@@ -7289,15 +7302,15 @@
                   </div>
                   <div class="d-flex flex-column">
                   <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment</span>
-                  <span class="text-info"> *Accept only pdf files </span>
+                  <span class="text-info">Accept any type of file</span>
                   </div>
               </div>
               <div class="form-group">
-                  <label for="exampleFormControlFile1"> Remarks <span class="text-danger">*</span></label>
+                  <label for="exampleFormControlFile1"> Remark <span class="text-danger">*</span></label>
                   <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks" [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
-                      placeholder="Define your exact reason here." style="height: 160px; margin: 0px;"></textarea>
+                      placeholder="Enter project remark if any" style="height: 160px; margin: 0px;"></textarea>
                   <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
-                  <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
+                  <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
               </div>
 
               <div class="form-group mb-1">
@@ -7349,7 +7362,7 @@
                   <div class="card1 brdr-0 active" id="overv-pro">
                       <div class="mt-3">
                           <div class="form-group">
-                              <label>Attachments</label><span class="text-danger">*</span>
+                              <label>Attachment</label><span class="text-danger">*</span>
                               <div class="input-group mb-3"  [ngClass]="{'error-date': !selectedFile&&formFieldsRequired}">
                                   <div class="input-group-prepend">
                                       <span class="input-group-text">
@@ -7373,17 +7386,17 @@
                                   </div>
                               </div>
                               <div class="d-flex flex-column">
-                                    <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide the attachment.</span>
-                                    <span class="text-info"> *Accept only pdf files </span>
+                                    <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide the attachment</span>
+                                    <span class="text-info">Accept any type of file</span>
                               </div>
                           </div>
 
                           <div class="form-group">
-                              <label for="exampleFormControlFile1"> Remarks <span
+                              <label for="exampleFormControlFile1"> Remark<span
                                       class="text-danger">*</span></label>
                               <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
-                                  [(ngModel)]="_remarks" placeholder="Define your exact reason here."></textarea>
-                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
+                                  [(ngModel)]="_remarks" placeholder="Enter remark if any"></textarea>
+                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remark</span>
                               <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
                           </div>
 
@@ -7397,12 +7410,12 @@
                   <div class="card1 brdr-0" id="edit-pro">
                       <div class="mt-3">
                           <div class="form-group">
-                              <label for="exampleFormControlFile1"> Remarks <span
+                              <label for="exampleFormControlFile1"> Remark<span
                                       class="text-danger">*</span></label>
                               <textarea class="form-control" aria-label="With textarea" style="height: 160px;"  [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
-                                  [(ngModel)]="_remarks" placeholder="Define your exact reason here."></textarea>
+                                  [(ngModel)]="_remarks" placeholder="Enter project remark if any"></textarea>
                               <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
-                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
+                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remark</span>
                           </div>
 
                           <div class="form-group mb-0">
@@ -7497,12 +7510,12 @@
                                                   <span *ngIf="!Holddate&&formFieldsRequired" style="color:red">Please select hold date</span>
                                               </div>
                                               <div class="form-group mb-1">
-                                                  <label>Remarks<span class="text-danger">*</span></label>
+                                                  <label>Remark<span class="text-danger">*</span></label>
                                                   <textarea class="form-control" placeholder="" rows="2" cols="20" [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                                                       style="height:90px;"
-                                                      placeholder="Define your exact hold reason here. e.g: Waiting for store license"
+                                                      placeholder="Enter hold reason here e.g: Waiting for store license"
                                                       [(ngModel)]="hold_remarks"></textarea>
-                                                      <span *ngIf="!hold_remarks&&formFieldsRequired"  style="color:red">Please provide remarks</span>
+                                                      <span *ngIf="!hold_remarks&&formFieldsRequired"  style="color:red">Please provide remark</span>
                                               </div>
 
                               <ng-container *ngIf="currentActionView===undefined&&isEHsectionVisible">
@@ -7533,7 +7546,7 @@
                                                             <mat-datepicker #nddpicker></mat-datepicker>
                                                         </div>
                                                     </div>
-                                                    <span *ngIf="!newPrjDeadline&&formFieldsRequired"  style="color:red">please provide new project deadline.</span>
+                                                    <span *ngIf="!newPrjDeadline&&formFieldsRequired"  style="color:red">please provide new project deadline</span>
                                               </div>
                             </ng-container>
 
@@ -7668,10 +7681,10 @@
                                                       <textarea class="form-control" rows="2" cols="20"
                                                       [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                                                           [(ngModel)]="hold_remarks"
-                                                          placeholder="Define your exact reason to release the hold project."
+                                                          placeholder="Enter reason to release the hold project"
                                                           style="height:170px;">
                                                                           </textarea>
-                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">remarks required.</span>
+                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
                                                   </div>
 
                                               </div>
@@ -7717,17 +7730,17 @@
                                                                   #picker7></mat-datepicker>
                                                           </div>
                                                       </div>
-                                                      <span *ngIf="!newRelDate.value&&formFieldsRequired" style="color:red">please enter new release date.</span>
+                                                      <span *ngIf="!newRelDate.value&&formFieldsRequired" style="color:red">please enter new release date</span>
                                                   </div>
                                                   <div class="form-group mb-1">
-                                                      <label>Remarks<span class="text-danger">*</span></label>
+                                                      <label>Remark<span class="text-danger">*</span></label>
                                                       <textarea class="form-control" rows="2" cols="20"
                                                       [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
                                                           [(ngModel)]="hold_remarks"
-                                                          placeholder="Define your exact reason to edit release date."
+                                                          placeholder="Enter reason to edit release date"
                                                           style="height:100px;">
                                                                           </textarea>
-                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">remarks required</span>
+                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
                                                   </div>
                                               </div>
                                           </div>
@@ -7809,11 +7822,11 @@
                           <b>Project: {{projectInfo&&projectInfo.Project_Name}}</b>
                       </div>
                       <div class="form-group mb-1">
-                          <label>Remarks<span class="text-danger">*</span></label>
+                          <label>Remark<span class="text-danger">*</span></label>
                           <textarea class="form-control" [(ngModel)]="hold_remarks" rows="2" cols="20" [ngClass]="{'error-border': !hold_remarks&&formFieldsRequired}"
-                              placeholder="Define your exact reason to cancel the project."
+                              placeholder="Enter reason to cancel the project"
                               style="height:150px;"></textarea>
-                          <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please provide remarks</span>
+                          <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please provide remark</span>
                       </div>
                   </div>
                   <!-- <li class="kt-nav__separator"></li> -->
@@ -7859,7 +7872,7 @@
                       d="M10.7324 3.72534C10.7324 2.92969 10.4164 2.16663 9.85374 1.60402C9.29113 1.04141 8.52807 0.725342 7.73242 0.725342V0.725342C6.93677 0.725342 6.17371 1.04141 5.6111 1.60402C5.04849 2.16663 4.73242 2.92969 4.73242 3.72534"
                       stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <h4 class="m-0 ml-2">Meetings</h4>
+              <h4 class="m-0 ml-2">View or link meetings</h4>
               <a href="javascript:void(0)" class="abs-btn closebtn btn btn-xs btn-icon btn-hover-info"
                   (click)="closeMeetingSidebar()">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"

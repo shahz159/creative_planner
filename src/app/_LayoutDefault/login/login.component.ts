@@ -111,8 +111,8 @@ export class LoginComponent implements OnInit {
               // this.InValidPassword = false;
               // this.cd.detectChanges();
               this.router.navigate([this.dashboardUrl]);
-              this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-              this.notifyService.showSuccess("Successfully", "Logged In");
+              this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by :');
+              this.notifyService.showSuccess("Successfully", "Logged in");
               this.InValidPassword = false;
               this.cd.detectChanges();
             }
@@ -242,8 +242,8 @@ export class LoginComponent implements OnInit {
               //debugger
               if (this.IsPolicy == 1) {
                 this.router.navigate([this.dashboardUrl]);
-                this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-                this.notifyService.showSuccess("Successfully", "Logged In");
+                this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+                this.notifyService.showSuccess("Successfully", "Logged in");
                 this.InValidPassword = false;
                 this.cd.detectChanges();
               }
