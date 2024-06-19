@@ -851,7 +851,7 @@ a.ordr-a {
 }
 .kt-header__topbar-item:hover svg {
     transition: all 0.3s;
-    fill: #8a75e7;
+    fill: #8a75e7; 
 }
 .modal.fade.show {
     display: block;

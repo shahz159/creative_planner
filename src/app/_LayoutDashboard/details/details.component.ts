@@ -869,7 +869,7 @@ this.prjPIECHART.render();
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
       this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
@@ -895,26 +895,26 @@ this.prjPIECHART.render();
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
-      if(this.ProjectType != 'Standard Tasks' && this.ProjectType != 'Standard Tasks' ){
-        var deadlineExtend=JSON.parse(this.projectInfo['deadlineExtendlist']);
-        this.deadlineExtendlist=Object.values(deadlineExtend);
-        this.totaldeadlineExtend=this.deadlineExtendlist.length;
-
-        let count:number=0;
-        this.deadlineExtendlist.map((actv:any)=>{
-
-          if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
-             {   // actv.count : 2,3,4....
-              debugger
-                 let updatecount=(actv.count-count);
-                 let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                 actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
-                 count+=1;
-             }
-            return actv;
-        });
-
-        console.log(this.deadlineExtendlist,'deadlineExtendlist')
+      if(['001','002','011'].includes(this.projectInfo.Project_Block)){
+        
+        const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
+        if(_deadlineextendlist){
+          var deadlineExtend=JSON.parse(_deadlineextendlist);
+          this.deadlineExtendlist=Object.values(deadlineExtend);
+          this.totaldeadlineExtend=this.deadlineExtendlist.length;
+          let count:number=0;
+          this.deadlineExtendlist.map((actv:any)=>{
+            if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+               {   // actv.count : 2,3,4....
+                   let updatecount=(actv.count-count);
+                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                   count+=1;
+               }
+              return actv;
+          });
+        }
+        
       }
 
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
@@ -3808,15 +3808,17 @@ check_allocation() {
   mainMastercode: any;
   approve_details: any;
 
-  getapproval_actiondetails() {
+  getapproval_actiondetails() { 
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
       // console.log(data,"appact");
+      
 
-
-      const isactiondetails:boolean=(data[0]['actiondetails']!='[]'&&data[0]['actiondetails'].length>0);
+      const isactiondetails:boolean=((data[0]['actiondetails']!='[]'&&data[0]['actiondetails']!=null)&&data[0]['actiondetails'].length>0);
       const isapprovaldetails:boolean=(data[0]['approvaldetails']!='[]'&&data[0]['approvaldetails'].length>0);
+
+
 
       if (isactiondetails || isapprovaldetails) {
         if (isactiondetails) {
@@ -6354,7 +6356,6 @@ removeSelectedDMSMemo(item){
   dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
 
-
 holdcontinue(Pcode:any){
        this.Holddate = this.datepipe.transform(this.Holddate, 'MM/dd/yyyy');
        this.objProjectDto.Project_holddate = this.Holddate;
@@ -6364,6 +6365,8 @@ holdcontinue(Pcode:any){
 
          this._Message = data['message'];
          if (this._Message == 'Project Hold Updated') {
+ 
+          this.HprocessDone--;
 
            if(this.currentActionView!==undefined)
            this._Message=this._Message.replace('Project','Action')
@@ -6380,6 +6383,8 @@ holdcontinue(Pcode:any){
                this.GetActivityDetails();
 
              }
+
+
          }
        });
 }
@@ -6390,7 +6395,7 @@ holdcontinue(Pcode:any){
   extendAndHold:boolean=false;
   isEHsectionVisible:boolean=false;
   minPrjDeadline:Date;
-
+  HprocessDone:number=0;
   onHoldDateChanged(){
 
     if(this.currentActionView===undefined){     // only for project.
@@ -6404,13 +6409,11 @@ holdcontinue(Pcode:any){
 }
 
 
-
-
-
   onProject_Hold(id, Pcode) {
 
   if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
        // if holddate and remarks are provided.
+      this.HprocessDone=this.extendAndHold?2:1;
 
       if(this.isEHsectionVisible){
             if(this.extendAndHold){
@@ -6442,6 +6445,7 @@ holdcontinue(Pcode:any){
                     this.approvalObj.isApproval = 0;
 
                     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+                      this.HprocessDone--;
                       console.log(data['message'], "edit response");
                       if (data['message'] == '1') {
                         this.notifyService.showSuccess("Updated successfully", "Success");
@@ -6495,12 +6499,14 @@ holdcontinue(Pcode:any){
       // if remarks are provided.
       if(this.currentActionView===undefined){
         // project release
+        this.HprocessDone=1;
         if (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo) {
           this.approvalObj.Project_Code = this.URL_ProjectCode;
           this.approvalObj.Request_type = 'Project Release';
           this.approvalObj.Emp_no = this.Current_user_ID;
           this.approvalObj.Remarks = this.hold_remarks;
           this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+            this.HprocessDone=0;
             this.closePrjReleaseSideBar();
             this._Message = (data['message']);
             if (this._Message == '1') {
@@ -6533,8 +6539,9 @@ holdcontinue(Pcode:any){
         this.approvalObj.Request_type = 'Project Release';
         this.approvalObj.Emp_no = this.Current_user_ID;
         this.approvalObj.Remarks = this.hold_remarks;
+        this.HprocessDone=1;
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-
+          this.HprocessDone=0;
           this.closePrjReleaseSideBar();
           this._Message = (data['message']);
           if (this._Message == '1') {
@@ -6680,7 +6687,7 @@ holdcontinue(Pcode:any){
 
   updateProjectCancel() {
 
-  if(this.hold_remarks){
+  if(this.hold_remarks&&this.hold_remarks.trim()!=''){
 
     Swal.fire({
       title: 'Project Cancel',
@@ -6755,15 +6762,12 @@ holdcontinue(Pcode:any){
 
   // project cancel section end
 
-
+  processingStd:boolean=false;
   achieveStandard() {
     if(this._remarks==''||this.selectedFile==null){
         this.formFieldsRequired=true;
         return;
     }
-
-
-
 
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
@@ -6775,9 +6779,10 @@ holdcontinue(Pcode:any){
     fd.append("Project_Name", this.projectInfo.Project_Name);
 
     console.log(this._MasterCode, this._remarks, this.selectedFile, this.Current_user_ID, "fd");
-
+    this.processingStd=true;
     this.service._UpdateStandardTaskSubmission(fd).
       subscribe((event: HttpEvent<any>) => {
+        this.processingStd=false;  
         switch (event.type) {
           case HttpEventType.Sent:
             console.log('Request has been made!');
@@ -6833,8 +6838,10 @@ holdcontinue(Pcode:any){
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.ProjectName);
     // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+    this.processingStd=true;
     this.service._UpdateStandardTaskSubmission(fd).
       subscribe(event => {
+        this.processingStd=false;
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
           this.notifyService.showInfo("File uploaded successfully", "Project updated");
@@ -7298,6 +7305,7 @@ openNewPrjReleaseSideBar() {
 
 closeNewPrjReleaseSideBar() {
    this.hold_remarks = '';
+   this.notProvided=false;
   document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementById("newdetails").classList.remove("position-fixed");
@@ -7314,45 +7322,53 @@ getRejectType() {
   });
 }
 
+newPrjreleasing:boolean=false;
 releasenewProject(){
 
+  if(!this.hold_remarks||this.hold_remarks.trim()==''){
+    this.notProvided=true;
+      return;
+  }
+
   if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo||this.Current_user_ID==this.projectInfo.OwnerEmpNo){
-    this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalObj.Request_type = 'New Project Reject Release';
-    this.approvalObj.Emp_no = this.Current_user_ID;
-    this.approvalObj.Remarks = this.hold_remarks;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.Request_type = 'New Project Reject Release';
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Remarks = this.hold_remarks;
+      this.newPrjreleasing=true;
+      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+        this.newPrjreleasing=false;
+        this.closeNewPrjReleaseSideBar();
+        this._Message = (data['message']);
+        if (this._Message == '1') {
+          this.notifyService.showSuccess("New Project reject release request sent to the project owner", "Success");
+          this.getProjectDetails(this.URL_ProjectCode);
+          this.getRejectType();
+          this.getapproval_actiondetails();
 
-    this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-      this.closeNewPrjReleaseSideBar();
-      this._Message = (data['message']);
-      if (this._Message == '1') {
-        this.notifyService.showSuccess("New Project reject release request sent to the project owner", "Success");
-        this.getProjectDetails(this.URL_ProjectCode);
-        this.getRejectType();
-        this.getapproval_actiondetails();
+
+          if(this.Current_user_ID==this.projectInfo.OwnerEmpNo)
+          {
+            this.isApprovalSection=true; // back to initial value
+            this.isTextAreaVisible=false;    // back to initial value
+            this.getapprovalStats();
+          }
 
 
-        if(this.Current_user_ID==this.projectInfo.OwnerEmpNo)
-        {
-          this.isApprovalSection=true; // back to initial value
-          this.isTextAreaVisible=false;    // back to initial value
-          this.getapprovalStats();
+
         }
+        else if (this._Message == '2' || this._Message == '0') {
+          this.notifyService.showError("Project release failed", "Failed");
+        }
+      });
+    // this.Clear_Feilds();
+    console.log(this.approvalObj,"cancel")
+  }
+  else{
+    // this.close_space();
+    this.notifyService.showError("Access denied","Failed")
+  }
 
-
-
-      }
-      else if (this._Message == '2' || this._Message == '0') {
-        this.notifyService.showError("Project release failed", "Failed");
-      }
-    });
-  // this.Clear_Feilds();
-  console.log(this.approvalObj,"cancel")
-}
-else{
-  // this.close_space();
-  this.notifyService.showError("Access denied","Failed")
-}
 }
 
 
@@ -7825,7 +7841,7 @@ this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  let name: string = 'Meeting-Report';
+  let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
   var myWindow = window.open(myurl);

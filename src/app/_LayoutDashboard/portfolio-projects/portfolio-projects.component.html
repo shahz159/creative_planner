@@ -529,7 +529,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" aria-expanded="true" [hidden]="HideProjects">
 
-                        <div class="card projects-list no-border kt-portlet__body_scroll kt-portlet__body_scroll1">
+                        <div class="card projects-list no-border">
                             <div class="card-body pt-0">
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -570,8 +570,11 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr *ngIf="(item1.Status=== _PortProjStatus||_PortProjStatus=='')"
-                                            class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                            <tr>
+
+                                                    <td class="icond">
+                                                        <span *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                           
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -587,9 +590,7 @@
                                                     'ToDoCompleted':item1.Status=='ToDo Completed',
                                                     'NewTodo':item1.Status=='New Todo'
 
-                                                    }">
-
-                                                    <td class="icond">
+                                                    }"></span>
                                                         <div class="d-flex align-items-center">
                                                             <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
                                                             placement="right" data-trigger="focus" title="Project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
@@ -1299,6 +1300,32 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!--begin::Portlet-->
+                                <div class="kt-portlet">
+                                    <div class="kt-portlet__head">
+                                        <div class="kt-portlet__head-label">
+                                            <span class="kt-portlet__head-icon kt-hidden">
+                                                <i class="la la-gear"></i>
+                                            </span>
+                                            <h3 class="kt-portlet__head-title">
+                                                Projects details
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="kt-portlet__body">
+                                        <div id="kt_flotcharts_8" style="height: fit-content;">
+                                            <div id="chartdiv3" style="width: 100%; height: fit-content"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Portlet-->
+                            </div>   
+                        </div>
+
+
                     </div>
                 </div>
             </div>

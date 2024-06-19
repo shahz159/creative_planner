@@ -1055,6 +1055,7 @@ onProjectOwnerChanged(){
       });
 
       console.log(this.conditional_List,'--conditional prjs------------->')
+      console.log(this.assigntask_json,'--assigntask_json--');
  });
   }
 
