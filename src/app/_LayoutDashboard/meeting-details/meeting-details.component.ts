@@ -723,6 +723,8 @@ latestTime:string;
   actualTime_S:any;
   actualTime_E:any;
   actualDuration:any;
+  AverageDuration:any;
+  AttendeeCount:any;
 
 
 InsertAttendeeMeetingTime(){
@@ -2298,9 +2300,15 @@ GetcompletedMeeting_data() {
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
-
+          this.AttendeeCount=this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S=this.CompletedMeeting_notes[0].Actual_Start;
+          this.separateTime(this.actualTime_S);
           this.actualTime_E=this.CompletedMeeting_notes[0].Actual_End;
+          this.separateTime(this.actualTime_E);
+          this.actualTime_dur=this.CompletedMeeting_notes[0].Actual_Dur;
+          this.convertDuration(this.actualTime_dur);
+          this.AverageDuration=this.CompletedMeeting_notes[0].Average_Dur;
+          this.convertDuration(this.AverageDuration);
     
           const startTime = moment(this.actualTime_S, 'hh:mm A');
           const endTime = moment(this.actualTime_E, 'hh:mm A');
@@ -2345,6 +2353,43 @@ GetcompletedMeeting_data() {
     //   }
     //   console.log(this.CompletedMeeting_notes, 'notes11122')
     });
+}
+
+starthour: any;
+endhour: any;
+startperiod: any;
+endperiod: any;
+separateTime(time: string) {
+  const [hour, period] = time.split(' ');
+  if(time==this.actualTime_S){
+    this.starthour = hour;
+    this.startperiod = period;
+  }
+  else if(time==this.actualTime_E){
+    this.endhour = hour;
+    this.endperiod = period;
+  }
+}
+
+actualTime_dur:any;
+meetinghours:any;
+meetingminutes:any;
+meetingseconds:any;
+avghours:any;
+avgminutes:any;
+avgseconds:any;
+
+convertDuration(totalMinutes: number) {
+  if(totalMinutes==this.actualTime_dur){
+    this.meetinghours = Math.floor(totalMinutes / 60);
+    this.meetingminutes = totalMinutes % 60;
+    this.meetingseconds = 0; // Assuming no seconds as input is in minutes
+  }
+  else if(totalMinutes==this.AverageDuration){
+    this.avghours = Math.floor(totalMinutes / 60);
+    this.avgminutes = totalMinutes % 60;
+    this.avgseconds = 0; // Assuming no seconds as input is in minutes
+  }
 }
 
 ActionedAssigned_Josn: any = [];
