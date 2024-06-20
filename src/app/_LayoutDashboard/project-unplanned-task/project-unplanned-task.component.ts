@@ -97,7 +97,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
 
       tippy('#tippy1', {
-        content: "Runway Tasks!!",
+        content: "Runway tasks",
         arrow: true,
         animation: 'scale-extreme',
         //animation: 'tada',
@@ -109,7 +109,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       });
 
       tippy('#tippy2', {
-        content: "Add Category!",
+        content: "Add category",
         arrow: true,
         animation: 'scale-extreme',
         //animation: 'tada',
@@ -121,7 +121,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       });
 
       tippy('#tippy3', {
-        content: "Add Task!",
+        content: "Add task",
         arrow: true,
         animation: 'scale-extreme',
         //animation: 'tada',
@@ -133,7 +133,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
       });
 
       tippy('.mybutton', {
-        content: "Enter Rack Name",
+        content: "Enter rack name",
         arrow: true,
         animation: 'scale-extreme',
         //animation: 'tada',
@@ -1155,6 +1155,13 @@ activeButton: string = 'totalProjects';
 setActiveButton(buttonName: string) {
   this.activeButton = buttonName;
 }
+
+items = [
+  { total: 1, details: 'Unassign task' },
+  { total: 2, details: 'Completed' },
+  { total: 3, details: 'Assign task/project' },
+  { total: 4, details: 'Action to project'}
+];
 
 }
 
