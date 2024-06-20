@@ -4238,34 +4238,38 @@ NewAddUserCountFeature() {
 
 
 
+all_status={
+  'Under Approval': '#B2D732', 
+  'InProcess':'#0089FB',
+  'Completed':'#62B134',
+  'Delay':'#EE4137',
+  'Completion Under Approval':'#B2D732',
+  'Forward Under Approval':'#B2D732',
+  'Project Hold':'#E2D9BC',
+  'Cancelled':'#EE4137',
+  'New Project Rejected':'#DFDFDF',
+  'Deadline Extend Under Approval':'#F88282',
+  'other':'#d0d0d0'
+};
+prj_statuses:any=[];
+
 loadGanttChart(){
 debugger
   console.log(">pr>",this._ProjectsListBy_Pid);
   
-  const all_status={
-     'Under Approval': '#B2D732', 
-     'InProcess':'#0089FB',
-     'Completed':'#62B134',
-     'Delay':'#EE4137',
-     'Completion Under Approval':'#B2D732',
-     'Forward Under Approval':'#B2D732',
-     'Project Hold':'#E2D9BC',
-     'Cancelled':'#EE4137',
-     'New Project Rejected':'#DFDFDF',
-     'Deadline Extend Under Approval':'#F88282',
-     'other':'#d0d0d0'
-  };
+  this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status);
+  this.prj_statuses=Array.from(new Set(this.prj_statuses));
+  
 
 
   const _series=this._ProjectsListBy_Pid.map((prj,_index)=>{
-      const color=all_status[prj.Status]||all_status['other'];
+      const color=this.all_status[prj.Status]||this.all_status['other'];
       const isDelayPrj=prj.Status=='Delay';
-
 
 
       const data_ar=[{ 
         x:`${prj.Project_Name} (${prj.Project_Code})`, 
-        y:[new Date(prj.Project_StartDate).getTime(),new Date(prj.DeadLine).getTime()], 
+        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
         fillColor:color, 
         index:_index
       }];
@@ -4273,7 +4277,7 @@ debugger
       const data_ar1=[
         { 
           x:`${prj.Project_Name} (${prj.Project_Code})`,
-            y:[new Date(prj.Project_StartDate).getTime(),new Date(prj.DeadLine).getTime()], 
+            y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
             fillColor:'#0089FB', 
             index:_index
         },
@@ -4301,7 +4305,7 @@ debugger
 const rowHeight = 40; 
 const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
 let chartHeight = rowHeight * dataPoints;
-chartHeight=chartHeight<100?120:chartHeight;
+chartHeight=chartHeight<200?200:chartHeight;
 
 
 var options = {
@@ -4346,8 +4350,20 @@ var options = {
 
 
   xaxis: {
-    type: 'datetime'
+    type: 'datetime',
+    position: 'top', // This moves the x-axis to the top
+    labels: {
+      show: true
+    },
+    axisBorder: {
+      show: true
+    },
+    axisTicks: {
+      show: true
+    }
   },
+
+
   grid: {
     yaxis: {
       lines: {
@@ -4358,6 +4374,12 @@ var options = {
       lines: {
         show: true
       }
+    },
+    padding: {
+      top: 35,
+      right: 10,
+      bottom: 20, // Add padding to the bottom to create space below the controller buttons
+      left: 0
     }
   },
   legend: { show:false },
@@ -4367,19 +4389,19 @@ var options = {
  const data = w.config.series[seriesIndex].data[dataPointIndex];
  const index=data.index;
  const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
- const prj_start=moment(this._ProjectsListBy_Pid[index].Created_Dt).format('YYYY-MM-DD');
- const prj_end=moment(this._ProjectsListBy_Pid[index].DeadLine).format('YYYY-MM-DD');
- const daydiff=moment(this._ProjectsListBy_Pid[index].Created_Dt).diff(moment(this._ProjectsListBy_Pid[index].DeadLine),'days');
+ const prj_start=this.datepipe.transform(new Date(this._ProjectsListBy_Pid[index].DPG), 'MMM d, y');
+ const prj_end=this.datepipe.transform(new Date(this._ProjectsListBy_Pid[index].DeadLine), 'MMM d, y');
+ const daydiff=Math.abs(moment(this._ProjectsListBy_Pid[index].DPG,'YYYY-MM-DD').diff(moment(this._ProjectsListBy_Pid[index].DeadLine,'YYYY-MM-DD'),'days'));
  const prj_totalactions=this._ProjectsListBy_Pid[index].Actioncount;
  const completed_actions=this._ProjectsListBy_Pid[index].CompletedActioncount;
  const prj_status=this._ProjectsListBy_Pid[index].Status;
- const statusColor=all_status[prj_status];
+ const statusColor=this.all_status[prj_status];
  const prjsubmtype=this._ProjectsListBy_Pid[index].SubmissionType;
  const prjdurationtime=this._ProjectsListBy_Pid[index].StandardDuration;
  const delaydays_=Math.abs(this._ProjectsListBy_Pid[index].Delaydays);
 
 
-    return  `<div style="width: fit-content; min-width: 260px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
+    return  `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
        <span style="padding: 0.3em 0.6em 0.2em 0.6em; color: #0089FB; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_type}</span>
        <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span> 

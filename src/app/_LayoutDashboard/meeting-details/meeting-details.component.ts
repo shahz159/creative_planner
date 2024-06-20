@@ -490,6 +490,15 @@ meeting_details(){
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
     this.Link_Detail=this.EventScheduledjson[0].Link_Details;
 
+    let str=this.Link_Detail;
+    let regexp=/href="https:\/\/[^"]+"/;
+    let result=regexp.exec(str);
+    if(result&&result[0])
+    this.Link_Detail=result[0].slice(6,result[0].length-1);
+
+
+  
+
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
     this.totalguest = this.User_Scheduledjson.length;
 
