@@ -1321,7 +1321,7 @@ this.prjPIECHART.render();
   addNewAction() {
     if (this.projectInfo.Status === 'Completed') {
       Swal.fire({
-        title: "Wait This Project is Already Completed",
+        title: "Wait this project is already completed",
         text: 'Do you want to reopen this Project?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
@@ -2475,13 +2475,12 @@ currentStdAprView:number|undefined;
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
       this.formFieldsRequired=true;
-      this.notifyService.showInfo("Please fill in the mandatory fields.", '');
+      this.notifyService.showInfo("Please fill in the mandatory fields", '');
     }
     else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
       Swal.fire({
-        title: 'This is the last action to be completed.',
+        title: 'This is the last action to be completed',
         text: 'Do you want to proceed with main project submission?',
-        // icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'
@@ -2490,7 +2489,8 @@ currentStdAprView:number|undefined;
         if (res.value) {   // when user proceed also with the main project submission.
           if (this.selectedFile == null) {
             this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
-          }
+            }
+
           else {
             // 1.  ACTION SUBMISSION
             const fd = new FormData();
@@ -2516,7 +2516,7 @@ currentStdAprView:number|undefined;
                     this._Message = (JSON.parse(myJSON).body).Message;
                     if(this._Message==='Success')
                     {
-                      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+                      this.notifyService.showSuccess("Successfully updated", 'Action completed');
                       // after the action is successfully completed
                       this.closeInfo();
                       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
@@ -2525,13 +2525,13 @@ currentStdAprView:number|undefined;
                       this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
                     }
                     else
-                    this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
+                    this.notifyService.showError('Unable to complete this action','Something went wrong');
                   };break;
 
                 }
               });
 
-            // ACTION SUBMITTED.
+            // ACTION SUBMITTED
 
 
 
@@ -2558,7 +2558,7 @@ currentStdAprView:number|undefined;
                     this.progress = Math.round(event.loaded / event.total * 100);
                     console.log(this.progress, "progress");
                     if (this.progress == 100) {
-                      this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                      this.notifyService.showInfo("File uploaded successfully", "Project updated");
 
                     }
                     break;
@@ -2604,7 +2604,7 @@ currentStdAprView:number|undefined;
               this.closeActCompSideBar();
               this.getAttachments(1);      // close action completion sidebar.
             });
-          this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+          this.notifyService.showSuccess("Successfully updated", 'Action completed');
           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
       });   //swal end
@@ -2636,7 +2636,7 @@ currentStdAprView:number|undefined;
               this._Message = (JSON.parse(myJSON).body).Message;
               if(this._Message==='Success')
               {
-                this.notifyService.showSuccess("Successfully Updated", 'Action completed.');
+                this.notifyService.showSuccess("Successfully updated", 'Action completed');
                 // after the action is successfully completed
                 let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
                 const prjActionindex = this.projectActionInfo.indexOf(prjAction)
@@ -2996,13 +2996,13 @@ currentStdAprView:number|undefined;
           this.notifyService.showError("Not updated", "Failed");
         }
         else if (data['message'] == '5') {
-          this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+          this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
         }
         else if (data['message'] == '6') {
-          this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
         }
         else if (data['message'] == '8') {
-          this.notifyService.showError("Selected Project owner cannot be updated", "Not updated");
+          this.notifyService.showError("Selected project owner cannot be updated", "Not updated");
         }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
@@ -3215,10 +3215,10 @@ currentStdAprView:number|undefined;
             this.notifyService.showError("Not updated", "Failed");
           }
           else if (data['message'] == '5') {
-            this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
           }
           else if (data['message'] == '8') {
             this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
@@ -3254,10 +3254,10 @@ currentStdAprView:number|undefined;
         this.notifyService.showError("Not updated", "Failed");
       }
       else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
       }
       else if (data['message'] == '6') {
-        this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
       }
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
@@ -3540,11 +3540,12 @@ check_allocation() {
       });
       this.dar_details();
       this.getDarTime();
-
+      this.actionCode=null
       this.workdes = "";
       this.starttime = null;
       this.endtime = null;
       this.notProvided=false;
+      this.closedarBar()
     // document.getElementById("newdetails").classList.remove("position-fixed");
     // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("rightbar-overlay").style.display = "none";
@@ -3945,7 +3946,7 @@ check_allocation() {
               }
               else{
                 if (this.progress == 100) {
-                  this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+                  this.notifyService.showInfo("File uploaded successfully", "Project updated");
                 }
                 this.notifyService.showSuccess(this._Message, 'Success');
               }
@@ -3980,7 +3981,7 @@ check_allocation() {
           this.closeInfoProject();
 
         });
-      this.notifyService.showSuccess("Successfully Updated", 'Action completed');
+      this.notifyService.showSuccess("Successfully updated", 'Action completed');
     }
 
   }
@@ -6793,7 +6794,7 @@ holdcontinue(Pcode:any){
             this.progress = Math.round(event.loaded / event.total * 100);
             console.log(this.progress, "progress");
             if (this.progress == 100) {
-              this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+              this.notifyService.showInfo("File uploaded successfully", "Project updated");
 
             }
             break;
@@ -6843,7 +6844,7 @@ holdcontinue(Pcode:any){
         this.processingStd=false;
         if (event.type == HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showInfo("File uploaded successfully", "Project Updated");
+          this.notifyService.showInfo("File uploaded successfully", "Project updated");
         }
         else if (event.type === HttpEventType.Response) {
           var myJSON = JSON.stringify(event);
@@ -7687,7 +7688,7 @@ loadActivitiesByDate(d){
 cancelAction(index) {
 
   Swal.fire({
-    title: 'Action Cancel',
+    title: 'Action cancel',
     html: 'Are you sure to cancel the Action "<strong>' + this.projectActionInfo[index].Project_Name + '</strong>"?<br>Note: The cancelled Action will be deactivated.',
     // icon: 'info',
     showCancelButton: true,

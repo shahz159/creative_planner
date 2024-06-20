@@ -140,7 +140,7 @@
   border: 0;
 }
 
-error-border, 
+error-border,
 .error-date .input-group-text,
 .error-date .form-control,
 ::ng-deep .error-vd .ng-select-container {
@@ -148,4 +148,45 @@ error-border,
 }
 .error-date .custom-file-label {
   border: 1px solid #F44336 !important;
+}
+.add-icon {
+  color: white;
+  border-radius: 50%;
+  background-color: #646C9A;
+  -webkit-text-stroke-width: thin;
+}
+
+.add-icon:hover {
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+.close-icon {
+  color: #f4f3f3;
+  /* background-color: gray; */
+  border-radius: 50%;
+}
+.save-mat-selection{
+  font-size: 17px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #646C9A;
+}
+.save-mat-selection:hover{
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+mat-icon.mat-icon.notranslate.curser-pointer {
+  /* height: 20px; */
+  width: 20px;
+  font-size: 20px;
+}
+::ng-deep .date-border ::ng-deep .mat-icon-button {
+  width: 40px;
+  height: 36px;
+  line-height: 36px;
 }

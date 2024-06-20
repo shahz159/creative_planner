@@ -1694,32 +1694,32 @@
                             </div>
                         </div>
                     </div>
-                    <div class="meeting-attendance">
+                    <div class="meeting-attendance"  *ngIf="Meetingstatuscom=='Completed'">
                         <div class="meeting-attendance-item">
-                            <div class="meeting-attendance-count">2</div>
+                            <div class="meeting-attendance-count">{{AttendeeCount}}</div>
                             <div class="meeting-attendance-title">Attended</div>
                         </div>
                         <div class="meeting-attendance-item">
                             <div class="meeting-attendance-count">
-                                <span><span>3:41</span><span class="time-value ml-1">PM</span></span>
+                                <span><span>{{starthour}}</span><span class="time-value ml-1">{{startperiod}}</span></span>
                                 <span>-</span>
-                                <span><span>5:12</span><span class="time-value ml-1">PM</span></span>
+                                <span><span>{{endhour}}</span><span class="time-value ml-1">{{endperiod}}</span></span>
                             </div>
                             <div class="meeting-attendance-title">Start and end time</div>
                         </div>
                         <div class="meeting-attendance-item">
                             <div class="meeting-attendance-count">
-                                <span><span>1</span><span class="time-value">h</span></span>
-                                <span><span>31</span><span class="time-value">m</span></span>
-                                <span><span>50</span><span class="time-value">s</span></span>
+                                <span><span>{{meetinghours}}</span><span class="time-value">h</span></span>
+                                <span><span>{{meetingminutes}}</span><span class="time-value">m</span></span>
+                                <span><span>{{meetingseconds}}</span><span class="time-value">s</span></span>
                             </div>
                             <div class="meeting-attendance-title">Meeting duration</div>
                         </div>
                         <div class="meeting-attendance-item">
                             <div class="meeting-attendance-count">
-                                <span><span>1</span><span class="time-value">h</span></span>
-                                <span><span>25</span><span class="time-value">m</span></span>
-                                <span><span>45</span><span class="time-value">s</span></span>
+                                <span><span>{{avghours}}</span><span class="time-value">h</span></span>
+                                <span><span>{{avgminutes}}</span><span class="time-value">m</span></span>
+                                <span><span>{{avgseconds}}</span><span class="time-value">s</span></span>
                             </div>
                             <div class="meeting-attendance-title">Average attendance time</div>
                         </div>
@@ -4123,6 +4123,9 @@
                         <span>Back to admin</span>
                     </div>
                   </ng-container>
+                  <ng-container  *ngIf="Meetingstatuscom=='Completed'">
+                    <div class="join-time">{{main_actualDuration}} mins</div>
+                  </ng-container>
                 </div>
 
 
@@ -4164,10 +4167,6 @@
                                             </path>
                                         </svg>
                                     </span>
-
-
-
-
                             </div>
                             <span>
                                 <div class="user-name">
@@ -4180,8 +4179,7 @@
                             </span>
                         </div>
                         <div class="user-status-info">
-                            <div class="user-status online">
-
+                            <div class="user-status online" *ngIf="Meetingstatuscom!='Completed' && item.onlineStatus=='Start'">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13"
                                         fill="currentColor">
@@ -4192,7 +4190,18 @@
                                 </span>
                                 <span>Online</span>
                             </div>
-                            <div class="join-time">06:00 PM</div>
+                            <div class="user-status offline"  *ngIf="Meetingstatuscom!='Completed' && item.onlineStatus!='Start'">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                        <g>
+                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                        </g>
+                                      </svg>
+                                </span>
+                                <span>Offline</span>
+                            </div>
+                            <div class="join-time" *ngIf="Meetingstatuscom=='Completed' && item.onlineDuration">{{item.onlineDuration}} mins</div>
+                            <div class="join-time" *ngIf="Meetingstatuscom=='Completed' && !item.onlineDuration">0 mins</div>
                             <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                             <ng-container   *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false" >
                             <div class="user-status-action"  (click)=" Updating_Adminmeeting(item.stringval)">

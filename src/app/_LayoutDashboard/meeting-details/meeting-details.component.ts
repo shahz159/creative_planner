@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -27,7 +27,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./meeting-details.component.css'],
 
 })
-export class MeetingDetailsComponent implements OnInit {
+export class MeetingDetailsComponent implements OnInit, OnDestroy {
   _ObjAssigntaskDTO: AssigntaskDTO;
   allTodos:any=[];
   todosVisible:boolean=false;
@@ -175,6 +175,7 @@ export class MeetingDetailsComponent implements OnInit {
   // }
 
   ngOnDestroy(): void {
+    this.Insert_meetingreport();
     // Unsubscribe when the component is destroyed to prevent memory leaks
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
@@ -324,7 +325,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
   View_Meeting_Attendees() {
     document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
-    this.GetProjectAndsubtashDrpforCalender();
+    this.meeting_details();
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -395,6 +396,7 @@ export class MeetingDetailsComponent implements OnInit {
   isCheckboxDisabled: boolean = false;
   Isadmin: boolean = false;
   Createdby:string;
+  main_actualDuration:any;
   status:string;
   Meeting_status: boolean;
   Link_Detail:any
@@ -483,9 +485,10 @@ meeting_details(){
 
     //console.log(this.totalAgendaList,'sdfb') 
 
-    var x =this.Agendas_List.length
+    var x =this.Agendas_List.length;
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
+    this.main_actualDuration=this.EventScheduledjson[0].actual_duration;
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
     this.Link_Detail=this.EventScheduledjson[0].Link_Details;
@@ -689,8 +692,10 @@ status_Type:string;
 
   actualTime_S:any;
   actualTime_E:any;
+  actualTime_dur:any;
   actualDuration:any;
-
+  AverageDuration:any;
+  AttendeeCount:any;
 
 InsertAttendeeMeetingTime(){
 
@@ -707,11 +712,8 @@ InsertAttendeeMeetingTime(){
    
     
     }
-  )
+  );
 }
-
-
-
 
 
 startMeetingOfAttendees() {
@@ -2221,10 +2223,16 @@ GetcompletedMeeting_data() {
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
-
+          
+          this.AttendeeCount=this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S=this.CompletedMeeting_notes[0].Actual_Start;
+          this.separateTime(this.actualTime_S);
           this.actualTime_E=this.CompletedMeeting_notes[0].Actual_End;
-    
+          this.separateTime(this.actualTime_E);
+          this.actualTime_dur=this.CompletedMeeting_notes[0].Actual_Dur;
+          this.convertDuration(this.actualTime_dur);
+          this.AverageDuration=this.CompletedMeeting_notes[0].Average_Dur;
+          this.convertDuration(this.AverageDuration);
           const startTime = moment(this.actualTime_S, 'hh:mm A');
           const endTime = moment(this.actualTime_E, 'hh:mm A');
           const duration = moment.duration(endTime.diff(startTime));
@@ -2267,6 +2275,43 @@ GetcompletedMeeting_data() {
     //   }
     //   console.log(this.CompletedMeeting_notes, 'notes11122')
     });
+}
+
+starthour: any;
+endhour: any;
+startperiod: any;
+endperiod: any;
+
+separateTime(time: string) {
+  const [hour, period] = time.split(' ');
+  if(time==this.actualTime_S){
+    this.starthour = hour;
+    this.startperiod = period;
+  }
+  else if(time==this.actualTime_E){
+    this.endhour = hour;
+    this.endperiod = period;
+  }
+}
+
+meetinghours:any;
+meetingminutes:any;
+meetingseconds:any;
+avghours:any;
+avgminutes:any;
+avgseconds:any;
+
+convertDuration(totalMinutes: number) {
+  if(totalMinutes==this.actualTime_dur){
+    this.meetinghours = Math.floor(totalMinutes / 60);
+    this.meetingminutes = totalMinutes % 60;
+    this.meetingseconds = 0; // Assuming no seconds as input is in minutes
+  }
+  else if(totalMinutes==this.AverageDuration){
+    this.avghours = Math.floor(totalMinutes / 60);
+    this.avgminutes = totalMinutes % 60;
+    this.avgseconds = 0; // Assuming no seconds as input is in minutes
+  }
 }
 
 ActionedAssigned_Josn: any = [];
