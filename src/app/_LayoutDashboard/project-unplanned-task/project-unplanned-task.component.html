@@ -393,10 +393,10 @@
                                 <ul class="drop-ul">
                                     <li class="dropdown-header">Filter by</li>
                                     <li>
-                                        <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects')">
+                                        <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects');totalproject()">
                                             <div class="d-flex align-items-center">
                                                 <span class="count total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
-                                                <div class="fil-lbl" (click)="totalproject()"   >Total Projects</div>
+                                                <div class="fil-lbl"    >Total Projects</div>
                                                 <span class="chck-icn">
                                                   <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -411,10 +411,10 @@
                                         </button>
                                     </li>
                                     <li  *ngIf="_TodoList.length>0" >
-                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList')"  >
+                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList');taskside()"  >
                                             <div    class="d-flex align-items-center">
                                                 <span class="count task">{{_TodoList.length}}</span>
-                                                <div  (click)="taskside()" class="fil-lbl">Unassign task</div>
+                                                <div   class="fil-lbl">Unassign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -429,10 +429,10 @@
                                         </button>
                                     </li>
                                     <li  *ngIf="_CompletedList.length>0">
-                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed')" >
+                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed');completed()" >
                                             <div class="d-flex align-items-center">
                                                 <span class="count done">{{_CompletedList&&_CompletedList.length}}</span>
-                                                <div (click)="completed()" class="fil-lbl">Completed</div>
+                                                <div  class="fil-lbl">Completed</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -447,10 +447,10 @@
                                         </button>
                                     </li>
                                     <li *ngIf="ActionedSubtask_Json.length>0"  >
-                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask')">
+                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask');showactprj()">
                                             <div class="d-flex align-items-center">
                                                 <span class="count action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
-                                                <div   class="fil-lbl"  (click)="showactprj()"  >Action to projects</div>
+                                                <div   class="fil-lbl"    >Action to projects</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -465,10 +465,10 @@
                                         </button>
                                     </li>
                                     <li *ngIf="ActionedAssigned_Josn.length>0"  >
-                                        <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned')" >
+                                        <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned');showassign()" >
                                             <div class="d-flex align-items-center">
                                                 <span class="count assigned-task">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
-                                                <div class="fil-lbl" (click)="showassign()"  >Assign task</div>
+                                                <div class="fil-lbl"   >Assign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -538,32 +538,6 @@
 
 
 
-                                  <div class="accordion accordion-attendes-notes "  id="UssignTask_List">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="AssignOne">
-                                            <a class="accordion-button" type="button" data-toggle="collapse"
-                                                data-target="#UssignTask_notes" aria-expanded="false"
-                                                aria-controls="UssignTask_notes">
-                                                <div class="head-content ">
-                                                    <span    class="accordion-heading" >Total projects</span>
-
-                                                </div>
-                                                <div>
-                                                    <span class="accordion-icon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
-                                                            viewBox="0 0 15 9" fill="none">
-                                                            <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
-                                                                stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </h2>
-                                        <div id="UssignTask_notes" class="accordion-collapse collapse  show"
-                                            aria-labelledby="AssignOne" data-parent="#UssignTask_List">
-
-                                            <div class="todo-list">
 
 
 
@@ -1082,10 +1056,7 @@
 
 
 
-                              </div>
-                            </div>
-                        </div>
-                    </div>
+
 
 
 
@@ -1098,42 +1069,44 @@
                 </div>
 
 <!-- </ng-container> -->
+<div class="add_assigned_task-removeforcss mt-2 pr-1">
+  <div class="form-group mb-0">
+      <a class="btn btn-sm btn-info font-weight-bold mr-2 py-2 px-3 px-xxl-5 text-white my-1 float-right d-none"
+          id="addbtn"><i class="la la-plus text-white mr-2"></i>Add task</a>
+      <div class="input-group" id="addtsk">
+          <div class="input-group-prepend w-100">
+              <button class="btn btn-info btn-sm lh-25" id="basic-addon1" id="tippy3"
+                  (click)="EnterSubmit(_Demotext)" primary="true">
+                  <i class="la la-plus text-white mr-0"></i>
+              </button>
+              <input type="text" [(ngModel)]="_Demotext"
+              class="form-control add_assign_task_input brdr-gr"
+              placeholder="Add task to '{{_CategoryName}}' and press enter to submit"
+              (keyup.enter)="EnterSubmit(_Demotext)" aria-describedby="basic-addon1" primary="true">
+          </div>
+
+          <!-- <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1">
+                      <i class="la la-calendar-o"></i>
+                  </span>
+                  <span class="input-group-text curser-pointer" id="basic-addon1" data-toggle="modal"
+                      data-target="#AssignTo">
+                      <i class="la la-user"></i>
+                  </span>
+                  <span class="input-group-text" id="basic-addon1" data-toggle="modal"
+                      data-target="#AttachmentModal">
+                      <i class="la la-paperclip"></i>
+                  </span>
+              </div> -->
+      </div>
+  </div>
+</div>
 </div>
 
 
 
 
-                <div class="add_assigned_task-removeforcss mt-2 pr-1">
-                    <div class="form-group mb-0">
-                        <a class="btn btn-sm btn-info font-weight-bold mr-2 py-2 px-3 px-xxl-5 text-white my-1 float-right d-none"
-                            id="addbtn"><i class="la la-plus text-white mr-2"></i>Add task</a>
-                        <div class="input-group" id="addtsk">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-info btn-sm lh-25" id="basic-addon1" id="tippy3"
-                                    (click)="EnterSubmit(_Demotext)" primary="true">
-                                    <i class="la la-plus text-white mr-0"></i>
-                                </button>
-                            </div>
-                            <input type="text" [(ngModel)]="_Demotext"
-                                class="form-control add_assign_task_input brdr-gr"
-                                placeholder="Add task to '{{_CategoryName}}' and press enter to submit"
-                                (keyup.enter)="EnterSubmit(_Demotext)" aria-describedby="basic-addon1" primary="true">
-                            <!-- <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="la la-calendar-o"></i>
-                                    </span>
-                                    <span class="input-group-text curser-pointer" id="basic-addon1" data-toggle="modal"
-                                        data-target="#AssignTo">
-                                        <i class="la la-user"></i>
-                                    </span>
-                                    <span class="input-group-text" id="basic-addon1" data-toggle="modal"
-                                        data-target="#AttachmentModal">
-                                        <i class="la la-paperclip"></i>
-                                    </span>
-                                </div> -->
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

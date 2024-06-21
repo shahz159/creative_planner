@@ -346,6 +346,7 @@ GetInsertAttendeeMeetingTime(obj:CalenderDTO){
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Status=obj.Status;
   this.obj_CalenderDTO.StartTime=obj.StartTime;
+  this.obj_CalenderDTO.Start_time=obj.Start_time;
   this.obj_CalenderDTO.EndTime=obj.EndTime;
 
 

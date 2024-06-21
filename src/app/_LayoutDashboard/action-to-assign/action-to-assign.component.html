@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div *ngIf="selectedProjectType=='011'" style="color:grey">To do list not more than 3 Days </div>
-                <span *ngIf="noStartDate==true" style="color:red">Start date required!</span>
+                <span *ngIf="noStartDate==true" style="color:red">Please select start date</span>
             </div>
 
 
@@ -250,7 +250,7 @@
                         <mat-datepicker #picker2></mat-datepicker>
                     </div>
                 </div>
-                <span *ngIf ="noEndDate == true" style="color:red">End date required!</span>
+                <span *ngIf ="!_EndDate" style="color:red">Please select end date</span>
             </div>
             <div class="form-group flex-1" *ngIf="_StartDate==null">
                 <label>End date :</label>
