@@ -4925,7 +4925,9 @@
                     
                     <div class="menu-item">
                         <div class="menu-content pt-2 pb-2">
-                            <span class="menu-section text-muted text-uppercase fs-8 ls-1">Meeting Notes</span>
+                            <span class="menu-section text-muted text-uppercase fs-8 ls-1">Meeting Notes</span><span> - </span>
+                            <span *ngIf="fiterDataOfEmployee==false" class="menu-section text-muted fs-8 ls-1">By Agenda</span>
+                            <span *ngIf="fiterDataOfEmployee==true" class="menu-section text-muted fs-8 ls-1">By Employee</span>
                         </div>
                     </div>
                     <ng-container *ngFor="let meeting of Previousdata_meeting;let i = index">
@@ -4938,7 +4940,7 @@
                                     </span>
                              </span>                                
                             </span>
-                            <span class="menu-title">{{meeting.Schedule_date | date: 'dd-MM-YYYY'}}</span>
+                            <span class="menu-title">{{meeting.Schedule_date | date: 'fullDate'}}</span>
                             <span class="menu-arrow rotate" id="agendaarrow-{{i}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
                                     viewBox="0 0 15 9" fill="none">
@@ -4950,26 +4952,11 @@
                         </span>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <ng-container *ngIf="fiterDataOfEmployee==false">
                         <div class="menu-sub menu-sub-accordion sub-menu active" id="agendalist-{{i}}">
-                            <div class="menu-content pt-2 pb-2">
+                            <!-- <div class="menu-content pt-2 pb-2">
                                 <span class="menu-section text-muted text-uppercase fs-8 ls-1">Agendas</span>
-                            </div>
+                            </div> -->
                             <div class="nav flex-column"  role="tablist"  *ngFor="let Agenda of meeting.Details; let j = index">
                                 <a class="menu-item " [class.active]="Agenda === activeAgenda"  id="agenda1-tab" data-toggle="tab" data-target="#agenda1" type="button" role="tab" aria-controls="agenda1">
                                     <div class="menu-link pl"  (click)="sortbyAgendaList(j,Agenda)">
@@ -4999,28 +4986,8 @@
                         </div>
                        </ng-container>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                        <ng-container *ngIf="fiterDataOfEmployee==true">
                         <div class="menu-sub menu-sub-accordion sub-menu active" id="agendalist-{{i}}">
-                            <div class="menu-content pt-2 pb-2">
-                                <span class="menu-section text-muted text-uppercase fs-8 ls-1">By name</span>
-                            </div>
                             <div class="nav flex-column"  role="tablist"  *ngFor="let Agenda of meeting.Details; let j = index">
                                 <a class="menu-item " [class.active]="Agenda === activeAgendasList" id="agenda1-tab" data-toggle="tab" data-target="#agenda1" type="button" role="tab" aria-controls="agenda1">
                                     <div class="menu-link pl"  (click)="sortbyFilterList(j,Agenda)">
@@ -5050,9 +5017,6 @@
                             </div>
                         </div>
                        </ng-container>
-
-
-
 
 
                     </div>
