@@ -3202,7 +3202,7 @@
                     </div>
                     <div class="se-col-11">
                         <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
-                            <div class="title">{{subtashDrpLoading?'Loading...':'Add participants'}}</div>
+                            <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -3286,7 +3286,7 @@
                     </div>
                     <div class="se-col-11">
                         <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PROJECT')">
-                            <div class="title">{{subtashDrpLoading?'Loading...':'Add project'}}</div>
+                            <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -3311,8 +3311,8 @@
                     </div>
                     <div class="se-col-11">
                         <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PORTFOLIO')">
-                            <div class="title">{{subtashDrpLoading?'Loading':'Add portfolio'}}</div>
-                            <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3"  >
+                            <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
+                            <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </div>
@@ -3335,7 +3335,7 @@
                     </div>
                     <div class="se-col-11">
                         <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('DMS')">
-                            <div class="title">{{loading?'Loading':'Add dms'}}</div>
+                            <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add dms')}}</div>
                             <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -4609,7 +4609,9 @@
                         </div>
                 </ng-container>
                 <ng-template #gotresult>
-                    <li *ngFor="let prj of ProjectListArray" class="modal-project-list-item">
+                   
+                <ng-container *ngFor="let prj of ProjectListArray">
+                    <li *ngIf="!(MasterCode&&MasterCode.includes(prj.Project_Code))" class="modal-project-list-item">
                         <span>
                             <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)"></mat-checkbox>
                         </span>
@@ -4617,6 +4619,7 @@
                               {{prj.BlockNameProject}}
                         </span>
                     </li>
+                </ng-container>   
                     <div *ngIf="ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
                         <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

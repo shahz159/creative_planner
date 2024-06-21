@@ -5998,13 +5998,16 @@ debugger
 
   //   }
 
-  // }
+  // } 
 
 inputTyped:string;
 onProjectSearch(inputtext:any){
    
    if(this.searchingResult==false){
     const filterobj=this.basedOnFilter;
+
+    this.isFilteredOn=(this.basedOnFilter.byuser||this.basedOnFilter.bycompany);  //  on the filter dot if applied.
+
     this.searchingResult=true;
     this.CalenderService.NewGetProjectandsubtaskDrp(inputtext,filterobj).subscribe((res:any)=>{
         console.log(res);
@@ -6033,25 +6036,40 @@ onProjectSearch(inputtext:any){
 
   onInputSearch(inputText:any){  
     let keyname;
-    let arrtype;
+    let arrtype; 
+    let selectedinto;
+    let property_name; 
     if(this.projectmodaltype=='PARTICIPANT')
      {
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
+       selectedinto='ngEmployeeDropdown';      
+       property_name='Emp_No';                 
      }
     else if(this.projectmodaltype=='PORTFOLIO')
     {
        keyname='Portfolio_Name';
        arrtype=this.Portfoliolist_1;
+       selectedinto='Portfolio';      
+       property_name='portfolio_id';   
     }
     else if(this.projectmodaltype=='DMS')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
+      selectedinto='SelectDms';      
+      property_name='MailId'; 
     }
+
     const result=arrtype.filter(item=>{
-        return item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
-    })
+
+      const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+      let nameMatched:boolean=false; 
+      if(unselected)
+      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())  
+      
+      return nameMatched; 
+    });
     this.FilteredResults=result;
   }
 
@@ -6113,19 +6131,13 @@ projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
   const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
-  searchField.focus();
+  if(searchField)searchField.focus();
 
   if(modaltype==='PROJECT')
   this.onProjectSearch('');
 
-  if(modaltype==='PORTFOLIO')
-    this.FilteredResults=this.Portfoliolist_1;
-
-  if(modaltype==='DMS')
-    this.FilteredResults=this.Memos_List;
-
-  if(modaltype==='PARTICIPANT')
-    this.FilteredResults=this._EmployeeListForDropdown;
+  if(modaltype!='PROJECT')
+    this.onInputSearch('');
 }
 close_projectmodal(){
   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -6252,7 +6264,9 @@ onPortfolioFilter(){
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
-         return x&&y;
+         const z=x&&y;
+         const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(prtf.portfolio_id);
+         return isSelected?false:z;
     });
     this.FilteredResults=fresult;
     this.isFilteredOn=true;
@@ -6260,27 +6274,34 @@ onPortfolioFilter(){
 
 onDMSFilter(){
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
-      const fresult=this.Memos_List.filter((_memo:any)=>{
-           if(!this.basedOnFilter.byuser)
-            return true;
+      const fresult=this.Memos_List.filter((_memo:any)=>{ 
 
-           return (_memo.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+       let hasMemo:boolean=false;
+       hasMemo=(!this.basedOnFilter.byuser)||(_memo.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+      
+       let isSelected:boolean=false;
+       isSelected=this.SelectDms&&this.SelectDms.includes(_memo.MailId);
+
+       return isSelected?false:hasMemo;   
       });
+
       this.FilteredResults=fresult;
       this.isFilteredOn=true;
 }
 
 onParticipantFilter(){
-  debugger
    const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{
-      return (_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+      const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany;
+      let includeEmp:boolean=false;
+      if(isEmpIn)
+      includeEmp=!(this.ngEmployeeDropdown&&this.ngEmployeeDropdown.includes(_emp.Emp_No));
+      return includeEmp;
    });
    this.FilteredResults=fresult;
    this.isFilteredOn=true;
 }
 
 clearAppliedFiltered(){
-  this.isFilteredOn=false;
   this.basedOnFilter.byuser=null;
   this.basedOnFilter.bycompany=null;
     switch(this.projectmodaltype){
@@ -6288,16 +6309,17 @@ clearAppliedFiltered(){
           this.onProjectSearch('');
         };break;
         case 'PORTFOLIO':{
-           this.FilteredResults=this.Portfoliolist_1;
+          this.onPortfolioFilter();
         };break;
         case 'DMS':{
-           this.FilteredResults=this.Memos_List;
+          this.onDMSFilter();
         };break;
         case 'PARTICIPANT':{
-           this.FilteredResults=this._EmployeeListForDropdown;
+          this.onParticipantFilter();
         };break;
         default:{};
     }
+    this.isFilteredOn=false;
 }
 
 // new design of select prj,select memo, select portfo, select participants.....etc end
@@ -6438,48 +6460,6 @@ repeatEvent() {
           });
         })
 
-
-
-
-
-
-      // valid starttimearr and endtimearr setting start. new
-            let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
-            let _currentdate=moment();
-            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-            {
-                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-                const index:number=this.StartTimearr.findIndex((item:any)=>{
-                    const t=moment(item,'h:mm A');
-                    const result=t>=ct;
-                    return result;
-                });
-                this.validStartTimearr=this.StartTimearr.slice(index);
-            }
-            else
-            this.validStartTimearr=[...this.StartTimearr];
-
-
-
-            this.timingarryend = [];
-            this.Time_End = [];
-            this.Time_End = this.StartTimearr;
-            let _index = this.Time_End.indexOf(this.Startts);
-            if (_index + 1 === this.Time_End.length) {
-              _index = -1;
-            }
-            this.timingarryend = this.Time_End.splice(_index + 1);
-            this.EndTimearr = this.timingarryend;
-    // valid starttimearr and endtimearr setting end.  new
-
-
-
-
-
-
-
-
-
        }
 
     });
@@ -6497,8 +6477,6 @@ if(input_date<current_date){
    this.earlyDate=true;
     return;
 }
-
-
 
 
   let finalarray = [];

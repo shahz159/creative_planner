@@ -938,7 +938,7 @@
                                                             </div>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
-                                                            <span class="Delay_color font-weight-400" *ngIf=" item.Status!='InProcess' && item.Status!='Completed' && item.Status!='Under Approval'">{{item.Status}}</span>
+                                                            <span class="Delay_color font-weight-400" *ngIf=" item.Status!='InProcess' && item.Status!='Completed' && item.Status!='Under Approval'"><strong>{{item.Status}}</strong></span>
                                                             <span class="Completed_color font-weight-400" *ngIf="item.Status=='Completed'">{{item.Status}}</span>
                                                             <span class="Under_Approval_color font-weight-400" *ngIf="item.Status=='Under Approval'">New approval</span>
                                                         </ng-container>
