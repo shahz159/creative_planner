@@ -511,7 +511,7 @@ meeting_details(){
     let startIndex = this.Link_Detail.indexOf('</a>');
     let anchorText = this.Link_Detail.substring(startIndex + 4); 
    
-    var UserID_Password=anchorText.replace(/<[^>]*>/g, ' ')
+    var UserID_Password=anchorText.replace(/<[^>]*>/g, ' ');
     if(UserID_Password!=''){
       this.urlUserID_Password=UserID_Password
     }
