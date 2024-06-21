@@ -125,6 +125,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   _PopupConfirmedValue: number;
+
   ngOnInit(): void {
 
     this.route.paramMap.subscribe(params => {
@@ -149,7 +150,6 @@ export class MeetingDetailsComponent implements OnInit {
       this.GetProjectAndsubtashDrpforCalender();
       this.GetTimeslabfordate();
       this.GetcompletedMeeting_data();
-      this.GetAttendeesnotes();
       this.GetPreviousdate_meetingdata();
             
     //   this.signalRService.startConnection();
@@ -400,6 +400,7 @@ export class MeetingDetailsComponent implements OnInit {
   isCheckboxDisabled: boolean = false;
   Isadmin: boolean = false;
   Createdby:string;
+  main_actualDuration:any;
   status:string;
   Meeting_status: boolean;
   Link_Detail:any
@@ -430,6 +431,7 @@ export class MeetingDetailsComponent implements OnInit {
   totalActiontask:any
   totalTodotask:any
   totalCompletedAgenda:any
+  urlUserID_Password:any
 
   meeting_details_1(){
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -441,13 +443,21 @@ meeting_details(){
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{ 
    
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
+    this.Agendas_List=this.EventScheduledjson[0].Agendas;
+ 
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
     this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
       const statusOrder = { "Accepted": 1,"Pending":2, "May be": 3, "Rejected": 4 };
       return statusOrder[a.Status] - statusOrder[b.Status];
   });
+  
+  this.orderedItems = this.orderedItems.sort((a, b) => {
+    if (a.onlineStatus === "Start") return -1;
+    if (b.onlineStatus === "Start") return 1;
+    return 0;
+  });
+
  
     this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
     this.Actiontask=this.EventScheduledjson[0].Actiontasks;  
@@ -469,7 +479,7 @@ meeting_details(){
       this.userFound = racisUserIds.includes(this.Current_user_ID);
     }
   
-    this.Agendas_List=this.EventScheduledjson[0].Agendas;
+
     console.log(this.Agendas_List,'Agenda List')
     this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
     this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
@@ -491,15 +501,26 @@ meeting_details(){
     var x =this.Agendas_List.length
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
-    
+    this.main_actualDuration=this.EventScheduledjson[0].actual_duration;
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
     this.Link_Detail=this.EventScheduledjson[0].Link_Details;
 
+
+
+    let startIndex = this.Link_Detail.indexOf('</a>');
+    let anchorText = this.Link_Detail.substring(startIndex + 4); 
+   
+    var UserID_Password=anchorText.replace(/<[^>]*>/g, ' ')
+    if(UserID_Password!=''){
+      this.urlUserID_Password=UserID_Password
+    }
+    
     let str=this.Link_Detail;
     let regexp=/href="https:\/\/[^"]+"/;
     let result=regexp.exec(str);
     if(result&&result[0])
+ 
     this.Link_Detail=result[0].slice(6,result[0].length-1);
 
 
@@ -621,9 +642,9 @@ latestTime:string;
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTime.getTime();
       console.log( new Date().getTime() - this.startTime.getTime(),"tiem")
-      if (this.elapsedTime >= this.duration) {
-        this.stopMeeting();
-      }
+      // if (this.elapsedTime >= this.duration) {
+      //   this.stopMeeting();
+      // }
     }, 1000);
 
      console.log(this.startTime,'ijfbviabfvbsvskjvbzsib')
@@ -664,9 +685,9 @@ latestTime:string;
     this.meetingPaused = false;
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
-      if (this.elapsedTime >= this.duration) {
-        this.stopMeeting();
-      }
+      // if (this.elapsedTime >= this.duration) {
+      //   this.stopMeeting();
+      // }
     }, 1000);
   }
 
@@ -792,9 +813,9 @@ startMeetingOfAttendees() {
   this.timer = setInterval(() => {
     this.elapsedTime = this.elapsedTime+1000;
    
-    if (this.elapsedTime >= this.duration) {
-      this.stopMeetingAttendees();
-    }
+    // if (this.elapsedTime >= this.duration) {
+    //   this.stopMeetingAttendees();
+    // }
   }, 1000);
 
   // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
@@ -1794,6 +1815,7 @@ agendasAdded:number=0;
 status_type:any;
 
 
+
 addAgenda(){
 
   if(this.agendaInput&&this.agendaInput?.trim().length<100){
@@ -1811,15 +1833,13 @@ addAgenda(){
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-
-    this._calenderDto.Status_type = "Left";
+  
+  
+   
     this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
     (data => {
        this.meeting_details();
-       this.status_type='agenda';
-       this.GetAttendeesnotes();
        this.notifyService.showSuccess("Agenda added successfully ", '');
-       
     })
     this.agendaInput=undefined;
   }
@@ -2041,7 +2061,6 @@ addBulletPointsOnEnter(event: any) {
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type;
       this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
-      this._calenderDto.Status_type = "Left";
      
       console.log(this._calenderDto,'Private notes');
      this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
@@ -2346,6 +2365,7 @@ GetcompletedMeeting_data() {
       this.interval = setInterval(() => {
         // this.saveAttendeeTime();
         this.GetAttendeesnotes();
+
         // console.log('1')
        
       }, 1000);
@@ -2746,54 +2766,32 @@ exact_start:any;
 
 taskcount:any=[];
 notescount:any=[];
+Status_type:any;
+
 
 GetAttendeesnotes(){
-  
+
   this.Schedule_ID=this.Scheduleid;
   this._calenderDto.Schedule_ID=this.Schedule_ID;
   this._calenderDto.Emp_No=this.Current_user_ID;
-  this._calenderDto.Status_type=this.status_type==undefined?null:this.status_type;
-
-  console.log( this._calenderDto.Status_type,'====2===>')
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
     
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
     this.exact_start=(data['Start_time']);
-    this.agendasList=JSON.parse(data['Agendas']);
-    console.log(this.exact_start,'====3==>'); 
-  
 
+     this.agendasList=JSON.parse(data['Agendas']);
 
-   if(this.agendasList.length!=0){
-       this.meeting_details();
-       // console.log(this.agendasList,'status');
-        this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
-        this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
-        this.notifyService.showInfo('New agenda added', "")   
-        this.status_type=undefined;     
-    }
-
-
-
-
-
-
-    // if(this.Agendas_List.length>0){
-    //     if(this.agendasList.length!=this.Agendas_List.length){
-    //     this.Agendas_List=this.agendasList;
-    //     console.log(this.agendasList,'status');
-    //     this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
-    //     this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+    if(this.agendasList.length!=this.Agendas_List.length){
+      this.Agendas_List=this.agendasList;
+      this.taskcount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
+      this.notescount=this.Agendas_List.map(item=>({count:0,agendaid:item.AgendaId}));
       
-    //     this.notifyService.showInfo('New agenda added', "")   
-    //     }
-    // }
-   
+         this.notifyService.showInfo('New agenda added', "")
+      
+    }
     
-    
-    
-
+ 
     this.notescount.forEach(item=>item.count=0);  //1. clear previous notes count data.
     this.taskcount.forEach(item=>item.count=0);   //1. clear previous task count data.
     this.status_type='';
@@ -2837,6 +2835,11 @@ GetAttendeesnotes(){
   });
   // this.meeting_details();
 }
+
+
+
+
+
 
     
 /////////////////////////////////////////// All Attendees Notes End //////////////////////////////////////////////////////////////////
