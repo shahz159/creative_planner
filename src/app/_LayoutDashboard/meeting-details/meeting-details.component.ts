@@ -736,7 +736,6 @@ InsertAttendeeMeetingTime(){
   this._calenderDto.Schedule_ID=this.Scheduleid;
   this._calenderDto.Status=this.status_Type;
   this._calenderDto.StartTime=this.startTime==undefined?null:formatTime(this.startTime);
-  console.log('this.currentTime')
   this._calenderDto.Start_time=this.currentTime;
   this._calenderDto.EndTime=this.endTime==undefined?null:formatTime(this.endTime)
  // console.log(this._calenderDto,'time of meeting');
@@ -753,7 +752,6 @@ InsertAttendeeMeetingTime(){
 
 
 startMeetingOfAttendees() {
-
   this.meetingOfAttendees=false;
  this.play=true;
   this.status_Type='Start';
@@ -773,12 +771,21 @@ startMeetingOfAttendees() {
 
   // this.currentTime=localStorage.getItem('startTime');
 
+  if(this.exact_start=='' || this.exact_start==null || this.exact_start==undefined){
+    this.exact_start=this.currentTime;
+  }
+    
+
   let timeA = this.parseTime(this.exact_start);
   let timeB = this.parseTime(this.latestTime);
 
   let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
 
   console.log('Difference in milliseconds:', differenceInMilliseconds);
+  console.log('current', this.currentTime );
+  console.log('exact', this.exact_start);
+  console.log('latest', this.latestTime);
+
   this.elapsedTime=differenceInMilliseconds;
 
   this.timer = setInterval(() => {
