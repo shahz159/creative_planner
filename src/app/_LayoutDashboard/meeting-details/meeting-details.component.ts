@@ -2413,7 +2413,7 @@ convertDuration(totalMinutes: number) {
     this.meetingminutes = totalMinutes % 60;
     this.meetingseconds = 0; // Assuming no seconds as input is in minutes
   }
-  else if(totalMinutes==this.AverageDuration){
+  if(totalMinutes==this.AverageDuration){
     this.avghours = Math.floor(totalMinutes / 60);
     this.avgminutes = totalMinutes % 60;
     this.avgseconds = 0; // Assuming no seconds as input is in minutes
