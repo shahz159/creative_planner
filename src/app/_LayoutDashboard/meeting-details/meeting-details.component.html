@@ -24,19 +24,7 @@
                                             </div>
                                             <span class="kt-meeting-title-name">Meeting info</span>
                                         </div>
-                                       <div class="kt-meeting-status started mt-0 mb-2"   *ngIf="meetingInProgress">
-                                         <span class="kt-meeting-status-icon">
-                                                <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
-                                                    version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                    <path
-                                                        d="M30,6h-0.887c-0.525,0-1.029,0.207-1.404,0.576L25,9.248V8c0-1.657-1.344-3-3-3H3  C1.346,5,0,6.345,0,8v6.972V24c0,1.656,1.343,3,3,3h19c1.656,0,3-1.344,3-3v-1.221l2.709,2.672c0.375,0.369,0.879,0.576,1.404,0.576  H30c1.104,0,2-0.895,2-2V8C32,6.895,31.104,6,30,6z M3,25c-0.552,0-1-0.449-1-1V8c0-0.553,0.447-1,1-1h19c0.551,0,1,0.448,1,1v16  c0,0.551-0.449,1-1,1H3z M30,24.027h-0.887H29l-4-4V20l-1-1v-6l5-5h0.113H30V24.027z"
-                                                        fill="currentcolor" id="video" />
-                                                </svg>
-                                            </span> 
-                                            <span class="kt-meeting-status-time">{{formatTime(elapsedTime)}}</span> 
-                                      </div>  
+                                      
                                         <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -1658,6 +1646,22 @@
                                         <span class="kt-meeting-status-title">Resume</span>
                                     </div>
                                 </ng-container> -->
+                                <div class="kt-meeting-status started mt-0 mb-2"   *ngIf="meetingInProgress">
+                                    <span class="kt-meeting-status-icon">
+                                           <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
+                                               version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
+                                               xmlns="http://www.w3.org/2000/svg"
+                                               xmlns:xlink="http://www.w3.org/1999/xlink">
+                                               <path
+                                                   d="M30,6h-0.887c-0.525,0-1.029,0.207-1.404,0.576L25,9.248V8c0-1.657-1.344-3-3-3H3  C1.346,5,0,6.345,0,8v6.972V24c0,1.656,1.343,3,3,3h19c1.656,0,3-1.344,3-3v-1.221l2.709,2.672c0.375,0.369,0.879,0.576,1.404,0.576  H30c1.104,0,2-0.895,2-2V8C32,6.895,31.104,6,30,6z M3,25c-0.552,0-1-0.449-1-1V8c0-0.553,0.447-1,1-1h19c0.551,0,1,0.448,1,1v16  c0,0.551-0.449,1-1,1H3z M30,24.027h-0.887H29l-4-4V20l-1-1v-6l5-5h0.113H30V24.027z"
+                                                   fill="currentcolor" id="video" />
+                                           </svg>
+                                       </span> 
+                                       <span class="kt-meeting-status-time">{{formatTime(elapsedTime)}}</span> 
+                                 </div>  
+
+
+
                                     <div class="kt-meeting-status started " *ngIf="!meetingInProgress && !meetingStopped" (click)="startMeeting();InsertAttendeeMeetingTime()">
                                         <span class="kt-meeting-status-icon" >
                                             <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -1694,32 +1698,32 @@
                             </div>
                         </div>
                     </div>
-                    <div class="meeting-attendance">
+                    <div class="meeting-attendance"  *ngIf="Meetingstatuscom=='Completed'">
                         <div class="meeting-attendance-item">
-                            <div class="meeting-attendance-count">2</div>
+                            <div class="meeting-attendance-count">{{AttendeeCount}}</div>
                             <div class="meeting-attendance-title">Attended</div>
                         </div>
                         <div class="meeting-attendance-item">
                             <div class="meeting-attendance-count">
-                                <span><span>3:41</span><span class="time-value ml-1">PM</span></span>
+                                <span><span>{{starthour}}</span><span class="time-value ml-1">{{startperiod}}</span></span>
                                 <span>-</span>
-                                <span><span>5:12</span><span class="time-value ml-1">PM</span></span>
+                                <span><span>{{endhour}}</span><span class="time-value ml-1">{{endperiod}}</span></span>
                             </div>
                             <div class="meeting-attendance-title">Start and end time</div>
                         </div>
                         <div class="meeting-attendance-item">
                             <div class="meeting-attendance-count">
-                                <span><span>1</span><span class="time-value">h</span></span>
-                                <span><span>31</span><span class="time-value">m</span></span>
-                                <span><span>50</span><span class="time-value">s</span></span>
+                                <span><span>{{meetinghours}}</span><span class="time-value">h</span></span>
+                                <span><span>{{meetingminutes}}</span><span class="time-value">m</span></span>
+                                <span><span>{{meetingseconds}}</span><span class="time-value">s</span></span>
                             </div>
                             <div class="meeting-attendance-title">Meeting duration</div>
                         </div>
                         <div class="meeting-attendance-item">
                             <div class="meeting-attendance-count">
-                                <span><span>1</span><span class="time-value">h</span></span>
-                                <span><span>25</span><span class="time-value">m</span></span>
-                                <span><span>45</span><span class="time-value">s</span></span>
+                                <span><span>{{avghours}}</span><span class="time-value">h</span></span>
+                                <span><span>{{avgminutes}}</span><span class="time-value">m</span></span>
+                                <span><span>{{avgseconds}}</span><span class="time-value">s</span></span>
                             </div>
                             <div class="meeting-attendance-title">Average attendance time</div>
                         </div>
@@ -4123,6 +4127,9 @@
                         <span>Back to admin</span>
                     </div>
                   </ng-container>
+                  <ng-container  *ngIf="Meetingstatuscom=='Completed'">
+                    <div class="join-time">{{main_actualDuration}} mins</div>
+                  </ng-container>
                 </div>
 
 
@@ -4164,10 +4171,6 @@
                                             </path>
                                         </svg>
                                     </span>
-
-
-
-
                             </div>
                             <span>
                                 <div class="user-name">
@@ -4180,8 +4183,7 @@
                             </span>
                         </div>
                         <div class="user-status-info">
-                            <div class="user-status online">
-
+                            <div class="user-status online" *ngIf="Meetingstatuscom!='Completed' && item.onlineStatus=='Start'">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13"
                                         fill="currentColor">
@@ -4192,7 +4194,18 @@
                                 </span>
                                 <span>Online</span>
                             </div>
-                            <div class="join-time">06:00 PM</div>
+                            <div class="user-status offline"  *ngIf="Meetingstatuscom!='Completed' && item.onlineStatus!='Start'">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                        <g>
+                                          <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                        </g>
+                                      </svg>
+                                </span>
+                                <span>Offline</span>
+                            </div>
+                            <div class="join-time" *ngIf="Meetingstatuscom=='Completed' && item.onlineDuration">{{item.onlineDuration}} mins</div>
+                            <div class="join-time" *ngIf="Meetingstatuscom=='Completed' && !item.onlineDuration">0 mins</div>
                             <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
                             <ng-container   *ngIf="item.IsAdmin == false && Isadmin==true && isCheckboxDisabled==false" >
                             <div class="user-status-action"  (click)=" Updating_Adminmeeting(item.stringval)">
@@ -7966,8 +7979,7 @@
                 </div>
                 <div class="rgt-des">
                     <div>
-                        <div class="main-s pro-nm"> <span
-                                class="kt-dt-cnt-view">
+                        <div class="main-s pro-nm"> <span class="kt-dt-cnt-view">
                                 {{totalCompletedAgenda}}/{{totalAgendaList}}
                               </span>Agenda</div>
                     </div>

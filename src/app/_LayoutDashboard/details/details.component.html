@@ -2705,31 +2705,25 @@
                                                   </div>
                                               </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'Cancelled'">
+                                            <div class="kt-project-type" *ngSwitchCase="'Cancelled'">
                                                   <div class="Kt-Pd-Status Cancelled"> Cancelled </div>
-                                              </div>
-                                              <div class="kt-project-type" *ngSwitchCase="'Project Hold'">
+                                            </div>
+ 
+                                            <div class="kt-project-type" *ngSwitchCase="'Project Hold'">
                                                   <div class="Kt-Pd-Status Hold"> Hold until {{hold_upto}}</div>
-                                              </div>
-                                              <div class="kt-project-type "
-                                                  *ngSwitchCase="'Cancellation Under Approval'">
-                                                  <div class="Kt-Pd-Status Delay"> Cancellation approval
-                                                  </div>
-                                              </div>
+                                            </div>
+                                              
+                                            <div class="kt-project-type " *ngSwitchCase="'Cancellation Under Approval'">
+                                                  <div class="Kt-Pd-Status Delay"> Cancellation approval</div>
+                                            </div>
 
+                                            <div class="kt-project-type " *ngSwitchCase="'ToDo Achieved'">
+                                                <div class="Kt-Pd-Status todo-achieved"> ToDo achieved </div>
+                                            </div>
 
-
-                                              <div class="kt-project-type "
-                                              *ngSwitchCase="'ToDo Achieved'">
-                                              <div class="Kt-Pd-Status todo-achieved"> ToDo achieved
-                                              </div>
-                                          </div>
-
-                                          <div class="kt-project-type "
-                                          *ngSwitchCase="'ToDo Completed'">
-                                          <div class="Kt-Pd-Status todo-completed"> ToDo completed
-                                          </div>
-                                      </div>
+                                            <div class="kt-project-type " *ngSwitchCase="'ToDo Completed'">
+                                                <div class="Kt-Pd-Status todo-completed"> ToDo completed</div>
+                                            </div>
 
 
                                       <div class="kt-project-type "
@@ -2764,7 +2758,7 @@
 
 
 
-                                              </div>
+                                         </div>
 
 
 

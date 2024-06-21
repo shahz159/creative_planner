@@ -4303,192 +4303,209 @@ closedarBar() {
 
 
 }
-
 // shared and shared details side bar end
 
 
-loadGanttChart(){
-  debugger
-    console.log(">pr>",this._ProjectsListBy_Pid);
+all_status={
+  'Under Approval': '#B2D732', 
+  'InProcess':'#0089FB',
+  'Completed':'#62B134',
+  'Delay':'#EE4137',
+  'Completion Under Approval':'#B2D732',
+  'Forward Under Approval':'#B2D732',
+  'Project Hold':'#E2D9BC',
+  'Cancelled':'#EE4137',
+  'New Project Rejected':'#DFDFDF',
+  'Deadline Extend Under Approval':'#F88282',
+  'other':'#d0d0d0'
+}; 
+prj_statuses:any=[];
+loadGanttChart(){ 
+  console.log(">pr>",this._ProjectsListBy_Pid);
+  
+  this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status);
+  this.prj_statuses=Array.from(new Set(this.prj_statuses));
+  
+  const _series=this._ProjectsListBy_Pid.map((prj,_index)=>{
+      const color=this.all_status[prj.Status]||this.all_status['other'];
+      const isDelayPrj=prj.Status=='Delay';
 
-    const all_status={
-       'Under Approval': '#B2D732',
-       'InProcess':'#0089FB',
-       'Completed':'#62B134',
-       'Delay':'#EE4137',
-       'Completion Under Approval':'#B2D732',
-       'Forward Under Approval':'#B2D732',
-       'Project Hold':'#E2D9BC',
-       'Cancelled':'#EE4137',
-       'New Project Rejected':'#DFDFDF',
-       'Deadline Extend Under Approval':'#F88282',
-       'other':'#d0d0d0'
-    };
 
+      const data_ar=[{ 
+        x:`${prj.Project_Name} (${prj.Project_Code})`, 
+        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
+        fillColor:color, 
+        index:_index
+      }];
 
-    const _series=this._ProjectsListBy_Pid.map((prj,_index)=>{
-        const color=all_status[prj.Status]||all_status['other'];
-        const isDelayPrj=prj.Status=='Delay';
-
-
-
-        const data_ar=[{
+      const data_ar1=[
+        { 
           x:`${prj.Project_Name} (${prj.Project_Code})`,
-          y:[new Date(prj.Project_StartDate).getTime(),new Date(prj.DeadLine).getTime()],
-          fillColor:color,
-          index:_index
-        }];
+            y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
+            fillColor:'#0089FB', 
+            index:_index
+        },
+        {
+          x:`${prj.Project_Name} (${prj.Project_Code})`,
+          y:[new Date(prj.DeadLine).getTime(),new Date().getTime()], 
+          fillColor:'#EE4137', 
+          index:_index,
+        }
+      ];
 
-        const data_ar1=[
-          {
-            x:`${prj.Project_Name} (${prj.Project_Code})`,
-              y:[new Date(prj.Project_StartDate).getTime(),new Date(prj.DeadLine).getTime()],
-              fillColor:'#0089FB',
-              index:_index
-          },
-          {
-            x:`${prj.Project_Name} (${prj.Project_Code})`,
-            y:[new Date(prj.DeadLine).getTime(),new Date().getTime()],
-            fillColor:'#EE4137',
-            index:_index,
-          }
-        ];
+    
+      const obj={
+          name:prj.Status,
+          data:isDelayPrj?data_ar1:data_ar
+      };
+      return obj;
+  });
 
-
-        const obj={
-            name:prj.Status,
-            data:isDelayPrj?data_ar1:data_ar
-        };
-        return obj;
-    });
-
-    console.log('series here:',_series);
+  console.log('series here:',_series);
 
 
 
-  // Desired height per row in pixels
-  const rowHeight = 40;
-  const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
-  let chartHeight = rowHeight * dataPoints;
-  chartHeight=chartHeight<100?120:chartHeight;
+// Desired height per row in pixels
+const rowHeight = 40; 
+const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
+let chartHeight = rowHeight * dataPoints;
+chartHeight=chartHeight<200?200:chartHeight;
 
 
-  var options = {
-    series: _series,
-    chart: {
-      height: chartHeight,
-      type: 'rangeBar'
+var options = {
+  series: _series,
+  chart: {
+    height: chartHeight,
+    type: 'rangeBar'
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+      barHeight: '58%', // Adjust to fill the available space
+      rangeBarGroupRows: true
+    }
+  },
+
+  fill: {
+    type: 'solid'
+  },
+
+
+
+  dataLabels: {
+    enabled:false,
+    formatter: function(val, opts) {
+      // var label = opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].x;
+      // let text;
+      // if(label == 'Stream Planner work scheduling')
+      //   text = '43/58 actions completed';
+      // else if(label == 'Test project for new project title')
+      //   text = 'completed';
+      // else if(label == 'Water colors project')
+      //   text = '5 days delay.';
+      // return text;
+      return '';
     },
-    plotOptions: {
-      bar: {
-        horizontal: true,
-        barHeight: '58%', // Adjust to fill the available space
-        rangeBarGroupRows: true
+    style: {
+      colors: ['#f3f4f5', '#fff']
+    }
+  },
+
+
+
+  xaxis: {
+    type: 'datetime',
+    position: 'top', // This moves the x-axis to the top
+    labels: {
+      show: true
+    },
+    axisBorder: {
+      show: true
+    },
+    axisTicks: {
+      show: true
+    }
+  },
+
+
+  grid: {
+    yaxis: {
+      lines: {
+        show: true
       }
     },
-
-    fill: {
-      type: 'solid'
-    },
-
-
-
-    dataLabels: {
-      enabled:false,
-      formatter: function(val, opts) {
-        // var label = opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].x;
-        // let text;
-        // if(label == 'Stream Planner work scheduling')
-        //   text = '43/58 actions completed';
-        // else if(label == 'Test project for new project title')
-        //   text = 'completed';
-        // else if(label == 'Water colors project')
-        //   text = '5 days delay.';
-        // return text;
-        return '';
-      },
-      style: {
-        colors: ['#f3f4f5', '#fff']
-      }
-    },
-
-
-
     xaxis: {
-      type: 'datetime'
-    },
-    grid: {
-      yaxis: {
-        lines: {
-          show: true
-        }
-      },
-      xaxis: {
-        lines: {
-          show: true
-        }
+      lines: {
+        show: true
       }
     },
-    legend: { show:false },
-    tooltip: {
-      custom: ({series, seriesIndex, dataPointIndex, w})=> {
-
-   const data = w.config.series[seriesIndex].data[dataPointIndex];
-   const index=data.index;
-   const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
-   const prj_start=moment(this._ProjectsListBy_Pid[index].Created_Dt).format('YYYY-MM-DD');
-   const prj_end=moment(this._ProjectsListBy_Pid[index].DeadLine).format('YYYY-MM-DD');
-   const daydiff=moment(this._ProjectsListBy_Pid[index].Created_Dt).diff(moment(this._ProjectsListBy_Pid[index].DeadLine),'days');
-   const prj_totalactions=this._ProjectsListBy_Pid[index].Actioncount;
-   const completed_actions=this._ProjectsListBy_Pid[index].CompletedActioncount;
-   const prj_status=this._ProjectsListBy_Pid[index].Status;
-   const statusColor=all_status[prj_status];
-   const prjsubmtype=this._ProjectsListBy_Pid[index].SubmissionType;
-   const prjdurationtime=this._ProjectsListBy_Pid[index].StandardDuration;
-   const delaydays_=Math.abs(this._ProjectsListBy_Pid[index].Delaydays);
-
-
-      return  `<div style="width: fit-content; min-width: 260px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
-         <span style="padding: 0.3em 0.6em 0.2em 0.6em; color: #0089FB; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_type}</span>
-         <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span>
-            ${
-              ['Core Tasks','Secondary Tasks'].includes(prj_type)?
-              `<span style="font-size: 13px; color: #0d0d0dd6; display: flex; align-items: flex-end; column-gap: 3px;">
-                <fieldset style="border: 2px solid #4e49491f; padding: 0.2em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e4949d9; min-width: 55px; display: flex; justify-content: center;">
-                  <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e4949d9; width:fit-content;   ">actions</legend>
-                  ${completed_actions}<span style="color: #b4b4b4db;">/</span>${prj_totalactions}
-                </fieldset>
-                <span style="color: #4e4949d9; font-weight: bold; font-family: 'Lucida Sans Unicode'; font-size: 9px;">DONE</span>
-              </span>`:''
-            }
-      </div>
-      <div style="font-size: 12px; display: flex; column-gap: 3px;">
-        <fieldset style=" flex-grow:1;   border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
-          <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: grey;  width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'submission':'start'}</legend>
-          ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjsubmtype:prj_start}
-        </fieldset>
-        ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'':`
-          <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
-            <span style="text-align: center; color: gray; font-family: Lucida Sans Unicode; font-size: 8px;">${daydiff+(daydiff>1?' days':' day')}</span>
-          </span>
-         `}
-        <fieldset style=" flex-grow:1; border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
-          <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: gray;   width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'duration':'end'}</legend>
-          ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjdurationtime:prj_end}
-        </fieldset>
-      </div>
-    </div>`;
-
-      }
-    },
+    padding: {
+      top: 35,
+      right: 10,
+      bottom: 20, // Add padding to the bottom to create space below the controller buttons
+      left: 0
+    }
+  },
+  legend: { show:false },
+  tooltip: {
+    custom: ({series, seriesIndex, dataPointIndex, w})=> { 
+      
+ const data = w.config.series[seriesIndex].data[dataPointIndex];
+ const index=data.index;
+ const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
+ const prj_start=this.datepipe.transform(new Date(this._ProjectsListBy_Pid[index].DPG), 'MMM d, y');
+ const prj_end=this.datepipe.transform(new Date(this._ProjectsListBy_Pid[index].DeadLine), 'MMM d, y');
+ const daydiff=Math.abs(moment(this._ProjectsListBy_Pid[index].DPG,'YYYY-MM-DD').diff(moment(this._ProjectsListBy_Pid[index].DeadLine,'YYYY-MM-DD'),'days'));
+ const prj_totalactions=this._ProjectsListBy_Pid[index].Actioncount;
+ const completed_actions=this._ProjectsListBy_Pid[index].CompletedActioncount;
+ const prj_status=this._ProjectsListBy_Pid[index].Status;
+ const statusColor=this.all_status[prj_status];
+ const prjsubmtype=this._ProjectsListBy_Pid[index].SubmissionType;
+ const prjdurationtime=this._ProjectsListBy_Pid[index].StandardDuration;
+ const delaydays_=Math.abs(this._ProjectsListBy_Pid[index].Delaydays);
 
 
+    return  `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
+       <span style="padding: 0.3em 0.6em 0.2em 0.6em; color: #0089FB; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_type}</span>
+       <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span> 
+          ${
+            ['Core Tasks','Secondary Tasks'].includes(prj_type)?
+            `<span style="font-size: 13px; color: #0d0d0dd6; display: flex; align-items: flex-end; column-gap: 3px;">
+              <fieldset style="border: 2px solid #4e49491f; padding: 0.2em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e4949d9; min-width: 55px; display: flex; justify-content: center;">
+                <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e4949d9; width:fit-content;   ">actions</legend>
+                ${completed_actions}<span style="color: #b4b4b4db;">/</span>${prj_totalactions}
+              </fieldset>
+              <span style="color: #4e4949d9; font-weight: bold; font-family: 'Lucida Sans Unicode'; font-size: 9px;">DONE</span>
+            </span>`:''
+          }
+    </div>
+    <div style="font-size: 12px; display: flex; column-gap: 3px;">
+      <fieldset style=" flex-grow:1;   border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
+        <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: grey;  width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'submission':'start'}</legend>
+        ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjsubmtype:prj_start}
+      </fieldset>
+      ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'':`
+        <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
+          <span style="text-align: center; color: gray; font-family: Lucida Sans Unicode; font-size: 8px;">${daydiff+(daydiff>1?' days':' day')}</span>
+        </span>
+       `}      
+      <fieldset style=" flex-grow:1; border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
+        <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: gray;   width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'duration':'end'}</legend>
+        ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjdurationtime:prj_end}
+      </fieldset>
+    </div>
+  </div>`;
 
-  };
+    }
+  },
 
-  var chart = new ApexCharts(document.querySelector("#chartdiv3"), options);
-  chart.render();
+
+
+};
+
+var chart = new ApexCharts(document.querySelector("#chartdiv3"), options);
+chart.render();
 
 }
 

@@ -3670,6 +3670,8 @@ ul.schedule-select-list li {
     margin-bottom: 0.5rem;
     cursor: default;
     margin-right: 10px;
+    max-width: 180px;
+    min-width: 180px;
 }
 
 ul.schedule-select-list li .schedule-select-list-item {
@@ -3798,6 +3800,22 @@ ul.schedule-select-user-list li {
     margin-right: 10px;
     cursor: default;
     background-color: #f7f7f7;
+    width: 200px;
+}
+
+.schedule-select-user-list-item .user-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 140px;
+}
+@media screen and (min-width: 1440px) {
+    ul.schedule-select-user-list li {
+        width: 240px;
+    }
+    .schedule-select-user-list-item .user-name {
+        width: 180px;
+    }
 }
 
 ul.schedule-select-user-list li .schedule-select-user-list-item {

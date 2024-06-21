@@ -139,6 +139,7 @@ export class MeetingDetailsComponent implements OnInit {
           this._MasterCode = pcode;
       });
       this.Current_user_ID = localStorage.getItem('EmpNo');
+      // this.getAttendeeTime();
       this.meeting_details();
       this.addAgenda();
       // this.GetMeetingnotes_data();
@@ -149,14 +150,18 @@ export class MeetingDetailsComponent implements OnInit {
       this.GetTimeslabfordate();
       this.GetcompletedMeeting_data();
       this.GetAttendeesnotes();
-      this.GetPreviousdate_meetingdata()
-      
+      this.GetPreviousdate_meetingdata();
+            
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
     //   // Here you can update your view/model with the received message
     // });
     this._PopupConfirmedValue = 1;
+
+
+    // const storedStartTime = localStorage.getItem('startTime');
+    // console.log(storedStartTime,'startTime');
   }
 
   getDetailsScheduleId() {
@@ -486,9 +491,19 @@ meeting_details(){
     var x =this.Agendas_List.length
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
+    
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
     this.Link_Detail=this.EventScheduledjson[0].Link_Details;
+
+    let str=this.Link_Detail;
+    let regexp=/href="https:\/\/[^"]+"/;
+    let result=regexp.exec(str);
+    if(result&&result[0])
+    this.Link_Detail=result[0].slice(6,result[0].length-1);
+
+
+  
 
     this.User_Scheduledjson= JSON.parse(this.EventScheduledjson[0].Add_guests);
     this.totalguest = this.User_Scheduledjson.length;
@@ -582,25 +597,53 @@ meeting_details(){
 }
 
 status_Type:string;
-
-
+currentTime:string;
+latestTime:string;
 
   startMeeting() {
    
     this.play=true;
     this.status_Type='Start';
     this.startTime = new Date();
+    let currentDate = new Date();
+
+    // Get the current time components
+    let currentHours = currentDate.getHours();
+    let currentMinutes = currentDate.getMinutes();
+    let currentSeconds = currentDate.getSeconds();
+
+    // Format the time if necessary (e.g., add leading zeros)
+    this.currentTime = `${this.formatTimeUnit(currentHours)}:${this.formatTimeUnit(currentMinutes)}:${this.formatTimeUnit(currentSeconds)}`;
+
+    localStorage.setItem('startTime', this.currentTime);
     this.meetingInProgress = true;
     this.GetcompletedMeeting_data();
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTime.getTime();
-      
+      console.log( new Date().getTime() - this.startTime.getTime(),"tiem")
       if (this.elapsedTime >= this.duration) {
         this.stopMeeting();
       }
     }, 1000);
 
-    // console.log(this.startTime,'ijfbviabfvbsvskjvbzsib')
+     console.log(this.startTime,'ijfbviabfvbsvskjvbzsib')
+  }
+
+  formatTimeUnit(timeUnit: number): string {
+    // Add leading zero if the time unit is less than 10
+    return timeUnit < 10 ? `0${timeUnit}` : `${timeUnit}`;
+  }
+
+
+  compareTimer(){
+    
+   }
+
+   parseTime(time: string): Date {
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, seconds, 0);
+    return date;
   }
 
 
@@ -681,9 +724,12 @@ status_Type:string;
   actualTime_S:any;
   actualTime_E:any;
   actualDuration:any;
+  AverageDuration:any;
+  AttendeeCount:any;
 
 
 InsertAttendeeMeetingTime(){
+ 
 
   const formatTime = time => time ? new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : null;
 
@@ -691,6 +737,7 @@ InsertAttendeeMeetingTime(){
   this._calenderDto.Schedule_ID=this.Scheduleid;
   this._calenderDto.Status=this.status_Type;
   this._calenderDto.StartTime=this.startTime==undefined?null:formatTime(this.startTime);
+  this._calenderDto.Start_time=this.currentTime;
   this._calenderDto.EndTime=this.endTime==undefined?null:formatTime(this.endTime)
  // console.log(this._calenderDto,'time of meeting');
   this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
@@ -706,7 +753,6 @@ InsertAttendeeMeetingTime(){
 
 
 startMeetingOfAttendees() {
-
   this.meetingOfAttendees=false;
  this.play=true;
   this.status_Type='Start';
@@ -714,8 +760,37 @@ startMeetingOfAttendees() {
 //  console.log(this.startTime,'sAtm')
   this.meetingInProgress = true;
   this.GetcompletedMeeting_data();
+
+  let currentDate = new Date();
+
+  // Get the current time components
+  let currentHours = currentDate.getHours();
+  let currentMinutes = currentDate.getMinutes();
+  let currentSeconds = currentDate.getSeconds();
+  this.latestTime = `${this.formatTimeUnit(currentHours)}:${this.formatTimeUnit(currentMinutes)}:${this.formatTimeUnit(currentSeconds)}`;
+  this.currentTime = `${this.formatTimeUnit(currentHours)}:${this.formatTimeUnit(currentMinutes)}:${this.formatTimeUnit(currentSeconds)}`;
+
+  // this.currentTime=localStorage.getItem('startTime');
+
+  if(this.exact_start=='' || this.exact_start==null || this.exact_start==undefined){
+    this.exact_start=this.currentTime;
+  }
+    
+
+  let timeA = this.parseTime(this.exact_start);
+  let timeB = this.parseTime(this.latestTime);
+
+  let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
+
+  console.log('Difference in milliseconds:', differenceInMilliseconds);
+  console.log('current', this.currentTime );
+  console.log('exact', this.exact_start);
+  console.log('latest', this.latestTime);
+
+  this.elapsedTime=differenceInMilliseconds;
+
   this.timer = setInterval(() => {
-    this.elapsedTime = new Date().getTime() - this.startTime.getTime();
+    this.elapsedTime = this.elapsedTime+1000;
    
     if (this.elapsedTime >= this.duration) {
       this.stopMeetingAttendees();
@@ -1845,7 +1920,7 @@ AgendaId:any
 
 
 showAgendaDetails(item,index){
-    if(this.meetingInProgress==true){
+    if(this.meetingInProgress==true || this.Meetingstatuscom=='Completed'){
       this.AgendaId=item.AgendaId
       this.currentAgendaView=index
       this.GetAssigned_SubtaskProjects()
@@ -2200,6 +2275,27 @@ Meetingstatuscom: string;
 // Isadmin: boolean = false;
 // unsubscribe: boolean = false;
 
+saveAttendeeTime(){
+  if(this.meetingInProgress){
+    const spend_time=this.elapsedTime;
+    localStorage.setItem('mtg_spend_time',spend_time.toString());
+  }
+}
+
+getAttendeeTime(){
+  if(this.meetingStarted){
+     const spend_time=localStorage.getItem('mtg_spend_time');
+     if(spend_time)
+     {
+        this.elapsedTime=+spend_time;
+     } 
+  }
+}
+
+
+
+
+
 GetcompletedMeeting_data() {
   
   this.Schedule_ID = this.Scheduleid;
@@ -2207,14 +2303,22 @@ GetcompletedMeeting_data() {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
+     
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.meeting_details();
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
-
+          this.AttendeeCount=this.CompletedMeeting_notes[0].online_count;
+           console.log(this.AttendeeCount, 'AttendeeCount');
           this.actualTime_S=this.CompletedMeeting_notes[0].Actual_Start;
+          this.separateTime(this.actualTime_S);
           this.actualTime_E=this.CompletedMeeting_notes[0].Actual_End;
+          this.separateTime(this.actualTime_E);
+          this.actualTime_dur=this.CompletedMeeting_notes[0].Actual_Dur;
+          this.convertDuration(this.actualTime_dur);
+          this.AverageDuration=this.CompletedMeeting_notes[0].Average_Dur;
+          this.convertDuration(this.AverageDuration);
     
           const startTime = moment(this.actualTime_S, 'hh:mm A');
           const endTime = moment(this.actualTime_E, 'hh:mm A');
@@ -2225,7 +2329,7 @@ GetcompletedMeeting_data() {
         const hours = Math.floor(durationInMinutes / 60);
         const minutes = durationInMinutes % 60;
         this.actualDuration = moment({ hour: hours, minute: minutes }).format('HH:mm');
-       // console.log(duration.asMinutes(), 'duration in minutes');
+      
 
 
 
@@ -2240,6 +2344,7 @@ GetcompletedMeeting_data() {
     // } else if(this.meetingInProgress){
     } else{
       this.interval = setInterval(() => {
+        // this.saveAttendeeTime();
         this.GetAttendeesnotes();
         // console.log('1')
        
@@ -2258,6 +2363,60 @@ GetcompletedMeeting_data() {
     //   }
     //   console.log(this.CompletedMeeting_notes, 'notes11122')
     });
+}
+
+starthour: any;
+endhour: any;
+startperiod: any;
+endperiod: any;
+// separateTime(time: string) {
+
+//   const [hour, period] = time.split(' ');
+//   if(time==this.actualTime_S){
+//     this.starthour = hour;
+//     this.startperiod = period;
+//   }
+//   else if(time==this.actualTime_E){
+//     this.endhour = hour;
+//     this.endperiod = period;
+//   }
+// }
+
+
+
+
+separateTime(time: string | undefined) {
+
+  if (!time) return; // Return early if time is undefined or null
+  const [hour, period] = time.split(' ');
+  if (time === this.actualTime_S) {
+    this.starthour = hour;
+    this.startperiod = period;
+  } else if (time === this.actualTime_E) {
+    this.endhour = hour;
+    this.endperiod = period;
+  }
+}
+
+actualTime_dur:any;
+meetinghours:any;
+meetingminutes:any;
+meetingseconds:any;
+avghours:any;
+avgminutes:any;
+avgseconds:any;
+
+convertDuration(totalMinutes: number) {
+  if(totalMinutes==this.actualTime_dur){
+    this.meetinghours = Math.floor(totalMinutes / 60);
+    this.meetingminutes = totalMinutes % 60;
+    this.meetingseconds = 0; // Assuming no seconds as input is in minutes
+  }
+  else if(totalMinutes==this.AverageDuration){
+    this.avghours = Math.floor(totalMinutes / 60);
+    this.avgminutes = totalMinutes % 60;
+    this.avgseconds = 0; // Assuming no seconds as input is in minutes
+  }
 }
 
 ActionedAssigned_Josn: any = [];
@@ -2582,7 +2741,8 @@ hasMeetingStarted: boolean;
 hasMeetingEnd: boolean ;
 NotesCount:any;
 TaskCount:any;
-agendasList:any
+agendasList:any;
+exact_start:any;
 
 taskcount:any=[];
 notescount:any=[];
@@ -2594,14 +2754,15 @@ GetAttendeesnotes(){
   this._calenderDto.Emp_No=this.Current_user_ID;
   this._calenderDto.Status_type=this.status_type==undefined?null:this.status_type;
 
-  // console.log( this._calenderDto.Status_type,'====2===>')
+  console.log( this._calenderDto.Status_type,'====2===>')
   this._calenderDto.AgendaId=this.currentAgendaView===undefined?0:this.Agendas_List[this.currentAgendaView].AgendaId;
     
   this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
   ((data:any)=>{ 
-  
+    this.exact_start=(data['Start_time']);
     this.agendasList=JSON.parse(data['Agendas']);
-    console.log(this.agendasList,'====3==>'); 
+    console.log(this.exact_start,'====3==>'); 
+  
 
 
    if(this.agendasList.length!=0){
@@ -2612,29 +2773,6 @@ GetAttendeesnotes(){
         this.notifyService.showInfo('New agenda added', "")   
         this.status_type=undefined;     
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2682,7 +2820,7 @@ GetAttendeesnotes(){
 
       if(this.meetingStarted==true && !this.hasMeetingStarted){  
         this.startMeetingOfAttendees();
-        this.InsertAttendeeMeetingTime()
+        this.InsertAttendeeMeetingTime();
         this.hasMeetingStarted = true;
         this.hasMeetingEnd=false;
       } else if(this.meetingStarted!=true && !this.hasMeetingEnd &&  this.meetingOfAttendees==false){
