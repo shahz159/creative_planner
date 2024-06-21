@@ -2978,7 +2978,7 @@
                                                         <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label> 
                                                         <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
                                                             placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
-                                                            <ng-option *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                                                            <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
                                                                 {{item}}</ng-option>
                                                         </ng-select>
                                                         <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
@@ -3171,16 +3171,13 @@
 
                         </div>
                     </div>
+
                     <div class="se-col-11">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <angular-editor placeholder="Meeting link" [(ngModel)]="Link_Details" [config]="config"></angular-editor>
                         </div>
                     </div>
-                    
+                  
                 </div>
                
                 <div class="se-row" id="Location_Name" style="display:none">
