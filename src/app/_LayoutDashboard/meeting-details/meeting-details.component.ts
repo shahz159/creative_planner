@@ -400,6 +400,7 @@ export class MeetingDetailsComponent implements OnInit {
   isCheckboxDisabled: boolean = false;
   Isadmin: boolean = false;
   Createdby:string;
+  main_actualDuration:any;
   status:string;
   Meeting_status: boolean;
   Link_Detail:any
@@ -491,6 +492,7 @@ meeting_details(){
     var x =this.Agendas_List.length
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
+    this.main_actualDuration=this.EventScheduledjson[0].actual_duration;
     this.status=this.EventScheduledjson[0].Status;
     this.sched_admin=this.EventScheduledjson.Owner_isadmin;
     this.Link_Detail=this.EventScheduledjson[0].Link_Details;
