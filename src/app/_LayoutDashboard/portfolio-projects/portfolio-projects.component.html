@@ -75,10 +75,10 @@
                                     </a> -->
 
 
-                                    <a class="kt-todo__icon" title="Shared details" data-toggle="modal" *ngIf="Project_Graph=='Graphs'"
+                                    <!-- <a class="kt-todo__icon" title="Shared details" data-toggle="modal" *ngIf="Project_Graph=='Graphs'"
                                     data-target="#exampleModal2" [hidden]="_btnShareDetails" href="javascript:void(0)">
                                         <i class="fas fa-file-alt"></i>
-                                    </a>
+                                    </a> -->
 
 
                                     <a class="kt-todo__icon "   (click)="openMeetingSidebar()"     title="View or link meeting">
@@ -574,7 +574,7 @@
 
                                                     <td class="icond">
                                                         <span *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
-                                           
+
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
                                                     'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
@@ -1328,7 +1328,7 @@
                                     </div>
                                 </div>
                                 <!--end::Portlet-->
-                            </div>   
+                            </div>
                         </div>
 
 
@@ -1473,81 +1473,288 @@
     <!-- Link memos Template -->
 <!-- share sidebar-->
 <div id="shareBar" class="sideInfobar offcanvas animate-right">
-    <div class="px-4 pt-4 pb-1">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"> Share portfolio </h4>
-            <a href="javascript:void(0)" (click)="_CloseshareBar()" class="closebtn btn btn-xs btn-icon btn-hover-primary mt-2">
-                <i class="fa fa-times"></i>
-            </a>
-        </div>
-    </div>
-    <div class="kt-portlet__body p-3">
-        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
-            <div class="card-body multi">
-                <form>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Select company</label>
-                        <div>
-                            <ng-multiselect-dropdown [placeholder]="' Company '" class="mutlidropdown-set"
-                                name="CompanyDropdown" [(ngModel)]="ngCompanyDropdown"
-                                [settings]="dropdownSettings_Cmp" [data]="Company_List"
-                                (onSelect)="OnCompanySelect($event)" (onDeSelect)="OnCmpDeselect()">
-                            </ng-multiselect-dropdown>
-                        </div>
-                        <p class="text-danger"><b>{{this._ErrorMessage_comp}}</b></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Select user</label>
-                        <div>
-                            <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
-                                name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
-                                [settings]="dropdownSettings_Emp" [data]="EmployeeList"
-                                (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
-                            </ng-multiselect-dropdown>
-                             <!-- <ng-select class="mutlidropdown-set" (add)="OnEmpSelect($event)" (remove)="OnEmpDeselect()" [(ngModel)]="ngEmployeeDropdown"
-                             bindValue="EmployeeDropdown" bindLabel="EmployeeDropdown" placeholder="TM Name" [multiple]="true" [selectableGroup]="true" >
+  <div class="kt-portlet">
+      <div class="kt-portlet__head">
+          <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
+              <div class="Kt-pp-list">
+                  <div class="card-header card-header-tabs-line pb-0 pl-0">
+                      <div class="card-toolbar">
+                          <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                              <li class="nav-item">
+                                  <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                      <span class="svg-icv-hd">
+                                          <i class="fas fa-share-alt"></i>
+                                      </span>
+                                      <span class="nav-text">Share portfolio</span>
+                                  </a>
+                              </li>
 
-                                <ng-option [value]="Emp_No" *ngFor="let item of EmployeeList" >
-                                    {{item.TM_DisplayName}}
-                                </ng-option>
+                              <!-- <li class="nav-item">
+                                  <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                      <span class="svg-icv-hd">
+                                          <i class="fas fa-file-alt"></i> </span>
+                                      <span class="nav-text">Shared details</span>
+                                  </a>
+                              </li> -->
+                          </ul>
+                      </div>
+                  </div>
+              </div>
 
-                            </ng-select> -->
 
-                        </div>
-                        <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="mb-3">Preferences</label>
-                        <div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" [(ngModel)]="preferences"
-                                        (change)="Radio_View_fullaccess($event.target.value)" value="View Only"
-                                        name="optradio">View only
-                                </label>
-                            </div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" [(ngModel)]="preferences"
-                                        (change)="Radio_View_fullaccess($event.target.value)" value="Full Access"
-                                        name="optradio">Full access
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
-                </form>
-                <div class="pt-3 text-right">
-                    <button type="button" class="btn btn-secondary btn-sm mr-3"
-                        (click)="_CloseshareBar()">Close</button>
-                    <button type="button" class="btn btn-primary btn-sm"
-                        (click)="share()">Share</button>
+
+
+
+                <div class="rt-btn">
+                    <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                        (click)="_CloseshareBar()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                            fill="currentColor">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                            </path>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
+
+      <div class="share-portfolio-div tab-content">
+          <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"aria-labelledby="kt_tab_pane_1_4">
+              <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+                  <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+                      <div class="card-body multi">
+                          <form>
+                               <!-- <div class="form-group">
+                                  <label for="exampleInputEmail1">Select company</label>
+                                   <div>
+                                      <ng-multiselect-dropdown [placeholder]="' Company '" class="mutlidropdown-set"
+                                          name="CompanyDropdown" [(ngModel)]="ngCompanyDropdown"
+                                          [settings]="dropdownSettings_Cmp" [data]="Company_List"
+                                          (onSelect)="OnCompanySelect($event)" (onDeSelect)="OnCmpDeselect()">
+                                      </ng-multiselect-dropdown>
+                                  </div>
+                                  <p class="text-danger"><b>{{this._ErrorMessage_comp}}</b></p>
+                              </div> -->
+
+                                     <!-- <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
+                                          name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
+                                          [settings]="dropdownSettings_Emp" [data]="EmployeeList"
+                                          (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
+                                      </ng-multiselect-dropdown> -->
+
+
+
+
+
+
+<div>
+                                      <div class="form-group" >
+                                        <mat-form-field class="drp-dwn-field w-100"   *ngIf="Employeshare">
+                                          <mat-label>Select employee</mat-label>
+                                           <mat-chip-list #selectedEmp2share>
+                                            <mat-chip *ngFor="let emptoshare of shareToEmplys" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare)">
+                                              {{getObjOf(Employeshare,emptoshare,'Emp_No')?.DisplayName}}-{{getObjOf(Employeshare,emptoshare,'Emp_No')?.TM_DisplayName}}
+                                              <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                              </button>
+                                            </mat-chip>
+
+                                          </mat-chip-list>
+                                          <div class="d-flex">
+                                            <input class="flex-1" [matChipInputFor]="selectedEmp2share"
+                                                [matAutocomplete]="employee2shareDrpDwn" #employeeShare2TF />
+
+                                            <button *ngIf="isEmployeeDrpDwnOpen"
+                                                class="bg-transparent border-0 "  (click)="this.isEmployeeDrpDwnOpen=false; closeAutocompleteDrpDwn('employee2shareDrpDwn');">
+                                                <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                                                <button *ngIf="!isEmployeeDrpDwnOpen"
+                                                class="bg-transparent border-0" (click)="this.isEmployeeDrpDwnOpen=true; openAutocompleteDrpDwn('employee2shareDrpDwn');">
+                                                <mat-icon class="add-icon"
+                                                    >add</mat-icon></button>
+                                            </div>
+
+
+                                        <mat-autocomplete aria-label="employee2shareDrpDwn" #employee2shareDrpDwn="matAutocomplete"
+                                        (optionSelected)="onEmployeeSelected($event); employeeShare2TF.value=''; "
+                                        (opened)="isEmployeeDrpDwnOpen=true" (closed)="isEmployeeDrpDwnOpen=false; ">
+
+                                        <mat-option *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)" [value]="emp.Emp_No">
+
+                                          <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
+                                              {{emp.DisplayName}} - {{emp.TM_DisplayName}}
+                                      </mat-option>
+                                     </mat-autocomplete>
+                                    </mat-form-field>
+
+
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                              </div>
+                              <div class="form-group mb-0">
+                                  <label class="mb-3">Preferences</label>
+                                  <div>
+                                      <div class="form-check-inline">
+                                          <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" [(ngModel)]="preferences"
+                                                  (change)="Radio_View_fullaccess($event.target.value)" value="View Only"
+                                                  name="optradio">View only
+                                          </label>
+                                      </div>
+                                      <div class="form-check-inline">
+                                          <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" [(ngModel)]="preferences"
+                                                  (change)="Radio_View_fullaccess($event.target.value)" value="Full Access"
+                                                  name="optradio">Full access
+                                          </label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
+                              &nbsp;     &nbsp;
+                              <div class="form-group mb-0">
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="btn btn-info btn-sm mb-3" (click)="share()">Share</button>
+                                    <button type="submit" class="btn btn-secondary btn-sm ml-2 mb-3" (click)="_CloseshareBar()">Close</button>
+                                </div>
+                            </div>
+                            &nbsp;     &nbsp;
+                              <hr>
+
+                              &nbsp;&nbsp;
+                              <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div>
+                                            <h5 class="modal-title" id="exampleModalLabel"><strong>Shared details</strong></h5>
+                                            <h6 class="text-dark">Portfolio owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
+                                            </h6>
+                                        </div>
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button> -->
+                                    </div>
+                                    <div class="modal-body min-scroll">
+                                        <table class="table table-bordered table-striped">
+                                            <tr>
+                                                <th>Shared to</th>
+                                                <th>Shared by</th>
+                                                <th>Preference type</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            <tr *ngFor="let item of _ShareDetailsList">
+                                                <td>
+                                                    {{item.Shared_To}}
+                                                </td>
+                                                <td>
+                                                    {{item.Shared_By}}
+                                                    <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                                            {{item.Shared_To}}
+                                                        </div> -->
+                                                </td>
+                                                <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                                        <td><span><strong>To : </strong></span>{{item.Shared_To}}</td>
+                                                    </div>
+                                                    <div *ngIf="item.SharedbyEmpNo!=Current_user_ID">
+                                                        <td><span><strong>By : </strong></span>{{item.Shared_By}}</td>
+                                                    </div> -->
+                                                <td>
+                                                    <span
+                                                        [ngStyle]="{'color':item.Preferences=== 'Full Access' ? '#28a745' : '#dc3545'}">{{item.Preferences}}</span>
+                                                </td>
+                                                <td align="center">
+                                                    <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-0 px-2 py-1"
+                                                        (click)="deleteSharedUsers(item.Portfolio_ID,item.EmployeeId,item.SharedbyEmpNo)"><i
+                                                            class="fas fa-trash-alt mr-0"></i></a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!-- <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" id="Mdl_closebtn" data-dismiss="modal"
+                                            (click)="Close_ShareModel()">Close</button>
+                                    </div> -->
+                                </div>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              <!-- <div class="kt-portlet__foot py-3">
+                  <div class="form-group mb-0">
+                      <button type="submit" class="btn btn-info btn-sm" (click)="share()">Share</button>
+                      <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="_CloseshareBar()">Close</button>
+                  </div>
+              </div> -->
+          </div>
+          <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
+              <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+                  <div class="mb-3">
+                      <h6 class="text-dark mb-0">Portfolio owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
+                      </h6>
+                  </div>
+                  <div class="">
+                      <table class="table table-bordered table-striped">
+                          <tr>
+                              <th>Shared to</th>
+                              <th>Shared by</th>
+                              <th>Preference type</th>
+                              <th>Delete</th>
+                          </tr>
+                          <tr *ngFor="let item of _ShareDetailsList">
+                              <td>
+                                  {{item.Shared_To}}
+                              </td>
+                              <td>
+                                  {{item.Shared_By}}
+                                  <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                          {{item.Shared_To}}
+                                      </div> -->
+                              </td>
+                              <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                      <td><span><strong>To : </strong></span>{{item.Shared_To}}</td>
+                                  </div>
+                                  <div *ngIf="item.SharedbyEmpNo!=Current_user_ID">
+                                      <td><span><strong>By : </strong></span>{{item.Shared_By}}</td>
+                                  </div> -->
+                              <td>
+                                  <span
+                                      [ngStyle]="{'color':item.Preferences=== 'Full Access' ? '#28a745' : '#dc3545'}">{{item.Preferences}}</span>
+                              </td>
+                              <td align="center">
+                                  <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-0 px-2 py-1"
+                                      (click)="deleteSharedUsers(item.Portfolio_ID,item.EmployeeId,item.SharedbyEmpNo)"><i
+                                          class="fas fa-trash-alt mr-0"></i></a>
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>
 
 
 <div id="rightbar-overlay"  (click)="closeInfo()"></div>
@@ -1644,7 +1851,7 @@
                       d="M10.7324 3.72534C10.7324 2.92969 10.4164 2.16663 9.85374 1.60402C9.29113 1.04141 8.52807 0.725342 7.73242 0.725342V0.725342C6.93677 0.725342 6.17371 1.04141 5.6111 1.60402C5.04849 2.16663 4.73242 2.92969 4.73242 3.72534"
                       stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <h4 class="m-0 ml-2">View or link meetings</h4>
+              <h4 class="m-0 ml-2">View or link meeting</h4>
               <a href="javascript:void(0)" class="abs-btn closebtn btn btn-xs btn-icon btn-hover-info"
                   (click)="closeMeetingSidebar()">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"

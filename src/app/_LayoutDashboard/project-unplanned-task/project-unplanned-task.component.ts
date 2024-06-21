@@ -193,7 +193,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         });
     }
     else {
-      this.notifyService.showInfo("Failed to add task!!", "Please Enter Task Name");
+      this.notifyService.showInfo("Failed to add task", "Please enter task name");
     }
     this.clearFeilds();
   }
@@ -549,7 +549,7 @@ debugger
         });
     }
     else {
-      this.notifyService.showInfo("Category Name Required", "");
+      this.notifyService.showInfo("Category name required", "");
     }
     this.clearFeilds()
   }
