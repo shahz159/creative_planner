@@ -751,6 +751,11 @@
                                                                 style="color: #c0b5dc;">Hold approval
                                                             </span>
                                                         </div>
+
+                                                        <div *ngIf="item.Project_Block=='003'&&item.Status.includes('Delay')">
+                                                            <span class="Delay_color font-weight-400">{{item.Status}}</span>
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                             </tbody>

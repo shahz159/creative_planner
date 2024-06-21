@@ -682,15 +682,21 @@
                                                                   'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
                                                                   'Cancelled':projectInfo.Status==='Cancelled',
                                                                   'Hold':projectInfo.Status==='Project Hold',
-                                                                  'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval'
+                                                                  'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval',
+                                                                  'Delay':projectInfo.Project_Block=='003'&&projectInfo.Status.includes('Delay')
                                                                   }">
                                                           {{
                                                           projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
-                                                          projectInfo.Status==='Delay'?'Delay '+projectInfo.Delaydays+'
-                                                          days':projectInfo.Status === 'Under Approval' ? 'New approval' : projectInfo.Status==='InProcess'?
-                                                           'In-process' : projectInfo.Status=='Under Approval'?'New approval' :projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval"
-                                                          :projectInfo.Status== "Completion Under Approval" ? "Completion approval" :projectInfo.Status=='Forward Under Approval'? "Forward approval" :projectInfo.Status=='Not Started'?'Draft': projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
-                                                          :projectInfo.Status=='InProcess'?'In-process': projectInfo.Status
+                                                          projectInfo.Status==='Delay'?'Delay '+projectInfo.Delaydays+'days':
+                                                          projectInfo.Status==='Under Approval' ? 'New approval':
+                                                          projectInfo.Status==='InProcess'?'In-process':
+                                                          projectInfo.Status=='Under Approval'?'New approval':
+                                                          projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval":
+                                                          projectInfo.Status== "Completion Under Approval"?"Completion approval":
+                                                          projectInfo.Status=='Forward Under Approval'? "Forward approval":
+                                                          projectInfo.Status=='Not Started'?'Draft':
+                                                          projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
+                                                          projectInfo.Status=='InProcess'?'In-process': projectInfo.Status
                                                           }}
 
                                                       </div>
@@ -2042,7 +2048,8 @@
           projectInfo.Status==='Not Started'||
           ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected','Project Hold'].includes(activity)||
           ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)) ||
-          ((multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId))
+          ((multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId))||
+          (projectInfo.Project_Block==='003'&&projectInfo.Status.includes('Delay'))
           ">
 
       <div class="kt-Note-msg  d-flex">
@@ -2314,6 +2321,66 @@
       </div>
 
 
+        <ng-container *ngIf="projectInfo&&projectInfo.Status=='Not Started'">
+            <div class="notification not-star" *ngIf="projectInfo.ResponsibleEmpNo==Current_user_ID">
+                <svg width="22px" height="22px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" style="
+                    stroke: #484848;
+                    stroke-width: 2px;
+                    fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
+                    <span  class="notif-msg" style=" cursor: pointer;">Please submit the draft to start working on the project.</span>
+            </div>
+
+            <div class="notification not-star cursor-pointer" *ngIf="projectInfo.ResponsibleEmpNo!=Current_user_ID">
+                <svg width="22px" height="22px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" style="
+                stroke: #484848;
+                stroke-width: 2px;
+                fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
+
+                <span class="notif-msg" style=" cursor: pointer;">
+                Please inform the responsible of the project to submit the draft to start working on the project.</span>
+            </div>
+        </ng-container>
+
+
+        <div *ngIf="(totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)" class="notification stdtask-underapproval-notification">
+            <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
+                enable-background="new 0 0 64 64" xml:space="preserve" style="
+                fill: #00a2eb;">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g>
+                        <path
+                            d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z">
+                        </path>
+                        <path
+                            d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z">
+                        </path>
+                        <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path>
+                        <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path>
+                        <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path>
+                        <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path>
+                        <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path>
+                    </g>
+                </g>
+            </svg>
+            <span class="notif-msg fs-6" style="color:#00a2eb">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
+
+            <button title="view all task approvals" class="stdtaskaprv-open-btn  curser-pointer " (click)="ApprovalSideBar()">
+                <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path class="arrow"
+                            d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+            </button>
 
 
 
@@ -2323,126 +2390,70 @@
 
 
 
+        </div>
 
-    <ng-container *ngIf="projectInfo&&projectInfo.Status=='Not Started'">
-          <div class="notification not-star" *ngIf="projectInfo.ResponsibleEmpNo==Current_user_ID">
-              <svg width="22px" height="22px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" style="
-                  stroke: #484848;
-                  stroke-width: 2px;
-                  fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
-                  <span  class="notif-msg" style=" cursor: pointer;">Please submit the draft to start working on the project.</span>
-          </div>
-
-          <div class="notification not-star cursor-pointer" *ngIf="projectInfo.ResponsibleEmpNo!=Current_user_ID">
-              <svg width="22px" height="22px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" style="
-              stroke: #484848;
-              stroke-width: 2px;
-              fill: none;"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><defs ></defs><line  x1="16.77" y1="12.95" x2="16.77" y2="17.73" class="cls-1"></line><line  x1="16.77" y1="18.68" x2="16.77" y2="20.59" class="cls-1"></line><circle cx="16.77" cy="16.77" r="5.73" class="cls-1"></circle><polyline  points="9.14 20.59 1.5 20.59 1.5 1.5 16.77 1.5 16.77 9.14" class="cls-1"></polyline><line  x1="4.36" y1="5.32" x2="13.91" y2="5.32" class="cls-1"></line><line  x1="4.36" y1="9.14" x2="13.91" y2="9.14" class="cls-1"></line><line  x1="4.36" y1="12.95" x2="9.14" y2="12.95" class="cls-1"></line><line  x1="4.36" y1="16.77" x2="9.14" y2="16.77" class="cls-1"></line></g></svg>
-
-            <span class="notif-msg" style=" cursor: pointer;">
-              Please inform the responsible of the project to submit the draft to start working on the project.</span>
-          </div>
-    </ng-container>
-
-
-
-
-
-
-
-    <div *ngIf="(totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)" class="notification stdtask-underapproval-notification">
-      <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
-          enable-background="new 0 0 64 64" xml:space="preserve" style="
-          fill: #00a2eb;">
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-          <g id="SVGRepo_iconCarrier">
-              <g>
-                  <path
-                      d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z">
-                  </path>
-                  <path
-                      d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z">
-                  </path>
-                  <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path>
-                  <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path>
-                  <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path>
-                  <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path>
-                  <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path>
-              </g>
-          </g>
-      </svg>
-      <span class="notif-msg fs-6" style="color:#00a2eb">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
-
-      <button title="view all task approvals" class="stdtaskaprv-open-btn  curser-pointer " (click)="ApprovalSideBar()">
-        <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-                <path
-                    d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
-                    stroke-linecap="round" stroke-linejoin="round"></path>
-                <path class="arrow"
-                    d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
-                    stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </svg>
-    </button>
+        <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification">
+            <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
+                enable-background="new 0 0 64 64" xml:space="preserve" style="
+                fill: #00A2EB;">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g>
+                        <path
+                            d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z">
+                        </path>
+                        <path
+                            d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z">
+                        </path>
+                        <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path>
+                        <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path>
+                        <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path>
+                        <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path>
+                        <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path>
+                    </g>
+                </g>
+            </svg>
+            <span class="notif-msg fs-6" style="color:#00a2eb">You have {{multiapproval_list.length}}  item pending approval.</span>
+            <button class="reqaccess-open-btn  curser-pointer " (click)="MultipleApprovalSideBar()">
+                <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path class="arrow"
+                            d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+            </button>
+        </div>
 
 
-
-
-
-
-
-
-
-  </div>
-
-
-
-
-
-  <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification">
-    <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
-        enable-background="new 0 0 64 64" xml:space="preserve" style="
-        fill: #00A2EB;">
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-            <g>
-                <path
-                    d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z">
-                </path>
-                <path
-                    d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z">
-                </path>
-                <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path>
-                <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path>
-                <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path>
-                <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path>
-                <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path>
-            </g>
-        </g>
-    </svg>
-    <span class="notif-msg fs-6" style="color:#00a2eb">You have {{multiapproval_list.length}}  item pending approval.</span>
-    <button class="reqaccess-open-btn  curser-pointer " (click)="MultipleApprovalSideBar()">
-        <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-                <path
-                    d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
-                    stroke-linecap="round" stroke-linejoin="round"></path>
-                <path class="arrow"
-                    d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
-                    stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </svg>
-    </button>
-  </div>
+        <div class="notification delay-notification" *ngIf="projectInfo.Project_Block==='003'&&projectInfo.Status.includes('Delay')">
+            <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g>
+                        <path
+                            d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
+                        </path>
+                        <path
+                            d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+            <span class="notif-msg" style="color:#ff2727 ">
+                This standard task submission is delayed by {{taskDelayedby}} {{taskDelayedby>1?'days':'day'}}. The last submission was on {{projectInfo.taskSubmit|date:'mediumDate'}}
+            </span>
+      
+      
+        </div>
 
 
 <!--this is new
@@ -2489,7 +2500,6 @@
 
        </div>
       </div>
-
       </ng-container>
 
 </ng-container>
@@ -2659,51 +2669,41 @@
 
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
-                                              <div class="kt-project-type " *ngSwitchCase="'Delay'">
-                                                  <div class="Kt-Pd-Status Delay">Delay
-                                                      {{projectInfo&&projectInfo.Delaydays
-                                                      }} days </div>
-                                              </div>
+                                            <div class="kt-project-type " *ngSwitchCase="'Delay'">
+                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} days </div>
+                                            </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'Completed'">
+                                            <div class="kt-project-type" *ngSwitchCase="'Completed'">
                                                   <div class="Kt-Pd-Status Done"> Completed </div>
-                                              </div>
+                                            </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'InProcess'">
+                                            <div class="kt-project-type" *ngSwitchCase="'InProcess'">
                                                   <div class="Kt-Pd-Status Inprocess "> In-process </div>
-                                              </div>
+                                            </div>
 
+                                            <div class="kt-project-type" *ngSwitchCase="'New Project Rejected'">
+                                                  <div class="Kt-Pd-Status NewProjectRejected">New project rejected</div>
+                                            </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'New Project Rejected'">
-                                                  <div class="Kt-Pd-Status NewProjectRejected">New project rejected
-                                                  </div>
-                                              </div>
-
-
-                                              <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
+                                            <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
                                                   <div class="Kt-Pd-Status new-project-under"> New approval </div>
-                                              </div>
+                                            </div>
 
-                                              <div class="kt-project-type"
-                                                  *ngSwitchCase="'Completion Under Approval'">
-                                                  <div class="Kt-Pd-Status CompletionUnderApproval"> Completion approval
-                                                  </div>
-                                              </div>
+                                            <div class="kt-project-type" *ngSwitchCase="'Completion Under Approval'">
+                                                  <div class="Kt-Pd-Status CompletionUnderApproval"> Completion approval</div>
+                                            </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'Forward Under Approval'">
-                                                  <div class="Kt-Pd-Status ForwardUnderApproval"> Forward approval
-                                                  </div>
-                                              </div>
+                                            <div class="kt-project-type" *ngSwitchCase="'Forward Under Approval'">
+                                                  <div class="Kt-Pd-Status ForwardUnderApproval"> Forward approval</div>
+                                            </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'Enactive Under Approval'">
-                                                  <div class="Kt-Pd-Status EnactiveUnderApproval"> EnActive approval
-                                                  </div>
-                                              </div>
+                                            <div class="kt-project-type" *ngSwitchCase="'Enactive Under Approval'">
+                                                  <div class="Kt-Pd-Status EnactiveUnderApproval"> EnActive approval</div>
+                                            </div>
 
-                                              <div class="kt-project-type" *ngSwitchCase="'Deadline Extend Under Approval'">
-                                                  <div class="Kt-Pd-Status DeadlineExtend"> Deadline extend approval
-                                                  </div>
-                                              </div>
+                                            <div class="kt-project-type" *ngSwitchCase="'Deadline Extend Under Approval'">
+                                                  <div class="Kt-Pd-Status DeadlineExtend"> Deadline extend approval</div>
+                                            </div>
 
                                             <div class="kt-project-type" *ngSwitchCase="'Cancelled'">
                                                   <div class="Kt-Pd-Status Cancelled"> Cancelled </div>
@@ -2726,14 +2726,9 @@
                                             </div>
 
 
-                                      <div class="kt-project-type "
-                                      *ngSwitchCase="'Not Started'">
-                                      <div class="Kt-Pd-Status not-started"> Draft
-                                      </div>
-                                   </div>
-
-
-
+                                            <div class="kt-project-type " *ngSwitchCase="'Not Started'">
+                                               <div class="Kt-Pd-Status not-started"> Draft</div>
+                                            </div>
 
                                               <!-- <div class="kt-project-type">
                                                 <div class="Kt-Pd-Status" >
@@ -2741,30 +2736,13 @@
                                                 </div>
                                               </div> -->
 
-
-
                                           <ng-container *ngSwitchDefault>
                                             <div  *ngIf="projectInfo&&projectInfo.Project_Block=='003'"  class="kt-project-type ">
-                                                <div class="Kt-Pd-Status Delay">{{projectInfo.Status}}
-                                                   </div>
+                                                <div class="Kt-Pd-Status Delay">{{projectInfo.Status}}</div>
                                              </div>
                                           </ng-container>
 
-
-
-
-
-
-
-
-
                                          </div>
-
-
-
-
-
-
 
                                       </div>
                                       <div class="kt-project-desc w-80">
@@ -2817,7 +2795,7 @@
                                                       <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
                                                           (click)="approvalClick('EDIT')">Edit & Accept</button>
                                                   </div> -->
-                                                  <div class="kt-detail-link">
+                                                  <div class="kt-detail-link    d-none   ">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
                                                   <span class="kt-detail-iconname">Project Audit</span></div>
                                                           <div
@@ -2849,7 +2827,7 @@
 
 
                                                     <!-- Project Audit -->
-                                                    <div class="mt-2">
+                                                    <div class="mt-2 d-none">
                                                         <div class="mb-2">
                                                             <label>Select User<span class="text-danger">*</span></label>
                                                         <ng-select required #action="ngModel" name="rej_type"
@@ -2867,7 +2845,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- Conditional Assign-->
-                                                    <div class="mt-2">
+                                                    <div class="mt-2 d-none">
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="mb-2">
@@ -4027,6 +4005,13 @@
                                                       projectInfo.OwnerEmpNo===Current_user_ID||
                                                       projectInfo.ResponsibleEmpNo===Current_user_ID
                                                       )&&projectActionInfo[currentActionView].Status!='Completed'" (click)="cancelAction(currentActionView)"   >Action cancel</button>
+
+
+                                                    <!-- <button class=" Bt-newprj-release  ml-2" (click)="openNewPrjReleaseSideBar()"
+                                                    *ngIf="projectActionInfo[currentActionView].Status=='New Project Rejected' && (Current_user_ID == projectInfo.ResponsibleEmpNo||Current_user_ID==projectInfo.OwnerEmpNo)">New
+                                                    project release</button> -->
+
+
                                                   </div>
                                               </div>
                                           </div>
@@ -4379,19 +4364,16 @@
                                                               <div class="row mt-3">
                                                                   <div class="col-lg-12 p-0">
                                                                       <div class="kt-info-pg-btns">
-                                                                          <button type="button" data-to="#pills-3-tab"
-                                                                              (click)="removeCommit()"
-                                                                              (click)="Close_Comments()"
-                                                                              class="btn btn-project-stv mr-3 ">Close</button>
+                                                                          
                                                                           <span>
                                                                               <button (click)="submitApproval()"
                                                                                   type="button" *ngIf="Accept_active"
                                                                                   data-to="#pills-3-tab"
-                                                                                  class="btn btn-project-stv Bt-Submit"
+                                                                                  class="btn btn-project-stv Bt-Submit p-2"
                                                                                   primary="true">Submit</button>
 
                                                                               <button type="submit"
-                                                                                  class="btn btn-project-stv Bt-Submit"
+                                                                                  class="btn btn-project-stv Bt-Submit p-2"
                                                                                   *ngIf="Conditional_Active || Reject_active"
                                                                                   data-to="#pills-3-tab"
                                                                                   (click)="submitApproval()"
@@ -4402,7 +4384,7 @@
                                                                           <button type="button" data-to="#pills-3-tab"
                                                                               (click)="removeCommit()"
                                                                               (click)="Close_Comments()"
-                                                                              class="btn btn-project-stv mr-3 ">Close</button>
+                                                                              class="btn btn-project-stv ml-3 p-2">Close</button>
                                                                       </div>
                                                                   </div>
                                                               </div>
@@ -11797,63 +11779,32 @@
                                       <div class="height-scroll h-scr">
                                           <div class="px-4 py-3">
 
-                                            <!-- <div style="
-                                            margin-bottom: 18px;
-                                        ">
-                                                <div style="
-                                        ">
-                                                <span style="
-                                            margin: 0;
-                                        ">from Aquib shahbaz</span>
-
-                                                </div>
-
-                                                <div style="
-                                            font-weight: 500;
-                                            border: 1px solid #f5f6fc;
-                                            padding: 0.5em 1em;
-                                            background-color: #f5f6fc;
-                                            border-radius: 0px;
-                                            font-size: 12px;
-                                            display: flex;
-                                            flex-direction: column;
-                                        ">
-                                            <span style="
-                                            background-color: #f5f6fc;
-                                            color: #646c9a;
-                                            font-family: Lucida Sans Unicode;
-                                            font-size: 8px;
-                                            align-self: flex-end;
-                                            padding: 2px;
-                                            font-weight: bold;
-                                        ">Reject comments</span>
-
-                                                  <ng-container *ngFor="let item of lastactivity">
-
-                                                    <span>{{item.Req_Coments}}</span>
-                                                </ng-container>
-                                        </div>
-
-                                            </div> -->
-
-
-
-
-
-                                              <div class="form-group mb-1 d-flex"><b>Project:</b>
-                                                   <span>{{projectInfo&&projectInfo.Project_Name}}</span>
-                                              </div>
-                                               <div class="form-group mb-1">
-
-                                                  <ng-container *ngFor="let item of lastactivity">
-                                                      <h6 class="mb-1"
-                                                          *ngIf="activity=='New Project Rejected' || activity=='New Action Rejected'">
-                                                          {{activity}} for "{{item.rejectType}}".
-                                                      </h6>
-                                                      <h6> <strong>Reject comments:</strong>
-                                                          {{item.Req_Coments}}</h6>
-                                                  </ng-container>
-                                              </div>
+                                        <ng-container *ngFor="let item of lastactivity">
+                                            <div _ngcontent-xxd-c397="" style="font-weight: 500; border: 1px solid #f5f6fc; padding: 0.5em 1em; background-color: #f5f6fc; border-radius: 0px; font-size: 12px; display: flex; flex-direction: column;"><span _ngcontent-xxd-c397="" style="background-color: #f5f6fc;color: #646c9a;font-family: Lucida Sans Unicode;font-size: 9px;align-self: flex-end;padding: 2px;font-weight: bold;">{{item.Empname}}</span><div style="
+                                                display: flex;
+                                                flex-direction: column;
+                                                margin-bottom: 15px;
+                                            ">
+                                              <span _ngcontent-xxd-c397="" style="background-color: #f5f6fc;color: #808080c9;font-size: 9px;align-self: flex-start;">Rejected due to :</span> 
+                                            <span _ngcontent-xxd-c397="" style="
+                                                margin-top: 2px;
+                                            ">{{item.rejectType}}</span> 
+                                            </div>
+                                            
+                                            
+                                            
+                                            
+                                            <div style="
+                                                display: flex;
+                                                flex-direction: column;
+                                                margin-bottom: 15px;
+                                            ">
+                                              <span _ngcontent-xxd-c397="" style="background-color: #f5f6fc;color: #808080c9;font-size: 9px;align-self: flex-start;">Reject comments :</span> 
+                                            <span _ngcontent-xxd-c397="" style="
+                                                margin-top: 2px;
+                                            ">{{item.Req_Coments}}</span> 
+                                            </div></div>
+                                        </ng-container>
 
                                               <div class="form-group mb-1">
                                                   <label>Remarks<span class="text-danger">*</span></label>
