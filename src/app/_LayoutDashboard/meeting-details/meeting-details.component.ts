@@ -329,7 +329,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
   View_Meeting_Attendees() {
     document.getElementById("Meeting_Attendees").classList.add("kt-quick-active--on");
-    this.GetProjectAndsubtashDrpforCalender();
+    this.meeting_details();
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
