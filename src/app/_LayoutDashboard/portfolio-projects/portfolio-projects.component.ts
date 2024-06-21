@@ -55,6 +55,7 @@ import { LinkService } from 'src/app/_Services/link.service';
 import { helpers } from 'chart.js';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { FormControl } from '@angular/forms';
 declare var ApexCharts: any;
 
 @Component({
@@ -207,6 +208,7 @@ export class PortfolioProjectsComponent implements OnInit {
   Avaliabletime: any[];
   objProjectDto: ProjectDetailsDTO;
   portfolioid: any;
+  fruitInput: any;
 
   constructor(
     private el: ElementRef,
@@ -300,8 +302,9 @@ export class PortfolioProjectsComponent implements OnInit {
   availablereport:any
   Availableport:any
   Portfolio : any[]
-
+  Employeshare:any[]
   GetPortfolioProjectsByPid() {
+    debugger
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -321,6 +324,7 @@ export class PortfolioProjectsComponent implements OnInit {
     //this.LoadingBar_state.start();
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => {
+debugger
         this._MessageIfNotOwner = data[0]['message'];
 
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
@@ -330,7 +334,9 @@ export class PortfolioProjectsComponent implements OnInit {
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         this.lastProject = this._ProjectsListBy_Pid.length;
-        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
+        this.Employeshare =JSON.parse(data[0]['Employee_Json'])
+        console.log( this.Employeshare,'employeeeeeeeeeeee')
+        console.log("Portfolio Projects---->", data);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
@@ -475,10 +481,10 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Share_preferences = false;
         this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
         if (this.PreferenceTpye == 1) {
-          if (this.With_Data[0].Preferences == "View Only") {
+          if (this.With_Data && this.With_Data.length > 0 && this.With_Data[0].Preferences === "View Only") {
             this.Share_preferences = true;
-          }
-          else if (this.With_Data[0].Preferences == "Full Access") {
+        }
+          else if (this.With_Data[0] && this.With_Data[0].Preferences == "Full Access") {
             this.Share_preferences = false;
           }
         }
@@ -712,13 +718,11 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   ngCompanyDropdown: any;
 
   share_Users() {
-
-    document.getElementById("shareBar").style.width = "400px";
+    document.getElementById("shareBar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
     //SnackBar Dismiss
   }
-
   OnCompanySelect(CompNo: string) {
     this.ngEmployeeDropdown = null;
     this._ErrorMessage_comp = "";
@@ -797,25 +801,27 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this._ErrorMessage_Pref = "";
     this._Preferences = val;
   }
-
+  shararrayseprate:any
   share() {
-    if (this.CompanyDropdown == undefined) {
-      return this._ErrorMessage_comp = "* Please Select Company";
-    }
-    if (this.EmployeeDropdown == undefined) {
+    // if (this.CompanyDropdown == undefined) {
+    //   return this._ErrorMessage_comp = "* Please Select Company";
+    // }
+    debugger
+    if (this.shareToEmplys == undefined) {
       return this._ErrorMessage_User = "* Please Select User Name";
     }
     if (this.preferences == null) {
       return this._ErrorMessage_Pref = "* Please Select Preferences";
     }
-    if (this.Current_user_ID == this.EmployeeDropdown.replace(/\s/g, "")) {
+    if (this.Current_user_ID == this.shareToEmplys[0]) {
       this.notifyService.showInfo("You Can't Share Portfolio by yourSelf", "");
 
-    }
+     }
     else {
-      if (this.CompanyDropdown != undefined && this.EmployeeDropdown != undefined && this.preferences != null) {
-        this.ObjSharePortfolio.CompanyId = this._CompanyNo;
-        this.ObjSharePortfolio.EmployeeId = this._SelectedEmpIds_String;
+      //  this.shararrayseprate = this.shareToEmplys.join(', ')
+      if (this.shareToEmplys != undefined && this.preferences != null) {
+        this.ObjSharePortfolio.CompanyId = '400';
+        this.ObjSharePortfolio.EmployeeId = this.shareToEmplys.join(',');
         this.ObjSharePortfolio.Portfolio_ID = this.Url_portfolioId;
         this.ObjSharePortfolio.Preference = this._Preferences;
         this.ObjSharePortfolio.Shared_By = this.Current_user_ID;
@@ -834,6 +840,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   Close_ShareModel() {
     this.CompanyDropdown = "";
     this.EmployeeDropdown = "";
+    this.shareToEmplys=[]
+    // this.shareToEmplys=''
+    // this.Employeshare =[]
     this._ErrorMessage_comp = "";
     this._ErrorMessage_User = "";
     this._ErrorMessage_Pref = "";
@@ -841,6 +850,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // this.ngEmployeeDropdown.size == 0;
     this.ngCompanyDropdown = [];
     this.ngEmployeeDropdown = [];
+
     this.closebutton.nativeElement.click();
   }
 
@@ -1136,7 +1146,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
           this.service.GetProjectsBy_portfolioId(p_id)
             .subscribe((data) => {
               this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
-              //console.log(this._ShareDetailsList)
+              console.log(this._ShareDetailsList)
               if (this._ShareDetailsList == 0) {
                 this._btnShareDetails = true;
               }
@@ -1165,6 +1175,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labeldeletedproject(){
+
     this.showDeletedPrjOnly=true;
     this._PortProjStatus = "";
   }
@@ -1193,6 +1204,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labelDelay() {
+    debugger
     this._PortProjStatus = "Delay";
     this.showDeletedPrjOnly=false;
   }
@@ -1204,6 +1216,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labelCompleted() {
+    debugger
     this._PortProjStatus = 'Completed';
     this.showDeletedPrjOnly=false;
     console.log('_PortProjStatus:',this._PortProjStatus);
@@ -1211,6 +1224,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelNewProject() {
+    debugger
     this._PortProjStatus = "New Project";
     this.showDeletedPrjOnly=false;
     if (this._PortProjStatus.includes('New Project')) {
@@ -1219,6 +1233,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelRejecteds() {
+    debugger
     this._PortProjStatus = "New Project Rejected";
     this._PortProjStatus.includes('Rejected');
     this.showDeletedPrjOnly=false;
@@ -1611,7 +1626,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
   _CloseshareBar() {
     this.Close_ShareModel();
-    document.getElementById("shareBar").style.width = "0";
+    document.getElementById("shareBar").classList.remove("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
@@ -3832,6 +3847,7 @@ isParticipantDrpDwnOpen:boolean=false;
 isDMSMemoDrpDwnOpen:boolean=false;
 isPortfolioDrpDwnOpen:boolean=false;
 isProjectDrpDwnOpen:boolean=false;
+isEmployeeDrpDwnOpen:boolean=false
  openAutocompleteDrpDwn(Acomp:string){
   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
   requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
@@ -4475,6 +4491,94 @@ loadGanttChart(){
   chart.render();
 
 }
+
+
+
+
+ shareToEmplys:any=[];
+onEmployeeSelected(e:any){
+debugger
+  const employeeChoosed=this.Employeshare.find((p:any)=>p.Emp_No===e.option.value);
+
+  if(employeeChoosed){
+    if(!this.shareToEmplys)
+      this.shareToEmplys=[]
+
+       const index=this.shareToEmplys.indexOf(employeeChoosed.Emp_No);
+       if(index===-1){
+          // if not present then add it
+          this.shareToEmplys.push(employeeChoosed.Emp_No);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.shareToEmplys.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('employee2shareDrpDwn');
+}
+removeSelectedemployee(item){
+  const index=this.shareToEmplys.indexOf(item);
+  if(index!==-1){
+    this.shareToEmplys.splice(index,1);
+  }
+}
+
+getObjOf(arr, id, idName) {
+  const obj = arr.find(item => item[idName] == id);
+  return obj;
+}
+
+
+// fruitCtrl = new FormControl();
+// selectedEmployees: any = [];
+// selectedEmpIds: any = [];
+
+// nonRacisList:any[]
+// isSelection: boolean =false;
+// isSupportDrpDwnOpen:boolean=false;
+
+//   selectedChip(event: MatAutocompleteSelectedEvent): void {
+//     // this._keeppanelopen();
+//     const selectedEmployee = this.nonRacisList.find((fruit) => fruit.Emp_No === event.option.value);
+//     if (selectedEmployee) {
+//       const index = this.selectedEmployees.findIndex((emp) => emp.Emp_No === selectedEmployee.Emp_No);
+
+//       if (index === -1) {
+//         // Employee not found in the selected array, add it
+//         this.selectedEmployees.push(selectedEmployee);
+//         this.selectedEmpIds.push(selectedEmployee.Emp_No);
+//       } else {
+//         // Employee found in the selected array, remove it
+//         this.selectedEmployees.splice(index, 1);
+//         this.selectedEmpIds.splice(index, 1);
+//       }
+//     }
+
+//     this.fruitInput.nativeElement.value = '';
+//     this.filteredEmployees = this.nonRacisList;
+//     console.log(this.selectedEmpIds, "selected")
+//   }
+
+//   isSelectedChip(employee: any): boolean {
+//     return this.selectedEmployees.some((emp) => emp.Emp_No === employee.Emp_No);
+//   }
+
+
+
+
+
+// // selectedEmployees:any[]
+
+
+// filterEmployees(input: string): void {
+//   this.isSelection = true;
+//   this.Employeshare = this.nonRacisList.filter((employee) =>
+//     employee.NonRACIS.toLowerCase().includes(input.toLowerCase())
+//   );
+// }
+
+
+
+
 
 
 
