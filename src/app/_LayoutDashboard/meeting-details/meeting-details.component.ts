@@ -489,7 +489,7 @@ meeting_details(){
 
     //console.log(this.totalAgendaList,'sdfb') 
 
-    var x =this.Agendas_List.length
+    var x =this.Agendas_List.length;
 
     this.Createdby=this.EventScheduledjson[0].Created_by;
     this.main_actualDuration=this.EventScheduledjson[0].actual_duration;
@@ -1921,7 +1921,7 @@ AgendaId:any
 
 
 showAgendaDetails(item,index){
-    if(this.meetingInProgress==true || this.Meetingstatuscom=='Completed'){
+    if(this.meetingInProgress==true){
       this.AgendaId=item.AgendaId
       this.currentAgendaView=index
       this.GetAssigned_SubtaskProjects()
@@ -2304,21 +2304,18 @@ GetcompletedMeeting_data() {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
     (data => {
-     
       this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
       this.meeting_details();
       if(this.CompletedMeeting_notes!=null && this.CompletedMeeting_notes!=undefined && this.CompletedMeeting_notes!=''){
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
 
           this.AttendeeCount=this.CompletedMeeting_notes[0].online_count;
-           console.log(this.AttendeeCount, 'AttendeeCount');
           this.actualTime_S=this.CompletedMeeting_notes[0].Actual_Start;
           this.separateTime(this.actualTime_S);
           this.actualTime_E=this.CompletedMeeting_notes[0].Actual_End;
           this.separateTime(this.actualTime_E);
           this.actualTime_dur=this.CompletedMeeting_notes[0].Actual_Dur;
           this.convertDuration(this.actualTime_dur);
-          debugger
           this.AverageDuration=this.CompletedMeeting_notes[0].Average_Dur;
           this.convertDuration(this.AverageDuration);
     
@@ -2331,7 +2328,7 @@ GetcompletedMeeting_data() {
         const hours = Math.floor(durationInMinutes / 60);
         const minutes = durationInMinutes % 60;
         this.actualDuration = moment({ hour: hours, minute: minutes }).format('HH:mm');
-      
+       // console.log(duration.asMinutes(), 'duration in minutes');
 
 
 
@@ -2371,30 +2368,13 @@ starthour: any;
 endhour: any;
 startperiod: any;
 endperiod: any;
-// separateTime(time: string) {
-
-//   const [hour, period] = time.split(' ');
-//   if(time==this.actualTime_S){
-//     this.starthour = hour;
-//     this.startperiod = period;
-//   }
-//   else if(time==this.actualTime_E){
-//     this.endhour = hour;
-//     this.endperiod = period;
-//   }
-// }
-
-
-
-
-separateTime(time: string | undefined) {
-
-  if (!time) return; // Return early if time is undefined or null
+separateTime(time: string) {
   const [hour, period] = time.split(' ');
-  if (time === this.actualTime_S) {
+  if(time==this.actualTime_S){
     this.starthour = hour;
     this.startperiod = period;
-  } else if (time === this.actualTime_E) {
+  }
+  else if(time==this.actualTime_E){
     this.endhour = hour;
     this.endperiod = period;
   }
