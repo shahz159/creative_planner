@@ -1940,7 +1940,7 @@ AgendaId:any
 
 
 showAgendaDetails(item,index){
-    if(this.meetingInProgress==true){
+    if(this.meetingInProgress==true || this.Meetingstatuscom=='Completed'){
       this.AgendaId=item.AgendaId
       this.currentAgendaView=index
       this.GetAssigned_SubtaskProjects()
