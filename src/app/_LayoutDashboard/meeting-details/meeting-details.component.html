@@ -1110,7 +1110,7 @@
                                                         [ngClass]="{'Active':currentAgendaView===i,
                                                         'kt-agendas-item': Isadmin ===true}
                                                         ">
-                                                        <ng-container  *ngIf="Meetingstatuscom==Completed"
+                                                        <ng-container  *ngIf="Meetingstatuscom=='Completed'"
                                                         >
                                                         <label *ngIf="Isadmin==true "
                                                             class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
@@ -1165,7 +1165,7 @@
                                                                         <div  class="kt-info-lable-v-date"> {{item.Creation_date|date:'dd-MM-YYYY'}} </div>
                                                                     </div>
                                                             </div>
-                                                            <ng-container  *ngIf="Meetingstatuscom==Completed">
+                                                            <ng-container  *ngIf="Meetingstatuscom=='Completed'">
                                                             <div class="agenda-edit">
                                                                 <button *ngIf="Isadmin==true " [id]="'edit-agendaname-btn-'+i"
                                                                     class="edit-agendaname-btn" (click)="editAgenda(i)">
@@ -1246,7 +1246,7 @@
                                                     <div  *ngIf="item.Status==1 "  class="kt-agenda-items"
                                                         [ngClass]="{'Active':currentAgendaView===i}">
 
-                                                        <ng-container  *ngIf="Meetingstatuscom==Completed">
+                                                        <ng-container  *ngIf="Meetingstatuscom=='Completed'">
                                                         <label *ngIf="Isadmin==true "
                                                         class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                                         <input type="checkbox" (click)="UndoCompleteAgenda()" name="Checkboxes15" checked />
@@ -1627,9 +1627,9 @@
 
 
 
-                                <div class="Kt-Pd-Status Done"  *ngIf="Meetingstatuscom!=Completed">Completed Meeting Report</div>
+                                <div class="Kt-Pd-Status Done"  *ngIf="Meetingstatuscom!='Completed'">Completed Meeting Report</div>
 
-                                <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
+                                <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom=='Completed'">
                                   
                                     <!-- <ng-container *ngIf="meetingInProgress">
                                      <div class="kt-meeting-status hold" *ngIf="play" (click)="pauseMeeting()" >
@@ -2528,7 +2528,7 @@
                                     <span class="kt-meeting-title-name">Agenda Notes</span>
                                 </div>
 
-                                <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom==Completed)">
+                                <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom=='Completed')">
                                     <div class="Kt-agenda-done"  *ngIf="Agendas_List[currentAgendaView].Status==1 "> Completed </div>
                                   </ng-container>
                                 <div class="kt-btn-notes-div" >
@@ -3701,7 +3701,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container *ngIf="Meetingstatuscom==Completed" >
+            <ng-container *ngIf="Meetingstatuscom=='Completed'" >
             <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                 <div class="matchip-drp-dwn">
                     <mat-form-field class="drp-dwn-field ">
@@ -3766,7 +3766,7 @@
 
                         <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                         <!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> -->
-                        <ng-container *ngIf="Meetingstatuscom==Completed">
+                        <ng-container *ngIf="Meetingstatuscom=='Completed'">
                         <ng-container *ngIf="Isadmin==true">
                         <ng-container *ngFor="let item of EventScheduledjson">
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -3841,7 +3841,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container  *ngIf="Meetingstatuscom==Completed"> 
+            <ng-container  *ngIf="Meetingstatuscom=='Completed'"> 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
                 <mat-form-field class="drp-dwn-field w-100">
                     <mat-label>Select Portfolios</mat-label>
@@ -3930,7 +3930,7 @@
                                     <a (click)="DeletePortfolios(data.numberval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> --> 
-                                    <ng-container *ngIf="Meetingstatuscom==Completed" >  
+                                    <ng-container *ngIf="Meetingstatuscom=='Completed'" >  
                                      <ng-container *ngIf="Isadmin==true">
                                      <ng-container *ngFor="let item of EventScheduledjson">
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
@@ -4503,7 +4503,7 @@
                 </div>
                 <div class="kt-nav__separator"></div>
             </li>
-            <ng-container *ngIf="Meetingstatuscom==Completed" > 
+            <ng-container *ngIf="Meetingstatuscom=='Completed'" > 
             <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
 
 
@@ -4592,7 +4592,7 @@
                                     <a (click)="DeleteProject(item.stringval)">
                                         <i class="fas fa-trash-alt"></i>
                                     </a> -->
-                                    <ng-container *ngIf="Meetingstatuscom==Completed"> 
+                                    <ng-container *ngIf="Meetingstatuscom=='Completed'"> 
                                     <ng-container *ngIf="Isadmin==true">
                                     <ng-container *ngFor="let data of EventScheduledjson">
                                         <ng-container *ngIf="data.Recurrence==='Do not repeat'">
@@ -6555,7 +6555,7 @@
                 </h4>
 
                 <div class="d-flex align-items-center">
-                    <ng-container *ngIf="Meetingstatuscom==Completed"> 
+                    <ng-container *ngIf="Meetingstatuscom=='Completed'"> 
                     <button id="upload_btn" class="btn-silvr" (click)="upload_btn()">
                         <!-- *ngIf="Isadmin==true"   -->
                         <span>
