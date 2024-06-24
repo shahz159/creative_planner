@@ -443,6 +443,7 @@ meeting_details(){
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data)=>{ 
    
     this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+    console.log("admin",this.EventScheduledjson);
     this.Agendas_List=this.EventScheduledjson[0].Agendas;
  
     this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
