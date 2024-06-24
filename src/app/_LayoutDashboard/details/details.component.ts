@@ -170,6 +170,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ProjDto:ProjectDetailsDTO|undefined;
   formFieldsRequired:boolean=false;
   isLoadingData:boolean|undefined;
+  taskDelayedby:number|undefined;
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -895,6 +896,13 @@ this.prjPIECHART.render();
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
+      if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
+          let regex=/[0-9]+/;
+          const result=regex.exec(this.projectInfo.Status);
+          if(result)
+          this.taskDelayedby=+result[0].trim();
+      }
+
       if(['001','002','011'].includes(this.projectInfo.Project_Block)){
         
         const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
@@ -6816,18 +6824,19 @@ holdcontinue(Pcode:any){
         //   this.notifyService.showSuccess(this._Message, 'Success');
         // }
         this.closeInfo();
+        this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
         this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
-
+ 
   notachieveStandard() {
     if(this._remarks==''){
       this.formFieldsRequired=true;
       return;
     }
 
-
+ 
     this.selectedFile = null;
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
@@ -6854,6 +6863,7 @@ holdcontinue(Pcode:any){
         this.closeInfo();
 
       });
+      this.getProjectDetails(this.URL_ProjectCode);
       this.getapprovalStats();
       this._projectSummary.GetProjectsByUserName('RACIS Projects');
   }

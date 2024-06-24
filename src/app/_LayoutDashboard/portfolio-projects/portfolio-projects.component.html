@@ -806,15 +806,9 @@
 
 
 
-
-
-
-
-
-
                                             <ng-container *ngIf="!showDeletedPrjOnly">
                                                 <td>
-                                                    <div *ngIf="item1.Status=='Delay'">
+                                                  <div *ngIf="item1.Status=='Delay'">
                                                       <span
                                                           class="Delay_color font-weight-400">{{item1.Status}}
 
@@ -834,11 +828,7 @@
                                                            <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
                                                             <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                         </span>
-
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
-
-
-
                                                   </div>
                                                   <div *ngIf="item1.Status=='InProcess'">
                                                       <span
@@ -943,6 +933,10 @@
                                                           >{{item1.Status}}
                                                       </span>
                                                   </div>
+                                                 <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')">
+                                                    <span class="Delay_color font-weight-400">{{item1.Status}}</span>
+                                                 </div>
+
                                                 </td>
                                               </ng-container>
 
@@ -976,7 +970,7 @@
 
 
 
-<ng-container *ngIf="showDeletedPrjOnly">
+                                        <ng-container *ngIf="showDeletedPrjOnly">
                                              <td>
                                               <div *ngIf="item1.Status=='Delay'">
                                                 <span
@@ -1100,43 +1094,29 @@
                                                     >{{item1.Status}}
                                                 </span>
                                             </div>
-                                          </td>
-
-
-
+                                            </td>
                                         </ng-container>
 
 
 
+                        <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
+                            <span class="Delay_color curser-pointer">Deleted </span>
+                                <!-- <div class="d-flex align-items-center justify-content-start">
 
+                            <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
+                            <ng-container *ngIf="item1.Deleted_by">
+                                {{ item1.Deleted_by }} |
+                            </ng-container>
+                            {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
+                                        </div> -->
+                        <span class="attach-tippy">
+                            <b class="fa fa-trash text-info attachment" ></b>
+                        <span class="st-line">
+                            <div style="width: max-content;">Deleted by: <h6>{{item1.Deleted_by}} </h6></div>
+                            <div>on: {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}</div></span>
+                        </span>
 
-
-
-
-
-
-
-
-
-
-                <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
-                    <span class="Delay_color curser-pointer">Deleted </span>
-                         <!-- <div class="d-flex align-items-center justify-content-start">
-
-                     <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
-                      <ng-container *ngIf="item1.Deleted_by">
-                        {{ item1.Deleted_by }} |
-                      </ng-container>
-                      {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
-                                   </div> -->
-                <span class="attach-tippy">
-                    <b class="fa fa-trash text-info attachment" ></b>
-                <span class="st-line">
-                    <div style="width: max-content;">Deleted by: <h6>{{item1.Deleted_by}} </h6></div>
-                    <div>on: {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}</div></span>
-                </span>
-
-                </td>
+                        </td>
 
 
 
