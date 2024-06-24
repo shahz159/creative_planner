@@ -570,10 +570,10 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')" >
+                                            <tr *ngIf="item1.Status===_PortProjStatus||item1.Status.includes('Delay')&&_PortProjStatus==='Delay'||_PortProjStatus==''">
 
                                                     <td class="icond">
-                                                        <span    class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                                        <span class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
 
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
@@ -1562,27 +1562,17 @@
                                         (optionSelected)="onEmployeeSelected($event); employeeShare2TF.value=''; "
                                         (opened)="isEmployeeDrpDwnOpen=true" (closed)="isEmployeeDrpDwnOpen=false; ">
 
-                                        <mat-option *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)" [value]="emp.Emp_No">
-
-                                          <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
-                                              {{emp.DisplayName}} - {{emp.TM_DisplayName}}
-                                      </mat-option>
+                                        <ng-container *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)">
+                                          <mat-option *ngIf="!_SharedToEmps.includes(emp.Emp_No)" [value]="emp.Emp_No">
+                                              <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
+                                                  {{emp.DisplayName}} - {{emp.TM_DisplayName}}
+                                          </mat-option>
+                                      </ng-container>
                                      </mat-autocomplete>
                                     </mat-form-field>
 
 
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 

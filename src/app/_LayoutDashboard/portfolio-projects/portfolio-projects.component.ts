@@ -56,6 +56,7 @@ import { helpers } from 'chart.js';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
+import { debug } from 'console';
 declare var ApexCharts: any;
 
 @Component({
@@ -67,6 +68,7 @@ declare var ApexCharts: any;
 export class PortfolioProjectsComponent implements OnInit {
   _PortProjStatus: string;
   _ShareDetailsList: any;
+  _SharedToEmps:any=[];
   //_PortfolioListTable: boolean;
   PortfolioList: boolean;
   //Rename_PortfolioName: any;
@@ -173,7 +175,7 @@ export class PortfolioProjectsComponent implements OnInit {
   _btnShareDetails: boolean;
   PreferenceTpye: any;
   With_Data: any;
-  Share_preferences: boolean;
+  Share_preferences: any;
   _objStatusDTO: StatusDTO;
   ObjSharePortfolio: Shareportfolio_DTO;
   _objDropdownDTO: DropdownDTO;
@@ -209,6 +211,7 @@ export class PortfolioProjectsComponent implements OnInit {
   objProjectDto: ProjectDetailsDTO;
   portfolioid: any;
   fruitInput: any;
+
 
   constructor(
     private el: ElementRef,
@@ -470,6 +473,10 @@ debugger
           allowSearchFilter: true,
         };
         this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+        if(this._ShareDetailsList){
+          debugger
+          this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
+          }
         if (this._ShareDetailsList == 0) {
           this._btnShareDetails = true;
         }
@@ -477,6 +484,7 @@ debugger
           this._btnShareDetails = false;
         }
         this.PreferenceTpye = data[0]["PreferenceType"];
+        debugger
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
         this.Share_preferences = false;
         this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
@@ -802,6 +810,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this._Preferences = val;
   }
   shararrayseprate:any
+  isElementPresent:any
   share() {
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
@@ -809,18 +818,19 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     debugger
     if (this.shareToEmplys == undefined) {
       return this._ErrorMessage_User = "* Please Select User Name";
+
     }
     if (this.preferences == null) {
       return this._ErrorMessage_Pref = "* Please Select Preferences";
     }
     if (this.Current_user_ID == this.shareToEmplys[0]) {
       this.notifyService.showInfo("You Can't Share Portfolio by yourSelf", "");
+    }
 
-     }
     else {
       //  this.shararrayseprate = this.shareToEmplys.join(', ')
       if (this.shareToEmplys != undefined && this.preferences != null) {
-        this.ObjSharePortfolio.CompanyId = '400';
+        // this.ObjSharePortfolio.CompanyId = '400';
         this.ObjSharePortfolio.EmployeeId = this.shareToEmplys.join(',');
         this.ObjSharePortfolio.Portfolio_ID = this.Url_portfolioId;
         this.ObjSharePortfolio.Preference = this._Preferences;
@@ -1138,6 +1148,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   countFav: number;
 
   deleteSharedUsers(p_id, empid, Sharedby) {
+    debugger
     var deleteProject = window.confirm('Are you sure you want to Remove ?');
     if (deleteProject) {
       //console.log(p_id, empid, Sharedby);
@@ -1146,6 +1157,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
           this.service.GetProjectsBy_portfolioId(p_id)
             .subscribe((data) => {
               this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+              if(this._ShareDetailsList){
+                this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
+                }
               console.log(this._ShareDetailsList)
               if (this._ShareDetailsList == 0) {
                 this._btnShareDetails = true;
