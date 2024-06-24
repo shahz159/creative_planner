@@ -1253,9 +1253,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelUA() {
-
+debugger
     this._PortProjStatus = "Under Approval";
-    this._PortProjStatus.includes('Under Approval')
+    // this._PortProjStatus.includes('Under Approval')
     this.showDeletedPrjOnly=false;
     console.log(this._PortProjStatus,"Under Apprval")
   }
@@ -4307,7 +4307,7 @@ closedarBar() {
 
 
 all_status={
-  'Under Approval': '#B2D732', 
+  'Under Approval': '#B2D732',
   'InProcess':'#0089FB',
   'Completed':'#62B134',
   'Delay':'#EE4137',
@@ -4318,42 +4318,42 @@ all_status={
   'New Project Rejected':'#DFDFDF',
   'Deadline Extend Under Approval':'#F88282',
   'other':'#d0d0d0'
-}; 
+};
 prj_statuses:any=[];
-loadGanttChart(){ 
+loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
-  
+
   this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
-  
+
   const _series=this._ProjectsListBy_Pid.map((prj,_index)=>{
       const color=this.all_status[prj.Status]||this.all_status['other'];
       const isDelayPrj=prj.Status=='Delay';
 
 
-      const data_ar=[{ 
-        x:`${prj.Project_Name} (${prj.Project_Code})`, 
-        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
-        fillColor:color, 
+      const data_ar=[{
+        x:`${prj.Project_Name} (${prj.Project_Code})`,
+        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
+        fillColor:color,
         index:_index
       }];
 
       const data_ar1=[
-        { 
+        {
           x:`${prj.Project_Name} (${prj.Project_Code})`,
-            y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
-            fillColor:'#0089FB', 
+            y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
+            fillColor:'#0089FB',
             index:_index
         },
         {
           x:`${prj.Project_Name} (${prj.Project_Code})`,
-          y:[new Date(prj.DeadLine).getTime(),new Date().getTime()], 
-          fillColor:'#EE4137', 
+          y:[new Date(prj.DeadLine).getTime(),new Date().getTime()],
+          fillColor:'#EE4137',
           index:_index,
         }
       ];
 
-    
+
       const obj={
           name:prj.Status,
           data:isDelayPrj?data_ar1:data_ar
@@ -4366,7 +4366,7 @@ loadGanttChart(){
 
 
 // Desired height per row in pixels
-const rowHeight = 40; 
+const rowHeight = 40;
 const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
 let chartHeight = rowHeight * dataPoints;
 chartHeight=chartHeight<200?200:chartHeight;
@@ -4448,8 +4448,8 @@ var options = {
   },
   legend: { show:false },
   tooltip: {
-    custom: ({series, seriesIndex, dataPointIndex, w})=> { 
-      
+    custom: ({series, seriesIndex, dataPointIndex, w})=> {
+
  const data = w.config.series[seriesIndex].data[dataPointIndex];
  const index=data.index;
  const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
@@ -4468,7 +4468,7 @@ var options = {
     return  `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
        <span style="padding: 0.3em 0.6em 0.2em 0.6em; color: #0089FB; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_type}</span>
-       <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span> 
+       <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span>
           ${
             ['Core Tasks','Secondary Tasks'].includes(prj_type)?
             `<span style="font-size: 13px; color: #0d0d0dd6; display: flex; align-items: flex-end; column-gap: 3px;">
@@ -4489,7 +4489,7 @@ var options = {
         <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
           <span style="text-align: center; color: gray; font-family: Lucida Sans Unicode; font-size: 8px;">${daydiff+(daydiff>1?' days':' day')}</span>
         </span>
-       `}      
+       `}
       <fieldset style=" flex-grow:1; border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
         <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: gray;   width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'duration':'end'}</legend>
         ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjdurationtime:prj_end}

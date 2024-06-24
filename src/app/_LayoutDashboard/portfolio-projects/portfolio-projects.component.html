@@ -570,10 +570,10 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr>
+                                            <tr *ngIf="(item1.Status=== _PortProjStatus||_PortProjStatus=='')">
 
                                                     <td class="icond">
-                                                        <span *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                                        <span    class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
 
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
@@ -1320,7 +1320,7 @@
                                             <div class="d-flex gap-2">
                                                 <div *ngFor="let status of prj_statuses"  class="d-flex align-items-center gap-1">
                                                     <div [ngStyle]="{ backgroundColor:all_status[status]}" style="width: 10px; height: 10px;"></div>
-                                                    {{status}} 
+                                                    {{status}}
                                                 </div>
                                             </div>
                                             <div id="chartdiv3" style="width: 100%; height: fit-content"></div>
