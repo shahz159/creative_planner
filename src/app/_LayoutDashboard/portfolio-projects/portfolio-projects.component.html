@@ -114,6 +114,7 @@
                                                         </div>
                                                     </button>
                                                 </li>
+                                                <!-- onButtonClick('inn') -->
                                                 <li *ngIf="CountInprocess>0" (click)="labelInprocess();onButtonClick('inn')">
                                                     <button  id="inn" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
@@ -570,7 +571,7 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr>
+                                            <tr  *ngIf="(item1.Status==_PortProjStatus)||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus==''">
 
                                                     <td class="icond">
                                                         <span *ngIf="(item1.Status.includes(_PortProjStatus)||_PortProjStatus=='')"   class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
@@ -591,6 +592,7 @@
                                                     'NewTodo':item1.Status=='New Todo'
 
                                                     }"></span>
+
                                                         <div class="d-flex align-items-center">
                                                             <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
                                                             placement="right" data-trigger="focus" title="Project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
@@ -1561,12 +1563,15 @@
                                         <mat-autocomplete aria-label="employee2shareDrpDwn" #employee2shareDrpDwn="matAutocomplete"
                                         (optionSelected)="onEmployeeSelected($event); employeeShare2TF.value=''; "
                                         (opened)="isEmployeeDrpDwnOpen=true" (closed)="isEmployeeDrpDwnOpen=false; ">
+                                    <ng-container *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)">
+                                        <mat-option *ngIf="!_SharedToEmps.includes(emp.Emp_No)" [value]="emp.Emp_No">
 
-                                        <mat-option *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)" [value]="emp.Emp_No">
-
-                                          <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
-                                              {{emp.DisplayName}} - {{emp.TM_DisplayName}}
-                                      </mat-option>
+                                            <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
+                                                {{emp.DisplayName}} - {{emp.TM_DisplayName}}
+                                        </mat-option>
+                                    </ng-container>
+                                        
+                                      
                                      </mat-autocomplete>
                                     </mat-form-field>
 

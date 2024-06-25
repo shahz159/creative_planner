@@ -1208,7 +1208,17 @@ this.prjPIECHART.render();
     if(index!=undefined){
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
       $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+
+       if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
+         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
+       }
     }
+
+
+   
+
+
+
 
   }
 
@@ -7316,6 +7326,7 @@ openNewPrjReleaseSideBar() {
 closeNewPrjReleaseSideBar() {
    this.hold_remarks = '';
    this.notProvided=false;
+   this.isReleasingAction=false;
   document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementById("newdetails").classList.remove("position-fixed");
@@ -7332,16 +7343,43 @@ getRejectType() {
   });
 }
 
+
+activity1: any;
+lastactivity1: any;
+send_from1: any;
+rejectactivity1: any;
+
+getActionRejectType(actioncode:any) {
+  this.approvalObj.Project_Code = actioncode;
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => { debugger
+    this.activity1 = data[0]["activity"];
+    this.send_from1 = data[0]["sendFrom"];
+    this.rejectactivity1 = data[0]["rejectactivity"];
+    this.lastactivity1 = JSON.parse(data[0]["lastactivity"]);
+    console.log('action activity:',this.activity1,'action last activity:', this.lastactivity1);
+  });
+}
+
+
+
+
+isReleasingAction:boolean=false;
 newPrjreleasing:boolean=false;
 releasenewProject(){
 
+  this.isReleasingAction=!(this.currentActionView===undefined||this.currentActionView===null);
+ 
   if(!this.hold_remarks||this.hold_remarks.trim()==''){
     this.notProvided=true;
       return;
   }
 
-  if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo||this.Current_user_ID==this.projectInfo.OwnerEmpNo){
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
+  if(
+    [this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(this.Current_user_ID)||
+    this.isReleasingAction?([this.projectActionInfo[this.currentActionView].Project_Owner,this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID)):true
+    ){
+      
+      this.approvalObj.Project_Code = this.isReleasingAction?this.projectActionInfo[this.currentActionView].Project_Code:this.URL_ProjectCode;
       this.approvalObj.Request_type = 'New Project Reject Release';
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Remarks = this.hold_remarks;
@@ -7351,12 +7389,16 @@ releasenewProject(){
         this.closeNewPrjReleaseSideBar();
         this._Message = (data['message']);
         if (this._Message == '1') {
-          this.notifyService.showSuccess("New Project reject release request sent to the project owner", "Success");
+          if(this.isReleasingAction)
+            this.notifyService.showSuccess("New Action reject release request send.", "Success");
+          else
+            this.notifyService.showSuccess("New Project reject release request sent to the project owner.", "Success");
+          
           this.getProjectDetails(this.URL_ProjectCode);
-          this.getRejectType();
+          this.getRejectType();  
+          if(this.isReleasingAction)this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
           this.getapproval_actiondetails();
-
-
+          
           if(this.Current_user_ID==this.projectInfo.OwnerEmpNo)
           {
             this.isApprovalSection=true; // back to initial value
@@ -7368,7 +7410,7 @@ releasenewProject(){
 
         }
         else if (this._Message == '2' || this._Message == '0') {
-          this.notifyService.showError("Project release failed", "Failed");
+          this.notifyService.showError(`${this.isReleasingAction?'Action':'Project'} release failed`, "Failed");
         }
       });
     // this.Clear_Feilds();

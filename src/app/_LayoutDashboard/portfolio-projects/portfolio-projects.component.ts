@@ -67,6 +67,7 @@ declare var ApexCharts: any;
 export class PortfolioProjectsComponent implements OnInit {
   _PortProjStatus: string;
   _ShareDetailsList: any;
+  _SharedToEmps:any=[];   // array of emp number to whom the portfolio shared. 
   //_PortfolioListTable: boolean;
   PortfolioList: boolean;
   //Rename_PortfolioName: any;
@@ -334,7 +335,7 @@ debugger
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         this.lastProject = this._ProjectsListBy_Pid.length;
-        this.Employeshare =JSON.parse(data[0]['Employee_Json'])
+        this.Employeshare =JSON.parse(data[0]['Employee_Json']);
         console.log( this.Employeshare,'employeeeeeeeeeeee')
         console.log("Portfolio Projects---->", data);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
@@ -468,8 +469,10 @@ debugger
           unSelectAllText: 'UnSelect All',
           itemsShowLimit: 1,
           allowSearchFilter: true,
-        };
-        this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+        };   
+        this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']); 
+        if(this._ShareDetailsList){ this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);  }
+        
         if (this._ShareDetailsList == 0) {
           this._btnShareDetails = true;
         }
@@ -1146,6 +1149,8 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
           this.service.GetProjectsBy_portfolioId(p_id)
             .subscribe((data) => {
               this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+              if(this._ShareDetailsList){ this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);  }
+
               console.log(this._ShareDetailsList)
               if (this._ShareDetailsList == 0) {
                 this._btnShareDetails = true;
@@ -4322,10 +4327,10 @@ all_status={
 prj_statuses:any=[];
 loadGanttChart(){ 
   console.log(">pr>",this._ProjectsListBy_Pid);
-  
-  this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status);
+  debugger
+  this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status.includes('Delay')?'Delay':item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
-  
+
   const _series=this._ProjectsListBy_Pid.map((prj,_index)=>{
       const color=this.all_status[prj.Status]||this.all_status['other'];
       const isDelayPrj=prj.Status=='Delay';
@@ -4368,7 +4373,7 @@ loadGanttChart(){
 // Desired height per row in pixels
 const rowHeight = 40; 
 const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
-let chartHeight = rowHeight * dataPoints;
+let chartHeight = rowHeight * dataPoints*(_series.length<10?2:1);
 chartHeight=chartHeight<200?200:chartHeight;
 
 
