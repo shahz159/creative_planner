@@ -56,6 +56,7 @@ import { helpers } from 'chart.js';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
+import { debug } from 'console';
 declare var ApexCharts: any;
 
 @Component({
@@ -174,7 +175,7 @@ export class PortfolioProjectsComponent implements OnInit {
   _btnShareDetails: boolean;
   PreferenceTpye: any;
   With_Data: any;
-  Share_preferences: boolean;
+  Share_preferences: any;
   _objStatusDTO: StatusDTO;
   ObjSharePortfolio: Shareportfolio_DTO;
   _objDropdownDTO: DropdownDTO;
@@ -210,6 +211,7 @@ export class PortfolioProjectsComponent implements OnInit {
   objProjectDto: ProjectDetailsDTO;
   portfolioid: any;
   fruitInput: any;
+
 
   constructor(
     private el: ElementRef,
@@ -469,10 +471,12 @@ debugger
           unSelectAllText: 'UnSelect All',
           itemsShowLimit: 1,
           allowSearchFilter: true,
-        };   
-        this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']); 
-        if(this._ShareDetailsList){ this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);  }
+        };
+        this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+        if(this._ShareDetailsList){
         
+          this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
+          }
         if (this._ShareDetailsList == 0) {
           this._btnShareDetails = true;
         }
@@ -480,6 +484,7 @@ debugger
           this._btnShareDetails = false;
         }
         this.PreferenceTpye = data[0]["PreferenceType"];
+        debugger
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
         this.Share_preferences = false;
         this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
@@ -805,6 +810,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this._Preferences = val;
   }
   shararrayseprate:any
+  isElementPresent:any
   share() {
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
@@ -812,18 +818,19 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     debugger
     if (this.shareToEmplys == undefined) {
       return this._ErrorMessage_User = "* Please Select User Name";
+
     }
     if (this.preferences == null) {
       return this._ErrorMessage_Pref = "* Please Select Preferences";
     }
     if (this.Current_user_ID == this.shareToEmplys[0]) {
       this.notifyService.showInfo("You Can't Share Portfolio by yourSelf", "");
+    }
 
-     }
     else {
       //  this.shararrayseprate = this.shareToEmplys.join(', ')
       if (this.shareToEmplys != undefined && this.preferences != null) {
-        this.ObjSharePortfolio.CompanyId = '400';
+        // this.ObjSharePortfolio.CompanyId = '400';
         this.ObjSharePortfolio.EmployeeId = this.shareToEmplys.join(',');
         this.ObjSharePortfolio.Portfolio_ID = this.Url_portfolioId;
         this.ObjSharePortfolio.Preference = this._Preferences;
@@ -1141,6 +1148,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   countFav: number;
 
   deleteSharedUsers(p_id, empid, Sharedby) {
+    debugger
     var deleteProject = window.confirm('Are you sure you want to Remove ?');
     if (deleteProject) {
       //console.log(p_id, empid, Sharedby);
@@ -1149,8 +1157,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
           this.service.GetProjectsBy_portfolioId(p_id)
             .subscribe((data) => {
               this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
-              if(this._ShareDetailsList){ this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);  }
-
+              if(this._ShareDetailsList){
+                this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
+                }
               console.log(this._ShareDetailsList)
               if (this._ShareDetailsList == 0) {
                 this._btnShareDetails = true;
@@ -1258,9 +1267,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelUA() {
-
+debugger
     this._PortProjStatus = "Under Approval";
-    this._PortProjStatus.includes('Under Approval')
+    // this._PortProjStatus.includes('Under Approval')
     this.showDeletedPrjOnly=false;
     console.log(this._PortProjStatus,"Under Apprval")
   }
@@ -4312,7 +4321,7 @@ closedarBar() {
 
 
 all_status={
-  'Under Approval': '#B2D732', 
+  'Under Approval': '#B2D732',
   'InProcess':'#0089FB',
   'Completed':'#62B134',
   'Delay':'#EE4137',
@@ -4323,11 +4332,11 @@ all_status={
   'New Project Rejected':'#DFDFDF',
   'Deadline Extend Under Approval':'#F88282',
   'other':'#d0d0d0'
-}; 
+};
 prj_statuses:any=[];
-loadGanttChart(){ 
+loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
-  debugger
+  
   this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status.includes('Delay')?'Delay':item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
 
@@ -4336,29 +4345,29 @@ loadGanttChart(){
       const isDelayPrj=prj.Status=='Delay';
 
 
-      const data_ar=[{ 
-        x:`${prj.Project_Name} (${prj.Project_Code})`, 
-        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
-        fillColor:color, 
+      const data_ar=[{
+        x:`${prj.Project_Name} (${prj.Project_Code})`,
+        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
+        fillColor:color,
         index:_index
       }];
 
       const data_ar1=[
-        { 
+        {
           x:`${prj.Project_Name} (${prj.Project_Code})`,
-            y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()], 
-            fillColor:'#0089FB', 
+            y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
+            fillColor:'#0089FB',
             index:_index
         },
         {
           x:`${prj.Project_Name} (${prj.Project_Code})`,
-          y:[new Date(prj.DeadLine).getTime(),new Date().getTime()], 
-          fillColor:'#EE4137', 
+          y:[new Date(prj.DeadLine).getTime(),new Date().getTime()],
+          fillColor:'#EE4137',
           index:_index,
         }
       ];
 
-    
+
       const obj={
           name:prj.Status,
           data:isDelayPrj?data_ar1:data_ar
@@ -4371,7 +4380,7 @@ loadGanttChart(){
 
 
 // Desired height per row in pixels
-const rowHeight = 40; 
+const rowHeight = 40;
 const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
 let chartHeight = rowHeight * dataPoints*(_series.length<10?2:1);
 chartHeight=chartHeight<200?200:chartHeight;
@@ -4453,8 +4462,8 @@ var options = {
   },
   legend: { show:false },
   tooltip: {
-    custom: ({series, seriesIndex, dataPointIndex, w})=> { 
-      
+    custom: ({series, seriesIndex, dataPointIndex, w})=> {
+
  const data = w.config.series[seriesIndex].data[dataPointIndex];
  const index=data.index;
  const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
@@ -4473,7 +4482,7 @@ var options = {
     return  `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
        <span style="padding: 0.3em 0.6em 0.2em 0.6em; color: #0089FB; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_type}</span>
-       <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span> 
+       <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span>
           ${
             ['Core Tasks','Secondary Tasks'].includes(prj_type)?
             `<span style="font-size: 13px; color: #0d0d0dd6; display: flex; align-items: flex-end; column-gap: 3px;">
@@ -4494,7 +4503,7 @@ var options = {
         <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
           <span style="text-align: center; color: gray; font-family: Lucida Sans Unicode; font-size: 8px;">${daydiff+(daydiff>1?' days':' day')}</span>
         </span>
-       `}      
+       `}
       <fieldset style=" flex-grow:1; border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
         <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: gray;   width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'duration':'end'}</legend>
         ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjdurationtime:prj_end}

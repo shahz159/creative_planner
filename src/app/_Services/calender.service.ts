@@ -334,10 +334,19 @@ NewGetAttendeesMeetingnotes(obj: CalenderDTO){
   this.obj_CalenderDTO.AgendaId=obj.AgendaId
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
-  this.obj_CalenderDTO.Status_type=obj.Status_type;
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetAttendeesMeetingnotes", this.obj_CalenderDTO);
 
 }
+
+
+NewInsertInsertSmartMeetingType(obj: CalenderDTO){
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  this.obj_CalenderDTO.Status_type=obj.Status_type;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewInsertInsertSmartMeetingType", this.obj_CalenderDTO);
+
+}
+
 
 
 

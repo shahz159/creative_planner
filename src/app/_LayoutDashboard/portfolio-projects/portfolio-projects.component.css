@@ -2337,7 +2337,7 @@ background-color: #CCC;
   margin: 0 5px;
 }
 .btn-filtr.active svg {
-  fill: #5766d7;
+  fill: #5766d7 !important;
 }
 
 .fil-lbl {
@@ -2366,7 +2366,7 @@ background-color: #CCC;
   background-color: #35A79C !important;
   }
 .in-pro{
-  background-color:#000 !important
+  background-color:#0089FB  !important
 }
 .del{
   background-color: #EE4137  !important;
