@@ -1608,10 +1608,10 @@
                                             </path>
                                         </svg>
                                     </a>   
-                                    <a class="kt-inbox__icon" title="Meeting History" (click)="History_meeting()">
+                                    <!-- <a class="kt-inbox__icon" title="Meeting History" (click)="History_meeting()">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1"  fill="currentColor" height="16"
                                         width="16"  class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z"></path></svg>
-                                    </a>
+                                    </a> -->
                                     
                                     
                                   
@@ -2034,7 +2034,7 @@
                                     </div>
                                     <div class="col-md-9 details-form-control-bg">
                                         <div class="details-form-control">
-                                            <span class="dark-title" *ngIf="Link_Detail==''" style="display: flex; align-items: center; gap: 6px">
+                                            <span class="dark-title" *ngIf="Link_Detail=='' || (!Link_Detail.includes('meet.google.com') && !Link_Detail.includes('skype.com') && !Link_Detail.includes('zoom'))" style="display: flex; align-items: center; gap: 6px">
                                                 <!-- <svg class="mb-2" width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="#2e3436"> <path d="m 8 1.992188 c -2.617188 0 -5.238281 0.933593 -7.195312 2.808593 l -0.496094 0.480469 c -0.3984378 0.378906 -0.410156 1.011719 -0.03125 1.410156 c 0.382812 0.398438 1.015625 0.410156 1.414062 0.027344 l 0.5 -0.476562 c 3.085938 -2.953126 8.53125 -2.953126 11.617188 0 l 0.5 0.476562 c 0.398437 0.382812 1.03125 0.371094 1.414062 -0.027344 c 0.378906 -0.398437 0.367188 -1.03125 -0.03125 -1.410156 l -0.496094 -0.480469 c -1.957031 -1.875 -4.578124 -2.808593 -7.195312 -2.808593 z m -0.03125 4.007812 c -1.570312 0.011719 -3.128906 0.628906 -4.207031 1.8125 l -0.5 0.550781 c -0.375 0.40625 -0.347657 1.042969 0.0625 1.414063 c 0.410156 0.371094 1.042969 0.339844 1.414062 -0.070313 l 0.5 -0.542969 c 1.242188 -1.363281 3.992188 -1.492187 5.398438 -0.128906 c 0.121093 -0.023437 0.242187 -0.035156 0.363281 -0.035156 c 0.53125 0 1.039062 0.210938 1.414062 0.585938 l 0.222657 0.222656 c 0.011719 -0.011719 0.023437 -0.019532 0.039062 -0.03125 c 0.40625 -0.371094 0.4375 -1.007813 0.0625 -1.414063 l -0.5 -0.550781 c -1.125 -1.230469 -2.703125 -1.824219 -4.269531 -1.8125 z m 0.03125 4 c -0.511719 0 -1.023438 0.195312 -1.414062 0.585938 c -0.78125 0.78125 -0.78125 2.046874 0 2.828124 s 2.046874 0.78125 2.828124 0 c 0.210938 -0.210937 0.359376 -0.453124 0.457032 -0.714843 l -0.285156 -0.285157 c -0.554688 -0.554687 -0.707032 -1.367187 -0.46875 -2.070312 c -0.335938 -0.226562 -0.726563 -0.34375 -1.117188 -0.34375 z m 0 0" fill-opacity="0.34902"></path> <path d="m 11 10 c -0.265625 0 -0.519531 0.105469 -0.707031 0.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 l 1.292969 1.292969 l -1.292969 1.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 s 1.023437 0.390625 1.414062 0 l 1.292969 -1.292969 l 1.292969 1.292969 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 s 0.390625 -1.023437 0 -1.414062 l -1.292969 -1.292969 l 1.292969 -1.292969 c 0.390625 -0.390625 0.390625 -1.023437 0 -1.414062 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 s -0.519531 0.105469 -0.707031 0.292969 l -1.292969 1.292969 l -1.292969 -1.292969 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 0"></path> </g> </g></svg> -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="18" viewBox="0 0 36 22" fill="none">
                                                     <path d="M31.7143 3.79541H4.08222C3.64171 3.79541 3.24124 4.15583 3.24124 4.63639V17.6115C3.24124 18.052 3.60166 18.4524 4.08222 18.4524H31.7143C32.1548 18.4524 32.5553 18.092 32.5553 17.6115V4.59634C32.5553 4.15583 32.1949 3.79541 31.7143 3.79541ZM30.9134 16.8105H4.9232V5.43732H30.8733L30.9134 16.8105Z" fill="#6772FE"/>
@@ -2813,7 +2813,7 @@
        </ng-container>
 
        <ng-container *ngIf="Agendas_List[currentAgendaView].Status!=1">
-        <div id="attendes_notes" class="accordion-collapse collapse"
+        <div id="attendes_notes" class="accordion-collapse collapse show"
             aria-labelledby="headingOne" data-parent="#accordion_attendes_notes">
             <div class="accordion-body">
                 <div *ngIf="currentAgendaView+1">
@@ -4925,7 +4925,9 @@
                     
                     <div class="menu-item">
                         <div class="menu-content pt-2 pb-2">
-                            <span class="menu-section text-muted text-uppercase fs-8 ls-1">Meeting Notes</span>
+                            <span class="menu-section text-muted text-uppercase fs-8 ls-1">Meeting Notes</span><span> - </span>
+                            <span class="menu-section text-muted fs-8 ls-1" *ngIf="fiterDataOfEmployee==false">by Agenda</span>
+                            <span class="menu-section text-muted fs-8 ls-1" *ngIf="fiterDataOfEmployee==true">by Name</span>
                         </div>
                     </div>
                     <ng-container *ngFor="let meeting of Previousdata_meeting;let i = index">
@@ -4967,9 +4969,8 @@
 
                         <ng-container *ngIf="fiterDataOfEmployee==false">
                         <div class="menu-sub menu-sub-accordion sub-menu active" id="agendalist-{{i}}">
-                            <div class="menu-content pt-2 pb-2">
-                                <span class="menu-section text-muted text-uppercase fs-8 ls-1">Agendas</span>
-                            </div>
+                            <!-- <div class="menu-content pt-2 pb-2">
+                            </div> -->
                             <div class="nav flex-column"  role="tablist"  *ngFor="let Agenda of meeting.Details; let j = index">
                                 <a class="menu-item " [class.active]="Agenda === activeAgenda"  id="agenda1-tab" data-toggle="tab" data-target="#agenda1" type="button" role="tab" aria-controls="agenda1">
                                     <div class="menu-link pl"  (click)="sortbyAgendaList(j,Agenda)">
@@ -5018,9 +5019,8 @@
 
                        <ng-container *ngIf="fiterDataOfEmployee==true">
                         <div class="menu-sub menu-sub-accordion sub-menu active" id="agendalist-{{i}}">
-                            <div class="menu-content pt-2 pb-2">
-                                <span class="menu-section text-muted text-uppercase fs-8 ls-1">By name</span>
-                            </div>
+                            <!-- <div class="menu-content pt-2 pb-2">
+                            </div> -->
                             <div class="nav flex-column"  role="tablist"  *ngFor="let Agenda of meeting.Details; let j = index">
                                 <a class="menu-item " [class.active]="Agenda === activeAgendasList" id="agenda1-tab" data-toggle="tab" data-target="#agenda1" type="button" role="tab" aria-controls="agenda1">
                                     <div class="menu-link pl"  (click)="sortbyFilterList(j,Agenda)">
