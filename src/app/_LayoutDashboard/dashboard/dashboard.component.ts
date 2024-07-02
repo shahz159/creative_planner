@@ -1964,10 +1964,8 @@ export class DashboardComponent implements OnInit {
         var vLocation_fulladd = "FullAddress_loc";
         element[vLocation_fulladd] = (this._meetingroom==true)?(this.Locationfulladd == undefined ? "" : this.Locationfulladd):'';
 
-        var vLocation_url = "Addressurl";
+        var vLocation_url = "Addressurl"; 
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
-
-
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
@@ -1975,6 +1973,7 @@ export class DashboardComponent implements OnInit {
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+        
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -1995,6 +1994,24 @@ export class DashboardComponent implements OnInit {
         var vAgendas = "Meeting_Agendas";
         const mtgAgendas = JSON.stringify(this.allAgendas.length > 0 ? this.allAgendas : []);
         element[vAgendas] = mtgAgendas;
+
+
+
+// dont provide unnecessary values to api when task is creating.
+       if(this.ScheduleType=='Task'){
+        element[vUser_Name]='';
+        element[vLocation_Type]='';
+        element[vLocation_fulladd]='';
+        element[vLocation_url]='';
+        element[vOnlinelink]=false;
+         element[vLink_Details]='';
+         element[vDescription]='';
+         element[vPortfolio_name]='';
+         element[vDMS_Name]='';
+         element[vAgendas]='[]';
+       }
+// dont provide unnecessary values to api when task is creating.
+
 
         //
       });
@@ -2773,6 +2790,7 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_viw222").style.display = "none";
        document.getElementById("core_Dms").style.display = "none";
        document.getElementById("meeting-online-add").style.display = "none";
+       document.getElementById('Descrip_Name12').style.display='none';
 
      }
      else if(val==2)
@@ -2791,6 +2809,8 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_viw222").style.display = "flex";
        document.getElementById("core_Dms").style.display = "flex";
        document.getElementById("meeting-online-add").style.display = "flex";
+       document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
+       
      }
      this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
   }
@@ -5998,7 +6018,7 @@ debugger
 
   //   }
 
-  // } 
+  // }   
 
 inputTyped:string;
 onProjectSearch(inputtext:any){
@@ -6775,6 +6795,8 @@ this.close_customrecurrencemodal();
 }
 
 // new eventsidebar design code end
+
+
 
 
 
