@@ -673,6 +673,7 @@ onFileChanged(event: any) {
     this.file = files[0];
     this.fileAttachment = this.file;
     // this.determineFileType(this.file.name);
+    console.log(this.fileAttachment,"testtestsetsetsetsetsettttt")
   } else {
     this.file = null;
     this.fileAttachment = null;
@@ -1087,6 +1088,7 @@ onProjectOwnerChanged(){
   projectType:any
   portfolio:any
   prtf:any
+  Attachment:any
   // allocated:any
 
   onButtonClick(value:any,id:number){
@@ -1109,12 +1111,17 @@ onProjectOwnerChanged(){
     this.Prjtype=this.bind_Project[0].Project_Type;
     this.duration=this.bind_Project[0].Duration+1;
     this.Allocated_Hours=this.bind_Project[0].Allocated;
+    this.fileAttachment = this.bind_Project[0].FileName;
+    console.log(this.fileAttachment,"fileAttachmentfileAttachmentfileAttachmentfileAttachmentfileAttachment")
     const portfolios_ = this.bind_Project[0].Portfolio_Id;
+
     if(portfolios_){
         const portfolioids=portfolios_.split(',');
         const result=this._portfoliosList.filter(item=>portfolioids.includes(item.Portfolio_ID.toString()));
         this.ngDropdwonPort = result;
+
     }
+
     else
      this.ngDropdwonPort=[];
 
@@ -1803,6 +1810,7 @@ openTemplate(template:any){
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
+   this.fileAttachment=null
   //  this.PrjCrdtr='';
    this.PrjAuditor='';
   //  this.PrjInformer='';
@@ -2653,6 +2661,11 @@ if (messages[value]){
 }
 
 }
+LoadDocument(url: string){
+  var myWindow = window.open(url);
+  myWindow.focus();
+}
+
 }
 
 // calculateDateDifference(): void {

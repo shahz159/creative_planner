@@ -810,13 +810,16 @@
                                                 <td>
                                                   <div *ngIf="item1.Status=='Delay'">
                                                       <span
-                                                          class="Delay_color font-weight-400">{{item1.Status}}
 
-                                                      <span *ngIf="item1.Delaydays>0"
-                                                          class=" delayDays">
-                                                          <strong>{{item1.Delaydays}}
-                                                              days</strong>
-                                                            </span>
+
+                                                   *ngIf="item1.Delaydays>0"
+                                                        class=" Delay_color font-weight-400 ">
+                                                        {{item1.Delaydays}}
+                                                            days
+
+                                                     <span     class="">{{item1.Status}}
+
+                                                     </span>
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">

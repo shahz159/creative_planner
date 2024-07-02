@@ -904,7 +904,7 @@ this.prjPIECHART.render();
       }
 
       if(['001','002','011'].includes(this.projectInfo.Project_Block)){
-        
+
         const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
         if(_deadlineextendlist){
           var deadlineExtend=JSON.parse(_deadlineextendlist);
@@ -922,7 +922,7 @@ this.prjPIECHART.render();
               return actv;
           });
         }
-        
+
       }
 
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
@@ -3816,12 +3816,12 @@ check_allocation() {
   mainMastercode: any;
   approve_details: any;
 
-  getapproval_actiondetails() { 
+  getapproval_actiondetails() {
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
     this.approvalservice.GetAppovalandActionDetails(this.approvalObj).subscribe(data => {
       // console.log(data,"appact");
-      
+
 
       const isactiondetails:boolean=((data[0]['actiondetails']!='[]'&&data[0]['actiondetails']!=null)&&data[0]['actiondetails'].length>0);
       const isapprovaldetails:boolean=(data[0]['approvaldetails']!='[]'&&data[0]['approvaldetails'].length>0);
@@ -6373,7 +6373,7 @@ holdcontinue(Pcode:any){
 
          this._Message = data['message'];
          if (this._Message == 'Project Hold Updated') {
- 
+
           this.HprocessDone--;
 
            if(this.currentActionView!==undefined)
@@ -6790,7 +6790,7 @@ holdcontinue(Pcode:any){
     this.processingStd=true;
     this.service._UpdateStandardTaskSubmission(fd).
       subscribe((event: HttpEvent<any>) => {
-        this.processingStd=false;  
+        this.processingStd=false;
         switch (event.type) {
           case HttpEventType.Sent:
             console.log('Request has been made!');
@@ -6829,14 +6829,14 @@ holdcontinue(Pcode:any){
         this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
- 
+
   notachieveStandard() {
     if(this._remarks==''){
       this.formFieldsRequired=true;
       return;
     }
 
- 
+
     this.selectedFile = null;
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);

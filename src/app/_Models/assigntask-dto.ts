@@ -24,5 +24,6 @@ export class AssigntaskDTO {
     CategoryId: number;
     CategoryName: string;
     Remarks: string;
-    
+  Attachment: any;
+
 }
