@@ -1279,7 +1279,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_Dms").style.display = "none";
           // document.getElementById("Monthly_121").style.display = "none";
           // document.getElementById("weekly_121").style.display = "none";
-          document.getElementById("meeting-online-add").style.display = "none"; 
+          document.getElementById("meeting-online-add").style.display = "none";
 
         }
         else if (this.ScheduleType == 'Event') {
@@ -1340,7 +1340,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-          document.getElementById("meeting-online-add").style.display = "flex"; 
+          document.getElementById("meeting-online-add").style.display = "flex";
           document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
 
 
@@ -1433,13 +1433,13 @@ export class DashboardComponent implements OnInit {
         this.scstartdate = this._Oldstart_date;
         // alert(this.scstartdate)
         // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
-        this.Addressurl = this.EventScheduledjson[0]['Addressurl']  
+        this.Addressurl = this.EventScheduledjson[0]['Addressurl']
         // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
-       
-       
+
+
 
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
 
@@ -1599,7 +1599,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_Dms").style.display = "none";
           // document.getElementById("Monthly_121").style.display = "none";
           // document.getElementById("weekly_121").style.display = "none";
-          document.getElementById("meeting-online-add").style.display = "none";  
+          document.getElementById("meeting-online-add").style.display = "none";
 
         }
         else if (this.ScheduleType == 'Event') {
@@ -1626,7 +1626,7 @@ export class DashboardComponent implements OnInit {
           this.arr2.forEach(element => {
             this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
           });
-       
+
           this.SelectDms = [];
           this.SelectDms1 = [];
           this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
@@ -1648,14 +1648,14 @@ export class DashboardComponent implements OnInit {
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
           document.getElementById("Guest_Name").style.display = "flex";
-          document.getElementById("meeting-online-add").style.display = "flex"; 
+          document.getElementById("meeting-online-add").style.display = "flex";
           document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
           document.getElementById("Descrip_Name").style.display = "flex";
           document.getElementById("core_viw121").style.display = "flex";
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-           
+
 
 
 
@@ -1956,7 +1956,7 @@ export class DashboardComponent implements OnInit {
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
-        
+
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -1966,14 +1966,13 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
-
-
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -1994,6 +1993,24 @@ export class DashboardComponent implements OnInit {
         var vAgendas = "Meeting_Agendas";
         const mtgAgendas = JSON.stringify(this.allAgendas.length > 0 ? this.allAgendas : []);
         element[vAgendas] = mtgAgendas;
+
+
+
+// dont provide unnecessary values to api when task is creating.
+       if(this.ScheduleType=='Task'){
+        element[vUser_Name]='';
+        element[vLocation_Type]='';
+        element[vLocation_fulladd]='';
+        element[vLocation_url]='';
+        element[vOnlinelink]=false;
+         element[vLink_Details]='';
+         element[vDescription]='';
+         element[vPortfolio_name]='';
+         element[vDMS_Name]='';
+         element[vAgendas]='[]';
+       }
+// dont provide unnecessary values to api when task is creating.
+
 
         //
       });
@@ -2317,7 +2334,7 @@ export class DashboardComponent implements OnInit {
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
 
-          
+
           var vLocation_Type = "Location_Type";
           element[vLocation_Type] = this._meetingroom==true?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2561,7 +2578,7 @@ export class DashboardComponent implements OnInit {
   }
   else {
     document.getElementById("Location_Name").style.display = "none";
-    this._meetingroom = false; 
+    this._meetingroom = false;
   }
  }
 
@@ -2703,7 +2720,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("Descrip_Name").style.display = "none";  // description
       document.getElementById("core_viw123").style.display = "flex";   // select projects (in task)
       document.getElementById("core_viw121").style.display = "none";   // select project (in event)
-      document.getElementById("core_viw222").style.display = "none";   // select portfolio 
+      document.getElementById("core_viw222").style.display = "none";   // select portfolio
       document.getElementById("core_Dms").style.display = "none";       // select dms
       document.getElementById("meeting-online-add").style.display = "none";  // meeting online or offline
 
@@ -2722,7 +2739,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("Descrip_Name").style.display = "flex";  // description
       document.getElementById("core_viw121").style.display = "flex";   // select project (in event)
       document.getElementById("core_viw123").style.display = "none";   // select projects (in task)
-      document.getElementById("core_viw222").style.display = "flex";  // select portfolio 
+      document.getElementById("core_viw222").style.display = "flex";  // select portfolio
       document.getElementById("core_Dms").style.display = "flex";      // select dms
       document.getElementById("meeting-online-add").style.display = "flex";  // meeting online or offline
 
@@ -2772,6 +2789,7 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_viw222").style.display = "none";
        document.getElementById("core_Dms").style.display = "none";
        document.getElementById("meeting-online-add").style.display = "none";
+       document.getElementById('Descrip_Name12').style.display='none';
 
      }
      else if(val==2)
@@ -2790,6 +2808,8 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_viw222").style.display = "flex";
        document.getElementById("core_Dms").style.display = "flex";
        document.getElementById("meeting-online-add").style.display = "flex";
+       document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
+
      }
      this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
   }
@@ -3825,7 +3845,7 @@ debugger
   loading: boolean = false;
   statusofMeeting:any;
 
-  GetClickEventJSON_Calender(arg) { 
+  GetClickEventJSON_Calender(arg) {
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3862,8 +3882,8 @@ debugger
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
-        
-        
+
+
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
@@ -5474,7 +5494,7 @@ debugger
     this.AllDatesSDandED.push(jsonData);
     this.GetTimeslabfordate();
 
-    this.mtgOnDays=[]; 
+    this.mtgOnDays=[];
     this.notProvided = false;
     this.subtask_loading=false;
     this.subtashDrpLoading=false;
@@ -6037,11 +6057,11 @@ debugger
 
   //   }
 
-  // } 
+  // }
 
 inputTyped:string;
 onProjectSearch(inputtext:any){
-   
+
    if(this.searchingResult==false){
     const filterobj=this.basedOnFilter;
 
@@ -6054,7 +6074,7 @@ onProjectSearch(inputtext:any){
           this.ProjectListArray=JSON.parse(res['Projectlist']);
            console.log("project name searched result:",this.ProjectListArray);
           this.searchingResult=false;
-          
+
           if(this.inputTyped!=undefined){
              const newsearch=this.inputTyped;
              this.inputTyped=undefined;
@@ -6066,48 +6086,48 @@ onProjectSearch(inputtext:any){
    }
    else
    this.inputTyped=inputtext;
-      
+
 }
 
-  
 
 
 
-  onInputSearch(inputText:any){  
+
+  onInputSearch(inputText:any){
     let keyname;
-    let arrtype; 
+    let arrtype;
     let selectedinto;
-    let property_name; 
+    let property_name;
     if(this.projectmodaltype=='PARTICIPANT')
      {
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
-       selectedinto='ngEmployeeDropdown';      
-       property_name='Emp_No';                 
+       selectedinto='ngEmployeeDropdown';
+       property_name='Emp_No';
      }
     else if(this.projectmodaltype=='PORTFOLIO')
     {
        keyname='Portfolio_Name';
        arrtype=this.Portfoliolist_1;
-       selectedinto='Portfolio';      
-       property_name='portfolio_id';   
+       selectedinto='Portfolio';
+       property_name='portfolio_id';
     }
     else if(this.projectmodaltype=='DMS')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
-      selectedinto='SelectDms';      
-      property_name='MailId'; 
+      selectedinto='SelectDms';
+      property_name='MailId';
     }
 
     const result=arrtype.filter(item=>{
 
       const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
-      let nameMatched:boolean=false; 
+      let nameMatched:boolean=false;
       if(unselected)
-      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())  
-      
-      return nameMatched; 
+      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
+
+      return nameMatched;
     });
     this.FilteredResults=result;
   }
@@ -6166,6 +6186,7 @@ date_menu_close(dialogId:string){
   document.getElementById(dialogId).classList.remove("show");
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
+  debugger
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -6313,15 +6334,15 @@ onPortfolioFilter(){
 
 onDMSFilter(){
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
-      const fresult=this.Memos_List.filter((_memo:any)=>{ 
+      const fresult=this.Memos_List.filter((_memo:any)=>{
 
        let hasMemo:boolean=false;
        hasMemo=(!this.basedOnFilter.byuser)||(_memo.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
-      
+
        let isSelected:boolean=false;
        isSelected=this.SelectDms&&this.SelectDms.includes(_memo.MailId);
 
-       return isSelected?false:hasMemo;   
+       return isSelected?false:hasMemo;
       });
 
       this.FilteredResults=fresult;
@@ -6814,6 +6835,8 @@ this.close_customrecurrencemodal();
 }
 
 // new eventsidebar design code end
+
+
 
 
 

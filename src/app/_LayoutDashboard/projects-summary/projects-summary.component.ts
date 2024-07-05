@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, QueryList, ViewChildren,ViewChild } from '@angular/core';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -18,6 +18,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import tippy from 'node_modules/tippy.js';
+import { MatAutocompleteTrigger,MatAutocomplete } from '@angular/material/autocomplete';
 
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +39,10 @@ export class ProjectsSummaryComponent implements OnInit {
   canceledit: boolean =false;
   searchResult: Boolean = false;
   _ObjCompletedProj: CompletedProjectsDTO;
-
+  companyDDwn: boolean;
+  @ViewChild('auto') autoComplete: MatAutocomplete;
+  @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
 
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
@@ -65,6 +69,8 @@ export class ProjectsSummaryComponent implements OnInit {
 
   ngOnInit() {
 // JQUERY
+
+this.getDropdownsDataFromDB()
 $(document).ready(function() {
   // Action next
   $('.btn-next').on('click', function() {
@@ -109,8 +115,8 @@ $(document).ready(function(){
       this.GetProjectsByUserName(this.type1);
     })
 
-
-
+   // dropdowns data
+    this.getDropdownsDataFromDB1();
   }
 
 
@@ -406,7 +412,7 @@ $(document).ready(function(){
     // alert(this.isChecked);
   }
     GetProjectsByUserName(type) {
-      debugger
+debugger
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
 
@@ -490,9 +496,9 @@ $(document).ready(function(){
 
   LastPage:number;
   lastPagerecords:number;
-
+  duplicateofCompany:any[]=[]
   getDropdownsDataFromDB() {
-
+debugger
     if(this.Type=='ALL Projects'){
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -509,10 +515,12 @@ $(document).ready(function(){
     // this._objDropdownDTO.PortfolioId = null;
     this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
       .subscribe((data) => {
-        //Emp
         // console.log("company data",data)
+            debugger
+
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
+
         }
         else {
           this.EmpCountInFilter = this.selectedItem_Emp[0];
@@ -525,8 +533,11 @@ $(document).ready(function(){
           this.TypeContInFilter = this.selectedItem_Type[0];
         }
         //Company
+
         if (this.selectedItem_Company.length == 0) {
-          this.CompanyCountFilter = JSON.parse(data[0]['CompanyType_Json']);
+
+          this.CompanyCountFilter =  this.CompanyCountFilter.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
+          console.log(this.CompanyCountFilter,'CompanyCountFilterCompanyCountFilterCompanyCountFilter');
         }
         else {
           this.CompanyCountFilter = this.selectedItem_Company[0];
@@ -576,6 +587,8 @@ $(document).ready(function(){
         .subscribe((data) => {
           //Emp
           // console.log("company data",data)
+
+          debugger
           if (this.selectedItem_Emp.length == 0) {
             this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
           }
@@ -591,7 +604,7 @@ $(document).ready(function(){
           }
           //Company
           if (this.selectedItem_Company.length == 0) {
-            this.CompanyCountFilter = JSON.parse(data[0]['CompanyType_Json']);
+            this.CompanyCountFilter = this.CompanyCountFilter.length===0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
           }
           else {
             this.CompanyCountFilter = this.selectedItem_Company[0];
@@ -615,7 +628,7 @@ $(document).ready(function(){
           else {
             this.LastPage = Math.trunc(_vl);
           }
-
+debugger
           if(this.CurrentPageNo == this.LastPage){
             this.lastPagerecords=30;
           }
@@ -623,6 +636,125 @@ $(document).ready(function(){
         });
     }
   }
+
+
+//test
+// all_companiesList:any=[];
+// all_project_types:any=[];
+// all_employees_list:any=[];
+// all_status_types:any=[];
+
+// getDropdownsDataFromDB1(){   debugger
+
+//   this._objDropdownDTO.EmpNo = this.Current_user_ID;
+//   this._objDropdownDTO.Selected_ProjectType = "";
+//   this._objDropdownDTO.Selected_Status = "";
+//   this._objDropdownDTO.SelectedCompany = "";
+//   this._objDropdownDTO.SelectedEmp_No = "";
+//   this._objDropdownDTO.Selected_SearchText = "";
+//   this._objDropdownDTO.ActiveStatus = "Active";
+//   this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{ debugger
+
+//     this.all_companiesList=JSON.parse(data[0]['CompanyType_Json']);
+//     this.all_project_types=JSON.parse(data[0]['ProjectType_Json']);
+//     this.all_employees_list=JSON.parse(data[0]['Emp_Json']);
+//     this.all_status_types=JSON.parse(data[0]['Status_Json']);
+
+//     this.CompanyCountFilter=[...this.all_companiesList];
+//     this.EmpCountInFilter=[...this.all_employees_list];
+//     this.TypeContInFilter=[... this.all_project_types];
+//     this.StatusCountFilter=[...this.all_status_types];
+
+
+//       this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
+//       this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
+//       this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
+
+//       let _vl = this._totalProjectsCount / 30;
+//       let _vl1 = _vl % 1;
+//       if (_vl1 > 0.000) {
+//         this.LastPage = Math.trunc(_vl) + 1;
+//       }
+//       else {
+//         this.LastPage = Math.trunc(_vl);
+//       }
+
+//       if(this.CurrentPageNo == this.LastPage){
+//         this.lastPagerecords=30;
+//       }
+//   });
+// };
+
+
+
+
+
+
+
+
+  getDropdownsDataFromDB1(){   debugger
+
+      this._objDropdownDTO.EmpNo = this.Current_user_ID;
+      this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
+      this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
+      this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
+      this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
+      this._objDropdownDTO.Selected_SearchText = this.searchText;
+      this._objDropdownDTO.ActiveStatus = "Active";
+      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{ debugger
+
+
+
+          this.EmpCountInFilter=this.emplyToselect.length==0?JSON.parse(data[0]['Emp_Json']):this.EmpCountInFilter;
+          this.TypeContInFilter=this.projtypeToselect.length==0?JSON.parse(data[0]['ProjectType_Json']):this.TypeContInFilter;
+          this.CompanyCountFilter=this.comToselect.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
+          this.StatusCountFilter=this.enterStatus.length==0?JSON.parse(data[0]['Status_Json']):this.StatusCountFilter;
+
+
+          this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
+          this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
+          this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
+debugger
+          let _vl = this._totalProjectsCount / 30;
+          let _vl1 = _vl % 1;
+          if (_vl1 > 0.000) {
+            this.LastPage = Math.trunc(_vl) + 1;
+          }
+          else {
+            this.LastPage = Math.trunc(_vl);
+          }
+
+          if(this.CurrentPageNo == this.LastPage){
+            this.lastPagerecords=30;
+          }
+
+
+
+      });
+
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//test
 
   checkedItems_Status: any = [];
   checkedItems_Type: any = [];
@@ -808,7 +940,8 @@ $(document).ready(function(){
   }
 
   applyFilters() {
-
+debugger
+this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -840,6 +973,7 @@ $(document).ready(function(){
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails)
       .subscribe(data => {
+        debugger
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
         this._CurrentpageRecords = this._ProjectDataList.length;
@@ -854,10 +988,12 @@ $(document).ready(function(){
           this.emptyspace=true;
         }
       });
+
     //Filtering Checkbox de
     this.getDropdownsDataFromDB();
     }
     else if(this.Type=='RACIS Projects'){
+      debugger
       this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
       this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
       this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
@@ -876,9 +1012,15 @@ $(document).ready(function(){
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe(data => {
+          debugger
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
           this._CurrentpageRecords = this._ProjectDataList.length;
+
+    console.log('lastPagerecords:',this.lastPagerecords);
+    console.log('CurrentPageNo:',this.CurrentPageNo);
+    console.log('_CurrentpageRecords:',this._CurrentpageRecords);
+
           if (this._ProjectDataList.length == 0) {
             this._filtersMessage = "No more projects matched your search";
             this._filtersMessage2 = " Clear the filters & try again";
@@ -890,8 +1032,11 @@ $(document).ready(function(){
             this.emptyspace=true;
           }
         });
-     this.getDropdownsDataFromDB();  //akh testing
+
+     this.getDropdownsDataFromDB();
+    this.filterMegadropdownclose()
     }
+
   }
 
   Team_Autho:any
@@ -980,6 +1125,7 @@ $(document).ready(function(){
       this.checkedItems_Cmp = [];
     }
     //console.log("On Reset--->", this.checkedItems_Type, this.checkedItems_Status, this.checkedItems_Emp);
+
     this.applyFilters();
     // this.getNewFilterResult()
   }
@@ -992,15 +1138,16 @@ $(document).ready(function(){
 
 
   resetAll() {
-    debugger;
+
 
   // const type: string='RACIS Projects'
   //   this.GetProjectsByUserName(type);
   // this.getDropdownsDataFromDB()
-    this.selectedEmp=[]
-    this.selectedCompanies=[]
-    this.selectedStatus = []
-    this.selectedTypes = []
+  this.edited=false
+    this.emplyToselect=[]
+    this.comToselect=[]
+    this.enterStatus = []
+    this.projtypeToselect = []
     this.searchResult=false;
     this.txtSearch = '';
     this.searchText= '';
@@ -1426,17 +1573,47 @@ onEmpSelected(selected:boolean,selectedItem:any){
 }
 
 getNewFilterResult(){
+debugger
+this.edited = false
+  this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
+  this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.comToselect.includes(item.Company_No));
+  this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.projtypeToselect.includes(item.Block_No));
+  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Count));
+  // this.edited=true
 
-  this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.selectedEmp.includes(item.Emp_No));
-  this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.selectedCompanies.includes(item.Company_No));
-  this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.selectedTypes.includes(item.Block_No));
-  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.selectedStatus.includes(item.Name));
-  this.edited=true
-  console.log(this.checkedItems_Emp,'employee')
-  console.log(this.checkedItems_Cmp,'company')
-  console.log(this.checkedItems_Type,'type')
-  console.log(this.checkedItems_Status,'status')
-  this.applyFilters();
+  this.selectedEmp_String = this.checkedItems_Emp.map(select => {
+    return select.Emp_No;
+  }).join(',');
+  this.selectedType_String = this.checkedItems_Type.map(select => {
+    return select.Block_No;
+  }).join(',');
+  this.selectedStatus_String = this.checkedItems_Status.map(select => {
+    return select.Name;
+  }).join(',');
+  this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
+    return select.Company_No;
+  }).join(',');
+
+
+
+
+
+
+
+
+  // console.log(this.checkedItems_Emp,'employee')
+  // console.log(this.checkedItems_Cmp,'company')
+  // console.log(this.checkedItems_Type,'type')
+  // console.log(this.checkedItems_Status,'status')
+
+  // console.log(this.EmpCountInFilter)
+  // console.log(this.CompanyCountFilter)
+  // console.log(this.TypeContInFilter)
+  // console.log(this.StatusCountFilter)
+
+
+  // this.applyFilters();
+  this.getDropdownsDataFromDB1();
 }
 
 
@@ -1524,6 +1701,115 @@ getNewFilterResult(){
 
 // new filter functionality end.
 
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
+
+isEmployeeDrpDwnOpen:boolean=false
+iscompanyDrpDwnOpen:boolean=false
+isprojectDrpDwnOpen:boolean=false;
+isstatusDrpDwnOpen:boolean=false
+
+
+
+ openAutocompleteDrpDwn(Acomp:string){
+
+    //  this.autocompletes.forEach((item) =>
+    //   {
+    //     if (item.autocomplete.ariaLabel !== Acomp)
+    //       {
+    //         requestAnimationFrame(() => item.closePanel());
+
+    //       }
+    //     })
+      const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+      requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+
+}
+
+ closeAutocompleteDrpDwn(Acomp:string){
+
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+
+}
+
+
+// openDropdown(dropdown: string): void {
+//   debugger
+//   if (dropdown === 'companyDDwn') {
+//     this.iscompanyDrpDwnOpen = true;
+//     this.isEmployeeDrpDwnOpen = false; // Close employee dropdown
+//   } else if (dropdown === 'employeeDDwn') {
+//     this.isEmployeeDrpDwnOpen = true;
+//     this.iscompanyDrpDwnOpen = false; // Close company dropdown
+//   }
+// }
+
+
+// new
+comToselect:any=[];
+oncompanySelected(e:any){
+
+  const companyChoosed=this.CompanyCountFilter.find((p:any)=>p.Company_No===e.option.value);
+
+  if(companyChoosed){
+       const index=this.comToselect.indexOf(companyChoosed.Company_No);
+       if(index===-1){
+          // if not present then add it
+          this.comToselect.push(companyChoosed.Company_No);
+
+
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.comToselect.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('companyDDwn');
+
+  // this.applyNewFilter();
+}
+removeSelectedcomp(item){
+  const index=this.comToselect.indexOf(item);
+  if(index!==-1){
+    this.comToselect.splice(index,1);
+  }
+}
+
+getObjOfs(arr, id, idName) {
+  const obj = arr.find(item => item[idName] == id);
+  return obj;
+}
+
+// oncompanySelected(e:any){
+//   const companyChoosed=this.CompanyCountFilter.find((p:any)=>p.Company_No===e.option.value);
+//   if(companyChoosed){
+//        const index=this.comToselect.indexOf(companyChoosed.Company_No);
+//        if(index===-1){
+//           // if not present then add it
+//           this.comToselect.push(companyChoosed.Company_No);
+//        }
+//        else
+//       //  if(this.comToselect[index]!=this.projectInfo.Project_Code)
+//         { //  if item choosed is already selected then remove it. but it should not be the default project.
+//         this.comToselect.splice(index,1);
+//        }
+//   }
+//   this.openAutocompleteDrpDwn('companyDDwn');
+// }
+// removeSelectedcomp(item){
+//   // if(this.projectInfo.Project_Code!=item){   // cannot remove the default selected project.
+//     const index=this.comToselect.indexOf(item);
+//     if(index!==-1)
+//       this.comToselect.splice(index,1);
+//   // }
+// }
+
+// getObjOfs(Company_No:string){
+//   if(this.CompanyCountFilter){
+//    const P=this.CompanyCountFilter.find(pr=>pr.Company_No==Company_No);
+//    return P?P.Name:'';
+//   }
+//    return [];
+// }
 
 
 
@@ -1533,12 +1819,110 @@ getNewFilterResult(){
 
 
 
+emplyToselect:any=[];
+onEmployeeSelected(e:any){
+
+  const employeeChoosed=this.EmpCountInFilter.find((p:any)=>p.Emp_No===e.option.value);
+
+  if(employeeChoosed){
+       const index=this.emplyToselect.indexOf(employeeChoosed.Emp_No);
+       if(index===-1){
+          // if not present then add it
+          this.emplyToselect.push(employeeChoosed.Emp_No);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.emplyToselect.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('employeeDDwn');
+}
+removeSelectedemployee(item){
+  const index=this.emplyToselect.indexOf(item);
+  if(index!==-1){
+    this.emplyToselect.splice(index,1);
+  }
+}
+
+getObjOf(arr, id, idName) {
+  const obj = arr.find(item => item[idName] == id);
+  return obj;
+}
 
 
 
+projtypeToselect:any=[];
+onprojtypeSelected(e:any){
+
+  const projtyChoosed=this.TypeContInFilter.find((p:any)=>p.Block_No===e.option.value);
+
+  if(projtyChoosed){
+       const index=this.projtypeToselect.indexOf(projtyChoosed.Block_No);
+       if(index===-1){
+          // if not present then add it
+          this.projtypeToselect.push(projtyChoosed.Block_No);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.projtypeToselect.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('proDDwn');
+}
+removeSelectedproject(item){
+  const index=this.projtypeToselect.indexOf(item);
+  if(index!==-1){
+    this.projtypeToselect.splice(index,1);
+  }
+}
+
+getObjOfpro(arr, id, idName) {
+  const obj = arr.find(item => item[idName] == id);
+  return obj;
+}
 
 
 
+enterStatus:any=[];
+onstatusSelected(e:any){
 
+  const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Count===e.option.value);
+
+  if(statusChoosed){
+       const index=this.enterStatus.indexOf(statusChoosed.Count);
+       if(index===-1){
+          // if not present then add it
+          this.enterStatus.push(statusChoosed.Count);
+       }
+       else{ //  if item choosed is already selected then remove it.
+        this.enterStatus.splice(index,1);
+       }
+  }
+  this.openAutocompleteDrpDwn('statusDDwn');
+}
+removeSelectedstatus(item){
+  const index=this.enterStatus.indexOf(item);
+  if(index!==-1){
+    this.enterStatus.splice(index,1);
+  }
+}
+
+getObjOfstatus(arr, id, idName) {
+  const obj = arr.find(item => item[idName] == id);
+  return obj;
+}
+
+filterMegadropdown(){
+  document.getElementById("mega_dropdown_menu").classList.add("drop-active");
+}
+filterMegadropdownclose(){
+  document.getElementById("mega_dropdown_menu").classList.remove("drop-active");
+}
+
+
+sortCompany:any[]
+
+
+ _ErrorMessage_User:any
+
+this_ErrorMessage_User = "* Please Select User Name"
 
 }

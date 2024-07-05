@@ -2701,3 +2701,7 @@ color: #2786fb;
 .form-control[readonly] {
   background-color: #ffffff;
 }
+.attachment {
+  padding: 5px;
+  cursor: pointer;
+}

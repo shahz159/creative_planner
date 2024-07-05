@@ -1,3 +1,4 @@
+import { AttachmentsDTO } from './../../_Models/attachments-dto';
 // import { flatten } from '@angular/compiler';
 import { Component, OnInit,ViewChild,ViewChildren,QueryList } from '@angular/core';
 import { FormControl } from '@angular/forms'
@@ -283,20 +284,22 @@ else {
       this._ObjAssigntaskDTO.AssignId = this.task_id;
       this._ObjAssigntaskDTO.ProjectType = this.selectedProjectType;
       this._ObjAssigntaskDTO.Remarks = this._remarks;
+      this._ObjAssigntaskDTO.Attachment = this.fileAttachment;
+
       // console.log(this.selectedProjectType);
-      if (this._inputAttachments != null) {
-        if (this._inputAttachments.length > 0) {
-          this._ObjAssigntaskDTO.Reference = this._inputAttachments[0].Files;
+      if (this.fileAttachment != null) {
+        if (this.fileAttachment.length > 0) {
+          this._ObjAssigntaskDTO.Reference = this.fileAttachment[0].Files;
         }
       }
-      //console.log("Sending Obj..",this._ObjAssigntaskDTO)
+      console.log("Sending Obj..",this._ObjAssigntaskDTO)
       const fd = new FormData();
       fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
-      if (this._inputAttachments != null) {
-        if (this._inputAttachments.length > 0) {
+      if (this.fileAttachment != null) {
+        if (this.fileAttachment.length > 0) {
           fd.append("Attachment", "true");
-          fd.append('file', this._inputAttachments[0].Files);
-          console.log(this._inputAttachments, 'files')
+          fd.append('file', this.fileAttachment[0].Files);
+          console.log(this.fileAttachment, 'files')
         }
       }
       else {
@@ -307,6 +310,7 @@ else {
       fd.append("Desc", this._description);
       fd.append("StartDate", datestrStart);
       fd.append("EndDate", datestrEnd);
+      fd.append("attachment",this.fileAttachment);
       fd.append("ProjectDays", this._ObjAssigntaskDTO.ProjectDays.toString());
       fd.append("TypeofTask", this.typeoftask);
       fd.append("Remarks", this._remarks);
@@ -326,6 +330,7 @@ else {
 
       this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
         (data) => {
+          console.log(data,'atattachmeatattachmeatattachmeatattachme')
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
             this.router.navigate(["UnplannedTask/"]);
@@ -334,7 +339,7 @@ else {
 
             this.clearFeilds();
             this.closeInfo();
-            this._inputAttachments = [];
+            this.fileAttachment = [];
           }
           else if(this._Urlid == 2){
 
@@ -345,7 +350,7 @@ else {
 
             this.clearFeilds();
             this.closeInfo();
-            this._inputAttachments = [];
+            this.fileAttachment = [];
           }
           else if(this._Urlid == 3){
 
@@ -356,7 +361,7 @@ else {
 
             this.clearFeilds();
             this.closeInfo();
-            this._inputAttachments = [];
+            this.fileAttachment = [];
           }
 
         });
@@ -393,7 +398,7 @@ else {
     this._description = "";
     this._StartDate = null;
     this._remarks = null;
-    this._inputAttachments = null;
+    this.fileAttachment = null;
     (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
     //document.getElementById("uploadFile").Value = null;
     this._EndDate = null;
