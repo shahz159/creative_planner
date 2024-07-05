@@ -2901,9 +2901,6 @@ currentStdAprView:number|undefined;
    else this.formFieldsRequired=false;  // back to initial value.
 // check all mandatory fields are provided or not
 
-
-
-
     this._remarks = '';
     if (this.OGProjectType != this.ProjectType) {
       var type = this.ProjectType
@@ -3110,11 +3107,11 @@ currentStdAprView:number|undefined;
 
 
 
-
+  updatingAction: boolean = false;
 
 
   onAction_update() {
-
+    this.updatingAction = true;
 // check all mandatory field are provided.
     if(!(this.ActionName&&this.ActionDescription&&
          this.ActionOwner&&this.ActionResponsible&&
@@ -3276,7 +3273,7 @@ currentStdAprView:number|undefined;
       this.closeInfo();
     });
   }
-
+  this.updatingAction = false;
   }
 
 

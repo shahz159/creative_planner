@@ -3398,7 +3398,7 @@ span.admin-check-svg {
 }
 
 .meeting-attendees-user:hover {
-    transform: translateX(-4px);
+    /* transform: translateX(-4px); */
     transition: all .5s;
     border-radius: 5px;
     box-shadow: 3px 5px 6px #0000001c;
@@ -5114,7 +5114,7 @@ span.svg-icon {
     /* border: 1px solid #f3f3f3;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px; */
 }
-a.pn-card:after {
+/* a.pn-card:after {
     content: "+";
     position: absolute;
     right: 7px;
@@ -5126,7 +5126,7 @@ a.pn-card:after {
 }
 a.pn-card[aria-expanded="true"]:after {
     content: "-";
-}
+} */
 
 .pn-main-date {
     display: flex;
@@ -5318,7 +5318,54 @@ a.pn-card[aria-expanded="true"]:after {
     width: 100%;
 }
 
-
+.pn-in-label-main {
+    display: flex;
+    align-items: center;
+}
+.pn-in-label {
+    display: flex;
+    align-items: center;
+}
+.history-meeting-sidebar ul#myMeeting {
+    background-color: #e8edf3;
+    border-radius: 8px;
+    padding: 6px 10px;
+    border-bottom: 0px solid #dee2e6;
+}
+.history-meeting-sidebar .nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-color: transparent;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.history-meeting-sidebar .nav-tabs .nav-item .nav-link {
+    padding: 2px 10px;
+    transition: all 0.3s;
+    font-size: 1rem;
+    font-weight: 400;
+}
+.history-meeting-sidebar .nav-tabs .nav-item {
+    margin-bottom: 1px;
+}
+.history-meeting-sidebar .nav-tabs .nav-link:hover {
+    border-color: transparent;
+}
+.history-meeting-sidebar .nav-tabs .nav-item .nav-link {
+    color: #6a5569;
+}
+.history-meeting-sidebar .nav-tabs .nav-item .nav-link.active{
+    color: #475569;
+}
+div#myMeetingContent.sidehf_scroll {
+    height: calc(100vh - 130px);
+    overflow: auto;
+    padding: 10px 10px;
+}
+.history-meeting-sidebar  .nav-tabs {
+    margin: 0 0 12px 0;
+}
 .agenda-menu-column {
     flex-direction: column;
     width: 100%;
@@ -5814,6 +5861,21 @@ span.previous-dot.active {
     background-color: #d8efff;
     color: red;
 }
+
+.delay-Start{
+    background-color: #fd7e7a38 !important;
+   
+}
+
+
+
+.notification .notif-img {
+    align-self: center;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    max-height: 20px;
+  }
 @keyframes notfi-anim{
     from{
        transform: scaleY(0);
@@ -5905,17 +5967,41 @@ span.previous-dot.active {
     font-size: 12px;
     text-align: end;
 }
-.meeting-attendance{
+.meeting-attendance-main{
     background: #fff;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: 0 2px 16px #cccccc80;
     border-radius: 4px;
     position: relative;
     margin-top: 1rem;
+    padding-top: 1.5rem;
+}
+.meeting-attendance-heading {
+    position: absolute;
+    background-color: #ebf4ff;
+    border: 1px solid #90abec;
+    color: #4970d0;
+    font-weight: 500;
+    padding: 2px 4px;
+    top: -12px;
+    left: 10px;
+    font-size: 11px;
+    border-radius: 2px;
+}
+.legend-border {
+    border: 1px solid #90abec;
+    border-radius: 4px;
+    padding: 0.65rem 1rem;
+    position: relative;
+}
+.meeting-attendance {
     display: flex;
     gap: 10px;
     justify-content: space-between;
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
 }
+
 .meeting-attendance-item {
     border: 1px solid #e1e1e1;
     border-radius: 10px;
@@ -5923,6 +6009,7 @@ span.previous-dot.active {
     width: 100%;
     user-select: none;
 }
+
 .meeting-attendance-count {
     color: #242424;
     font-size: 23px;
@@ -5930,14 +6017,54 @@ span.previous-dot.active {
     display: flex;
     gap: 6px;
 }
+
 .meeting-attendance-title {
     color: #5b5b5b;
     font-size: 14px;
     font-weight: 400;
     width: max-content;
 }
+
 span.time-value {
     font-size: 16px;
+}
+.meeting-attendance-btn{
+    padding: 0.1rem 0.2rem;
+    font-size: 0.875rem;
+    line-height: normal;
+    border-radius: 0.2rem;
+    background-color: #e9e9ff !important;
+    border-color: #f5f5ff !important;
+    color: #527ce2 !important;
+}
+.meeting-attendance-btn svg{
+    width: 14px;
+    height: 14px;
+    transition: all 0.2s ease-in-out;
+    transform: rotate(0deg);
+}
+.meeting-attendance-btn[aria-expanded="true"] svg{
+    transition: all 0.2s ease-in-out;
+    transform: rotate(180deg);
+}
+.meeting-attendance-accordion-div .meeting-attendance-count{
+    font-size: 16px;
+}
+.meeting-attendance-accordion-div .meeting-attendance-item {
+    padding: 0 0.65rem;
+    align-items: center;
+    background-color: #f3f8ff;
+    border: 1px solid #e4eefb;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.meeting-attendance-date{
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    margin-top: 10px;
+    text-align: justify;
 }
 ::ng-deep .modal-backdrop.fade.show {
     display: none;
@@ -5974,3 +6101,382 @@ span.time-value {
 .kt-inbox__datetimes{
     font-size: 15px !important;
 }
+
+
+/* Repeat Section  Start*/
+
+.form-group.dt {
+    position: relative;
+    margin-bottom: 0px;
+}
+
+.schedule-dt {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: calc(1.5em + 1.3rem + 6px);
+    font-size: 0.95rem;
+    padding: 0.65rem 0.5rem;
+    padding-left: 3.5rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #ebedf2;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.schedule-dt .dt-tm-icon {
+    background: #d9d9d9;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(1.5em + 1.3rem + 6px);
+    color: #717171;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 4px 0px 0px 4px;
+}
+
+.schedule-dt svg {
+    width: 24px;
+    height: 24px;
+}
+
+.schedule-dt-tm {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+span.schedule-dt-muted {
+    color: #d8e2fb;
+    font-weight: 700;
+}
+
+.schedule-repeat .wc-cus {
+    width: 100%;
+}
+
+.schedule-dt-text {
+    display: flex;
+    align-items: center;
+    margin-top: 0.25rem;
+    color: #8a8a8a;
+    font-size: 10px;
+    gap: 2px;
+}
+
+
+.date-menu {
+    border: 0 !important;
+    margin: 0;
+    min-width: 40rem;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    padding: 1rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    z-index: 95;
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    right: auto;
+    bottom: auto;
+    transform: translate3d(0px, 60px, 0px);
+    margin-top: 0px;
+    margin-bottom: 0.125rem;
+    display: none;
+}
+
+.date-menu.show {
+    display: block;
+}
+
+.date-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-menu-calender {
+    width: 100%;
+}
+
+.date-menu-time {
+    width: 100%;
+}
+
+.date-menu .mat-card {
+    background: #f1f1f1;
+    padding: 0px;
+    box-shadow: none !important;
+}
+
+::ng-deep .date-menu .ng-select .ng-select-container {
+    border: 0px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+::ng-deep .date-menu .ng-select.ng-select-opened>.ng-select-container {
+    background: #f1f1f1;
+}
+
+.date-menu-close {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background-color: #e2e5ec;
+    border: 1px solid #e2e5ec;
+    color: #595d6e;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: normal;
+    text-align: center;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+::ng-deep .demo-inline-calendar-card {
+    padding-top: 0px !important;
+}
+
+.foot-calendar .demo-inline-calendar-card {
+    max-width: 250px;
+}
+.mark-admin-drop{
+    position: absolute;
+    transform: translate3d(-225px, 38px, 0px);
+    top: 0px;
+    left: 0px;
+    will-change: transform;
+    float: left;
+    min-width: 25rem;
+    padding: 12px 14px;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    z-index: 1000;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    display: none;
+}
+.mark-admin-drop.show{
+    display: block;
+}
+.meeting-attendes .kt-chat__messages {
+    height: 100%;
+}
+.meeting-attendees-user.active .admin-hover {
+    display: inline-flex;
+    transition: all .5s;
+    align-items: center;
+    gap: 5px;
+}
+#repeatModal.kt-quick-active--on{
+    display: block;
+}
+.meeting-attendees-user .user-status.offline{
+    text-align: right;
+}
+
+.offlinedpoint{
+    margin-left: 32em;
+}
+.deadline-count-btn {
+    background: #d5e0f9;
+    color: #1e5bf1;
+    font-weight: 600;
+    padding: 0px 2px;
+    margin-left: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    display: inline-flex;
+  }
+  
+  .deadline-count-btn:hover {
+    background: #c6d7ff;
+    color: #013ed3;
+  }
+  
+  .deadline-count {
+    position: relative;
+  }
+.deadline-count .dropdown-menu {
+    min-width: 25rem;
+    padding: 1rem 1rem;
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    /* transform: translate3d(4px, 20px, 0px); */
+    transform: translate3d(24px, -24px, 0px);
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    border-radius: .25rem;
+    transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    display: none;
+  }
+  
+  .deadline-count:hover .dropdown-menu {
+    display: block;
+  }
+  
+  .deadline-main:hover .deadline-count .dropdown-menu {
+    display: block;
+  }
+ul.deadline-timeline {
+    padding: 0px;
+    list-style: none;
+    padding-left: 2rem;
+    padding-right: 10px;
+    min-height: 93px;
+    max-height: 300px;
+    overflow: auto;
+  }
+  
+  ul.deadline-timeline::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  ul.deadline-timeline::-webkit-scrollbar-thumb {
+    background-color: #8cabfa;
+    border-radius: 50px;
+  }
+  
+  ul.deadline-timeline::-webkit-scrollbar-track {
+    background-color: #e9ebee;
+    border-radius: 50px;
+  }
+  
+  li.deadline-timeline-item {
+    position: relative;
+    padding-bottom: 1rem;
+  }
+  
+  li.deadline-timeline-item:before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #527ce2;
+    border-radius: 50%;
+    top: 6px;
+    left: -22px;
+    z-index: 9;
+  }
+  
+  li.deadline-timeline-item:after {
+    content: "";
+    width: 2px;
+    height: 70px;
+    background-color: #c4d2f5;
+    position: absolute;
+    top: -69px;
+    left: -17px;
+  }
+  
+  .deadline-timeline-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00a7aa;
+  }
+  
+  .deadline-timeline-item-on {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: .95rem;
+  }
+  
+  .deadline-timeline-item-on .svg-icon {
+    fill: #020202;
+    margin-right: 4px;
+  }
+  
+  li.deadline-timeline-item:first-child:after {
+    display: none;
+  }
+
+  .smart-glass {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 288px;
+    height: 388px;
+}
+
+.logo {
+    width: 288px;
+    height: 288px;
+    position: relative;
+}
+
+.circle {
+    padding: 20px;
+    border: 6px solid transparent;
+    border-top-color: #6388e3;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    animation: connect 2.5s linear infinite;
+}
+
+.loader-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@keyframes connect {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
