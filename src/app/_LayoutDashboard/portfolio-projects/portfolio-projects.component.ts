@@ -5170,7 +5170,7 @@ bindCustomRecurrenceValues(){
   this.selectedrecuvalue=this.selectedrecuvalue1;
   this.dayArr=[...this.dayArr1];
   this.MonthArr=[...this.MonthArr1];
-  // this._EndDate1 = moment();
+   this._EndDate1 = moment();
   this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
   this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
 
