@@ -1573,8 +1573,8 @@
                                                 {{emp.DisplayName}} - {{emp.TM_DisplayName}}
                                         </mat-option>
                                     </ng-container>
-                                         
-                                      
+
+
                                      </mat-autocomplete>
                                     </mat-form-field>
 
@@ -1813,7 +1813,8 @@
 
 
 <div class="sideInfobar animate-right" id="Meetings_SideBar">
-  <div class="kt-portlet">
+
+  <div class="kt-portlet" id="main-meeting" *ngIf="meetingsViewOn; else mysideInfobar_schd">
       <div class="kt-portlet__head">
           <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 15 14" fill="none">
@@ -1861,7 +1862,7 @@
               </div>
           </div>
       </div>
-    <div class="kt-portlet__body flex-row" id="main-meeting" *ngIf="meetingsViewOn; else mysideInfobar_schd">
+    <div class="kt-portlet__body flex-row" >
           <div class="w-100">
 
               <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
@@ -3417,11 +3418,14 @@
 
 
 
-      <ng-template #mysideInfobar_schd>
+
+
+  </div>
+   <ng-template #mysideInfobar_schd>
           <div   class="kt-portlet mb-0 m-2 ">
               <div class="offcanvas-header d-flex align-items-center  p-1 mt-2 "
                   *ngIf="editTask==false && copyTask==false">
-                  <button class="back-mtg-btn mr-1 p-2" (click)="meetingsViewOn=true;MasterCode=null  ">
+                  <button class="back-mtg-btn mr-1 p-2" (click)="meetingsViewOn=true;MasterCode=null;this.allAgendas=[]  ">
                       <svg width="26px" height="26px" viewBox="-163.84 -163.84 1351.68 1351.68" fill="#475569"
                           class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000"
                           stroke-width="33.792">
@@ -3448,7 +3452,7 @@
                           <div>
                               <div class="">
                                   <div class="d-none align-items-start form-cusom-check">
-                                      <label class="form-check-label mr-2" for="customSwitch1">Task</label>
+                                      <!-- <label class="form-check-label mr-2" for="customSwitch1">Task</label> -->
                                       <div class="form-check form-switch">
                                           <input type="checkbox" class="form-check-input" id="customSwitch1">
                                           <label class="form-check-label" for="customSwitch1">Event</label>
@@ -3457,21 +3461,191 @@
                               </div>
                           </div>
                       </div>
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                           <label class="cus-lbl">Title<span class="text-danger">*</span> </label>
                           <input class="form-control Title" placeholder="Enter Title" type="text"
                               [(ngModel)]="Title_Name" minlength="3" maxlength="250"
                               (keyup)="LastLengthValidation11()">
                           <span style="color:red" [hidden]="MinLastNameLength"> Min length 3</span>
+ <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="TaskEvent-Sidebar">
+            <div class="schedule-event">
+                      </div> -->
+                      <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="TaskEvent-Sidebar">
+                        <div class="schedule-event">
+                      <div class="se-row">
+                        <div class="se-col-1">
+                            <div class="label-icon">
+                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 6V19M6 6H18" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </div>
+                        </div>
+                        <div class="se-col-11">
+                            <div class="d-flex align-items-end">
+                                <div class="form-group w-100">
+                                    <input id="dsb-evt-titleName" class="form-control" [ngClass]="{
+                                        'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
+                                        ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
+                                        }"
+                                        placeholder="Add Title" type="text" [(ngModel)]="Title_Name"
+                                        minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
+                                    <div class="d-flex flex-column ">
+                                    <span style="color:red" [hidden]="MinLastNameLength">min length 3</span>
+                                    <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">please enter title name</span>
+                                    <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">title should not exceed 100 characters.</span>
+                                   </div>
+                                </div>
+                                <div *ngIf="create==true" class="d-flex align-items-center">
+                                    <div (click)="changeScheduleType(2)" class="schedule-badge active mr-2 ml-3  curser-pointer"  [ngClass]="{'active':ScheduleType=='Event'}">Event</div>
+                                    <!-- <div (click)="changeScheduleType(1)" class="schedule-badge curser-pointer" [ngClass]="{'active':ScheduleType=='Task'}" >Task</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                      </div>
 
 
-
-                      <div class="form-group" id="Descrip_Name">
+                      <!-- <div class="form-group" id="Descrip_Name">
                         <label class="cus-lbl">Description </label>
                         <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
+                    </div> -->
+
+                    <div class="se-row"  id="Descrip_Name">
+                      <div class="se-col-1">
+                          <div class="label-icon">
+                              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 6H20M4 12H14M4 18H9" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                          </div>
+                      </div>
+                      <div class="se-col-11">
+                          <div class="form-group">
+                              <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
+                              <span *ngIf="Description_Type&&Description_Type.trim().length>200"  style="color:red">description should not exceed 200 characters.</span>
+                          </div>
+                      </div>
+                  </div>
+
+
+                  <div class="se-row">
+                    <div class="se-col-1">
+                        <div class="label-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="9" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle> <path d="M12 6.5V12L16 14" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        </div>
                     </div>
+                    <div class="se-col-11">
+                        <div class="schedule-date-time">
+                            <div class="row">
+                                <div class="col-md-6 schedule-br">
+                                    <div class="form-group dt">
+                                        <div class="curser-pointer" (click)="date_menu('date-menu')">
+                                            <div class="schedule-dt-tm">
+                                                <div>
+                                                    <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <span class="picktime-box" [ngClass]="{'error-border':!Startts&&notProvided}">{{Startts}}</span>
+                                                    <span class="schedule-dt-muted">-</span>
+                                                    <span class="picktime-box" [ngClass]="{'error-border':!Endtms&&notProvided}">{{Endtms}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="schedule-dt-text" *ngIf="_StartDate&&Startts&&Endtms">
+                                                <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                                                <span>This {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} will take place on {{_StartDate|date:'MMMM d,y'}} from {{Startts}} until {{Endtms}}</span>
+                                            </div>
+                                            <span *ngIf="!_StartDate&&notProvided" style="color:red">please select schedule date.</span>
+
+                                        <ng-container *ngIf="notProvided">
+                                            <span *ngIf="!(Startts||Endtms); else strtendrq" style="color:red">please select start time and end time.</span>
+                                            <ng-template #strtendrq>
+                                            <span *ngIf="!Startts" style="color:red">please select start time.</span>
+                                            <span *ngIf="!Endtms" style="color:red" >please select end time.</span>
+                                            </ng-template>
+                                        </ng-container>
+
+                                        </div>
+                                        <div class="date-menu" id="date-menu">
+                                            <div class="date-menu-item">
+                                                <div class="date-menu-close" (click)="date_menu_close('date-menu')">Close</div>
+                                                <div class="date-menu-calender">
+                                                    <mat-card class="demo-inline-calendar-card">
+                                                        <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                                                      </mat-card>
+                                                </div>
+                                                <div class="date-menu-time">
+                                                    <div class="mb-2">
+                                                        <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                                                        <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                                            placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                                            <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                                                                {{item}}</ng-option>
+                                                        </ng-select>
+                                                        <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                                                    </div>
+                                                    <div class="">
+                                                        <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                                                        <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                                            [(ngModel)]="Endtms">
+                                                            <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                                {{item1}}
+                                                                ({{
+                                                                    Startts|timeDiff:item1
+                                                                }})
+                                                            </ng-option>
+                                                        </ng-select>
+                                                        <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="schedule-br curser-pointer col-md-6 " id="div_recurrence">
+                                            <div class="repeat" (click)="customrecurrencemodal()">
+                                                <div *ngIf="selectedrecuvalue">
+                                                    <span *ngIf="selectedrecuvalue=='0'">Do not repeat</span>
+                                                    <span *ngIf="selectedrecuvalue=='1'">Daily until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                    <span *ngIf="selectedrecuvalue=='2'">Weekly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                    <span *ngIf="selectedrecuvalue=='3'">Monthly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                </div>
+                                                <div class="repeat-icon">
+                                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 10L12 15L17 10" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex fs-8" *ngIf="selectedrecuvalue=='2'">
+
+                                              <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                              <ng-container *ngIf="mtgOnDays.length>1">
+                                                 on
+                                                  <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                     {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                  </ng-container>
+                                              </ng-container>
+
+                                            </div>
+
+                                            <div class="d-flex flex-wrap fs-8" *ngIf="selectedrecuvalue=='3'">
+                                                    <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                    <ng-container *ngIf="mtgOnDays.length>1">
+                                                        on
+                                                        <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                           {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                        </ng-container>
+                                                    </ng-container>
+                                            </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+<!--
 
                     <div [ngClass]="{'d-none':ScheduleType==='Task'}" class="form-group" id="agenda-field">
                       <label class="cus-lbl">Add Agenda</label><span class="text-danger">*</span>
@@ -3539,7 +3713,787 @@
                       </div>
                       <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > Please provide atleast one agenda.</span>
 
+                  </div> -->
+
+                  <div class="se-row" [ngClass]="{'d-none':ScheduleType==='Task'}">
+                    <div class="se-col-1">
+                        <div class="label-icon">
+                            <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#717171"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#717171"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#717171"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z"></path></g></svg>
+                        </div>
+                    </div>
+                    <div class="se-col-11">
+                  <div  class="form-group" id="agenda-field">
+
+
+                    <div class="action-section" id="action_section" [class.active]="isClassAdded">
+                        <div class="agenda-heading">
+                            <span>
+                                <p class="agenda-main-title">Agenda</p>
+                                <p class="agenda-sub-title">Add agenda topics before the meeting</p>
+                            </span>
+                        </div>
+                        <div class="todo-main" [ngClass]="{'error-borderbottom': allAgendas.length===0&&notProvided}">
+                            <div class="task-header">
+                                <div class="task-tools">
+                                    <div class="task-count"></div>
+                                </div>
+                                <div class="agenda-input-field">
+                                    <input class="form-control task-input" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                                    [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
+                                    />
+                                <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                                </div>
+                            </div>
+
+
+
+                            <div class="todo-list">
+                                <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">
+                                    <span class="agenda-index">{{i+1}}.</span>
+                                    <label [id]="'agenda-label-'+i" class="task-name">{{agenda.name}}</label>
+                                    <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
+
+                                <div class="agenda-ctrl-btns">
+
+
+                                    <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" (click)="editAgenda(i)"  >
+                                        <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
+                                    </button>
+
+                                    <button [id]="'remove-agenda-btn-'+i" class="remove-agenda-btn" (click)="deleteAgenda(i)">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                            role="img" font-size="1.5rem" width="1em" height="1em"
+                                            viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                            <path fill="currentColor"
+                                                d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                            </path>
+                                        </svg>
+                                    </button>
+
+                                <button (click)="cancelAgendaEdit(i)" title="cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
+                                <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
+                                </button>
+
+
+                                <button (click)="updateAgenda(i)"  title="save" [id]="'editing-save-'+i" class="editing-save d-none ">
+                                    <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
+                                </button>
+
+
+
+                                </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <span style="color:red" *ngIf="allAgendas.length===0&&notProvided" > Please provide atleast one agenda.</span>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="se-row align-items-center " id="meeting-online-add">
+              <div class="se-col-1">
+                  <div class="label-icon pt-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1"><g id="meeting"><path d="M 2.9375 3.746094 C 2.996094 3.742188 2.996094 3.742188 3.058594 3.742188 C 3.191406 3.742188 3.328125 3.742188 3.464844 3.742188 C 3.5625 3.742188 3.65625 3.742188 3.753906 3.742188 C 4.046875 3.742188 4.335938 3.742188 4.628906 3.742188 C 4.765625 3.742188 4.902344 3.742188 5.039062 3.738281 C 5.496094 3.738281 5.953125 3.738281 6.410156 3.738281 C 6.527344 3.738281 6.648438 3.738281 6.765625 3.738281 C 6.808594 3.738281 6.808594 3.738281 6.855469 3.738281 C 7.332031 3.738281 7.808594 3.738281 8.28125 3.734375 C 8.773438 3.734375 9.261719 3.734375 9.75 3.734375 C 10.027344 3.734375 10.300781 3.734375 10.574219 3.730469 C 10.835938 3.730469 11.09375 3.730469 11.351562 3.730469 C 11.445312 3.730469 11.539062 3.730469 11.636719 3.730469 C 12.742188 3.726562 12.742188 3.726562 13.203125 4.042969 C 13.234375 4.066406 13.269531 4.085938 13.304688 4.109375 C 13.777344 4.457031 14.082031 4.921875 14.179688 5.507812 C 14.183594 5.597656 14.1875 5.691406 14.191406 5.785156 C 14.191406 5.808594 14.195312 5.835938 14.195312 5.859375 C 14.195312 5.941406 14.199219 6.023438 14.203125 6.105469 C 14.203125 6.160156 14.203125 6.21875 14.207031 6.273438 C 14.210938 6.410156 14.214844 6.542969 14.21875 6.679688 C 14.445312 6.53125 14.671875 6.378906 14.898438 6.230469 C 14.980469 6.179688 15.058594 6.125 15.136719 6.074219 C 15.695312 5.707031 15.695312 5.707031 16.25 5.339844 C 16.292969 5.308594 16.335938 5.28125 16.378906 5.25 C 16.453125 5.203125 16.527344 5.152344 16.601562 5.101562 C 17.03125 4.8125 17.433594 4.621094 17.964844 4.707031 C 18.410156 4.800781 18.714844 5.023438 18.984375 5.390625 C 19.136719 5.667969 19.183594 5.910156 19.183594 6.226562 C 19.1875 6.257812 19.1875 6.292969 19.1875 6.328125 C 19.1875 6.4375 19.1875 6.550781 19.1875 6.664062 C 19.1875 6.742188 19.1875 6.824219 19.1875 6.902344 C 19.1875 7.167969 19.1875 7.429688 19.1875 7.691406 C 19.1875 7.785156 19.1875 7.875 19.191406 7.964844 C 19.191406 8.390625 19.191406 8.816406 19.191406 9.246094 C 19.191406 9.734375 19.191406 10.226562 19.195312 10.71875 C 19.195312 11.101562 19.195312 11.480469 19.195312 11.859375 C 19.195312 12.085938 19.195312 12.316406 19.199219 12.542969 C 19.199219 12.753906 19.199219 12.96875 19.199219 13.183594 C 19.199219 13.261719 19.199219 13.339844 19.199219 13.417969 C 19.203125 14.019531 19.148438 14.46875 18.71875 14.917969 C 18.414062 15.207031 18.039062 15.328125 17.621094 15.316406 C 17.164062 15.285156 16.792969 15.046875 16.421875 14.792969 C 16.386719 14.769531 16.355469 14.746094 16.320312 14.722656 C 16.246094 14.671875 16.171875 14.625 16.101562 14.574219 C 15.914062 14.445312 15.726562 14.316406 15.539062 14.191406 C 15.5 14.164062 15.464844 14.140625 15.425781 14.113281 C 15.027344 13.84375 14.625 13.582031 14.21875 13.320312 C 14.21875 13.371094 14.21875 13.371094 14.21875 13.417969 C 14.214844 13.542969 14.214844 13.667969 14.210938 13.792969 C 14.210938 13.847656 14.207031 13.898438 14.207031 13.953125 C 14.199219 14.621094 14.027344 15.21875 13.554688 15.703125 C 13.09375 16.078125 12.65625 16.257812 12.0625 16.253906 C 12.023438 16.257812 11.984375 16.257812 11.941406 16.257812 C 11.808594 16.257812 11.671875 16.257812 11.535156 16.257812 C 11.4375 16.257812 11.34375 16.257812 11.246094 16.257812 C 10.953125 16.257812 10.664062 16.257812 10.371094 16.257812 C 10.234375 16.257812 10.097656 16.257812 9.960938 16.261719 C 9.503906 16.261719 9.046875 16.261719 8.589844 16.261719 C 8.472656 16.261719 8.351562 16.261719 8.234375 16.261719 C 8.207031 16.261719 8.175781 16.261719 8.144531 16.261719 C 7.667969 16.261719 7.191406 16.261719 6.71875 16.265625 C 6.226562 16.265625 5.738281 16.265625 5.25 16.265625 C 4.972656 16.265625 4.699219 16.265625 4.425781 16.269531 C 4.164062 16.269531 3.90625 16.269531 3.648438 16.269531 C 3.554688 16.269531 3.460938 16.269531 3.363281 16.269531 C 2.257812 16.273438 2.257812 16.273438 1.796875 15.957031 C 1.746094 15.921875 1.746094 15.921875 1.695312 15.890625 C 1.226562 15.546875 0.910156 15.074219 0.820312 14.492188 C 0.816406 14.371094 0.816406 14.25 0.816406 14.132812 C 0.8125 14.09375 0.8125 14.058594 0.8125 14.019531 C 0.8125 13.898438 0.8125 13.777344 0.8125 13.652344 C 0.8125 13.566406 0.8125 13.476562 0.8125 13.390625 C 0.8125 13.101562 0.8125 12.8125 0.8125 12.527344 C 0.8125 12.425781 0.8125 12.328125 0.808594 12.226562 C 0.808594 11.816406 0.808594 11.402344 0.808594 10.988281 C 0.808594 10.882812 0.808594 10.773438 0.808594 10.667969 C 0.808594 10.640625 0.808594 10.613281 0.808594 10.585938 C 0.808594 10.15625 0.808594 9.722656 0.804688 9.292969 C 0.804688 8.851562 0.804688 8.40625 0.804688 7.964844 C 0.804688 7.714844 0.804688 7.46875 0.800781 7.21875 C 0.800781 6.984375 0.800781 6.75 0.800781 6.519531 C 0.800781 6.433594 0.800781 6.347656 0.800781 6.261719 C 0.796875 5.8125 0.800781 5.417969 0.976562 5 C 0.988281 4.96875 1 4.941406 1.011719 4.910156 C 1.230469 4.410156 1.671875 4.054688 2.167969 3.847656 C 2.425781 3.753906 2.664062 3.746094 2.9375 3.746094 Z M 2.589844 5.621094 C 2.480469 5.800781 2.496094 5.988281 2.496094 6.191406 C 2.496094 6.222656 2.496094 6.257812 2.496094 6.292969 C 2.492188 6.40625 2.492188 6.519531 2.492188 6.632812 C 2.492188 6.714844 2.492188 6.796875 2.492188 6.875 C 2.492188 7.097656 2.492188 7.316406 2.492188 7.539062 C 2.492188 7.675781 2.492188 7.8125 2.492188 7.953125 C 2.492188 8.382812 2.492188 8.8125 2.492188 9.246094 C 2.492188 9.742188 2.488281 10.242188 2.488281 10.738281 C 2.488281 11.125 2.488281 11.507812 2.488281 11.894531 C 2.488281 12.125 2.488281 12.351562 2.488281 12.582031 C 2.484375 12.800781 2.484375 13.015625 2.484375 13.230469 C 2.484375 13.3125 2.484375 13.390625 2.484375 13.46875 C 2.484375 13.578125 2.484375 13.6875 2.484375 13.792969 C 2.484375 13.824219 2.484375 13.855469 2.484375 13.890625 C 2.488281 14.117188 2.527344 14.304688 2.675781 14.488281 C 2.78125 14.566406 2.882812 14.574219 3.011719 14.574219 C 3.042969 14.574219 3.074219 14.574219 3.109375 14.574219 C 3.144531 14.574219 3.179688 14.574219 3.21875 14.574219 C 3.273438 14.574219 3.273438 14.574219 3.332031 14.574219 C 3.460938 14.578125 3.585938 14.578125 3.714844 14.578125 C 3.804688 14.578125 3.898438 14.578125 3.988281 14.578125 C 4.238281 14.578125 4.484375 14.578125 4.734375 14.578125 C 4.890625 14.578125 5.042969 14.578125 5.199219 14.578125 C 5.628906 14.578125 6.058594 14.578125 6.488281 14.578125 C 6.527344 14.578125 6.527344 14.578125 6.570312 14.578125 C 6.613281 14.578125 6.613281 14.578125 6.652344 14.578125 C 6.710938 14.578125 6.765625 14.578125 6.820312 14.578125 C 6.847656 14.578125 6.878906 14.578125 6.90625 14.578125 C 7.355469 14.578125 7.804688 14.582031 8.25 14.582031 C 8.710938 14.582031 9.171875 14.582031 9.632812 14.582031 C 9.890625 14.582031 10.152344 14.582031 10.410156 14.582031 C 10.652344 14.585938 10.894531 14.585938 11.140625 14.585938 C 11.230469 14.585938 11.316406 14.585938 11.40625 14.585938 C 11.527344 14.585938 11.652344 14.585938 11.773438 14.585938 C 11.824219 14.585938 11.824219 14.585938 11.878906 14.585938 C 12.066406 14.585938 12.191406 14.574219 12.34375 14.453125 C 12.519531 14.261719 12.503906 14.058594 12.503906 13.808594 C 12.503906 13.777344 12.503906 13.742188 12.503906 13.707031 C 12.507812 13.59375 12.507812 13.480469 12.507812 13.367188 C 12.507812 13.285156 12.507812 13.203125 12.507812 13.125 C 12.507812 12.902344 12.507812 12.683594 12.507812 12.460938 C 12.507812 12.324219 12.507812 12.1875 12.507812 12.046875 C 12.507812 11.617188 12.507812 11.1875 12.507812 10.753906 C 12.507812 10.257812 12.511719 9.757812 12.511719 9.261719 C 12.511719 8.875 12.511719 8.492188 12.511719 8.105469 C 12.511719 7.875 12.511719 7.648438 12.511719 7.417969 C 12.515625 7.199219 12.515625 6.984375 12.515625 6.769531 C 12.515625 6.6875 12.515625 6.609375 12.515625 6.53125 C 12.515625 6.421875 12.515625 6.3125 12.515625 6.207031 C 12.515625 6.175781 12.515625 6.144531 12.515625 6.109375 C 12.511719 5.882812 12.472656 5.695312 12.324219 5.511719 C 12.21875 5.433594 12.117188 5.425781 11.988281 5.425781 C 11.957031 5.425781 11.925781 5.425781 11.890625 5.425781 C 11.835938 5.425781 11.835938 5.425781 11.78125 5.425781 C 11.746094 5.425781 11.707031 5.425781 11.667969 5.425781 C 11.539062 5.421875 11.414062 5.421875 11.285156 5.421875 C 11.195312 5.421875 11.101562 5.421875 11.011719 5.421875 C 10.761719 5.421875 10.515625 5.421875 10.265625 5.421875 C 10.109375 5.421875 9.957031 5.421875 9.800781 5.421875 C 9.371094 5.421875 8.941406 5.421875 8.511719 5.421875 C 8.472656 5.421875 8.472656 5.421875 8.429688 5.421875 C 8.386719 5.421875 8.386719 5.421875 8.347656 5.421875 C 8.289062 5.421875 8.234375 5.421875 8.179688 5.421875 C 8.136719 5.421875 8.136719 5.421875 8.09375 5.421875 C 7.644531 5.421875 7.195312 5.417969 6.75 5.417969 C 6.289062 5.417969 5.828125 5.417969 5.367188 5.417969 C 5.109375 5.417969 4.847656 5.417969 4.589844 5.417969 C 4.347656 5.414062 4.105469 5.414062 3.859375 5.414062 C 3.769531 5.414062 3.683594 5.414062 3.59375 5.414062 C 3.472656 5.414062 3.347656 5.414062 3.226562 5.414062 C 3.191406 5.414062 3.15625 5.414062 3.121094 5.414062 C 2.890625 5.417969 2.746094 5.445312 2.589844 5.621094 Z M 17.324219 6.6875 C 17.28125 6.71875 17.28125 6.71875 17.234375 6.746094 C 17.1875 6.78125 17.1875 6.78125 17.136719 6.8125 C 17.101562 6.835938 17.066406 6.855469 17.035156 6.878906 C 16.84375 7.003906 16.652344 7.132812 16.464844 7.261719 C 16.078125 7.523438 15.703125 7.761719 15.28125 7.960938 C 14.578125 8.300781 14.578125 8.300781 14.128906 8.914062 C 13.910156 9.625 13.886719 10.515625 14.179688 11.210938 C 14.5 11.71875 15.097656 11.972656 15.617188 12.222656 C 15.988281 12.402344 16.320312 12.636719 16.65625 12.871094 C 16.824219 12.984375 16.996094 13.097656 17.164062 13.207031 C 17.210938 13.238281 17.210938 13.238281 17.253906 13.265625 C 17.371094 13.355469 17.371094 13.355469 17.5 13.398438 C 17.5 11.15625 17.5 8.914062 17.5 6.601562 C 17.429688 6.601562 17.378906 6.652344 17.324219 6.6875 Z M 17.324219 6.6875 " style="stroke: none; fill-rule: nonzero; fill: #717171; fill-opacity: 1;"></path><path d="M 4.46875 6.625 C 4.507812 6.625 4.550781 6.625 4.59375 6.625 C 4.683594 6.621094 4.773438 6.621094 4.859375 6.625 C 4.996094 6.625 5.128906 6.621094 5.261719 6.621094 C 5.347656 6.621094 5.4375 6.621094 5.523438 6.621094 C 5.582031 6.621094 5.582031 6.621094 5.640625 6.621094 C 5.933594 6.621094 6.21875 6.664062 6.441406 6.867188 C 6.652344 7.09375 6.699219 7.3125 6.691406 7.617188 C 6.667969 7.851562 6.578125 7.992188 6.414062 8.15625 C 6.125 8.351562 5.875 8.378906 5.53125 8.375 C 5.492188 8.375 5.449219 8.375 5.40625 8.375 C 5.316406 8.378906 5.226562 8.378906 5.140625 8.375 C 5.003906 8.375 4.871094 8.378906 4.738281 8.378906 C 4.652344 8.378906 4.5625 8.378906 4.476562 8.378906 C 4.4375 8.378906 4.398438 8.378906 4.359375 8.378906 C 4.066406 8.378906 3.78125 8.335938 3.558594 8.132812 C 3.347656 7.90625 3.300781 7.6875 3.308594 7.382812 C 3.332031 7.148438 3.421875 7.007812 3.585938 6.84375 C 3.875 6.648438 4.125 6.621094 4.46875 6.625 Z M 4.46875 6.625 " style="stroke: none; fill-rule: nonzero; fill: #717171; fill-opacity: 1;"></path></g></svg>
                   </div>
+              </div>
+              <div class="se-col-11">
+                  <div class="row">
+                      <div class="col-md-6" id="meeting-add">
+                          <div class="meeting-offline">
+                              <div class="form-check schedule-check">
+                                  <input  [(ngModel)]="_meetingroom"  (click)="Meeting_method($event)" class="form-check-input curser-pointer" type="checkbox" value=""/>
+                                  <label class="form-check-label curser-pointer" for="onlinecheck">
+                                    Meeting room
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6" id="online-add">
+                          <div class="meeting-offline">
+                             <div class="form-check schedule-check">
+                                  <input [(ngModel)]="_onlinelink"  (click)="Online_method($event)" class="form-check-input curser-pointer" type="checkbox" value="" id="onlinecheck">
+                                  <label class="form-check-label curser-pointer " for="onlinecheck">
+                                    Online
+                                  </label>
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="se-row" id="Descrip_Name12" style="display:none" >
+              <div class="se-col-1">
+                  <div class="label-icon">
+                      <span aria-hidden="true" class="side-icns"><svg
+                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                              <path
+                                  d="M17.6572 14.8282L16.2429 13.414L17.6572 11.9998C19.2193 10.4377 19.2193 7.90506 17.6572 6.34296C16.0951 4.78086 13.5624 4.78086 12.0003 6.34296L10.5861 7.75717L9.17188 6.34296L10.5861 4.92875C12.9292 2.5856 16.7282 2.5856 19.0714 4.92875C21.4145 7.27189 21.4145 11.0709 19.0714 13.414L17.6572 14.8282ZM14.8287 17.6567L13.4145 19.0709C11.0714 21.414 7.27238 21.414 4.92923 19.0709C2.58609 16.7277 2.58609 12.9287 4.92923 10.5856L6.34345 9.17139L7.75766 10.5856L6.34345 11.9998C4.78135 13.5619 4.78135 16.0946 6.34345 17.6567C7.90555 19.2188 10.4382 19.2188 12.0003 17.6567L13.4145 16.2425L14.8287 17.6567ZM14.8287 7.75717L16.2429 9.17139L9.17188 16.2425L7.75766 14.8282L14.8287 7.75717Z">
+                              </path>
+                          </svg></span>
+
+                  </div>
+              </div>
+
+              <div class="se-col-11">
+                  <div class="form-group">
+                      <angular-editor placeholder="Meeting link" [(ngModel)]="Link_Details" [config]="config"></angular-editor>
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="se-row" id="Location_Name" style="display:none">
+              <div class="se-col-1">
+                  <div class="label-icon">
+                      <svg style="width:22px; height:25px;" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </div>
+              </div>
+              <div class="se-col-11">
+                  <div class="form-group">
+                      <input class="form-control curser-pointer" placeholder="Add Location" type="text" ngx-google-places-autocomplete
+                      [(ngModel)]="Location_Type" (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
+
+                  </div>
+              </div>
+          </div>
+
+
+
+
+          <div class="se-row" id="Guest_Name" style="display:none">
+            <div class="se-col-1">
+                <div class="label-icon">
+                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </div>
+            </div>
+            <div class="se-col-11">
+                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+                    <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
+                    <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
+                    <li *ngFor="let empno of ngEmployeeDropdown">
+                       <div class="schedule-select-user-list-item">
+                            <div class="user-info">
+                                <div class="user-image">
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                                </div>
+                                <div class="user-name">{{getObjOf(_EmployeeListForDropdown,empno,'Emp_No').DisplayName}}</div>
+                            </div>
+                            <div>
+                                <span (click)="discardChoosedItem('PARTICIPANT',empno)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                            </div>
+                       </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="form-group mb-0">
+          <label class="cus-lbl">Attachment </label>
+          <div class="custom-file pl-1">
+              <input type="file" id="uploadFile_" accept="application/pdf"
+                  class="form-control-file" (change)="onFileChange_($event)" multiple>
+          </div>
+      </div> -->
+
+
+      <div class="se-row">
+        <div class="se-col-1">
+            <div class="label-icon">
+                <svg fill="#717171" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M359.784,103.784v262.919c0,57.226-46.557,103.784-103.784,103.784s-103.784-46.557-103.784-103.784V103.784 c0-34.336,27.934-62.27,62.27-62.27c34.336,0,62.27,27.934,62.27,62.27v262.919c0,11.445-9.312,20.757-20.757,20.757 s-20.757-9.311-20.757-20.757V103.784H193.73v262.919c0,34.336,27.934,62.27,62.27,62.27s62.27-27.934,62.27-62.27V103.784 C318.27,46.557,271.713,0,214.487,0S110.703,46.557,110.703,103.784v262.919C110.703,446.82,175.883,512,256,512 s145.297-65.18,145.297-145.297V103.784H359.784z"></path> </g> </g> </g></svg>
+            </div>
+        </div>
+        <div class="se-col-11">
+            <div class="schedule-file">
+                <div class="file-input" id="file__input">
+                  <input (change)="onFileChange($event)" class="file-input-file" accept="application/pdf" id="customFile" type="file" multiple="multiple" name="files[]"/>
+                  <label class="file-input-label" for="customFile">
+                    <span class="file-input-button">
+
+                        <span>Add attachment</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <ul class="schedule-file-list">
+                <li *ngFor='let url of _lstMultipleFiales'>
+                   <div class="schedule-file-list-item">
+                        <div class="file-info">
+                            <div class="file-svg">
+                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </div>
+                            <div class="file-name">{{url.FileName}} <span class="text-muted">({{url.Size}}kb)</span></div>
+                        </div>
+                        <div  class="file-remove">
+                            <span (click)="RemoveSelectedFile(url.UniqueId)" title="remove" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                        </div>
+                   </div>
+                </li>
+
+
+                <li *ngFor='let url of Attachment12_ary'>
+                    <div class="schedule-file-list-item">
+                         <div class="file-info">
+                             <div class="file-svg">
+                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                             </div>
+                             <div class="file-name">{{url.File_Name}}</div>
+                         </div>
+                         <div  class="file-remove">
+                             <span (click)="RemoveExistingFile(url.file_id)" title="remove"  class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                         </div>
+                    </div>
+                 </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="se-row" id="core_viw121" style="display:none">
+      <div class="se-col-1">
+          <div class="label-icon">
+              <svg fill="#717171" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
+          </div>
+      </div>
+      <div class="se-col-11">
+          <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PROJECT')">
+              <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
+              <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
+                  <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+          <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+              <li *ngFor="let prj of projectsSelected">
+                 <div class="schedule-select-list-item">
+                  <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
+                  <span (click)="discardChoosedItem('PROJECT',prj.Project_Code)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                 </div>
+                 <div class="schedule-select-list-user">{{prj.TM_DisplayName}}</div>
+              </li>
+
+          </ul>
+      </div>
+  </div>
+
+
+  <div class="se-row" id="core_viw222" >
+    <div class="se-col-1">
+        <div class="label-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        </div>
+    </div>
+    <div class="se-col-11">
+        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PORTFOLIO')">
+            <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
+            <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+          <li *ngFor="let prtfid of Portfolio">
+             <div class="schedule-select-list-item">
+              <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
+              <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+             </div>
+             <div class="schedule-select-list-user">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').DisplayName}}</div>
+          </li>
+      </ul>
+
+    </div>
+</div>
+
+<div class="se-row" id="core_Dms" style="display:none">
+  <div class="se-col-1">
+      <div class="label-icon">
+          <img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" >
+      </div>
+  </div>
+  <div class="se-col-11">
+      <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('DMS')">
+          <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add dms')}}</div>
+          <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
+              <span class="sr-only">Loading...</span>
+          </div>
+      </div>
+      <ul class="schedule-select-list" *ngIf="loading==false"  >
+          <li *ngFor="let memoid of SelectDms">
+             <div class="schedule-select-list-item">
+              <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
+              <span (click)="discardChoosedItem('DMS',memoid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+             </div>
+             <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
+          </li>
+      </ul>
+  </div>
+</div>
+</div>
+</div>
+
+        <div class="modal-backdrop fade show" id="schedule-event-modal-backdrop" style="display: none;"></div>
+        <!-- Project Modal Start -->
+        <div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
+            <div class="modal-dialog modal-dialog-centered" >
+              <div class="modal-content">
+                <div class="modal-header  gap-1">
+                   <ng-container *ngIf="projectmodaltype">
+                            <img *ngIf="projectmodaltype==='DMS'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                            <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
+                                <path
+                                    d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+                                </path>
+                            </svg>
+                            <i  *ngIf="projectmodaltype==='PROJECT'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
+
+                            <i *ngIf="projectmodaltype==='PORTFOLIO'" class="fas-icn fas fa-list mt-2 mb-2"></i>
+
+                            <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype.toLowerCase()}}</h5>
+                  </ng-container>
+                  <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="modal-search">
+                    <div class="search-svg">
+                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </div>
+
+                    <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='PROJECT'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
+
+                    <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
+
+
+
+                    <div class="modal-icon mr-1 curser-pointer" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
+                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </div>
+                    <div class="modal-icon curser-pointer" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearchRef.value=null; ">
+                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
+                    </div>
+                  </div>
+                  <div class="position-relative">
+                    <div id="project-filter" class="project-filter">
+
+
+                        <div *ngIf="projectmodaltype!=='DMS'" class="project-filter-item">
+                            <div class="item-label">Company</div>
+                            <div class="item-select">
+                                <div class="" >
+                                    <ng-select [(ngModel)]="basedOnFilter.bycompany" placeholder="Select company" (change)=" this.basedOnFilter.byuser=null">
+                                        <ng-option *ngFor="let company of companies_Arr" [value]="company.ClientId">{{company.ClientName.trim()}}</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="projectmodaltype!=='PARTICIPANT'" class="project-filter-item">
+                            <div class="item-label">Users</div>
+                            <div class="item-select">
+                                <div class="">
+
+                                   <ng-select [(ngModel)]="basedOnFilter.byuser" placeholder="Select user"  style="max-width:360px;" >
+                                        <ng-container *ngFor="let user of _EmployeeListForDropdown">
+                                        <ng-option *ngIf="(user.Emp_Comp_No===basedOnFilter.bycompany)||!basedOnFilter.bycompany"  [value]="user.Emp_No">{{user.DisplayName}}</ng-option>
+                                        </ng-container>
+                                   </ng-select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="projectmodaltype==='PROJECT'" class="project-filter-item">
+                            <div class="item-label">Status</div>
+                            <div class="item-select">
+                                <div class="" >
+                                     <ng-select [(ngModel)]="basedOnFilter.bystatus"  placeholder="Select status">
+                                        <ng-option value="inprocess">In-Process</ng-option>
+                                        <ng-option value="delay">Delay</ng-option>
+                                        <ng-option value="completed">Completed</ng-option>
+                                        <ng-option value="underapproval">Under Approval</ng-option>
+                                     </ng-select>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+                        <div class="project-filter-footer">
+                            <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
+                            <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
+                            <button *ngIf="projectmodaltype==='DMS'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();  ">Submit</button>
+                            <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();  ">Submit</button>
+                            <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
+                        </div>
+                    </div>
+
+
+
+                    <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='PROJECT'">
+                        <ng-container *ngIf="searchingResult;else gotresult">
+                                <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                    <div class="spinner-border" style="color: #6388e3; width:40px; height:40px " role="status">
+                                        <span class="visually-hidden"></span>
+                                    </div>
+                                </div>
+                        </ng-container>
+                        <ng-template #gotresult>
+
+                        <ng-container *ngFor="let prj of ProjectListArray">
+                            <li *ngIf="!(MasterCode&&MasterCode.includes(prj.Project_Code))" class="modal-project-list-item">
+                                <span>
+                                    <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)"></mat-checkbox>
+                                </span>
+                                <span class="project-name">
+                                      {{prj.BlockNameProject}}
+                                </span>
+                            </li>
+                        </ng-container>
+                            <div *ngIf="ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </div>
+                        </ng-template>
+
+
+                    </ul>
+
+                    <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
+                            <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
+                                <span>
+                                    <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)"></mat-checkbox>
+                                </span>
+                                <span class="project-name">
+                                    {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
+                                </span>
+                            </li>
+                            <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </div>
+                    </ul>
+                    <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='DMS'">
+
+
+                            <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
+                                <span>
+                                    <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)"></mat-checkbox>
+                                </span>
+                                <label class="project-name">
+                                   {{memo.Subject}}-{{memo.DisplayName}}
+                                </label>
+                            </li>
+
+                            <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </div>
+
+                    </ul>
+                    <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
+                            <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
+                                <span>
+                                    <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
+                                </span>
+                                <span style="display:flex; align-items: center; gap: 5px;">
+                                    <span class="project-user-image">
+                                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                                    </span>
+                                    <span class="project-name">
+                                        {{emp.DisplayName}}
+                                    </span>
+                                </span>
+                            </li>
+                            <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                    </g>
+                                </svg>
+                                <span style="color:#757575" class="ml-2">No results found.</span>
+                            </div>
+                    </ul>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <ng-container *ngIf="projectmodaltype">
+                            <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                            <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
+                    </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- Project Modal End -->
+
+        <div class="customrecurrence modal fade show" id="customrecurrence" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="customrecurrenceLabel" aria-hidden="true"  style="display: none">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="customrecurrenceLabel">Custom recurrence</h5>
+              </div>
+              <div class="modal-body">
+
+                  <div class="form-group flex-1">
+                      <label>Repeat</label>
+                      <mat-select name="Select Type" placeholder="Do not repeat"
+                          [(value)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
+                          <mat-option value="0">Do not repeat</mat-option>
+                          <mat-option value="1">Daily</mat-option>
+                          <mat-option value="2">Weekly</mat-option>
+                          <mat-option value="3">Monthly</mat-option>
+                          <!-- <mat-option value="5">Last day of the month</mat-option> -->
+                      </mat-select>
+                  </div>
+
+
+                  <div>
+                      <div class="ml-0 form-group" style="display: none;" id="weekly_121_new">
+                          <label class="">Days</label>
+                          <div class="pt-1">
+                              <div class="d-flex">
+                                  <ng-container *ngFor="let item of dayArr1">
+                                      <div
+                                          [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                          <input (change)="selectedDay($event)" id="{{item.value}}"
+                                              type="checkbox" name="DaysChk" value="{{item.value}}"
+                                              class="rep-chk" />
+                                          {{item.Day}}
+                                      </div>
+                                  </ng-container>
+                              </div>
+                              <span *ngIf="notProvided1==='dayarr1'" class="fs-7" style="color:red">choose a day.</span>
+                          </div>
+                      </div>
+                      <div class="ml-0 form-group" style="display: none;" id="Monthly_121_new">
+                          <label class="">Day</label>
+                          <div class="pt-1">
+                              <div class="d-flex flex-wrap">
+                                  <ng-container *ngFor="let item of MonthArr1">
+                                      <div
+                                          [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                          <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                              type="checkbox" name="monthChk" value="{{item.value}}"
+                                              class="rep-chk" />
+                                          {{item.Day}}
+                                      </div>
+                                  </ng-container>
+                              </div>
+                              <span *ngIf="notProvided1==='montharr1'" class="fs-7" style="color:red">choose a day.</span>
+                          </div>
+                      </div>
+                  </div>
+
+
+                  <div class="mb-2" id="div_endDate_new">
+                          <label>End Date</label>
+                          <div class="endtill-date">
+                              <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="_StartDate"
+                                      [(ngModel)]="_EndDate1"  placeholder="End Date"
+                                      class="form-control" style="padding-left: 4rem !important;">
+                                  <span class="endtill-date-icon">
+                                      <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
+                                      <mat-datepicker #div_endDatepicker></mat-datepicker>
+                                  </span>
+                             <span *ngIf="notProvided1==='enddate1'&&!_EndDate1" class="fs-7" style="color:red">end date required.</span>
+                          </div>
+                          <div *ngIf="_EndDate1" class="schedule-dt-text">
+                              <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                              <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
+                          </div>
+                  </div>
+
+
+                  <!--new plan-->
+                  <!-- <div class="d-flex align-items-center mb-5">
+                      <div class="cr-label">Repeat Every</div>
+                      <div class="cr-every">
+                          <div class="cr-every-number">
+                              <input type="number" class="form-control" value="1">
+                          </div>
+                          <div class="cr-every-select">
+                              <select class="form-control" id="exampleFormControlSelect1">
+                                  <option>Weekly</option>
+                                  <option>Monthly</option>
+                                  <option>Yearly</option>
+                                </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center mb-5">
+                      <div class="cr-label">Repeat On</div>
+                      <div class="cr-on">
+                              <div class="d-flex">
+                                  <ng-container *ngFor="let item of dayArr">
+                                      <div
+                                          [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                          <input (change)="selectedDay($event)" id="{{item.value}}"
+                                              type="checkbox" name="DaysChk" value="{{item.value}}"
+                                              class="rep-chk" />
+                                          {{item.Day}}
+                                      </div>
+                                  </ng-container>
+                              </div>
+                          <div>
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="skipholidaycheck">
+                                  <label class="form-check-label" for="skipholidaycheck">
+                                    Skip Holidays
+                                  </label>
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-start mb-5">
+                      <div class="cr-label pt-3">Ends</div>
+                      <div class="cr-end-main">
+                          <div class="cr-end-1">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
+                                  <label class="form-check-label" for="exampleRadios1">
+                                    Never
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                                  <label class="form-check-label" for="exampleRadios2">
+                                    On
+                                  </label>
+                                </div>
+                                <div>
+                                  <input class="form-control" type="text" placeholder="Readonly input here..." value="August 19, 2024" readonly>
+                                </div>
+                          </div>
+                          <div class="cr-end-2">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
+                                  <label class="form-check-label" for="exampleRadios3">
+                                    After
+                                  </label>
+                                </div>
+                                <div class="occurences-div">
+                                  <div><input type="number" class="form-control" value="13"></div>
+                                  <div class="occ-title">Occurences</div>
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                      <div class="cr-label">Summary</div>
+                      <div class="cr-summary">
+                          Montly on the second Tuesday, until Jan 25,2025
+                      </div>
+                  </div> -->
+                    <!--new plan-->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
+                <button type="button" class="btn btn-close-secondary" (click)="close_customrecurrencemodal()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+<!--
+ <div class="form-group" id="Guest_Name" style="display:none">
+            <div class="d-flex">
+                <mat-form-field class="drp-dwn-field w-100">
+                    <mat-label>Select participants</mat-label>
+                    <mat-chip-list #selectedParticipants>
+                        <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt"
+                            (removed)="removeSelectedParticipant(p)">
+                            {{p.DisplayName}}
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div class="d-flex">
+                        <input class="flex-1" [matChipInputFor]="selectedParticipants"
+                            [matAutocomplete]="participantsDrpDwn" #ParticipantTF />
+                        <button *ngIf="isParticipantDrpDwnOpen"
+                            class="bg-transparent border-0 curser-pointer "><mat-icon class="close-icon  save-mat-selection"
+                                (click)=" this.isParticipantDrpDwnOpen=false;   closeAutocompleteDrpDwn('ParticipantDrpDwn');">done</mat-icon></button>
+                        <button *ngIf="!isParticipantDrpDwnOpen"
+                            class="bg-transparent border-0 curser-pointer  "><mat-icon class="add-icon"
+                                (click)="this.isParticipantDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantDrpDwn');">add</mat-icon></button>
+                    </div>
+                    <mat-autocomplete aria-label="ParticipantDrpDwn"
+                        #participantsDrpDwn="matAutocomplete"
+                        (optionSelected)="onParticipantSelected($event); ParticipantTF.value=''; "
+                        (opened)="isParticipantDrpDwnOpen=true"
+                        (closed)="isParticipantDrpDwnOpen=false;    ">
+                        <mat-option
+                            *ngFor="let p of _EmployeeListForDropdown|filter:(ParticipantTF.value.trim())"
+                            [value]="p.Emp_No">
+                            <mat-checkbox color="primary"
+                                [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.indexOf(p)!==-1"></mat-checkbox>
+                            {{p.DisplayName}}
+                        </mat-option>
+
+
+                        <mat-option *ngIf="(_EmployeeListForDropdown|filter:ParticipantTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
+                          <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                              <g id="SVGRepo_iconCarrier">
+                                  <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                              </g>
+                          </svg>
+                          <span style="color:#757575" class="ml-2">No results found.</span>
+                      </mat-option>
+
+
+
+
+
+
+
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div> -->
+
+
+
+
+
 
                       <div class="form-group" id="core_viw123"  *ngIf="ProjectListArray">
                           <label class="cus-lbl">Select project <span class="text-danger"
@@ -3568,7 +4522,7 @@
                           <span *ngIf="_subname == true" style="color:red">Please select project!</span>
                       </div>
 
-                      <div class="form-group" id="core_viw121" style="display:none">
+                      <!-- <div class="form-group" id="core_viw121" style="display:none">
 
                               <mat-form-field class="drp-dwn-field w-100" *ngIf="ProjectListArray">
                               <mat-label>Select project </mat-label>
@@ -3619,7 +4573,7 @@
                               </mat-autocomplete>
                           </mat-form-field>
 
-                      </div>
+                      </div> -->
 
                       <div class="content-main show pt-0" id="core_viw">
                           <div class="form-group" id="subtaskid">
@@ -3642,7 +4596,7 @@
                                           class="fas fa-star mr-2"></i>{{_status=='Under Approval'? 'New Approval':_status}}</span>
                               </div>
                           </div>
-
+<!--
                           <div class="form-group" id="core_viw222" style="display:none">
 
                               <mat-form-field class="drp-dwn-field w-100"  >
@@ -3698,8 +4652,8 @@
                                   </mat-autocomplete>
                               </mat-form-field>
 
-                          </div>
-                          <div class=" d-flex align-items-center  justify-content-center " *ngIf="loading"  style="height:65vh">
+                          </div> -->
+                          <!-- <div class=" d-flex align-items-center  justify-content-center " *ngIf="loading"  style="height:65vh">
                             <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
                            <span class="visually-hidden"></span>
                            </div>
@@ -3757,80 +4711,22 @@
                                   </mat-autocomplete>
                               </mat-form-field>
 
-                          </div>
+                          </div> -->
 
-                          <div class="form-group" id="Guest_Name" style="display:none">
-                              <div class="d-flex">
-                                  <mat-form-field class="drp-dwn-field w-100">
-                                      <mat-label>Select participants</mat-label>
-                                      <mat-chip-list #selectedParticipants>
-                                          <mat-chip *ngFor="let p of ngEmployeeDropdown" class="Data_chip_kt"
-                                              (removed)="removeSelectedParticipant(p)">
-                                              {{p.DisplayName}}
-                                              <button matChipRemove>
-                                                  <mat-icon>cancel</mat-icon>
-                                              </button>
-                                          </mat-chip>
-                                      </mat-chip-list>
-                                      <div class="d-flex">
-                                          <input class="flex-1" [matChipInputFor]="selectedParticipants"
-                                              [matAutocomplete]="participantsDrpDwn" #ParticipantTF />
-                                          <button *ngIf="isParticipantDrpDwnOpen"
-                                              class="bg-transparent border-0 curser-pointer "><mat-icon class="close-icon  save-mat-selection"
-                                                  (click)=" this.isParticipantDrpDwnOpen=false;   closeAutocompleteDrpDwn('ParticipantDrpDwn');">done</mat-icon></button>
-                                          <button *ngIf="!isParticipantDrpDwnOpen"
-                                              class="bg-transparent border-0 curser-pointer  "><mat-icon class="add-icon"
-                                                  (click)="this.isParticipantDrpDwnOpen=true; openAutocompleteDrpDwn('ParticipantDrpDwn');">add</mat-icon></button>
-                                      </div>
-                                      <mat-autocomplete aria-label="ParticipantDrpDwn"
-                                          #participantsDrpDwn="matAutocomplete"
-                                          (optionSelected)="onParticipantSelected($event); ParticipantTF.value=''; "
-                                          (opened)="isParticipantDrpDwnOpen=true"
-                                          (closed)="isParticipantDrpDwnOpen=false;    ">
-                                          <mat-option
-                                              *ngFor="let p of _EmployeeListForDropdown|filter:(ParticipantTF.value.trim())"
-                                              [value]="p.Emp_No">
-                                              <mat-checkbox color="primary"
-                                                  [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.indexOf(p)!==-1"></mat-checkbox>
-                                              {{p.DisplayName}}
-                                          </mat-option>
-
-
-                                          <mat-option *ngIf="(_EmployeeListForDropdown|filter:ParticipantTF.value.trim()).slice(0,1000).length===0" style="pointer-events:none;"  >
-                                            <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
-                                                </g>
-                                            </svg>
-                                            <span style="color:#757575" class="ml-2">No results found.</span>
-                                        </mat-option>
-
-
-
-
-
-
-
-                                      </mat-autocomplete>
-                                  </mat-form-field>
-                              </div>
-                          </div>
 
 
 
 
                           <div>
                               <div>
-                                  <div class="form-group" id="online-add">
+                                  <!-- <div class="form-group" id="online-add">
                                       <div class="form-check form-check-custom form-check-solid pl-4">
                                           <input class="form-check-input" [(ngModel)]="_onlinelink"
                                               (click)="Online_method($event)" type="checkbox" value=""
                                               id="flexCheckChecked">
                                           <label class="form-check-label" for="flexCheckChecked">Online </label>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <div class="form-group" id="Descrip_Name12" style="display:none">
                                       <label class="cus-lbl">Link description </label>
                                       <!-- <textarea class="form-control" [(ngModel)]="Link_Details" height="40px"></textarea> -->
@@ -3848,18 +4744,12 @@
                           </div>
 
 
-                          <div class="form-group mb-0">
-                              <label class="cus-lbl">Attachment </label>
-                              <div class="custom-file pl-1">
-                                  <input type="file" id="uploadFile_" accept="application/pdf"
-                                      class="form-control-file" (change)="onFileChange_($event)" multiple>
-                              </div>
-                          </div>
 
 
-                          <div class="dropzone dropzone-multi form-group" id="">
-                              <div id="div_exixtingfiles" class="dropzone-items">
-                                  <div *ngFor='let url of _lstMultipleFiales'>
+
+                          <!-- <div class="dropzone dropzone-multi form-group" id="">
+                              <div id="div_exixtingfiles" class="dropzone-items"> -->
+                                  <!-- <div *ngFor='let url of _lstMultipleFiales'>
                                       <div class="dropzone-item p-3 m-0 border br-0">
                                           <div class="dropzone-file">
                                               <div class="dropzone-filename">
@@ -3872,9 +4762,9 @@
                                               </div>
                                           </div>
                                       </div>
-                                  </div>
+                                  </div> -->
 
-                                  <div *ngFor='let url of Attachment12_ary'>
+                                  <!-- <div *ngFor='let url of Attachment12_ary'>
                                       <div class="dropzone-item p-3 m-0 border br-0">
                                           <div id="url_{{url.file_id}}" class="dropzone-file">
                                               <div class="dropzone-filename">
@@ -3887,10 +4777,10 @@
                                               </div>
                                           </div>
                                       </div>
-                                  </div>
-                              </div>
-                          </div>
-
+                                  </div> -->
+                              <!-- </div>
+                          </div> -->
+<!--
                           <div class="form-group mb-0">
                               <div class="d-flex gap-1">
                                   <div class="form-group flex-1">
@@ -4100,7 +4990,7 @@
                                       </ng-container>
                                   </div>
                               </div>
-                          </div>
+                          </div> -->
 
                           <div *ngIf="isChecked == '1'">
                               <div class="form-group align-items-start  mb-3 d-none">
@@ -4452,9 +5342,9 @@
 
               <div class="kt-portlet__foot py-3">
                   <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
-                      <button type="submit" class="btn btn-info w-110 ml-2" [disabled]="!Endtms ||!Startts || !Title_Name || !totalcountofagenda"
-                          (click)="OnSubmitSchedule()">Submit</button>
-                          <!-- -->
+                      <button type="submit" class="btn btn-info w-110 ml-2"
+                          (click)="onSubmitBtnClicked()">Submit</button>
+
 
                       <button *ngIf="draftid==0" (click)="Insert_indraft()"  type="cancel" class="btn btn-dull ml-3"
                           >Save draft</button>
@@ -4471,9 +5361,6 @@
 
 
       </ng-template>
-
-  </div>
-
   <div id="User_list_View" class="sideInfobar animate-right bg-slide-br">
     <div class="kt-portlet" id="Team_view_pr">
         <div class="kt-portlet__head">
