@@ -118,9 +118,12 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="kt-project-type">
-                                    <div class="Kt-Pd-Status Delay {{item.Status=='Under Approval'?'new-project' :'black-text'}}" [ngClass]="{'Delay':item.Status=='Delay'}" *ngIf="item.Status=='Delay'">
-                                        {{item.Status =='InProcess'?'In-Process':(item.Status=='Under Approval'?'New Approval':item.Status)}} {{item.Delaydays}} days
+                                   
+                                    <div class="Kt-Pd-Status Delay black-text" *ngIf="item.Status=='Delay'">
+                                        Delay {{item.Delaydays}} days
                                     </div>
+
+                                    
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
                                                         'UnderApproval': item.Status=='Under Approval',
                                                         'Not_Started': item.Status=='Not Started',
@@ -136,10 +139,21 @@
                                                         'Cancelled': item.Status=='Cancelled',
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold'}">
-                                        <ng-container *ngIf="item.Status!='Project Hold'"> {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
-                                        </ng-container>
-                                        <ng-container *ngIf="item.Status=='Project Hold'">Hold</ng-container>
+  
+                                       {{
+                                            item.Status=='Under Approval'?'New approval' : 
+                                            item.Status=="Cancellation Under Approval"?"Cancellation approval":
+                                            item.Status=="Completion Under Approval" ? "Completion approval":
+                                            item.Status=='Forward Under Approval'? "Forward approval":
+                                            item.Status=='Not Started'?'Draft':
+                                            item.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
+                                            item.Status=='InProcess'?'In-process':
+                                            item.Status=='Project Hold'?'Hold':
+                                            item.Status
+                                         }}
+                                  
                                     </div>
+                                 
                                 </div>
                             </div>
 
@@ -175,10 +189,12 @@
                                  </span>
                            </div> -->
                         <div class="kt-project-type  ">
-                            <div class="Kt-Pd-Status Delay  "  [ngClass]="{'Delay':item.Status=='Delay'}" *ngIf="item.Status=='Delay'">
-                                {{item.Status=='Under Approval'?'New Approval':(item.Status=='InProcess'?'In-Process':item.Status)}} {{item.Delaydays}} days
+                            <div class="Kt-Pd-Status Delay" *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
+                                <ng-container *ngIf="item.Status=='Delay'">Delay {{item.Delaydays}} days</ng-container>
+                                <ng-container *ngIf="item.Status!='Delay'">{{item.Status}}</ng-container>
                             </div>
-                            <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
+                            <ng-template #notdelay_status>
+                            <div class="Kt-Pd-Status" [ngClass]="{'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                 'Inprocess': item.Status=='InProcess' , 'NewProjectRejected': item.Status=='New Project Rejected',
                                                 'Done': item.Status=='Completed','ToDo':item.Status=='ToDo Achieved',
                                                 'ToDoCompleted':item.Status=='ToDo Completed','EnactiveUnderApproval': item.Status=='Enactive Under Approval',
@@ -193,6 +209,7 @@
                                                   </ng-container>
 
                             </div>
+                           </ng-template>
                             <div class="Requested_user_info">
                                 <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -261,7 +278,8 @@
                     </div>
                     <div class="kt-project-type ">
                         <!-- <div  class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">Completion Under Approval</div> -->
-                        <div *ngFor="let item of ProjectStatesJson" class="Kt-Pd-Status" [ngClass]="{'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
+                        <div *ngFor="let item of ProjectStatesJson" class="Kt-Pd-Status" [ngClass]="{
+                                                'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                 'Inprocess': item.Status=='InProcess',
                                                 'NewProjectRejected': item.Status=='New Project Rejected',
                                                 'Done': item.Status=='Completed',
@@ -272,7 +290,7 @@
                                                 'CompletionUnderApproval': item.Status=='Completion Under Approval',
                                                 'Delay': item.Status=='Cancellation Under Approval',
                                                 'Cancelled': item.Status=='Cancelled',
-                                                'Delay':item.Status=='Delay',
+                                                'Delay':item.Status.toLowerCase().includes('delay'),
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}" >
                             {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}

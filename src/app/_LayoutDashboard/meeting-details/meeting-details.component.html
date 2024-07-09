@@ -1704,7 +1704,7 @@
                    
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == false || delayMeeting == true) || (Meetingstatuscom=='Completed' && AutoComplete == true)">
+                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == true || delayMeeting == true) || (Meetingstatuscom=='Completed' && AutoComplete == true)">
                         <div class="kt-note-icon" style="align-self:flex-start">
                         <svg xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -1762,6 +1762,18 @@
                                 This meeting expired {{meetingDuration}} days ago and can not be started.</span>
                             </div>
                          </container>
+                         <container  *ngIf="upcomingMeeting == true">
+                            <div class="notification delay-notification mydelay-action-notf">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
+                                height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                <path _ngcontent-pef-c397=""
+                                  d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                </path>
+                              </svg>
+                              <span class="notif-msg" style=" color: #00a2eb;" >
+                                This meeting is scheduled for {{EventScheduledjson[0].Schedule_date| date:'EEEE,MMMM d, YYYY'}}, at {{EventScheduledjson[0].St_Time}}.</span>
+                            </div>
+                            </container>
 
                          <container  *ngIf="AutoComplete == true">
                             <div class="notification delay-notification mydelay-action-notf">
@@ -1775,6 +1787,7 @@
                                 This meeting was not manually ended by the admin and hence was automatically completed by the <b>Stream planner</b>, resulting in varying durations.</span>
                             </div>
                             </container>
+     
                     </div>
                    </div>
                   
@@ -1808,7 +1821,7 @@
                         <div class="meeting-attendance-title">Average attendance time</div>
                     </div>
                 </div>
-                <div class="meeting-attendance-main d-none">
+                <div class="meeting-attendance-main">
                     <div class="legend-border">
                         <div class="meeting-attendance-heading">Completion Report</div>
                         <div class="meeting-attendance-date">Tuesday, July 2, 2024</div>
@@ -5416,6 +5429,15 @@
                 </li>
               </ul>
               <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">
+
+                <div class=" d-flex align-items-center  justify-content-center" *ngIf="previousWithUpcoming_loader" style="height:65vh">
+                    <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
+                       <span class="visually-hidden"></span>
+                      </div>
+                  </div>
+
+
+
                 <div class="tab-pane fade show active" id="previousmeeting" role="tabpanel" aria-labelledby="previousmeeting-tab">
                     <div class="historymeeting-accordion  accordion"  id="accordionHistoryMeeting">
                         <div class="card" *ngFor="let item of previousmeetings;let i = index">
@@ -5447,8 +5469,12 @@
         
                                             <div class="pn-details">
                                                 <div class="pn-label">Location</div>
-                                                <div class="pn-time">
+                                                <div class="pn-time"  *ngIf="item.Location">
                                                     {{item.Location}}
+                                                </div>
+
+                                                <div class="pn-time"  *ngIf="!item.Location">
+                                                    Not Provided
                                                 </div>
                                             </div>
                                             <div class="pn-details">
@@ -5729,10 +5755,9 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                       
                                             <div class="pn-details">
                                                 <div class="pn-label">Meeting Status</div>
-                                                <div class="pn-time">
+                                                <div  class="Kt-Pd-Status Done">
                                                     Completed
                                                 </div>
                                             </div>
@@ -5753,9 +5778,9 @@
                                             </div>
                                             <div class="pn-details">
                                                 <div class="pn-label">Attendees</div>
-                                                <div class="pn-part" *ngFor="let prt of item.Addguest;let i = index">
-                                                    <div class="pn-part-group" title="Md Waseem Akram">
-                                                        <span class="pn-part-item">{{prt.twolet}}</span>
+                                                <div class="pn-part">
+                                                    <div class="pn-part-group"  *ngFor="let prt of item.Addguest;let i = index">
+                                                        <span class="pn-part-item" title="{{prt.TM_DisplayName}}">{{prt.twolet}}</span>
                                                     </div>
                                                     <!-- <div class="pn-part-group" title="Md Waseem Akram">
                                                         <span class="pn-part-item">A</span>
@@ -5772,11 +5797,11 @@
                                                 <div class="pn-part-group dropdown" *ngIf="item.RemainingGuestsCount">
                                                     <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <span class="pn-part-item">+{{item.RemainingGuestsCount}}</span>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
+                                                        <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
                                                             <div class="pn-part-drop-item">Md Waseem Akram</div>
                                                             <div class="pn-part-drop-item">Md Waseem Akram</div>
                                                             <div class="pn-part-drop-item">Md Waseem Akram</div>
-                                                        </div>
+                                                        </div> -->
                                                     </a>
                                                     
                                                 </div> 
@@ -5788,7 +5813,7 @@
                                                         <div class="pn-time">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="#717171" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="#717171"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="#717171"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="#717171"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="#717171"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="#717171"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="#717171"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="#717171" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="#717171"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="#717171" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                                                         </div>
-                                                    <div class="pn-ag-count">
+                                                    <div class="pn-ag-count" title="Agenda">
                                                        {{item.AgendaCount}}
                                                     </div>
                                                     </div>
@@ -5797,7 +5822,7 @@
                                                         <div class="pn-timel">
                                                             <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                         </div>
-                                                    <div class="pn-ag-count">
+                                                    <div class="pn-ag-count" title="Notes">
                                                        {{item.NotesCount}}
                                                     </div>
                                                     </div>
@@ -5805,8 +5830,8 @@
                                                     <div class="pn-in-label">
                                                         <div class="pn-time">
                                                             <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 19.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 12.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 5.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 5.5L4 6.5L7 3.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 12.5L4 13.5L7 10.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 19.5L4 20.5L7 17.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                        </div>
-                                                    <div class="pn-ag-count">
+                                                        </div> 
+                                                    <div class="pn-ag-count" title="Assign project">
                                                        {{item.TaskCount}}
                                                     </div>
                                                     </div>
@@ -5816,8 +5841,6 @@
                                     </div>
                                 </div>
                               </a>
-                      
-                          
                         </div>
                         <!-- <div class="card">
                               <a class="pn-card">
@@ -6238,7 +6261,9 @@
                           
                         </div> -->
                       </div>
+
                 </div>
+                 
                 <div class="tab-pane fade" id="upcomingmeeting" role="tabpanel" aria-labelledby="upcomingmeeting-tab">
                     <div class="card" *ngFor="let data of upcomingmeetings;let i = index">
                         <a class="pn-card" >
@@ -6268,9 +6293,13 @@
   
                                       <div class="pn-details">
                                           <div class="pn-label">Location</div>
-                                          <div class="pn-time">
+                                          <div class="pn-time" *ngIf="data.Location">
                                               {{data.Location}}
                                           </div>
+
+                                          <div class="pn-time"  *ngIf="!data.Location">
+                                            Not Provided
+                                        </div>
                                       </div>
                                       <div class="pn-details">
                                           <div class="pn-label">Meeting Type</div>
@@ -6553,7 +6582,7 @@
                                  
                                       <div class="pn-details">
                                           <div class="pn-label">Meeting Status</div>
-                                          <div class="pn-time">
+                                          <div  class="Kt-Pd-Status Done">
                                               Completed
                                           </div>
                                       </div>
@@ -6573,12 +6602,12 @@
                                           </div>
                                       </div>
                                       <div class="pn-details">
-                                          <div class="pn-label">Participants</div>
-                                          <div class="pn-part">
-                                              <div class="pn-part-group" title="Md Waseem Akram">
-                                                  <span class="pn-part-item">M</span>
+                                          <div class="pn-label">Attendees</div>
+                                           <div class="pn-part" >
+                                              <div class="pn-part-group" *ngFor="let upcom of data.Addguest">
+                                                  <span class="pn-part-item" title="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
                                               </div>
-                                              <div class="pn-part-group" title="Md Waseem Akram">
+                                              <!-- <div class="pn-part-group" title="Md Waseem Akram">
                                                   <span class="pn-part-item">A</span>
                                               </div>
                                               <div class="pn-part-group" title="Md Waseem Akram">
@@ -6586,19 +6615,20 @@
                                               </div>
                                               <div class="pn-part-group" title="Md Waseem Akram">
                                                   <span class="pn-part-item">S</span>
-                                              </div>
-                                              <div class="pn-part-group dropdown">
-                                                  <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                      <span class="pn-part-item">+3</span>
-                                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
-                                                          <div class="pn-part-drop-item">Md Waseem Akram</div>
-                                                          <div class="pn-part-drop-item">Md Waseem Akram</div>
-                                                          <div class="pn-part-drop-item">Md Waseem Akram</div>
-                                                      </div>
-                                                  </a>
-                                                  
-                                              </div>
+                                              </div> -->
+                                             
                                           </div>
+                                          <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount">
+                                            <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="pn-part-item">+{{data.RemainingGuestsCount}}</span>
+                                                <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
+                                                    <div class="pn-part-drop-item">Md Waseem Akram</div>
+                                                    <div class="pn-part-drop-item">Md Waseem Akram</div>
+                                                    <div class="pn-part-drop-item">Md Waseem Akram</div>
+                                                </div> -->
+                                            </a>
+                                            
+                                        </div>
                                       </div>
                                       <div class="pn-details mb-0">
                                           <div class="pn-label">Meeting Actions</div>
@@ -6607,7 +6637,7 @@
                                                   <div class="pn-time">
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="#717171" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="#717171"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="#717171"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="#717171"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="#717171"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="#717171"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="#717171"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="#717171" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="#717171"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="#717171" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                                                   </div>
-                                              <div class="pn-ag-count">
+                                              <div class="pn-ag-count" title="Agenda">
                                                  {{data.AgendaCount}}
                                               </div>
                                               </div>
@@ -6616,7 +6646,7 @@
                                                   <div class="pn-timel">
                                                       <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                   </div>
-                                              <div class="pn-ag-count">
+                                              <div class="pn-ag-count" title="Notes">
                                                   {{data.NotesCount}}
                                               </div>
                                               </div>
@@ -6625,7 +6655,7 @@
                                                   <div class="pn-time">
                                                       <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 19.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 12.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 5.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 5.5L4 6.5L7 3.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 12.5L4 13.5L7 10.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 19.5L4 20.5L7 17.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                   </div>
-                                              <div class="pn-ag-count">
+                                              <div class="pn-ag-count" title="Assign project">
                                                   {{data.TaskCount}}
                                               </div>
                                               </div>
@@ -6641,7 +6671,7 @@
                 </div>
               
               </div>
-            
+
         </div>
     </div>
 </div>
