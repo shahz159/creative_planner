@@ -974,7 +974,7 @@ selectedAttendeesList = new Set<any>();
 
   OnCat_Cancel(Cid) {
     (<HTMLInputElement>document.getElementById("TextboxCat_" + Cid)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("LabelCat_" + Cid)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("LabelCat_" + Cid)).style.display = "flex";
     this.hideMenuOfCategory = false;
   }
 

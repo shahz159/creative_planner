@@ -711,7 +711,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   ngCompanyDropdown: any;
 
   share_Users() {
-    document.getElementById("shareBar").style.width = "400px";
+    document.getElementById("shareBar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
     //SnackBar Dismiss
@@ -1608,7 +1608,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
   _CloseshareBar() {
     this.Close_ShareModel();
-    document.getElementById("shareBar").style.width = "0";
+    document.getElementById("shareBar").classList.remove("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 

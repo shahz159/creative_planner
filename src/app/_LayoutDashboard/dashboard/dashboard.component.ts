@@ -664,10 +664,10 @@ export class DashboardComponent implements OnInit {
   // ngAfterViewInit() {
 
 
-  //   this.drawBarGraph();
-  //   // setTimeout(() => {
-  //   //   this.startTour();
-  //   // }, 3000);
+  //   this.drawLineGraph();
+  //   setTimeout(() => {
+  //     this.startTour();
+  //   }, 3000);
   // }
 
 
@@ -5747,36 +5747,38 @@ debugger
 
 
   // bar graph
-
-  drawBarGraph() {
-    var options = {
-      series: [{
-        data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
-        this.RejectedCount, this.CompletedCount, this.AssignActionCount]
-      }],
-      chart: {
-        type: 'bar',
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          horizontal: true,
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
-          ' Under Approval Projects', 'Assigned Actions'
-        ],
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
-    chart.render();
-  }
+  // drawLineGraph() {
+  //   var options = {
+  //     series: [{
+  //       name: 'Series 1',
+  //       data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
+  //         this.RejectedCount, this.CompletedCount, this.AssignActionCount
+  //       ]
+  //     }],
+  //     chart: {
+  //       type: 'line', // Change chart type to line
+  //       height: 350
+  //     },
+  //     plotOptions: {
+  //       bar: {
+  //         borderRadius: 4,
+  //         horizontal: true,
+  //       }
+  //     },
+  //     dataLabels: {
+  //       enabled: false
+  //     },
+  //     xaxis: {
+  //       categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
+  //         'Under Approval Projects', 'Assigned Actions'
+  //       ],
+  //     }
+  //   };
+  
+  //   var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
+  //   chart.render();
+  // }
+  
 
   // bar graph
   // agenda in event creation start
@@ -6741,7 +6743,12 @@ if (this.selectedrecuvalue == '0') {
 
 this.close_customrecurrencemodal();
 }
-
+view_graph_div(){
+  document.getElementById("graph-div").style.display = "block";
+}
+close_graph_div(){
+  document.getElementById("graph-div").style.display = "none";
+}
 // new eventsidebar design code end
 
 }

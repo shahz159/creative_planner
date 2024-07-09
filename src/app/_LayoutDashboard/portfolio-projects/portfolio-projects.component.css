@@ -3581,3 +3581,12 @@ small.tlv-df {
 .attach-tippy:hover .st-line{
   display: block;
 }
+.Kt-pp-list .card-header {
+  border-bottom: 0px solid #ebedf2;
+}
+.Kt-pp-list .nav-tabs .nav-link {
+  margin-bottom: 0px;
+}
+.Kt-pp-list .nav-tabs {
+  margin: 0 0 0px 0;
+}

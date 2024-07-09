@@ -1423,79 +1423,169 @@
     <!-- Link memos Template -->
 <!-- share sidebar-->
 <div id="shareBar" class="sideInfobar offcanvas animate-right">
-    <div class="px-4 pt-4 pb-1">
-        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-2">
-            <h4 class="font-weight-bold m-0"> Share portfolio </h4>
-            <a href="javascript:void(0)" (click)="_CloseshareBar()" class="closebtn btn btn-xs btn-icon btn-hover-primary mt-2">
-                <i class="fa fa-times"></i>
-            </a>
-        </div>
-    </div>
-    <div class="kt-portlet__body p-3">
-        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
-            <div class="card-body multi">
-                <form>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Select company</label>
-                        <div>
-                            <ng-multiselect-dropdown [placeholder]="' Company '" class="mutlidropdown-set"
-                                name="CompanyDropdown" [(ngModel)]="ngCompanyDropdown"
-                                [settings]="dropdownSettings_Cmp" [data]="Company_List"
-                                (onSelect)="OnCompanySelect($event)" (onDeSelect)="OnCmpDeselect()">
-                            </ng-multiselect-dropdown>
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 w-100">
+                <div class="Kt-pp-list">
+                    <div class="card-header card-header-tabs-line pb-0 pl-0">
+                        <div class="card-toolbar">
+                            <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                        <span class="svg-icv-hd">
+                                            <i class="fas fa-share-alt"></i>
+                                        </span>
+                                        <span class="nav-text">Share portfolio</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                        <span class="svg-icv-hd">
+                                            <i class="fas fa-file-alt"></i> </span>
+                                        <span class="nav-text">Shared details</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <p class="text-danger"><b>{{this._ErrorMessage_comp}}</b></p>
                     </div>
-                    <div class="form-group">
-                        <label>Select user</label>
-                        <div>
-                            <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
-                                name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
-                                [settings]="dropdownSettings_Emp" [data]="EmployeeList"
-                                (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
-                            </ng-multiselect-dropdown>
-                             <!-- <ng-select class="mutlidropdown-set" (add)="OnEmpSelect($event)" (remove)="OnEmpDeselect()" [(ngModel)]="ngEmployeeDropdown"
-                             bindValue="EmployeeDropdown" bindLabel="EmployeeDropdown" placeholder="TM Name" [multiple]="true" [selectableGroup]="true" >
+                </div>
 
-                                <ng-option [value]="Emp_No" *ngFor="let item of EmployeeList" >
-                                    {{item.TM_DisplayName}}
-                                </ng-option>
 
-                            </ng-select> -->
 
+
+
+                  <div class="rt-btn">
+                      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                          (click)="_CloseshareBar()">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                              fill="currentColor">
+                              <path fill="none" d="M0 0h24v24H0z"></path>
+                              <path
+                                  d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                              </path>
+                          </svg>
+                      </a>
+                  </div>
+              </div>
+          </div>
+
+    
+        <div class="share-portfolio-div tab-content">
+            <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"aria-labelledby="kt_tab_pane_1_4">
+                <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+                    <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+                        <div class="card-body multi">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Select company</label>
+                                    <div>
+                                        <ng-multiselect-dropdown [placeholder]="' Company '" class="mutlidropdown-set"
+                                            name="CompanyDropdown" [(ngModel)]="ngCompanyDropdown"
+                                            [settings]="dropdownSettings_Cmp" [data]="Company_List"
+                                            (onSelect)="OnCompanySelect($event)" (onDeSelect)="OnCmpDeselect()">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                    <p class="text-danger"><b>{{this._ErrorMessage_comp}}</b></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select user</label>
+                                    <div>
+                                        <ng-multiselect-dropdown [placeholder]="' TM Name '" class="mutlidropdown-set"
+                                            name="EmployeeDropdown" [(ngModel)]="ngEmployeeDropdown"
+                                            [settings]="dropdownSettings_Emp" [data]="EmployeeList"
+                                            (onSelect)="OnEmpSelect($event)" (onDeSelect)="OnEmpDeselect()">
+                                        </ng-multiselect-dropdown>
+                                         <!-- <ng-select class="mutlidropdown-set" (add)="OnEmpSelect($event)" (remove)="OnEmpDeselect()" [(ngModel)]="ngEmployeeDropdown"
+                                         bindValue="EmployeeDropdown" bindLabel="EmployeeDropdown" placeholder="TM Name" [multiple]="true" [selectableGroup]="true" >
+            
+                                            <ng-option [value]="Emp_No" *ngFor="let item of EmployeeList" >
+                                                {{item.TM_DisplayName}}
+                                            </ng-option>
+            
+                                        </ng-select> -->
+            
+                                    </div>
+                                    <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="mb-3">Preferences</label>
+                                    <div>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" [(ngModel)]="preferences"
+                                                    (change)="Radio_View_fullaccess($event.target.value)" value="View Only"
+                                                    name="optradio">View only
+                                            </label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" [(ngModel)]="preferences"
+                                                    (change)="Radio_View_fullaccess($event.target.value)" value="Full Access"
+                                                    name="optradio">Full access
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
+                            </form>
                         </div>
-                        <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
                     </div>
+                </div>
+                <div class="kt-portlet__foot py-3">
                     <div class="form-group mb-0">
-                        <label class="mb-3">Preferences</label>
-                        <div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" [(ngModel)]="preferences"
-                                        (change)="Radio_View_fullaccess($event.target.value)" value="View Only"
-                                        name="optradio">View only
-                                </label>
-                            </div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" [(ngModel)]="preferences"
-                                        (change)="Radio_View_fullaccess($event.target.value)" value="Full Access"
-                                        name="optradio">Full access
-                                </label>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-info btn-sm" (click)="share()">Share</button>
+                        <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="_CloseshareBar()">Close</button>
                     </div>
-                    <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
-                </form>
-                <div class="pt-3 text-right">
-                    <button type="button" class="btn btn-secondary btn-sm mr-3"
-                        (click)="_CloseshareBar()">Close</button>
-                    <button type="button" class="btn btn-primary btn-sm"
-                        (click)="share()">Share</button>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
+                <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+                    <div class="mb-3">
+                        <h6 class="text-dark mb-0">Portfolio owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
+                        </h6>
+                    </div>
+                    <div class="">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Shared to</th>
+                                <th>Shared by</th>
+                                <th>Preference type</th>
+                                <th>Delete</th>
+                            </tr>
+                            <tr *ngFor="let item of _ShareDetailsList">
+                                <td>
+                                    {{item.Shared_To}}
+                                </td>
+                                <td>
+                                    {{item.Shared_By}}
+                                    <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                            {{item.Shared_To}}
+                                        </div> -->
+                                </td>
+                                <!-- <div *ngIf="item.SharedbyEmpNo==Current_user_ID">
+                                        <td><span><strong>To : </strong></span>{{item.Shared_To}}</td>
+                                    </div>
+                                    <div *ngIf="item.SharedbyEmpNo!=Current_user_ID">
+                                        <td><span><strong>By : </strong></span>{{item.Shared_By}}</td>
+                                    </div> -->
+                                <td>
+                                    <span
+                                        [ngStyle]="{'color':item.Preferences=== 'Full Access' ? '#28a745' : '#dc3545'}">{{item.Preferences}}</span>
+                                </td>
+                                <td align="center">
+                                    <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-0 px-2 py-1"
+                                        (click)="deleteSharedUsers(item.Portfolio_ID,item.EmployeeId,item.SharedbyEmpNo)"><i
+                                            class="fas fa-trash-alt mr-0"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 

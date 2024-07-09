@@ -1,4 +1,4 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3">
     <!--Begin::Row    DIV ONE -->
     <div class="row">
         <div class="col-lg-12">
@@ -210,7 +210,7 @@
                 </div>
             </div>
             <!--begin::Portlet-->
-            <div class="kt-portlet">
+            <div class="kt-portlet mt-3 mb-0">
                 <!-- <div class="kt-portlet__head">
                     <div class="col-md-6 py-3">
                         <input type="text" class="form-control" [(ngModel)]="portfolioName"
@@ -223,20 +223,20 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 ">
+                <div class="kt-portlet__body pt-3 pb-2">
                     <div class="card projects-list no-border">
                         <div class="card-body">
                             <!--begin: Datatable -->
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12  table-scroll">
                                         <div *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found.</div>
                                         <table class="table table-hover dataTable no-footer dtr-inline" id="project-4"
-                                            role="grid" style="width: 0px;">
+                                            role="grid">
                                             <thead>
                                                 <tr role="row">
                                                     <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
-                                                        style="width: 0px;" aria-sort="ascending"
+                                                       aria-sort="ascending"
                                                         aria-label=": activate to sort column descending">
                                                         <!-- <mat-list-item>
                                                             <mat-checkbox checked color="primary"
@@ -246,8 +246,8 @@
                                                             </mat-checkbox>
                                                         </mat-list-item> -->
 
-                                                          <mat-checkbox  [checked]="isAllPrjSelected"   title="Select All" (change)="selectUnselectPagePrjs($event)" color="primary"></mat-checkbox>
-                                                          <label class="fs-7 ml-2" style="position: absolute;left: 3%;">Select all</label>
+                                                          <span class="d-flex align-items-center"><mat-checkbox  [checked]="isAllPrjSelected"   title="Select All" (change)="selectUnselectPagePrjs($event)" color="primary"></mat-checkbox>
+                                                            <label class="fs-7 ml-2">Select all</label></span>
 
                                                     </th>
 

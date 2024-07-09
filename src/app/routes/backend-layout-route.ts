@@ -11,6 +11,16 @@ export const BACKEND_ROUTES: Routes = [
      },
 
      {
+          path: 'Streamdashboard',canActivate:[AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/stream-dashboard/stream-dashboard.module').then(m => m.StreamDashboardModule)
+     },
+
+     {
+          path: 'StreamCalendar',canActivate:[AuthGuard],
+          loadChildren: () => import('../_LayoutDashboard/stream-calendar/stream-calendar.module').then(m => m.StreamCalendarModule)
+     },
+
+     {
           path: 'Portfolio',canActivate: [AuthGuard],
           loadChildren: () => import('../_LayoutDashboard/home/home.module').then(m => m.HomeModule)
      },

@@ -1,5 +1,5 @@
-<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid margin-height side_view">
-    <div class="row">
+<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid margin-height side_view p-0 pr-3 runway-bg">
+    <div class="row d-none">
         <div class="col-lg-12">
             <div class="kt-portlet__head-label mt-3">
                 <h4 class="kt-portlet__head-title">
@@ -283,83 +283,310 @@
     <!-- Two Side Work -->
     <div class="row">
         <!-- Block 1 -->
-        <div class="col-lg-3">
-            <div class="card r-shadow px-2 pt-2 h-100">
-                <div class=" p-2 sidebar scrollbar">
-                    <ul class="side-bar-box">
-                        <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
-                        <li *ngFor="let item of CategoryList" [ngClass]="{'bg-secondary': item.Category_ID==_Categoryid}">
-                            <a>
-                                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                    <!--Textbox Category Rename -->
-                                    <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
-                                        style="display: none;">
-                                        <div class="d-flex">
-                                            <input type="text" class="form-control" [(ngModel)]="Cat_Name"
-                                                (keydown.enter)="OnCategoryRename(item.Category_ID)">
-                                            <div class="d-flex ml-3" id="button-addon4">
-                                                <button class=" btn btn-secondary btn btn-sm py-0 px-2 mr-2"
-                                                    (click)="OnCategoryRename(item.Category_ID)"><i
-                                                        class="fas fa-check text-info"></i></button>
-                                                <button class=" btn btn-secondary btn btn-sm py-0 px-2"
-                                                    (click)="OnCat_Cancel(item.Category_ID)"><i
-                                                        class="fas fa-times text-dark"></i></button>
-                                            </div>
-                                        </div>
+        <div class="col-md-4">
+            <div class="card left-card h-100">
+                    <div class="kt-info-box">
+                        <div class="d-flex align-items-center">
+                            <div class="kt-info-box-tittle mt-0 mb-2">
+                                <div class="kt-title-icon">
+                                    <span class="svg-icon m-0">
+                                        <svg width="22px" height="22px" fill="#fff"
+                                            xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+                                            xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+                                            xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                                            y="0px" viewBox="0 0 100 105"
+                                            style="enable-background:new 0 0 100 100;" xml:space="preserve">
+                                            <switch>
+                                                <foreignObject
+                                                    requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
+                                                    x="0" y="0" width="1" height="1" />
+                                                <g i:extraneous="self">
+                                                    <g>
+                                                        <path
+                                                            d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z" />
+                                                        <path
+                                                            d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z" />
+                                                        <path
+                                                            d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z" />
+                                                        <path
+                                                            d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z" />
+                                                        <path
+                                                            d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z" />
+                                                        <path
+                                                            d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z" />
+                                                        <path
+                                                            d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z" />
+                                                        <path
+                                                            d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z" />
+                                                        <path
+                                                            d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z" />
+                                                    </g>
+                                                </g>
+                                            </switch>
+                                        </svg>
                                     </span>
-                                    <div class="d-flex flex-column align-items-cente py-2 w-90">
-                                        <div id="LabelCat_{{item.Category_ID}}"
-                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
-                                            <span >
-                                                <p
-                                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg project-title mb-2" >
-                                                    {{item.Category_Name}}
-                                                </p>
-                                            </span>
-                                            <span class="kt-badge kt-badge--dark  kt-badge--inline w-content">
-                                                <div class=""> {{ item.Created_DT | date:'d MMM, y' }}</div>
-                                            </span>
-                                            <!-- <span class="kt-badge kt-badge--primary  kt-badge--inline w-content">
-                                                {{item.Created_DT|taskDateAgo}}
-                                            </span> -->
-                                            <span class="kt-badge kt-badge--info  kt-badge--inline w-content">
-                                                <div class="">{{item.TaskCount}}</div>
-                                            </span>
-                                            <!-- Venkat Class For Count
-                                                <span class="kt-badge kt-badge--primary kt-badge--inline w-content b-r-20">33</span> -->
-                                        </div>
-                                        <!-- End -->
-                                    </div>
-                                    <!-- <div class="d-flex flex-wrap align-items-center py-lg-0 py-2"> -->
-                                    <span mat-icon-button [matMenuTriggerFor]="menuCat" [hidden]="hideMenuOfCategory"
-                                        aria-label="Example icon-button with a menu" matTooltip="More" *ngIf="item.Category_ID!='2411'">
-                                        <mat-icon color="primary">more_vert</mat-icon>
-                                    </span>
-                                    <mat-menu #menuCat="matMenu" xPosition="after">
-                                        <button mat-menu-item mat
-                                            (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
-                                            <mat-icon class="mr-2" color='primary'>edit</mat-icon>
-                                            <span>Edit</span>
-                                        </button>
-
-                                        <button mat-menu-item mat
-                                            (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
-                                            <mat-icon class="mr-2" color='primary'>delete</mat-icon>
-                                            <span>Delete</span>
-                                        </button>
-                                    </mat-menu>
-                                    <!-- </div> -->
                                 </div>
-                            </a>
-                        </li>
-                    </ul>
+                                Stream Planner Runway Task
+                            </div>
+                        </div>
+                        <div class="position-relative w-100">
+                            <div class="cat-search-field">
+                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                        stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z"
+                                            fill="#000000"></path>
+                                    </g>
+                                </svg>
+                                <input type="search" autocomplete="off" name="search"
+                                    placeholder="Search"
+                                    class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0 " />
+                            </div>
+                        </div>
+                                            
+                    </div>
+                    <div class="owner_responsible_view mb-3">
+                        <div class="own_x">
+                            <div class="ow_r">
+                                <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
+                            </div>
+                            <div class="ow_dtl">
+                                <label>Total Categories</label>
+                                <p>{{catcount}}</p>
+                            </div>
+                        </div>
+
+                        <div class="own_x">
+                            <div class="ow_r">
+                                <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></g></svg>
+                              </div>
+                            <div class="ow_dtl">
+                                <label>Total Tasks</label>
+                                <p>{{procount}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-info-box px-0 pt-0 kt-leftside-scroll">
+                        <div class="kt-main-list">
+                            <!-- <div class="kt-main-list-item">
+                                <div class="kt-main-list-item-icon cat-c">
+                                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
+                                </div>
+                                <div class="kt-main-list-item-label">
+                                    <div class="kt-main-list-item-name">Total Categories</div>
+                                    <div class="kt-main-list-item-count">{{catcount}}</div>
+                                </div>
+                            </div>
+                            <div class="kt-main-list-item">
+                                <div class="kt-main-list-item-icon task-c">
+                                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></g></svg>
+                                </div>
+                                <div class="kt-main-list-item-label">
+                                    <div class="kt-main-list-item-name">Total Tasks</div>
+                                    <div class="kt-main-list-item-count">{{procount}}</div>
+                                </div>
+                            </div> -->
+                            <div class="kt-main-list-item">
+                                <div class="kt-main-list-item-icon imp-c">
+                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </div>
+                                <div class="kt-main-list-item-label">
+                                    <div class="kt-main-list-item-name">Important</div>
+                                    <div class="kt-main-list-item-count">7</div>
+                                </div>
+                            </div>
+                            <div class="kt-main-list-item">
+                                <div class="kt-main-list-item-icon acc-c">
+                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </div>
+                                <div class="kt-main-list-item-label">
+                                    <div class="kt-main-list-item-name">Accepted</div>
+                                    <div class="kt-main-list-item-count"  *ngIf="acceptCount">{{acceptCount}}</div>
+                                    <div class="kt-main-list-item-count"  *ngIf="!acceptCount">0</div>
+                                </div>
+                            </div>
+                            <div class="kt-main-list-item">
+                                <div class="kt-main-list-item-icon pen-c">
+                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 3H4M20 21H4M5 3C5 5.51022 6.21228 7.86592 8.25493 9.32495L15.7451 14.675C17.7877 16.1341 19 18.4898 19 21M19 3C19 5.51022 17.7877 7.86592 15.7451 9.32495L8.25493 14.675C6.21228 16.1341 5 18.4898 5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </div>
+                                <div class="kt-main-list-item-label">
+                                    <div class="kt-main-list-item-name">Pending</div>
+                                    <div class="kt-main-list-item-count"  *ngIf="pendingCount">{{pendingCount}}</div>
+                                    <div class="kt-main-list-item-count" *ngIf="!pendingCount">0</div>
+                                </div>
+                            </div>
+                            <div class="kt-main-list-item">
+                                <div class="kt-main-list-item-icon rej-c">
+                                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>times</title> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
+                                </div>
+                                <div class="kt-main-list-item-label">
+                                    <div class="kt-main-list-item-name">Rejected</div>
+                                    <div class="kt-main-list-item-count" *ngIf="rejectCount">{{rejectCount}}</div>
+                                    <div class="kt-main-list-item-count" *ngIf="!rejectCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="kt-left-hr">
+                <div class="kt-info-box-cat">
+                    <div class="d-flex align-items-center">
+                        <div class="kt-info-box-tittle mt-0 mb-2" style="padding-left: 10px;">
+                            <div class="kt-title-icon">
+                                <span class="svg-icon m-0">
+                                    <svg width="22px" height="22px" fill="#fff"
+                                        xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+                                        xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+                                        xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
+                                        y="0px" viewBox="0 0 100 105"
+                                        style="enable-background:new 0 0 100 100;" xml:space="preserve">
+                                        <switch>
+                                            <foreignObject
+                                                requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
+                                                x="0" y="0" width="1" height="1" />
+                                            <g i:extraneous="self">
+                                                <g>
+                                                    <path
+                                                        d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z" />
+                                                    <path
+                                                        d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z" />
+                                                    <path
+                                                        d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z" />
+                                                    <path
+                                                        d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z" />
+                                                    <path
+                                                        d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z" />
+                                                    <path
+                                                        d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z" />
+                                                    <path
+                                                        d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z" />
+                                                    <path
+                                                        d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z" />
+                                                    <path
+                                                        d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z" />
+                                                </g>
+                                            </g>
+                                        </switch>
+                                    </svg>
+                                </span>
+                            </div>
+                            Category
+                        </div>
+                    </div>
+                    <div class="kt-category-action-list-view">
+                            <ul class="kt-category-acion-content side-bar-box">
+                                <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
+                                <li *ngFor="let item of CategoryList" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
+                                    <a>
+                                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                            <!--Textbox Category Rename -->
+                                            <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
+                                                style="display: none;">
+                                                <div class="d-flex align-items-center">
+                                                    <input type="text" class="form-control" [(ngModel)]="Cat_Name"
+                                                        (keydown.enter)="OnCategoryRename(item.Category_ID)">
+                                                    <div class="d-flex ml-3" id="button-addon4">
+                                                        <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2"
+                                                            (click)="OnCategoryRename(item.Category_ID)"><i
+                                                                class="fas fa-check mr-0"></i></button>
+                                                        <button class=" btn btn-input-cat-action delete btn-sm py-0 px-2"
+                                                            (click)="OnCat_Cancel(item.Category_ID)"><i
+                                                                class="fas fa-times mr-0"></i></button>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
+                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name)" >
+                                                <div class="kt-main-list-item-icon">
+                                                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
+                                                </div>
+                                                <div class="kt-main-list-item-label">
+                                                    <div class="kt-main-list-item-name">{{item.Category_Name}}</div>
+                                                    <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
+                                                <div id="LabelCat_{{item.Category_ID}}"
+                                                    (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
+                                                    <div class="kt-category-p-tittle">
+                                                        <h4>
+                                                            {{item.Category_Name}}
+                                                        </h4>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="labelcat-task">
+                                                            Total Tasks: <b>{{item.TaskCount}}</b>
+                                                        </div>
+                                                        <!-- <div class="labelcat-date">
+                                                            {{ item.Created_DT | date:'d MMM, y' }}
+                                                       </div> -->
+                                                       <!-- <span class="kt-badge kt-badge--primary  kt-badge--inline w-content">
+                                                           {{item.Created_DT|taskDateAgo}}
+                                                       </span> -->
+                                                       
+                                                    </div>
+                                                   
+                                                </div>
+                                                <!-- End -->
+                                            </div>
+                                            <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411'">
+                                                <button class="btn btn-cat-action edit" title="Edit"
+                                                    (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
+                                                    <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M432.4 787.2c-24.1 27.6-34.7 34.2-68.4 46.6-51.9 19.4-147 55.1-208.9 78.3-11.7 4.6-55.9 2.3-37.4-41.1 21-60.4 51.8-149.6 69.4-200.5 12.8-35.9 17.9-45.2 43.7-69.3l266.5-266.5L686 523.4C686 523.4 506.6 710.1 432.4 787.2z"></path><path d="M726.5 482.9 537.9 294.3 578.3 253.8 767 442.5Z"></path><path d="M888.3 321.2l-80.8 80.9L618.8 213.4l80.9-80.8c29.8-29.8 78-29.8 107.8 0l80.9 80.8C918.1 243.1 918.1 291.4 888.3 321.2z"></path></svg></span>
+                                               
+                                                </button>
+        
+                                                <button  class="btn btn btn-cat-action delete" title="Delete"
+                                                    (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
+                                                    <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M223.595474 318.284043l24.022113 480.742089c0 54.376445 44.989657 98.456383 100.485599 98.456383l331.963601 0c55.494918 0 100.489692-44.078914 100.489692-98.456383l23.109324-480.742089L223.595474 318.284043zM831.749418 284.181341c0.099261-20.274766 0.158612-21.623483 0.158612-22.981411 0-52.871161-31.298843-81.888032-73.29533-81.888032l-116.892267 0.122797c0-27.751041-27.105335-50.245358-54.855352-50.245358L441.349917 129.189338c-27.744901 0-55.727209 22.494317-55.727209 50.245358l-117.013017-0.122797c-46.387493 0-73.29533 35.359322-73.29533 81.888032 0 1.363044 0.054235 2.706645 0.158612 22.981411l636.281561 0L831.749418 284.181341zM614.168937 444.615287c0-15.32708 12.421914-27.750017 27.744901-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.744901-12.422937-27.744901-27.751041L614.168937 444.615287 614.168937 444.615287zM485.85862 444.615287c0-15.32708 12.42703-27.750017 27.751041-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.751041-12.422937-27.751041-27.751041L485.85862 444.615287 485.85862 444.615287zM357.63733 444.615287c0-15.32708 12.422937-27.750017 27.751041-27.750017 15.321964 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.42703 27.751041-27.750017 27.751041-15.328104 0-27.751041-12.422937-27.751041-27.751041L357.63733 444.615287 357.63733 444.615287zM357.63733 444.615287"></path></svg></span>
+                                                   
+                                                </button>
+                                            </div>
+                                            <!-- <div class="d-flex flex-wrap align-items-center py-lg-0 py-2"> -->
+                                            <!-- <span mat-icon-button [matMenuTriggerFor]="menuCat" [hidden]="hideMenuOfCategory"
+                                                aria-label="Example icon-button with a menu" matTooltip="More" *ngIf="item.Category_ID!='2411'">
+                                                <mat-icon color="primary">more_vert</mat-icon>
+                                            </span>
+                                            <mat-menu #menuCat="matMenu" xPosition="after">
+                                                <button mat-menu-item mat
+                                                    (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
+                                                    <mat-icon class="mr-2" color='primary'>edit</mat-icon>
+                                                    <span>Edit</span>
+                                                </button>
+        
+                                                <button mat-menu-item mat
+                                                    (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
+                                                    <mat-icon class="mr-2" color='primary'>delete</mat-icon>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </mat-menu> -->
+                                            <!-- </div> -->
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                    </div>
                 </div>
-                <div class="add_assigned_task1 p-2">
+                    </div>
+                    
+                   
+                  
+                
+
+                <div class="add_assigned_task1 p-2 mt-3">
                     <div class="form-group mb-0">
                         <div class="input-group">
                             <div class="input-group-prepend w-100">
                                 <button class="btn btn-info btn-sm lh-25" id="basic-addon2" (click)="OnSubmitCategory(Mdl_CategoryName)" primary="true" id="tippy2">
-                                    <i class="la la-plus text-white mr-0"></i>
+                                    <!-- <i class="la la-plus text-white mr-0"></i> -->
+                                    <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M3.75 4.5L4.5 3.75H10.5L11.25 4.5V10.5L10.5 11.25H4.5L3.75 10.5V4.5ZM5.25 5.25V9.75H9.75V5.25H5.25ZM13.5 3.75L12.75 4.5V10.5L13.5 11.25H19.5L20.25 10.5V4.5L19.5 3.75H13.5ZM14.25 9.75V5.25H18.75V9.75H14.25ZM17.25 20.25H15.75V17.25H12.75V15.75H15.75V12.75H17.25V15.75H20.25V17.25H17.25V20.25ZM4.5 12.75L3.75 13.5V19.5L4.5 20.25H10.5L11.25 19.5V13.5L10.5 12.75H4.5ZM5.25 18.75V14.25H9.75V18.75H5.25Z" fill="#ffffff"></path> </g></svg>
                                 </button>
                                 <input type="text"  [(ngModel)]="Mdl_CategoryName" class="form-control add_assign_task_input brdr-gr"
                                     placeholder="Add category and press enter to submit"
@@ -372,21 +599,24 @@
             </div>
         </div>
         <!-- Block 2  -->
-        <div class="col-lg-9">
-            <div class="card r-shadow p-2 h-100" [hidden]="ShowTaskList_Div">
+        <div class="col-md-8">
+            <div class="card info-card-body mt-5" [hidden]="ShowTaskList_Div">
 
-            <!-- Messages If Not Found -->
+            <div class="card-body p-0">
+                <div class="kt-info-box kt-info-project-box border-0 ng-star-inserted">
+                    <h4 class="t-m-t">Tasks</h4>
+                    <!-- Messages If Not Found -->
             <h4 style="color:lightgray">{{IfNoTaskFound}}</h4>
             <!-- Messages End -->
 
                 <div class="row">
                     <div class="col-lg-12">
-                          <div class="d-flex align-items-center justify-content-between px-2 mb-3">
-                            <h3>{{_CategoryName}}</h3>
+                          <div class="kt-cat-name d-flex align-items-center justify-content-between">
+                            <h4>{{_CategoryName}}</h4>
 
                           <div class="dropdown">
                             <a class="kt-todo__icon" data-toggle="dropdown"  title="Filter">
-                                <i class="fas fa-ellipsis-v"></i>
+                                <i class="fas fa-ellipsis-h"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
 
@@ -520,13 +750,13 @@
                         <!-- Inprocess -->
                         <div class="row" >
                             <div class="col-lg-12" >
-                                <div class="p-2 scrollbar1">
+                                <div class="p-2 scrollbar1" style="padding-top: 0px !important;">
                                   <div id="taskdd" class="d-none">
-                                    <h5  *ngIf="_TodoList.length>0">Unassign task</h5>
+                                    <h5 class="task-main-title" *ngIf="_TodoList.length>0">Unassign task</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
-                                        <div class="mb-2 card" *ngFor="let item of _TodoList; let i=index">
-                                            <div class="card-body p-2 Replied_border_left_true_NewProject mr-2">
-                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                        <div class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList; let i=index">
+                                            <div class="card-body p-2">
+                                                <div data-type="inbox" class="d-flex align-items-center my-1">
                                                     <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
                                                         <div class="kt-inbox__actions">
                                                             <input type="radio" name="Subtask" class="subtask-radio mx-4"
@@ -548,7 +778,7 @@
                                                                         [(ngModel)]="_taskName"
                                                                         style="width: 78%;height: 32px;"
                                                                         (keydown.enter)="OnTask_Rename()">
-                                                                    <div class="d-inline-block ml-3" id="button-addon4">
+                                                                    <div class="d-inline-flex ml-3" id="button-addon4">
                                                                         <button (click)="OnTask_Rename()"
                                                                             class=" btn btn-primary btn btn-sm mr-2">Done</button>
                                                                         <button class=" btn btn-secondary btn btn-sm"
@@ -559,78 +789,87 @@
                                                         </div>
 
                                                         <!-- Rename Model -->
-                                                        <div class="mt-2">
-                                                            <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
-                                                                {{item.Creation_Date | date:'d MMM, y' }}
-                                                            </span>
-                                                            <!-- <span
-                                                                class="kt-badge kt-badge--dark  kt-badge--inline w-content">
-                                                                {{item.Creation_Date|date:'medium'}}
-                                                            </span> -->
-                                                            <!-- Act Fiber Care --- 7288 9999 99 , 91 21 21 21 21 -->
-                                                            <!-- <span
-                                                                class="kt-badge kt-badge--primary  kt-badge--inline w-content">
-                                                                {{item.Creation_Date|taskDateAgo}}
-                                                            </span> -->
-                                                            <!-- <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                {{item.Creation_Date|taskDateAgo}}
-                                                            </span> -->
-                                                            <span *ngIf="item.TypeOfTask=='SUBTASK'"
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                Action added to
-                                                                <mat-icon color='primary' class="ml-2">task_alt</mat-icon>
-                                                            </span>
-                                                        </div>
+                                                        
                                                     </div>
 
+                                                   <div>
                                                     <div class="d-flex align-items-center py-lg-0 py-2"
-                                                        id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
-                                                        <span matTooltip="Re-Name"
-                                                            (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
-                                                            class="mr-2 cursor-pointer">
-                                                            <mat-icon class="mr-2" color="primary">edit</mat-icon>
+                                                    id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
+                                                    <span matTooltip="Re-Name"
+                                                        (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
+                                                        class="mr-2 cursor-pointer unassign-btn">
+                                                        <mat-icon >edit</mat-icon>
+                                                    </span>
+                                                    <!-- <span class="mr-2" matTooltip="Create New Project">
+                                                        <mat-icon color="primary">add</mat-icon>
+                                                    </span> -->
+                                                    <span matTooltip="Delete Task"
+                                                        (click)="_Deletetask(item.Assign_Id,item.Task_Name)"
+                                                        class="mr-2 cursor-pointer  unassign-btn">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </span>
+                                                    <!-- <span mat-icon-button [matMenuTriggerFor]="menu"
+                                                        aria-label="Example icon-button with a menu" matTooltip="More"
+                                                        class="cursor-pointer">
+                                                        <mat-icon color="primary">more_vert</mat-icon>
+                                                    </span>
+                                                    <mat-menu #menu="matMenu"  xPosition="after">
+
+                                                        <button mat-menu-item mat (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
+
+                                                            <mat-icon class="mr-2 " color='primary'>group</mat-icon>
+                                                            <span>Assign Task/Project</span>
+                                                        </button>
+
+                                                        <button mat-menu-item mat
+                                                            (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
+                                                            <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
+                                                            <span>Add action to project</span>
+                                                        </button>
+                                                    </mat-menu>  -->
+                                                    
+                                                        <span matTooltip="Assign Project" (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2 cursor-pointer unassign-btn">
+                                                             <mat-icon>group</mat-icon>
                                                         </span>
-                                                        <!-- <span class="mr-2" matTooltip="Create New Project">
-                                                            <mat-icon color="primary">add</mat-icon>
-                                                        </span> -->
-                                                        <span matTooltip="Delete Task"
-                                                            (click)="_Deletetask(item.Assign_Id,item.Task_Name)"
-                                                            class="mr-2 cursor-pointer">
-                                                            <mat-icon color='primary'>delete</mat-icon>
+                                                        <span matTooltip="Add Action To Project" (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2 cursor-pointer unassign-btn">
+                                                            <mat-icon>new_label</mat-icon>
+                                                       </span>
+                                                        <!-- <mat-icon title="Assign Project"  (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+
+                                                        <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon> -->
+                                                  
+                                                    <mat-menu #AssignTo="matMenu">
+                                                        <span *ngFor="let item1 of EmployeeList">
+                                                            <button mat-menu-item
+                                                                (click)="OnEmployeeSelect(item1.Emp_No,item.Assign_Id)">{{item1.Tm_DisplayName}}</button>
                                                         </span>
-                                                        <!-- <span mat-icon-button [matMenuTriggerFor]="menu"
-                                                            aria-label="Example icon-button with a menu" matTooltip="More"
-                                                            class="cursor-pointer">
-                                                            <mat-icon color="primary">more_vert</mat-icon>
-                                                        </span>
-                                                        <mat-menu #menu="matMenu"  xPosition="after">
-
-                                                            <button mat-menu-item mat (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)">
-
-                                                                <mat-icon class="mr-2 " color='primary'>group</mat-icon>
-                                                                <span>Assign Task/Project</span>
-                                                            </button>
-
-                                                            <button mat-menu-item mat
-                                                                (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)">
-                                                                <mat-icon class="mr-2" color='primary'>new_label</mat-icon>
-                                                                <span>Add action to project</span>
-                                                            </button>
-                                                        </mat-menu>  -->
-                                                        <div class="task-actions"  class="cursor-pointer" >
-                                                            <mat-icon title="Assign Project"  (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
-
-                                                            <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
-                                                      </div>
-                                                        <mat-menu #AssignTo="matMenu">
-                                                            <span *ngFor="let item1 of EmployeeList">
-                                                                <button mat-menu-item
-                                                                    (click)="OnEmployeeSelect(item1.Emp_No,item.Assign_Id)">{{item1.Tm_DisplayName}}</button>
-                                                            </span>
-                                                        </mat-menu>
-                                                    </div>
+                                                    </mat-menu>
+                                                </div>
+                                                <div class="mt-1" style="display: flex; align-items: center; justify-content: end;  border-top: 1px solid #f1e3e3;">
+                                                    <span
+                                                        class="">
+                                                        {{item.Creation_Date | date:'d MMM, y' }}
+                                                    </span>
+                                                    <!-- <span
+                                                        class="kt-badge kt-badge--dark  kt-badge--inline w-content">
+                                                        {{item.Creation_Date|date:'medium'}}
+                                                    </span> -->
+                                                    <!-- Act Fiber Care --- 7288 9999 99 , 91 21 21 21 21 -->
+                                                    <!-- <span
+                                                        class="kt-badge kt-badge--primary  kt-badge--inline w-content">
+                                                        {{item.Creation_Date|taskDateAgo}}
+                                                    </span> -->
+                                                    <!-- <span
+                                                        class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Creation_Date|taskDateAgo}}
+                                                    </span> -->
+                                                    <span *ngIf="item.TypeOfTask=='SUBTASK'"
+                                                        class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                        Action added to
+                                                        <mat-icon color='primary' class="ml-2">task_alt</mat-icon>
+                                                    </span>
+                                                </div>
+                                                   </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -638,36 +877,36 @@
 
                                     <!-- Completed -->
                                     <div id="Completed" class="d-none">
-                                    <h5 *ngIf="_CompletedList&&_CompletedList.length>0" >Completed</h5>
+                                    <h5  class="task-main-title" *ngIf="_CompletedList&&_CompletedList.length>0" >Completed</h5>
                                     <div data-type="inbox" class="kt-inbox__items">
                                         <!-- Completed  -->
-                                        <div class="card mb-2" *ngFor="let item of _CompletedList">
-                                            <div class="card-body p-2 Replied_border_left_true_success mr-2">
-                                                <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
-                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
+                                        <div class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList">
+                                            <div class="card-body p-2">
+                                                <div data-type="inbox" class="d-flex align-items-center my-1">
+                                                    <div class="symbol symbol-60 symbol-2by3 flex-shrink-0">
                                                         <div class="kt-inbox__actions">
                                                             <input type="radio" class="subtask-radio mx-4"
                                                                 (click)="On_Uncheck(item.Assign_Id)" checked>
                                                             <span></span>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                    <div class="d-flex align-items-center justify-content-between my-lg-0 my-2 w-100">
                                                         <div
                                                             class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
                                                             <span
                                                                 class="kt-inbox__subject"><s>{{item.Task_Name}}</s></span>
                                                         </div>
-                                                        <div class="mt-2">
+                                                        <div class="">
                                                             <span
-                                                                class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline mr-2">
+                                                                class="">
                                                                 <div>
                                                                     {{item.Modified_DT|date:'d MMM, y'}}
                                                                 </div>
                                                             </span>
-                                                            <span
+                                                            <!-- <span
                                                                 class="kt-inbox__label kt-badge kt-badge done kt-badge-light-bold kt-badge--inline">
                                                                 {{item.ToDo_Status}}
-                                                            </span>
+                                                            </span> -->
                                                         </div>
                                                     </div>
                                                     <div class="kt-inbox__datetime">
@@ -680,11 +919,11 @@
                                     </div>
                                   </div>
                                   <div id='ActionToProjects' class="d-none">
-                                    <h5  *ngIf="((ActionedSubtask_Json.length) > 0)">Action to projects</h5>
+                                    <h5  class="task-main-title"  *ngIf="((ActionedSubtask_Json.length) > 0)">Action to projects</h5>
                                     <div   data-type="inbox" class="kt-inbox__items">
                                         <!-- Action Subtask -->
-                                        <div    class="mb-2 card" *ngFor="let item of ActionedSubtask_Json">
-                                            <div class="card-body p-2 Replied_border_left_true_underApprovals mr-2">
+                                        <div    class="mb-2 card  Replied_border_left_true_underApprovals" *ngFor="let item of ActionedSubtask_Json">
+                                            <div class="card-body p-2">
                                                 <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
 
                                                     <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
@@ -693,13 +932,94 @@
                                                             <span></span>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                        <div
-                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
+                                                    <div class="action-div-item w-100">
+                                                        <div class="position-relative dropright">
 
+                                                        <a class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
+                                                          
+                                                           <div class="dropdown-menu run-info-hover-menu">
+                                                                <div class="heading">
+                                                                    <div>
+                                                                        <small>Action to projects</small>
+                                                                        <h6 class="mb-0">{{item.Task_Name}}</h6>
+                                                                    </div>
+                                                                    <div>
+                                                                        <button class="btn btn-sm btn-outline-info" (click)="openActionInDetails(item.Project_Code,item.ActionCode)">View Action</button>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="run-details">
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Created date</div>
+                                                                        <div class="run-control">{{item.Creation_Date| date:'d MMM, y' }}</div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Assigned to</div>
+                                                                        <div class="run-control">{{item.Assigned_Name}} | {{item.Modified_DT| date:'d MMM, y'}}</div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Action added to</div>
+                                                                        <div class="run-control">{{item.Project_Name}}</div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Project type</div>
+                                                                        <div class="run-control">{{item.Project_type }} </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Action status</div>
+                                                                        <div class="run-control">
+                                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                                    [ngClass]="{
+                                                                                    'kt-badge completed ': item.Status === 'Completed',
+                                                                                    'kt-badge in-process': item.Status === 'InProcess',
+                                                                                    'kt-badge rejecteds': item.Status === 'Rejected',
+                                                                                    'kt-badge project-complete-rejected': item.Status === 'Project Complete Rejected',
+                                                                                    'kt-badge new-project-reject': item.Status === 'New Project Rejected',
 
+                                                                                    ' kt-badge completion-under-approval': item.Status === 'Completion Under Approval',
+                                                                                    'kt-badge deadline-extend-under-approval': item.Status === 'Deadline Extend Under Approval',
+                                                                                    'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
+                                                                                    'kt-badge cancelled': item.Status === 'Cancelled',
+                                                                                    'kt-badge new-project-under':item.Status==='Under Approval'
+                                                                                    }">
+                                                                                        {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval'
+                                                                                        :item.Status=="Cancellation Under Approval"?"Cancellation approval" :item.Status== "Completion Under Approval" ?
+                                                                                        "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':
+                                                                                        item.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
+                                                                                        :item.Status=='InProcess'?'In-process':item.Status}}
+                                                                                <!-- <div></div> -->
+                                                                            </span>
+                                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
+                                                                                <div> {{item.Status }} {{item.Delaydays}} days</div>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Start date</div>
+                                                                        <div class="run-control">{{item.Start_Date|date:'d MMM, y'}} </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">End date</div>
+                                                                        <div class="run-control">{{item.End_Date|date:'d MMM, y'}}</div>
+                                                                    </div>
+                                                                    <div class="run-item" *ngIf="item.FileName !=''" >
+                                                                        <div class="run-label">Attachment</div>
+                                                                        <div class="run-control">
+                                                                            <a (click)="LoadDocument(item.Reference)" href="javascript(void:0)"><i class="fas fa-file-pdf text-muted mr-1"></i>{{item.FileName}}</a>
+                                                                            </div>
+                                                                    </div>
+                                                                    <div class="run-item" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
+                                                                        <div class="run-label">Remarks</div>
+                                                                        <div class="run-control">{{item.Remarks}}</div>
+                                                                    </div>
+                                                                </div>
+                                                          </div>
+                                                        </a>
 
-                                                            <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
+                                                            <!-- <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="View Action!" >
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -722,25 +1042,56 @@
                                                          </g>
 
                                                          </svg>
-                                                           </a>
-
-
-
-
-
-
-
-                                                            <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
+                                                           </a> -->   
                                                         </div>
-                                                        <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
-                                                        <div class="my-2">
+                                                        <div class="action-right">
+                                                            <div class="action-div-item-content">
+                                                                <div class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}</div>
+                                                                <div class="desc">{{item.Task_Description}}</div>
+                                                                <div>{{item.Project_type }} | {{item.Assigned_Name}}</div>
+                                                            </div>
+                                                            <div  class="action-div-item-content-end">
+                                                                <div class="mb-1">
+                                                                    {{item.Creation_Date| date:'d MMM, y' }}
+                                                                </div>
+                                                                <div>
+                                                                    <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                        [ngClass]="{
+                                                                          'kt-badge completed ': item.Status === 'Completed',
+                                                                          'kt-badge in-process': item.Status === 'InProcess',
+                                                                          'kt-badge rejecteds': item.Status === 'Rejected',
+                                                                          'kt-badge project-complete-rejected': item.Status === 'Project Complete Rejected',
+                                                                          'kt-badge new-project-reject': item.Status === 'New Project Rejected',
+    
+                                                                          ' kt-badge completion-under-approval': item.Status === 'Completion Under Approval',
+                                                                          'kt-badge deadline-extend-under-approval': item.Status === 'Deadline Extend Under Approval',
+                                                                          'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
+                                                                          'kt-badge cancelled': item.Status === 'Cancelled',
+                                                                          'kt-badge new-project-under':item.Status==='Under Approval'
+                                                                        }">
+                                                                            {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval'
+                                                                            :item.Status=="Cancellation Under Approval"?"Cancellation approval" :item.Status== "Completion Under Approval" ?
+                                                                            "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':
+                                                                            item.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
+                                                                            :item.Status=='InProcess'?'In-process':item.Status}}
+                                                                    <!-- <div></div> -->
+                                                                 </span>
+                                                                 <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
+                                                                    <div> {{item.Status }} {{item.Delaydays}} days</div>
+                                                                 </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="my-2 d-none">
 
                                                             <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline">
                                                                 <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> Delay</div>
                                                             </span> -->
                                                             <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                                <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                                <div><img src="https://cswebapps.com/creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                                 <div>
                                                                     {{item.Creation_Date| date:'d MMM, y' }}
                                                                 </div>
@@ -766,7 +1117,7 @@
                                                                 </div>
                                                             </span>
                                                         </div>
-                                                        <div class="">
+                                                        <div class="d-none">
                                                             <label  data-toggle="tooltip" title="Project Type!"
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                             <i class="fa fa-clone mr-2"></i>{{item.Project_type }} </label>
@@ -808,11 +1159,11 @@
                                                                 <div> {{item.Status}}</div>
                                                             </span> -->
                                                             <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                <div ><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                <div ><img src="https://cswebapps.com/creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                                 <div > {{item.Start_Date|date:'d MMM, y'}}</div>
                                                             </span>
                                                             <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                <div><img src="https://cswebapps.com/creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> {{item.End_Date|date:'d MMM, y'}}</div>
                                                             </span>
                                                             <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
@@ -820,7 +1171,7 @@
                                                                 <div> Jun 29, 2022</div>
                                                             </span> -->
                                                         </div>
-                                                        <div class="mt-1 pl-2">
+                                                        <div class="mt-1 pl-2 d-none">
                                                             <!-- <span  *ngIf="item.FileName !==''" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer"  (click)="LoadDocument(item.Reference)">
                                                                 <div ><i class="fas fa-link mr-2"></i></div>
                                                                 <div >{{item.FileName}}
@@ -838,31 +1189,130 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div class="kt-inbox__datetime">
-                                                    </div>
+                                                    <!-- <div class="kt-inbox__datetime">
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                   </div>
                                     <div id="AssignedTask" class="d-none">
-                                    <h5    *ngIf="ActionedAssigned_Josn.length>0">Assigned Task/Project</h5>
+                                    <h5   class="task-main-title"   *ngIf="ActionedAssigned_Josn.length>0">Assigned Task/Project</h5>
                                     <div    data-type="inbox" class="kt-inbox__items">
                                         <!-- Action Assigned Tasks -->
 
-                                        <div   class="mb-2 card" *ngFor="let item of ActionedAssigned_Josn">
+                                        <div   class="mb-2 card Replied_border_left_true_warning" *ngFor="let item of ActionedAssigned_Josn">
                                             <!-- <div class="overlay-card"   ></div> -->
-                                            <div class="card-body p-2 Replied_border_left_true_warning mr-2">
+                                            <div class="card-body p-2">
                                                 <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
                                                     <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
                                                         <div class="kt-inbox__actions">
                                                             <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
                                                         </div>
                                                     </div>
-                                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="action-div-item w-100">
+                                                        <div class="position-relative dropright">
+                                                            <a class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
+                                                           
+                                                           <div class="dropdown-menu run-info-hover-menu">
+                                                                <div class="heading">
+                                                                    <div>
+                                                                        <small>Assigned Task/Project</small>
+                                                                        <h6 class="mb-0">{{item.Task_Name}}</h6>
+                                                                    </div>
+                                                                    <div>
+                                                                        <button class="btn btn-sm btn-outline-info" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)">View Project</button>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="run-details">
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Created date</div>
+                                                                        <div class="run-control">{{item.Creation_Date|  date:'d MMM, y'}}</div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Assigned to</div>
+                                                                        <div class="run-control">{{item.AssignedTo}} | {{item.Modified_DT|date :'d MMM, y'}} </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Assigned Status</div>
+                                                                        <div class="run-control">
+                                                                            <span  data-toggle="tooltip" title="Assigned Status!"
+                                                                            class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                                            [ngClass]="{'rejecteds':item.Status=='Rejected',
+                                                                                'accepteds':item.Status=='Accepted',
+                                                                                 'pendings':item.Status=='Pending'}">
+                                                                            <span> {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</span>
+                                                                             </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Project type</div>
+                                                                        <div class="run-control">
+                                                                            <span *ngIf="item.Project_type">
+                                                                            {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</span>
+                                                                         </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Project status</div>
+                                                                        <div class="run-control">
+                                                                            <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
+                                                                    class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline"
+                                                                    [ngClass]="{
+                                                                      'kt-badge completed ': item.Project_status === 'Completed',
+                                                                      'kt-badge in-process': item.Project_status === 'InProcess',
+                                                                      'kt-badge rejecteds': item.Project_status === 'Rejected',
+                                                                      'kt-badge project-complete-rejected': item.Project_status === 'Project Complete Rejected',
+                                                                      'kt-badge new-project-reject': item.Project_status === 'New Project Rejected',
+
+                                                                      ' kt-badge completion-under-approval': item.Project_status === 'Completion Under Approval',
+                                                                      'kt-badge deadline-extend-under-approval': item.Project_status === 'Deadline Extend Under Approval',
+                                                                      'kt-badge deadline-extend-under-approval': item.Project_status === 'Cancellation Under Approval',
+                                                                      'kt-badge cancelled': item.Project_status === 'Cancelled',
+                                                                      'kt-badge new-project-under':item.Project_status==='Under Approval'
+                                                                    }">
+                                                                    <div>{{item.Project_status=='Under Approval'?'New approval':item.Project_status=='Enactive Under Approval'?'Enactive approval'
+                                                                      :item.Project_status=="Cancellation Under Approval"?"Cancellation approval" :item.Project_status== "Completion Under Approval" ?
+                                                                      "Completion approval" :item.Project_status=='Forward Under Approval'? "Forward approval" :item.Project_status=='Not Started'?'Draft':
+                                                                      item.Project_status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
+                                                                      :item.Project_status=='InProcess'?'In-process':item.Project_status}}
+                                                                    </div>
+                                                             </span>
+                                                             <span data-toggle="tooltip" title="Project status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
+                                                                    <div> {{item.Project_status}} {{item.Delaydays}} days</div>
+                                                             </span>
+                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
+                                                                    class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline hold">
+                                                                    <div> Hold </div>
+                                                             </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">Start date</div>
+                                                                        <div class="run-control">{{item.Start_Date|date : 'd MMM, y'}} </div>
+                                                                    </div>
+                                                                    <div class="run-item">
+                                                                        <div class="run-label">End date</div>
+                                                                        <div class="run-control">{{item.End_Date|date: 'd MMM, y'}}</div>
+                                                                    </div>
+                                                                    <div class="run-item" *ngIf="item.FileName !==''" >
+                                                                        <div class="run-label">Attachment</div>
+                                                                        <div class="run-control">
+                                                                            <a (click)="LoadDocument(item.Reference)" href="javascript(void:0)"><i class="fas fa-file-pdf text-muted mr-1"></i>{{item.FileName}}</a>
+                                                                            </div>
+                                                                    </div>
+                                                                    <div class="run-item" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
+                                                                        <div class="run-label">Remarks</div>
+                                                                        <div class="run-control">{{item.Remarks}}</div>
+                                                                    </div>
+                                                                </div>
+                                                          </div>
+                                                        </a>
+                                                    </div>
                                                          <!--more details-->
-                                                            <div>
+                                                            <!-- <div>
                                                                 <a data-toggle="tooltip" title="Project Details!" class="info-btn curser-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'"
                                                                 (click)="openInfo(item.Project_Code,item.Project_Name)">
                                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -910,19 +1360,39 @@
 
                                                          </svg>
                                                                 </a>
-                                                            </div>&nbsp;
-                                                            <div class="text-dark-75  font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
-                                                                <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                                                            </div> -->
+                                                       
+                                                        <div class="action-right">
+                                                            <div class="action-div-item-content">
+                                                                <div class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}</div>
+                                                                <div class="desc">{{item.Task_Description}}</div>
+                                                                <div><span *ngIf="item.Project_type">
+                                                                    {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</span> | {{item.AssignedTo}}</div>
+                                                            </div>
+                                                            <div  class="action-div-item-content-end">
+                                                                <div class="mb-1">
+                                                                    {{item.Creation_Date|  date:'d MMM, y'}}
+                                                                </div>
+                                                                <div>
+                                                                    <span  data-toggle="tooltip" title="Assigned Status!"
+                                                            class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
+                                                            [ngClass]="{'rejecteds':item.Status=='Rejected',
+                                                                'accepteds':item.Status=='Accepted',
+                                                                 'pendings':item.Status=='Pending'}">
+                                                            <div> {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</div>
+                                                             </span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
-                                                        <div class="my-2  d-flex">
+                                                        <!-- <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                                                        <span class="desc ml-2 mb-2">{{item.Task_Description}}</span> -->
+                                                        <div class="my-2   d-none">
                                                             <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
                                                                 <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
                                                                 <div> {{item.Creation_Date}}</div>
                                                             </span> -->
                                                             <span data-toggle="tooltip" title="Created date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
-                                                                <div><img src="../creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
+                                                                <div><img src="https://cswebapps.com/creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                                 <div>
                                                                     {{item.Creation_Date|  date:'d MMM, y'}}
                                                                 </div>
@@ -936,16 +1406,16 @@
                                                             </span>
 
                                                             <span data-toggle="tooltip" title="Assigned Date!" class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                                <div><img src="../creativeplanner/assets/icons/create1.png" alt="actiondate" class="badge-img"></div>
+                                                                <div><img src="https://cswebapps.com/creativeplanner/assets/icons/create1.png" alt="actiondate" class="badge-img"></div>
                                                                 <div>
                                                                     {{item.Modified_DT|date :'d MMM, y'}}
                                                                 </div>
                                                             </span>
                                                             <span  data-toggle="tooltip" title="Assigned Status!"
                                                             class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                            [ngClass]="{'kt-badge rejecteds':item.Status=='Rejected',
-                                                                'kt-badge accepteds':item.Status=='Accepted',
-                                                                 'kt-badge pendings':item.Status=='Pending'}">
+                                                            [ngClass]="{'rejecteds':item.Status=='Rejected',
+                                                                'accepteds':item.Status=='Accepted',
+                                                                 'pendings':item.Status=='Pending'}">
                                                             <div> {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</div>
                                                              </span>
                                                             <!-- <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline" *ngIf="item.Status =='Pending'">
@@ -955,7 +1425,7 @@
                                                             <b> {{item.AssignedTo}}</b>
                                                         </span> -->
                                                         </div>
-                                                        <div class="my-1  d-flex" >
+                                                        <div class="my-1   d-none" >
                                                             <label data-toggle="tooltip" title="Project type!" *ngIf="item.Project_type"
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
                                                                 class="fa fa-clone mr-2"></i>
@@ -997,11 +1467,11 @@
                                                                 <div> {{item.Status}}</div>
                                                             </span> -->
                                                                 <span *ngIf="item.Start_Date" data-toggle="tooltip" title="Start date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                    <div><img src="../creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                    <div><img src="https://cswebapps.com/creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                                     <div> {{item.Start_Date|date : 'd MMM, y'}}</div>
                                                                 </span>
                                                                 <span *ngIf="item.End_Date" data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
-                                                                    <div><img src="../creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
+                                                                    <div><img src="https://cswebapps.com/creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                                     <div> {{item.End_Date|date: 'd MMM, y'}}</div>
                                                                 </span>
                                                                 <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
@@ -1016,7 +1486,7 @@
                                                                 </span> -->
                                                               <!--status end-->
                                                         </div>
-                                                        <div class="mt-2">
+                                                        <div class="mt-2 d-none">
                                                             <!-- <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer" *ngIf="item.FileName != ''"  (click)="LoadDocument(item.Reference)">
                                                                 <div ><i class="fas fa-link mr-2"></i></div>
                                                                 <div >{{item.FileName}}
@@ -1034,8 +1504,8 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div class="kt-inbox__datetime">
-                                                    </div>
+                                                    <!-- <div class="kt-inbox__datetime">
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -1046,37 +1516,40 @@
                         </div>
                     </div>
                 </div>
-                <div class="add_assigned_task-removeforcss mt-2 pr-1">
-                    <div class="form-group mb-0">
-                        <a class="btn btn-sm btn-info font-weight-bold mr-2 py-2 px-3 px-xxl-5 text-white my-1 float-right d-none"
-                            id="addbtn"><i class="la la-plus text-white mr-2"></i>Add task</a>
-                        <div class="input-group" id="addtsk">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-info btn-sm lh-25" id="basic-addon1" id="tippy3"
-                                    (click)="EnterSubmit(_Demotext)" primary="true">
-                                    <i class="la la-plus text-white mr-0"></i>
-                                </button>
-                            </div>
-                            <input type="text" [(ngModel)]="_Demotext"
-                                class="form-control add_assign_task_input brdr-gr"
-                                placeholder="Add task to @'{{_CategoryName}}' and press enter to submit"
-                                (keyup.enter)="EnterSubmit(_Demotext)" aria-describedby="basic-addon1" primary="true">
-                            <!-- <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="la la-calendar-o"></i>
-                                    </span>
-                                    <span class="input-group-text curser-pointer" id="basic-addon1" data-toggle="modal"
-                                        data-target="#AssignTo">
-                                        <i class="la la-user"></i>
-                                    </span>
-                                    <span class="input-group-text" id="basic-addon1" data-toggle="modal"
-                                        data-target="#AttachmentModal">
-                                        <i class="la la-paperclip"></i>
-                                    </span>
-                                </div> -->
+                
+                </div>
+            </div>
+            <div class="add_assigned_task-removeforcss p-2">
+                <div class="form-group mb-0">
+                    <a class="btn btn-sm btn-info font-weight-bold mr-2 py-2 px-3 px-xxl-5 text-white my-1 float-right d-none"
+                        id="addbtn"><i class="la la-plus text-white mr-2"></i>Add task</a>
+                    <div class="input-group" id="addtsk">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-info btn-sm lh-25" id="basic-addon1" id="tippy3"
+                                (click)="EnterSubmit(_Demotext)" primary="true">
+                                <i class="la la-plus text-white mr-0"></i>
+                            </button>
                         </div>
+                        <input type="text" [(ngModel)]="_Demotext"
+                            class="form-control add_assign_task_input brdr-gr"
+                            placeholder="Add task to @'{{_CategoryName}}' and press enter to submit"
+                            (keyup.enter)="EnterSubmit(_Demotext)" aria-describedby="basic-addon1" primary="true">
+                        <!-- <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="la la-calendar-o"></i>
+                                </span>
+                                <span class="input-group-text curser-pointer" id="basic-addon1" data-toggle="modal"
+                                    data-target="#AssignTo">
+                                    <i class="la la-user"></i>
+                                </span>
+                                <span class="input-group-text" id="basic-addon1" data-toggle="modal"
+                                    data-target="#AttachmentModal">
+                                    <i class="la la-paperclip"></i>
+                                </span>
+                            </div> -->
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
