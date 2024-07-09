@@ -138,13 +138,13 @@
                                             </div>
 
 
-                                            <!-- <div class="row">
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
                                                         placeholder="Search Filters" [(ngModel)]="txtSearch"
                                                         style="width: 100%;">
                                                 </div>
-                                            </div> -->
+                                            </div>
                                             <br>
 
 
@@ -1186,7 +1186,7 @@
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
                                                             <ng-container [ngSwitch]="item.Status">
-                                                                   
+
                                                                     <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
                                                                     <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
                                                                     <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
@@ -1198,9 +1198,9 @@
                                                                     <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
                                                                      <ng-container *ngSwitchDefault>
                                                                         <span class="Delay_color font-weight-400" *ngIf="item.Status.toLowerCase().includes('delay')"><strong>{{item.Status}}</strong></span>
-                                                                        <span class="Not_Started font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{item.Status}}</span> 
+                                                                        <span class="Not_Started font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{item.Status}}</span>
                                                                      </ng-container>
-                                                          
+
                                                             </ng-container>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
