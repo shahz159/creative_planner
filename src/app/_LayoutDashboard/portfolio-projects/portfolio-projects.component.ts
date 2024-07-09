@@ -4331,46 +4331,114 @@ all_status={
   'Cancelled':'#EE4137',
   'New Project Rejected':'#DFDFDF',
   'Deadline Extend Under Approval':'#F88282',
+  'ToDo Achieved':'#62B134',
+  'ToDo Completed':'#62B134',
+  'Cancellation Under Approval':'#EE4137',
   'other':'#d0d0d0'
 };
 prj_statuses:any=[];
 loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
   
-  this.prj_statuses=this._ProjectsListBy_Pid.map(item=>item.Status.includes('Delay')?'Delay':item.Status);
+
+  const _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
+  this.prj_statuses=_ProjectsListBy_Pid1.map(item=>item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
+  const todays_date=new Date().getTime(); 
 
-  const _series=this._ProjectsListBy_Pid.map((prj,_index)=>{
+  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
       const color=this.all_status[prj.Status]||this.all_status['other'];
-      const isDelayPrj=prj.Status=='Delay';
+     
+      let data_ar=[];
+      const prj_startd=new Date(prj.DPG);
+      const prj_endd=new Date(prj.DeadLine);
+      const curdate=new Date();
+
+    if(prj_startd<curdate&&prj_endd>curdate){
 
 
-      const data_ar=[{
-        x:`${prj.Project_Name} (${prj.Project_Code})`,
-        y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
-        fillColor:color,
-        index:_index
-      }];
-
-      const data_ar1=[
-        {
-          x:`${prj.Project_Name} (${prj.Project_Code})`,
+       if(prj.Status=='InProcess')
+       {
+            data_ar=[
+              {
+                x:`${prj.Project_Name} (${prj.Project_Code})`,
+                y:[new Date(prj.DPG).getTime(),new Date().getTime()],
+                fillColor:color,
+                index:_index
+               },
+               {
+                x:`${prj.Project_Name} (${prj.Project_Code})`,
+                y:[new Date().getTime(),new Date(prj.DeadLine).getTime()],
+                fillColor:'#dcdcdc',
+                index:_index
+               }
+            ];
+       }
+       else if(prj.Status=='Delay')
+       {
+            data_ar=[
+              {
+                x:`${prj.Project_Name} (${prj.Project_Code})`,
+                y:[new Date(prj.DPG).getTime(),new Date(prj.maxDeadline).getTime()],
+                fillColor:'#0089FB',
+                index:_index
+              },
+              {
+                x:`${prj.Project_Name} (${prj.Project_Code})`,
+                y:[new Date(prj.maxDeadline).getTime(),new Date().getTime()],
+                fillColor:'#EE4137',
+                index:_index
+              },
+              {
+                x:`${prj.Project_Name} (${prj.Project_Code})`,
+                y:[new Date().getTime(),new Date(prj.DeadLine).getTime()],
+                fillColor:'#f1f1f1',
+                index:_index
+              }
+            ];
+       }
+       else 
+       {
+          data_ar=[{
+            x:`${prj.Project_Name} (${prj.Project_Code})`,
             y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
-            fillColor:'#0089FB',
+            fillColor:color,
             index:_index
-        },
-        {
-          x:`${prj.Project_Name} (${prj.Project_Code})`,
-          y:[new Date(prj.DeadLine).getTime(),new Date().getTime()],
-          fillColor:'#EE4137',
-          index:_index,
-        }
-      ];
+           }];
+       }
+
+
+    }
+    else{
+          const colorvalue=prj_startd>=curdate&&prj.Status=='InProcess'?'#dcdcdc':color;
+          
+           data_ar=prj.Status=='Delay'?
+            [{
+              x:`${prj.Project_Name} (${prj.Project_Code})`,
+              y:[new Date(prj.DPG).getTime(),new Date(prj.maxDeadline).getTime()],
+              fillColor:'#0089FB',
+              index:_index
+              },
+              {
+                x:`${prj.Project_Name} (${prj.Project_Code})`,
+                y:[new Date(prj.maxDeadline).getTime(),new Date().getTime()],
+                fillColor:colorvalue,
+                index:_index
+            }]:
+            [{
+              x:`${prj.Project_Name} (${prj.Project_Code})`,
+              y:[new Date(prj.DPG).getTime(),new Date(prj.DeadLine).getTime()],
+              fillColor:colorvalue,
+              index:_index
+            }];
+
+
+    }
 
 
       const obj={
           name:prj.Status,
-          data:isDelayPrj?data_ar1:data_ar
+          data:data_ar
       };
       return obj;
   });
@@ -4466,55 +4534,113 @@ var options = {
 
  const data = w.config.series[seriesIndex].data[dataPointIndex];
  const index=data.index;
- const prj_type=this._ProjectsListBy_Pid[index].Exec_BlockName;
- const prj_start=this.datepipe.transform(new Date(this._ProjectsListBy_Pid[index].DPG), 'MMM d, y');
- const prj_end=this.datepipe.transform(new Date(this._ProjectsListBy_Pid[index].DeadLine), 'MMM d, y');
- const daydiff=Math.abs(moment(this._ProjectsListBy_Pid[index].DPG,'YYYY-MM-DD').diff(moment(this._ProjectsListBy_Pid[index].DeadLine,'YYYY-MM-DD'),'days'));
- const prj_totalactions=this._ProjectsListBy_Pid[index].Actioncount;
- const completed_actions=this._ProjectsListBy_Pid[index].CompletedActioncount;
- const prj_status=this._ProjectsListBy_Pid[index].Status;
- const statusColor=this.all_status[prj_status];
- const prjsubmtype=this._ProjectsListBy_Pid[index].SubmissionType;
- const prjdurationtime=this._ProjectsListBy_Pid[index].StandardDuration;
- const delaydays_=Math.abs(this._ProjectsListBy_Pid[index].Delaydays);
+ const prj_name=_ProjectsListBy_Pid1[index].Project_Name;
+ const prj_start=this.datepipe.transform(new Date(_ProjectsListBy_Pid1[index].DPG), 'MMM d, y');
+ const prj_end=this.datepipe.transform(new Date(_ProjectsListBy_Pid1[index].DeadLine), 'MMM d, y');
+ const daydiff=Math.abs(moment(_ProjectsListBy_Pid1[index].DPG,'YYYY-MM-DD').diff(moment(_ProjectsListBy_Pid1[index].DeadLine,'YYYY-MM-DD'),'days'))+1;
+ const prj_totalactions=_ProjectsListBy_Pid1[index].Actioncount;
+ const completed_actions=_ProjectsListBy_Pid1[index].CompletedActioncount;
+ const prj_status=_ProjectsListBy_Pid1[index].Status;
+ const statusColor=this.all_status[prj_status]||this.all_status['other'];
+ const delaydays_=Math.abs(_ProjectsListBy_Pid1[index].Delaydays);
+ const prj_res=_ProjectsListBy_Pid1[index].Team_Res;
+ const prj_alhrs=_ProjectsListBy_Pid1[index].AllocatedHours;
+ const used_hrs=_ProjectsListBy_Pid1[index].UsedHours;
+
+const _cd=new Date();   
+const d1=new Date(_ProjectsListBy_Pid1[index].DPG);  
+const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
 
 
-    return  `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:white;">
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
-       <span style="padding: 0.3em 0.6em 0.2em 0.6em; color: #0089FB; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_type}</span>
-       <span style="padding: 0.3em 0.6em 0.2em 0.6em; border-radius: 4px; background-color: ${statusColor}; color: white; font-family: 'Lucida Sans Unicode'; font-size: 12px; margin-right:5px;">${prj_status} ${prj_status=='Delay'?delaydays_+' days':''}</span>
-          ${
-            ['Core Tasks','Secondary Tasks'].includes(prj_type)?
-            `<span style="font-size: 13px; color: #0d0d0dd6; display: flex; align-items: flex-end; column-gap: 3px;">
-              <fieldset style="border: 2px solid #4e49491f; padding: 0.2em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e4949d9; min-width: 55px; display: flex; justify-content: center;">
-                <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e4949d9; width:fit-content;   ">actions</legend>
-                ${completed_actions}<span style="color: #b4b4b4db;">/</span>${prj_totalactions}
-              </fieldset>
-              <span style="color: #4e4949d9; font-weight: bold; font-family: 'Lucida Sans Unicode'; font-size: 9px;">DONE</span>
-            </span>`:''
-          }
-    </div>
-    <div style="font-size: 12px; display: flex; column-gap: 3px;">
-      <fieldset style=" flex-grow:1;   border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
-        <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: grey;  width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'submission':'start'}</legend>
-        ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjsubmtype:prj_start}
-      </fieldset>
-      ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'':`
-        <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
-          <span style="text-align: center; color: gray; font-family: Lucida Sans Unicode; font-size: 8px;">${daydiff+(daydiff>1?' days':' day')}</span>
-        </span>
-       `}
-      <fieldset style=" flex-grow:1; border: 1px solid #4e49491f; padding: 0.3em; border-radius: 6px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
-        <legend style="font-size: 8px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: gray;   width:fit-content; ">${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?'duration':'end'}</legend>
-        ${(prj_type=='Standard Tasks'||prj_type=='Routine Tasks')?prjdurationtime:prj_end}
-      </fieldset>
-    </div>
-  </div>`;
+
+
+
+     return `<div style=" width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:#ffffff;">
+                    <div style=" display: flex;margin-bottom: 4px;column-gap: 10px;">
+                           <span style="flex-grow: 1;">
+                              <span style="font-size: 10px;font-family: Lucida Sans Unicode;display: inline-block;max-width: 250px;text-wrap: nowrap;overflow: hidden hidden;text-overflow: ellipsis;">${prj_name}</span>
+                             <span style="font-size: 9px;font-family: Lucida Sans Unicode;display: flex;align-items: center;justify-content: start;color: #afaeae;position: relative;top: -4px;">${prj_res}</span>
+                           </span> 
+                         <span style="padding: 0.3em 0.6em 0.2em 0.6em;border-radius: 2px;background-color:${statusColor}; color: white;font-family: 'Lucida Sans Unicode';font-size: 11px;align-self: flex-start;">${prj_status} ${prj_status=='Delay'?(delaydays_+(delaydays_>1?' days':' day')):''}</span>
+                    </div>
+                
+                    
+                    <div style="display: flex;align-items: center;margin-bottom: 0px;column-gap: 10px;">
+                                <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
+                                          <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
+                                            <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0; ">Actions</legend>
+                                            ${completed_actions}<span style="color: #b4b4b4db;">/</span>${prj_totalactions}
+                                          </fieldset>
+                                </span>
+                               
+                               <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
+                                          <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
+                                            <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;  ">Allocated hours</legend>
+                                           ${prj_alhrs} hrs
+                                          </fieldset>
+                                </span>      
+
+                                 <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
+                                          <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
+                                            <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;  ">Utilized hr</legend>
+                                            ${used_hrs} hrs
+                                          </fieldset>
+                                </span>      
+                    </div>
+                    <div style="font-size: 12px; display: flex; column-gap: 3px;">
+                                  <fieldset style=" flex-grow:1;   border: 1px solid #4e49491f; padding: 0.3em; border-radius: 3px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
+                                    <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width:fit-content;  margin-bottom:0; ">${d1<_cd?'Started on':'Starting from'}</legend>
+                                   ${prj_start}
+                                  </fieldset>
+                                  
+                                    <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
+                                      <span style="text-align: center;color: #4e49499c;font-family: Lucida Sans Unicode;font-weight: bold;font-size: 9px;">${daydiff} ${daydiff>1?'days':'day'}</span>
+                                    </span>
+                                   
+                                  <fieldset style="flex-grow:1;border: 1px solid #4e49491f;padding: 0.3em;border-radius: 6px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e49499c;min-width: 50px;display: flex;justify-content: center;font-size: 10px;text-align: left;">
+                                    <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width: fit-content;margin-left: 5px; margin-bottom:0; ">${d2<_cd?'Ended on':'Ending on'}</legend>
+                                    ${prj_end}
+                                  </fieldset>
+                    </div>
+               </div> `;
 
     }
   },
 
 
+  annotations: {
+    xaxis: [
+      {
+        x: todays_date,
+        borderColor: '#5867dd',
+        borderWidth: 2, // Increase line width
+        label: {
+          style: {
+            color: '#fff',
+            background: '#5867dd',
+            fontFamily: 'Lucida Sans Unicode', // Attractive font family
+            fontWeight: 'normal', // Bold text
+            fontSize: '9px', // Increase font size for better visibility
+            padding: {
+              left: 6,
+              right: 6,
+              top: 3,
+              bottom: 3
+            },
+            borderRadius: '5px', // Rounded corners
+            // textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)', // Add shadow to make text stand out
+          },
+          text: 'Today',
+          textAnchor: 'start', // Align text to the start (left) of the label
+          offsetX: 9, // Horizontal offset to position it to the right of the line
+          offsetY: 0 // Slight vertical offset to fine-tune position
+        }
+      }
+    ]
+  }
+  
+  
+  
 
 };
 

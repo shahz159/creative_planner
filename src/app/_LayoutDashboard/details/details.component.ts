@@ -27,7 +27,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar} from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 import {
@@ -41,7 +41,6 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
-import { debug } from 'console';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -171,6 +170,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   formFieldsRequired:boolean=false;
   isLoadingData:boolean|undefined;
   taskDelayedby:number|undefined;
+  projectAuditor:any;
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -812,7 +812,7 @@ this.prjPIECHART.render();
   requestlist: any;
   approverequestlist: any=[];
   noapproverequestlist: any=[];
-
+  
   // getRequestAcessdetails(){
   //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
   //     this.requestlist=JSON.parse(res[0]['requestlist']);
@@ -932,7 +932,8 @@ this.prjPIECHART.render();
         this.filteredPrjAction=this.getFilteredPrjActions('All','All');
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
-        console.log('Now After Sorting:',this.filterstatus);
+        console.log('Now After Sorting:',this.filteremployee);
+
       }
       this.calculateProjectActions();    // calculate project actions details.
 
@@ -1016,6 +1017,8 @@ this.prjPIECHART.render();
   PeopleOnProject:any;
 
   nonRacisList:any=[];
+
+
   GetPeopleDatils(){
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
@@ -1035,17 +1038,32 @@ this.prjPIECHART.render();
             this.secondRecords=this.firstthreeRecords[1]?this.firstthreeRecords[1][0].split(' ')[0]:'';
             this.thirdRecords=this.firstthreeRecords[2]?this.firstthreeRecords[2][0].split(' ')[0]:'';
 
+// If project has project auditor
+          const prj_auditor=this.Project_List.find((item)=>item.Role==='Auditor');
+          if(prj_auditor){
+            this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
+          }
+// If project has project auditor        
 
-
-          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map(emp=>{
+          
+          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{ 
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
             console.log(this.PeopleOnProject,"sssssssss")
-          //   const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-          //   if(p)
-          //    obj.contribution=p.RespDuration;
+            if(this.Subtask_Res_List){
+              const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
+              if(p)
+               obj.contribution=p.RespDuration;
+            }
+
+            if(this.filteremployee){
+              const hasActions:boolean=this.filteremployee.map(item=>item.Team_Res).includes(emp); 
+              obj.isRemovable=(obj.Role.includes('Support')&&hasActions==false);
+            }
+            
             return obj;
           });
+  
 
         }
       });
@@ -1055,15 +1073,17 @@ this.prjPIECHART.render();
 
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
-        this.filteredEmployees = this.nonRacisList;
+        this.filteredEmployees = this.nonRacisList;    
 
-        const RACISList = (JSON.parse(data[0]['RacisList']));
+        let RACISList = (JSON.parse(data[0]['RacisList']));
 
         if (RACISList && RACISList.length > 0) {
           const racisUserIds = RACISList.map((user: any) => user.Emp_No);
           this.userFound = racisUserIds.includes(this.Current_user_ID);
         }
 
+        this.racisNonRacis=[...RACISList,...this.nonRacisList];   debugger
+        
       });
 
 
@@ -1423,7 +1443,9 @@ this.prjPIECHART.render();
   closeMultipleSideBar(){
     document.getElementById("multiple_view").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("newdetails").classList.remove("position-fixed");
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#newdetails').removeClass('position-fixed');
+
   }
 
 
@@ -1538,7 +1560,7 @@ multipleback(){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
     this.currentSidebarOpened="PEOPLES";
-    this.GetPeopleDatils()
+    this.GetPeopleDatils();
   }
 
 
@@ -1855,6 +1877,7 @@ multipleback(){
   Accept_active: boolean = false;
   Conditional_Active: boolean = false;
   Reject_active: boolean = false;
+  Audit_active:boolean=false;
   Transfer_active:boolean=false;
   rejDesc: any;
   noRejectType: boolean = false;
@@ -1883,6 +1906,7 @@ multipleback(){
   }
   Close_Comments() {
     this.comments = "";
+    this.notProvided=false;
   }
 
   sidno:any;
@@ -2028,7 +2052,13 @@ currentStdAprView:number|undefined;
   }
 
   approvalClick(actionType) {
-    this.comments = ""
+    
+  // clearing entered data if any.
+    this.comments = "";
+    this.empAuditor_remarks='';
+    this.emp_Auditor=undefined;
+  // clearing entered data if any.
+
     switch (actionType) {
       case 'ACCEPT': {
         this.isRejectOptionsVisible = false
@@ -2037,6 +2067,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = true;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Audit_active=false;
         this.Transfer_active=false;
         // this.getapprovalStats();
         //    this.getProjectDetails(this.URL_ProjectCode);
@@ -2049,6 +2080,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = true;
         this.Reject_active = false;
+        this.Audit_active=false;
         this.Transfer_active=false;
       }; break;
       case 'REJECT': {
@@ -2058,15 +2090,27 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = true;
+        this.Audit_active=false;
         this.Transfer_active=false;
       };break;
-      case 'TRANSFER':{
+      case 'AUDIT':{
         this.isRejectOptionsVisible = false;
         this.selectedType = '5';
         this.rejectType = undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Audit_active=true;
+        this.Transfer_active=false;
+      };break;
+      case 'TRANSFER':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = '6';
+        this.rejectType = undefined;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.Audit_active=false;
         this.Transfer_active=true;
       };break;
       case 'NOTSELECTED':{
@@ -2076,6 +2120,7 @@ currentStdAprView:number|undefined;
         this.Accept_active = false;
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Audit_active=false;
         this.Transfer_active=false;
         this.isTextAreaVisible = false;
       }
@@ -2767,7 +2812,7 @@ currentStdAprView:number|undefined;
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
-        console.log('Subtask_Res_List:',this.Subtask_Res_List);
+        console.log('Subtask_Res_List:',this.Subtask_Res_List);  
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.Category_List);
@@ -6414,16 +6459,14 @@ holdcontinue(Pcode:any){
   isEHsectionVisible:boolean=false;
   minPrjDeadline:Date;
   HprocessDone:number=0;
-  onHoldDateChanged(){
 
-    if(this.currentActionView===undefined){     // only for project.
-      const d1=new Date(this.Holddate);
-      const d2=new Date(this.projectInfo.EndDate);
-      this.isEHsectionVisible=d1>d2;
-      d1.setDate(d1.getDate()+1);
-      this.minPrjDeadline=d1;
-    }
-
+  onHoldDateChanged(){  
+    
+    const d1=new Date(this.Holddate);
+    const d2=new Date(this.projectInfo.EndDate);
+    this.isEHsectionVisible=d1>d2;
+    d1.setDate(d1.getDate()+1);
+    this.minPrjDeadline=d1;
 }
 
 
@@ -6489,6 +6532,8 @@ holdcontinue(Pcode:any){
                   }).then((choice1:any)=>{
                       if(choice1.value===true)
                         this.holdcontinue(Pcode);
+                      else 
+                        this.HprocessDone=0;
                   });
             }
 
@@ -7083,7 +7128,7 @@ filterConfig:{filterby:string,sortby:string}={
          filterby:'All',
          sortby:'All'
 };
-onFilterConfigChanged({filterBy,sortBy}){
+onFilterConfigChanged({filterBy,sortBy}){ 
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
@@ -7099,7 +7144,7 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
-getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+getFilteredPrjActions(filterby:string='All',sortby:string='All'){   debugger
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo;
@@ -7108,12 +7153,12 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
     if(sortby!=='All'){
      if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
       arr=arr.filter((action)=>{
-        return action.Team_Res===sortby;
+        return action.Team_Res.trim()===sortby;
        });
      }
      else{  // when sortby is 'Assigned By me'
         arr=arr.filter((action)=>{
-              return action.AssignedbyEmpno===this.Current_user_ID;
+              return action.AssignedbyEmpno.trim()===this.Current_user_ID;
         });
      }
     }
@@ -8381,6 +8426,199 @@ updateAgenda(index: number) {
   console.log('all agendas after updating:', this.allAgendas);
 }
 // agenda in event creation end
+
+
+
+
+
+
+// PROJECT auditor, Transfer functionality start.
+
+isAuditorDrpDwnOpen:boolean=false;
+selectedAuditor:any;   
+racisNonRacis:any=[]; // all emp list.
+sprtaudtr_remarks:string|undefined;   // remarks provided during removing of auditor or support member.
+p_index:number=-1;                // selection info.
+processingRemove:boolean=false;  
+typeUserRemove:'AUDITOR'|'SUPPORT'|undefined;
+
+
+
+emp_Auditor:string|undefined;
+empAuditor_remarks:string|undefined;
+
+
+ 
+onAuditorSelected(e){ debugger
+  if(e.option.value){
+    const selected_emp=e.option.value;
+    this.selectedAuditor=selected_emp;
+  }
+  this.openAutocompleteDrpDwn('auditor_DrpDwn');
+}
+
+
+onAuditorSubmitClicked(){ 
+  const selected_emp=this.selectedAuditor.empNo;
+  this.projectMoreDetailsService.NewUpdateProjectAuditor(this.projectInfo.Project_Code,this.Current_user_ID,selected_emp).subscribe((res:any)=>{
+      
+          if(res.message==1){
+             this.notifyService.showSuccess(`${this.selectedAuditor.empName} set as Auditor`,'Success');
+             this.selectedAuditor=undefined;
+             this.GetPeopleDatils();
+          }else if(res.message==2){
+             this.notifyService.showError(`Unable to set ${this.selectedAuditor.empName} as Auditor.`,'Failed.');
+          }
+          else 
+            this.notifyService.showError('Something went wrong.','');
+      
+  });
+}
+
+
+removeSelectedAuditor(){
+  this.selectedAuditor=undefined;
+}
+
+onChangeAuditorBtnClicked(){
+     const addteamtab_btn:any=document.querySelector("a[href='#kt_tab_pane_2_4']");
+     addteamtab_btn.click();
+    setTimeout(()=>{
+      const auditorInput:any=document.querySelector('input#auditor-inputfield');
+      auditorInput.click();
+    },300)  
+}
+
+
+openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
+  if(this.p_index>-1){
+    this.closeRemoveSADialog(this.p_index);
+  }   // closing opened dialog if present.
+  
+  this.p_index=index; 
+  this.typeUserRemove=removalType;  
+  document.getElementById(`mark-admin-drop${this.p_index}`).classList.add("show");
+  let remarks_input:any=document.querySelector(`#mark-admin-drop${this.p_index} textarea.remarks-input`); remarks_input.focus();
+  document.getElementById(`pOnPrj-user-row-${index}`).classList.add('pOnPrj-row-selection');
+}
+
+closeRemoveSADialog(index:number){ debugger
+  document.getElementById(`mark-admin-drop${index}`).classList.remove("show");
+  document.getElementById(`pOnPrj-user-row-${index}`).classList.remove('pOnPrj-row-selection');
+  this.sprtaudtr_remarks=undefined;
+  this.notProvided=false;
+  this.typeUserRemove=undefined;
+  this.p_index=-1;
+}
+
+
+onSARemoveSubmit(){ 
+
+   if(this.sprtaudtr_remarks&&this.sprtaudtr_remarks.trim()){
+        const project_code=this.projectInfo.Project_Code;
+        const current_userid=this.Current_user_ID;
+        const auditor_empno=this.typeUserRemove=='AUDITOR'?this.PeopleOnProject[this.p_index].Emp_No:null;
+        const support_empno=this.typeUserRemove=='SUPPORT'?this.PeopleOnProject[this.p_index].Emp_No:null;
+        const remarks_=this.sprtaudtr_remarks;
+
+        this.processingRemove=true;
+        this.projectMoreDetailsService.NewDeleteProjectRACIS(project_code,current_userid,auditor_empno,support_empno,remarks_).subscribe((res:any)=>{
+              console.log(res); 
+              this.processingRemove=false;
+              if(res.message==1)
+              {
+                if(this.typeUserRemove=='SUPPORT')
+                  this.notifyService.showSuccess(`Removed ${this.PeopleOnProject[this.p_index].Emp_Name} from Support.`,'Success');
+                else if(this.typeUserRemove=='AUDITOR')
+                  this.notifyService.showSuccess(`Removed ${this.PeopleOnProject[this.p_index].Emp_Name} as Auditor.`,'Success');
+
+                this.closeRemoveSADialog(this.p_index); 
+                this.GetPeopleDatils();
+               
+              }
+              else if(res.message==2){
+
+                if(this.typeUserRemove=='SUPPORT')
+                  this.notifyService.showError(`unable to remove ${this.PeopleOnProject[this.p_index].Emp_Name} from Support.`,'Failed');
+                else if(this.typeUserRemove=='AUDITOR')
+                  this.notifyService.showError(`unable to remove ${this.PeopleOnProject[this.p_index].Emp_Name} as Auditor of the project.`,'Failed');
+              }
+              else 
+              this.notifyService.showError('Something went wrong.','Failed');
+              
+        });
+   }
+   else 
+   this.notProvided=true;
+
+}
+
+
+
+onPrjAuditSubmitClicked(){
+
+      if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
+          this.notProvided=true;
+          return;
+      }
+      else 
+        this.notProvided=false;
+
+     const project_code:string=this.projectInfo.Project_Code;
+     const empno:string=this.Current_user_ID;
+     const auditor:string=this.emp_Auditor;
+     const remarks:string=this.empAuditor_remarks;
+     this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
+          console.log(res);
+          if(res&&res.message){
+              this.notifyService.showSuccess(res.message,'Success');
+             
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.getapprovalStats();
+          }
+          else 
+            this.notifyService.showError('something went wrong.','Failed');
+
+     })
+}
+
+
+onTransferBtnClicked(){
+        if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
+            this.notProvided=true;
+            return;
+        }
+        else 
+          this.notProvided=false;
+
+      const project_code:string=this.projectInfo.Project_Code;
+      const empno:string=this.Current_user_ID;
+      const remarks:string=this.empAuditor_remarks;
+      const newowner:string=this.emp_Auditor;
+      this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
+                 if(res&&res.message){
+                    this.notifyService.showSuccess(res.message,'Success');
+                    this.getProjectDetails(this.URL_ProjectCode);
+                    this.getapprovalStats();
+                 }
+                 else{
+                    this.notifyService.showError('something went wrong.','Failed');
+                 }
+      });
+
+}
+
+
+ 
+
+
+
+// PROJECT auditor, Transfer functionality end.
+
+
+
+
+
 
 
 

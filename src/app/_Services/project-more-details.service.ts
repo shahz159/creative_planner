@@ -63,7 +63,45 @@ export class ProjectMoreDetailsService {
 }
 
 
+NewUpdateProjectAuditor(project_code:string,empno:string,empToasAudit:string){
+    this.ObjSubTaskDTO.Project_Code=project_code;
+    this.ObjSubTaskDTO.Emp_No=empno;
+    this.ObjSubTaskDTO.Remarks='';
+    this.ObjSubTaskDTO.auditor=empToasAudit; 
+    return this.http.post(this.rootUrl+'Category/NewUpdateProjectAuditor',this.ObjSubTaskDTO);
+}
 
+
+NewDeleteProjectRACIS(project_code:string,empno:string,auditor:any,teamsupport:any,remarks:string){
+  this.ObjSubTaskDTO.Project_Code=project_code;
+  this.ObjSubTaskDTO.Emp_No=empno;
+  this.ObjSubTaskDTO.Remarks=remarks;
+  this.ObjSubTaskDTO.Team_Support=teamsupport;
+  this.ObjSubTaskDTO.auditor=auditor; 
+   
+  return this.http.post(this.rootUrl+'Category/NewDeleteProjectRACIS',this.ObjSubTaskDTO);
+}
+
+
+
+NewUpdateProjectAuditApproval(project_code:string,empno:string,auditor:string,remarks:string){
+  this.ObjSubTaskDTO.Project_Code=project_code;
+  this.ObjSubTaskDTO.Emp_No=empno;
+  this.ObjSubTaskDTO.auditor=auditor;
+  this.ObjSubTaskDTO.Remarks=remarks;
+  return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdateProjectAuditApproval',this.ObjSubTaskDTO);
+}
+
+
+
+
+NewUpdateTransferProjectComplete(project_code:string,empno:string,remarks:string,newowner:string){
+  this.ObjSubTaskDTO.Project_Code=project_code;
+  this.ObjSubTaskDTO.Emp_No=empno;
+  this.ObjSubTaskDTO.Remarks=remarks;
+  this.ObjSubTaskDTO.owner=newowner;
+  return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdateTransferProjectComplete',this.ObjSubTaskDTO);
+}
 
 
 

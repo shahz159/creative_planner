@@ -751,12 +751,9 @@ export class DashboardComponent implements OnInit {
   closeevearea() {
     $('.bg-ovr').removeClass('d-block');
     $('.bg-ovr1').removeClass('d-block');
-
     $('.side_view').removeClass('position-fixed');
-
     this.date_menu_close('date-menu-1');
     $('#propse11').removeClass('show');
-
     this.closefooter();
   }
   // Scheduling Work
@@ -1380,7 +1377,7 @@ export class DashboardComponent implements OnInit {
 
           this.timingarryend = [];
           this.Time_End = [];
-          this.Time_End = this.StartTimearr;
+          this.Time_End = [...this.StartTimearr];
           let _index = this.Time_End.indexOf(this.Startts);
           if (_index + 1 === this.Time_End.length) {
             _index = -1;
@@ -1692,7 +1689,7 @@ export class DashboardComponent implements OnInit {
 
           this.timingarryend = [];
           this.Time_End = [];
-          this.Time_End = this.StartTimearr;
+          this.Time_End = [...this.StartTimearr];
           let _index = this.Time_End.indexOf(this.Startts);
           if (_index + 1 === this.Time_End.length) {
             _index = -1;
@@ -3000,9 +2997,9 @@ debugger
     const inputtime1=moment(this.Startts,'h:mm A');
     const inputtime2=moment(this.Endtms,'h:mm A');
     if(inputtime1<ct)
-      this.Startts=null;
+      this.Startts=this.validStartTimearr[0];
     if(inputtime2<ct)
-      this.Endtms=null;
+      this.Endtms=this.validStartTimearr[1];
 
    // verify whether starttime and endtime are valid or not. end
 
@@ -3884,7 +3881,8 @@ debugger
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "flex";
+          
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
@@ -3901,7 +3899,6 @@ debugger
           // document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
         }
-
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
@@ -3959,7 +3956,7 @@ debugger
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+                       debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
         console.log(this.EventScheduledjson, "Testing");
@@ -3983,7 +3980,7 @@ debugger
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
@@ -4080,7 +4077,7 @@ debugger
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
@@ -6144,7 +6141,7 @@ date_menu(dialogId:string){
   document.getElementById(dialogId).classList.add("show");
 }
 date_menu_close(dialogId:string){
-  document.getElementById(dialogId).classList.remove("show");
+  $(`#${dialogId}`).removeClass('show');
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
