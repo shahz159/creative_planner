@@ -623,10 +623,10 @@
                                 <ul class="drop-ul">
                                     <li class="dropdown-header">Filter by</li>
                                     <li>
-                                        <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects')">
+                                        <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects');totalproject()">
                                             <div class="d-flex align-items-center">
-                                                <span class="count ">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
-                                                <div class="fil-lbl" (click)="totalproject()"   >Total Projects</div>
+                                                <span class="count total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
+                                                <div class="fil-lbl"    >Total Projects</div>
                                                 <span class="chck-icn">
                                                   <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -641,10 +641,10 @@
                                         </button>
                                     </li>
                                     <li  *ngIf="_TodoList.length>0" >
-                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList')"  >
+                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList');taskside()"  >
                                             <div    class="d-flex align-items-center">
-                                                <span class="count">{{_TodoList.length}}</span>
-                                                <div  (click)="taskside()" class="fil-lbl">Unassign task</div>
+                                                <span class="count task">{{_TodoList.length}}</span>
+                                                <div   class="fil-lbl">Unassign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -659,10 +659,10 @@
                                         </button>
                                     </li>
                                     <li  *ngIf="_CompletedList.length>0">
-                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed')" >
+                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed');completed()" >
                                             <div class="d-flex align-items-center">
-                                                <span class="count">{{_CompletedList&&_CompletedList.length}}</span>
-                                                <div (click)="completed()" class="fil-lbl">Completed</div>
+                                                <span class="count done">{{_CompletedList&&_CompletedList.length}}</span>
+                                                <div  class="fil-lbl">Completed</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -677,10 +677,10 @@
                                         </button>
                                     </li>
                                     <li *ngIf="ActionedSubtask_Json.length>0"  >
-                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask')">
+                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask');showactprj()">
                                             <div class="d-flex align-items-center">
-                                                <span class="count">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
-                                                <div   class="fil-lbl"  (click)="showactprj()"  >Action to projects</div>
+                                                <span class="count action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
+                                                <div   class="fil-lbl"    >Action to projects</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -695,10 +695,10 @@
                                         </button>
                                     </li>
                                     <li *ngIf="ActionedAssigned_Josn.length>0"  >
-                                        <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned')" >
+                                        <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned');showassign()" >
                                             <div class="d-flex align-items-center">
-                                                <span class="count">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
-                                                <div class="fil-lbl" (click)="showassign()"  >Assign task</div>
+                                                <span class="count assigned-task">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
+                                                <div class="fil-lbl"   >Assign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -745,9 +745,22 @@
                     </div>
                 </div>
                 <!-- Test Work -->
+
+
+
+
+
+
+
+
+
+
+
+
                 <div   class="kt-container--fluid kt-grid__item kt-grid__item--fluid">
                     <div  id="kt_inbox" class=" kt-inbox">
                         <!-- Inprocess -->
+
                         <div class="row" >
                             <div class="col-lg-12" >
                                 <div class="p-2 scrollbar1" style="padding-top: 0px !important;">
@@ -873,7 +886,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div></div>
+                                    </div>
+                                  </div>
 
                                     <!-- Completed -->
                                     <div id="Completed" class="d-none">
@@ -1110,7 +1124,7 @@
                                                                 </mat-icon>
                                                                 <b>{{item.Assigned_Name}}</b>
                                                             </span>
-                                                            <span data-toggle="tooltip" title="Assigned Date!"
+                                                            <span data-toggle="tooltip" title="Assigned date"
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                 <div>
                                                                     {{item.Modified_DT| date:'d MMM, y'}}
@@ -1122,7 +1136,7 @@
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                             <i class="fa fa-clone mr-2"></i>{{item.Project_type }} </label>
 
-                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                            <span  data-toggle="tooltip" title="Action status" *ngIf="item.Status!='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
                                                                     [ngClass]="{
                                                                       'kt-badge completed ': item.Status === 'Completed',
@@ -1144,7 +1158,7 @@
                                                                         :item.Status=='InProcess'?'In-process':item.Status}}
                                                                 <!-- <div></div> -->
                                                              </span>
-                                                             <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                             <span  data-toggle="tooltip" title="Action status" *ngIf="item.Status=='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                 <div> {{item.Status }} {{item.Delaydays}} days</div>
                                                              </span>
@@ -1156,7 +1170,7 @@
                                                                 class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
                                                                 data-tippy-content="Another Tooltip">
                                                                 <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                                <div> {{item.Status}}</div>
+                                                                <div> {{item.Status}}</div>Start dateEnd date
                                                             </span> -->
                                                             <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                 <div ><img src="https://cswebapps.com/creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
@@ -1182,10 +1196,9 @@
                                                             <a class="text-info curser-pointer" title="Click To Open File"
                                                                 ><b>{{item.FileName}}</b></a></span>
                                                             <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
-                                                            <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
-                                                                <!-- <i class="fas fa-registered text-muted mr-1"></i> -->
-                                                                <b class="mr-1">Remarks :</b>
-                                                                <span class="mb-0">{{item.Remarks}}</span>
+                                                            <span  data-toggle="tooltip" title="Remarks" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
+                                                                <i class="fas fa-registered text-muted mr-1"></i>
+                                                                <b>{{item.Remarks}}</b>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -1337,7 +1350,7 @@
                                                            </svg>
                                                                 </a>
                                                                 <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)"
-                                                                    role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="Project dashboard!" class="info-btn curser-pointer">
+                                                                    role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="Project dashboard" class="info-btn curser-pointer">
                                                                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                          <g>
@@ -1411,7 +1424,7 @@
                                                                     {{item.Modified_DT|date :'d MMM, y'}}
                                                                 </div>
                                                             </span>
-                                                            <span  data-toggle="tooltip" title="Assigned Status!"
+                                                            <span  data-toggle="tooltip" title="Assigned status"
                                                             class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
                                                             [ngClass]="{'rejecteds':item.Status=='Rejected',
                                                                 'accepteds':item.Status=='Accepted',
@@ -1430,7 +1443,7 @@
                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m"><i
                                                                 class="fa fa-clone mr-2"></i>
                                                             {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</label>
-                                                            <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
+                                                            <span data-toggle="tooltip" title="Project status" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
                                                                     class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline"
                                                                     [ngClass]="{
                                                                       'kt-badge completed ': item.Project_status === 'Completed',
@@ -1452,11 +1465,11 @@
                                                                       :item.Project_status=='InProcess'?'In-process':item.Project_status}}
                                                                     </div>
                                                              </span>
-                                                             <span data-toggle="tooltip" title="Project status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
+                                                             <span data-toggle="tooltip" title="Project status" *ngIf="item.Project_status && item.Project_status=='Delay'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                     <div> {{item.Project_status}} {{item.Delaydays}} days</div>
                                                              </span>
-                                                             <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
+                                                             <span data-toggle="tooltip" title="Project status" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline hold">
                                                                     <div> Hold </div>
                                                              </span>
@@ -1492,15 +1505,14 @@
                                                                 <div >{{item.FileName}}
                                                                 </div>
                                                             </span> -->
-                                                            <span data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
+                                                            <span data-toggle="tooltip" title="Attachment" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
                                                                 class="fas fa-file-pdf text-muted mr-1"></i>
                                                             <a class="text-info curser-pointer" title="Click To Open File"
                                                                 (click)="LoadDocument(item.Reference)"><b>{{item.FileName}}</b></a></span>
                                                             <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
-                                                            <span  data-toggle="tooltip" title="Remarks!" class="mx-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
-                                                                <!-- <i class="fas fa-registered text-muted mr-1"></i> -->
-                                                                <b class="mr-1">Remarks :</b>
-                                                                <span class="mb-0">{{item.Remarks}}</span>
+                                                            <span  data-toggle="tooltip" title="Remarks" class="mx-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
+                                                                <i class="fas fa-registered text-muted mr-1"></i>
+                                                                <b>{{item.Remarks}}</b>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -1511,6 +1523,14 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+
+
+
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -1549,6 +1569,46 @@
                             </div> -->
                     </div>
                 </div>
+
+<!-- </ng-container> -->
+<div class="add_assigned_task-removeforcss mt-2 pr-1">
+  <div class="form-group mb-0">
+      <a class="btn btn-sm btn-info font-weight-bold mr-2 py-2 px-3 px-xxl-5 text-white my-1 float-right d-none"
+          id="addbtn"><i class="la la-plus text-white mr-2"></i>Add task</a>
+      <div class="input-group" id="addtsk">
+          <div class="input-group-prepend w-100">
+              <button class="btn btn-info btn-sm lh-25" id="basic-addon1" id="tippy3"
+                  (click)="EnterSubmit(_Demotext)" primary="true">
+                  <i class="la la-plus text-white mr-0"></i>
+              </button>
+              <input type="text" [(ngModel)]="_Demotext"
+              class="form-control add_assign_task_input brdr-gr"
+              placeholder="Add task to '{{_CategoryName}}' and press enter to submit"
+              (keyup.enter)="EnterSubmit(_Demotext)" aria-describedby="basic-addon1" primary="true">
+          </div>
+
+          <!-- <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1">
+                      <i class="la la-calendar-o"></i>
+                  </span>
+                  <span class="input-group-text curser-pointer" id="basic-addon1" data-toggle="modal"
+                      data-target="#AssignTo">
+                      <i class="la la-user"></i>
+                  </span>
+                  <span class="input-group-text" id="basic-addon1" data-toggle="modal"
+                      data-target="#AttachmentModal">
+                      <i class="la la-paperclip"></i>
+                  </span>
+              </div> -->
+      </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
             </div>
             </div>
         </div>
@@ -1751,7 +1811,7 @@
             </div>
         </div>
     </div> -->
-</div>
+<!-- </div> -->
 
 
 <div class="modal-backdrop show" id="schedule-event-modal-backdrop" style="display: none;"></div>

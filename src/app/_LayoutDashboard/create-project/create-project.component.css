@@ -197,7 +197,7 @@
 }
 
 .card {
-  cursor: pointer;
+
   transition: 0.6s;
   position: relative;
 }
@@ -2142,7 +2142,7 @@ a.nav-link.active span {
 
 .Kt-info-box-main {
   border: 1px solid #ededed;
-  cursor: pointer;
+
   border-radius: 4px;
 }
 
@@ -2690,4 +2690,18 @@ color: #2786fb;
 
 .action-edit-header{
    color:#646c9a;
+}
+
+
+.readonly{
+  color: #ccc!important;
+  font-size: inherit;
+  cursor: not-allowed !important;
+}
+.form-control[readonly] {
+  background-color: #ffffff;
+}
+.attachment {
+  padding: 5px;
+  cursor: pointer;
 }

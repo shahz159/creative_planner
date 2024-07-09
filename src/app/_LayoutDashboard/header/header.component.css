@@ -851,7 +851,7 @@ a.ordr-a {
 }
 .kt-header__topbar-item:hover svg {
     transition: all 0.3s;
-    fill: #8a75e7;
+    fill: #8a75e7; 
 }
 .modal.fade.show {
     display: block;
@@ -949,3 +949,6 @@ span.leave-date-icon {
     width: 22px;
     height: 22px;
 }
+::ng-deep span.kt-header__topbar-icon svg:focus {
+    outline: none;
+  }

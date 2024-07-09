@@ -27,8 +27,8 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="title-view-md">
-                        <h2 class="text-primary">Let’s get started!</h2>
-                        <p>Please select from the below options to create project.</p>
+                        <h2 class="text-primary">Let’s get started</h2>
+                        <p>Please select from the below options to create project</p>
                       </div>
                     </div>
                     <div class="option-section">
@@ -401,7 +401,7 @@
                     <div class="col-lg-12">
                       <div class="d-flex align-items-center justify-content-between w-100">
                         <div class="title-view-md">
-                          <p class="mb-0">Assigned / conditional projects</p>
+                          <p class="mb-0">Assigned / Conditional projects</p>
                         </div>
                         <div class="kt-ctv-btn mt-0">
                           <button type="button" (click)="back_to_options()"
@@ -436,10 +436,11 @@
                                       <p>{{i+1}}</p><span>Project</span>
                                     </div>
                                     <div class="kt-act-info">
-                                      <div class="kt-act-ttl-v">
-                                        <h6>{{record.Task_Name}}</h6>
+                                      <div class="kt-act-ttl-v" >
+                                        <h6 title="Project name">{{record.Task_Name}}  <span *ngIf="record.FileName" class="fa fa-paperclip  attachment cursor-pointer"  [style.height.px]="10"
+                                          [style.width.px]="10" title="Reference attachment" (click)="LoadDocument(record.Reference)"></span></h6>
                                         <div class="d-flex">
-                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg
+                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic" title="Start date and End date" ><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
                                                 viewBox="0 0 1024 1024" version="1.1" class="icon">
                                                 <path
@@ -448,10 +449,10 @@
                                                 <path
                                                   d="M341.3 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7S384 61.8 384 85.3v149.3c0 23.6-19.1 42.7-42.7 42.7zM682.7 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v149.3c-0.1 23.6-19.2 42.7-42.7 42.7zM810.7 490.7H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7zM810.7 704H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7S834.2 704 810.7 704z"
                                                   fill="#5F6379"></path>
-                                              </svg></span><span class="kt-act-ic-info">{{record.Start_Date|date:'dd-MM-YYYY' }}
+                                              </svg></span><span class="kt-act-ic-info" >{{record.Start_Date|date:'dd-MM-YYYY' }}
                                               -
                                               {{record.End_Date|date:'dd-MM-YYYY' }}</span></div>
-                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg width="15px" height="15px"
+                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic" ><svg width="15px" height="15px"
                                                 viewBox="0 0 1024.00 1024.00" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                                 fill="#3688ff" stroke="#3688ff" stroke-width="0.01024" class="icon">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -471,8 +472,8 @@
                                                     d="M528.7168 472.93952c0 8.9856-7.48544 16.26624-16.7168 16.26624-9.23136 0-16.7168-7.28064-16.7168-16.26624V253.35808c0-8.9856 7.48544-16.26624 16.7168-16.26624 9.23136 0 16.7168 7.28064 16.7168 16.26624v219.58144zM476.83584 532.25984c7.03488-5.82144 17.5872-4.992 23.56736 1.85344a15.96416 15.96416 0 0 1-1.90464 22.92736l-101.88288 84.3008c-7.03488 5.82144-17.5872 4.992-23.56736-1.85344a15.96416 15.96416 0 0 1 1.90464-22.92736l101.88288-84.3008z"
                                                     fill="#000000"></path>
                                                 </g>
-                                              </svg></span><span class="kt-act-ic-info">{{record.Duration + 1}} days</span></div>
-                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg
+                                              </svg></span><span class="kt-act-ic-info" title="Duration">{{record.Duration +1}} days</span></div>
+                                          <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic" ><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
                                                 viewBox="0 0 1024 1024" version="1.1" class="icon">
                                                 <path
@@ -484,42 +485,54 @@
                                                 <path
                                                   d="M512 1002.7c-270.6 0-490.7-220.1-490.7-490.7S241.4 21.3 512 21.3s490.7 220.1 490.7 490.7-220.1 490.7-490.7 490.7z m0-896c-223.5 0-405.3 181.8-405.3 405.3S288.5 917.3 512 917.3 917.3 735.5 917.3 512 735.5 106.7 512 106.7z"
                                                   fill="#3688FF"></path>
-                                              </svg></span><span class="kt-act-ic-info">{{record.Created_Name}}</span></div>
+                                              </svg></span><span class="kt-act-ic-info" title="Responsible">{{record.Created_Name}}</span></div>
+
+
+
+                                              <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic"><svg xmlns="http://www.w3.org/2000/svg" width="15px"
+                                                    height="15px"
+                                                    viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                                    <path
+                                                      d="M427.2 203c0-112.1-90.9-203-203-203C112.1-.2 21.2 90.6 21 202.6A202.9 202.9 0 0 0 161.5 396v101.7a14.3 14.3 0 0 0 14.3 14.3h96.4a14.3 14.3 0 0 0 14.3-14.3V396.1A203.2 203.2 0 0 0 427.2 203zm-271.6 0c0-90.8 137.3-90.8 137.3 0-.1 89.9-137.3 91-137.3 0z" fill="#3688FF"  />
+                                                  </svg>
+                                                </span><span class="kt-act-ic-info" title="Source">{{record.source}} <span *ngIf="record.sourcename"
+                                                    title="Source name"> / {{ record.sourcename}} </span>
+                                                </span></div>
                                         </div>
                                       </div>
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
-                                          <div class="kt-dl-icon db-v" (click)="onRejectButtonClick(record,i+1)" data-toggle="modal"
-                                            data-target="#exampleModalCenter"><span class="kt-svg-ic"><svg width="26px"
-                                                height="26px" viewBox="0 0 23 23" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                                </g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                  <circle cx="12" cy="12" r="9" fill="#ff4d4d" fill-opacity="0.24"></circle>
-                                                  <path d="M9.00009 14.9997L15.0001 8.99966" stroke="#d10000"
-                                                    stroke-width="1.44">
-                                                  </path>
-                                                  <path d="M15 15L9 9" stroke="#d10000" stroke-width="1.44"></path>
-                                                </g>
-                                              </svg>
-                                            </span>
+
+                                          <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Create"
+                                            (click)="Scratech_btn();onButtonClick(record,i+1);">
+                                            <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
+                                              xmlns="http://www.w3.org/2000/svg">
+                                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                              </g>
+                                              <g id="SVGRepo_iconCarrier">
+                                                <circle cx="12" cy="12" r="8" fill="#0091eb" fill-opacity="0.24"></circle>
+                                                <path
+                                                  d="M9.5 12L11.3939 13.8939C11.4525 13.9525 11.5475 13.9525 11.6061 13.8939L15.5 10"
+                                                  stroke="#0091eb" stroke-width="1.56"></path>
+                                              </g>
+                                            </svg></span></div>&nbsp;&nbsp;
+
+
+
+
+
+                                          <div class="kt-dl-icon db-v" title="Delete" (click)="onRejectButtonClick(record,i+1)" data-toggle="modal"
+                                            data-target="#exampleModalCenter">  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            aria-hidden="true" role="img" font-size="1.5rem" width="1.2em" height="1.2em"
+                                            viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                            <path _ngcontent-otf-c186="" fill="gray"
+                                              d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                            </path>
+                                          </svg>
+
                                           </div>
-                                          <div class="kt-dl-icon"><span class="kt-svg-ic"
-                                              (click)="Scratech_btn();onButtonClick(record,i+1);">
-                                              <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                                </g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                  <circle cx="12" cy="12" r="8" fill="#0091eb" fill-opacity="0.24"></circle>
-                                                  <path
-                                                    d="M9.5 12L11.3939 13.8939C11.4525 13.9525 11.5475 13.9525 11.6061 13.8939L15.5 10"
-                                                    stroke="#0091eb" stroke-width="1.56"></path>
-                                                </g>
-                                              </svg></span></div>
+
                                         </div>
                                       </div>
                                     </div>
@@ -558,7 +571,7 @@
                                       </div>
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
-                                          <div class="kt-dl-icon"><span class="kt-svg-ic"
+                                          <div class="kt-dl-icon"><span class="kt-svg-ic" title="Create"
                                               (click)="Scratech_btn();getConditional(item);">
                                               <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -609,8 +622,8 @@
                                   <p>{{i+1}}</p><span>Template</span>
                                 </div>
                                 <div class="kt-act-info">
-                                  <div class="kt-act-ttl-v" (click)="Scratech_btn();openTemplate(record);">
-                                    <h6>{{record.Project_Name }}</h6>
+                                  <div class="kt-act-ttl-v curser-pointer" >
+                                    <h6 title="Project name">{{record.Project_Name }}</h6>
                                     <div class="d-flex">
                                       <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic">
                                           <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" width="22px" height="22px"
@@ -622,13 +635,31 @@
                                             <path
                                               d="M493.795556 450.56h186.595555c6.826667 0 11.377778-4.551111 11.377778-11.377778v-2.275555c0-6.826667-4.551111-11.377778-11.377778-11.377778h-186.595555c-6.826667 0-11.377778 4.551111-11.377778 11.377778v2.275555c0 4.551111 4.551111 11.377778 11.377778 11.377778zM493.795556 543.857778h186.595555c6.826667 0 11.377778-4.551111 11.377778-11.377778v-2.275556c0-6.826667-4.551111-11.377778-11.377778-11.377777h-186.595555c-6.826667 0-11.377778 4.551111-11.377778 11.377777v2.275556c0 4.551111 4.551111 11.377778 11.377778 11.377778zM493.795556 641.706667h186.595555c6.826667 0 11.377778-4.551111 11.377778-11.377778v-2.275556c0-6.826667-4.551111-11.377778-11.377778-11.377777h-186.595555c-6.826667 0-11.377778 4.551111-11.377778 11.377777v2.275556c-2.275556 4.551111 4.551111 11.377778 11.377778 11.377778zM680.391111 709.973333h-186.595555c-6.826667 0-11.377778 4.551111-11.377778 11.377778v2.275556c0 6.826667 4.551111 11.377778 11.377778 11.377777h186.595555c6.826667 0 11.377778-4.551111 11.377778-11.377777v-2.275556c0-4.551111-4.551111-11.377778-11.377778-11.377778zM573.44 318.577778c0-9.102222-4.551111-13.653333-11.377778-13.653334h-186.595555c-6.826667 0-11.377778 4.551111-11.377778 11.377778v2.275556c0 6.826667 4.551111 11.377778 11.377778 11.377778h186.595555c6.826667 0 11.377778-4.551111 11.377778-11.377778z" />
                                           </svg>
-                                        </span><span class="kt-act-ic-info">
+                                        </span><span class="kt-act-ic-info" title="Project type">
                                           {{record.ProjectType}}</span></div>
                                     </div>
                                   </div>
                                   <div class="kt-act-btns">
                                     <div class="d-flex align-items-center">
-                                      <div class="kt-dl-icon db-v" (click)="onTmpRmvDialogOpen(i)"><span class="kt-svg-ic">
+                                      <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Create"
+                                        (click)="Scratech_btn();openTemplate(record);">
+                                        <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
+                                          xmlns="http://www.w3.org/2000/svg">
+                                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                          </g>
+                                          <g id="SVGRepo_iconCarrier">
+                                            <circle cx="12" cy="12" r="8" fill="#0091eb" fill-opacity="0.24"></circle>
+                                            <path
+                                              d="M9.5 12L11.3939 13.8939C11.4525 13.9525 11.5475 13.9525 11.6061 13.8939L15.5 10"
+                                              stroke="#0091eb" stroke-width="1.56"></path>
+                                          </g>
+                                        </svg></span></div>&nbsp;&nbsp;
+
+
+
+
+                                      <div class="kt-dl-icon db-v" title="Delete" (click)="onTmpRmvDialogOpen(i)"><span class="kt-svg-ic">
                                           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             aria-hidden="true" role="img" font-size="1.5rem" width="1.2em" height="1.2em"
                                             viewBox="0 0 24 24" class="iconify iconify--mdi">
@@ -711,15 +742,15 @@
                                     <div class="kt-act-no">
                                       <p>{{i+1}}</p><span>Project</span>
                                     </div>
-                                    <div class="kt-act-info justify-content-start " >
+                                    <div class="kt-act-info justify-content-start" title="Project name" >
                                       <div class="kt-act-ttl-v flex-grow-1" (click)="openDraft(i)">
                                         <h6>{{draftp.Project_Name?draftp.Project_Name:''}}</h6>
                                         <div class="d-flex">
                                           <div class="kt-vi-act-dtl">
 
-                                            <span class="kt-act-ic-info mr-2">{{draftp.ProjectType?draftp.ProjectType.trim():''}}</span>
+                                            <span class="kt-act-ic-info mr-2" title="Project type">{{draftp.ProjectType?draftp.ProjectType.trim():''}}</span>
 
-                                            <span class="kt-act-svg-ic">
+                                            <span class="kt-act-svg-ic" >
                                                   <svg
                                                     xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
                                                     viewBox="0 0 1024 1024" version="1.1" class="icon">
@@ -732,7 +763,7 @@
                                                   </svg>
                                             </span>
 
-                                            <span class="kt-act-ic-info">{{draftp.ModifiedDate}}</span>
+                                            <span class="kt-act-ic-info" title="Create date">{{draftp.ModifiedDate}}</span>
 
 
                                           </div>
@@ -742,21 +773,34 @@
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
 
-                                            <div class="kt-dl-icon db-v"  (click)="deleteDraft(i)">
+                                          <div class="kt-dl-icon" title="Create"  (click)="openDraft(i)">
+                                            <span class="kt-svg-ic">
+                                              <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                                </g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                  <circle cx="12" cy="12" r="8" fill="#0091eb" fill-opacity="0.24"></circle>
+                                                  <path d="M9.5 12L11.3939 13.8939C11.4525 13.9525 11.5475 13.9525 11.6061 13.8939L15.5 10" stroke="#0091eb"
+                                                    stroke-width="1.56"></path>
+                                                </g>
+                                              </svg>
+                                            </span>
+                                        </div>&nbsp;&nbsp;
+
+
+
+
+
+                                            <div class="kt-dl-icon db-v" title="Delete" (click)="deleteDraft(i)">
                                                   <span class="kt-svg-ic">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="1.1em" height="1.1em" viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="1.1em" height="1.1em" viewBox="0 0 24 24" class="iconify iconify--mdi">
                                                         <path fill="gray" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z"></path>
                                                       </svg>
                                                   </span>
                                             </div>
 
-                                            <div class="kt-dl-icon"  (click)="openDraft(i)">
-                                              <span class="kt-svg-ic">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.499 40.5" width="17px" height="17px">
-                                                  <path fill="#9d9d9d" stroke="none" stroke-width="0" d="M39.622,21.746l-6.749,6.75c-0.562,0.562-1.326,0.879-2.122,0.879s-1.56-0.316-2.121-0.879l-6.75-6.75c-1.171-1.171-1.171-3.071,0-4.242c1.171-1.172,3.071-1.172,4.242,0l1.832,1.832C27.486,13.697,22.758,9.25,17,9.25 c-6.064,0-11,4.935-11,11c0,6.064,4.936,11,11,11c1.657,0,3,1.343,3,3s-1.343,3-3,3c-9.373,0-17-7.626-17-17s7.627-17,17-17 c8.936,0,16.266,6.933,16.936,15.698l1.442-1.444c1.172-1.172,3.072-1.172,4.242,0C40.792,18.674,40.792,20.574,39.622,21.746z"></path>
-                                                  </svg>
-                                              </span>
-                                          </div>
+
 
                                         </div>
                                       </div>
@@ -793,7 +837,7 @@
                       <div class="Kt-info-box-main active"
                          (click)="this.currentActionView=undefined;"
                         [ngClass]="{'active':currentActionView===undefined}">
-                        <div class="kt-info-box curser-pointer border-0">
+                        <div class="kt-info-box  border-0">
                           <div class="d-flex align-items-center">
                             <div class="kt-info-box-tittle mt-0 mb-2">
                               <div class="kt-title-icon">
@@ -1128,7 +1172,7 @@
                         </div>
                         <div class="kt-project-action-list-view">
                           <div class="kt-projcect-act-list">
-                            <div *ngFor="let tempact of PrjTemplActions;let i=index" class="row curser-pointer  mb-2  ">
+                            <div *ngFor="let tempact of PrjTemplActions;let i=index" class="row   mb-2  ">
                               <div class="col-lg-8 pl-0 pr-1">
                                 <div class="kt-p-box border-r-0" style=" background-color: #f3fbff; padding: 1.2em;">
                                   <div class="kt-action-p-tittle">
@@ -1145,9 +1189,10 @@
                                 <div class="kt-p-box border-l-0 text-center" style="background-color:#f3fbff;">
                                   <div class="kt-p-status">
                                     <div class="kt-p-action-No"
-                                      style=" color: #626262;font-family: lucida sans unicode;font-weight: bold; padding:0.8em; display:flex; justify-content: space-between;    ">
+                                      style=" color: #626262;font-family: lucida sans unicode;font-weight: bold; padding:0.8em; display:flex; justify-content: space-between;    " >
                                       Action {{i+1}}
-                                      <svg (click)="openTemplateAction(tempact)" class="template-pin" height="19px"
+                                      <span title="Draft">
+                                        <svg (click)="openTemplateAction(tempact)" class="template-pin cursor-pointer" height="19px"
                                         width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00"
                                         xml:space="preserve" fill="#000000" stroke="#000000"
@@ -1155,7 +1200,7 @@
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
                                         </g>
-                                        <g id="SVGRepo_iconCarrier">
+                                        <g id="SVGRepo_iconCarrier"  >
                                           <polygon
                                             points="474.962,117.094 394.906,37.038 235.88,179.284 242.345,269.657 332.717,276.121 ">
                                           </polygon>
@@ -1170,6 +1215,8 @@
                                           </path>
                                         </g>
                                       </svg>
+                                      </span>
+
                                     </div>
                                   </div>
                                 </div>
@@ -1353,7 +1400,7 @@
                            <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
 
                           <ng-container [ngSwitch]="notificationMsg">
-                                <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation! Enter the initial project details to continue.</span>
+                                <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation enter the initial project details to continue.</span>
                                 <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away from creating the project.</span>
                                 <span *ngSwitchCase="2" class="notif-msg">You are 1 step away from creating the project.</span>
                                 <span *ngSwitchCase="3" class="notif-msg">Project not yet submitted. Click the 'Submit Project' button to submit the project for approval or continue adding actions.</span>
@@ -1386,10 +1433,10 @@
                                   <input class="form-control" type="text"
                                     placeholder="Enter project name" [ngClass]="{'error-border': !PrjName&&notProvided}" [(ngModel)]="PrjName"  #PrjNameF="ngModel"(ngModelChange)="isPrjNameValid=isValidString(PrjName.trim(),3)"   />
                                     <span style="color:rgb(217,48,37)" class=""
-                                    *ngIf="!PrjName&&notProvided">Please enter project name </span>
+                                    *ngIf="!PrjName&&notProvided">Please enter project name. </span>
 
 
-                                    <span *ngIf="isPrjNameValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter at least 3 words, Maximum 100 character are allowed</span>
+                                    <span *ngIf="isPrjNameValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter at least 3 words, maximum 100 characters are allowed</span>
                                     <!-- <span *ngIf="isPrjNameValid==='TOOLONG'"  style="color:rgb(217,48,37)">Maximum 100 Words allowed</span> -->
                                     <span *ngIf="PrjName&&PrjName.length>100" style="color:rgb(217,48,37)" >Maximum 100 characters are allowed</span>
                                 </div>
@@ -1399,9 +1446,9 @@
                                   <label>Project description<span class="text-danger">*</span></label>
                                   <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
                                     placeholder="Enter project description" [ngClass]="{'error-border': !PrjDes&&notProvided}" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
-                                    <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project Description </span>
+                                    <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
                                     <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
-                                    at least 5 words, Maximum 200 Words are allowed</span>
+                                    at least 5 words, maximum 200 characters are allowed</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
                                    <span *ngIf="PrjDes&&PrjDes.length>200" style="color:rgb(217,48,37)">Maximum 200 characters are allowed</span>
                                 </div>
@@ -1446,7 +1493,7 @@
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>Start date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjstartdate && notProvided}">
-                                      <input class="form-control ng-pristine curser-pointer" name="date" [(ngModel)]="Prjstartdate" (input)="text()"    (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
+                                      <input class="form-control ng-pristine curser-pointer" name="date" [(ngModel)]="Prjstartdate" (input)="text()"    (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;Prjstartdate=Prjstartdate>=previousdate?Prjstartdate:null"
                                         id="d-date" placeholder="Select start date" [matDatepicker]="picker2"
                                         (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
                                         #SrtDate="ngModel" />
@@ -1500,9 +1547,9 @@
                                       </span>
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-                                    <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">Allocated hours cannot be 0, please enter a
+                                    <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">Allocated hours cannot be 0 and decimal, please enter a
                                       value </span>
-                                    <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217,48,37)">{{_message}}</span>
+                                    <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
                                     <!-- <span *ngIf="allocated.value && !isNumeric(allocated.value)">Alphabet will not accept
                                       {{maxAllocation}}
                                     </span> -->
@@ -1531,82 +1578,88 @@
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [ngClass]="{'error-vd': notProvided}" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
+                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [ngClass]="{'error-vd': !Allocated_Hours&& notProvided}" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
                                         </ng-select>
-                                        <span *ngIf="notProvided" style="color:rgb(217,48,37)">Please select allocated hour</span>
+                                        <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Please select allocated hour</span>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" >
+                                        <ng-select placeholder="select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours"   [ngClass]="{'error-vd': !Allocated_Hours && notProvided}" >
                                           <ng-option *ngFor="let item of Daily_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span style="color:#646c9a"> Max duration limit is 60 Minutes only.</span>
+                                        <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)" >Please select allocated hour</span>
+                                        <div style="color:#646c9a"> Max duration limit is 60 Minutes only</div>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed" *ngSwitchCase="2">
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours">
+                                        <ng-select placeholder="Select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Week_array" [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span style="color:#646c9a"> Max duration limit is 2 hrs only.</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
+                                        <span style="color:#646c9a"> Max duration limit is 2 hours only</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="3">
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours">
+                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Month_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span style="color:#646c9a">Max duration limit is 4 hrs only.</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
+                                        <span style="color:#646c9a">Max duration limit is 4 hours only</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="4">
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours">
+                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Quarter_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span style="color:#646c9a"> Max duration limit is 8 hrs only.</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
+                                        <span style="color:#646c9a"> Max duration limit is 8 hours only</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="5">
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours">
+                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Halfyear_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span style="color:#646c9a"> Max duration limit is 10 hrs only.</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
+                                        <span style="color:#646c9a"> Max duration limit is 10 hours only</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="6">
                                        <label>Allocated hours<span class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours">
-                                          <ng-option *ngFor="let item of Halfyear_array"
+                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}"  >
+                                          <ng-option *ngFor="let item of Annual_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span style="color:#646c9a"> Max duration limit is 16 hrs only.</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
+                                        <span style="color:#646c9a"> Max duration limit is 16 hours only</span>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                                 <div class="col-lg-4 mb-3"  *ngIf="(Prjtype=='003' || Prjtype=='008') && prjsubmission=='6'">
                                   <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
-                                    <div class="">
+                                    <div class="" >
                                       <label>Recurrence<span class="text-danger">*</span></label>
-                                      <ng-select placeholder="Select month" class="kt-form-vd curser-pointer" [(ngModel)]="Annual_date">
+                                      <ng-select placeholder="Select month" class="kt-form-vd curser-pointer"   [ngClass]="{'error-vd': !Annual_date && notProvided}"  [(ngModel)]="Annual_date">
                                         <ng-option [value]="1">January</ng-option>
                                         <ng-option [value]="2">February</ng-option>
                                         <ng-option [value]="3">March</ng-option>
@@ -1620,6 +1673,7 @@
                                         <ng-option [value]="11">November</ng-option>
                                         <ng-option [value]="12">December</ng-option>
                                       </ng-select>
+                                      <span *ngIf="!Annual_date&&notProvided" style="color:rgb(217,48,37)">Please select recurrence</span>
                                     </div>
                                   </div>
                                 </div>
@@ -1689,6 +1743,7 @@
                                           <div class="dropzone-file">
                                             <div class="dropzone-filename">
                                               <span (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">{{fileAttachment.name}}</span>
+                                              <span  *ngIf="fileAttachment" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">{{fileAttachment}}</span>
                                               <span class="dropzone-delete">
                                                 <i class="flaticon2-cross" (click)="fileAttachment=null;     "></i>
                                               </span>
@@ -1744,7 +1799,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Owner<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!PrjOwner&&notProvided}"   placeholder="Select Type.." [(ngModel)]="PrjOwner"
+                                  <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!PrjOwner&&notProvided}"   placeholder="Select owner" [(ngModel)]="PrjOwner"
                                   (change)="onProjectOwnerChanged();    setRACIS();   PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim();  ">
                                     <ng-option *ngFor="let p of owner_json" [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
@@ -1754,43 +1809,43 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Responsible<span class="text-danger">*</span></label>
-                                  <ng-select *ngIf="Responsible_json"  [ngClass]="{'error-vd':!PrjResp&&notProvided}"     class="kt-form-vd" placeholder="Select Type.."
+                                  <ng-select *ngIf="Responsible_json"  [ngClass]="{'error-vd':!PrjResp&&notProvided}"     class="kt-form-vd" placeholder="Select responsible"
                                     [(ngModel)]="PrjResp" (change)="onResponsibleChanged();  setRACIS(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim(); ">
                                     <ng-option
                                       [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
                                     <ng-option
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Authority<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjAuth"  [ngClass]="{'error-vd':!PrjAuth&&notProvided}"
+                                  <ng-select class="kt-form-vd" placeholder="Select authority" [(ngModel)]="PrjAuth"  [ngClass]="{'error-vd':!PrjAuth&&notProvided}"
                                     *ngIf="Responsible_json" (change)="setRACIS(); ">
                                     <ng-option
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
                                       [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjAuth">Please select authority.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjAuth">Please select authority</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Coordinator<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjCrdtr"  [ngClass]="{'error-vd':!PrjCrdtr&&notProvided}"
+                                  <ng-select class="kt-form-vd" placeholder="Select coordinator" [(ngModel)]="PrjCrdtr"  [ngClass]="{'error-vd':!PrjCrdtr&&notProvided}"
                                     (change)="setRACIS(); ">
                                     <ng-option *ngFor="let p of allUser_json"
                                       [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjCrdtr">Please select coordinator.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjCrdtr">Please select coordinator</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Inform<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="PrjInformer" [ngClass]="{'error-vd':!PrjInformer&&notProvided}"
+                                  <ng-select class="kt-form-vd" placeholder="Select Informer" [(ngModel)]="PrjInformer" [ngClass]="{'error-vd':!PrjInformer&&notProvided}"
                                     (change)="setRACIS() ">
 
                                   <ng-container *ngIf="Responsible_json">
@@ -1803,12 +1858,12 @@
                                   </ng-container>
 
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjInformer">Please select informer.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjInformer">Please select informer</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
-                                  <label>Auditor (optional)</label>
+                                  <label>Auditor</label>
                                   <ng-select class="kt-form-vd" placeholder="Select auditor" [(ngModel)]="PrjAuditor"
                                     (change)="setRACIS()">
                                     <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name}}</ng-option>
@@ -1858,7 +1913,7 @@
                                       </ng-template>
                                     </mat-autocomplete>
                                   </mat-form-field>
-                                  <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">Please select support.</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">Please select support</span>
                                 </div>
                               </div>
 
@@ -2062,7 +2117,7 @@
                                   </div>
                                 </div>
                                 <div class="col text-center ">
-                                  <div class="kt-info-lable-v"> Deadline </div>
+                                  <div class="kt-info-lable-v"> End date </div>
                                   <div class="kt-info-data-v"> {{projectInfo&&projectInfo.EndDate | date :
                                     'dd-MM-yyyy'}}
                                   </div>
@@ -2418,7 +2473,7 @@
                                     {{PrjActionsInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}} </div>
                                 </div>
                                 <div class="col text-center ">
-                                  <div class="kt-info-lable-v"> Deadline </div>
+                                  <div class="kt-info-lable-v"> End date </div>
                                   <div class="kt-info-data-v">
                                     {{PrjActionsInfo[currentActionView].EndDate|date:'dd-MM-YYYY'}} </div>
                                 </div>
@@ -2540,13 +2595,19 @@
     </div>
 
     <!-- Project Details edit view Start-->
+
        <div class="sideInfobar animate-right" id="Project_Details_Edit_forms">
       <div class="kt-info-body">
+        <h3 style="margin-left: 10px;">Project edit</h3>
       <div class="modal-header p-3">
+
           <div class="d-flex justify-content-between align-items-center w-100">
+
               <div class="d-flex align-items-center">
+
                   <div class="kt-info-box-tittle m-0">
                       <div class="kt-title-icon">
+
                           <span class="svg-icon kt-title-icon m-0">
                               <svg width="22px" height="22px" fill="#fff"
                                   xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
@@ -2585,6 +2646,11 @@
                               </svg>
                           </span>
                       </div>
+
+
+
+
+
                       <div class="Project_type_DW curser-pointer">
                         <!-- <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="Prjtype">
                           <ng-option *ngFor="let item of ProjectType_json"
@@ -2725,9 +2791,11 @@
                       </ng-select>
                   </ng-container>
                   <ng-template #ownwerEdit>
-                      <input type="text" (click)="displaymessagemain()" class="form-control readonly"
+                      <input type="text" (click)="displaymessagemain('Owner')" class="form-control readonly"
                           [(ngModel)]="selectedOwner" readonly />
+
                   </ng-template>
+
                       </div>
                   </div>
               </div>
@@ -2794,7 +2862,7 @@
                           </span> Category </div>
                       <div class="">
                       <ng-select class="kt-form-vd curser-pointer"  [ngClass]="{'error-vd':!selectedcategory&&notProvided}"  [(ngModel)]="selectedcategory"
-                                  placeholder="Select Category">
+                                  placeholder="Select category">
                                   <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
                                       [disabled]="Category==item.ReportType">
                                       {{item.ReportType}}
@@ -2823,8 +2891,9 @@
                           <!-- <input type="text" placeholder="SAR 00.00"  class="form-control readonly"
                           readonly  /> -->
                           <input type="text" class="form-control readonly" placeholder="SAR 00.00"
-                          value="{{projectInfo && projectInfo.Project_Cost | currency:'SAR '}}" readonly />
+                          value="{{projectInfo && projectInfo.Project_Cost | currency:'SAR '}}" (click)="displaymessagemain('Cost')" readonly />
                       </div>
+
                   </div>
               </div>
               <div class="col-lg-4 text-left">
@@ -2875,8 +2944,8 @@
                 <div class="form-group mb-0">
                   <div class="kt-info-lable-v"> Start date</div>
                       <div class="date-border d-flex " [ngClass]="{'error-date':!Start_Date&&notProvided}">
-                        <input  class="form-control curser-pointer"   [(ngModel)]="Start_Date" [min]="todayDate"   (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()"
-                         placeholder="Start date" />
+                        <input  class="form-control curser-pointer"   [(ngModel)]="Start_Date" [min]="todayDate"   (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()"
+                         placeholder="Select start date" />
                          <div class="input-group-text p-0">
                           <mat-datepicker-toggle matSuffix [for]="startEditsPicker">
                           </mat-datepicker-toggle>
@@ -2898,12 +2967,12 @@
 
                   <div class="col-lg-4 text-left mb-3">
                       <div class="form-group mb-0">
-                          <div class="kt-info-lable-v"> Deadline</div>
+                          <div class="kt-info-lable-v">End date</div>
                               <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
-                                <input class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="End_Date=Start_Date>End_Date?null:End_Date"
+                                <input class="form-control curser-pointer" [(ngModel)]="End_Date"     (dateChange)="End_Date=End_Date>Start_Date?End_Date:null;"
                                     [min]="Start_Date" [matDatepicker]="strtEditsPicker"
                                     (click)="strtEditsPicker.open();"
-                                     placeholder="Deadline Date..."
+                                     placeholder="Select end date"
                                     class="form-control" name="date" />
                                 <div class="input-group-text p-0">
                                     <mat-datepicker-toggle matSuffix [for]="strtEditsPicker">
@@ -2916,12 +2985,16 @@
                   </div>
                   <div class="col-lg-4 text-left">
                   <div class="form-group mb-2 Ic_ed">
+
                       <div class="kt-info-lable-v"> Duration</div>
                   <div class="input-icon Sub_In_ed"
                         *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                        <input type="text" class="form-control readonly" value="{{projectInfo.Duration +1}} days "
-                            placeholder="Duration..." readonly />
+                        <input type="text" class="form-control readonly" (click)="displaymessagemain('Duration')" value="{{projectInfo.Duration +1}} days "
+                            placeholder="Enter duration" readonly />
+
                  </div>
+
+
                 <ng-template #continue>
                     <div class="input-icon Sub_In_ed readonly">
                         <input type="text" class="form-control readonly" value=" Continuous" readonly>
@@ -2933,9 +3006,17 @@
               <div class="col-lg-4 text-left" >
                   <div class="form-group mb-2 Ic_ed">
                       <div class="kt-info-lable-v"> Allocated hours
-                          <div class="input-icon Sub_In_ed">
-                              <input type="text" class="form-control readonly" [(ngModel)]="Allocated" readonly />
+                          <div class="input-icon Sub_In_ed" >
+                              <input    (input)="validateInput()"
+                              (keypress)="restrictToNumbers($event)" (click)="displaymessagemain('Allocated hour')"  class="form-control readonly" [(ngModel)]="Allocated" pattern="[0-9]*"    min="0" readonly/>
                           </div>
+                          <span *ngIf=" Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
+                          </span>
+                        <span *ngIf="Allocated > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
+                          hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+
+                        <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
+                        <!-- <span *ngIf="!Allocated" style="color:rgb(217, 48, 37)">It accept only numeric and non-negative value</span> -->
                       </div>
                   </div>
               </div>
@@ -2944,8 +3025,8 @@
               <div class="col-lg-12">
                   <div class="form-group ">
                       <label for="exampleFormControlFile1">Remarks</label>
-                          <textarea class="form-control curser-pointer" aria-label="With textarea"
-                          placeholder="Define your exact reason here." [(ngModel)]="_remarks"
+                          <textarea class="form-control " aria-label="With textarea"
+                          placeholder="Enter project remark if any" [(ngModel)]="_remarks"
                           style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
                   </div>
               </div>
@@ -2995,7 +3076,7 @@
                         <label class="pe-label">Action name</label>
                         <div class="input-icon project-name_ed curser-pointer">
                                 <input [ngClass]="{'error-border':!ProjectName&&notProvided}"    type="text" class="form-control" [(ngModel)]="ProjectName"
-                                placeholder="Enter action name" (ngModelChange)="isPrjNameValid=isValidString(ProjectName.trim(),2)"     />
+                                placeholder="Enter action name" (ngModelChange)="oninputchange($event);isPrjNameValid=isValidString(ProjectName.trim(),2);"     />
                               <span *ngIf="!ProjectName&&notProvided" style="color:red">Please enter action name </span>
                               <span *ngIf="isPrjNameValid=='TOOSHORT'" style="color:red">Please enter atleast 2 words, Maximum 100 characters are allowed</span>
                               <span *ngIf="ProjectName&&ProjectName.length>100" style="color:red">Maximum 100 characters are allowed</span>
@@ -3006,7 +3087,7 @@
                     <div class="form-group mb-2">
                         <label class="pe-label">Action description</label>
                         <div class="input-icon project_des_ed curser-pointer">
-                              <textarea [ngClass]="{'error-border':!ProjectDescription&&notProvided}" type="text" class="form-control" placeholder="Enter action description." height="60px"
+                              <textarea [ngClass]="{'error-border':!ProjectDescription&&notProvided}" type="text" class="form-control" placeholder="Enter action description" height="60px"
                               [(ngModel)]="ProjectDescription" (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
                               <span *ngIf="!ProjectDescription&&notProvided" style="color:red">Please enter action description </span>
                               <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 200 characters are allowed</span>
@@ -3064,7 +3145,7 @@
                          Owner
                     </div>
                     <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
-                         <input type="text" (click)="displaymessagemain()" class="form-control readonly" [(ngModel)]="selectedOwner" readonly />
+                         <input type="text" (click)="editable('Owner')" class="form-control readonly" [(ngModel)]="selectedOwner" readonly />
                     </div>
                 </div>
             </div>
@@ -3105,7 +3186,7 @@
                       </span> Category </div>
                   <div class="">
                   <ng-select class="kt-form-vd curser-pointer"  [ngClass]="{'error-vd':!selectedcategory&&notProvided}"  [(ngModel)]="selectedcategory"
-                              placeholder="Select Category">
+                              placeholder="Select category">
                               <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
                                   [disabled]="Category==item.ReportType">
                                   {{item.ReportType}}
@@ -3132,7 +3213,7 @@
                                 </path>
                             </svg></span> Cost </div>
                     <div class="input-icon Sub_In_ed">
-                        <input *ngIf="PrjActionsInfo&&PrjActionsInfo[currentActionView]"  type="text" class="form-control readonly" placeholder="SAR 00.00"
+                        <input *ngIf="PrjActionsInfo&&PrjActionsInfo[currentActionView]"  type="text"  (click)="editable('cost')" class="form-control readonly" placeholder="SAR 00.00"
                         value="{{PrjActionsInfo[currentActionView].Project_Cost | currency:'SAR '}}" readonly />
                     </div>
                 </div>
@@ -3189,7 +3270,7 @@
                     <div class="kt-info-lable-v"> Start date</div>
                         <div class="date-border d-flex" [ngClass]="{'error-date':!Start_Date&&notProvided}">
                           <input type="text" class="form-control cursor-pointer"
-                          [(ngModel)]="Start_Date"   placeholder="Start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;"/>
+                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Allocated=Allocated=null;Start_Date= Start_Date>=previousdate?Start_Date:null"/>
                           <div class="input-group-text p-0">
                             <mat-datepicker-toggle matSuffix [for]="ActionstartDatepicker">
                             </mat-datepicker-toggle>
@@ -3204,12 +3285,12 @@
                 </div>
                 <div class="col-lg-4 text-left mb-3">
                     <div class="form-group mb-0">
-                        <div class="kt-info-lable-v"> Deadline</div>
+                        <div class="kt-info-lable-v">End date</div>
                             <div class="date-border d-flex" [ngClass]="{'error-date':!End_Date&&notProvided}"  >
-                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="End_Date=Start_Date>End_Date?null:End_Date;"
+                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="End_Date=Start_Date>End_Date?null:End_Date;Allocated=Allocated=null;"
                                   [min]="Start_Date"   [matDatepicker]="ActionEnd_Datepicker"
 
-                                  (click)="ActionEnd_Datepicker.open();"   placeholder="Deadline Date..."
+                                  (click)="ActionEnd_Datepicker.open();"   placeholder="Select end date"
                                   class="form-control" name="date" />
                               <div class="input-group-text p-0">
                                   <mat-datepicker-toggle matSuffix [for]="ActionEnd_Datepicker">
@@ -3225,8 +3306,8 @@
                 <div class="form-group mb-2 Ic_ed">
                     <div class="kt-info-lable-v"> Duration</div>
                     <div class="input-icon Sub_In_ed">
-                          <input type="text" class="form-control readonly" value="{{ActionDuration +1}} days "
-                              placeholder="Duration..." readonly />
+                          <input type="text" class="form-control readonly" (click)="editable('duration')"  value="{{ActionDuration +1}} days "
+                              placeholder="Select duration" readonly />
                     </div>
                   </div>
                 </div>
@@ -3234,18 +3315,19 @@
             <div class="col-lg-4 text-left" >
                 <div class="form-group mb-2 Ic_ed">
                     <div class="kt-info-lable-v"> Allocated hours
-                        <!-- <div class="input-icon Sub_In_ed">
-                            <input type="text" class="form-control readonly" [(ngModel)]="Allocated" readonly />
-                        </div> -->
+
                         <div class="input-icon Sub_In_ed">
-                          <input type="text" id="myInput" class="form-control readonly"
-                              *ngIf="Allocated>0" [(ngModel)]="Allocated"
-                              readonly />
-                              <input type="text" id="myInput" class="form-control"
-                              *ngIf="Allocated==0" [(ngModel)]="Allocated" />
-                              <span *ngIf="(Allocated==0)" style="color:red" class="fs-8"  >*Allocated hours cannot be 0, please enter a value.</span>
-                              <!-- <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >Daily allocation limit: 10 hours; enter ≤ <b>{{ActionmaxAllocation}}</b> hours.</span>
-                              <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">*please provide both dates.</span> -->
+                          <input   class="form-control readonly" placeholder="Enter allocated hour"
+                            [(ngModel)]="Allocated" pattern="[0-9]*" (input)="validateInput()"
+                            (keypress)="restrictToNumbers($event)"  (click)="editable('Allocated')"    readonly
+                               />
+                              <span *ngIf=" Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
+                              </span>
+                            <span *ngIf="Allocated > maxactAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
+                              hours. Please enter the hours less than or equal to <b>{{maxactAllocation}}</b> hours!</span>
+
+                            <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
+
                       </div>
 
 
@@ -3260,7 +3342,7 @@
                 <div class="form-group ">
                     <label for="exampleFormControlFile1">Remarks</label>
                         <textarea class="form-control curser-pointer" aria-label="With textarea"
-                        placeholder="Define your exact reason here." [(ngModel)]="_remarks"
+                        placeholder="Enter action remark if any" [(ngModel)]="_remarks"
                         style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
                 </div>
             </div>

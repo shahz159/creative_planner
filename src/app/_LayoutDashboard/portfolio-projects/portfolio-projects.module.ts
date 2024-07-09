@@ -14,14 +14,13 @@ import { DateFormatPipePipe } from 'src/app/Shared/date-format-pipe.pipe';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { angularEditorConfig } from '@kolkov/angular-editor/lib/config';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
     PortfolioProjectsComponent,
     SortDirective,
-    DateFormatPipePipe,
-
+    DateFormatPipePipe
   ],
   imports: [
     CommonModule,
@@ -31,6 +30,7 @@ import { angularEditorConfig } from '@kolkov/angular-editor/lib/config';
     FormsModule,
     ReactiveFormsModule,
     AngularEditorModule,
+    MatDatepickerModule,
     NgSelectModule,
     ToastrModule,
     MaterialModule,

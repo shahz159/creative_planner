@@ -495,7 +495,7 @@
                                                       <div *ngIf="item.Status=='ToDo Achieved'">
                                                         <span class="ToDo-Achieved font-weight-400">ToDo achieved
                                                         </span>
-                                                    </div>
+                                                      </div>
                                                         <div *ngIf="item.Status=='Project Complete Rejected'">
                                                             <span class="Project-Complete-Rejected font-weight-400">Project
                                                                 complete
@@ -525,6 +525,11 @@
                                                                 > Hold approval
                                                             </span>
                                                         </div>
+                                                        <div *ngIf="item.Project_Block=='003'&&item.Status.includes('Delay')">
+                                                            <span class="Delay font-weight-400">Delay
+                                                            </span>
+                                                        </div>
+
                                                     </td>
 
                                                 </tr>

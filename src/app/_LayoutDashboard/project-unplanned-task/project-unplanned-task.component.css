@@ -1364,6 +1364,7 @@ ul {
 .kt-quick-search .kt-quick-search__form .input-group-append .input-group-text {
     /* background-color: #e4e7ff; */
     cursor: pointer;
+
 }
 
 .kt-quick-search .kt-quick-search__form .input-group {
@@ -1748,7 +1749,7 @@ ul {
 }
 
 .scrollbar1 {
-    height: calc(100vh - 237px);
+    height: calc(100vh - 280px);
     overflow: hidden;
     overflow-y: auto;
 }
@@ -1922,17 +1923,17 @@ span.count {
 
 
 .assigned-task {
-    background-color: #A847F0;
+    background-color: #A847F0 !important;
     color: white !important;
 }
 
 .total-project {
-    background-color: #35A79C;
+    background-color: #35A79C !important;
     color: white;
 }
 
 .accepted {
-    background-color: #0272D0;
+    background-color: #0272D0 !important;
     color: white;
 }
 
@@ -1951,9 +1952,35 @@ span.count {
     color: black;
     /* border: none;
   outline: none; */
-
 }
 
+.task-font{
+  color: #D4A4FF;
+  font-size: large;
+}
+.total-font{
+  color: #35A79C;
+  font-size: large;
+}
+.assign-font{
+  color: #A847Fd;
+  font-size: large;
+}
+.action-font{
+  color:#2322227a ;
+  font-size: large;
+}
+.done-font{
+  color: #62B134;
+  font-size: large;
+}
+
+
+
+.assigned-task{
+  background-color: #A847Fd;
+  color:black;
+}
 .assigned-task {
     background-color: #A847Fd;
     color: black;
@@ -2013,7 +2040,7 @@ span.count {
 }
 
 .scrollbar1 {
-    height: calc(100vh - 312px);
+    height: calc(100vh - 280px);
 }
 
 .pendings {
@@ -2209,7 +2236,7 @@ span.count2 {
 }
 
 .action-to-project {
-    background-color: rgb(123 104 238 / 15%);
+    background-color: rgb(123 104 238 / 15%)  !important;
     color: black !important;
     font-size: 12px;
     font-weight: 500;

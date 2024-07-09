@@ -339,12 +339,23 @@ NewGetAttendeesMeetingnotes(obj: CalenderDTO){
 }
 
 
+NewInsertInsertSmartMeetingType(obj: CalenderDTO){
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  this.obj_CalenderDTO.Status_type=obj.Status_type;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewInsertInsertSmartMeetingType", this.obj_CalenderDTO);
+
+}
+
+
+
 
 GetInsertAttendeeMeetingTime(obj:CalenderDTO){
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Status=obj.Status;
   this.obj_CalenderDTO.StartTime=obj.StartTime;
+  this.obj_CalenderDTO.Start_time=obj.Start_time;
   this.obj_CalenderDTO.EndTime=obj.EndTime;
 
 
@@ -440,7 +451,14 @@ NewGetProjectandsubtaskDrp(prjName:string,filtertype:any=undefined){
 }
 
 
+GetRecurrenceMeetingsService(obj:CalenderDTO){
 
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No,
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID,
+  this.obj_CalenderDTO.Status_type=obj.Status_type
+
+  return this.http.post(this.rootUrl+'CalenderAPI/NewGetRecurrenceMeetingsService',this.obj_CalenderDTO)
+}
 
 
 

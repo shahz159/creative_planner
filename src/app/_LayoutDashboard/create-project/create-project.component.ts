@@ -88,10 +88,9 @@ export class CreateProjectComponent implements OnInit {
   PrjInformer:string;
   PrjAuditor:string;
   PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
-  todayDate: Date = new Date();
+  todayDate: Date = (new Date);
   EmpName:any
-
-
+  previousdate :Date= new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)
 
 
   PrjCode:string|undefined;
@@ -125,6 +124,7 @@ export class CreateProjectComponent implements OnInit {
   maxlimit: boolean = true;
   _message: string;
   maxAllocation: number;
+  maxactAllocation:number;
   _allocated:any
   maxDate:any
   URL_ProjectCode: any;
@@ -310,9 +310,63 @@ export class CreateProjectComponent implements OnInit {
    this.newProjectDetails(this.PrjCode);
   }
 
-  displaymessagemain(){
-    this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+
+
+  displaymessagemain(value: string): void {
+
+    // this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+    const messages = {
+      'Duration': {
+        message: "Project duration can't be changed",
+        title: "Not editable"
+      },
+
+      'Owner': {
+        message: "Project owner can't be changed",
+        title: "Not editable"
+      },
+
+      'Cost': {
+        message: "Project cost can't be changed",
+        title: "Not editable"
+      },
+
+
+
+      'Allocated hour': {
+        message: "Project allocated hour can't be changed",
+        title: "Not editable"
+      }
+    }
+    if (messages[value]) {
+      const { message, title } = messages[value]
+      this.notifyService.showInfo(message, title)
+    }
+
+
+
+
+
+
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
@@ -368,9 +422,46 @@ export class CreateProjectComponent implements OnInit {
       this.maxAllocation=(Difference_In_Days+1)*10;
     }
     else
-    this._message = "Start Date/End date missing, It accept only numeric value"
+    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
 
   }
+
+  setprojeditAllocation() {
+    if(this.Start_Date&&this.End_Date){
+      this.Start_Date=new Date(this.Start_Date);
+      this.End_Date=new Date(this.End_Date);
+      const dffinsec=this.Start_Date.getTime()-this.End_Date.getTime()
+      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+      this.maxAllocation=(Difference_In_Days+1)*10;
+    }
+    else
+    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
+
+  }
+  setactioneditAllocation() {
+
+    if(this.Start_Date&&this.End_Date){
+      this.Start_Date=new Date(this.Start_Date);
+      this.End_Date=new Date(this.End_Date);
+      const dffinsec=this.Start_Date.getTime()-this.End_Date.getTime()
+      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+      this.maxactAllocation=(Difference_In_Days+1)*10;
+    }
+    else
+    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
+
+  }
+
+  validateInput() {
+    this.Allocated = this.Allocated.toString().replace(/[^0-9]/g, '');
+  }
+  restrictToNumbers(event: KeyboardEvent) {
+    if (!/^[0-9]$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+
 
 
   setMaxDate(){
@@ -384,6 +475,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   generateTimeIntervals(duration: number, interval: number, maxLimit: number): string[] {
+
     const timeArray: string[] = [];
 
     for (let i = 1; i <= duration; i++) {
@@ -403,6 +495,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   timearrays() {
+
     this.Daily_array = this.generateTimeIntervals(4, 15, 1);
     this.Week_array = this.generateTimeIntervals(8, 15, 2);
     this.Month_array = this.generateTimeIntervals(16, 15, 4);
@@ -413,11 +506,11 @@ export class CreateProjectComponent implements OnInit {
 
 createSRTProject(){
    Swal.fire({
-     title:"Are you Sure?",
+     title:"Are you sure?",
      text:`You will be going to spend "${this.PrjCost}.00 SAR" on this Project. Do you want to Continue?`,
      showConfirmButton:true,
      showCancelButton:true,
-     confirmButtonText: 'Yes, Confirm!',
+     confirmButtonText: 'Yes, confirm',
      cancelButtonText: 'Cancel'
    })
    .then(choice=>{
@@ -493,8 +586,8 @@ createSRTProject(){
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
 
-               this.notification.showSuccess("Saved successfully.","");
-               this.notification.showInfo("Please submit the project for approval.","");
+              //  this.notification.showSuccess("Saved successfully","");
+               this.notification.showInfo("Please submit the project for approval","");
 
                //2. file attachment uploading  if present
                if(this.fileAttachment)
@@ -505,7 +598,7 @@ createSRTProject(){
                {    // when core, secondary
                 if(this.savePrjAsDraft==true)
                 {
-                  this.notification.showSuccess("Project saved as draft.","Success");
+                  this.notification.showSuccess("Project saved as draft","Success");
                   this.back_to_options();
                   this.GetAssignedTaskDetails();
                 }
@@ -518,7 +611,7 @@ createSRTProject(){
            else if(res&&res.message==='Success1'){
 
              this.PrjCode=res.Project_Code;
-               this.notification.showSuccess(this.PrjName+" Successfully created.","Project Created and Submitted to the Project Owner : "+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
+               this.notification.showSuccess(this.PrjName+" Successfully created","Project created and submitted to the project owner : "+this.owner_json.find((ow)=>ow.EmpNo==this.PrjOwner)?.EmpName);
                //2. file attachment uploading  if present
                if(this.fileAttachment)
                this.uploadFileAttachment()
@@ -529,7 +622,7 @@ createSRTProject(){
            }
            else
            {
-             this.notification.showError("Unable to create Project","Project Creation Failed");
+             this.notification.showError("Unable to create project","Project creation failed");
            }
 
 
@@ -539,7 +632,7 @@ createSRTProject(){
     else{
       // please provide all mandatory fields to create project.
       this.notProvided=true;
-      this.notification.showError('please fill in all mandatory fields.','Required Information');
+      this.notification.showError('Please fill in all mandatory fields','Required information');
     }
  }
 
@@ -554,11 +647,11 @@ createSRTProject(){
            this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
             console.log("file attachment:",fres)
             if(fres&&fres.Message==='Success'){
-              this.notification.showSuccess('Successfully uploaded the File attachment.','File Attachment Uploaded.');
+              this.notification.showSuccess('Successfully uploaded the file attachment','File attachment uploaded');
               this.isFileUploaded=true;
             }
             else{
-               this.notification.showError('Unable to upload the File Attachment','File Uploading Failed');
+               this.notification.showError('Unable to upload the file attachment','File uploading failed');
                this.isFileUploaded=false;
             }
         });
@@ -580,6 +673,7 @@ onFileChanged(event: any) {
     this.file = files[0];
     this.fileAttachment = this.file;
     // this.determineFileType(this.file.name);
+    console.log(this.fileAttachment,"testtestsetsetsetsetsettttt")
   } else {
     this.file = null;
     this.fileAttachment = null;
@@ -715,6 +809,7 @@ onFileChanged(event: any) {
   templateProjects(){
     $('.Templates-list').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
+    this.ngDropdwonPort=[];
   }
 
   draftsProjects(){
@@ -727,7 +822,7 @@ onFileChanged(event: any) {
 
     // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
 
-debugger
+
 this.isPrjNameValid=this.isValidString(this.PrjName,3);
 this.isPrjDesValid=this.isValidString(this.PrjDes,5);
 
@@ -916,13 +1011,24 @@ onProjectOwnerChanged(){
   assigntask_json:any
   template_json:any;
   draft_json:any;
+  daysDifference:any
 
   GetAssignedTaskDetails(){
+
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
     ((res)=>{  console.log("draft_json:",JSON.parse(res[0].draft_json));
-      this.assigntask_json=JSON.parse(res[0].Assigntask_json);
+      this.assigntask_json = JSON.parse(res[0].Assigntask_json).map(task => {
+        const startDate = moment(task.Start_Date);
+        const endDate = moment(task.End_Date);
+        const duration = endDate.diff(startDate, 'days'); // Calculate duration in days
+        return {
+          ...task,
+          Duration: duration
+        };
+      });
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
+
 
       this.draft_json=JSON.parse(res[0].draft_json);
       this.draft_json=this.draft_json.map(dft=>{
@@ -933,11 +1039,24 @@ onProjectOwnerChanged(){
          d===1?'Yesterday':
          [2,3].includes(d)?d+' days ago':
          this.datepipe.transform(dft.CreatedOn,'dd-MM-yyyy')
-       };
+
+
+
+
+
+
+};
+
+
+
+
+
+
+
       });
 
-
       console.log(this.conditional_List,'--conditional prjs------------->')
+      console.log(this.assigntask_json,'--assigntask_json--');
  });
   }
 
@@ -947,7 +1066,7 @@ onProjectOwnerChanged(){
   }
 
   notifytemp(){
-    this.notification.showInfo("","You do not have any Templates");
+    this.notification.showInfo("","You do not have any templates");
 
   }
 
@@ -967,9 +1086,13 @@ onProjectOwnerChanged(){
   CreateName:any
   unique_id:number
   projectType:any
+  portfolio:any
+  prtf:any
+  Attachment:any
   // allocated:any
 
-  onButtonClick(value:any,id:number){ debugger
+  onButtonClick(value:any,id:number){
+    debugger
     this.bind_Project = [value]
     // this.duration=this.bind_Project[0].Duration;
 
@@ -986,8 +1109,22 @@ onProjectOwnerChanged(){
     this.PrjDes=this.bind_Project[0].Task_Description
     this.unique_id=id;
     this.Prjtype=this.bind_Project[0].Project_Type;
-    this.duration=this.bind_Project[0].Duration+1
-    this.Allocated_Hours=this.bind_Project[0].Allocated
+    this.duration=this.bind_Project[0].Duration+1;
+    this.Allocated_Hours=this.bind_Project[0].Allocated;
+    this.fileAttachment = this.bind_Project[0].FileName;
+    console.log(this.fileAttachment,"fileAttachmentfileAttachmentfileAttachmentfileAttachmentfileAttachment")
+    const portfolios_ = this.bind_Project[0].Portfolio_Id;
+
+    if(portfolios_){
+        const portfolioids=portfolios_.split(',');
+        const result=this._portfoliosList.filter(item=>portfolioids.includes(item.Portfolio_ID.toString()));
+        this.ngDropdwonPort = result;
+
+    }
+
+    else
+     this.ngDropdwonPort=[];
+
     // this.Prjstartdate =this.bind_Project[0].Start_Date
     // this.Prjenddate = this.bind_Project[0].End_Date
   }
@@ -1014,7 +1151,7 @@ onRejectButtonClick(value:any,id:number){
 
 
   conditionalList:any;   // selected conditional project will be in this variable.
- 
+
   getConditional(value:any){
     this.conditionalList = [value];
     this.PrjName=this.conditionalList[0].Project_Name;
@@ -1022,6 +1159,7 @@ onRejectButtonClick(value:any,id:number){
     this.Prjenddate=this.conditionalList[0].DeadLine;
     this.PrjDes=this.conditionalList[0].Project_Description;
     this.Prjtype=this.conditionalList[0].Project_Block;
+     this.ngDropdwonPort=[];
 
   }
 
@@ -1068,7 +1206,7 @@ onRejectButtonClick(value:any,id:number){
 
   Project_details_edit() {
 
-    debugger
+
 
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
@@ -1144,7 +1282,7 @@ showActionDetails(index: number | undefined) {
 selectedOwner: any;
 //ProjectType: string
 ProjectDescription: string
-Start_Date: string;
+Start_Date: any;
 OGowner: any;
 OGresponsible: any;
 OGownerid: any;
@@ -1201,13 +1339,15 @@ initializeSelectedValue() {
 projectEdit(val) {
 
 
-  debugger
+
 
   this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
   this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
 
 
-if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100){
+if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=200
+  &&this.selectedOwnResp&&this.selectedcategory&&this.selectedclient&&this.Start_Date&&this.End_Date
+){
   this.notProvided=false
 
 } else{
@@ -1215,46 +1355,17 @@ this.notProvided=true;
 return;
 }
 
-if(this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=200){
-  this.notProvided=false
-} else{
-  this.notProvided=true;
-  return;
-}
-if(this.selectedOwnResp){
-  this.notProvided=false
-}
- else{
-  this.notProvided=true
-  return
- }
+//  this.setprojeditAllocation()
+//  if(this.Allocated <= this.maxAllocation){
+// this.notProvided=false
+//  }
+//  else{
+//   this.notProvided=true
+//   return
+//  }
 
- if(this.selectedcategory){
-  this.notProvided=false
-}
- else{
-  this.notProvided=true
-  return
- }
+  // this._remarks = '';
 
- if(this.selectedclient){
-  this.notProvided=false
-}
- else{
-  this.notProvided=true
-  return
- }
-
- if(this.Start_Date&&this.End_Date){
-  this.notProvided=false
-}
- else{
-  this.notProvided=true
-  return
- }
-
-
-  this._remarks = '';
   if (this.OGProjectType != this.ProjectType) {
     var type = this.ProjectType
     this.ProjectType = this.ProjectType;
@@ -1329,7 +1440,8 @@ if(this.selectedOwnResp){
     StartDate: datestrStart,
     EndDate: datestrEnd,
     SubmissionName: Submission,
-    AllocatedHours: allocation
+    AllocatedHours: allocation,
+    Remarks:this._remarks
   }
   const jsonvalue = JSON.stringify(jsonobj)
   console.log(jsonvalue, 'json');
@@ -1338,6 +1450,7 @@ if(this.selectedOwnResp){
 
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Project_Code = this.PrjCode;
+
     this.approvalObj.json = jsonvalue;
     //this.approvalObj.Remarks = this._remarks;
     this.approvalObj.isApproval = val;
@@ -1354,11 +1467,11 @@ if(this.selectedOwnResp){
 
       }
       else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+        this.notifyService.showSuccess(" Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
         this.closeInfos();
       }
       else if (data['message'] == '6') {
-        this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        this.notifyService.showSuccess("Updated successfully"+" Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
         this.closeInfos();
       }
       else if (data['message'] == '8') {
@@ -1397,7 +1510,7 @@ if(this.selectedOwnResp){
 RACIS:any=[];
 
 
-setRACIS(){ debugger
+setRACIS(){
     this.RACIS=[];
 
      this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
@@ -1480,10 +1593,12 @@ addreschange() {
 
   }
 }
+
+// strin =new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0);
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){
-debugger
+
   const _prjstrtd= new Date(this.projectInfo.StartDate);
   const _prjendd= new Date(this.projectInfo.EndDate);
   const _curtd=new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0);
@@ -1556,7 +1671,7 @@ debugger
 
 
    Swal.fire({
-       title:'Are you Sure?',
+       title:'Are you sure?',
        text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
        showConfirmButton:true,
        showCancelButton:true,
@@ -1573,12 +1688,12 @@ debugger
               this.ProjectDto.Project_Cost=this.PrjCost;
               this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
                 if(res&&res.message==='Success'){
-                      this.notification.showSuccess("Project sent to Project Owner :"+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for Approval',"Success");
+                      this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
                       this.router.navigate(['./backend/ProjectsSummary']);
                       //  this.closeInfo();
                   }
                 else{
-                    this.notification.showError('something went wrong!','Failed');
+                    this.notification.showError('something went wrong','Failed');
                 }
               });
       }
@@ -1640,7 +1755,7 @@ onTmpRmvDialogOpen(index:number){
         // when the user said no
         Swal.fire(
           'Cancelled',
-          'Template Undisturbed',
+          'Template undisturbed',
           'error'
         )
       }
@@ -1652,7 +1767,7 @@ removeTemplate(templateCode:string){
   this.ProjectDto.Project_Code=templateCode;
   this.createProjectService.NewDeleteProjectTemplate(this.ProjectDto).subscribe((res:any)=>{
         if(res&&res.message==='Success'){
-               this.notification.showSuccess('Template deleted.','Success');
+               this.notification.showSuccess('Template deleted','Success');
                this.GetAssignedTaskDetails();
         }
         else{
@@ -1691,10 +1806,11 @@ openTemplate(template:any){
    this.PrjDes=PInfo.Project_Description;
    this.PrjCategory=this.Category_json.find((item)=>item.CategoryName.trim()===PInfo.Category).CategoryId;
    this.prjsubmission=PInfo.SubmissionId;
-
+   this.ngDropdwonPort=[];
    this.PrjOwner=PInfo.OwnerEmpNo;
    this.PrjResp=PInfo.ResponsibleEmpNo;
    this.PrjAuth=PInfo.AuthorityEmpNo;
+   this.fileAttachment=null
   //  this.PrjCrdtr='';
    this.PrjAuditor='';
   //  this.PrjInformer='';
@@ -1716,7 +1832,7 @@ openTemplate(template:any){
 
   this.service.NewProjectService(template.Project_Code).subscribe(
     (data) => {
-      debugger
+
       if (data != null && data != undefined) {
           this.PrjSupport=JSON.parse(data[0]['RacisList']);
           console.log('****template support***',this.PrjSupport);
@@ -1880,7 +1996,7 @@ deleteDraft(index:number){
       showCancelButton:true,
       showConfirmButton:true,
       title:'Are you sure?',
-      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'.`,
+      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'`,
     }).then(choice=>{
          if(choice.isConfirmed){
 
@@ -1888,11 +2004,11 @@ deleteDraft(index:number){
           this.ProjectDto.Emp_No=this.Current_user_ID;
           this.createProjectService.NewDeleteDraft(this.ProjectDto).subscribe((res:any)=>{
                      if(res.message=='1'){
-                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted.`,"Deleted Successfully.");
+                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted`,"Deleted successfully");
                        this.GetAssignedTaskDetails();
                      }
                      else{
-                        this.notifyService.showError(`Failed to delete ${this.draft_json[index].Project_Name}.`,"Failed.");
+                        this.notifyService.showError(`Failed to delete ${this.draft_json[index].Project_Name}`,"Failed");
                      }
            });
 
@@ -1903,7 +2019,7 @@ deleteDraft(index:number){
 
 
 openDraft(index:number){
-  debugger
+
   console.log(this.draft_json[index]);
   this.Prjtype=this.draft_json[index].Project_Block;
   this.PrjCode=this.draft_json[index].Project_Code;
@@ -1946,7 +2062,7 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
 
 // getting file attachment name if provided in the draft project. start
   const PrjI=JSON.parse(res[0]['ProjectInfo_Json'])[0];
-  debugger
+
   if(PrjI.Sourcefile){
     this.fileAttachment={name:PrjI.Sourcefile+'.'+PrjI.contenttype};
     this.isFileUploaded=true;
@@ -1982,13 +2098,15 @@ isPrjDesValids:'TOOSHORT'|'VALID'='VALID';
 isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
  if(inputString){
 
- let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
- const x=rg.test(inputString);
- // let rg = new RegExp('^(?:\\S+\\s+){' + (maxWords - 1) + '}\\S+');
-//  const words = inputString.trim().split(/\s+/);
-//  const y=words.length<=maxWrds
+  // let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+  let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+// let rg = new RegExp('^\\s*(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+(?:\\s+\\S+)*\\s*$');
+
+
+ const x=rg.test(inputString.trim());
+
 return x ? 'VALID' : 'TOOSHORT';
-// return (x&&y)?'VALID':(x==false)?'TOOSHORT':'TOOLONG';
+
  }
 return 'TOOSHORT'
 
@@ -2023,7 +2141,7 @@ changeprojecttype(){
 
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
-debugger
+
     if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
           this.prjsubmission=null;
           this.Allocated_Hours=null;
@@ -2067,7 +2185,7 @@ debugger
 // functionality to check prj allocated hr with action allocated hrs
 isExceededTotalAllocatedHr:boolean=false;
 hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
-debugger
+
    if(!this.isExceededTotalAllocatedHr){
 
           const totalhrsused=this.PrjActionsInfo.reduce((sum:any,action:any)=>{
@@ -2088,7 +2206,7 @@ debugger
     ///////////////////////////////////////// Action Edit start /////////////////////////////
 
     Action_details_edit() {
-      debugger
+
       document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
       document.getElementById("Action_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
       document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -2143,32 +2261,7 @@ debugger
 
 
   alterAction(){
-debugger
 
-
-
-
-
-//   const f= new Date(this.projectInfo.EndDate)
-
-//   const isInvalid = this.PrjActionsInfo.some((actn) => {
-//     const actdate = new Date(actn.EndDate);
-//     return actdate > f;
-// });
-
-// // If any action's start date is before the project start date, show the popup
-// if (isInvalid) {
-
-//               if (isInvalid >f ) {
-//               Swal.fire({
-//                 title:"Invalid End Date",
-//                 text:"Action end date can't be greater than project end date",
-//                 showCloseButton:true
-//               })
-
-//   return;
-
-//           }}
 
 
 const dateone= new Date(this.projectInfo.EndDate)
@@ -2183,6 +2276,10 @@ if(dateone < datetwo){
   })
   return
 }
+// this.setactioneditAllocation()
+
+
+
 this.isPrjNameValid=this.isValidString(this.ProjectName,2);
 this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
 
@@ -2348,7 +2445,7 @@ this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -2425,7 +2522,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 
     onPrjDeadlineChanged(){
-      debugger
+
       const inputdate=new Date(this.End_Date);
       const isvalid=this.PrjActionsInfo.every(actns=>{
           const actenddate=new Date(actns.EndDate);
@@ -2528,16 +2625,72 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 
 
+    oninputchange(value:string){
+      this.ProjectName = value.trim();
+    }
 
 
 
-
-
-
-
-
+editable(value:string){
+ const messages = {
+    Owner:{
+      message:"Action owner can't be changed",
+      title:'Not editable'
+    },
+    duration:{
+    message:"Action duration can't be changed",
+    title:'Not editable'
+  },
+  cost:{
+    message:"Action cost can't be changed",
+    title:"Not editable"
+  },
+  Allocated:{
+    message:"Action allocated hours can't be changed",
+    title:"Not editable"
 
   }
+
+
+
+
+}
+if (messages[value]){
+  const {message,title} = messages[value]
+  this.notifyService.showInfo(message,title)
+}
+
+}
+LoadDocument(url: string){
+  var myWindow = window.open(url);
+  myWindow.focus();
+}
+
+}
+
+// calculateDateDifference(): void {
+//   debugger
+
+//   if (this.assigntask_json) {
+
+//     const start = new Date(this.assigntask_json&& this.assigntask_json.Start_Date);
+//     const end = new Date(this.assigntask_json&& this.assigntask_json.End_Date);
+
+
+//     if ((start.getTime()) && (end.getTime())) {
+//       if (end >= start) {
+//         const timeDifference = end.getTime() - start.getTime();
+//         this.daysDifference = timeDifference / (1000 * 3600 * 24);
+//       } }}
+
+
+
+//   console.log(`Days difference: ${this.daysDifference}`);
+// }
+
+// }
+
+
 
 
 

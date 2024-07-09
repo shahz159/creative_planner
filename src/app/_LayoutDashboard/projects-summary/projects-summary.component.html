@@ -36,7 +36,7 @@
 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
                                     <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
-                                  </svg>
+                               </svg>
                                   <a class="ordr-a" href="javascritp:void(0)">Project Type</a>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
@@ -88,6 +88,7 @@
                             <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
                                 {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
                             </ng-container>
+
                             of
                             <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
                             <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
@@ -104,8 +105,8 @@
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()"
-                            [disabled]="_CurrentpageRecords<30">
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false"
+                            [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
                             <a [hidden]="Z2A" (click)="_SortProjectList()" class="btn btn-label-primary btn-sm"
@@ -118,17 +119,17 @@
                             </a>
                         </div>
                         <!-- Filters -->
-                        <div class="stores-sec mr-1">
+                        <div class="mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
+                                    <a (click)="filterMegadropdown()" [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"><i
                                             class="fas fa-ellipsis-v mr-0 "></i>
                                     </a>
-                                    <div class="dropdown-menu mega-dropdown-menu">
+                                    <div class="dropdown-menu mega-dropdown-menu" id="mega_dropdown_menu">
                                         <div (click)="$event.stopPropagation();">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h5><strong>Total Projects - </strong>
+                                                    <h5><strong>Total projects - </strong>
                                                         <h5 class="d-inline-block">
                                                             <strong>{{_totalProjectsCount}}</strong>
                                                         </h5>
@@ -137,18 +138,76 @@
                                             </div>
 
 
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
                                                         placeholder="Search Filters" [(ngModel)]="txtSearch"
                                                         style="width: 100%;">
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <br>
-                                            <div class="row">
 
 
-                                              <div class="col-md-3 bd-right">
+
+                                            <div class="">
+                                                <!-- Adding the new matdropdown for multiple filter                   -->
+                                              <div>
+                                                <div class="form-group" >
+                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="CompanyCountFilter">
+                                                    <mat-label>Company</mat-label>
+                                                     <mat-chip-list #selected_companies>
+                                                      <mat-chip *ngFor="let emptoshare of comToselect" class="Data_chip_kt" (removed)="removeSelectedcomp(emptoshare); getNewFilterResult();">
+                                                        {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}
+
+                                                        <!-- -{{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Count}} -->
+                                                        <button matChipRemove>
+                                                          <mat-icon>cancel</mat-icon>
+                                                        </button>
+                                                      </mat-chip>
+
+                                                    </mat-chip-list>
+                                                    <div class="d-flex">
+                                                      <input class="flex-1" [matChipInputFor]="selected_companies"
+                                                          [matAutocomplete]="companyDrpDwn" #company_searchtf />
+
+                                                      <button *ngIf="iscompanyDrpDwnOpen"
+                                                          class="bg-transparent border-0 "  (click)="this.iscompanyDrpDwnOpen=false; closeAutocompleteDrpDwn('companyDDwn');">
+                                                          <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                                                          <button *ngIf="!iscompanyDrpDwnOpen"
+                                                          class="bg-transparent border-0" (click)="this.iscompanyDrpDwnOpen=true;  openAutocompleteDrpDwn('companyDDwn');">
+                                                          <mat-icon class="add-icon"
+                                                              >add</mat-icon></button>
+                                                      </div>
+
+
+                                                  <mat-autocomplete aria-label="companyDDwn" #companyDrpDwn="matAutocomplete"
+                                                  (optionSelected)="oncompanySelected($event);  getNewFilterResult();"
+                                                  (opened)="iscompanyDrpDwnOpen=true"  (closed)="iscompanyDrpDwnOpen=false; ">
+
+
+                                                    <mat-option [value]="emp.Company_No"  *ngFor="let emp of (CompanyCountFilter|filter:company_searchtf.value).slice(0,1000)">
+                                                        <mat-checkbox  color="primary"  [checked]="comToselect?comToselect.indexOf(emp.Company_No)!==-1:false"></mat-checkbox>
+                                                            {{emp.Name}}
+                                                            - {{emp.Count}}
+                                                    </mat-option>
+
+                                               </mat-autocomplete>
+                                              </mat-form-field>
+
+
+                                          </div>
+
+
+
+
+
+
+                                            <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                        </div>
+
+
+                                              <!-- <div class="col-md-3 bd-right">
                                                 <p><strong>Company</strong></p>
                                                   <div class="count-height">
 
@@ -176,12 +235,12 @@
                                                     </ng-container>
 
                                                   </div>
-                                              </div>
+                                              </div> -->
 
 
 
 
-                                              <div class="col-md-3 bd-right">
+                                              <!-- <div class="col-md-3 bd-right">
                                                 <p><strong>Employees</strong></p>
                                                   <div class="count-height">
 
@@ -209,13 +268,73 @@
                                                     </ng-container>
 
                                                   </div>
-                                              </div>
+                                              </div> -->
+
+
+<!-- employee matdropdown start -->
+                                              <div>
+                                                <div class="form-group" >
+                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter">
+                                                    <mat-label>Employees</mat-label>
+                                                     <mat-chip-list #selected_employee>
+                                                      <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
+                                                        {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
+
+                                                        -{{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Count}}
+                                                        <button matChipRemove>
+                                                          <mat-icon>cancel</mat-icon>
+                                                        </button>
+                                                      </mat-chip>
+
+                                                    </mat-chip-list>
+                                                    <div class="d-flex">
+                                                      <input class="flex-1" [matChipInputFor]="selected_employee"
+                                                          [matAutocomplete]="employeeDrpDwn" #employee_searchtf />
+
+                                                      <button *ngIf="isEmployeeDrpDwnOpen"
+                                                          class="bg-transparent border-0 "  (click)="this.isEmployeeDrpDwnOpen=false; closeAutocompleteDrpDwn('employeeDDwn');">
+                                                          <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                                                          <button *ngIf="!isEmployeeDrpDwnOpen"
+                                                          class="bg-transparent border-0" (click)="this.isEmployeeDrpDwnOpen=true;    openAutocompleteDrpDwn('employeeDDwn');">
+                                                          <mat-icon class="add-icon"
+                                                              >add</mat-icon></button>
+                                                      </div>
+
+
+                                                  <mat-autocomplete aria-label="employeeDDwn" #employeeDrpDwn="matAutocomplete"
+                                                  (optionSelected)="onEmployeeSelected($event); getNewFilterResult(); employee_searchtf .value=''; "
+                                                  (opened)="isEmployeeDrpDwnOpen=true"     (closed)="isEmployeeDrpDwnOpen=false; ">
+
+
+                                                    <mat-option [value]="emp.Emp_No"  *ngFor="let emp of (EmpCountInFilter|filter:employee_searchtf.value).slice(0,1000)">
+                                                        <mat-checkbox  color="primary" [checked]="emplyToselect?emplyToselect.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
+                                                            {{emp.Name}}
+                                                            - {{emp.Count}}
+                                                    </mat-option>
+
+                                               </mat-autocomplete>
+                                              </mat-form-field>
+
+
+                                          </div>
 
 
 
 
 
-                                              <div class="col-md-3 bd-right">
+
+                                            <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                        </div>
+
+<!-- employee matdropdown end -->
+
+
+
+
+
+
+                                              <!-- <div class="col-md-3 bd-right">
                                                 <p><strong>Project type</strong></p>
                                                   <div class="count-height">
 
@@ -242,14 +361,73 @@
                                                       </div>
                                                     </ng-container>
                                                 </div>
-                                              </div>
+                                              </div> -->
+
+<!-- project type matdropdown start -->
+                                              <div>
+                                                <div class="form-group" >
+                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter">
+                                                    <mat-label>Project type</mat-label>
+                                                     <mat-chip-list #selected_projecttype>
+                                                      <mat-chip *ngFor="let emptoshare of projtypeToselect" class="Data_chip_kt" (removed)="removeSelectedproject(emptoshare); getNewFilterResult();">
+                                                        {{getObjOfpro(TypeContInFilter,emptoshare,'Block_No')?.Name}}
+
+                                                        -{{getObjOf(TypeContInFilter,emptoshare,'Block_No')?.Count}}
+                                                        <button matChipRemove>
+                                                          <mat-icon>cancel</mat-icon>
+                                                        </button>
+                                                      </mat-chip>
+
+                                                    </mat-chip-list>
+                                                    <div class="d-flex">
+                                                      <input class="flex-1" [matChipInputFor]="selected_projecttype"
+                                                          [matAutocomplete]="projectDrpDwn" #project_searchtf />
+
+                                                      <button *ngIf="isprojectDrpDwnOpen"
+                                                          class="bg-transparent border-0 "  (click)="this.isprojectDrpDwnOpen=false; closeAutocompleteDrpDwn('proDDwn');">
+                                                          <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                                                          <button *ngIf="!isprojectDrpDwnOpen"
+                                                          class="bg-transparent border-0" (click)="this.isprojectDrpDwnOpen=true; openAutocompleteDrpDwn('proDDwn');">
+                                                          <mat-icon class="add-icon"
+                                                              >add</mat-icon></button>
+                                                      </div>
+
+
+                                                  <mat-autocomplete aria-label="proDDwn" #projectDrpDwn="matAutocomplete"
+                                                  (optionSelected)="onprojtypeSelected($event); getNewFilterResult();  project_searchtf.value=''; "
+                                                  (opened)="isprojectDrpDwnOpen=true" (closed)="isprojectDrpDwnOpen=false; ">
+
+
+                                                    <mat-option [value]="emp.Block_No"  *ngFor="let emp of (TypeContInFilter|filter:project_searchtf.value).slice(0,1000)">
+                                                        <mat-checkbox  color="primary" [checked]="projtypeToselect?projtypeToselect.indexOf(emp.Block_No)!==-1:false"></mat-checkbox>
+                                                            {{emp.Name}}
+                                                            - {{emp.Count}}
+                                                    </mat-option>
+
+                                               </mat-autocomplete>
+                                              </mat-form-field>
+
+
+                                          </div>
 
 
 
 
 
 
-                                                <div class="col-md-3 bd-right">
+                                            <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                        </div>
+
+
+
+                                        <!-- project type matdropdown start -->
+
+
+
+
+
+                                                <div class="col-md-3 bd-right d-none">
                                                   <p><strong>Status</strong></p>
                                                     <div class="count-height">
 
@@ -282,7 +460,7 @@
                                                             <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
                                                         </div> -->
                                                     </div>
-                                                    <div    class="selected-options">
+                                                    <!-- <div    class="selected-options">
                                                       <ng-container *ngFor="let item of StatusCountFilter">
                                                       <div  class="selected-options-item" *ngIf="selectedStatus.includes(item.Name)" >
                                                         {{item.Name}}
@@ -293,8 +471,74 @@
                                                           </span>
                                                       </div>
                                                     </ng-container>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
+
+
+
+
+
+                                                <div>
+                                                  <div class="form-group" >
+                                                    <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter">
+                                                      <mat-label>Status</mat-label>
+                                                       <mat-chip-list #selected_status>
+                                                        <mat-chip *ngFor="let emptoshare of enterStatus" class="Data_chip_kt" (removed)="removeSelectedstatus(emptoshare); getNewFilterResult();">
+                                                          {{getObjOfstatus(StatusCountFilter,emptoshare,'Count')?.Name}}
+
+                                                          -{{getObjOf(StatusCountFilter,emptoshare,'Count')?.Count}}
+                                                          <button matChipRemove>
+                                                            <mat-icon>cancel</mat-icon>
+                                                          </button>
+                                                        </mat-chip>
+
+                                                      </mat-chip-list>
+                                                      <div class="d-flex">
+                                                        <input class="flex-1" [matChipInputFor]="selected_status"
+                                                            [matAutocomplete]="statusDrpDwn" #status_searchtf />
+
+                                                        <button *ngIf="isstatusDrpDwnOpen"
+                                                            class="bg-transparent border-0 "  (click)="this.isstatusDrpDwnOpen=false; closeAutocompleteDrpDwn('statusDDwn');">
+                                                            <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                                                            <button *ngIf="!isstatusDrpDwnOpen"
+                                                            class="bg-transparent border-0" (click)="this.isstatusDrpDwnOpen=true; openAutocompleteDrpDwn('statusDDwn');">
+                                                            <mat-icon class="add-icon"
+                                                                >add</mat-icon></button>
+                                                        </div>
+
+
+                                                    <mat-autocomplete aria-label="statusDDwn" #statusDrpDwn="matAutocomplete"
+                                                    (optionSelected)="onstatusSelected($event);  status_searchtf.value=''; "
+                                                    (opened)="isstatusDrpDwnOpen=true" (closed)="isstatusDrpDwnOpen=false; ">
+
+
+                                                      <mat-option [value]="emp.Count"  *ngFor="let emp of (StatusCountFilter|filter:status_searchtf.value).slice(0,1000)">
+                                                          <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Count)!==-1:false"></mat-checkbox>
+                                                              {{emp.Name}}
+                                                              - {{emp.Count}}
+                                                      </mat-option>
+
+                                                 </mat-autocomplete>
+                                                </mat-form-field>
+
+
+                                            </div>
+
+
+
+
+
+
+                                              <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                          </div>
+
+
+
+
+
+
+
 
 
 
@@ -308,9 +552,12 @@
                                             <div class="col-md-10">
                                                 <button
                                                     class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="getNewFilterResult()">Submit</button>
+                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
                                                 <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
-                                                    (click)="resetAll()">Reset
+                                                    (click)="resetAll();getNewFilterResult();">Reset
+                                                </button>
+                                                <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="filterMegadropdownclose()">cancel
                                                 </button>
                                             </div>
                                         </div>
@@ -580,7 +827,7 @@
                         </div>
                         <!-- new filters -->
 
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll();getNewFilterResult()">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
 
@@ -756,7 +1003,7 @@
                                                         aria-label="End Date: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Last update
                                                     </th>
-                                                    
+
                                                     <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
                                                         <th [appSort]="_ProjectDataList" data-order="desc"
                                                                 data-name="Status" tabindex="0" aria-controls="project-4"
@@ -847,7 +1094,7 @@
 
                                                          </svg>
                                                         </a>
-                                                        
+
                                                             <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
                                                             <div class="port-info-btn ml-2"  title="Linked" (click)="_OpenfortfolioInfo(i,item.Project_Name)">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
@@ -911,7 +1158,7 @@
                                                         </ng-template>
                                                         </div>
                                                     </td>
-                                                   
+
                                                     <td><span class="kt-widget__other">{{item.Team_Res}}</span>
                                                     </td>
                                                     <td>
@@ -938,8 +1185,9 @@
                                                             </div>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
-                                                            <span class="Delay_color font-weight-400" *ngIf=" item.Status!='InProcess' && item.Status!='Completed'">{{item.Status}}</span>
+                                                            <span class="Delay_color font-weight-400" *ngIf=" item.Status!='InProcess' && item.Status!='Completed' && item.Status!='Under Approval'"><strong>{{item.Status}}</strong></span>
                                                             <span class="Completed_color font-weight-400" *ngIf="item.Status=='Completed'">{{item.Status}}</span>
+                                                            <span class="Under_Approval_color font-weight-400" *ngIf="item.Status=='Under Approval'">New approval</span>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
                                                             <div *ngIf="item.Status=='Under Approval'">
@@ -953,7 +1201,7 @@
                                                                 </span>
                                                             </div>
                                                             <!-- Other Status -->
-                                                            
+
                                                             <div *ngIf="item.Status=='InProcess'">
                                                                 <span class="InProcess_color font-weight-400">In-process</span>
                                                             </div>
@@ -970,7 +1218,7 @@
                                                                     project
                                                                     rejected</span>
                                                             </div>
-    
+
                                                             <div *ngIf="item.Status=='Project Hold'">
                                                                 <span class="Hold_color font-weight-400">
                                                                     Hold</span>
@@ -984,8 +1232,14 @@
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Completion Under Approval'">
-                                                                <span class="Completion_Under_Approval_color font-weight-400">Completion approval
+                                                                <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completion approval
                                                                 </span>
+                                                                <span class="attach-tippy">
+                                                                  <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                                                              <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                 <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                                                                  <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                              </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                                 <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
@@ -996,14 +1250,14 @@
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Completed'" class="attach-tippy-div">
-                                                                <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span> 
+                                                                <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
                                                                 <span class="attach-tippy">
                                                                     <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
                                                                 <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                   <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div> 
+                                                                   <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div>
                                                                     <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                                 </span>
-    
+
                                                             </div>
                                                             <div *ngIf="item.Status=='Forward Under Approval'">
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
@@ -1019,7 +1273,7 @@
                                                                 <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
                                                                 </span>
                                                             </div>
-    
+
                                                             <div *ngIf="item.Status=='Version'">
                                                                 <span class="text-danger font-weight-400">Version
                                                                 </span>
@@ -1051,7 +1305,7 @@
                                                                 </span>
                                                             </div>
                                                         </ng-container>
-                                                        
+
                                                     </td>
                                                     <td data-toggle="tooltip" data-placement="top"
                                                         title="RACIS">
@@ -1116,7 +1370,7 @@
                                                             </span>
                                                           </div>
                                                     </td>
-                                                    
+
                                                     <!-- <td (click)="_onRowClick(item.Project_Code,item.Project_Name)"
                                                         class="curser-pointer">
                                                         <a><i class="fa fa-link text-primary"></i></a>
@@ -1294,7 +1548,7 @@
                 <span class="text-small text-white">{{_displayprtflioName}}</span>
 
             </div>
-          
+
         </div>
     </div>
     <div class="kt-portlet__body p-3">
@@ -1304,14 +1558,14 @@
                     <div class="kt-widget1__item" *ngFor="let item of portfolio_List; let i=index">
                         <div class="kt-widget1__info kt-align-left" >
                          <h5 (click)="OnCardClick(item.Portfolio_ID)" class="curser-pointer">
-                               
-                             
-                                 {{i+1}}. {{item.Portfolio_Name}} 
-                               
+
+
+                                 {{i+1}}. {{item.Portfolio_Name}}
+
                            </h5>
                         </div>
                     </div>
-                 
+
                 </div>
             </div>
         </div>
