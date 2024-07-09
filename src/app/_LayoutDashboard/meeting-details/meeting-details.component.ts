@@ -2202,7 +2202,8 @@ export class MeetingDetailsComponent implements OnInit {
         if (this.Meetingnotes_time == '' || this.Meetingnotes_time == undefined) {
           this.Notes_Type = ''
         } else {
-          this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes']
+          this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes'];
+          console.log('privet',this.Notes_Type)
         }
         this.GetAttendeesnotes();
 
@@ -5143,22 +5144,26 @@ sortbyCurrent_Time(){
 
 previousmeetings:[any] | null;
 upcomingmeetings: [any] | null;
-
+previousWithUpcoming_loader: boolean = false;
 
 
 NewGetRecurrenceMeetings(meetings_HTR){
+  this.previousWithUpcoming_loader=true;
+  this.previousmeetings=null;
+  this.upcomingmeetings=null;
   this._calenderDto.Schedule_ID=this.Scheduleid;
   this._calenderDto.Emp_No=this.Current_user_ID;
   this._calenderDto.Status_type=meetings_HTR;
   this.CalenderService.GetRecurrenceMeetingsService(this._calenderDto).subscribe((data)=>{
-
+    this.previousWithUpcoming_loader=false
    
      if(data['previousmeetings']){
       this.previousmeetings = JSON.parse(data['previousmeetings']);
+  
       this.previousmeetings.map(meetings => {
          meetings.Addguest=JSON.parse(meetings.Addguest)  
       })
-
+     
 
       this.previousmeetings.forEach(meeting => {
         if (meeting.Addguest.length > 3) {
@@ -5169,14 +5174,15 @@ NewGetRecurrenceMeetings(meetings_HTR){
           meeting['RemainingGuestsCount'] = 0;
         }
       });
-      console.log(this.previousmeetings,'previousmeetings');
-   
+
+      console.log(this.previousmeetings,'previousmeetings2');
      }else if(data['upcomingmeetings']){
+    
       this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
       this.upcomingmeetings.map(upmeetings=>{
         upmeetings.Addguest=JSON.parse(upmeetings.Addguest)
       })
-
+    
 
       this.upcomingmeetings.forEach(meeting => {
         if (meeting.Addguest.length > 3) {
@@ -5187,12 +5193,11 @@ NewGetRecurrenceMeetings(meetings_HTR){
           meeting['RemainingGuestsCount'] = 0;
         }
       });
-      console.log(this.upcomingmeetings,'upcomingmeetings');
+      this.upcomingmeetings.reverse()
+      console.log(this.upcomingmeetings,'upcomingmeetings2');
+      
      }
-     
-   
   })
- 
 }
 
 //////////////////////////////////////////////////// Meeting Sidebar sectoion End ////////////////////////////////////////////////////////////

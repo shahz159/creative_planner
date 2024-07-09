@@ -3840,7 +3840,7 @@ debugger
   AdminMeeting_Status: string;
   Isadmin: boolean;
   loading: boolean = false;
-  statusofMeeting:any;
+  statusofMeeting:any|undefined;
 
   GetClickEventJSON_Calender(arg) {
     this.EventScheduledjson = [];
@@ -3927,11 +3927,10 @@ debugger
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
         debugger
-        var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID
-        )
-         this.statusofMeeting =eventStatus[0].Status;
+        var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
+         this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
          
-        console.log(this.statusofMeeting[0].Status, "12")
+        // console.log(this.statusofMeeting[0].Status, "12")
         this.dmsIdjson = [];
         if (this.DMS_Scheduledjson.length > 0) {
           this.DMS_Scheduledjson.forEach(element => {
