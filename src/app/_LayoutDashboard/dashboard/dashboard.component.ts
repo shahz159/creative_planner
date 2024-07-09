@@ -663,10 +663,10 @@ export class DashboardComponent implements OnInit {
   // ngAfterViewInit() {
 
 
-  //   this.drawBarGraph();
-  //   // setTimeout(() => {
-  //   //   this.startTour();
-  //   // }, 3000);
+  //   this.drawLineGraph();
+  //   setTimeout(() => {
+  //     this.startTour();
+  //   }, 3000);
   // }
 
 
@@ -920,7 +920,6 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Schedule_ID = id;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing111");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -961,7 +960,7 @@ export class DashboardComponent implements OnInit {
         this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-        console.log(this.Project_NameScheduledjson, "test000");
+        console.log(this.User_Scheduledjson, "test000");
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 
@@ -1129,7 +1128,7 @@ export class DashboardComponent implements OnInit {
     this.eventRepeat=false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {    debugger
+      ((data) => {    
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = 0;
@@ -1277,7 +1276,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_Dms").style.display = "none";
           // document.getElementById("Monthly_121").style.display = "none";
           // document.getElementById("weekly_121").style.display = "none";
-          document.getElementById("meeting-online-add").style.display = "none"; 
+          document.getElementById("meeting-online-add").style.display = "none";
 
         }
         else if (this.ScheduleType == 'Event') {
@@ -1338,7 +1337,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-          document.getElementById("meeting-online-add").style.display = "flex"; 
+          document.getElementById("meeting-online-add").style.display = "flex";
           document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
 
 
@@ -1408,7 +1407,7 @@ export class DashboardComponent implements OnInit {
 
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => { 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1431,13 +1430,13 @@ export class DashboardComponent implements OnInit {
         this.scstartdate = this._Oldstart_date;
         // alert(this.scstartdate)
         // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
-        this.Addressurl = this.EventScheduledjson[0]['Addressurl']  
+        this.Addressurl = this.EventScheduledjson[0]['Addressurl']
         // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
-       
-       
+
+
 
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
 
@@ -1522,7 +1521,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-          debugger
+       
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
@@ -1597,7 +1596,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("core_Dms").style.display = "none";
           // document.getElementById("Monthly_121").style.display = "none";
           // document.getElementById("weekly_121").style.display = "none";
-          document.getElementById("meeting-online-add").style.display = "none";  
+          document.getElementById("meeting-online-add").style.display = "none";
 
         }
         else if (this.ScheduleType == 'Event') {
@@ -1624,7 +1623,7 @@ export class DashboardComponent implements OnInit {
           this.arr2.forEach(element => {
             this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
           });
-       
+
           this.SelectDms = [];
           this.SelectDms1 = [];
           this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
@@ -1646,14 +1645,14 @@ export class DashboardComponent implements OnInit {
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
           document.getElementById("Guest_Name").style.display = "flex";
-          document.getElementById("meeting-online-add").style.display = "flex"; 
+          document.getElementById("meeting-online-add").style.display = "flex";
           document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
           document.getElementById("Descrip_Name").style.display = "flex";
           document.getElementById("core_viw121").style.display = "flex";
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-           
+
 
 
 
@@ -1816,7 +1815,7 @@ export class DashboardComponent implements OnInit {
     return lastDays;
   }
 
-  OnSubmitSchedule() { debugger
+  OnSubmitSchedule() { 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1890,7 +1889,7 @@ export class DashboardComponent implements OnInit {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+     
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -1954,14 +1953,14 @@ export class DashboardComponent implements OnInit {
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
-        
+
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
         var vLocation_fulladd = "FullAddress_loc";
         element[vLocation_fulladd] = (this._meetingroom==true)?(this.Locationfulladd == undefined ? "" : this.Locationfulladd):'';
 
-        var vLocation_url = "Addressurl"; 
+        var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
         var vOnlinelink = "Onlinelink";
@@ -1970,7 +1969,7 @@ export class DashboardComponent implements OnInit {
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-        
+
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -2141,7 +2140,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitReSchedule(type: number) {
-    debugger
+
     if (
       this.Title_Name &&
       this.Startts &&
@@ -2332,7 +2331,7 @@ export class DashboardComponent implements OnInit {
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
 
-          
+
           var vLocation_Type = "Location_Type";
           element[vLocation_Type] = this._meetingroom==true?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2576,7 +2575,7 @@ export class DashboardComponent implements OnInit {
   }
   else {
     document.getElementById("Location_Name").style.display = "none";
-    this._meetingroom = false; 
+    this._meetingroom = false;
   }
  }
 
@@ -2677,7 +2676,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-  Task_type(value) { debugger
+  Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -2718,7 +2717,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("Descrip_Name").style.display = "none";  // description
       document.getElementById("core_viw123").style.display = "flex";   // select projects (in task)
       document.getElementById("core_viw121").style.display = "none";   // select project (in event)
-      document.getElementById("core_viw222").style.display = "none";   // select portfolio 
+      document.getElementById("core_viw222").style.display = "none";   // select portfolio
       document.getElementById("core_Dms").style.display = "none";       // select dms
       document.getElementById("meeting-online-add").style.display = "none";  // meeting online or offline
 
@@ -2737,7 +2736,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById("Descrip_Name").style.display = "flex";  // description
       document.getElementById("core_viw121").style.display = "flex";   // select project (in event)
       document.getElementById("core_viw123").style.display = "none";   // select projects (in task)
-      document.getElementById("core_viw222").style.display = "flex";  // select portfolio 
+      document.getElementById("core_viw222").style.display = "flex";  // select portfolio
       document.getElementById("core_Dms").style.display = "flex";      // select dms
       document.getElementById("meeting-online-add").style.display = "flex";  // meeting online or offline
 
@@ -2807,7 +2806,7 @@ export class DashboardComponent implements OnInit {
        document.getElementById("core_Dms").style.display = "flex";
        document.getElementById("meeting-online-add").style.display = "flex";
        document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
-       
+
      }
      this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
   }
@@ -2902,7 +2901,7 @@ export class DashboardComponent implements OnInit {
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
     // this.Recurr_arr.push(days.target.value);
-    debugger
+   
     if(days.target.checked&&this.notProvided1=='dayarr1')
       this.notProvided1="";
   }
@@ -2911,7 +2910,7 @@ export class DashboardComponent implements OnInit {
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -3295,7 +3294,7 @@ debugger
 
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
-debugger
+
 
         this._arrayObj = data as [];
         this.Alltimes = [];
@@ -3303,11 +3302,12 @@ debugger
         this.AllEndtime = [];
         this.StartTimearr = [];
 
-        this._arrayObj.forEach(element => {
+          this._arrayObj.forEach(element => {
           this.EndTimearr.push(element.TSEnd);
           this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
+          // console.log("Arraydxxdd", this.EndTimearr);
         });
 
 
@@ -3358,7 +3358,7 @@ debugger
 currentTime:any;
 
   addstarttime() {
-debugger
+
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -3394,7 +3394,7 @@ debugger
       _index = -1;
     }
     this.timingarryend = this.Time_End.splice(_index + 1);
-
+debugger
     this.EndTimearr = this.timingarryend;
     this.timearr1 = this.Startts.split(":");
     let vahr = this.timearr1[0];
@@ -3840,8 +3840,9 @@ debugger
   AdminMeeting_Status: string;
   Isadmin: boolean;
   loading: boolean = false;
+  statusofMeeting:any;
 
-  GetClickEventJSON_Calender(arg) { 
+  GetClickEventJSON_Calender(arg) {
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -3849,9 +3850,11 @@ debugger
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {    debugger
+      ((data) => {  
         this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        var Schedule_date =this.EventScheduledjson[0].Schedule_date
+        this.meetingRestriction(Schedule_date);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
         console.log(this.EventScheduledjson, "Testing1");
@@ -3876,8 +3879,8 @@ debugger
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
-        
-        
+
+
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
@@ -3918,12 +3921,17 @@ debugger
           // document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
-
+       
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
-        console.log(this.User_Scheduledjson, "12")
+        debugger
+        var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID
+        )
+         this.statusofMeeting =eventStatus[0].Status;
+         
+        console.log(this.statusofMeeting[0].Status, "12")
         this.dmsIdjson = [];
         if (this.DMS_Scheduledjson.length > 0) {
           this.DMS_Scheduledjson.forEach(element => {
@@ -3958,7 +3966,6 @@ debugger
       ((data) => {
                        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
         console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -4056,7 +4063,6 @@ debugger
       ((data) => {
         this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
         // console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -4907,6 +4913,39 @@ debugger
     // }
   }
 
+  delayMeeting:any;
+  upcomingMeeting:any;
+  meetingDuration:any;
+
+  meetingRestriction(actualMeeting){
+  
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 8);
+    const meetingDate = new Date(actualMeeting);
+
+   
+    if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
+        this.delayMeeting = true;
+        this.upcomingMeeting = false;  
+    } 
+    // Check if meeting date is in the future
+    else if (meetingDate > today) {
+        this.upcomingMeeting = true;
+        this.delayMeeting = false;
+    } else {
+        this.delayMeeting = false;
+        this.upcomingMeeting = false;  
+        const durationMillis = meetingDate.getTime() - sevenDaysAgo.getTime();
+        // Convert milliseconds to days and add 8 to start from 8 days
+        var meetingDurations = Math.ceil(durationMillis / (1000 * 60 * 60 * 24)) - 7;
+        this.meetingDuration = Math.abs(meetingDurations);
+       // console.log(this.meetingDuration, 'meetingDate:');
+      }
+  }
+
+
+
 
   newMeetingDetails() {
     let name: string = 'Meeting-Details';
@@ -5250,7 +5289,7 @@ debugger
 
   darft_click(Sno, val) {
     this.draftid = Sno;
-debugger
+
     this.Task_type(val);
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
@@ -5452,7 +5491,7 @@ debugger
     this.AllDatesSDandED.push(jsonData);
     this.GetTimeslabfordate();
 
-    this.mtgOnDays=[]; 
+    this.mtgOnDays=[];
     this.notProvided = false;
     this.subtask_loading=false;
     this.subtashDrpLoading=false;
@@ -5741,36 +5780,38 @@ debugger
 
 
   // bar graph
-
-  drawBarGraph() {
-    var options = {
-      series: [{
-        data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
-        this.RejectedCount, this.CompletedCount, this.AssignActionCount]
-      }],
-      chart: {
-        type: 'bar',
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          horizontal: true,
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
-          ' Under Approval Projects', 'Assigned Actions'
-        ],
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
-    chart.render();
-  }
+  // drawLineGraph() {
+  //   var options = {
+  //     series: [{
+  //       name: 'Series 1',
+  //       data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
+  //         this.RejectedCount, this.CompletedCount, this.AssignActionCount
+  //       ]
+  //     }],
+  //     chart: {
+  //       type: 'line', // Change chart type to line
+  //       height: 350
+  //     },
+  //     plotOptions: {
+  //       bar: {
+  //         borderRadius: 4,
+  //         horizontal: true,
+  //       }
+  //     },
+  //     dataLabels: {
+  //       enabled: false
+  //     },
+  //     xaxis: {
+  //       categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
+  //         'Under Approval Projects', 'Assigned Actions'
+  //       ],
+  //     }
+  //   };
+  
+  //   var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
+  //   chart.render();
+  // }
+  
 
   // bar graph
   // agenda in event creation start
@@ -5792,7 +5833,7 @@ debugger
   }
 
   deleteAgenda(index: number) {
-    debugger
+
     if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
       const agenda_toRemove=this.allAgendas[index].name;
       this.allAgendas.splice(index, 1);
@@ -6015,11 +6056,11 @@ debugger
 
   //   }
 
-  // }   
+  // }
 
 inputTyped:string;
 onProjectSearch(inputtext:any){
-   
+
    if(this.searchingResult==false){
     const filterobj=this.basedOnFilter;
 
@@ -6032,7 +6073,7 @@ onProjectSearch(inputtext:any){
           this.ProjectListArray=JSON.parse(res['Projectlist']);
            console.log("project name searched result:",this.ProjectListArray);
           this.searchingResult=false;
-          
+
           if(this.inputTyped!=undefined){
              const newsearch=this.inputTyped;
              this.inputTyped=undefined;
@@ -6044,48 +6085,48 @@ onProjectSearch(inputtext:any){
    }
    else
    this.inputTyped=inputtext;
-      
+
 }
 
-  
 
 
 
-  onInputSearch(inputText:any){  
+
+  onInputSearch(inputText:any){
     let keyname;
-    let arrtype; 
+    let arrtype;
     let selectedinto;
-    let property_name; 
+    let property_name;
     if(this.projectmodaltype=='PARTICIPANT')
      {
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
-       selectedinto='ngEmployeeDropdown';      
-       property_name='Emp_No';                 
+       selectedinto='ngEmployeeDropdown';
+       property_name='Emp_No';
      }
     else if(this.projectmodaltype=='PORTFOLIO')
     {
        keyname='Portfolio_Name';
        arrtype=this.Portfoliolist_1;
-       selectedinto='Portfolio';      
-       property_name='portfolio_id';   
+       selectedinto='Portfolio';
+       property_name='portfolio_id';
     }
     else if(this.projectmodaltype=='DMS')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
-      selectedinto='SelectDms';      
-      property_name='MailId'; 
+      selectedinto='SelectDms';
+      property_name='MailId';
     }
 
     const result=arrtype.filter(item=>{
 
       const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
-      let nameMatched:boolean=false; 
+      let nameMatched:boolean=false;
       if(unselected)
-      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())  
-      
-      return nameMatched; 
+      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
+
+      return nameMatched;
     });
     this.FilteredResults=result;
   }
@@ -6102,7 +6143,7 @@ onProjectSearch(inputtext:any){
 
 
   customrecurrencemodal() {
-    debugger
+
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -6144,6 +6185,7 @@ date_menu_close(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
+  debugger
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -6291,15 +6333,15 @@ onPortfolioFilter(){
 
 onDMSFilter(){
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
-      const fresult=this.Memos_List.filter((_memo:any)=>{ 
+      const fresult=this.Memos_List.filter((_memo:any)=>{
 
        let hasMemo:boolean=false;
        hasMemo=(!this.basedOnFilter.byuser)||(_memo.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
-      
+
        let isSelected:boolean=false;
        isSelected=this.SelectDms&&this.SelectDms.includes(_memo.MailId);
 
-       return isSelected?false:hasMemo;   
+       return isSelected?false:hasMemo;
       });
 
       this.FilteredResults=fresult;
@@ -6366,7 +6408,7 @@ repeatEvent() {
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-      debugger
+ 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.Schedule_ID = 0;   // schedule id.
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
@@ -6486,7 +6528,7 @@ repeatEvent() {
 
 
 submitEventToRepeat(){
-debugger
+
 
 const input_date=moment(this._StartDate,'YYYY-MM-DD');
 const current_date=moment(moment().format('YYYY-MM-DD'),'YYYY-MM-DD');
@@ -6510,7 +6552,7 @@ if(input_date<current_date){
   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-     debugger
+  
       const date1: Date = new Date(this._StartDate);
       const date2: Date = new Date(this._SEndDate);
 
@@ -6609,7 +6651,7 @@ if(input_date<current_date){
       this._calenderDto.Schedule_ID = 0;
     }
     this._calenderDto.draftid = this.draftid;
-
+    console.log(this._calenderDto)
     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
       (data => {
 
@@ -6790,7 +6832,12 @@ if (this.selectedrecuvalue == '0') {
 
 this.close_customrecurrencemodal();
 }
-
+view_graph_div(){
+  document.getElementById("graph-div").style.display = "block";
+}
+close_graph_div(){
+  document.getElementById("graph-div").style.display = "none";
+}
 // new eventsidebar design code end
 
 

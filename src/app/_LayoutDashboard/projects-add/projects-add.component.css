@@ -1240,3 +1240,70 @@ a.info-btn svg {
   width: 26px;
   height: 26px;
 }
+.table-scroll {
+  overflow-y: auto;
+  height: calc(100vh - 150px);
+  scrollbar-width: thin;
+}
+
+thead {
+  background-color: #e9e9e9;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background-color: #e9e9e9;
+  z-index: 11;
+}
+
+th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 10 !important;
+  background-color: #fff;
+}
+
+th:nth-child(2) {
+  position: sticky;
+  left: 0px;
+  z-index: 9 !important;
+}
+
+th:nth-child(3) {
+  position: sticky;
+  left: 0px;
+  z-index: 8 !important;
+}
+
+th:nth-child(4) {
+  position: sticky;
+  left: 0px;
+  z-index: 7 !important;
+}
+
+td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 9;
+  background-color: #fff;
+}
+
+.table-hover tbody tr:hover td:first-child{
+  background-color: #fafbfc;
+}
+
+td:nth-child(2) {
+  position: sticky;
+  left: 0px;
+}
+
+td:nth-child(3) {
+  position: sticky;
+  left: 0px;
+}
+
+td:nth-child(4) {
+  position: sticky;
+  left: 0px;
+}

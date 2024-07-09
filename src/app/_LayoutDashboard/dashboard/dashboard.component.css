@@ -4558,3 +4558,8 @@ span.project-name {
     width: 20px;
     height: 20px;
 }
+
+.acceptmeeting{
+    background-color: #3699FF !important;
+    color: #fff !important;
+}
