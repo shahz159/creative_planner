@@ -67,18 +67,18 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 declare var ApexCharts: any;
 
-export const MY_DATE_FORMATS = {
+export const MY_FORMATS = {
   parse: {
-    dateInput: 'DD-MM-YYYY',
+    dateInput: "YYYY-MM-DD"
   },
   display: {
-    dateInput: 'DD-MM-YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  },
+    dateInput: "dddd, MMMM D YYYY",
+    monthYearLabel: "MMM YYYY",
+    dateA11yLabel: "YYYY-MM-DD HH:mm:ss",
+    monthYearA11yLabel: "MMMM YYYY"
+  }
 };
-
+moment.locale('en');
 
 @Component({
   selector: 'app-portfolio-projects',
@@ -3285,15 +3285,13 @@ getChangeSubtaskDetais(Project_Code) {
 
   selectedDay(days) {
 
-    //Checked the day
+
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
-    // this.Recurr_arr.push(days.target.value);
-    debugger
+
     if(days.target.checked&&this.notProvided=='dayarr1')
       this.notProvided="";
   }
-
 
 
 
@@ -3335,6 +3333,7 @@ getChangeSubtaskDetais(Project_Code) {
     }
     console.log(this.daysSelectedII, "Day Added array")
   }
+
 
   select(event: any) {
 
@@ -5090,6 +5089,8 @@ onItemChoosed(choosed:any,choosedItem:any){
 
 
 
+
+
 onRecurrenceTypeChange(val:any){
 
     this.selectedrecuvalue1 = val.value.toString();
@@ -5123,13 +5124,15 @@ onRecurrenceTypeChange(val:any){
       document.getElementById("Monthly_121_new").style.display = "block";
     }
 }
+
 selectmonthlydays(day) {
   let objIndex = this.MonthArr1.findIndex((obj => obj.value == day.target.value));
   this.MonthArr1[objIndex].checked = day.target.checked;
-  // this.calendar.updateTodaysDate();
+
   if(day.target.checked&&this.notProvided=='montharr1')
     this.notProvided="";
 }
+
 
 close_customrecurrencemodal() {
   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -5144,6 +5147,7 @@ close_customrecurrencemodal() {
   this.MonthArr1=[];
   this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
 }
+
 
 
 
@@ -5170,7 +5174,6 @@ bindCustomRecurrenceValues(){
   this.selectedrecuvalue=this.selectedrecuvalue1;
   this.dayArr=[...this.dayArr1];
   this.MonthArr=[...this.MonthArr1];
-   this._EndDate1 = moment();
   this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
   this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
 

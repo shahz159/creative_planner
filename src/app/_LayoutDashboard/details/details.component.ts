@@ -5656,6 +5656,8 @@ getChangeSubtaskDetais(Project_Code) {
     if(days.target.checked&&this.notProvided1=='dayarr1')
       this.notProvided1="";
   }
+
+
   selectmonthlydays(day) {
     let objIndex = this.MonthArr1.findIndex((obj => obj.value == day.target.value));
     this.MonthArr1[objIndex].checked = day.target.checked;
