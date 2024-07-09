@@ -52,5 +52,6 @@ export class SubTaskDTO {
   enddate:any;
 
   EventNumber:string;
-
+  auditor:string;
+  owner:string;
 }

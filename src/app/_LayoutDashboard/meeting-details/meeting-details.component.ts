@@ -19,6 +19,7 @@ import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
@@ -36,7 +37,7 @@ export class MeetingDetailsComponent implements OnInit {
   currentAgendaView: any
   _MasterCode: string;
   Current_user_ID: string;
-
+  @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
   _calenderDto: CalenderDTO;
 
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
@@ -123,7 +124,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-
+  activeAgendaIndex: number = 0
   _PopupConfirmedValue: number;
 
   ngOnInit(): void {
@@ -141,6 +142,7 @@ export class MeetingDetailsComponent implements OnInit {
     });
     this.Current_user_ID = localStorage.getItem('EmpNo');
     // this.getAttendeeTime();
+
     this.meeting_details();
 
     this.addAgenda();
@@ -151,8 +153,11 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetProjectAndsubtashDrpforCalender();
     this.GetTimeslabfordate();
     this.GetcompletedMeeting_data();
-    this.GetPreviousdate_meetingdata();
+    this.agendaside(0);
 
+    this.GetPreviousdate_meetingdata();
+    this._StartDate = moment().format("YYYY-MM-DD").toString();
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -160,9 +165,23 @@ export class MeetingDetailsComponent implements OnInit {
     // });
     this._PopupConfirmedValue = 1;
 
-
+    this.selectedrecuvalue = "0";
     // const storedStartTime = localStorage.getItem('startTime');
     // console.log(storedStartTime,'startTime');
+
+    moment.locale('en');
+    this.AllDatesSDandED = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    var Day = "Day";
+    jsonData[Day] = moment().format('dddd').substring(0, 3);
+    var DayNum1 = "DayNum";
+    jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
+    this.AllDatesSDandED.push(jsonData);
+    this._SEndDate = moment().format("YYYY-MM-DD").toString();
   }
 
   getDetailsScheduleId() {
@@ -318,10 +337,22 @@ export class MeetingDetailsComponent implements OnInit {
   View_Private_Notes() {
     document.getElementById("Private_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.GetMeetingnotes_data();
   }
+  Repeat_Meeting() {
+    document.getElementById("repeatModal").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+
+  }
+  Close_Repeat_Meeting() {
+    document.getElementById("repeatModal").classList.remove("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+
+  }
+
   close_privatenote_sideBar() {
     document.getElementById("Private_Notes").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -375,6 +406,10 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("upload_div").style.display = "none";
     document.getElementById("upload_btn").style.display = "block";
   }
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+
+  }
+
 
   totaldms: number;
   DMS_Scheduledjson: any = [];
@@ -423,20 +458,26 @@ export class MeetingDetailsComponent implements OnInit {
   userFound: boolean | undefined;
   EmpNo: any;
   meetingAdmin: boolean | undefined;
-  Actiontask: any
-  AssignedTask: any
+  Actiontask: any;
+  AssignedTask: any;
   Todotask: any;
   orderedItems: any;
   totalCountAssign: any;
   totalAssign: any;
-  totalActiontask: any
-  totalTodotask: any
-  totalCompletedAgenda: any
-  urlUserID_Password: any
+  totalActiontask: any;
+  totalTodotask: any;
+  totalCompletedAgenda: any;
+  urlUserID_Password: any;
+  Endtms: any;
 
   meeting_details_1() {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
+
+  delayMeeting: any;
+  upcomingMeeting: any;
+  meetingDuration: any;
+  meetings_Recurrence: any;
 
 
   meeting_details() {
@@ -445,8 +486,14 @@ export class MeetingDetailsComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      console.log("admin", this.EventScheduledjson);
+      console.log("EventScheduledjson", this.EventScheduledjson[0].Recurrence);
+      var Schedule_date = this.EventScheduledjson[0].Schedule_date
+      this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
+
+      this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
+      this.Startts = (this.EventScheduledjson[0]['St_Time']);
+      this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
@@ -460,6 +507,11 @@ export class MeetingDetailsComponent implements OnInit {
         if (b.onlineStatus === "Start") return 1;
         return 0;
       });
+
+
+      this.meetings_Recurrence = this.EventScheduledjson[0].Recurrence
+
+
 
 
       this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
@@ -483,10 +535,12 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
 
-      console.log(this.Agendas_List, 'Agenda List')
+
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
 
+
+   
 
 
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
@@ -505,6 +559,8 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.Createdby = this.EventScheduledjson[0].Created_by;
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
+
+
       this.status = this.EventScheduledjson[0].Status;
       this.sched_admin = this.EventScheduledjson.Owner_isadmin;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
@@ -519,7 +575,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.urlUserID_Password = UserID_Password.trim()
       }
 
-      console.log(anchorText, 'urlUserID_Password')
+
 
       let str = this.Link_Detail;
       let regexp = /href="https:\/\/[^"]+"/;
@@ -613,8 +669,37 @@ export class MeetingDetailsComponent implements OnInit {
     });
 
 
-
   }
+
+
+
+  meetingRestriction(actualMeeting) {
+
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 8);
+    const meetingDate = new Date(actualMeeting);
+
+
+    if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
+      this.delayMeeting = true;
+    }
+    // Check if meeting date is in the future
+    else if (meetingDate > today) {
+      this.upcomingMeeting = true;
+    } else {
+      this.delayMeeting = false;
+      this.upcomingMeeting = false;
+      const durationMillis = meetingDate.getTime() - sevenDaysAgo.getTime();
+      // Convert milliseconds to days and add 8 to start from 8 days
+      var meetingDurations = Math.ceil(durationMillis / (1000 * 60 * 60 * 24)) - 7;
+      this.meetingDuration = Math.abs(meetingDurations);
+      //  console.log(this.meetingDuration, 'meetingDate:');
+    }
+  }
+
+
+
 
   getInitials(name) {
     var initials = name.match(/\b\w/g) || [];
@@ -747,6 +832,15 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
+
+  formatCompleteDuration(duration: number): string {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+    return `${hours}h ${minutes}m 0s`;
+  }
+
+
+
   actualTime_S: any;
   actualTime_E: any;
   actualDuration: any;
@@ -755,7 +849,6 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   InsertAttendeeMeetingTime() {
-
 
     const formatTime = time => time ? new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : null;
 
@@ -808,10 +901,10 @@ export class MeetingDetailsComponent implements OnInit {
 
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
 
-    console.log('Difference in milliseconds:', differenceInMilliseconds);
-    console.log('current', this.currentTime);
-    console.log('exact', this.exact_start);
-    console.log('latest', this.latestTime);
+    // console.log('Difference in milliseconds:', differenceInMilliseconds);
+    // console.log('current', this.currentTime);
+    // console.log('exact', this.exact_start);
+    // console.log('latest', this.latestTime);
 
     this.elapsedTime = differenceInMilliseconds;
 
@@ -880,16 +973,17 @@ export class MeetingDetailsComponent implements OnInit {
 
   }
 
-  GetDMSList() {
-    this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
+  loadingDMS: boolean;
 
+
+
+  GetDMSList() {
+    this.loadingDMS = false;
+    this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
 
       }
-
-      // console.log(this._MemosSubjectList,'DMS Link')
-
       this._MemosSubjectList.forEach(element => {
         this.checkeddms.push(element.MailId);
         element.isChecked = true;
@@ -899,6 +993,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.dmscount = this.checkeddms.length;
 
     });
+    this.loadingDMS = true;
   }
 
   GetMemosByEmployeeId() {
@@ -916,6 +1011,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.originalDMSList = this.Memos_List;
 
       });
+
   }
 
   GetMemosByEmployeeId_new() {
@@ -1506,6 +1602,7 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
+  adminComments: any
 
   Updating_Adminmeeting(_emp) {
 
@@ -1513,10 +1610,12 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = _emp;
     this._calenderDto.IsAdmin = true;
-
+    // this._calenderDto.adminComment=this.adminComments==undefined?null:this.adminComments;
+    //  console.log(this.adminComments,'adminComments')
     this.CalenderService.NewAdmin_meetingreport(this._calenderDto).subscribe
       (data => {
         this.meeting_details();
+        this.adminComments = [];
       });
 
   }
@@ -1692,7 +1791,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    this.GetPreviousdate_meetingdata()
+    this.GetPreviousdate_meetingdata();
   }
 
 
@@ -1740,9 +1839,11 @@ export class MeetingDetailsComponent implements OnInit {
   } = { filterby: 'Agenda', sortby: 'All' };
 
   setFilterInfo(filterby: 'Agenda' | 'Attendees' | 'All', sortby: string | undefined) {
+    this.activeAgendaIndex = 0
     this.filterconfig.filterby = filterby;
     this.filterconfig.sortby = sortby;
     this.clearNotify = true;
+
   }
 
 
@@ -1761,6 +1862,7 @@ export class MeetingDetailsComponent implements OnInit {
   totalPreviousdata_meeting: any;
   attendeesLists: any;
   resultFound: boolean;
+  filterByAgenda: any;
 
   GetPreviousdate_meetingdata() {
 
@@ -1771,9 +1873,13 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
       (data => {
-
         if (data['previousmeet_data']) {
           this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
+          this.filterByAgenda = this.Previousdata_meeting[0].Details
+
+
+          this.sortbyAgendaList(0, this.filterByAgenda[0]);
+          this.sortbyFilterList(0, this.filterByAgenda[0])
           console.log(this.Previousdata_meeting, 'Previousdata_meeting');
           this.totalPreviousdata_meeting = this.Previousdata_meeting.length;
           this.resultFound = true
@@ -1784,6 +1890,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.attendeesLists = JSON.parse(data['attendeesList'])
         this.Emp_Number = 0
       });
+
   }
 
 
@@ -1795,7 +1902,6 @@ export class MeetingDetailsComponent implements OnInit {
   Employees: any
 
   sortbyAgendaList(index, agendaDetails) {
-
     this.activeAgenda = agendaDetails;
     this.Employees = agendaDetails.Employees
     // this.Employees=agendaDetails
@@ -1804,9 +1910,9 @@ export class MeetingDetailsComponent implements OnInit {
   activeAgendasList: any
 
   sortbyFilterList(index, agendaDetails) {
+
     this.activeAgendasList = agendaDetails
     this.AgendaNotes = agendaDetails.AgendaNotes
-
 
   }
 
@@ -1945,11 +2051,13 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   showAgendaDetails(item, index) {
+    console.log('testyyy', item, index)
     if (this.meetingInProgress == true || this.Meetingstatuscom == 'Completed') {
       this.AgendaId = item.AgendaId
       this.currentAgendaView = index
       this.GetAssigned_SubtaskProjects()
     } else if (this.Meetingstatuscom != 'Completed') {
+
       this.notifyService.showInfo("The meeting hasn't started yet", "")
     }
   }
@@ -2313,9 +2421,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-  // loading: boolean = false;
-  // this.loading = false;
-  // this.loading = true;
+  AutoComplete: boolean;
 
   GetcompletedMeeting_data() {
 
@@ -2330,7 +2436,8 @@ export class MeetingDetailsComponent implements OnInit {
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
-
+          this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
+          console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S = this.CompletedMeeting_notes[0].Actual_Start;
           this.separateTime(this.actualTime_S);
@@ -2805,7 +2912,7 @@ export class MeetingDetailsComponent implements OnInit {
             this.AllAttendees_notes = [];
           }
 
-          console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
+          //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
           if (this.meetingStarted == true && !this.hasMeetingStarted) {
             this.startMeetingOfAttendees();
@@ -2862,7 +2969,7 @@ export class MeetingDetailsComponent implements OnInit {
   _StartDate: any;
   Startts: any;
   StartTimearr: any = [];
-  Endtms: any;
+
   EndTimearr: any = [];
   _SEndDate: any;
   Note_deadlineexpire: boolean;
@@ -2904,8 +3011,6 @@ export class MeetingDetailsComponent implements OnInit {
       "checked": false
     }
   ];
-
-
 
 
   MonthArr: any = [
@@ -3470,30 +3575,86 @@ export class MeetingDetailsComponent implements OnInit {
   GetTimeslabfordate() {
 
     this._calenderDto.minutes = 5;
-    // this._hrtime = parseInt(moment(new Date()).format("HH"));
-    // this.Startts = this._hrtime.toString() + ':00';
     this._calenderDto.StartTime = "00:00";
     this._calenderDto.EndTime = "23:55";
 
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
 
+
         this._arrayObj = data as [];
-        this._arrayObj.forEach(element => {
+        this.Alltimes = [];
+        this.EndTimearr = [];
+        this.AllEndtime = [];
+        this.StartTimearr = [];
+
+          this._arrayObj.forEach(element => {
           this.EndTimearr.push(element.TSEnd);
           this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
         });
-
-        // console.log(this.EndTimearr[0]);
-        // console.log("Array" + this.EndTimearr);
+        
       });
   }
 
 
+  validStartTimearr:any=[];
+
+sortbyCurrent_Time(){
+  
+
+  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+  let _currentdate=moment();
+  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+  {
+      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+      const index:number=this.StartTimearr.findIndex((item:any)=>{
+          const t=moment(item,'h:mm A');
+          const result=t>=ct;
+          return result;
+      });
+      this.validStartTimearr=this.StartTimearr.slice(index);
+  }
+  else
+  this.validStartTimearr=[...this.StartTimearr];
+ 
+}
 
 
+
+
+  filteredEndTimes(): string[] {
+    if (!this.Startts) {
+      return [];
+    }
+    // Convert Start Time to minutes for easier comparison
+    const selectedStartMinutes = this.timeToMinutes(this.Startts);
+
+    // Filter End Time options to start from 5 minutes interval after selected Start Time
+    const filteredTimes = this.EndTimearr.filter(time => {
+      const endTimeMinutes = this.timeToMinutes(time);
+      return endTimeMinutes > selectedStartMinutes;
+    });
+
+    return filteredTimes;
+  }
+
+  // Convert time in format 'hh:mm AM/PM' to minutes since midnight
+  timeToMinutes(time: string): number {
+
+    const [hhmm, period] = time.split(' ');
+    const [hours, minutes] = hhmm.split(':').map(Number);
+    let totalMinutes = hours * 60 + minutes;
+
+    if (period === 'PM' && hours !== 12) {
+      totalMinutes += 12 * 60; // Add 12 hours worth of minutes for PM times, except 12 PM
+    } else if (period === 'AM' && hours === 12) {
+      totalMinutes -= 12 * 60; // Adjust 12 AM to 0 minutes
+    }
+
+    return totalMinutes;
+  }
 
 
 
@@ -3659,9 +3820,11 @@ export class MeetingDetailsComponent implements OnInit {
 
   selectStartDate(event) {
 
-    this._StartDate = event.value;
-    let sd = event.value.format("YYYY-MM-DD").toString();
-    this._SEndDate = event.value.format("YYYY-MM-DD").toString();
+    event = moment(event);
+    this._StartDate = event;
+
+    let sd = event.format("YYYY-MM-DD").toString();
+    this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
@@ -3697,8 +3860,8 @@ export class MeetingDetailsComponent implements OnInit {
       jsonData[columnNames] = this.Startts;
       jsonData[columnNamee] = this.Endtms;
       jsonData[IsActive] = 1;
-      jsonData[Day] = event.value.format('dddd').substring(0, 3);
-      jsonData[DayNum] = event.value.format('DD').substring(0, 3);
+      jsonData[Day] = event.format('dddd').substring(0, 3);
+      jsonData[DayNum] = event.format('DD').substring(0, 3);
       this.AllDatesSDandED.push(jsonData);
     }
     else {
@@ -3747,6 +3910,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.StartTimearr.push(element.TSStart);
       this.Alltimes.push(element.TSStart);
       //  console.log( this.Alltimes,"times")
+
     });
   }
 
@@ -4200,6 +4364,7 @@ export class MeetingDetailsComponent implements OnInit {
     // const format2 = "YYYY-MM-DD";
     var start = moment(this.minDate);
     const _arraytext = [];
+
     if (this.selectedrecuvalue == "0") {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
@@ -4672,12 +4837,10 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("filter-icon").classList.remove("active");
   }
 
-  // agendaside(){
-  //   document.getElementById("agendalist").classList.toggle("active");
-  //   document.getElementById("agendaarrow").classList.toggle("rotate");
-  // }
+
 
   agendaside(index: number) {
+
     const agendaListElement = document.getElementById(`agendalist-${index}`);
     const agendaArrowElement = document.getElementById(`agendaarrow-${index}`);
 
@@ -4706,6 +4869,7 @@ export class MeetingDetailsComponent implements OnInit {
   showDropdown = false;
 
   toggleDropdown() {
+    this.activeAgendaIndex = 0
     this.showDropdown = !this.showDropdown;
   }
 
@@ -4796,9 +4960,241 @@ export class MeetingDetailsComponent implements OnInit {
     });
   }
 
+  //////////////////////////////////////// Repeat Meeting section Start ///////////////////////////////////////////
+
+  date_menu(dialogId: string) {
+    document.getElementById(dialogId).classList.add("show");
+  }
+  date_menu_close(dialogId: string) {
+    document.getElementById(dialogId).classList.remove("show");
+  }
+  ////////////////////////////////////// Repeat Meeting  section End /////////////////////////////////////////////
+  activeIndex: number | null = null;
+
+  markAdmin(index) {
+    document.getElementById(`mark-admin-drop${index}`).classList.add("show");
+    this.activeIndex = index;
+  }
+
+  closemarkAdmin(index) {
+    document.getElementById(`mark-admin-drop${index}`).classList.remove("show");
+    if (this.activeIndex === index) {
+      this.activeIndex = null;
+    }
+  }
+
+  earlyDate: boolean = false;
+  Project_NameScheduledjson: any[] = [];
+  draftid: number = 0;
+
+
+  submitEventToRepeat() {
+    this._EndDate = this.EventScheduledjson[0]['End_date'];
+
+    const input_date = moment(this._StartDate, 'YYYY-MM-DD');
+    const current_date = moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD');
+    if (input_date < current_date) {
+      this.earlyDate = true;
+      return;
+    }
+
+    let finalarray = [];
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+    if (finalarray.length > 0) {
+      finalarray.forEach(element => {
+
+        const date1: Date = new Date(this._StartDate);
+        const date2: Date = new Date(this._SEndDate);
+
+        const diffInMs: number = date2.getTime() - date1.getTime();
+
+        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+        }
+        else {
+          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        }
+
+        var dd = moment(date3).add(diffInDays, 'days')
+
+        var SEndDates = "SEndDate";
+        element[SEndDates] = (dd.format(format2));
+
+        var vStartTime = "StartTime";
+        element[vStartTime] = this.Startts;
+
+        var vEndTime = "EndTime";
+        element[vEndTime] = this.Endtms;
+
+        var vEnd_date = "End_date";
+        element[vEnd_date] = this._EndDate;
+
+        var vIsDeleted = "IsDeleted";
+        element[vIsDeleted] = 0;
+
+        var vPending = "Pending_meeting";
+        element[vPending] = 0;
+
+        var vRecurrence = "Recurrence";
+        element[vRecurrence] = "0";
+
+        var vRecurrence_value = "Recurrence_values";
+        element[vRecurrence_value] = "";
+
+        var vEmp_No = "Emp_No";
+        element[vEmp_No] = this.Current_user_ID;
+
+        var vScheduleType = "ScheduleType";
+        element[vScheduleType] = 2;   // Event.
+
+        var vTitle_Name = "Title_Name";
+        element[vTitle_Name] = this.EventScheduledjson[0]["Task_Name"];
+
+        var vMasterCode = "MasterCode";
+        element[vMasterCode] = this.Project_NameScheduledjson.map(pr => pr.stringval).join(',');
+
+        var vUser_Name = "User_Name";
+        element[vUser_Name] = this.User_Scheduledjson.map(ur => ur.stringval).join(',');
+
+        var vLocation_Type = "Location_Type";
+        element[vLocation_Type] = this.EventScheduledjson[0].Location;
+
+        var vLocation_fulladd = "FullAddress_loc";
+        element[vLocation_fulladd] = this.EventScheduledjson[0].FullAddress_loc
+
+        var vLocation_url = "Addressurl";
+        element[vLocation_url] = this.EventScheduledjson[0].Addressurl;
+
+        var vOnlinelink = "Onlinelink";
+        element[vOnlinelink] = this.EventScheduledjson[0].Onlinelink;
+
+        var vLink_Details = "Link_Details";
+        element[vLink_Details] = this.EventScheduledjson[0].Link_Details;
+
+        var vDescription = "Description";
+        element[vDescription] = this.EventScheduledjson[0].Description;
+
+        var vSubtask = "Subtask";
+        element[vSubtask] = "";
+
+        var vEventNumber = "EventNumber";
+        element[vEventNumber] = this.EventScheduledjson[0].EventNumber;
+
+        var vPortfolio_name = "Portfolio_name";
+        element[vPortfolio_name] = this.portfolio_Scheduledjson.map(ptf => ptf.numberval).join(',');
+
+        var vDMS_Name = "DMS_Name";
+        element[vDMS_Name] = this.EventScheduledjson[0].DMS_Name;
+
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas = JSON.stringify(this.EventScheduledjson[0].Agendas.map(agd => ({ index: agd.AgendaId, name: agd.Agenda_Name })));
+        element[vAgendas] = mtgAgendas;
+        //
+      });
+      console.log(finalarray, 'finalarray')
+      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      if (this.Schedule_ID != 0) {
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+      }
+      else {
+        this._calenderDto.Schedule_ID = 0;
+      }
+      this._calenderDto.draftid = this.draftid;
+      console.log(this._calenderDto, 'testing')
+      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+        (data => {
+
+          this._Message = data['message'];
+          if (this._Message == "Updated Successfully") {
+            this.notifyService.showSuccess(this._Message, "Success");
+          }
+          else {
+            this.notifyService.showError(this._Message, "Failed");
+          }
+          //this.GetScheduledJson();
+          this._SEndDate = moment().format("YYYY-MM-DD").toString();
+          // this.TImetable();
+          this.minDate = moment().format("YYYY-MM-DD").toString();
+          this.maxDate = null;
+          // this.TImetable();
+          this.closeevearea();
+
+        });
+    }
+    else {
+      alert('Please Select Valid Date and Time');
+    }
+  }
+
+
+//////////////////////////////////////////////////// Meeting Sidebar sectoion Start////////////////////////////////////////////////////////////
+
+
+previousmeetings:[any] | null;
+upcomingmeetings: [any] | null;
 
 
 
+NewGetRecurrenceMeetings(meetings_HTR){
+  this._calenderDto.Schedule_ID=this.Scheduleid;
+  this._calenderDto.Emp_No=this.Current_user_ID;
+  this._calenderDto.Status_type=meetings_HTR;
+  this.CalenderService.GetRecurrenceMeetingsService(this._calenderDto).subscribe((data)=>{
 
+   
+     if(data['previousmeetings']){
+      this.previousmeetings = JSON.parse(data['previousmeetings']);
+      this.previousmeetings.map(meetings => {
+         meetings.Addguest=JSON.parse(meetings.Addguest)  
+      })
+
+
+      this.previousmeetings.forEach(meeting => {
+        if (meeting.Addguest.length > 3) {
+          const remainingGuestsCount = meeting.Addguest.length - 3;
+          meeting.Addguest = meeting.Addguest.slice(0, 3);
+          meeting['RemainingGuestsCount'] = remainingGuestsCount;
+        } else {
+          meeting['RemainingGuestsCount'] = 0;
+        }
+      });
+      console.log(this.previousmeetings,'previousmeetings');
+   
+     }else if(data['upcomingmeetings']){
+      this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
+      this.upcomingmeetings.map(upmeetings=>{
+        upmeetings.Addguest=JSON.parse(upmeetings.Addguest)
+      })
+
+
+      this.upcomingmeetings.forEach(meeting => {
+        if (meeting.Addguest.length > 3) {
+          const remainingGuestsCount = meeting.Addguest.length - 3;
+          meeting.Addguest = meeting.Addguest.slice(0, 3);
+          meeting['RemainingGuestsCount'] = remainingGuestsCount;
+        } else {
+          meeting['RemainingGuestsCount'] = 0;
+        }
+      });
+      console.log(this.upcomingmeetings,'upcomingmeetings');
+     }
+     
+   
+  })
+ 
+}
+
+//////////////////////////////////////////////////// Meeting Sidebar sectoion End ////////////////////////////////////////////////////////////
 
 } 

@@ -663,10 +663,10 @@ export class DashboardComponent implements OnInit {
   // ngAfterViewInit() {
 
 
-  //   this.drawBarGraph();
-  //   // setTimeout(() => {
-  //   //   this.startTour();
-  //   // }, 3000);
+  //   this.drawLineGraph();
+  //   setTimeout(() => {
+  //     this.startTour();
+  //   }, 3000);
   // }
 
 
@@ -751,12 +751,9 @@ export class DashboardComponent implements OnInit {
   closeevearea() {
     $('.bg-ovr').removeClass('d-block');
     $('.bg-ovr1').removeClass('d-block');
-
     $('.side_view').removeClass('position-fixed');
-
     this.date_menu_close('date-menu-1');
     $('#propse11').removeClass('show');
-
     this.closefooter();
   }
   // Scheduling Work
@@ -923,7 +920,6 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Schedule_ID = id;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing111");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -964,7 +960,7 @@ export class DashboardComponent implements OnInit {
         this.Project_NameScheduledjson = this.EventScheduledjson[0].Project_code;
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-        console.log(this.Project_NameScheduledjson, "test000");
+        console.log(this.User_Scheduledjson, "test000");
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 
@@ -1132,7 +1128,7 @@ export class DashboardComponent implements OnInit {
     this.eventRepeat=false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {    debugger
+      ((data) => {    
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = 0;
@@ -1380,7 +1376,7 @@ export class DashboardComponent implements OnInit {
 
           this.timingarryend = [];
           this.Time_End = [];
-          this.Time_End = this.StartTimearr;
+          this.Time_End = [...this.StartTimearr];
           let _index = this.Time_End.indexOf(this.Startts);
           if (_index + 1 === this.Time_End.length) {
             _index = -1;
@@ -1411,7 +1407,7 @@ export class DashboardComponent implements OnInit {
 
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => { 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1525,7 +1521,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-          debugger
+       
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
@@ -1692,7 +1688,7 @@ export class DashboardComponent implements OnInit {
 
           this.timingarryend = [];
           this.Time_End = [];
-          this.Time_End = this.StartTimearr;
+          this.Time_End = [...this.StartTimearr];
           let _index = this.Time_End.indexOf(this.Startts);
           if (_index + 1 === this.Time_End.length) {
             _index = -1;
@@ -1819,7 +1815,7 @@ export class DashboardComponent implements OnInit {
     return lastDays;
   }
 
-  OnSubmitSchedule() { debugger
+  OnSubmitSchedule() { 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1893,7 +1889,7 @@ export class DashboardComponent implements OnInit {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+     
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -2144,7 +2140,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitReSchedule(type: number) {
-    debugger
+
     if (
       this.Title_Name &&
       this.Startts &&
@@ -2680,7 +2676,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-  Task_type(value) { debugger
+  Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -2905,7 +2901,7 @@ export class DashboardComponent implements OnInit {
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
     // this.Recurr_arr.push(days.target.value);
-    debugger
+   
     if(days.target.checked&&this.notProvided1=='dayarr1')
       this.notProvided1="";
   }
@@ -2914,7 +2910,7 @@ export class DashboardComponent implements OnInit {
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -3000,9 +2996,9 @@ debugger
     const inputtime1=moment(this.Startts,'h:mm A');
     const inputtime2=moment(this.Endtms,'h:mm A');
     if(inputtime1<ct)
-      this.Startts=null;
+      this.Startts=this.validStartTimearr[0];
     if(inputtime2<ct)
-      this.Endtms=null;
+      this.Endtms=this.validStartTimearr[1];
 
    // verify whether starttime and endtime are valid or not. end
 
@@ -3298,7 +3294,7 @@ debugger
 
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
-debugger
+
 
         this._arrayObj = data as [];
         this.Alltimes = [];
@@ -3306,11 +3302,12 @@ debugger
         this.AllEndtime = [];
         this.StartTimearr = [];
 
-        this._arrayObj.forEach(element => {
+          this._arrayObj.forEach(element => {
           this.EndTimearr.push(element.TSEnd);
           this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
+          // console.log("Arraydxxdd", this.EndTimearr);
         });
 
 
@@ -3361,7 +3358,7 @@ debugger
 currentTime:any;
 
   addstarttime() {
-debugger
+
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -3397,7 +3394,7 @@ debugger
       _index = -1;
     }
     this.timingarryend = this.Time_End.splice(_index + 1);
-
+debugger
     this.EndTimearr = this.timingarryend;
     this.timearr1 = this.Startts.split(":");
     let vahr = this.timearr1[0];
@@ -3843,6 +3840,7 @@ debugger
   AdminMeeting_Status: string;
   Isadmin: boolean;
   loading: boolean = false;
+  statusofMeeting:any;
 
   GetClickEventJSON_Calender(arg) {
     this.EventScheduledjson = [];
@@ -3852,9 +3850,11 @@ debugger
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {    debugger
+      ((data) => {  
         this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        var Schedule_date =this.EventScheduledjson[0].Schedule_date
+        this.meetingRestriction(Schedule_date);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
         console.log(this.EventScheduledjson, "Testing1");
@@ -3884,7 +3884,8 @@ debugger
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "flex";
+          
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
@@ -3901,7 +3902,6 @@ debugger
           // document.getElementById("copy_data2").style.display = "none";
           // document.getElementById("act-btn").style.display = "none";
         }
-
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
@@ -3921,12 +3921,17 @@ debugger
           // document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
-
+       
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
-        console.log(this.User_Scheduledjson, "12")
+        debugger
+        var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID
+        )
+         this.statusofMeeting =eventStatus[0].Status;
+         
+        console.log(this.statusofMeeting[0].Status, "12")
         this.dmsIdjson = [];
         if (this.DMS_Scheduledjson.length > 0) {
           this.DMS_Scheduledjson.forEach(element => {
@@ -3959,9 +3964,8 @@ debugger
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+                       debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
         console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -3983,7 +3987,7 @@ debugger
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
@@ -4059,7 +4063,6 @@ debugger
       ((data) => {
         this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
         // console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -4080,7 +4083,7 @@ debugger
         // console.log(this.EventScheduledjson, "Testing12");
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
@@ -4910,6 +4913,39 @@ debugger
     // }
   }
 
+  delayMeeting:any;
+  upcomingMeeting:any;
+  meetingDuration:any;
+
+  meetingRestriction(actualMeeting){
+  
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 8);
+    const meetingDate = new Date(actualMeeting);
+
+   
+    if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
+        this.delayMeeting = true;
+        this.upcomingMeeting = false;  
+    } 
+    // Check if meeting date is in the future
+    else if (meetingDate > today) {
+        this.upcomingMeeting = true;
+        this.delayMeeting = false;
+    } else {
+        this.delayMeeting = false;
+        this.upcomingMeeting = false;  
+        const durationMillis = meetingDate.getTime() - sevenDaysAgo.getTime();
+        // Convert milliseconds to days and add 8 to start from 8 days
+        var meetingDurations = Math.ceil(durationMillis / (1000 * 60 * 60 * 24)) - 7;
+        this.meetingDuration = Math.abs(meetingDurations);
+       // console.log(this.meetingDuration, 'meetingDate:');
+      }
+  }
+
+
+
 
   newMeetingDetails() {
     let name: string = 'Meeting-Details';
@@ -5253,7 +5289,7 @@ debugger
 
   darft_click(Sno, val) {
     this.draftid = Sno;
-debugger
+
     this.Task_type(val);
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
@@ -5744,36 +5780,38 @@ debugger
 
 
   // bar graph
-
-  drawBarGraph() {
-    var options = {
-      series: [{
-        data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
-        this.RejectedCount, this.CompletedCount, this.AssignActionCount]
-      }],
-      chart: {
-        type: 'bar',
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          horizontal: true,
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
-          ' Under Approval Projects', 'Assigned Actions'
-        ],
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
-    chart.render();
-  }
+  // drawLineGraph() {
+  //   var options = {
+  //     series: [{
+  //       name: 'Series 1',
+  //       data: [this.DelayCount, this.DelayActionCount, this.TotalExpiryInMonth, this.ProjectsNotStarted, this.AssignedProjects, this.ProjectsNotWorking,
+  //         this.RejectedCount, this.CompletedCount, this.AssignActionCount
+  //       ]
+  //     }],
+  //     chart: {
+  //       type: 'line', // Change chart type to line
+  //       height: 350
+  //     },
+  //     plotOptions: {
+  //       bar: {
+  //         borderRadius: 4,
+  //         horizontal: true,
+  //       }
+  //     },
+  //     dataLabels: {
+  //       enabled: false
+  //     },
+  //     xaxis: {
+  //       categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
+  //         'Under Approval Projects', 'Assigned Actions'
+  //       ],
+  //     }
+  //   };
+  
+  //   var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
+  //   chart.render();
+  // }
+  
 
   // bar graph
   // agenda in event creation start
@@ -5795,7 +5833,7 @@ debugger
   }
 
   deleteAgenda(index: number) {
-    debugger
+
     if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
       const agenda_toRemove=this.allAgendas[index].name;
       this.allAgendas.splice(index, 1);
@@ -6105,7 +6143,7 @@ onProjectSearch(inputtext:any){
 
 
   customrecurrencemodal() {
-    debugger
+
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -6144,7 +6182,7 @@ date_menu(dialogId:string){
   document.getElementById(dialogId).classList.add("show");
 }
 date_menu_close(dialogId:string){
-  document.getElementById(dialogId).classList.remove("show");
+  $(`#${dialogId}`).removeClass('show');
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
   debugger
@@ -6370,7 +6408,7 @@ repeatEvent() {
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-      debugger
+ 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.Schedule_ID = 0;   // schedule id.
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
@@ -6490,7 +6528,7 @@ repeatEvent() {
 
 
 submitEventToRepeat(){
-debugger
+
 
 const input_date=moment(this._StartDate,'YYYY-MM-DD');
 const current_date=moment(moment().format('YYYY-MM-DD'),'YYYY-MM-DD');
@@ -6514,7 +6552,7 @@ if(input_date<current_date){
   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-     debugger
+  
       const date1: Date = new Date(this._StartDate);
       const date2: Date = new Date(this._SEndDate);
 
@@ -6613,7 +6651,7 @@ if(input_date<current_date){
       this._calenderDto.Schedule_ID = 0;
     }
     this._calenderDto.draftid = this.draftid;
-
+    console.log(this._calenderDto)
     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
       (data => {
 
@@ -6794,7 +6832,12 @@ if (this.selectedrecuvalue == '0') {
 
 this.close_customrecurrencemodal();
 }
-
+view_graph_div(){
+  document.getElementById("graph-div").style.display = "block";
+}
+close_graph_div(){
+  document.getElementById("graph-div").style.display = "none";
+}
 // new eventsidebar design code end
 
 

@@ -14,7 +14,6 @@ import { DateFormatPipePipe } from 'src/app/Shared/date-format-pipe.pipe';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { angularEditorConfig } from '@kolkov/angular-editor/lib/config';
-import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 
@@ -22,8 +21,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
   declarations: [
     PortfolioProjectsComponent,
     SortDirective,
-    DateFormatPipePipe,
-    TimeDiffPipe
+    DateFormatPipePipe
   ],
   imports: [
     CommonModule,

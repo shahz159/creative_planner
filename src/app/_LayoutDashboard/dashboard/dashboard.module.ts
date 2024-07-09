@@ -36,13 +36,6 @@ import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 
 
 
-
-
-
-
-
-
-
 FullCalendarModule.registerPlugins([
   interactionPlugin,
   dayGridPlugin,

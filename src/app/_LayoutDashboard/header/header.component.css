@@ -949,3 +949,6 @@ span.leave-date-icon {
     width: 22px;
     height: 22px;
 }
+::ng-deep span.kt-header__topbar-icon svg:focus {
+    outline: none;
+  }
