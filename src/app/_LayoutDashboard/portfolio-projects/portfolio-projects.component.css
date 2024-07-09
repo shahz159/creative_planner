@@ -3599,6 +3599,12 @@ small.tlv-df {
 .Kt-pp-list .nav-tabs {
   margin: 0 0 0px 0;
 }
+
+
+.todaylabelcsstest{
+    background-color: gold;
+    color:white;
+}
 /* portfolio event design start */
 .schedule-event .form-control {
   border: 2px solid #ebedf2;

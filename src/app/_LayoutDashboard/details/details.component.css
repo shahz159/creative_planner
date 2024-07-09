@@ -948,7 +948,6 @@ button.Kt-Approval-btns {
   border-color: #407f4c !important;
 }
 
-
   .Btn_Accpet:hover {
     background-color: #8ab991 !important;color: #fff !important;
   }
@@ -5122,6 +5121,18 @@ p.kt-dt-l {
   background-color: #ecf2ff !important;
 }
 
+.kt-inbox__icon .portfloNotfi-svg .fill-color {
+  fill: gray;
+}
+
+.kt-inbox__icon.event-active .portfloNotfi-svg .fill-color {
+  fill: #6388e3;
+}
+
+.kt-inbox__icon .timeline-view-svg{
+   width:20px !important; height:18px !important;
+}
+
 
 /* .event-active .blink {
   position: absolute;
@@ -6702,10 +6713,66 @@ div#User_list_View.kt-quick-active--on {
 }
 
 .actns-filtr-scroll::-webkit-scrollbar-thumb{
-  background-color: #eaeaea;
+  background-color: #c5c5c5;
   border-radius:5px;
 }
 
+
+.plps-tabs .nav-item .nav-link{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.plps-tabs .nav-item .nav-link.active{
+  border-bottom: 3px solid #5867dd;
+  transition-duration: 0.2s !important;
+  transition-timing-function: ease-out;
+}
+
+.plps-tabs .nav-item .nav-link.active:hover{
+  border-bottom: 3px solid #5867dd !important;
+}
+
+/*prj auditor css start*/
+.Auditor-edit-btn{
+   padding:5px;
+}
+.Auditor-edit-btn .auditor-btn-text{
+    max-width: 0;
+    overflow: hidden hidden;
+    transition-duration:0.5s;
+    text-wrap: nowrap;
+}
+
+.Auditor-edit-btn:hover{
+  background-color: #80808012;
+  transition-duration: 0.4s;
+ 
+}
+.Auditor-edit-btn:active{
+  background-color: #8080802b;
+  transition-duration: 0.2s;
+}
+.Auditor-edit-btn:hover .auditor-btn-text{
+  max-width: 600px;
+  transition-duration: 0.7s;
+  transition-delay: 0.3s; 
+}
+
+
+
+
+.mark-admin-drop{
+  position: absolute;
+  /* transform: translate3d(-225px, 38px, 0px); */
+  top: 21px;
+  right: 17px;
+  will-change: transform;
+  float: left;
+  min-width: 25rem;
+  padding: 12px 14px;
+  margin: .125rem 0 0;
+}
 /* dashboard new  event design start */
 .schedule-event .form-control {
   border: 2px solid #ebedf2;
@@ -6864,6 +6931,11 @@ span.schedule-dt-muted {
   margin-bottom: 0.125rem;
   display: none;
 }
+
+.mark-admin-drop.show{
+  display: block;
+}
+
 
 .date-menu.show {
   display: block;
@@ -7666,6 +7738,86 @@ input.search-input {
   position: relative;
   margin-bottom: 0px;
 }
+
+
+
+.pOnPrj-row-selection{
+  background-color: white;
+  border-radius: 3px;
+}
+
+
+@keyframes user-remove-anim{
+   from{
+    max-height: 0;
+    opacity: 0;
+   }
+   to{
+    max-height: 300px;
+    opacity: 1;
+   }
+}
+
+/*prj auditor css end*/
+
+
+/*new details page loading circle start*/
+
+.smart-glass {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 288px;
+  height: 388px;
+}
+
+.logo {
+  width: 288px;
+  height: 288px;
+  position: relative;
+}
+
+.circle {
+  padding: 20px;
+  border: 6px solid transparent;
+  border-top-color: #6388e3;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: connect 2.5s linear infinite;
+}
+
+.loader-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@keyframes connect {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/*new details page loading circle end*/
 .form-group.location,
 .form-group.meeting {
     position: relative;

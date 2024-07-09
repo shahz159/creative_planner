@@ -31,6 +31,7 @@ import { DatePickerFormatDirective } from "./date-picker-format.directive";
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 
 
@@ -69,7 +70,7 @@ FullCalendarModule.registerPlugins([
     ,NgxDocViewerModule,
     GuidedTourModule,
     Ng2SearchPipeModule,
- 
+
   ],
   providers: [DatePipe
     ,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},
