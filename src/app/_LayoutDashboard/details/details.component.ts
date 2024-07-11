@@ -41,6 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
+import { ThisReceiver } from '@angular/compiler';
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -9560,6 +9561,267 @@ onTransferBtnClicked(){
 
 
  
+
+
+
+
+
+total_userActns:number|undefined;
+loadActionsGrantt(){
+  const all_status = {
+    'Under Approval': '#B2D732',
+    'InProcess': '#0089FB',
+    'Completed': '#62B134',
+    'Delay': '#EE4137',
+    'Completion Under Approval': '#B2D732',
+    'Forward Under Approval': '#B2D732',
+    'Project Hold': '#E2D9BC',
+    'Cancelled': '#EE4137',
+    'New Project Rejected': '#DFDFDF',
+    'Deadline Extend Under Approval': '#F88282',
+    'ToDo Achieved': '#62B134',
+    'ToDo Completed': '#62B134',
+    'Cancellation Under Approval': '#EE4137',
+    'other': '#d0d0d0'
+  }; 
+
+  const todays_date = new Date().getTime();
+  const curdate = new Date();
+  const actions_list:any=this.projectActionInfo.filter((actn)=>{
+         return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
+  });
+  this.total_userActns=actions_list.length;
+
+
+  const _series = actions_list.map((actn, _index) => {
+    const color = all_status[actn.Status] || all_status['other'];
+    let data_ar = [];
+    const actn_startd = new Date(actn.StartDate);
+    const actn_endd = new Date(actn.EndDate);
+    
+
+    if (actn_startd < curdate && actn_endd > curdate) {
+      if (actn.Status === 'InProcess') {
+        data_ar = [
+          {
+            x: `${actn.Project_Name}-${actn.Project_Code}`,
+            y: [new Date(actn.StartDate).getTime(), new Date().getTime()],
+            fillColor: color,
+            index: _index
+          },
+          {
+            x: `${actn.Project_Name}-${actn.Project_Code}`,
+            y: [new Date().getTime(), new Date(actn.EndDate).getTime()],
+            fillColor: '#dcdcdc',
+            index: _index
+          }
+        ];
+      }else {
+        data_ar = [{
+          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
+          fillColor: color,
+          index: _index
+        }];
+      }
+    } else {
+      const colorvalue = actn_startd >= curdate && actn.Status === 'InProcess' ? '#dcdcdc' : color;
+      data_ar = actn.Status === 'Delay' ? [
+        {
+          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
+          fillColor: '#0089FB',
+          index: _index
+        },
+        {
+          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          y: [new Date(actn.EndDate).getTime(), new Date().getTime()],
+          fillColor: colorvalue,
+          index: _index
+        }] : [{
+          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
+          fillColor: colorvalue,
+          index: _index
+        }];
+    }
+
+    return {
+      name: actn.Status,
+      data: data_ar
+    };
+  });
+
+  const row_height=65;
+  let chart_height=row_height*actions_list.length;
+  chart_height=chart_height<=250?280:chart_height;
+  console.log('chart_height value:',chart_height);
+
+
+  const options = {
+    series: _series,
+    chart: {
+      height: chart_height,
+      type: 'rangeBar',
+      animations: {
+        enabled: false // Disable animations to improve performance
+      }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        barHeight: '58%',
+        rangeBarGroupRows: true
+      }
+    },
+    fill: {
+      type: 'solid'
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      type: 'datetime',
+      position: 'top',
+      labels: {
+        show: true
+      },
+      axisBorder: {
+        show: true
+      },
+      axisTicks: {
+        show: true
+      }
+    },
+    grid: {
+      yaxis: {
+        lines: {
+          show: true
+        }
+      },
+      xaxis: {
+        lines: {
+          show: true
+        }
+      },
+      padding: {
+        top: 35,
+        right: 10,
+        bottom: 20,
+        left: 0
+      }
+    },
+    legend: {
+      show: false
+    },
+    tooltip: {
+      custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+        const data = w.config.series[seriesIndex].data[dataPointIndex];
+        const index = data.index;
+        const actn_name = actions_list[index].Project_Name;
+        const actn_start = this.datepipe.transform(new Date(actions_list[index].StartDate), 'MMM d, y');
+        const actn_end = this.datepipe.transform(new Date(actions_list[index].EndDate), 'MMM d, y');
+        const daydiff = Math.abs(moment(actions_list[index].StartDate, 'YYYY-MM-DD').diff(moment(actions_list[index].EndDate, 'YYYY-MM-DD'), 'days')) + 1;
+        const actn_status = actions_list[index].Status;
+        const statusColor = all_status[actn_status] || all_status['other'];
+        const delaydays_ = Math.abs(actions_list[index].Delaydays);
+        const actn_res = actions_list[index].Responsible;
+        const actn_alhrs = actions_list[index].AllocatedHours;
+  
+        const _cd = new Date();
+        const d1 = new Date(actions_list[index].StartDate);
+        const d2 = new Date(actions_list[index].EndDate);
+  
+        return `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:#ffffff;">
+          <div style="display: flex;margin-bottom: 4px;column-gap: 10px;">
+            <span style="flex-grow: 1;">
+              <span style="font-size: 10px;font-family: Lucida Sans Unicode;display: inline-block;max-width: 250px;text-wrap: nowrap;overflow: hidden;text-overflow: ellipsis;">${actn_name}</span>
+              <span style="font-size: 9px;font-family: Lucida Sans Unicode;display: flex;align-items: center;justify-content: start;color: #afaeae;position: relative;top: -4px;">${actn_res}</span>
+            </span>
+            <span style="padding: 0.3em 0.6em 0.2em 0.6em;border-radius: 2px;background-color:${statusColor}; color: white;font-family: 'Lucida Sans Unicode';font-size: 11px;align-self: flex-start;">${actn_status} </span>
+          </div>
+          <div style="display: flex;align-items: center;margin-bottom: 0px;column-gap: 10px;">
+            <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
+              <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
+                <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;">Allocated hours</legend>
+                ${actn_alhrs} hrs
+              </fieldset>
+            </span>
+          </div>
+          <div style="font-size: 12px; display: flex; column-gap: 3px;">
+            <fieldset style="flex-grow:1; border: 1px solid #4e49491f; padding: 0.3em; border-radius: 3px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
+              <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width:fit-content;  margin-bottom:0;">${d1 < _cd ? 'Started on' : 'Starting from'}</legend>
+              ${actn_start}
+            </fieldset>
+            <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
+              <span style="text-align: center;color: #4e49499c;font-family: Lucida Sans Unicode;font-weight: bold;font-size: 9px;">${daydiff} ${daydiff > 1 ? 'days' : 'day'}</span>
+            </span>
+            <fieldset style="flex-grow:1;border: 1px solid #4e49491f;padding: 0.3em;border-radius: 6px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e49499c;min-width: 50px;display: flex;justify-content: center;font-size: 10px;text-align: left;">
+              <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width: fit-content;margin-left: 5px; margin-bottom:0;">${d2 < _cd ? 'Ended on' : 'Ending on'}</legend>
+              ${actn_end}
+            </fieldset>
+          </div>
+        </div>`;
+      }
+    },
+    annotations: {
+      xaxis: [{
+        x: todays_date,
+        borderColor: '#5867dd',
+        borderWidth: 2,
+        label: {
+          style: {
+            color: '#fff',
+            background: '#5867dd',
+            fontFamily: 'Lucida Sans Unicode',
+            fontWeight: 'normal',
+            fontSize: '9px',
+            padding: {
+              left: 6,
+              right: 6,
+              top: 3,
+              bottom: 3
+            },
+            borderRadius: '5px',
+          },
+          text: 'Today',
+          textAnchor: 'start',
+          offsetX: 9,
+          offsetY: 0
+        }
+      }]
+    }
+  };
+  
+
+  if (this.ActnsGanttChart) {
+    this.ActnsGanttChart.destroy();
+  }
+  
+  this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
+  this.ActnsGanttChart.render();
+  
+  
+  
+     
+
+}
+
+
+ActnsGanttChart:any;
+ganttActnsConfig:{byuser:string}={byuser:'All'};
+filterActionsOnGantt(option:string){
+     this.ganttActnsConfig.byuser=option;
+     this.loadActionsGrantt();
+}
+
+
+
+onActnsGanttClosed(){
+    this.ActnsGanttChart=null;
+    this.ganttActnsConfig={byuser:'All'};
+    this.total_userActns=undefined;
+}
 
 
 
