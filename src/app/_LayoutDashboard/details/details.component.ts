@@ -9587,8 +9587,13 @@ loadActionsGrantt(){
 
   const todays_date = new Date().getTime();
   const curdate = new Date();
-  const actions_list:any=this.projectActionInfo.filter((actn)=>{
+  let actions_list:any=this.projectActionInfo.filter((actn)=>{
          return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
+  });
+  actions_list.sort((a1,a2)=>{
+      const x=a1.Duration+(a1.Status=='Delay'?a1.Delaydays:0);
+      const y=a2.Duration+(a2.Status=='Delay'?a2.Delaydays:0);
+      return y-x;
   });
   this.total_userActns=actions_list.length;
 
