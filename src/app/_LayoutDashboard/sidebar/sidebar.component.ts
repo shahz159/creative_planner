@@ -42,6 +42,15 @@ export class SidebarComponent implements OnInit {
       inertia: true,
       placement:'right'
     });
+    tippy('#scheduleevent', {
+      content: "Schedule Event",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right'
+    });
     tippy('#performance', {
       content: "Performance dashboard",
       arrow: true,

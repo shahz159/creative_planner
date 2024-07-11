@@ -4411,7 +4411,12 @@ loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
   
 
-  const _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
+  let _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
+  _ProjectsListBy_Pid1.sort((p1,p2)=>{
+      let x=p1.Duration+(p1.Status=='Delay'?new Date(p1.DeadLine)>=new Date()?0:p1.Delaydays:0);
+      let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
+      return y-x;
+  });
   this.prj_statuses=_ProjectsListBy_Pid1.map(item=>item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime(); 
@@ -4424,7 +4429,7 @@ loadGanttChart(){
       const prj_endd=new Date(prj.DeadLine);
       const curdate=new Date();
 
-    if(prj_startd<curdate&&prj_endd>curdate){
+    if(prj_startd<curdate&&prj_endd>curdate){ 
 
 
        if(prj.Status=='InProcess')
