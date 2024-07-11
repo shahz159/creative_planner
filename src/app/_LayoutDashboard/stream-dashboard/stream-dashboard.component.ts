@@ -11,5 +11,10 @@ export class StreamDashboardComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  view_graph_div(){
+    document.getElementById("graph-div").style.display = "block";
+  }
+  close_graph_div(){
+    document.getElementById("graph-div").style.display = "none";
+  }
 }
