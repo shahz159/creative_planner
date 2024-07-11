@@ -11,6 +11,8 @@ import { Router, RouterLink } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import * as _ from 'underscore';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import * as moment from 'moment';
 // import { object, string } from '@amcharts/amcharts4/core';
 // import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { ParameterService } from "src/app/_Services/parameter.service";
@@ -43,6 +45,18 @@ export class ProjectsSummaryComponent implements OnInit {
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
+  pipe: any;
+
+selected_dates:any= null;
+ranges: any = {
+  'Today': [moment(), moment()],
+  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+  'This Month': [moment().startOf('month'), moment().endOf('month')],
+  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+};
+Dateselectionrange: string = 'Date selection range';
 
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
@@ -57,6 +71,10 @@ export class ProjectsSummaryComponent implements OnInit {
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
+    // this.selected = {
+    //   startDate: moment().startOf('day'),
+    //   endDate: moment().endOf('day')
+    // };
   }
 
   _subtaskDiv: boolean;
@@ -412,7 +430,6 @@ $(document).ready(function(){
     // alert(this.isChecked);
   }
     GetProjectsByUserName(type) {
-debugger
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
 
@@ -497,8 +514,10 @@ debugger
   LastPage:number;
   lastPagerecords:number;
   duplicateofCompany:any[]=[]
+
+
+
   getDropdownsDataFromDB() {
-debugger
     if(this.Type=='ALL Projects'){
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -506,6 +525,8 @@ debugger
     this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
     this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
     this._objDropdownDTO.Selected_SearchText = this.searchText;
+
+
     if(this.isChecked==true){
       this._objDropdownDTO.ActiveStatus = "Inactive";
     }
@@ -516,7 +537,6 @@ debugger
     this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
       .subscribe((data) => {
         // console.log("company data",data)
-            debugger
 
         if (this.selectedItem_Emp.length == 0) {
           this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
@@ -570,12 +590,14 @@ debugger
       });
     }
     else if(this.Type=='RACIS Projects'){
+
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
       this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
       this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
       this._objDropdownDTO.SelectedCompany = this.selectedCompany_String;
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
+
       if(this.isChecked==true){
         this._objDropdownDTO.ActiveStatus = "Inactive";
       }
@@ -588,7 +610,6 @@ debugger
           //Emp
           // console.log("company data",data)
 
-          debugger
           if (this.selectedItem_Emp.length == 0) {
             this.EmpCountInFilter = JSON.parse(data[0]['Emp_Json']);
           }
@@ -628,7 +649,6 @@ debugger
           else {
             this.LastPage = Math.trunc(_vl);
           }
-debugger
           if(this.CurrentPageNo == this.LastPage){
             this.lastPagerecords=30;
           }
@@ -692,7 +712,8 @@ debugger
 
 
 
-  getDropdownsDataFromDB1(){   debugger
+  getDropdownsDataFromDB1(){
+
 
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
       this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -701,7 +722,7 @@ debugger
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
       this._objDropdownDTO.ActiveStatus = "Active";
-      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{ debugger
+      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{
 
 
 
@@ -714,7 +735,6 @@ debugger
           this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
           this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
           this._totalProjectsCount = this._totalProjectsCount[0]['TotalProjects'];
-debugger
           let _vl = this._totalProjectsCount / 30;
           let _vl1 = _vl % 1;
           if (_vl1 > 0.000) {
@@ -940,7 +960,6 @@ debugger
   }
 
   applyFilters() {
-debugger
 this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -954,8 +973,14 @@ this.edited = true
     this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
       return select.Company_No;
     }).join(',');
+
+
+    const date_1 = this.selected_dates?moment(this.selected_dates.startDate.$d).format('YYYY-MM-DD'):null;
+    const date_2 = this.selected_dates?moment(this.selected_dates.endDate.$d).format('YYYY-MM-DD'):null;
+
+    // const datesString = `${date_1}, ${date_2}`;
+
     if(this.Type=='ALL Projects'){
-      //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
     this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
     this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
     this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
@@ -964,6 +989,9 @@ this.edited = true
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.searchText;
     this.ObjUserDetails.PortfolioId = null;
+    // this.ObjUserDetails.startdate = date_1;
+    // this.ObjUserDetails.enddate = date_2;
+
     if(this.isChecked==true){
       this.ObjUserDetails.ActiveStatus = "Inactive";
     }
@@ -973,7 +1001,6 @@ this.edited = true
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails)
       .subscribe(data => {
-        debugger
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
         this._CurrentpageRecords = this._ProjectDataList.length;
@@ -993,7 +1020,7 @@ this.edited = true
     this.getDropdownsDataFromDB();
     }
     else if(this.Type=='RACIS Projects'){
-      debugger
+      moment.locale('en');
       this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
       this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
       this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
@@ -1002,6 +1029,10 @@ this.edited = true
       this.ObjUserDetails.PageSize = 30;
       this.ObjUserDetails.SearchText = this.searchText;
       this.ObjUserDetails.PortfolioId = null;
+      this.ObjUserDetails.startdate = date_1;
+      this.ObjUserDetails.enddate = date_2
+
+
       if(this.isChecked==true){
         this.ObjUserDetails.ActiveStatus = "Inactive";
       }
@@ -1012,7 +1043,6 @@ this.edited = true
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe(data => {
-          debugger
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
           this._CurrentpageRecords = this._ProjectDataList.length;
@@ -1105,6 +1135,7 @@ this.edited = true
   resetFilters() {
     // this.getDropdownsDataFromDB()
     this.searchText = "";
+
     this.search_Type = [];
     this.CurrentPageNo = 1;
     this.edited=false;
@@ -1144,6 +1175,7 @@ this.edited = true
   //   this.GetProjectsByUserName(type);
   // this.getDropdownsDataFromDB()
   this.edited=false
+  this.selected_dates = null
     this.emplyToselect=[]
     this.comToselect=[]
     this.enterStatus = []
@@ -1151,6 +1183,8 @@ this.edited = true
     this.searchResult=false;
     this.txtSearch = '';
     this.searchText= '';
+    // const date_1 = null
+    // const date_2 = null
     this.selectedItem_Type.length = 0;
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0;
@@ -1573,8 +1607,9 @@ onEmpSelected(selected:boolean,selectedItem:any){
 }
 
 getNewFilterResult(){
-debugger
+
 this.edited = false
+
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
   this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.comToselect.includes(item.Company_No));
   this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.projtypeToselect.includes(item.Block_No));
@@ -1924,5 +1959,31 @@ sortCompany:any[]
  _ErrorMessage_User:any
 
 this_ErrorMessage_User = "* Please Select User Name"
+
+
+
+
+// Other methods and properties
+datesUpdated(range: any) {
+  if(range.startDate){
+      const start_date=range.startDate;
+      const end_date=range.endDate;
+      this.selected_dates={
+            ...range,
+            startDate:start_date,
+            endDate:end_date.$D?end_date:start_date
+      };
+  }
+  else{
+     this.selected_dates=null;
+  }
+
+}
+
+isInvalidDate(date: moment.Moment) {
+  // Example logic for invalid dates
+  return date.weekday() === 0 || date.weekday() === 6; // Disable weekends
+}
+
 
 }

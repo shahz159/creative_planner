@@ -100,7 +100,7 @@
                         </div> -->
 
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters();this.edited=false" [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
@@ -148,6 +148,21 @@
                                             <br>
 
 
+
+
+
+
+
+                                            <!-- <input class="rangepic form-control" type="text" ngxDaterangepickerMd [(ngModel)]="selected"
+                                              [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
+                                              [isInvalidDate]="isInvalidDate" [showClearButton]="true" (datesUpdated)="datesUpdated($event)"
+                                              [placeholder]="Dateselectionrange" /
+
+                                                       (datesUpdated)="datesUpdated($event)"
+                                              >
+ -->
+
+      <br>
 
                                             <div class="">
                                                 <!-- Adding the new matdropdown for multiple filter                   -->
@@ -537,7 +552,22 @@
 
 
 
-
+                                          <div class="row">
+                                            <div class="col-md-12">
+                                              <input class="form-control kt-quick-search__input pl-3"
+                                                     style="width: 100%;"
+                                                     ngxDaterangepickerMd
+                                                     [(ngModel)]="selected_dates"
+                                                     [showCustomRangeLabel]="true"
+                                                     [alwaysShowCalendars]="true"
+                                                     [ranges]="ranges"
+                                                     [linkedCalendars]="true"
+                                                     [showClearButton]="true"
+                                                     [autoApply]="false"
+                                                     (datesUpdated)="datesUpdated($event)"
+                                                     [placeholder]="Dateselectionrange"/>
+                                            </div>
+                                          </div>
 
 
 
@@ -827,7 +857,7 @@
                         </div>
                         <!-- new filters -->
 
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll();getNewFilterResult()">
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll();getNewFilterResult();">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
 
