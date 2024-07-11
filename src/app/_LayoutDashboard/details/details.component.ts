@@ -9597,7 +9597,6 @@ loadActionsGrantt(){
   });
   this.total_userActns=actions_list.length;
 
-
   const _series = actions_list.map((actn, _index) => {
     const color = all_status[actn.Status] || all_status['other'];
     let data_ar = [];
@@ -9662,6 +9661,11 @@ loadActionsGrantt(){
   chart_height=chart_height<=250?280:chart_height;
   console.log('chart_height value:',chart_height);
 
+
+ if(this.ActnsGanttChart){
+    this.ActnsGanttChart.updateSeries(_series);
+ }
+ else{
 
   const options = {
     series: _series,
@@ -9797,18 +9801,11 @@ loadActionsGrantt(){
       }]
     }
   };
-  
-
-  if (this.ActnsGanttChart) {
-    this.ActnsGanttChart.destroy();
-  }
-  
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
   this.ActnsGanttChart.render();
-  
-  
-  
-     
+
+ }
+
 
 }
 
