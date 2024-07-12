@@ -265,6 +265,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.procount = JSON.parse(data[0]['Procount']);
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
+ 
         this.status_list.forEach(element => {
           if(element.Status=='Accepted'){
             this.acceptCount = element.SCount;
@@ -566,7 +567,7 @@ debugger
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-    // debugger
+    debugger
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -1153,6 +1154,7 @@ showassign(){
 activeButton: string = 'totalProjects';
 
 setActiveButton(buttonName: string) {
+  debugger
   this.activeButton = buttonName;
 }
 
@@ -1162,7 +1164,12 @@ items = [
   { total: 3, details: 'Assign task/project' },
   { total: 4, details: 'Action to project'}
 ];
+currentStatus: string = 'Accepted'; // Default to 'Accepted'
 
+setStatus(status: string) {
+  debugger
+  this.currentStatus = status;
+}
 }
 
 

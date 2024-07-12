@@ -168,7 +168,11 @@ export class ProjectTypeService {
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
     this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
+    this.ObjUserDetails.startdate=obj.startdate;
+    this.ObjUserDetails.enddate=obj.enddate;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
+    // console.log(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary","ddddddddddddddddddddddddddddddddddddddddddddddd");
+    // console.log(this.ObjUserDetails,"ggggggggggggggggggggggggggggg");
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
   GetProjectsByOwner_Service_ForSummary(obj: UserDetailsDTO) {
@@ -182,8 +186,10 @@ export class ProjectTypeService {
     this.ObjUserDetails.PageSize = obj.PageSize;
     this.ObjUserDetails.SearchText = obj.SearchText;
     this.ObjUserDetails.ActiveStatus = obj.ActiveStatus;
-    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
+    this.ObjUserDetails.startdate=obj.startdate;
+    this.ObjUserDetails.enddate=obj.enddate;
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByOwner_ForSummary", this.ObjUserDetails);
+
   }
 
   GetProjectsByUserName_Service_ForProjectsTODO(obj: UserDetailsDTO) {
@@ -572,6 +578,8 @@ export class ProjectTypeService {
     this._ObjCompletedProj.Agenda_Id = objDTO.Agenda_Id;
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
+
+    console.log(this._ObjCompletedProj,'_ObjCompletedProj')
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
   }
 

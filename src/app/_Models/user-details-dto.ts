@@ -2,7 +2,7 @@ export class UserDetailsDTO {
     UserName: string;
     Password: string;
     Active: boolean;
-   
+
     Emp_Comp_No: string;
     SystemRole: string;
     Created_On: Date;
@@ -12,7 +12,7 @@ export class UserDetailsDTO {
     Rejoin: boolean;
     DB_UserId: string;
     DB_Password: string;
-   
+
     DateOfJoin: Date;
     Emp_Email: string;
     Emp_First_Name: string;
@@ -23,7 +23,7 @@ export class UserDetailsDTO {
     TM_DisplayName:string;
     ProjectType: string;
     Team_Support:string;
-   
+
     ProjectCodes: string;
     Project_Code: string;
     Exec_BlockName: string;
@@ -38,12 +38,16 @@ export class UserDetailsDTO {
     SelectedEmployee:string;
     SelectedCompany:string;
     SelectedStatus:string;
-    
+
     PageNumber: number;
     PageSize:number;
     SearchText: string;
-    PortfolioId:number; 
+    PortfolioId:number;
     IsPolicy:number;
+
+
+    startdate:any;
+    enddate:any;
 
     Owner_empno:string;
     Resp_empno:string;
@@ -52,4 +56,5 @@ export class UserDetailsDTO {
     IsCommunicationDownload: boolean;
     cancel:any;
     cancelcount:any;
+    checkedDate: any;
 }

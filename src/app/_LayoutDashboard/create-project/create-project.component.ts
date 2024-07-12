@@ -829,7 +829,7 @@ this.isPrjDesValid=this.isValidString(this.PrjDes,5);
 
   if(
 
-    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=200))&&
+    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=500))&&
     (
       (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
       (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours)) ||
@@ -1345,7 +1345,7 @@ projectEdit(val) {
   this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
 
 
-if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=200
+if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=500
   &&this.selectedOwnResp&&this.selectedcategory&&this.selectedclient&&this.Start_Date&&this.End_Date
 ){
   this.notProvided=false
@@ -2287,7 +2287,7 @@ this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
 
 
         // check all mandatory field are provided.
-        if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=200&&
+        if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=500&&
           this.OGowner&&this.OGresponsible&&
           this.selectedcategory&&this.selectedclient&&
           this.Start_Date&&this.End_Date&&

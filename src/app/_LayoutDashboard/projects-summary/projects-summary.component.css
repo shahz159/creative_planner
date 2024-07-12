@@ -3346,3 +3346,47 @@ td:nth-child(4) {
   font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
 }
 
+.add-icon {
+  color: white;
+  border-radius: 50%;
+  background-color: #646C9A;
+  -webkit-text-stroke-width: thin;
+}
+
+.add-icon:hover {
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+.daterangepicker .drp-buttons .applyBtn {
+  margin-right: 20px; /* Add margin to the right of the Apply button */
+}
+
+.daterangepicker .drp-buttons .cancelBtn {
+  margin-left: 30px; /* Add margin to the left of the Cancel button */
+}
+
+::ng-deep .md-drppicker .btn {
+  margin-left: 20px;
+}
+::ng-deep .md-drppicker .buttons_input .clear {
+  background-color: #e0e7ed !important;
+  margin-right: 15px;
+}
+
+::ng-deep button.btn.btn-default.clear svg {
+  display: none;
+}
+.input-group-append span {
+  display: none;
+}
+
+/* Style the clear button */
+ .input-group-append button {
+  /* Add your custom styles for the clear button */
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  /* Add padding or margins as needed */
+}
