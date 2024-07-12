@@ -134,7 +134,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     if(prjCode&&actCode)
       this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
     else
-    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", actCode, "3"]);
+    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode, "3"]);
 
     //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -210,6 +210,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
       //Reset The List for New Data
       this._ProjectDataList = [];
+
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe((data) => {
         
@@ -221,10 +222,11 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']); 
-            console.log(this._ProjectDataList,'_ProjectDataList')
+           
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+          
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
           }
@@ -282,6 +284,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+         
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
             // this.portfolio_List=JSON.parse(this._ProjectDataList['availableports'])
@@ -324,7 +327,9 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this._CurrentpageRecords = 0;
           }
           else {
+            debugger
             this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+          
             this._CurrentpageRecords = this._AssignedProjectsList.length;
             if (type == 'Assigned by me')
               this._totalProjectsCount = (data[0]['AssignTOcount']);
@@ -332,9 +337,14 @@ export class ViewDashboardProjectsComponent implements OnInit {
               this._totalProjectsCount = (data[0]['AssignBYcount']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+           
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
+            console.log(this.TypeContInFilter, "TypeContInFilter");
+            
+            console.log(this.StatusCountFilter, "StatusCountFilter");
 
-            console.log(this._AssignedProjectsList, "test assign");
+            console.log(this.EmpCountInFilter, "EmpCountInFilter");
+           
           }
         });
     }
@@ -522,6 +532,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           //Status
           if (this.selectedItem_Status.length == 0) {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+            
           }
           else {
             this.StatusCountFilter = this.selectedItem_Status[0];
@@ -576,6 +587,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           //Status
           if (this.selectedItem_Status.length == 0) {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+           
           }
           else {
             this.StatusCountFilter = this.selectedItem_Status[0];
@@ -1007,6 +1019,7 @@ getAssignedActions(type:'BYME'|'TOME'){
           this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
+        
           this._CurrentpageRecords = this._ProjectDataList.length;
           this._totalProjectsCount = data[0]['delaycount'];
           // console.log(this._ProjectDataList,"delay actions")
