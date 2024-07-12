@@ -9683,29 +9683,39 @@ loadActionsGrantt(){
       },
       events: {
         updated: ()=>{ 
-          // const chartContainer = document.querySelector("#actnsfull-graph");
-          // const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
-          // let textElements = xAxisLabels.querySelectorAll('text');
-          // const dateGcH=document.getElementById('dates-actnsGnt');
-          // const el:any=dateGcH.querySelector('#this-is-head');
-          
-          // el.innerHTML='';
-          // textElements.forEach(te=>{
-          //   const clonedTe = te.cloneNode(true);
-          //   clonedTe.setAttribute('y', '65%');
-          //   clonedTe.setAttribute('fill','#000');
-          //   el.appendChild(clonedTe);
-          // });
 
+          const chartContainer = document.querySelector("#actnsfull-graph");
+          const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
+          let textElements = xAxisLabels.querySelectorAll('text');
+          const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-grid .apexcharts-gridlines-horizontal line');
+          const linewth=hrline.getAttribute('x2');
+          const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
+          dateGcHl.style.width=linewth+'px';  
+          const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
+          dateGcHv.innerHTML=''; 
+          textElements.forEach(te => {
+            const clonedTe = te.cloneNode(true);
+            clonedTe.setAttribute('y', '65%');
+            clonedTe.setAttribute('fill', '#000');
+            dateGcHv.appendChild(clonedTe);
+          });
 
           // const ctrlbtns:any=document.querySelector('#actns-graphmodal .apexcharts-toolbar');
-          // ctrlbtns.style.position='fixed';
-          // ctrlbtns.style.top='18%';
-          // ctrlbtns.style.right='5%';
+          //  const ctrlsection:any=document.querySelector('.gantt-ctrls-btns');
+          //  ctrlsection.innerHTML='';
+          //  ctrlsection.append(ctrlbtns);
 
-          
+        
+          const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
+          const trsnfvalue=gcharttable.getAttribute('transform');
+          console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
+          gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
+          console.log('gcharttable:',gcharttable);
+              
 
          },
+
+        
       }
     
     },

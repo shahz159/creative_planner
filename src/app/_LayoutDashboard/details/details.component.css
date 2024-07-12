@@ -8133,7 +8133,7 @@ input.search-input {
 #actns-graphmodal .actns-graph-dv .actngantt-chart-holder{
    overflow-y: auto;
 }
-
+ 
 #actns-graphmodal .actns-graph-dv .actngantt-chart-holder::-webkit-scrollbar {
   width: 7px;
 }
