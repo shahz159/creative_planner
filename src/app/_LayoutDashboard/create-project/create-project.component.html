@@ -1448,9 +1448,9 @@
                                     placeholder="Enter project description" [ngClass]="{'error-border': !PrjDes&&notProvided}" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
                                     <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
                                     <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
-                                    at least 5 words, maximum 200 characters are allowed</span>
+                                    at least 5 words, maximum 500 characters are allowed</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
-                                   <span *ngIf="PrjDes&&PrjDes.length>200" style="color:rgb(217,48,37)">Maximum 200 characters are allowed</span>
+                                   <span *ngIf="PrjDes&&PrjDes.length>500" style="color:rgb(217,48,37)">Maximum 500 characters are allowed</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
@@ -2713,8 +2713,8 @@
                                 <textarea type="text" class="form-control"  [ngClass]="{'error-border':!ProjeditDescription&&notProvided}"    placeholder="Enter project description" height="60px"
                                 [(ngModel)]="ProjeditDescription" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
                                 <!-- <span *ngIf="!ProjectDescription&&notProvided" style="color:rgb(217,48,37)">Please enter description</span> -->
-                                <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 200 characters are allowed</span>
-                                <span *ngIf="ProjeditDescription&&ProjeditDescription.length > 200" style="color:rgb(217,48,37)">Maximum 200 characters are allowed</span>
+                                <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed</span>
+                                <span *ngIf="ProjeditDescription&&ProjeditDescription.length > 500" style="color:rgb(217,48,37)">Maximum 500 characters are allowed</span>
                           </div>
                       </div>
                   </div>
@@ -3090,8 +3090,8 @@
                               <textarea [ngClass]="{'error-border':!ProjectDescription&&notProvided}" type="text" class="form-control" placeholder="Enter action description" height="60px"
                               [(ngModel)]="ProjectDescription" (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
                               <span *ngIf="!ProjectDescription&&notProvided" style="color:red">Please enter action description </span>
-                              <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 200 characters are allowed</span>
-                              <span *ngIf="ProjectDescription&&ProjectDescription.length>200" style="color:red">Maximum 200 characters are allowed</span>
+                              <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed</span>
+                              <span *ngIf="ProjectDescription&&ProjectDescription.length>500" style="color:red">Maximum 500 characters are allowed</span>
                         </div>
                     </div>
                 </div>
