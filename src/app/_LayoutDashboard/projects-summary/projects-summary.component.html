@@ -138,12 +138,28 @@
                                             </div>
 
 
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
                                                         placeholder="Search Filters" [(ngModel)]="txtSearch"
                                                         style="width: 100%;">
                                                 </div>
+                                            </div> -->
+                                            <div class="row">
+                                              <div class="col-md-12">
+                                                <input class="form-control kt-quick-search__input pl-3"
+                                                       style="width: 100%;"
+                                                       ngxDaterangepickerMd
+                                                       [(ngModel)]="selected_dates"
+                                                       [showCustomRangeLabel]="true"
+                                                       [alwaysShowCalendars]="true"
+                                                       [ranges]="ranges"
+                                                       [linkedCalendars]="true"
+                                                       [showClearButton]="true"
+                                                       [autoApply]="false"
+                                                       (datesUpdated)="datesUpdated($event)"
+                                                       [placeholder]="Dateselectionrange"/>
+                                              </div>
                                             </div>
                                             <br>
 
@@ -552,22 +568,7 @@
 
 
 
-                                          <div class="row">
-                                            <div class="col-md-12">
-                                              <input class="form-control kt-quick-search__input pl-3"
-                                                     style="width: 100%;"
-                                                     ngxDaterangepickerMd
-                                                     [(ngModel)]="selected_dates"
-                                                     [showCustomRangeLabel]="true"
-                                                     [alwaysShowCalendars]="true"
-                                                     [ranges]="ranges"
-                                                     [linkedCalendars]="true"
-                                                     [showClearButton]="true"
-                                                     [autoApply]="false"
-                                                     (datesUpdated)="datesUpdated($event)"
-                                                     [placeholder]="Dateselectionrange"/>
-                                            </div>
-                                          </div>
+
 
 
 
