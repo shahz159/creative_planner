@@ -2866,7 +2866,7 @@
                                                             [(ngModel)]="emp_Auditor">
                                                             <ng-option [value]="item.Emp_No"
                                                                 *ngFor="let item of racisNonRacis">
-                                                                {{item.RACIS||item.NonRACIS}}
+                                                                {{item.RACIS}}
                                                             </ng-option>
                                                         </ng-select>
                                                         <span *ngIf="!emp_Auditor&&notProvided" style="color:red">please select employee.</span>
@@ -7189,9 +7189,9 @@
                                         (closed)="isAuditorDrpDwnOpen=false; ">
   
                                       <ng-container *ngFor="let emp of racisNonRacis|filter:AuditorInputTF.value.trim()">
-                                          <mat-option [value]="{empName:(emp.RACIS||emp.NonRACIS), empNo:emp.Emp_No}" class="mat-font">
+                                          <mat-option [value]="{empName:emp.RACIS, empNo:emp.Emp_No}" class="mat-font">
                                               <mat-checkbox color="primary" [checked]="selectedAuditor?(emp.Emp_No==selectedAuditor.empNo):false"></mat-checkbox>
-                                              {{emp.RACIS||emp.NonRACIS}}
+                                              {{emp.RACIS}}
                                           </mat-option>
                                       </ng-container>  
   
@@ -14418,8 +14418,20 @@
           </div>
   
         </div>
-        <div class="modal-body d-flex actns-graph-dv ">
-          <div class="actns-graph" id="actnsfull-graph"></div>
+        <div class="modal-body actns-graph-dv ">
+            <!-- <div  id="dates-actnsGnt"
+                style="position: fixed;z-index: 125;background: white; color: white;top: 23%;width: 93%;max-height: 39px;display: flex;justify-content: flex-end;">
+                <svg  width="82.5%" style="margin-right:6.5%; background-color:white;">
+                    <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
+                        <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
+                            
+                        </g>
+                    </g>
+                </svg>
+            </div> -->
+            <div class="actngantt-chart-holder" style="max-height:500px; overflow-y:auto; margin-top:50px;">
+              <div class="actns-graph" id="actnsfull-graph"></div>
+           </div>
         </div>
       </div>
     </div>
