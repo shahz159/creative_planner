@@ -1,3 +1,4 @@
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,13 +14,14 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { SortDirective } from './sort.directive';
 //import { ProjectInfoComponent } from '../project-info/project-info.component';
 
+
 @NgModule({
   declarations: [
     ProjectsSummaryComponent,
-    DateAgoPipe, 
+    DateAgoPipe,
     SortDirective,
-  // ProjectInfoComponent
-    
+
+
   ],
   imports: [
     CommonModule,
@@ -30,8 +32,9 @@ import { SortDirective } from './sort.directive';
     AutocompleteLibModule,
     NgbModule,
     NgMultiSelectDropDownModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    NgxDaterangepickerMd.forRoot()
   ],
-  exports: [SortDirective] 
+  exports: [SortDirective]
 })
 export class ProjectsSummaryModule { }
