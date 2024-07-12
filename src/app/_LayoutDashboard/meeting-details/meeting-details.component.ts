@@ -20,6 +20,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { eventNames } from 'process';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
 
 @Component({
@@ -478,6 +479,7 @@ export class MeetingDetailsComponent implements OnInit {
   upcomingMeeting: any;
   meetingDuration: any;
   meetings_Recurrence: any;
+  completionReports_Status:any=[];
 
 
   meeting_details() {
@@ -496,7 +498,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-
+    
       this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
         const statusOrder = { "Accepted": 1, "Pending": 2, "May be": 3, "Rejected": 4 };
         return statusOrder[a.Status] - statusOrder[b.Status];
@@ -507,7 +509,10 @@ export class MeetingDetailsComponent implements OnInit {
         if (b.onlineStatus === "Start") return 1;
         return 0;
       });
-
+    
+      var getTotalCount= this.orderedItems.filter(item=> item.Status==='Accepted'|| item.onlineDuration );
+   
+      this.completionReports_Status=getTotalCount.length + 1 
 
       this.meetings_Recurrence = this.EventScheduledjson[0].Recurrence
 
@@ -520,9 +525,12 @@ export class MeetingDetailsComponent implements OnInit {
       this.totalAssign = this.AssignedTask.length;
       this.totalActiontask = this.Actiontask.length;
       this.Todotask = this.EventScheduledjson[0].Todotasks;
-      this.totalTodotask = this.Todotask.length
-      this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask
 
+      console.log('this.Todotask',this.AssignedTask , this.Actiontask , this.Todotask);
+
+      this.totalTodotask = this.Todotask.length;
+      this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
+     
       if (this.EmpNo == this.Current_user_ID) {
         this.meetingAdmin = true
       } else {
@@ -584,19 +592,17 @@ export class MeetingDetailsComponent implements OnInit {
 
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-
-
-
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalguest = this.User_Scheduledjson.length;
-
+      this.checkedusers=[];
       this.User_Scheduledjson.forEach(element => {
         this.checkedusers.push(element.stringval);
         element.isChecked = true;
       });
 
       this.Guestcount = this.checkedusers.length;
-
+     
+    
       // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
 
 
@@ -608,7 +614,7 @@ export class MeetingDetailsComponent implements OnInit {
         element.isChecked = true;
       });
 
-      // console.log(this.portfolio_Scheduledjson,'}}}}}}}}}}}}}}}}')
+    
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
@@ -731,7 +737,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetcompletedMeeting_data();
     this.timer = setInterval(() => {
       this.elapsedTime = new Date().getTime() - this.startTime.getTime();
-      console.log(new Date().getTime() - this.startTime.getTime(), "tiem")
+      // console.log(new Date().getTime() - this.startTime.getTime(), "tiem")
       // if (this.elapsedTime >= this.duration) {
       //   this.stopMeeting();
       // }
@@ -984,6 +990,8 @@ export class MeetingDetailsComponent implements OnInit {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
 
       }
+      this.checkeddms=[];
+  
       this._MemosSubjectList.forEach(element => {
         this.checkeddms.push(element.MailId);
         element.isChecked = true;
@@ -1340,6 +1348,14 @@ export class MeetingDetailsComponent implements OnInit {
     myWindow.focus();
   }
 
+  OnCardClickUpcoming(Schedule_ID: any) {
+    // sessionStorage.setItem('portfolioId', Schedule_ID);
+    let name: string = 'Meeting-Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${Schedule_ID}`;
+    var myWindow = window.open(myurl, Schedule_ID);
+    myWindow.focus();
+  }
 
 
   GetDMSEventValue: any
@@ -2162,9 +2178,20 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
+
+
+
   addBulletPointsOnEnter(event: any) {
-    if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true) {
+    debugger
+    event.preventDefault();
+    if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
       // Replace newline characters with <br> tags
+      if(event.type === 'paste'){
+        const pastedText = event.clipboardData?.getData('text/plain') || '';
+        this.Notes_Type= this.Notes_Type + pastedText ;
+      }
+     
+      this.Notes_Type.trim();
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -2432,13 +2459,14 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
       (data => {
-
+           
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
+        console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
           this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
-          console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
+       
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S = this.CompletedMeeting_notes[0].Actual_Start;
           this.separateTime(this.actualTime_S);
@@ -2476,7 +2504,7 @@ export class MeetingDetailsComponent implements OnInit {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
 
-            // console.log('1')
+            //  console.log('1')
 
           }, 1000);
         }
@@ -2511,6 +2539,9 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
+
+  
+
   actualTime_dur: any;
   meetinghours: any;
   meetingminutes: any;
@@ -2525,11 +2556,11 @@ export class MeetingDetailsComponent implements OnInit {
       this.meetingminutes = totalMinutes % 60;
       this.meetingseconds = 0; // Assuming no seconds as input is in minutes
     }
-    if (totalMinutes == this.AverageDuration) {
-      this.avghours = Math.floor(totalMinutes / 60);
-      this.avgminutes = totalMinutes % 60;
-      this.avgseconds = 0; // Assuming no seconds as input is in minutes
-    }
+    // if (totalMinutes == this.AverageDuration) {
+    //   this.avghours = Math.floor(totalMinutes / 60);
+    //   this.avgminutes = totalMinutes % 60;
+    //   this.avgseconds = 0; // Assuming no seconds as input is in minutes
+    // }
   }
 
   ActionedAssigned_Josn: any = [];
@@ -2908,7 +2939,9 @@ export class MeetingDetailsComponent implements OnInit {
         if (this.meetingStarted || this.meetingStarted != true) {
 
           if (data['Checkdatetimejson'] != '') {
+            debugger
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
+            console.log(this.AllAttendees_notes,'this.AllAttendees_notes')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -4733,7 +4766,7 @@ sortbyCurrent_Time(){
       this.Action_item.push(element.Assign_Id)
 
     });
-
+  
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Note = this.Notes_Type;
@@ -4742,7 +4775,7 @@ sortbyCurrent_Time(){
     this._calenderDto.Dms = this.checkeddms.join(',');
     this._calenderDto.Portfolio = this.checkedportfolio.join(',');
     this._calenderDto.Project = this.checkedproject.join(',');
-    // console.log(this._calenderDto,"dto")
+   
     this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
       (data => {
         // this.notifyService.showSuccess("Successfully", "Completed");
@@ -5145,6 +5178,8 @@ sortbyCurrent_Time(){
 previousmeetings:[any] | null;
 upcomingmeetings: [any] | null;
 previousWithUpcoming_loader: boolean = false;
+totalupcomingmeetings:any;
+totalpreviousmeetings:any;
 
 
 NewGetRecurrenceMeetings(meetings_HTR){
@@ -5175,6 +5210,7 @@ NewGetRecurrenceMeetings(meetings_HTR){
         }
       });
 
+      this.totalpreviousmeetings=this.previousmeetings.length;
       console.log(this.previousmeetings,'previousmeetings2');
      }else if(data['upcomingmeetings']){
     
@@ -5194,6 +5230,7 @@ NewGetRecurrenceMeetings(meetings_HTR){
         }
       });
       this.upcomingmeetings.reverse()
+      this.totalupcomingmeetings=this.upcomingmeetings.length;
       console.log(this.upcomingmeetings,'upcomingmeetings2');
       
      }

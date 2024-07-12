@@ -1773,7 +1773,7 @@ export class DashboardComponent implements OnInit {
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.Description_Type.trim().length<=200):true)&&
+      (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -3852,6 +3852,7 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {  
         this.loading = false;
+        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
