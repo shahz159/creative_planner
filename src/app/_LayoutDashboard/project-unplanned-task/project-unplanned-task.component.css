@@ -1749,7 +1749,7 @@ ul {
 }
 
 .scrollbar1 {
-    height: calc(100vh - 280px);
+    /* height: calc(100vh - 280px); */
     overflow: hidden;
     overflow-y: auto;
 }
@@ -2040,7 +2040,7 @@ span.count {
 }
 
 .scrollbar1 {
-    height: calc(100vh - 280px);
+    /* height: calc(100vh - 280px); */
 }
 
 .pendings {
@@ -2630,9 +2630,9 @@ span.kt-inbox__subject.h5 {
     display: none;
 }
 
-.card.info-card-body .card-header {
+/* .card.info-card-body .card-header {
     display: none;
-}
+} */
 
 .owner_responsible_view {
     margin-top: 5px;
@@ -2929,12 +2929,12 @@ hr.kt-left-hr {
 }
 
 .scrollbar1 {
-    height: calc(100vh - 192px);
+   max-height: calc(100vh - 450px);
 }
 
 .scrollbar1::-webkit-scrollbar-button {
     background: transparent;
-    height: 15px;
+    height: 5px;
     display: block;
 }
 
@@ -3275,4 +3275,54 @@ li.kt-category-list:hover .kt-cat-action {
 }
 span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
     display: block;
+}
+.accordion-runway {
+    margin-top: 1rem;
+    height: calc(100vh - 220px)
+}
+.runway-card-body {
+    padding: 10px;
+}
+.runway-card-header {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 1rem;
+    display: flex;
+    margin-bottom: 8px;
+}
+.runway-card-header a {
+    width: 100%;
+    color: #000;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.runway-card-header .accordion-icon {
+    display: flex;
+}
+.runway-card-header .accordion-icon svg {
+    width: 14px;
+    height: 14px;
+    color: #6F6F6F;
+    transition: all 0.25s ease-in-out;
+}
+.runway-card-header a[aria-expanded="false"] .accordion-icon svg {
+    transform: rotate(0deg);
+}
+.runway-card-header a[aria-expanded="true"] .accordion-icon svg {
+    transform: rotate(180deg);
+}
+.runway-card {
+    margin-bottom: 10px;
+}
+span.task-count {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: #5e68a230;
+    color: #5e68a2;
+    text-align: center;
+    border-radius: 2px;
+    margin-left: 5px;
 }

@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   InValidPassword = false;
   InValidUserName = false;
   IsCommunicationDownload: boolean;
-
+  showLoader = true;
   //private ObjHomeComp: HomeComponent
   EmpNo: string; EmpCompNo: string; SystemRole: string;
   constructor(private formBuilder: FormBuilder,
@@ -69,7 +69,15 @@ export class LoginComponent implements OnInit {
       e.removeClass('hide').addClass('showp')
       e.prev('input').attr('type', 'text')
     }
-
+    setTimeout(() => {
+      this.showLoader = false;
+      let snapElement = document.getElementById('snap');
+    
+      if (snapElement) {
+        snapElement.classList.add('hidden'); 
+      }
+    }, 5500);
+    
   }
   get f() { return this.loginForm.controls; }
 
