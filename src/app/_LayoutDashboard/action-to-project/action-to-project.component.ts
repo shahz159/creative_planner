@@ -501,8 +501,7 @@ return
       return
     }
 
-
-if(this._Description.length>200){
+if(this._Description.length>500){
 return
 }
 

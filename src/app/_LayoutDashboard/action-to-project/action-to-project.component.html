@@ -45,8 +45,8 @@
         <span style="color:rgb(217,48,37)" class=""  *ngIf="!_Description&&_desbool">Please enter description name </span>
 
         <!-- <span *ngIf ="_desbool&&!_Description" style="color:red">Please enter description Maximum 200 characters are allowed</span> -->
-        <span *ngIf="_Description&&isPrjDesValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 200 characters are allowed</span>
-       <span *ngIf="_Description&&_Description.length>200" style="color:rgb(217,48,37)">Maximum 200 characters are allowed</span>
+        <span *ngIf="_Description&&isPrjDesValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 500 characters are allowed</span>
+       <span *ngIf="_Description&&_Description.length>500" style="color:rgb(217,48,37)">Maximum 500 characters are allowed</span>
       </div>
     <!-- <div; class="form-group">
         <label> Assign; To <span class="text-danger">*</span> : <strong></strong></label>
