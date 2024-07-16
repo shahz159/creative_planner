@@ -590,12 +590,13 @@ debugger
     // alert(this._Categoryid);
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-        //this.CategoryList = JSON.parse(data[0]['CategoryList']);
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
 
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        console.log(this.ActionedAssigned_Josn,"accept,pend")
+
         let _Accepted =0;
         let _Pending =0;
         let _Rejected=0;
