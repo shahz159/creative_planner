@@ -2858,7 +2858,7 @@
                                                             [(ngModel)]="emp_Auditor">
                                                             <ng-option [value]="item.Emp_No"
                                                                 *ngFor="let item of racisNonRacis">
-                                                                {{item.RACIS||item.NonRACIS}}
+                                                                {{item.RACIS}}
                                                             </ng-option>
                                                         </ng-select>
                                                         <span *ngIf="!emp_Auditor&&notProvided" style="color:red">please select employee.</span>
@@ -7181,9 +7181,9 @@
                                         (closed)="isAuditorDrpDwnOpen=false; ">
   
                                       <ng-container *ngFor="let emp of racisNonRacis|filter:AuditorInputTF.value.trim()">
-                                          <mat-option [value]="{empName:(emp.RACIS||emp.NonRACIS), empNo:emp.Emp_No}" class="mat-font">
+                                          <mat-option [value]="{empName:emp.RACIS, empNo:emp.Emp_No}" class="mat-font">
                                               <mat-checkbox color="primary" [checked]="selectedAuditor?(emp.Emp_No==selectedAuditor.empNo):false"></mat-checkbox>
-                                              {{emp.RACIS||emp.NonRACIS}}
+                                              {{emp.RACIS}}
                                           </mat-option>
                                       </ng-container>  
   
@@ -14409,10 +14409,33 @@
                 </div>
           </div>
   
-        </div>
-        <div class="modal-body d-flex actns-graph-dv ">
-          <div class="actns-graph" id="actnsfull-graph"></div>
-        </div>
+        </div>   
+       
+
+        <div class="modal-body actns-graph-dv" style=" display: flex; flex-direction: column;">
+            <!-- <div class="gantt-ctrls-btns">
+                  
+            </div> -->
+            <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 25px;">
+                <div class="dates-label" style="background-color: #fff">
+                       
+                        <svg  width="100%" height="30px">
+                            <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
+                                <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
+                                    
+                                </g>
+                            </g>
+                        </svg>
+
+
+                </div>
+            </div>
+          <div class="gantt-container" style="flex-grow: 1; max-height: 60vh; overflow-y: auto;">
+               <div class="actns-graph" id="actnsfull-graph"></div>
+          </div>
+      </div>
+
+
       </div>
     </div>
   </div>

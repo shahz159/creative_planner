@@ -161,29 +161,13 @@
                                                        [placeholder]="Dateselectionrange"/>
                                               </div>
                                             </div>
-                                            <br>
 
 
 
-
-
-
-
-                                            <!-- <input class="rangepic form-control" type="text" ngxDaterangepickerMd [(ngModel)]="selected"
-                                              [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
-                                              [isInvalidDate]="isInvalidDate" [showClearButton]="true" (datesUpdated)="datesUpdated($event)"
-                                              [placeholder]="Dateselectionrange" /
-
-                                                       (datesUpdated)="datesUpdated($event)"
-                                              >
- -->
-
-      <br>
-
-                                            <div class="">
+                                            <div class="row">
                                                 <!-- Adding the new matdropdown for multiple filter                   -->
-                                              <div>
-                                                <div class="form-group" >
+                                              <div  class="col-md-6">
+                                                <div class="form-group mb-0" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="CompanyCountFilter">
                                                     <mat-label>Company</mat-label>
                                                      <mat-chip-list #selected_companies>
@@ -303,8 +287,8 @@
 
 
 <!-- employee matdropdown start -->
-                                              <div>
-                                                <div class="form-group" >
+                                              <div class="col-md-6">
+                                                <div class="form-group mb-0" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter">
                                                     <mat-label>Employees</mat-label>
                                                      <mat-chip-list #selected_employee>
@@ -395,8 +379,8 @@
                                               </div> -->
 
 <!-- project type matdropdown start -->
-                                              <div>
-                                                <div class="form-group" >
+                                              <div class="col-md-6">
+                                                <div class="form-group mb-0" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter">
                                                     <mat-label>Project type</mat-label>
                                                      <mat-chip-list #selected_projecttype>
@@ -509,8 +493,8 @@
 
 
 
-                                                <div>
-                                                  <div class="form-group" >
+                                                <div class="col-md-6">
+                                                  <div class="form-group mb-0" >
                                                     <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter">
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
@@ -574,22 +558,22 @@
 
 
                                             </div>
-                                            <br>
+                                         
 
                                             <hr>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-10">
-                                                <button
-                                                    class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
-                                                <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
-                                                    (click)="resetAll();getNewFilterResult();">Reset
-                                                </button>
+                                            <div class="col-md-12 text-end">
                                                 <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
                                                     (click)="filterMegadropdownclose()">cancel
                                                 </button>
+                                                <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="resetAll();getNewFilterResult();">Reset
+                                                </button>
+                                                <button
+                                                    class="btn btn-info btn-upper btn-sm btn-bold mr-2"
+                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
                                             </div>
                                         </div>
                                     </div>

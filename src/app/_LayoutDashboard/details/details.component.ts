@@ -1093,7 +1093,8 @@ this.prjPIECHART.render();
           this.userFound = racisUserIds.includes(this.Current_user_ID);
         }
 
-        this.racisNonRacis=[...RACISList,...this.nonRacisList];   debugger
+
+        this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
         
       });
 
@@ -9590,11 +9591,11 @@ loadActionsGrantt(){
   let actions_list:any=this.projectActionInfo.filter((actn)=>{
          return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
   });
-  actions_list.sort((a1,a2)=>{
-      const x=a1.Duration+(a1.Status=='Delay'?a1.Delaydays:0);
-      const y=a2.Duration+(a2.Status=='Delay'?a2.Delaydays:0);
-      return y-x;
-  });
+  // actions_list.sort((a1,a2)=>{
+  //     const x=a1.Duration+(a1.Status=='Delay'?a1.Delaydays:0);
+  //     const y=a2.Duration+(a2.Status=='Delay'?a2.Delaydays:0);
+  //     return y-x;
+  // });
   this.total_userActns=actions_list.length;
 
   const _series = actions_list.map((actn, _index) => {
@@ -9656,30 +9657,72 @@ loadActionsGrantt(){
     };
   });
 
-  const row_height=65;
-  let chart_height=row_height*actions_list.length;
-  chart_height=chart_height<=250?280:chart_height;
-  console.log('chart_height value:',chart_height);
+ 
+  const rowHeight=50;
+  let chartHeight=rowHeight*actions_list.length+100;
+
 
 
  if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateSeries(_series);
+    this.ActnsGanttChart.updateOptions({
+      chart: {
+        height: chartHeight + 'px'
+      },
+      series: _series
+    });
  }
  else{
 
   const options = {
     series: _series,
     chart: {
-      height: chart_height,
+      height: chartHeight+'px',
       type: 'rangeBar',
       animations: {
         enabled: false // Disable animations to improve performance
+      },
+      events: {
+        updated: ()=>{ 
+
+          const chartContainer = document.querySelector("#actnsfull-graph");
+          const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
+          let textElements = xAxisLabels.querySelectorAll('text');
+          const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-grid .apexcharts-gridlines-horizontal line');
+          const linewth=hrline.getAttribute('x2');
+          const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
+          dateGcHl.style.width=linewth+'px';  
+          const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
+          dateGcHv.innerHTML=''; 
+          textElements.forEach(te => {
+            const clonedTe = te.cloneNode(true);
+            clonedTe.setAttribute('y', '65%');
+            clonedTe.setAttribute('fill', '#000');
+            dateGcHv.appendChild(clonedTe);
+          });
+
+          // const ctrlbtns:any=document.querySelector('#actns-graphmodal .apexcharts-toolbar');
+          //  const ctrlsection:any=document.querySelector('.gantt-ctrls-btns');
+          //  ctrlsection.innerHTML='';
+          //  ctrlsection.append(ctrlbtns);
+
+        
+          const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
+          const trsnfvalue=gcharttable.getAttribute('transform');
+          console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
+          gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
+          console.log('gcharttable:',gcharttable);
+              
+
+         },
+
+        
       }
+    
     },
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: '58%',
+        barHeight: '35%',
         rangeBarGroupRows: true
       }
     },
@@ -9693,7 +9736,11 @@ loadActionsGrantt(){
       type: 'datetime',
       position: 'top',
       labels: {
-        show: true
+        show: true,
+        style: {
+          offsetY: 10, // Adjust this value to add space below the labels
+          colors:'#000'
+        }
       },
       axisBorder: {
         show: true
@@ -9781,28 +9828,37 @@ loadActionsGrantt(){
         label: {
           style: {
             color: '#fff',
-            background: '#5867dd',
+            background: '#5867dda5',
             fontFamily: 'Lucida Sans Unicode',
             fontWeight: 'normal',
             fontSize: '9px',
             padding: {
-              left: 6,
-              right: 6,
-              top: 3,
-              bottom: 3
+              left: 4,
+              right: 4,
+              top: 2,
+              bottom: 2
             },
             borderRadius: '5px',
           },
           text: 'Today',
           textAnchor: 'start',
-          offsetX: 9,
-          offsetY: 0
+          offsetX: -13,
+          offsetY: -20
         }
       }]
     }
+    
   };
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
   this.ActnsGanttChart.render();
+  
+
+
+  
+
+
+
+   
 
  }
 

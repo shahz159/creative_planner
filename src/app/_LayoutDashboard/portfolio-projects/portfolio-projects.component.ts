@@ -305,6 +305,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
+    // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
   }
@@ -335,7 +336,8 @@ export class PortfolioProjectsComponent implements OnInit {
   availablereport:any
   Availableport:any
   Portfolio : any[]
-  Employeshare:any[]
+  Employeshare:any[];
+
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
@@ -367,7 +369,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.lastProject = this._ProjectsListBy_Pid.length;
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
         console.log( this.Employeshare,'employeeeeeeeeeeee')
-        console.log("Portfolio Projects---->",   this._ProjectsListBy_Pid);
+        console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
