@@ -251,15 +251,16 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 100px;    z-index: 12 !important;"> </th>
-                                                    <th>Task name</th>
-                                                    <th>Description</th>
-                                                    <th>Type</th>
-                                                    <th>Employee</th>
-                                                    <th>Start date</th>
-                                                    <th>End date</th>
-                                                    <th>Last update</th>
-                                                    <th>Status</th>
-                                                    <th *ngIf="Type==type2">Action</th>
+                                                    <th  ><i class="fa fa-sort-alpha-down-alt"></i>  Task name</th>
+                                                    <th class="mr-2">  <i class="fas fa-sort"></i>Description</th>
+                                                    <th class="mr-2">  <i class="fas fa-sort"></i>Type</th>
+                                                    <th class="mr-2">  <i class="fas fa-sort"></i>Responsible</th>
+                                                    <th>  <i class="fas fa-sort"></i>Start date</th>
+                                                    <th>  <i class="fas fa-sort"></i>Deadline</th>
+                                                    <th>  <i class="fas fa-sort"></i>Last update</th>
+                                                    <th>  <i class="fas fa-sort"></i>Status</th>
+                                                    <th>  <i class="fas fa-sort"></i>Racis</th>
+                                                    <th *ngIf="Type==type2" class="fas fa-sort">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -267,7 +268,7 @@
                                                     <!-- Project details info column -->
                                                     <td class="kt-widget__title mb-0 ">
                                                         <div class="d-flex align-items-center">
-                                                            <a data-toggle="tooltip" title="Project Details!"
+                                                            <a data-toggle="tooltip" title="Project info"
                                                             class="btn px-0 info-btn  mr-2"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
                                                             (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
@@ -352,6 +353,60 @@
                                                     </span>
 
                                                       </td>
+
+
+                                                      <td  data-toggle="tooltip" data-placement="top"
+                                                      title="RACIS">
+                                                      <div class="kt-widget__details">
+                                                          <div class="kt-section__content kt-section__content--solid">
+                                                            <div class="kt-media-group">
+
+                                                               <ng-container  *ngIf="item.ProjectOwner">
+                                                              <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.ProjectOwner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
+                                                              </a></ng-container>
+
+                                                              <ng-container  *ngIf="item.TeamSupport">
+                                                              <a *ngIf="item.ProjectOwner==item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.ProjectOwner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
+                                                              </a></ng-container>
+
+                                                              <ng-container *ngIf="item.TeamRes">
+                                                              <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.TeamRes.split(' ')[0].charAt(0)}}{{item.TeamRes.split(' ')[item.TeamRes.split(' ').length -1].charAt(0)}}</span>
+                                                                </a></ng-container>
+
+                                                                <ng-container *ngIf="item.TeamAutho">
+                                                              <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.TeamAutho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length -1].charAt(0)}}</span>
+                                                              </a></ng-container>
+
+                                                              <ng-container *ngIf="item.TeamRes">
+                                                              <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length-1].charAt(0)}}</span>
+                                                                </a></ng-container>
+
+                                                                <ng-container *ngIf="item.TeamSupport">
+                                                                <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.TeamSupport}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>{{item.TeamSupport&&item.TeamSupport.split(' ')[0].charAt(0)}}{{item.TeamSupport&&item.TeamSupport.split(' ')[item.TeamSupport&&item.TeamSupport.split(' ').length-1].charAt(0)}}</span>
+                                                                </a></ng-container>
+                                                                <ng-container *ngIf="item.TeamCoor">
+                                                              <a  *ngIf="item.TeamCoor==item.TeamInformer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.TeamCoor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>1+</span>
+                                                              </a></ng-container>
+                                                              <ng-container *ngIf="item.TeamInformer">
+                                                              <a *ngIf="item.TeamCoor!=item.TeamInformer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.TeamCoor}} & Informer: {{item.TeamInformer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                  <span>1+</span>
+                                                                </a></ng-container>
+                                                            </div>
+                                                          </div>
+                                                          <span class="pin-icn d-none">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pin-angle-fill">
+                                                              <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
+                                                          </span>
+                                                        </div>
+                                                  </td>
                                                       <td>
 
                                                         <a class="port-info-btn"  *ngIf="item.Status==='Pending' && Type==type2"
@@ -440,29 +495,27 @@
                                                         <i class="fas fa-sort"></i>
                                                         Project type
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                    <!-- <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="ReportType" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Category: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
                                                         Category
-                                                    </th>
+                                                    </th> -->
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="TM_DisplayName" tabindex="0"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
                                                         class="curser-pointer"
                                                         aria-label="User Name: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
-                                                        Employee
-                                                        name
+                                                        Responsible
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="DeadLine" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="End Date: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i>
-                                                        End
-                                                        date
+                                                     Deadline
                                                     </th>
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
@@ -478,6 +531,13 @@
                                                         <i class="fas fa-sort"></i>
                                                         Status
                                                     </th>
+                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                    data-name="Status" tabindex="0" aria-controls="project-4"
+                                                    rowspan="1" colspan="1" class="curser-pointer"
+                                                    aria-label="Status: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i>
+                                                   Racis
+                                                </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -566,10 +626,10 @@
                                                       </ng-template>
 
 
-                                                   
+
                                                             <ng-container *ngIf="ActionhiddenIcon==true && Mode!='AssignedActions'">
-                                                           
-                                                     
+
+
 
 
                                                             <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
@@ -645,15 +705,25 @@
                                                     </td>
 
                                                     <td><span class="kt-widget__other">{{item.Exec_BlockName}}</span>
+                                                      <div>
+                                                      <div *ngIf="item.ReportType==null;else ReportType">
+                                                        <div class="kt-widget__other">Developemt</div>
+                                                    </div>
+                                                    <ng-template #ReportType>
+                                                        <div class="kt-widget__other">{{item.ReportType}}</div>
+                                                    </ng-template>
+                                                  </div>
                                                     </td>
-                                                    <td>
+
+                                                    <!-- <td>
                                                         <div *ngIf="item.ReportType==null;else ReportType">
                                                             <span class="kt-widget__other">Developemt</span>
                                                         </div>
                                                         <ng-template #ReportType>
                                                             <span class="kt-widget__other">{{item.ReportType}}</span>
                                                         </ng-template>
-                                                    </td>
+                                                    </td> -->
+
                                                     <td><span class="kt-widget__other">{{actionAssignedType==='TOME'?item.TM_DisplayName:item.TeamRes}}</span>
                                                     </td>
                                                     <td><span class="kt-widget__other">
@@ -757,6 +827,58 @@
                                                         </div>
 
                                                     </td>
+
+                                                    <td  data-toggle="tooltip" data-placement="top"
+                                                    title="RACIS">
+                                                    <div class="kt-widget__details">
+                                                        <div class="kt-section__content kt-section__content--solid">
+                                                          <div class="kt-media-group">
+
+                                                            <ng-container *ngIf="item.ProjectOwner">
+                                                            <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.ProjectOwner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
+                                                            </a> </ng-container>
+
+                                                            <ng-container *ngIf="item.TeamSupport">
+                                                            <a *ngIf="item.ProjectOwner==item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.ProjectOwner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
+                                                            </a></ng-container>
+
+                                                            <ng-container *ngIf="item.TeamRes">
+                                                            <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>{{item.TeamRes.split(' ')[0].charAt(0)}}{{item.TeamRes.split(' ')[item.TeamRes.split(' ').length -1].charAt(0)}}</span>
+                                                              </a></ng-container>
+
+                                                              <ng-container *ngIf="item.TeamAutho">
+                                                            <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.TeamAutho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length -1].charAt(0)}}</span>
+                                                            </a></ng-container>
+                                                            <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length-1].charAt(0)}}</span>
+                                                              </a>
+                                                              <ng-container *ngIf="item.TeamSupport">
+                                                              <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.TeamSupport}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>{{item.TeamSupport&&item.TeamSupport.split(' ')[0].charAt(0)}}{{item.TeamSupport&&item.TeamSupport.split(' ')[item.TeamSupport&&item.TeamSupport.split(' ').length-1].charAt(0)}}</span>
+                                                              </a></ng-container>
+
+                                                              <ng-container  *ngIf="item.TeamCoor">
+                                                            <a  *ngIf="item.TeamCoor==item.TeamInformer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.TeamCoor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                              <span>1+</span>
+                                                            </a></ng-container>
+
+                                                            <ng-container *ngIf="item.TeamCoor">
+                                                            <a *ngIf="item.TeamCoor!=item.TeamInformer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.TeamCoor}} & Informer: {{item.TeamInformer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                                <span>1+</span>
+                                                              </a></ng-container>
+                                                          </div>
+                                                        </div>
+                                                        <span class="pin-icn d-none">
+                                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pin-angle-fill">
+                                                            <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                          </svg>
+                                                        </span>
+                                                      </div>
+                                                </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -942,7 +1064,7 @@
                 <span class="text-small text-white">{{_displayPrtName}}</span>
 
             </div>
-           
+
         </div>
     </div>
     <div class="kt-portlet__body p-3">
@@ -952,14 +1074,14 @@
                     <div class="kt-widget1__item" *ngFor="let item of portfolio_List; let i=index">
                         <div class="kt-widget1__info kt-align-left" >
                          <h5 (click)="OnCardClick(item.Portfolio_ID)" class="curser-pointer">
-                               
-                             
-                                 {{i+1}}. {{item.Portfolio_Name}} 
-                               
+
+
+                                 {{i+1}}. {{item.Portfolio_Name}}
+
                            </h5>
                         </div>
                     </div>
-                 
+
                 </div>
             </div>
         </div>

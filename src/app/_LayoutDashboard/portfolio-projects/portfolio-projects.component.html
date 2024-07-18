@@ -556,6 +556,8 @@
                                                     <th><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
                                                     <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
                                                     <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </th>
+                                                    <th *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Racis</span> </th>
+
 
                                                     <th>
 
@@ -945,6 +947,49 @@
                                                 </td>
                                               </ng-container>
 
+                                              <td  *ngIf="!showDeletedPrjOnly" data-toggle="tooltip" data-placement="top"
+                                              title="RACIS">
+                                              <div class="kt-widget__details">
+                                                  <div class="kt-section__content kt-section__content--solid">
+                                                    <div class="kt-media-group">
+                                                      <!-- *ngIf="item1.Project_Owner!=item1.Support" -->
+
+                                                      <a *ngIf="item1.Project_Owner!=item1.Team_Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item1.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                        <span>{{ item1.Project_Owner.split(' ')[0].charAt(0) }}{{ item1.Project_Owner.split(' ')[item1.Project_Owner.split(' ').length - 1].charAt(0) }}</span>
+                                                      </a>
+                                                      <a *ngIf="item1.Project_Owner==item1.Team_Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item1.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                        <span>{{ item1.Project_Owner.split(' ')[0].charAt(0) }}{{ item1.Project_Owner.split(' ')[item1.Project_Owner.split(' ').length - 1].charAt(0) }}</span>
+                                                      </a>
+
+                                                      <a *ngIf="item1.Team_Res!=item1.Team_Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item1.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                          <span>{{item1.Team_Res.split(' ')[0].charAt(0)}}{{item1.Team_Res.split(' ')[item1.Team_Res.split(' ').length -1].charAt(0)}}</span>
+                                                        </a>
+                                                      <a *ngIf="item1.Team_Res!=item1.Team_Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item1.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                        <span>{{item1.Team_Autho.split(' ')[0].charAt(0)}}{{item1.Team_Autho.split(' ')[item1.Team_Autho.split(' ').length -1].charAt(0)}}</span>
+                                                      </a>
+                                                      <a *ngIf="item1.Team_Res==item1.Team_Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item1.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                          <span>{{item1.Team_Autho.split(' ')[0].charAt(0)}}{{item1.Team_Autho.split(' ')[item1.Team_Autho.split(' ').length-1].charAt(0)}}</span>
+                                                        </a>
+                                                        <ng-container *ngIf="item1.Team_Support">
+                                                        <a *ngIf="item1.Project_Owner!=item1.Team_Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item1.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                          <span>{{item1.Team_Support&&item1.Team_Support.split(' ')[0].charAt(0)}}{{item1.Team_Support&&item1.Team_Support.split(' ')[item1.Team_Support&&item1.Team_Support.split(' ').length-1].charAt(0)}}</span>
+                                                        </a></ng-container>
+                                                      <a  *ngIf="item1.Team_Coor==item1.Team_Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item1.Team_Coor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                        <span>1+</span>
+                                                      </a>
+                                                      <a *ngIf="item1.Team_Coor!=item1.Team_Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item1.Team_Coor}} & Informer: {{item1.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
+                                                          <span>1+</span>
+                                                        </a>
+                                                    </div>
+                                                  </div>
+                                                  <span class="pin-icn d-none">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="bi bi-pin-angle-fill">
+                                                      <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                    </svg>
+                                                  </span>
+                                                </div>
+                                          </td>
+
 
                                                     <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
                                                     </ng-template> -->
@@ -1104,6 +1149,24 @@
 
 
 
+
+
+                                        <!-- <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
+                                          <span class="Delay_color curser-pointer">abcd </span>
+
+
+
+                                      </td> -->
+
+
+
+
+
+
+
+
+
+
                         <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
                             <span class="Delay_color curser-pointer">Deleted </span>
                                 <!-- <div class="d-flex align-items-center justify-content-start">
@@ -1255,7 +1318,31 @@
                                                     {{status}}
                                                 </div>
                                             </div>
-                                            <div id="chartdiv3" style="width: 100%; height: fit-content"></div>
+                                           <div class="prjs-Ganttchart d-flex flex-column">
+                                                   <div class="gantt-ctrls-btns"></div> 
+                                                   <div class="prjs-gantt-dates"> 
+                                                        <div class="dates-label bg-white ">
+                                                                <svg  width="100%" height="30px">
+                                                                    <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
+                                                                        <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
+                                                                            
+                                                                        </g>
+                                                                    </g>
+                                                                </svg>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gantt-container" style="flex-grow: 1; max-height: 600px; overflow-y: auto;">
+                                                        <div id="chartdiv3" style="width: 100%; height: fit-content"></div>
+                                                    </div>
+                                           </div>
+
+
+
+
+
+
+                                           
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -1317,7 +1404,7 @@
                             </div>
                         </div>
 
-                    
+
                     </div>
                 </div>
             </div>

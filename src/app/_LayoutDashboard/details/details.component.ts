@@ -1126,7 +1126,7 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
-
+          
     // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
           let count:number=0;
           this.Activity_List.map((actv:any)=>{
@@ -1142,7 +1142,7 @@ this.prjPIECHART.render();
           });
    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-
+        
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
           console.log(this.firstFiveRecords,"ffffive ffffffffffffffff")
@@ -1156,7 +1156,7 @@ this.prjPIECHART.render();
                   [2,3].includes(d)?d+' days ago':
                   this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                 };
-          })
+          });
 
         }
         this.activitiesLoading=false;  // end the loading.
@@ -9568,36 +9568,33 @@ onTransferBtnClicked(){
 
 
 total_userActns:number|undefined;
+
 loadActionsGrantt(){
-  const all_status = {
-    'Under Approval': '#B2D732',
-    'InProcess': '#0089FB',
-    'Completed': '#62B134',
-    'Delay': '#EE4137',
-    'Completion Under Approval': '#B2D732',
-    'Forward Under Approval': '#B2D732',
-    'Project Hold': '#E2D9BC',
-    'Cancelled': '#EE4137',
-    'New Project Rejected': '#DFDFDF',
-    'Deadline Extend Under Approval': '#F88282',
-    'ToDo Achieved': '#62B134',
-    'ToDo Completed': '#62B134',
-    'Cancellation Under Approval': '#EE4137',
-    'other': '#d0d0d0'
-  }; 
+  const all_status={
+    'Completed':'#388E3C',
+    'InProcess':'#64B5F6',
+    'Completion Under Approval':'#81C784',
+    'Forward Under Approval':'#64B5F6',
+    'Under Approval': '#9C27B0',
+    'Delay':'#D32F2F',
+    'Project Hold':'#A1887F',
+    'New Project Rejected':'#BA68C8',
+    'Deadline Extend Under Approval':'#F9A825',
+    'Cancellation Under Approval':'#EF5350',
+   
+    'Cancelled':'#EE4137',
+    'ToDo Achieved':'#62B134',
+    'ToDo Completed':'#62B134',
+    'other':'#d0d0d0'
+  };
+
 
   const todays_date = new Date().getTime();
   const curdate = new Date();
   let actions_list:any=this.projectActionInfo.filter((actn)=>{
          return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
   });
-  // actions_list.sort((a1,a2)=>{
-  //     const x=a1.Duration+(a1.Status=='Delay'?a1.Delaydays:0);
-  //     const y=a2.Duration+(a2.Status=='Delay'?a2.Delaydays:0);
-  //     return y-x;
-  // });
   this.total_userActns=actions_list.length;
-
   const _series = actions_list.map((actn, _index) => {
     const color = all_status[actn.Status] || all_status['other'];
     let data_ar = [];
@@ -9609,13 +9606,13 @@ loadActionsGrantt(){
       if (actn.Status === 'InProcess') {
         data_ar = [
           {
-            x: `${actn.Project_Name}-${actn.Project_Code}`,
+            x: `${actn.Project_Name}(${actn.Project_Code})`,
             y: [new Date(actn.StartDate).getTime(), new Date().getTime()],
             fillColor: color,
             index: _index
           },
           {
-            x: `${actn.Project_Name}-${actn.Project_Code}`,
+            x: `${actn.Project_Name}(${actn.Project_Code})`,
             y: [new Date().getTime(), new Date(actn.EndDate).getTime()],
             fillColor: '#dcdcdc',
             index: _index
@@ -9623,7 +9620,7 @@ loadActionsGrantt(){
         ];
       }else {
         data_ar = [{
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
           fillColor: color,
           index: _index
@@ -9633,18 +9630,18 @@ loadActionsGrantt(){
       const colorvalue = actn_startd >= curdate && actn.Status === 'InProcess' ? '#dcdcdc' : color;
       data_ar = actn.Status === 'Delay' ? [
         {
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
-          fillColor: '#0089FB',
+          fillColor: all_status['InProcess'],
           index: _index
         },
         {
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.EndDate).getTime(), new Date().getTime()],
           fillColor: colorvalue,
           index: _index
         }] : [{
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
           fillColor: colorvalue,
           index: _index
@@ -9656,22 +9653,11 @@ loadActionsGrantt(){
       data: data_ar
     };
   });
-
- 
   const rowHeight=50;
   let chartHeight=rowHeight*actions_list.length+100;
+  let max_Xvalue=curdate;
+  max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
-
-
- if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateOptions({
-      chart: {
-        height: chartHeight + 'px'
-      },
-      series: _series
-    });
- }
- else{
 
   const options = {
     series: _series,
@@ -9683,37 +9669,47 @@ loadActionsGrantt(){
       },
       events: {
         updated: ()=>{ 
-
-          const chartContainer = document.querySelector("#actnsfull-graph");
-          const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
-          let textElements = xAxisLabels.querySelectorAll('text');
-          const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-grid .apexcharts-gridlines-horizontal line');
-          const linewth=hrline.getAttribute('x2');
-          const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
-          dateGcHl.style.width=linewth+'px';  
-          const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
-          dateGcHv.innerHTML=''; 
-          textElements.forEach(te => {
-            const clonedTe = te.cloneNode(true);
-            clonedTe.setAttribute('y', '65%');
-            clonedTe.setAttribute('fill', '#000');
-            dateGcHv.appendChild(clonedTe);
-          });
-
-          // const ctrlbtns:any=document.querySelector('#actns-graphmodal .apexcharts-toolbar');
-          //  const ctrlsection:any=document.querySelector('.gantt-ctrls-btns');
-          //  ctrlsection.innerHTML='';
-          //  ctrlsection.append(ctrlbtns);
-
         
-          const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
-          const trsnfvalue=gcharttable.getAttribute('transform');
-          console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
-          gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
-          console.log('gcharttable:',gcharttable);
-              
+                const chartContainer = document.querySelector("#actnsfull-graph");
+                const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
+                let textElements = xAxisLabels.querySelectorAll('text');
+                const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
+                console.log('hrline is:',hrline);
+                const linewth=hrline.getAttribute('x2');
+                const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
+                dateGcHl.style.width=linewth+'px';  
+                const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
+                dateGcHv.innerHTML=''; 
+                textElements.forEach(te => {
+                  const clonedTe = te.cloneNode(true);
+                  clonedTe.setAttribute('y', '65%');
+                  clonedTe.setAttribute('fill', '#000');
+                  dateGcHv.appendChild(clonedTe);
+                });
 
-         },
+                const ctrlbtns:any=document.querySelector('#actnsfull-graph .apexcharts-toolbar');
+          
+                ctrlbtns.style.backgroundColor='rgb(255 255 255 / 65%)';
+                ctrlbtns.style.padding='4px 6px 7px 5px';
+                ctrlbtns.style.border='2px solid #b3b3b3';
+
+                const ganttCtrls:any=document.querySelector('#actns-graphmodal .gantt-ctrls-btns');
+                ganttCtrls.innerHTML='';
+                ganttCtrls.append(ctrlbtns);
+
+                // const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
+                // yaxis.querySelectorAll('text').forEach(v=>{
+                //    v.setAttribute('x','-150');
+                //    v.setAttribute('text-anchor','start');
+                // });
+
+                const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
+                const trsnfvalue=gcharttable.getAttribute('transform');
+                console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
+                gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
+                console.log('gcharttable:',gcharttable);
+
+        },
 
         
       }
@@ -9739,14 +9735,34 @@ loadActionsGrantt(){
         show: true,
         style: {
           offsetY: 10, // Adjust this value to add space below the labels
-          colors:'#000'
-        }
+          colors:'#fff'
+        },
+
       },
       axisBorder: {
         show: true
       },
       axisTicks: {
         show: true
+      },
+      max:max_Xvalue.getTime()
+      
+    },
+    yaxis: {
+      labels: {
+        style: {
+          fontSize: '12px',       
+          fontFamily: 'Arial, sans-serif', 
+          color: '#333',          
+          textAnchor: 'start'    
+        },
+        formatter: function(value) {
+          if (isNaN(value)) {
+              let str=value.substring(0,value.lastIndexOf('('));
+              return str;
+          } else 
+            return value;
+        }
       }
     },
     grid: {
@@ -9770,6 +9786,7 @@ loadActionsGrantt(){
     legend: {
       show: false
     },
+    
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
@@ -9783,11 +9800,11 @@ loadActionsGrantt(){
         const delaydays_ = Math.abs(actions_list[index].Delaydays);
         const actn_res = actions_list[index].Responsible;
         const actn_alhrs = actions_list[index].AllocatedHours;
-  
+
         const _cd = new Date();
         const d1 = new Date(actions_list[index].StartDate);
         const d2 = new Date(actions_list[index].EndDate);
-  
+
         return `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:#ffffff;">
           <div style="display: flex;margin-bottom: 4px;column-gap: 10px;">
             <span style="flex-grow: 1;">
@@ -9820,6 +9837,7 @@ loadActionsGrantt(){
         </div>`;
       }
     },
+
     annotations: {
       xaxis: [{
         x: todays_date,
@@ -9849,21 +9867,19 @@ loadActionsGrantt(){
     }
     
   };
+
+
+ if(this.ActnsGanttChart){  
+    this.ActnsGanttChart.updateOptions(options);
+ }
+ else{
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
   this.ActnsGanttChart.render();
-  
-
-
-  
-
-
-
-   
-
  }
 
 
 }
+
 
 
 ActnsGanttChart:any;
@@ -9887,7 +9903,11 @@ onActnsGanttClosed(){
 
 
 
+// Activities Filter start.
+emps_of_actvs:any=[];
+actvs_types:any=[];
 
+// Activities Filter end.
 
 
 

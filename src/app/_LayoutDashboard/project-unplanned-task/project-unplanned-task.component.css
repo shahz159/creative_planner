@@ -207,7 +207,7 @@ h5 {
     padding-left: 0px !important;
 }
 
-/* 
+/*
 .side-bar-box li {
     border-bottom: 1px solid #f1f1f1;
     font-weight: 400;
@@ -2044,24 +2044,24 @@ span.count {
 }
 
 .pendings {
-    background-color: black;
+    background-color: #455a64;
     color: white;
 }
 
 .completion-under {
-    background-color: #B2D732;
-    color: black
+    background-color: #81C784;
+    color: white
 }
 
 .done {
-    background-color: #62B134 !important;
+    background-color: #388E3C !important;
     color: white !important;
 }
 
 
 
 .accepteds {
-    background-color: #0272D0 !important;
+    background-color: #7B1FA2 !important;
     color: white;
     padding: 2px 8px;
     border-radius: 2px
@@ -2075,41 +2075,41 @@ span.count {
 }
 
 .project-complete-rejected {
-    background-color: #FAF065 !important;
-    color: black !important;
+    background-color: #F44336 !important;
+    color: white !important;
 }
 
 
 .new-project-under {
-    background-color: #B2D732;
-    color: #000;
+    background-color: #9C27B0;
+    color: white;
     padding: 2px 8px;
     border-radius: 2px;
 }
 
 .completion-under-approval {
     color: black !important;
-    background-color: #B2D732 !important;
+    background-color: #81C784 !important;
     padding: 2px 8px;
     border-radius: 2px
 }
 
 .completed {
-    background-color: #62B134 !important;
+    background-color: #388E3C !important;
     padding: 2px 8px;
     border-radius: 2px;
     color: #fff;
 }
 
 .new-project-reject {
-    background-color: #dfdfdf !important;
-    color: #000;
+    background-color: #BA68C8 !important;
+    color: white;
     padding: 2px 8px;
     border-radius: 2px
 }
 
 .deadline-extend-under-approval {
-    background-color: #F88282 !important;
+    background-color: #E57373 !important;
     color: #ffffff;
     padding: 2px 8px;
     border-radius: 2px
@@ -2123,7 +2123,7 @@ span.count {
 }
 
 .in-process {
-    background-color: #0089FB !important;
+    background-color: #64B5F6 !important;
     color: white;
     padding: 2px 8px;
     border-radius: 2px
@@ -2229,15 +2229,15 @@ span.count2 {
 }
 
 .hold {
-    background-color: #E2D9BC !important;
-    color: black Im !important;
+    background-color: #795548 !important;
+    color: white !important;
     padding: 2px 10px;
     border-radius: 3px;
 }
 
 .action-to-project {
-    background-color: rgb(123 104 238 / 15%)  !important;
-    color: black !important;
+    background-color: #0D47A1  !important;
+    color: white !important;
     font-size: 12px;
     font-weight: 500;
 
@@ -2783,7 +2783,7 @@ span.kt-inbox__subject.h5 {
 .kt-category-action-list-view::-webkit-scrollbar-track {
     background-color: #e9ebee;
     border-radius: 50px;
-} 
+}
 
 .kt-category-acion-content {
     direction: ltr;
@@ -2807,7 +2807,7 @@ span.kt-inbox__subject.h5 {
 
 .kt-leftside-scroll::-webkit-scrollbar-track {
     background-color: #f1f1f1;
-} 
+}
 .kt-info-box-cat {
     border: 0px solid #ededed;
     padding: 0px 0px;
