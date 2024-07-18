@@ -327,14 +327,8 @@ console.log(this._ProjectDataList,'_ProjectDataList')
             this._CurrentpageRecords = 0;
           }
           else {
-<<<<<<< HEAD
-            debugger
-            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);  
-          
-=======
             this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
           console.log(this._AssignedProjectsList,'Task Assigned list')
->>>>>>> 8df6cd27d13d328929b38cf36b4e6a1e60cba47b
             this._CurrentpageRecords = this._AssignedProjectsList.length;
             if (type == 'Assigned by me')
               this._totalProjectsCount = (data[0]['AssignTOcount']);
@@ -1088,3 +1082,4 @@ openAssignedProject(assignId:string) {
 
 
 
+ 
