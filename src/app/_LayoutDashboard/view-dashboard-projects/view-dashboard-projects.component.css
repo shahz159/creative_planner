@@ -1249,14 +1249,14 @@ tr.odd.project-list_AC.active {
 }
 
 .accepted {
-  background-color: #0272D0;
+  background-color: #7B1FA2;
   color: #fff;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .pending {
-  background-color: #1B272D;
+  background-color: #455A64;
   color: #fff;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1272,22 +1272,22 @@ tr.odd.project-list_AC.active {
 
 .new-project {
 
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 
 }
 
 .New-project {
-  background-color: #5789B8;
-  color: black;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .Delay_color {
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1296,7 +1296,7 @@ tr.odd.project-list_AC.active {
 }
 
 .InProcess_color {
-  background-color: #1B272D !important;
+  background-color: #64B5F6 !important;
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1304,15 +1304,15 @@ tr.odd.project-list_AC.active {
 }
 
 .Under_Approval_color {
-  background-color: #888888 !important;
-  color: black;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .Hold_color {
-  background-color: #E2D9BC !important;
-  color: #000;
+  background-color: #795548 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -1536,3 +1536,15 @@ td:nth-child(4) {
   }
 }
 
+.kt-media-group .kt-media.kt-media--sm img {
+  max-width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.kt-media-group .kt-media.kt-media--sm span {
+  width: 25px;
+  height: 25px;
+  background: #deecf8;
+  color: #2786fb;
+}

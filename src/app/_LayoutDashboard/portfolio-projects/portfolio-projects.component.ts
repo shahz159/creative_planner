@@ -305,7 +305,6 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
-    this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
   }
@@ -338,7 +337,6 @@ export class PortfolioProjectsComponent implements OnInit {
   Portfolio : any[]
   Employeshare:any[]
   GetPortfolioProjectsByPid() {
-    debugger
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -358,7 +356,6 @@ export class PortfolioProjectsComponent implements OnInit {
     //this.LoadingBar_state.start();
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => {
-debugger
         this._MessageIfNotOwner = data[0]['message'];
 
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
@@ -370,7 +367,7 @@ debugger
         this.lastProject = this._ProjectsListBy_Pid.length;
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
         console.log( this.Employeshare,'employeeeeeeeeeeee')
-        console.log("Portfolio Projects---->", data);
+        console.log("Portfolio Projects---->",   this._ProjectsListBy_Pid);
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
@@ -515,7 +512,6 @@ debugger
           this._btnShareDetails = false;
         }
         this.PreferenceTpye = data[0]["PreferenceType"];
-        debugger
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
         this.Share_preferences = false;
         this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
@@ -846,7 +842,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
-    debugger
     if (this.shareToEmplys == undefined) {
       return this._ErrorMessage_User = "* Please Select User Name";
 
@@ -1179,7 +1174,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   countFav: number;
 
   deleteSharedUsers(p_id, empid, Sharedby) {
-    debugger
     var deleteProject = window.confirm('Are you sure you want to Remove ?');
     if (deleteProject) {
       //console.log(p_id, empid, Sharedby);
@@ -1249,7 +1243,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labelDelay() {
-    debugger
     this._PortProjStatus = "Delay";
     this.showDeletedPrjOnly=false;
   }
@@ -1261,7 +1254,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labelCompleted() {
-    debugger
     this._PortProjStatus = 'Completed';
     this.showDeletedPrjOnly=false;
     console.log('_PortProjStatus:',this._PortProjStatus);
@@ -1269,7 +1261,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelNewProject() {
-    debugger
     this._PortProjStatus = "New Project";
     this.showDeletedPrjOnly=false;
     if (this._PortProjStatus.includes('New Project')) {
@@ -1278,7 +1269,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelRejecteds() {
-    debugger
     this._PortProjStatus = "New Project Rejected";
     this._PortProjStatus.includes('Rejected');
     this.showDeletedPrjOnly=false;
@@ -1298,7 +1288,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelUA() {
-debugger
     this._PortProjStatus = "Under Approval";
     // this._PortProjStatus.includes('Under Approval')
     this.showDeletedPrjOnly=false;
@@ -2093,7 +2082,6 @@ Insert_indraft() {
   }
 
   GetmeetingDetails() {
-debugger
     // first initialize all meetings variables to empty . and to avoid any miscalculation .  this is mandatory before calculating.
     this.meetingList = [];
     this.meeting_arry = [];
@@ -2122,7 +2110,6 @@ debugger
 
     this.service._GetMeetingListportfolio(this.ObjSubTaskDTO)
       .subscribe(data => {
-        debugger
         if (data && Array.isArray(data) && data.length > 0 && data[0]?.['MeetingFor_projects']?.length > 0) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
           this.Addguest= this.meetingList[0].Addguest
@@ -2684,11 +2671,10 @@ Task_type(value:number){
   }
 
   GetScheduledJson() {
-debugger
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => {
 
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
@@ -3546,7 +3532,7 @@ getChangeSubtaskDetais(Project_Code) {
     return moment({ hour, minute }).format("hh:mm A");
   }
   eventRepeat:boolean = false
-  OnSubmitSchedule() { debugger
+  OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -3620,7 +3606,7 @@ getChangeSubtaskDetais(Project_Code) {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -4195,7 +4181,6 @@ onMtgForLinkSelected(e:any){
 // }
 
 linkMtgsToPortfolio(){
-debugger
   const mtgsSelected=this.selectedMtgs2Link.join(',');
   let empno=this.Current_user_ID;
   let pid=this.Url_portfolioId;
@@ -4235,7 +4220,6 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-debugger
   if (this.agendaInput && this.agendaInput.trim().length > 0) {
     this.agendasAdded += 1;
     const agenda = {
@@ -4409,7 +4393,7 @@ all_status={
 prj_statuses:any=[];
 loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
-  
+
 
   let _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
   _ProjectsListBy_Pid1.sort((p1,p2)=>{
@@ -4419,17 +4403,17 @@ loadGanttChart(){
   });
   this.prj_statuses=_ProjectsListBy_Pid1.map(item=>item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
-  const todays_date=new Date().getTime(); 
+  const todays_date=new Date().getTime();
 
   const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
       const color=this.all_status[prj.Status]||this.all_status['other'];
-     
+
       let data_ar=[];
       const prj_startd=new Date(prj.DPG);
       const prj_endd=new Date(prj.DeadLine);
       const curdate=new Date();
 
-    if(prj_startd<curdate&&prj_endd>curdate){ 
+    if(prj_startd<curdate&&prj_endd>curdate){
 
 
        if(prj.Status=='InProcess')
@@ -4472,7 +4456,7 @@ loadGanttChart(){
               }
             ];
        }
-       else 
+       else
        {
           data_ar=[{
             x:`${prj.Project_Name} (${prj.Project_Code})`,
@@ -4486,7 +4470,7 @@ loadGanttChart(){
     }
     else{
           const colorvalue=prj_startd>=curdate&&prj.Status=='InProcess'?'#dcdcdc':color;
-          
+
            data_ar=prj.Status=='Delay'?
             [{
               x:`${prj.Project_Name} (${prj.Project_Code})`,
@@ -4622,8 +4606,8 @@ var options = {
  const prj_alhrs=_ProjectsListBy_Pid1[index].AllocatedHours;
  const used_hrs=_ProjectsListBy_Pid1[index].UsedHours;
 
-const _cd=new Date();   
-const d1=new Date(_ProjectsListBy_Pid1[index].DPG);  
+const _cd=new Date();
+const d1=new Date(_ProjectsListBy_Pid1[index].DPG);
 const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
 
 
@@ -4635,11 +4619,11 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
                            <span style="flex-grow: 1;">
                               <span style="font-size: 10px;font-family: Lucida Sans Unicode;display: inline-block;max-width: 250px;text-wrap: nowrap;overflow: hidden hidden;text-overflow: ellipsis;">${prj_name}</span>
                              <span style="font-size: 9px;font-family: Lucida Sans Unicode;display: flex;align-items: center;justify-content: start;color: #afaeae;position: relative;top: -4px;">${prj_res}</span>
-                           </span> 
+                           </span>
                          <span style="padding: 0.3em 0.6em 0.2em 0.6em;border-radius: 2px;background-color:${statusColor}; color: white;font-family: 'Lucida Sans Unicode';font-size: 11px;align-self: flex-start;">${prj_status} ${prj_status=='Delay'?(delaydays_+(delaydays_>1?' days':' day')):''}</span>
                     </div>
-                
-                    
+
+
                     <div style="display: flex;align-items: center;margin-bottom: 0px;column-gap: 10px;">
                                 <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
                                           <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
@@ -4647,31 +4631,31 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
                                             ${completed_actions}<span style="color: #b4b4b4db;">/</span>${prj_totalactions}
                                           </fieldset>
                                 </span>
-                               
+
                                <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
                                           <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
                                             <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;  ">Allocated hours</legend>
                                            ${prj_alhrs} hrs
                                           </fieldset>
-                                </span>      
+                                </span>
 
                                  <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
                                           <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
                                             <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;  ">Utilized hr</legend>
                                             ${used_hrs} hrs
                                           </fieldset>
-                                </span>      
+                                </span>
                     </div>
                     <div style="font-size: 12px; display: flex; column-gap: 3px;">
                                   <fieldset style=" flex-grow:1;   border: 1px solid #4e49491f; padding: 0.3em; border-radius: 3px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
                                     <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width:fit-content;  margin-bottom:0; ">${d1<_cd?'Started on':'Starting from'}</legend>
                                    ${prj_start}
                                   </fieldset>
-                                  
+
                                     <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
                                       <span style="text-align: center;color: #4e49499c;font-family: Lucida Sans Unicode;font-weight: bold;font-size: 9px;">${daydiff} ${daydiff>1?'days':'day'}</span>
                                     </span>
-                                   
+
                                   <fieldset style="flex-grow:1;border: 1px solid #4e49491f;padding: 0.3em;border-radius: 6px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e49499c;min-width: 50px;display: flex;justify-content: center;font-size: 10px;text-align: left;">
                                     <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width: fit-content;margin-left: 5px; margin-bottom:0; ">${d2<_cd?'Ended on':'Ending on'}</legend>
                                     ${prj_end}
@@ -4713,9 +4697,9 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
       }
     ]
   }
-  
-  
-  
+
+
+
 
 };
 
@@ -4729,7 +4713,6 @@ chart.render();
 
  shareToEmplys:any=[];
 onEmployeeSelected(e:any){
-debugger
   const employeeChoosed=this.Employeshare.find((p:any)=>p.Emp_No===e.option.value);
 
   if(employeeChoosed){
@@ -4920,7 +4903,6 @@ _EndDate1:any;
 mtgOnDays:any=[];  // list of day name on which mtg is present.
 notProvided:any;
 customrecurrencemodal() {
-  debugger
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("customrecurrence").style.display = "block";
 
@@ -5140,7 +5122,6 @@ onPortfolioFilter(){
   this.isFilteredOn=true;
 }
 keepChoosedItems(){
-  debugger
   switch(this.projectmodaltype)
   {
       case 'PROJECT':{

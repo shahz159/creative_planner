@@ -401,32 +401,32 @@
                                     <div class="kt-main-list-item-count">7</div>
                                 </div>
                             </div>
-                            <div class="kt-main-list-item">
+                            <div class="kt-main-list-item" (click)="OnCategoryClick(-1,'Accepted')">
                                 <div class="kt-main-list-item-icon acc-c">
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                 </div>
                                 <div class="kt-main-list-item-label">
-                                    <div class="kt-main-list-item-name"  (click)="OnCategoryClick(0,'Accepted')" >Accepted</div>
+                                    <div class="kt-main-list-item-name"   >Accepted</div>
                                     <div class="kt-main-list-item-count"  *ngIf="acceptCount">{{acceptCount}}</div>
                                     <div class="kt-main-list-item-count"  *ngIf="!acceptCount">0</div>
                                 </div>
                             </div>
-                            <div class="kt-main-list-item">
+                            <div class="kt-main-list-item" (click)="OnCategoryClick(-2,'Pending')">
                                 <div class="kt-main-list-item-icon pen-c">
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 3H4M20 21H4M5 3C5 5.51022 6.21228 7.86592 8.25493 9.32495L15.7451 14.675C17.7877 16.1341 19 18.4898 19 21M19 3C19 5.51022 17.7877 7.86592 15.7451 9.32495L8.25493 14.675C6.21228 16.1341 5 18.4898 5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                 </div>
                                 <div class="kt-main-list-item-label">
-                                    <div class="kt-main-list-item-name" (click)="OnCategoryClick(-1,'Pending')" >Pending</div>
+                                    <div class="kt-main-list-item-name"  >Pending</div>
                                     <div class="kt-main-list-item-count"  *ngIf="pendingCount">{{pendingCount}}</div>
                                     <div class="kt-main-list-item-count" *ngIf="!pendingCount">0</div>
                                 </div>
                             </div>
-                            <div class="kt-main-list-item">
+                            <div class="kt-main-list-item" (click)="OnCategoryClick(-3,'Rejected')">
                                 <div class="kt-main-list-item-icon rej-c">
                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>times</title> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
                                 </div>
                                 <div class="kt-main-list-item-label">
-                                    <div class="kt-main-list-item-name" (click)="OnCategoryClick(-2,'Rejected')">Rejected</div>
+                                    <div class="kt-main-list-item-name" >Rejected</div>
                                     <div class="kt-main-list-item-count" *ngIf="rejectCount">{{rejectCount}}</div>
                                     <div class="kt-main-list-item-count" *ngIf="!rejectCount">0</div>
                                 </div>
