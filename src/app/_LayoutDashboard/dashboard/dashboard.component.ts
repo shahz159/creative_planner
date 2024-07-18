@@ -5322,7 +5322,11 @@ debugger
     //     }
     //   });
     // }
-     this.SelectDms=this.draft_arry[0]["dms_id"]
+    if(this.draft_arry[0]['dms_id']){
+       this.SelectDms=this.draft_arry[0]['dms_id'].split(',');
+    }
+    else 
+     this.SelectDms=[];
 
     this.ngEmployeeDropdown = [];
     this.ngEmployeeDropdown1 = [];

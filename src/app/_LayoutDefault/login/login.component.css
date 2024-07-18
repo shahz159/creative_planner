@@ -1,5 +1,5 @@
 @media only screen and (min-width: 1024px) {
-    .h-100{
+    .h-100 {
         height: 100vh !important;
     }
 }
@@ -9,20 +9,213 @@
     border-color: #5867dd;
     color: #fff;
 }
-.showOrHide{
+
+.showOrHide {
     position: absolute;
     right: 12px;
     top: 12px;
     z-index: 1;
     cursor: pointer;
 }
-.close-eye{
+
+.close-eye {
     display: none;
 }
 
-.showp .open-eye{
+.showp .open-eye {
     display: none;
 }
-.showp .close-eye{
+
+.showp .close-eye {
     display: block;
+}
+
+#kt_login_signin_submit {
+    background-color: #5867dd;
+    border-color: #7ca3ff;
+    color: #fff;
+    border: 0;
+    font-weight: 500;
+    font-size: 15px;
+    background: linear-gradient(90deg, rgba(93, 167, 250, 1) 0%, rgba(97, 95, 250, 1) 50%, rgb(93 167 250) 100%);
+    height: 40px;
+    width: 100%;
+}
+
+.kt-login.kt-login--v6 .kt-login__aside .kt-login__wrapper .kt-login__container .kt-login__logo {
+    margin: 1rem auto 4rem auto;
+}
+
+.kt-login.kt-login--v6 .kt-login__aside .kt-login__wrapper .kt-login__container .kt-login__form {
+    margin-top: 2rem;
+}
+
+.kt-login.kt-login--v6 .kt-login__aside .kt-login__wrapper .kt-login__container .kt-login__form .form-control {
+    height: 46px;
+    border-radius: 4px;
+    border: 0;
+    background-color: #f1f1f1;
+    box-shadow: 3px 3px 5px 2px #e4e4e4f2;
+    /* border-bottom: 1px solid rgb(226 227 230); */
+    padding: 1rem 12px;
+    margin-top: 0.1rem;
+    color: #595d6e;
+}
+
+.kt-login.kt-login--v6 .kt-login__aside .kt-login__wrapper .kt-login__container .kt-login__form .form-control:focus {
+    box-shadow: 3px 3px 5px 2px #e4e4e4f2 !important;
+}
+
+.kt-login__content {
+    /* background: linear-gradient(230deg, rgba(93, 167, 250, 1) 0%, rgba(97, 95, 250, 1) 50%, rgb(93 167 250) 100%); */
+    background: radial-gradient(circle, rgb(67 119 255) 0%, rgb(215 229 255) 100%);
+    position: relative;
+}
+
+.bg-ani {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+.cube {
+    position: absolute;
+    top: 80%;
+    left: 45%;
+    width: 10px;
+    height: 10px;
+    border: solid 1px #7ca3ff;
+    transform-origin: top left;
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    -webkit-animation: cube 12s ease-in forwards infinite;
+    animation: cube 12s ease-in forwards infinite;
+}
+
+.cube:nth-child(2n) {
+    border-color: #d7e5ff;
+}
+
+.cube:nth-child(2) {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    left: 25%;
+    top: 40%;
+}
+
+.cube:nth-child(3) {
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    left: 75%;
+    top: 50%;
+}
+
+.cube:nth-child(4) {
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+    left: 90%;
+    top: 10%;
+}
+
+.cube:nth-child(5) {
+    -webkit-animation-delay: 5s;
+    animation-delay: 5s;
+    left: 10%;
+    top: 85%;
+}
+
+.cube:nth-child(6) {
+    -webkit-animation-delay: 4s;
+    animation-delay: 4s;
+    left: 50%;
+    top: 10%;
+}
+.cube:nth-child(7) {
+    -webkit-animation-delay: 6s;
+    animation-delay: 6s;
+    top: 24%;
+    left: 6%;
+}
+.cube:nth-child(8) {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    top: 90%;
+    left: 90%;
+}
+@-webkit-keyframes cube {
+    from {
+        transform: scale(0) rotate(0deg) translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(20) rotate(960deg) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+@keyframes cube {
+    from {
+        transform: scale(0) rotate(0deg) translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(20) rotate(960deg) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+.kt-login__desc .h-ti {
+    display: flex;
+}
+
+.kt-login__desc svg {
+    width: 50px;
+    height: 50px;
+}
+
+.kt-login__desc h1 {
+    font-size: 5rem;
+}
+
+.kt-login__desc p {
+    font-size: 14px;
+    border-left: 5px solid #fff;
+    padding: 0px 4px;
+    margin-left: 5px;
+}
+
+.kt-login.kt-login--v6 .kt-login__content .kt-login__section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    background: #ffffff30;
+    border: 1px solid #ffffff1c;
+    border-radius: 2px;
+    margin: 140px 80px;
+    width: 100%;
+    padding: 4rem;
+    z-index: 9;
+}
+
+.logo-loader {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: #000;
+    opacity: 1;
+    z-index: 9;
+    transition: opacity 1s ease-out;
+}
+
+.logo-loader.hidden {
+    opacity: 0;
+    z-index: -1;
 }

@@ -763,7 +763,7 @@ span.kt-dt-l {
 }
 
 .Kt-Pd-Status {
-  background-color: #EE4137;
+  background-color: #D32F2F;
   /* color:white; */
   color: #ffffff;
   font-weight: 600;
@@ -872,7 +872,7 @@ span.kt-dt-l {
 }
 
 .Delay {
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color: white !important
     /* color:#fff !important; */
 }
@@ -1489,18 +1489,18 @@ label.my-chosse-flv {
 
 
 .Inprocess {
-  background-color: #0089FB !important;
+  background-color: #64B5F6 !important;
   color: #fff;
 }
 
 
 .NewProjectRejected {
-  background-color: #DFDFDF !important;
-  color: #000 !important;
+  background-color: #BA68C8 !important;
+  color: white !important;
 }
 
 .Done {
-  background-color: #62B134 !important;
+  background-color: #388E3C !important;
   color: #fff !important;
 }
 
@@ -1510,18 +1510,18 @@ label.my-chosse-flv {
 }
 
 .CompletionUnderApproval {
-  background-color: #B2D732 !important;
+  background-color: #81C784 !important;
   color: #000;
 }
 
 .DeadlineExtend {
-  background-color: #F88282 !important;
-  color: #000 !important;
+  background-color: #E57373 !important;
+  color: white !important;
 }
 
 .Hold {
-  background-color: #E2D9BC !important;
-  color: #000 !important;
+  background-color: #795548 !important;
+  color: white !important;
 }
 
 .Cancelled {
@@ -4942,13 +4942,13 @@ p.kt-dt-l {
 }
 
 .new-project-under {
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
 }
 
 .Not_Started {
-  background-color: #888888 !important;
-  color: #fff;
+  background-color: #E0E0E0 !important;
+  color: black;
 }
 
 .todo-completed {
@@ -4963,8 +4963,8 @@ p.kt-dt-l {
 
 
 .not-started {
-  background-color: #888888 !important;
-  color: #fff !important;
+  background-color: #E0E0E0 !important;
+  color: black !important;
 }
 
 .diff-div {
@@ -7950,7 +7950,7 @@ input.search-input {
 .Auditor-edit-btn:hover{
   background-color: #80808012;
   transition-duration: 0.4s;
- 
+
 }
 .Auditor-edit-btn:active{
   background-color: #8080802b;
@@ -7959,7 +7959,7 @@ input.search-input {
 .Auditor-edit-btn:hover .auditor-btn-text{
   max-width: 600px;
   transition-duration: 0.7s;
-  transition-delay: 0.3s; 
+  transition-delay: 0.3s;
 }
 
 
@@ -7990,7 +7990,7 @@ input.search-input {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
-  
+
 
 }
 .mark-admin-drop.show{
@@ -8118,7 +8118,7 @@ input.search-input {
 .allactns-graph:hover .allactns-label{
   max-width: 100px;
   transition-duration: 0.4s;
-  transition-delay: 0.2s; 
+  transition-delay: 0.2s;
 }
 
 
@@ -8133,7 +8133,7 @@ input.search-input {
   #actns-graphmodal .modal-dialog.modal-xl {
     max-width: 97%;
     position: relative;
-    left: 0.5%; 
+    left: 0.5%;
   }
 }
 
