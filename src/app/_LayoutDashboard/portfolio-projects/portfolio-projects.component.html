@@ -2862,8 +2862,8 @@
 
                                     <div [id]="'older-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
                                         [attr.aria-labelledby]="'older-mtg-'+i" aria-hidden="true">
-                                                                                            <!-- (click)="meetingReport(omeeting.Schedule_ID)" -->
-                                        <div class="met-card mb-3" *ngFor="let omeeting of omeetings.totalmeetings"    >
+                                                                                            <!--  -->
+                                        <div class="met-card mb-3" *ngFor="let omeeting of omeetings.totalmeetings"   (click)="meetingReport(omeeting.Schedule_ID)" >
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-left">

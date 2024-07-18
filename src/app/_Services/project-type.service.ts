@@ -633,7 +633,9 @@ export class ProjectTypeService {
 
 
   _GetMeetingListportfolio(obj: SubTaskDTO) {
+    let EmpNo = localStorage.getItem('EmpNo');
     this.ObjSubTaskDTO.portfolio_id = obj.portfolio_id;
+    this.ObjSubTaskDTO.Emp_No = EmpNo;
     this.ObjSubTaskDTO.startdate = obj.startdate;
     this.ObjSubTaskDTO.enddate = obj.enddate;
     return this.http.post(this.rootUrl + "TestAPI/NewMeeting_ViewsinPortfolio", this.ObjSubTaskDTO);
