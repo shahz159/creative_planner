@@ -1521,7 +1521,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-       
+  
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
@@ -2149,7 +2149,7 @@ export class DashboardComponent implements OnInit {
       && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
     ) {
       this.notProvided = false;
-
+debugger
       // update code below
 
       this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -2584,7 +2584,7 @@ export class DashboardComponent implements OnInit {
 
 
   viewconfirm() {
-
+   debugger
     const _arraytext = [];
     if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
       for (let index = 0; index < this.dayArr.length; index++) {

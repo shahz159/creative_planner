@@ -93,7 +93,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
     this.Z2A = false;
-    this._subtaskDiv = true;
+    this._subtaskDiv = true;   debugger
     this.Mode = this.activatedRoute.snapshot.params.Mode;
     if(this.Mode=='DelayProjects'){
       this.delayType=this.delayType1;
@@ -328,7 +328,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             debugger
-            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+            this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);  
           
             this._CurrentpageRecords = this._AssignedProjectsList.length;
             if (type == 'Assigned by me')
@@ -574,7 +574,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this.service._GetAssignedProjects(this._ObjCompletedProj).
         subscribe(data => {
 
-          this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
+          this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']); 
 
           this._CurrentpageRecords = this._AssignedProjectsList.length;
           //Type
