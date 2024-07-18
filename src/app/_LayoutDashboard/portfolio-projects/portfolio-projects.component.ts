@@ -4623,7 +4623,7 @@ var options = {
   yaxis: {
     labels: {
       style: {
-        fontSize: '10px',       
+        fontSize: '12px',       
         fontFamily: 'Arial, sans-serif', 
         color: '#333',          
         textAnchor: 'start'    
