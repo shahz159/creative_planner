@@ -499,9 +499,9 @@
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
                                                         <mat-chip *ngFor="let emptoshare of enterStatus" class="Data_chip_kt" (removed)="removeSelectedstatus(emptoshare); getNewFilterResult();">
-                                                          {{getObjOfstatus(StatusCountFilter,emptoshare,'Count')?.Name}}
+                                                          {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
 
-                                                          -{{getObjOf(StatusCountFilter,emptoshare,'Count')?.Count}}
+                                                          -{{getObjOf(StatusCountFilter,emptoshare,'Name')?.Count}}
                                                           <button matChipRemove>
                                                             <mat-icon>cancel</mat-icon>
                                                           </button>
@@ -528,8 +528,8 @@
                                                     (opened)="isstatusDrpDwnOpen=true" (closed)="isstatusDrpDwnOpen=false; ">
 
 
-                                                      <mat-option [value]="emp.Count"  *ngFor="let emp of (StatusCountFilter|filter:status_searchtf.value).slice(0,1000)">
-                                                          <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Count)!==-1:false"></mat-checkbox>
+                                                      <mat-option [value]="emp.Name"  *ngFor="let emp of (StatusCountFilter|filter:status_searchtf.value).slice(0,1000)">
+                                                          <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Name)!==-1:false"></mat-checkbox>
                                                               {{emp.Name}}
                                                               - {{emp.Count}}
                                                       </mat-option>

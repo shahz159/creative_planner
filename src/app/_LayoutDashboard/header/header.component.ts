@@ -167,13 +167,12 @@ export class HeaderComponent implements OnInit {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    this.router.navigate(["../backend/Timeline"]);
+    this.router.navigate(["../backend/Timeline"],{queryParams:{section:this.timelineType}});
   }
 
   daterange() {
     document.getElementById("range-picker_header").classList.toggle("d-none");
     document.getElementById("main-section_header").classList.toggle("d-none");
-
   }
   applyleave(){
     document.getElementById("apply-leave").classList.add("open_sidebar");

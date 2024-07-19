@@ -1142,7 +1142,30 @@ this.prjPIECHART.render();
           });
    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-        
+   this.arrangeActivitiesBy('all','all');
+   this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
+   this.actvs_types=[];
+   
+
+
+   let actvs_done=this.Activity_List.map(actv_=>{
+    const prjdetChanged:boolean=['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(actv_.Value);
+    const actdetChanged:boolean=[/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/].some(rg=>rg.test(actv_.Value));
+    return /New Action- ".*"/.test(actv_.Value)?'New Action':
+                /Project Deadline changed \d+(?:th|nd|rd|st) Time/.test(actv_.Value)?'Project Deadline changed':
+                /Timeline added .*/.test(actv_.Value)?'Timeline added':
+                prjdetChanged?'Project Details changed':
+                actdetChanged?'Actions Details changed':
+                /Action Complete- ".*"/.test(actv_.Value)?'Action Complete':
+                /Action -".*" Hold/.test(actv_.Value)?'Action Hold':
+                /Action -".*" Deadline changed/.test(actv_.Value)?'Action Deadline changed':  
+                actv_.Value;  
+   });
+
+ 
+   actvs_done=Array.from(new Set(actvs_done));
+   this.actvs_types=[...actvs_done];
+   console.log('actvs_done:',actvs_done);
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
           console.log(this.firstFiveRecords,"ffffive ffffffffffffffff")
@@ -9730,12 +9753,12 @@ loadActionsGrantt(){
     },
     xaxis: {
       type: 'datetime',
-      position: 'top',
+      position: 'bottom',
       labels: {
         show: true,
         style: {
           offsetY: 10, // Adjust this value to add space below the labels
-          colors:'#fff'
+          colors:'#000'
         },
 
       },
@@ -9759,7 +9782,15 @@ loadActionsGrantt(){
         formatter: function(value) {
           if (isNaN(value)) {
               let str=value.substring(0,value.lastIndexOf('('));
-              return str;
+              str=str.trim();
+              const maxl=20;
+              if(str.length<=maxl)
+                return str;
+              else 
+                {
+                    return [str.substring(0,maxl),str.slice(maxl)];
+                }
+              
           } else 
             return value;
         }
@@ -9901,19 +9932,39 @@ onActnsGanttClosed(){
 
 // PROJECT auditor, Transfer functionality end.
 
-
-
-// Activities Filter start.
 emps_of_actvs:any=[];
 actvs_types:any=[];
+actvsFltrBy:{ activityType:string, empType:string }={ activityType:'all',empType:'all' };
+FilteredPrjActivities:any=[];
+
+arrangeActivitiesBy(acttype:string,emptype:string){
+     this.actvsFltrBy.activityType=acttype;
+     this.actvsFltrBy.empType=emptype;
+
+const checkmatch=(actvy)=>{
+    const regexarr=[
+      /Project Deadline changed \d+(?:th|nd|rd|st) Time/,
+      /Timeline added .*/,
+      /Action Complete- ".*"/,
+      /New Action- ".*"/,
+    ];
+    const a=regexarr.some(re=>re.test(actvy));
+    const b=regexarr.some(re=>re.test(this.actvsFltrBy.activityType));
+    return a&&b;
+}
+
+
+     this.FilteredPrjActivities=this.Activity_List.filter((acv)=>{
+
+
+
+      const x=(this.actvsFltrBy.empType=='all'||acv.Modifiedby==this.actvsFltrBy.empType);
+      const y=(this.actvsFltrBy.activityType=='all'||(acv.Value==this.actvsFltrBy.activityType?true:checkmatch(acv.Value)));
+            return x&&y;
+     });
+}
 
 // Activities Filter end.
-
-
-
-
-
-
 
 }
 
