@@ -1773,7 +1773,7 @@ export class DashboardComponent implements OnInit {
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
+      (this.Description_Type?(this.characterCount<500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -2147,6 +2147,7 @@ export class DashboardComponent implements OnInit {
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
 
@@ -2351,7 +2352,7 @@ export class DashboardComponent implements OnInit {
 
           var vDescription = "Description";
           element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-
+      
           var vSubtask = "Subtask";
           element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
 
@@ -6209,10 +6210,16 @@ close_projectmodal(){
   this.projectmodaltype=undefined; // no model open.
 }
 
+characterCount: number = 0;
 
+updateCharacterCount(): void {
 
-
-
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.Description_Type;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
 // new design of select prj,select memo, select portfo, select participants.....etc start
 
 // choosedItems:any=[];   // initially nothing selected.

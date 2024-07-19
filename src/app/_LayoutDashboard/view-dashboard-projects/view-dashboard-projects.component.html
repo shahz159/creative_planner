@@ -134,15 +134,16 @@
                                                 <div class="col-md-4">
                                                     <div class="count-height">
                                                         <p><strong>Project type</strong></p>
-                                                        <div class="d-flex justify-content-between"
-                                                            *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
-                                                            <label class="kt-checkbox">
+                                                        <div class="d-flex justify-content-between" *ngFor="let item of TypeContInFilter |filter:txtSearch;let i=index">
+                                                           <ng-container *ngIf="item.Exec_BlockName">
+                                                            <label class="kt-checkbox" >
                                                                 <input type="checkbox" (change)="isTypeChecked(item)"
                                                                     [(ngModel)]="item.checked">
                                                                 {{item.Exec_BlockName}}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
+                                                        </ng-container>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -151,6 +152,7 @@
                                                         <p><strong>Status</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of StatusCountFilter|filter:txtSearch">
+                                                            <ng-container *ngIf="item.Status">
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
@@ -161,6 +163,7 @@
                                                                     <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
+                                                        </ng-container>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -169,6 +172,7 @@
                                                         <p><strong>Employees</strong></p>
                                                         <div class="d-flex justify-content-between"
                                                             *ngFor="let item of EmpCountInFilter|filter:txtSearch">
+                                                            <ng-container *ngIf="item.TM_DisplayName">
                                                             <label class="kt-checkbox mb-3">
                                                                 <!-- <mat-checkbox class="example-margin" color="primary"
                                                                 (change)="isEmpChecked(item)"
@@ -181,6 +185,7 @@
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
+                                                        </ng-container>
                                                         </div>
                                                     </div>
                                                 </div>
