@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
@@ -8,6 +9,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { AuthService } from 'src/app/_Services/auth.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ActivatedRoute } from '@angular/router';
+import { TimelineComponent } from '../timeline/timeline.component';
 
 
 @Component({
@@ -17,7 +19,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+
   constructor(public service: ProjectTypeService,private router: Router,
+
     private route: ActivatedRoute,
     private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService) {
@@ -53,7 +57,7 @@ export class HeaderComponent implements OnInit {
     // this._fullname = localStorage.getItem('UserfullName');
     this.timelineType = this.type1;
     this.selectedSort = 'today';
-    
+
     this.getDashboardnotifications();
 
       // for tippys
@@ -65,7 +69,7 @@ export class HeaderComponent implements OnInit {
         animateFill: true,
         inertia: true,
       });
-  
+
       tippy('#timelinelog', {
         content: "Timeline log",
         arrow: true,
@@ -83,7 +87,7 @@ export class HeaderComponent implements OnInit {
         animateFill: true,
         inertia: true,
       });
-      
+
       tippy('#user_details', {
         content: "User details",
         arrow: true,
@@ -110,7 +114,7 @@ export class HeaderComponent implements OnInit {
         this.featuremodel();
     });
 
-   
+
   }
 
   menutoggle() {
@@ -164,10 +168,13 @@ export class HeaderComponent implements OnInit {
   }
 
   viewTimeline() {
+
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    this.router.navigate(["../backend/Timeline"]);
+    this.router.navigate(["../backend/Timeline"],{queryParams:{section:this.timelineType}});
+
+
   }
 
   daterange() {
@@ -191,7 +198,7 @@ export class HeaderComponent implements OnInit {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    
+
   }
 
   closeevearea2() {
@@ -202,6 +209,7 @@ export class HeaderComponent implements OnInit {
   }
 
   timelineLog(type) {
+    debugger
     this.showtimeline = true;
     if (this.selectedSort == 'custom') {
       this.customTimeline();
@@ -221,6 +229,7 @@ export class HeaderComponent implements OnInit {
         this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
           (data => {
             this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+            console.log( this.timelineList, "mytimeline")
             this.timelineDuration = (data[0]['TotalTime']);
             if (this.timelineList.length == 0) {
               this.showtimeline = false;
@@ -252,6 +261,7 @@ export class HeaderComponent implements OnInit {
         this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
           (data => {
             this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+            console.log( this.timelineList, "RACIStimeline")
             if (this.timelineList.length == 0) {
               this.showtimeline = false;
               this.timelineDuration = 0;
@@ -296,7 +306,7 @@ export class HeaderComponent implements OnInit {
       this.ObjSubTaskDTO.End_Date = this.timeTo;
 
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data => {    
+        (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration = (data[0]['TotalTime']);
           if (this.timelineList.length == 0) {
@@ -469,7 +479,7 @@ export class HeaderComponent implements OnInit {
       document.getElementById("newfeatures").classList.remove("feature-animate-active");
       document.getElementById("kt-bodyc").classList.remove("position-fixed");
     },600);
-      
+
   }
 
 
@@ -482,11 +492,11 @@ export class HeaderComponent implements OnInit {
         document.getElementById("kt-bodyc").classList.remove("position-fixed");
         //  let whatsnew:any=document.getElementsByClassName('whatsnewanim')[0];
         //  whatsnew.style.animationName='anim2';
-        //  whatsnew.style.animationTimingFunction='cubic-bezier(0.3, 0.9, 0.1, 1)'; 
+        //  whatsnew.style.animationTimingFunction='cubic-bezier(0.3, 0.9, 0.1, 1)';
          this.newfeaturetippy[0].show();
          let sf:any=document.getElementById('streamfeature');
          sf.style.backgroundColor=' #d3d3d342';
-        
+
          setTimeout(()=>{
           this.newfeaturetippy[0].hide();
           let sf:any=document.getElementById('streamfeature');
@@ -494,6 +504,17 @@ export class HeaderComponent implements OnInit {
          },2000)
   }
 
+  newDetailsaction(pcode,acode:string|undefined) {
+    let qparams='';
+        if(acode!==undefined){
+          qparams=`?actionCode=${acode}`;
+        }
+        let name: string = 'Details';
+        var url = document.baseURI + name;
+        var myurl = `${url}/${pcode}${qparams}`;
+        var myWindow = window.open(myurl,pcode);
+        myWindow.focus();
+      }
 
 
 }

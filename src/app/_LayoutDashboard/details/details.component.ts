@@ -9731,12 +9731,12 @@ loadActionsGrantt(){
     },
     xaxis: {
       type: 'datetime',
-      position: 'top',
+      position: 'bottom',
       labels: {
         show: true,
         style: {
           offsetY: 10, // Adjust this value to add space below the labels
-          colors:'#fff'
+          colors:'#000'
         },
 
       },

@@ -945,7 +945,7 @@ console.log(this._ProjectDataList,'_ProjectDataList')
   }
 
   newDetails(pcode,acode:string|undefined) {
-
+debugger
     let qparams='';
     if(acode!==undefined){
       qparams=`?actionCode=${acode}`;

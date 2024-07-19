@@ -2657,7 +2657,7 @@ label.checkbox.kt-fnt-vd {
 }
 
 .Delay {
-  background-color: #Ed6207 !important;
+  background-color: #D32F2F !important;
 }
 
 .kt-project-sts-data {
@@ -2677,11 +2677,11 @@ label.checkbox.kt-fnt-vd {
 }
 
 .bg-delay {
-  background-color: #Ed6207;
+  background-color: #D32F2F;
 }
 
 .bg-done {
-  background-color: #6aad3a;
+  background-color: #388E3C;
 }
 
 .kt-prg-bar-info {
@@ -2700,7 +2700,7 @@ label.checkbox.kt-fnt-vd {
 }
 
 .Deadline_Extend {
-  background-color: #f48383;
+  background-color: #f9A825;
 }
 
 button.Kt-Approval-btns {
@@ -2968,7 +2968,7 @@ tr.odd.project-list_AC.active {
 
 .Completion_Under_Approval_color {
   background-color: #81C784 !important;
-  color: #000;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -3021,8 +3021,8 @@ tr.odd.project-list_AC.active {
 }
 
 .Enactive_Under_Approval_color {
-  background-color: #C9C1E6 !important;
-  color: #000;
+  background-color: #F44336 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -3036,7 +3036,7 @@ tr.odd.project-list_AC.active {
 
 .Project_Complete_Rejected_color {
   background-color: #F44336 !important;
-  color: #000;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -3077,8 +3077,8 @@ a.info-btn svg {
 
 
 .Project_Hold_Under_Approval {
-  background-color: #c0b5dc;
-  color: #000;
+  background-color: #795548;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }

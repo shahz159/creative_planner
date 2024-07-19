@@ -57,7 +57,7 @@ header{
 .dropzone-item:not(:first-child){
     border-top: 0;
 }
-.btm-btn{    
+.btm-btn{
     position: fixed;
     bottom: 32px;
     right: 72px;
@@ -77,7 +77,7 @@ header{
     height: calc(100vh - 156px);
     overflow-y: auto;
 }
-.time-tabs.nav-pills .nav-item .nav-link.active, 
+.time-tabs.nav-pills .nav-item .nav-link.active,
 .time-tabs.nav-pills .nav-item .nav-link:active, .time-tabs.nav-pills .nav-item .nav-link.active:hover {
     background-color: transparent;
     color: #7b68ee;
@@ -442,7 +442,7 @@ a.ordr-a {
     margin-bottom: 0px;
   }
 
-  
+
 .symbol.symbol-circle,
 .symbol.symbol-circle .symbol-label,
 .symbol.symbol-circle>img {
@@ -519,7 +519,7 @@ a.ordr-a {
     margin-top: 8px;
   }
   .action-name {
-    color: #51667d;
+    color: #5867dd !important;
     font-size: 16px;
     font-weight: 600;
   }
@@ -568,7 +568,7 @@ a.ordr-a {
     height: 50px;
   }
 
-  
+
 .symbol-group .symbol-label {
     position: relative;
   }
@@ -607,7 +607,7 @@ a.ordr-a {
     width: 40px;
     height: 40px;
   }
-  
+
   .symbol .symbol-label{
     display: flex;
     align-items: center;
@@ -631,12 +631,12 @@ a.ordr-a {
 
   /*--new features--*/
   .feature-icon{
-    width: 1.5em; 
+    width: 1.5em;
     height: 1.5em;
     vertical-align: middle;
     color: #64748b;
     overflow: hidden;
- 
+
 
   }
   .kt-header__topbar-icon:hover .feature-icon{
@@ -851,7 +851,7 @@ a.ordr-a {
 }
 .kt-header__topbar-item:hover svg {
     transition: all 0.3s;
-    fill: #8a75e7; 
+    fill: #8a75e7;
 }
 .modal.fade.show {
     display: block;

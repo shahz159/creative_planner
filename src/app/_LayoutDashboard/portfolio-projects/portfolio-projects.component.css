@@ -1480,7 +1480,7 @@ span.count2 {
 }
 
 .Cancelled_color {
-  color: #DFDFDF !important;
+  color: #F44336 !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -1513,8 +1513,8 @@ span.count2 {
 }
 
 .Enactive_Under_Approval_color {
-  background-color: #C9C1E6 !important;
-  color: #000;
+  background-color: #F44336 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1605,7 +1605,7 @@ a.info-btn svg {
 
 .completion-under-approval {
   background-color: #81C784;
-  color: black;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1908,8 +1908,8 @@ left: 38%;
 
 
 .Not-Started {
-  background-color: #888888 !important;
-  color: white !important;
+  background-color: #E0E0E0 !important;
+  color: black !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -2203,15 +2203,15 @@ td:nth-child(4) {
   }
 }
 .Completion{
-  background-color: #b2d732;
-  color: #000;
+  background-color: #81C784;
+  color: white;
 }
 .Cancel-app{
-  background-color: #EE4137;
+  background-color: #F44336;
   color: white;
 }
 .Count-deadline{
-  background-color: #EE4137;
+  background-color: #F44336;
   color: white;
 }
 .foward-color{
@@ -2366,38 +2366,38 @@ background-color: #CCC;
   background-color: #35A79C !important;
   }
 .in-pro{
-  background-color:#0089FB  !important
+  background-color:#64B5F6  !important
 }
 .del{
-  background-color: #EE4137  !important;
+  background-color: #D32F2F  !important;
 }
 .draf{
-  background-color:  #888888 !important;
+  background-color:  #E0E0E0 !important;
 }
 .com{
-  background-color: #62B134 !important;
+  background-color: #388E3C !important;
 }
 .new-pro{
-  background-color: #B2D732 !important ;
-  color: #000 !important;
+  background-color: #9C27B0 !important ;
+  color: white !important;
 }
 .com-appr{
-  background-color:#B2D732 !important ;
-  color: #000 !important;
+  background-color:#81C784 !important ;
+  color: white !important;
 }
 .can-app{
-  background-color: #EE4137  !important;
+  background-color: #D32F2F  !important;
 }
 .for-app{
-  background-color: #B2D732 !important ;
-  color: #000 !important;
+  background-color: #9C27B0 !important ;
+  color: white !important;
 }
 .dead-ext{
-  background-color: #F88282 !important;
+  background-color: #F9A825 !important;
 }
 .pro-hold{
-  background-color:  #E2D9BC !important;
-  color: #000 !important;
+  background-color:  #795548 !important;
+  color: white !important;
 }
 .rej{
   background-color: #DFDFDF !important;

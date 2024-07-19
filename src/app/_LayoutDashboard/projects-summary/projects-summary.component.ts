@@ -545,6 +545,13 @@ $(document).ready(function(){
         else {
           this.EmpCountInFilter = this.selectedItem_Emp[0];
         }
+
+
+
+
+
+
+
         //Type
         if (this.selectedItem_Type.length == 0) {
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
@@ -960,6 +967,7 @@ $(document).ready(function(){
   }
 
   applyFilters() {
+    debugger
 this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -1607,13 +1615,13 @@ onEmpSelected(selected:boolean,selectedItem:any){
 }
 
 getNewFilterResult(){
-
+debugger
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
   this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.comToselect.includes(item.Company_No));
   this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.projtypeToselect.includes(item.Block_No));
-  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Count));
+  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Name));
   // this.edited=true
 
   this.selectedEmp_String = this.checkedItems_Emp.map(select => {
@@ -1919,13 +1927,13 @@ getObjOfpro(arr, id, idName) {
 enterStatus:any=[];
 onstatusSelected(e:any){
 
-  const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Count===e.option.value);
+  const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Name===e.option.value);
 
   if(statusChoosed){
-       const index=this.enterStatus.indexOf(statusChoosed.Count);
+       const index=this.enterStatus.indexOf(statusChoosed.Name);
        if(index===-1){
           // if not present then add it
-          this.enterStatus.push(statusChoosed.Count);
+          this.enterStatus.push(statusChoosed.Name);
        }
        else{ //  if item choosed is already selected then remove it.
         this.enterStatus.splice(index,1);
