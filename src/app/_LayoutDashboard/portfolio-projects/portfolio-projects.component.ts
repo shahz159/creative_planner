@@ -4304,7 +4304,7 @@ updateAgenda(index: number) {
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  let name: string = 'Meeting-Report';
+  let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
   var myWindow = window.open(myurl);

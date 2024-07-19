@@ -2666,6 +2666,60 @@ LoadDocument(url: string){
   myWindow.focus();
 }
 
+
+
+
+characterCount: number = 0;
+
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.PrjDes;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
+
+characterCount_Desc: number = 0;
+
+
+updateCharacterCount_Desc(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ProjeditDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Desc = textContent.length;
+}
+
+
+characterCount_Action: number = 0;
+
+updateCharacterCount_Action(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ProjectDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Action = textContent.length;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 // calculateDateDifference(): void {

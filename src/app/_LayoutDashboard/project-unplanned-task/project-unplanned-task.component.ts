@@ -619,6 +619,7 @@ debugger
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
       this.totalproject()
+      document.getElementById('addtsk').classList.remove('d-none')
   }
 
 
@@ -1172,7 +1173,9 @@ setStatus(status: string) {
   this.currentStatus = status;
 }
 
-
+hideAddTask(){
+  document.getElementById('addtsk').classList.add('d-none')
+}
 
 }
 

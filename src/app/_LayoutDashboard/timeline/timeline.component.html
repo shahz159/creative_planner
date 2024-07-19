@@ -122,7 +122,7 @@
                                                         <a *ngIf="item1.Tasktype=='Lunch'">Lunch</a>
                                                         <a *ngIf="item1.Tasktype=='Personal'">Personal</a>
                                                         <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype }}</a>
-                                                        <div class="timeline-text fs-6 " *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"><span class="desp-txt fs-7 actlabel-at-type">Action</span>{{item1.ActionName }}</div>
+                                                        <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"  (click)=" newDetailsaction(item1.project_code,item1.ActionCode)" ><div class="desp-txt fs-7 actlabel-at-type">Action</div>{{item1.ActionName }}</a>
                                                     </td>
                                                     <td>{{item1.WorkAchieved}}</td>
                                                     <td>{{item1.starttime}}</td>

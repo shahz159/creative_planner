@@ -359,7 +359,7 @@
                     <!--end: Head -->
                     <div class="tab-content">
                         <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
-                        
+
                             <div *ngIf="isNotificationsLoading;else NotificationsLoaded" class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll curser-pointer mh-325   d-flex  align-items-center  justify-content-center  "
                             data-scroll="true" data-height="300" data-mobile-height="200">
                                     <div class="spinner-border text-info" role="status" style="color: #9886eb !important;">
@@ -413,7 +413,7 @@
                                         all</a>
                                 </div>
                             </ng-template>
-                   
+
                         </div>
 
                     </div>
@@ -691,7 +691,7 @@
                                                 </div>
 
                                                 <div class="kt-task-cnt">
-                                                    <div class="action-name">
+                                                    <div class="action-name curser-pointer" (click)="newDetailsaction(item.project_code,item.ActionCode)" >
                                                         {{item.ActionName}}
                                                     </div>
                                                     <div class="action-info-achivement">

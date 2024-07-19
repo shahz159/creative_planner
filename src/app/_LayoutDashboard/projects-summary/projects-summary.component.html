@@ -138,13 +138,14 @@
                                             </div>
 
 
-                                            <!-- <div class="row">
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
                                                         placeholder="Search Filters" [(ngModel)]="txtSearch"
                                                         style="width: 100%;">
                                                 </div>
-                                            </div> -->
+                                            </div>
+
                                             <div class="row">
                                               <div class="col-md-12">
                                                 <input class="form-control kt-quick-search__input pl-3"
@@ -158,7 +159,8 @@
                                                        [showClearButton]="true"
                                                        [autoApply]="false"
                                                        (datesUpdated)="datesUpdated($event)"
-                                                       [placeholder]="Dateselectionrange"/>
+                                                       [placeholder]="Dateselectionrange"
+                                                       [locale]="{ format: 'DD-MM-YYYY' }"/>
                                               </div>
                                             </div>
 
@@ -451,7 +453,7 @@
                                                             <label class="kt-checkbox mb-3">
                                                                 <input type="checkbox"
                                                                 [checked]="selectedStatus.includes(item.Name)" (change)="onStatusSelected($event.target.checked,item.Name)" >
-                                                                 {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval": item.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name =="Not Started"?"Draft":item.Name}}
+                                                                 {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval": item.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name }}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -524,7 +526,7 @@
 
 
                                                     <mat-autocomplete aria-label="statusDDwn" #statusDrpDwn="matAutocomplete"
-                                                    (optionSelected)="onstatusSelected($event);  status_searchtf.value=''; "
+                                                    (optionSelected)="onstatusSelected($event);  status_searchtf.value='';  getNewFilterResult();"
                                                     (opened)="isstatusDrpDwnOpen=true" (closed)="isstatusDrpDwnOpen=false; ">
 
 
@@ -558,7 +560,7 @@
 
 
                                             </div>
-                                         
+
 
                                             <hr>
                                         </div>
@@ -1205,7 +1207,7 @@
                                                                     <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
                                                                     <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
                                                                     <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
-                                                                    <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Draft</span>
+                                                                    <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
                                                                     <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
                                                                     <span class="Cancellation_Under_Approval_color font-weight-400" *ngSwitchCase="'Cancellation Under Approval'">Cancellation approval</span>
                                                                     <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
@@ -1326,7 +1328,7 @@
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Not Started'">
-                                                                <span class="Not_Started font-weight-400">Draft
+                                                                <span class="Not_Started font-weight-400">Not Started
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Standardtask Enactive Hold'">

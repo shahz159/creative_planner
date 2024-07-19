@@ -545,6 +545,13 @@ $(document).ready(function(){
         else {
           this.EmpCountInFilter = this.selectedItem_Emp[0];
         }
+
+
+
+
+
+
+
         //Type
         if (this.selectedItem_Type.length == 0) {
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
@@ -959,7 +966,8 @@ $(document).ready(function(){
     }
   }
 
-  applyFilters() {  debugger
+  applyFilters() {
+    debugger
 this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -1610,7 +1618,7 @@ onEmpSelected(selected:boolean,selectedItem:any){
 
 
 getNewFilterResult(){
-
+debugger
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
@@ -1921,7 +1929,6 @@ getObjOfpro(arr, id, idName) {
 
 enterStatus:any=[];
 onstatusSelected(e:any){
-debugger
   const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Name===e.option.value);
 
   if(statusChoosed){

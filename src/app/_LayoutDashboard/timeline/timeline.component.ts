@@ -56,16 +56,16 @@ export class TimelineComponent implements OnInit {
     private projectMoreDetailsService: ProjectMoreDetailsService,
     private notifyService: NotificationService,
     public datepipe: DatePipe,
+    private route : ActivatedRoute,
     private _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
-    private route:ActivatedRoute
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
    }
 
   ObjSubTaskDTO: SubTaskDTO;
-  Current_user_ID: any;
+  Current_user_ID: any; 
   timelineList:any;
   Type:string;
   type1:string='My Timeline';
@@ -118,6 +118,8 @@ export class TimelineComponent implements OnInit {
   showtimeline:boolean=true;
   ProState:boolean=false;
   ngOnInit(): void {
+
+    const navigatingTotimeline = localStorage.getItem('navigatingTotimeline');
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.route.queryParams.subscribe(params => {
       const section=params.section;
@@ -623,6 +625,19 @@ submitDar() {
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
+
+
+  newDetailsaction(pcode,acode:string|undefined) {
+let qparams='';
+    if(acode!==undefined){
+      qparams=`?actionCode=${acode}`;
+    }
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}${qparams}`;
     var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }
