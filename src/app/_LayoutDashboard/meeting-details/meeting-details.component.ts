@@ -38,6 +38,9 @@ export class MeetingDetailsComponent implements OnInit {
   URL_ProjectCode: any;
   currentAgendaView: any
   _MasterCode: string;
+  
+  subtask_loading:boolean=false;
+  loading: boolean = false;
   Current_user_ID: string;
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
   _calenderDto: CalenderDTO;
@@ -6121,6 +6124,18 @@ NewGetRecurrenceMeetings(meetings_HTR){
      }
   })
 }
+
+
+Meeting_method(event){
+  if (event.target.checked) {
+    document.getElementById("Location_Name").style.display = "flex";
+    this._meetingroom = event.target.checked;
+  }
+  else {
+    document.getElementById("Location_Name").style.display = "none";
+    this._meetingroom = false;
+  }
+ }
 
 //////////////////////////////////////////////////// Meeting Sidebar sectoion End ////////////////////////////////////////////////////////////
 

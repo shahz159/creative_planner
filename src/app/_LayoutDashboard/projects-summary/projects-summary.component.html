@@ -138,36 +138,36 @@
                                             </div>
 
 
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="form-control kt-quick-search__input pl-3"
                                                         placeholder="Search Filters" [(ngModel)]="txtSearch"
                                                         style="width: 100%;">
                                                 </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-
-
-                                            <!-- <input class="rangepic form-control" type="text" ngxDaterangepickerMd [(ngModel)]="selected"
-                                              [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
-                                              [isInvalidDate]="isInvalidDate" [showClearButton]="true" (datesUpdated)="datesUpdated($event)"
-                                              [placeholder]="Dateselectionrange" /
-
+                                            </div> -->
+                                            <div class="row">
+                                              <div class="col-md-12">
+                                                <input class="form-control kt-quick-search__input pl-3"
+                                                       style="width: 100%;"
+                                                       ngxDaterangepickerMd
+                                                       [(ngModel)]="selected_dates"
+                                                       [showCustomRangeLabel]="true"
+                                                       [alwaysShowCalendars]="true"
+                                                       [ranges]="ranges"
+                                                       [linkedCalendars]="true"
+                                                       [showClearButton]="true"
+                                                       [autoApply]="false"
                                                        (datesUpdated)="datesUpdated($event)"
-                                              >
- -->
+                                                       [placeholder]="Dateselectionrange"/>
+                                              </div>
+                                            </div>
 
-      <br>
 
-                                            <div class="">
+
+                                            <div class="row">
                                                 <!-- Adding the new matdropdown for multiple filter                   -->
-                                              <div>
-                                                <div class="form-group" >
+                                              <div  class="col-md-6">
+                                                <div class="form-group mb-0" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="CompanyCountFilter">
                                                     <mat-label>Company</mat-label>
                                                      <mat-chip-list #selected_companies>
@@ -287,8 +287,8 @@
 
 
 <!-- employee matdropdown start -->
-                                              <div>
-                                                <div class="form-group" >
+                                              <div class="col-md-6">
+                                                <div class="form-group mb-0" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter">
                                                     <mat-label>Employees</mat-label>
                                                      <mat-chip-list #selected_employee>
@@ -379,8 +379,8 @@
                                               </div> -->
 
 <!-- project type matdropdown start -->
-                                              <div>
-                                                <div class="form-group" >
+                                              <div class="col-md-6">
+                                                <div class="form-group mb-0" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter">
                                                     <mat-label>Project type</mat-label>
                                                      <mat-chip-list #selected_projecttype>
@@ -493,8 +493,8 @@
 
 
 
-                                                <div>
-                                                  <div class="form-group" >
+                                                <div class="col-md-6">
+                                                  <div class="form-group mb-0" >
                                                     <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter">
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
@@ -552,43 +552,28 @@
 
 
 
-                                          <div class="row">
-                                            <div class="col-md-12">
-                                              <input class="form-control kt-quick-search__input pl-3"
-                                                     style="width: 100%;"
-                                                     ngxDaterangepickerMd
-                                                     [(ngModel)]="selected_dates"
-                                                     [showCustomRangeLabel]="true"
-                                                     [alwaysShowCalendars]="true"
-                                                     [ranges]="ranges"
-                                                     [linkedCalendars]="true"
-                                                     [showClearButton]="true"
-                                                     [autoApply]="false"
-                                                     (datesUpdated)="datesUpdated($event)"
-                                                     [placeholder]="Dateselectionrange"/>
-                                            </div>
-                                          </div>
+
 
 
 
 
                                             </div>
-                                            <br>
+                                         
 
                                             <hr>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-10">
-                                                <button
-                                                    class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
-                                                <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
-                                                    (click)="resetAll();getNewFilterResult();">Reset
-                                                </button>
+                                            <div class="col-md-12 text-end">
                                                 <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
                                                     (click)="filterMegadropdownclose()">cancel
                                                 </button>
+                                                <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="resetAll();getNewFilterResult();">Reset
+                                                </button>
+                                                <button
+                                                    class="btn btn-info btn-upper btn-sm btn-bold mr-2"
+                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1382,10 +1367,10 @@
                                                                 <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                     <span>{{item.Resp}}</span>
                                                                   </a>
-                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Authority}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                   <span>{{item.Autho}}</span>
                                                                 </a>
-                                                                <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Team_Autho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+                                                                <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Authority}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                     <span>{{item.Autho}}</span>
                                                                   </a>
                                                                 <!-- <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator:{{item.Team_Coor}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">

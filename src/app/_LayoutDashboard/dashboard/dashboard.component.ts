@@ -1521,7 +1521,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-       
+  
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
@@ -2150,7 +2150,7 @@ export class DashboardComponent implements OnInit {
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
-
+debugger
       // update code below
 
       this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -2585,7 +2585,7 @@ export class DashboardComponent implements OnInit {
 
 
   viewconfirm() {
-
+   debugger
     const _arraytext = [];
     if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
       for (let index = 0; index < this.dayArr.length; index++) {
@@ -5323,7 +5323,11 @@ debugger
     //     }
     //   });
     // }
-     this.SelectDms=this.draft_arry[0]["dms_id"]
+    if(this.draft_arry[0]['dms_id']){
+       this.SelectDms=this.draft_arry[0]['dms_id'].split(',');
+    }
+    else 
+     this.SelectDms=[];
 
     this.ngEmployeeDropdown = [];
     this.ngEmployeeDropdown1 = [];
