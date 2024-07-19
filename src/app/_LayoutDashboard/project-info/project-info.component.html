@@ -118,12 +118,12 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="kt-project-type">
-                                   
+
                                     <div class="Kt-Pd-Status Delay black-text" *ngIf="item.Status=='Delay'">
                                         Delay {{item.Delaydays}} days
                                     </div>
 
-                                    
+
                                     <div *ngIf="item.Status!='Delay'" class="Kt-Pd-Status" [ngClass]="{
                                                         'UnderApproval': item.Status=='Under Approval',
                                                         'Not_Started': item.Status=='Not Started',
@@ -139,21 +139,21 @@
                                                         'Cancelled': item.Status=='Cancelled',
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold'}">
-  
+
                                        {{
-                                            item.Status=='Under Approval'?'New approval' : 
+                                            item.Status=='Under Approval'?'New approval' :
                                             item.Status=="Cancellation Under Approval"?"Cancellation approval":
                                             item.Status=="Completion Under Approval" ? "Completion approval":
                                             item.Status=='Forward Under Approval'? "Forward approval":
-                                            item.Status=='Not Started'?'Draft':
+
                                             item.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
                                             item.Status=='InProcess'?'In-process':
                                             item.Status=='Project Hold'?'Hold':
                                             item.Status
                                          }}
-                                  
+
                                     </div>
-                                 
+
                                 </div>
                             </div>
 
@@ -204,7 +204,7 @@
                                                 >
                                                  <ng-container *ngIf="item.Status !== 'Project Hold'">
                                                   <span class=" font-weight-400 ">
-                                                    {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
+                                                    {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                                                  </span>
                                                   </ng-container>
 
@@ -293,7 +293,7 @@
                                                 'Delay':item.Status.toLowerCase().includes('delay'),
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold'}" >
-                            {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :item.Status=='Not Started'?'Draft':  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
+                            {{item.Status=='Under Approval'?'New approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                         </div>
 
                         <div class="Requested_user_info">

@@ -1072,15 +1072,15 @@ tr.odd.project-list_AC.active{
   background-color: #e0f1ff;
 }
 .under-approval{
-  color:black !important;
-  background-color: #B2D732 !important;
+  color:white !important;
+  background-color: #9C27B0!important;
   padding: 2px 8px;
   border-radius: 2px;
   width: max-content;
   display: inline-block;
 }
 .InProcess{
-  background-color: #0089FB !important;
+  background-color: #64B5F6 !important;
   color: white;
   padding: 2px 8px;
   border-radius: 2px;
@@ -1101,14 +1101,14 @@ tr.odd.project-list_AC.active{
 
 }
 .New-Project-Rejected{
-  background-color: #DFDFDF !important;
-  color: black !important;
+  background-color: #BA68C8 !important;
+  color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
 .Project-Hold{
-  background-color: #DFDFDF !important;
-  color: black !important;
+  background-color: #795548 !important;
+  color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -1125,15 +1125,15 @@ tr.odd.project-list_AC.active{
   border-radius: 3px;
 }
 .Completion-Under-Approval{
-  background-color: #B2D732 !important;
-  color: black !important;
+  background-color: #81C784 !important;
+  color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
   display: inline-block;
 }
 .Cancellation-Under-Approval{
-  background-color: #EE4137 !important;
+  background-color: #F44336 !important;
 color: white !important;
 padding: 2px 8px;
 border-radius: 2px;
@@ -1142,7 +1142,7 @@ display: inline-block;
 }
 
 .Cancelled{
-  background-color: #EE4137 !important;
+  background-color: #F44336 !important;
 color: white !important;
 padding: 2px 8px;
 border-radius: 2px;
@@ -1151,8 +1151,8 @@ display: inline-block;
 }
 
 .Forward-Under-Approval{
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1160,16 +1160,16 @@ display: inline-block;
 
 }
 .Project-Complete-Rejected{
-  background-color: #FAF065 !important;
-  color: #000;
+  background-color: #BA68C8 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
   display: inline-block;
 }
 .Enactive-Under-Approval{
-  background-color: #C9C1E6 !important;
-  color: #000;
+  background-color: #F44336 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1177,43 +1177,43 @@ display: inline-block;
 
 }
 .Deadline-Extend-Under-Approval{
-  background-color: #F88282 !important;
-  color: #000;
+  background-color: #F9A825 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
   display: inline-block;
 }
 .Project-Holded{
-  background-color: #DFDFDF !important;
-  color: black !important;
+  background-color: #795548 !important;
+  color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
 
 }
 .Project-Hold-Under-Approval{
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #795548 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
   display: inline-block;
 }
 .Completed{
-  background-color: #62B134 !important;
+  background-color: #388E3C !important;
   color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
 .Delay{
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color: white !important;
   padding: 2px 8px;
   border-radius: 2px
 }
 .Not-Started{
-  background-color: #888888!important;
-  color: white!important;
+  background-color: #E0E0E0  !important;
+  color: black !important;
   padding: 2px 10px;
   border-radius: 3px;
 }

@@ -694,7 +694,7 @@
                                                           projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval":
                                                           projectInfo.Status== "Completion Under Approval"?"Completion approval":
                                                           projectInfo.Status=='Forward Under Approval'? "Forward approval":
-                                                          projectInfo.Status=='Not Started'?'Draft':
+
                                                           projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
                                                           projectInfo.Status=='InProcess'?'In-process': projectInfo.Status
                                                           }}
@@ -1511,7 +1511,7 @@
                                                                               <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                               <span *ngSwitchCase="'Under Approval'">New action approval</span>
                                                                               <span *ngSwitchCase="'Project Hold'" class="hold-act-text">Hold until {{action.Holddate}}</span>
-                                                                              <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Draft</span>
+                                                                              <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Not Started</span>
                                                                               <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                           </span>
                                                                           <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
@@ -1732,7 +1732,7 @@
 
 
                                       <a class="kt-inbox__icon" (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO','event-active':projectInfo&&projectInfo.isPortfolio>0}"  title="View or link portfolio">
-                                      
+
                                         <svg class="portfloNotfi-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1">
                                             <defs></defs>
                                             <g stroke="none" stroke-width="2" fill="none">
@@ -1743,7 +1743,7 @@
                                               <circle class="fill-color" cx="5.5" cy="17" r="1.5"></circle>
                                             </g>
                                           </svg>
-                                          
+
 
                                     </a>
 
@@ -2235,7 +2235,7 @@
 
       <div class="notification meeting cursor-pointer" *ngIf="MeetingCount>0" (click)="openMeetingSidebar()"><svg xmlns="http://www.w3.org/2000/svg"
           height="16" width="16" viewBox="0 0 1024 1024" version="1.1" class="iconify iconify--mdi">
-          <path 
+          <path
             d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
           </path>
         </svg><span class="notif-msg" style=" cursor: pointer;" >
@@ -2730,7 +2730,7 @@
 
 
                                             <div class="kt-project-type " *ngSwitchCase="'Not Started'">
-                                               <div class="Kt-Pd-Status not-started"> Draft</div>
+                                               <div class="Kt-Pd-Status not-started"> Not Started</div>
                                             </div>
 
                                               <!-- <div class="kt-project-type">
@@ -2805,8 +2805,8 @@
 
 
                                                 <div *ngIf="requestType=='Project Complete'"  (click)="approvalClick('TRANSFER')" class="kt-detail-link " [ngClass]="Transfer_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
-                                                  
-                                                  
+
+
                                                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="18px" viewBox="0 0 412.879 412.879" xml:space="preserve" style="fill: #0086f170; stroke: #0086f147;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g>
                                                         <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673 C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                                                         <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -2815,7 +2815,7 @@
                                                         <path d="M201.348,31.93c41.489,0,78.794,23.886,96.431,60.586l-9.229,1.771c-2.341,0.449-4.266,2.112-5.046,4.365 c-0.781,2.252-0.303,4.75,1.258,6.554l27.264,31.512c1.279,1.48,3.129,2.307,5.045,2.307c0.418,0,0.839-0.038,1.258-0.119 c2.342-0.449,4.266-2.114,5.049-4.366l13.662-39.366c0.781-2.253,0.302-4.751-1.259-6.554c-1.56-1.804-3.966-2.639-6.304-2.188 l-11.475,2.203c-19.918-46.272-65.622-76.724-116.655-76.724c-5.529,0-10.011,4.48-10.011,10.01 C191.337,27.449,195.819,31.93,201.348,31.93z" style="stroke-width: 15px;"></path>
                                                      </g></g></g>
                                                     </svg>
-                                                  
+
                                                     <span class="kt-detail-iconname">Tranfer ownership</span>
                                                 </div>
 
@@ -2871,9 +2871,9 @@
                                                     </div>
                                                     <!-- Project Audit and Transfer ownership-->
 
-                                                    
 
-                                            
+
+
                                                     <!-- Conditional Assign-->
                                                     <div class="mt-2 ">
                                                         <div class="row">
@@ -4134,7 +4134,7 @@
                                                       <div class="Kt-Pd-Status  Hold">Hold until {{projectActionInfo[currentActionView].Holddate}}</div>
                                                   </div>
                                                   <div *ngSwitchCase="'Not Started'" class="kt-project-type">
-                                                      <div class="Kt-Pd-Status Not_Started">Draft</div>
+                                                      <div class="Kt-Pd-Status Not_Started">Not Started</div>
                                                   </div>
 
                                                   <div *ngSwitchDefault class="kt-project-type">
@@ -4189,7 +4189,7 @@
                                                   </div>
 
                                                   <div *ngSwitchCase="'Not Started'" class="kt-project-type">
-                                                      <div class="Kt-Pd-Status Not_Started ">Draft</div>
+                                                      <div class="Kt-Pd-Status Not_Started ">Not Started</div>
                                                   </div>
 
 
@@ -4202,7 +4202,7 @@
                                                           projectActionInfo[currentActionView].Status==='Completion Under Approval'?"Completion approval":
                                                           projectActionInfo[currentActionView].Status==='Enactive Under Approval'?'Enactive approval':
                                                           projectActionInfo[currentActionView].Status==='Cancellation Under Approval'?'Cancellation approval':
-                                                          projectActionInfo[currentActionView].Status=='Not Started'? 'Draft': projectActionInfo[currentActionView].Status}} </div>
+                                                           projectActionInfo[currentActionView].Status}} </div>
                                                   </div>
 
                                               </div>
@@ -4251,7 +4251,7 @@
                                                                 projectActionInfo[currentActionView].Status==='Completion Under Approval'?"Completion approval":
                                                                 projectActionInfo[currentActionView].Status==='Enactive Under Approval'?'Enactive approval':
                                                                 projectActionInfo[currentActionView].Status==='Cancellation Under Approval'?'Cancellation approval':
-                                                                projectActionInfo[currentActionView].Status=='Not Started'? 'Draft': projectActionInfo[currentActionView].Status}}
+                                                                 projectActionInfo[currentActionView].Status}}
                                                           </div>
                                                           <div class="Requested_user_info">
                                                               <span class="svg-Rq-icon"><svg
@@ -4965,7 +4965,7 @@
                           >{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
                           days ':projectInfo.Status === 'Under Approval' ? 'New approval' : projectInfo.Status==='InProcess'?
                                                            'In-process' : projectInfo.Status=='Under Approval'?'New approval' :projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval"
-                                                          :projectInfo.Status== "Completion Under Approval" ? "Completion approval" :projectInfo.Status=='Forward Under Approval'? "Forward approval" :projectInfo.Status=='Not Started'?'Draft': projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
+                                                          :projectInfo.Status== "Completion Under Approval" ? "Completion approval" :projectInfo.Status=='Forward Under Approval'? "Forward approval" : projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
                                                           :projectInfo.Status=='InProcess'?'In-process': projectInfo.Status}} </span>
                       <span
                           class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
@@ -6732,7 +6732,7 @@
                                             </svg> </span>
                                         <span class="nav-text pr-2">Add team</span>
                                     </a>
-                                </li> 
+                                </li>
 
 
 
@@ -6800,7 +6800,7 @@
                                                         stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
                                                         stroke-linejoin="round"></path>
                                                 </g>
-                                            </svg> 
+                                            </svg>
                                         </span>
                                         <span class="nav-text">{{projectAuditor?'Change auditor':'Add auditor'}}</span>
                                     </a>
@@ -6938,8 +6938,8 @@
                                             </div>
                                           </div>
                                         </div>
-                                        
-                                        
+
+
                                         <div *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" class="d-flex">
                                             <button  (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
                                                 <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
@@ -6980,10 +6980,10 @@
                                         <!--remarks on removing support/auditor-->
 
 
-                                       
+
                                     </div>
 
-                                  
+
 
                                     </div>
                                   </div>
@@ -7179,14 +7179,14 @@
                                         (optionSelected)="onAuditorSelected($event); AuditorInputTF.value=''; "
                                         (opened)="isAuditorDrpDwnOpen=true"
                                         (closed)="isAuditorDrpDwnOpen=false; ">
-  
+
                                       <ng-container *ngFor="let emp of racisNonRacis|filter:AuditorInputTF.value.trim()">
                                           <mat-option [value]="{empName:emp.RACIS, empNo:emp.Emp_No}" class="mat-font">
                                               <mat-checkbox color="primary" [checked]="selectedAuditor?(emp.Emp_No==selectedAuditor.empNo):false"></mat-checkbox>
                                               {{emp.RACIS}}
                                           </mat-option>
-                                      </ng-container>  
-  
+                                      </ng-container>
+
                                       <mat-option *ngIf="(racisNonRacis|filter:AuditorInputTF.value.trim()).length==0" style="pointer-events:none;"  >
                                           <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                                               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -7197,18 +7197,18 @@
                                           </svg>
                                           <span style="color:#757575" class="ml-2">No results found.</span>
                                       </mat-option>
-  
-  
-  
-  
-                                       
-  
+
+
+
+
+
+
                                     </mat-autocomplete>
                                 </mat-form-field>
                                 <button
                                     class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn "
                                     (click)="onAuditorSubmitClicked()">{{projectAuditor?'CHANGE':'SUBMIT'}}</button>
-  
+
                             </div>
                                   <!-- <div class="list-new-sp-team">
                                       <div class="user-list-card">
@@ -7282,7 +7282,7 @@
 
 
 
-                    
+
                             <div class="tab-pane fade" id="kt_tab_pane_user-request_approver" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_approver">
                               <div class="mx-3  user-request-box  "  *ngFor="let item of approverequestlist">
                                 <div  class="mb-2"><span
@@ -14313,7 +14313,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content" style="height:90vh;">
         <div class="modal-header">
-          
+
 
           <div class="actnsGrph-of-user">
             <h5 id="graphmodalLabel" class="modal-title">{{projectInfo&&projectInfo.Project_Name}}</h5>
@@ -14323,10 +14323,10 @@
             <div class="d-flex" *ngIf="ganttActnsConfig.byuser!='All'">
                 <ng-container *ngFor="let item of filteremployee">
                     <h6 class="sel-user fs-8" *ngIf="item.Team_Res==ganttActnsConfig.byuser">{{item.Responsible}}</h6>
-                </ng-container>    
+                </ng-container>
                 <h6 class="user-actns-cnt fs-8">{{total_userActns}} Actions</h6>
             </div>
-    
+
          </div>
 
 
@@ -14347,9 +14347,9 @@
                 </a>
                 <div id="dropd" aria-labelledby="Filter_btn"
                     class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter">
-  
+
                     <ul class="drop-ul p-1 filtr-config-option ">
-  
+
                         <button (click)="filterActionsOnGantt('All')"    [ngClass]="{'active2':ganttActnsConfig.byuser==='All'}"   class="btn btn-filtr">
                             <div class="d-flex align-items-center">
                                 <svg width="18px" height="18px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project</title> <g id="Page-1" stroke-width="0.00512" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#7c7979" transform="translate(64.000000, 34.346667)"> <path d="M192,7.10542736e-15 L384,110.851252 L384,332.553755 L192,443.405007 L1.42108547e-14,332.553755 L1.42108547e-14,110.851252 L192,7.10542736e-15 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M341.333,157.655 L213.333,231.555 L213.333,381.82 L341.333333,307.920144 L341.333,157.655 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g></svg>
@@ -14367,9 +14367,9 @@
                                 </span>
                             </div>
                         </button>
-  
+
                         <li *ngFor="let item of filteremployee">
-  
+
                             <button  (click)="filterActionsOnGantt(item.Team_Res)"   [ngClass]="{'active2':ganttActnsConfig.byuser===item.Team_Res}"  class="btn btn-filtr">
                                 <div class="d-flex align-items-center">
                                     <svg
@@ -14396,11 +14396,11 @@
                                     </span>
                                 </div>
                             </button>
-  
+
                         </li>
-  
+
                     </ul>
-  
+
                 </div>
                 </div>
                 </div>
@@ -14408,21 +14408,21 @@
                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11083)"> <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#b0b0b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11083"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
                 </div>
           </div>
-  
-        </div>   
-       
+
+        </div>
+
 
         <div class="modal-body actns-graph-dv" style=" display: flex; flex-direction: column;">
             <!-- <div class="gantt-ctrls-btns">
-                  
+
             </div> -->
             <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 25px;">
                 <div class="dates-label" style="background-color: #fff">
-                       
+
                         <svg  width="100%" height="30px">
                             <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
                                 <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
-                                    
+
                                 </g>
                             </g>
                         </svg>

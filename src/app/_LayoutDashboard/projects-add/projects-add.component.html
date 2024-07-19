@@ -124,7 +124,7 @@
 
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Enactive Under Approval"?"Enactive approval"  :item.Name=="Project Hold Under Approval"?"Hold approval" :item.Name=="Deadline Extend Under Approval"?"Deadline extend approval":item.Name=="Cancellation Under Approval"?"Cancellation approval"   :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name =="Not Started"?"Draft":item.Name}}
+                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Enactive Under Approval"?"Enactive approval"  :item.Name=="Project Hold Under Approval"?"Hold approval" :item.Name=="Deadline Extend Under Approval"?"Deadline extend approval":item.Name=="Cancellation Under Approval"?"Cancellation approval"   :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name }}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -489,7 +489,7 @@
                                                             </span>
                                                         </div>
                                                         <div *ngIf="item.Status=='Not Started'">
-                                                          <span class="Not-Started font-weight-400">Draft
+                                                          <span class="Not-Started font-weight-400">Not Started
                                                           </span>
                                                       </div>
                                                       <div *ngIf="item.Status=='ToDo Achieved'">

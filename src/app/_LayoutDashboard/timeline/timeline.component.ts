@@ -17,6 +17,7 @@ import 'moment/locale/fr';
 import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+import { ActivatedRoute } from '@angular/router';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -55,6 +56,7 @@ export class TimelineComponent implements OnInit {
     private projectMoreDetailsService: ProjectMoreDetailsService,
     private notifyService: NotificationService,
     public datepipe: DatePipe,
+    private route : ActivatedRoute,
     private _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) private _locale: string
     ) {
@@ -116,8 +118,13 @@ export class TimelineComponent implements OnInit {
   showtimeline:boolean=true;
   ProState:boolean=false;
   ngOnInit(): void {
+
+    const navigatingTotimeline = localStorage.getItem('navigatingTotimeline');
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.timelineLog(this.type1);
+    this.route.queryParams.subscribe(params => {
+      const section=params.section;
+      this.timelineLog(section=='self'?this.type1:section=='racis'?this.type2:this.type1);
+    });
     this.activeDate=true;
     this.sortType=this.sort1;
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
@@ -618,6 +625,19 @@ submitDar() {
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
+    var myWindow = window.open(myurl,pcode);
+    myWindow.focus();
+  }
+
+
+  newDetailsaction(pcode,acode:string|undefined) {
+let qparams='';
+    if(acode!==undefined){
+      qparams=`?actionCode=${acode}`;
+    }
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${pcode}${qparams}`;
     var myWindow = window.open(myurl,pcode);
     myWindow.focus();
   }

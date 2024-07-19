@@ -1923,7 +1923,7 @@ span.count {
 
 
 .assigned-task {
-    background-color: #A847F0 !important;
+    background-color: #607D8B !important;
     color: white !important;
 }
 
@@ -1948,14 +1948,14 @@ span.count {
 }
 
 .task {
-    background-color: #D4A4FF;
-    color: black;
+    background-color: #90A4AE !important;
+    color: white;
     /* border: none;
   outline: none; */
 }
 
 .task-font{
-  color: #D4A4FF;
+  color: #90A4AE;
   font-size: large;
 }
 .total-font{
@@ -1971,24 +1971,21 @@ span.count {
   font-size: large;
 }
 .done-font{
-  color: #62B134;
+  color: #388E3C;
   font-size: large;
 }
 
 
 
 .assigned-task{
-  background-color: #A847Fd;
-  color:black;
-}
-.assigned-task {
-    background-color: #A847Fd;
-    color: black;
+  background-color: #607D8B;
+  color:white;
 }
 
+
 .task {
-    background-color: #D4A4FF;
-    color: black;
+    background-color: #90A4AE;
+    color: white;
 }
 
 .runway-actions .card-body {
@@ -2222,7 +2219,7 @@ span.count2 {
 }
 
 .delay {
-    background-color: #EE4137 !important;
+    background-color: #D32F2F !important;
     color: white !important;
     padding: 2px 10px;
     border-radius: 3px;
@@ -2268,7 +2265,7 @@ span.count2 {
 .assigned-task:focus::after {
     content: "";
     position: absolute !important;
-    border-top: 10px solid #A847Fd;
+    border-top: 10px solid #607D8B;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     bottom: -32%;

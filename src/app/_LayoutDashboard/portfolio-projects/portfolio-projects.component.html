@@ -155,7 +155,7 @@
                                                     <button id="draft" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count draf">{{CountNotStarted}}</span>
-                                                            <div class="fil-lbl">Draft</div>
+                                                            <div class="fil-lbl">Not started</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -865,7 +865,7 @@
                                                   </div>
                                                   <div *ngIf="item1.Status=='Not Started'">
                                                     <span
-                                                        class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
+                                                        class="Not-Started font-weight-400 ">{{ item1.Status  }}</span>
                                                     <br>
                                                 </div>
                                                   <div *ngIf="item1.Status=='New Todo'">
@@ -1015,14 +1015,48 @@
 
 
 
+                                                    <!-- <div *ngIf="item1.Status=='Delay'">
+                                                      <span
 
 
+                                                   *ngIf="item1.Delaydays>0"
+                                                        class=" Delay_color font-weight-400 ">
+                                                        {{item1.Delaydays}}
+                                                            days
+
+                                                     <span     class="">{{item1.Status}}
+
+                                                     </span>
+                                                      </span>
+                                                  </div> -->
 
 
 
                                         <ng-container *ngIf="showDeletedPrjOnly">
                                              <td>
+                                    <ng-container *ngIf="item1.Delaydays>0;  else delayy">
                                               <div *ngIf="item1.Status=='Delay'">
+                                                <span  *ngIf="item1.Delaydays>0"
+                                                    class="Delay_color font-weight-400">
+                                                    {{item1.Delaydays}}
+                                                            days
+
+
+                                                <span
+                                                    class="">
+                                                    <strong>{{item1.Status}}
+                                                        </strong>
+                                                      </span>
+                                                </span>
+                                            </div>
+                                          </ng-container>
+
+                                          <ng-template #delayy > <span
+                                            class="Delay_color font-weight-400">
+                                            <strong>{{item1.Status}}
+                                                </strong>
+                                              </span> </ng-template>
+                                              <!-- <div *ngIf="item1.Status=='Delay'">
                                                 <span
                                                     class="Delay_color font-weight-400">{{item1.Status}}
 
@@ -1032,7 +1066,7 @@
                                                         days</strong>
                                                       </span>
                                                 </span>
-                                            </div>
+                                            </div> -->
                                             <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                 <span
                                                     class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
@@ -1075,7 +1109,7 @@
                                             </div>
                                             <div *ngIf="item1.Status=='Not Started'">
                                               <span
-                                                  class="Not-Started font-weight-400 ">{{ (item1.Status === 'Not Started') ? 'Draft' : item1.Status }}</span>
+                                                  class="Not-Started font-weight-400 ">{{ item1.Status }}</span>
 
                                           </div>
                                             <div *ngIf="item1.Status=='New Todo'">
