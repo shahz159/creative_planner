@@ -32,7 +32,7 @@
                       </div>
                     </div>
                     <div class="option-section">
-                      <div (click)="Scratech_btn(); reset()" >
+                      <div (click)="Scratech_btn();reset();updateCharacterCount()" >
                         <div class="op-card Scratech cursor-pointer">
                           <div class="op-svg-ic">
                             <svg xmlns="http://www.w3.org/2000/svg" width="81" height="81" viewBox="0 0 81 81" fill="none">
@@ -1445,12 +1445,14 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project description<span class="text-danger">*</span></label>
                                   <textarea class="form-control form-control kt-desc-textarea" data-kt-autosize="true"
-                                    placeholder="Enter project description" [ngClass]="{'error-border': !PrjDes&&notProvided}" [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
+                                    placeholder="Enter project description" [ngClass]="{'error-border': !PrjDes&&notProvided}" (input)="updateCharacterCount()"
+                                    (paste)="updateCharacterCount()"  [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
                                     <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
                                     <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
                                     at least 5 words, maximum 500 characters are allowed</span>
+                                    <span *ngIf="characterCount > 0" >Characters with spaces {{characterCount}}</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
-                                   <span *ngIf="PrjDes&&PrjDes.length>500" style="color:rgb(217,48,37)">Maximum 500 characters are allowed</span>
+                                   <span *ngIf="characterCount >500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
@@ -1784,9 +1786,9 @@
                             <div class="kt-ctv-btn mt-0">
                               <button type="button"
 
-                                class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="Move_to_add_team(); getPrjCost(Allocated_Hours);">Next
+                                class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="Move_to_add_team(); getPrjCost(Allocated_Hours);updateCharacterCount()">Next
                               </button>
-                              <button type="button" (click)="back_to_options();"
+                              <button type="button" (click)="back_to_options();updateCharacterCount()"
                                 class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back to options</button>
 
                               <!-- [disabled]="!(Prjtype&&(PrjName&&PrjName.trim().split(' ').length>=3)&&PrjClient&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&PrjCategory&&Prjstartdate&&Prjenddate&&Prjduration)" -->
@@ -1955,7 +1957,7 @@
                               <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev"
                                 (click)="cancelPrjCreation()">Cancel</button> -->
                               <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev mr-2"
-                                (click)="Back_to_project_details_tab()">
+                                (click)="Back_to_project_details_tab();updateCharacterCount() ">
                                 Previous</button>
 
                               <button *ngIf="Prjtype=='001'||Prjtype=='002'"    type="button" class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="saveAsDraft()">Save as draft</button>
@@ -1974,7 +1976,7 @@
                               <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                 <div class="PA_title w-100">
                                   <span class="label">Project</span>
-                                  <span class="PA_Edit_btn m-2  curser-pointer  " (click)="Project_details_edit();">
+                                  <span class="PA_Edit_btn m-2  curser-pointer  " (click)="Project_details_edit();updateCharacterCount_Desc()">
                                     <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="15"
                                       height="15">
                                       <path
@@ -2344,7 +2346,7 @@
                               <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                 <div class="PA_title w-100">
                                   <span class="label">Action {{currentActionView+1}}</span>
-                                  <span class="PA_Edit_btn m-2 curser-pointer" (click)="Action_details_edit()" >
+                                  <span class="PA_Edit_btn m-2 curser-pointer" (click)="Action_details_edit();updateCharacterCount_Action()" >
                                     <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="15"
                                       height="15">
                                       <path
@@ -2711,10 +2713,12 @@
                               <!-- <textarea type="text" class="form-control" [(ngModel)]="PrjDes" placeholder="Search..." height="60px"
                                 ></textarea> -->
                                 <textarea type="text" class="form-control"  [ngClass]="{'error-border':!ProjeditDescription&&notProvided}"    placeholder="Enter project description" height="60px"
-                                [(ngModel)]="ProjeditDescription" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
+                                [(ngModel)]="ProjeditDescription"    (input)="updateCharacterCount_Desc()"
+                                (paste)="updateCharacterCount_Desc()" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
                                 <!-- <span *ngIf="!ProjectDescription&&notProvided" style="color:rgb(217,48,37)">Please enter description</span> -->
                                 <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed</span>
-                                <span *ngIf="ProjeditDescription&&ProjeditDescription.length > 500" style="color:rgb(217,48,37)">Maximum 500 characters are allowed</span>
+                                <span *ngIf="characterCount_Desc > 0" >Characters with spaces {{characterCount_Desc}}</span>
+                                <span *ngIf="characterCount_Desc > 500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
                           </div>
                       </div>
                   </div>
@@ -3088,10 +3092,12 @@
                         <label class="pe-label">Action description</label>
                         <div class="input-icon project_des_ed curser-pointer">
                               <textarea [ngClass]="{'error-border':!ProjectDescription&&notProvided}" type="text" class="form-control" placeholder="Enter action description" height="60px"
-                              [(ngModel)]="ProjectDescription" (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
+                              [(ngModel)]="ProjectDescription"  (input)="updateCharacterCount_Action()"
+                              (paste)="updateCharacterCount_Action()"   (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
                               <span *ngIf="!ProjectDescription&&notProvided" style="color:red">Please enter action description </span>
                               <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed</span>
-                              <span *ngIf="ProjectDescription&&ProjectDescription.length>500" style="color:red">Maximum 500 characters are allowed</span>
+                              <span *ngIf="characterCount_Action > 0" >Characters with spaces {{characterCount_Action}}</span>
+                              <span *ngIf="characterCount_Action>500" style="color:red">Maximum 500 characters are allowed</span>
                         </div>
                     </div>
                 </div>

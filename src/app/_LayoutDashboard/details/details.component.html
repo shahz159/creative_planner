@@ -2533,7 +2533,7 @@
                                                   Current_user_ID == projectInfo.ResponsibleEmpNo ||
                                                   isHierarchy==true
                                                   )">
-                                                  <div class="PA_Edit_btn" (click)="Project_details_edit()">
+                                                  <div class="PA_Edit_btn" (click)="Project_details_edit();updateCharacterCount()">
                                                       <svg xmlns="http://www.w3.org/2000/svg" id="Outline"
                                                           viewBox="0 0 24 24" width="15" height="15">
                                                           <path
@@ -3945,7 +3945,7 @@
                                                    isHierarchy
                                                    )">
                                                   <a href="javascript:void(0)">
-                                                      <div class="PA_Edit_btn" (click)="Action_details_edit()">
+                                                      <div class="PA_Edit_btn" (click)="Action_details_edit();updateCharacterCount_Action()">
                                                           <svg xmlns="http://www.w3.org/2000/svg" id="Outline"
                                                               viewBox="0 0 24 24" width="15" height="15">
                                                               <path
@@ -11720,8 +11720,10 @@
                               <div class="input-icon project_des_ed curser-pointer">
                                   <textarea type="text" class="form-control" placeholder="Search" height="60px"
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
-                                      [(ngModel)]="ProjectDescription"></textarea>
+                                      [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
+                              <span *ngIf="characterCount > 0" >Characters with spaces {{characterCount}}</span>
+                              <span *ngIf="characterCount>=500"  style="color:red"> description should not exceed 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
                       </div>
@@ -12221,8 +12223,11 @@
                           <div class="input-icon project_des_ed">
                               <textarea type="text" class="form-control" placeholder="Search" height="60px"
                               [ngClass]="{'error-border': !ActionDescription&&formFieldsRequired}"
-                                  [(ngModel)]="ActionDescription"></textarea>
+                                  [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()"
+                                  (paste)="updateCharacterCount_Action()" ></textarea>
                           </div>
+                          <span *ngIf="characterCount_Action > 0" >Characters with spaces {{characterCount_Action}}</span>
+                          <span *ngIf="characterCount_Action >=500"  style="color:red">    description should not exceed 500 characters.</span>
                           <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>
                   </div>

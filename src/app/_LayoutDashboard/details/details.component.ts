@@ -2960,7 +2960,8 @@ currentStdAprView:number|undefined;
 // check all mandatory fields are provided or not
    if(!(
         (this.ProjectName&&this.ProjectName.trim()!='')&&
-        (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+        // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+        (this.ProjectDescription?(this.characterCount<500):true)
       ))
    {
       this.formFieldsRequired=true;
@@ -3181,7 +3182,7 @@ currentStdAprView:number|undefined;
   onAction_update() {
     this.updatingAction = true;
 // check all mandatory field are provided.
-    if(!(this.ActionName&&this.ActionDescription&&
+    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<500):true)&&
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
          this.ActionstartDate&&this.ActionendDate&&
@@ -9907,10 +9908,28 @@ onActnsGanttClosed(){
 emps_of_actvs:any=[];
 actvs_types:any=[];
 
-// Activities Filter end.
+characterCount: number = 0;
+
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ProjectDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
 
 
+characterCount_Action: number = 0;
 
+updateCharacterCount_Action(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ActionDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Action = textContent.length;
+}
 
 
 
