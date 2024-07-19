@@ -8077,6 +8077,21 @@ input.search-input {
 /*new details page loading circle end*/
 
 
+/* activities filter*/
+
+.actvs-flr-btn{
+    position:absolute;
+    right:55px;
+    background-color: transparent;
+    border:0;
+}
+
+
+/*activities filter*/
+
+
+
+
 /* all actns view  start*/
 .allactns-graph {
   display: flex;
@@ -8128,26 +8143,10 @@ input.search-input {
    width:100%;
 }
 
-
-
 #actns-graphmodal .actns-graph-dv .actngantt-chart-holder{
    overflow-y: auto;
 }
-
-#actns-graphmodal .actns-graph-dv .actngantt-chart-holder::-webkit-scrollbar {
-  width: 7px;
-}
-
-#actns-graphmodal .actns-graph-dv .actngantt-chart-holder::-webkit-scrollbar-thumb {
-  background-color: #c8c8c8;
-  border-radius: 50px;
-}
-#actns-graphmodal .actns-graph-dv .actngantt-chart-holder::-webkit-scrollbar-track {
-  background-color: #fff;
-  border-radius: 50px;
-}
-
-
+ 
 .actnsGrph-of-user .sel-user{
   background-color: gray;
   color: white;
@@ -8167,6 +8166,25 @@ input.search-input {
 }
 
 
+#actns-graphmodal .gantt-container{
+  flex-grow: 1; 
+  max-height: 60vh; 
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+#actns-graphmodal .gantt-container::-webkit-scrollbar {
+  width: 7px;
+}
+
+#actns-graphmodal .gantt-container::-webkit-scrollbar-thumb {
+  background-color: #c8c8c8;
+  border-radius: 50px;
+}
+#actns-graphmodal .gantt-container::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 50px;
+}
 
 
 /* all actns view  start*/

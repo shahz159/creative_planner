@@ -4304,7 +4304,7 @@ updateAgenda(index: number) {
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  let name: string = 'Meeting-Report';
+  let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
   var myWindow = window.open(myurl);
@@ -4375,21 +4375,21 @@ closedarBar() {
 }
 // shared and shared details side bar end
 
-
 all_status={
-  'Under Approval': '#B2D732',
-  'InProcess':'#0089FB',
-  'Completed':'#62B134',
-  'Delay':'#EE4137',
-  'Completion Under Approval':'#B2D732',
-  'Forward Under Approval':'#B2D732',
-  'Project Hold':'#E2D9BC',
+  'Completed':'#388E3C',
+  'InProcess':'#64B5F6',
+  'Completion Under Approval':'#81C784',
+  'Forward Under Approval':'#64B5F6',
+  'Under Approval': '#9C27B0',
+  'Delay':'#D32F2F',
+  'Project Hold':'#A1887F',
+  'New Project Rejected':'#BA68C8',
+  'Deadline Extend Under Approval':'#F9A825',
+  'Cancellation Under Approval':'#EF5350',
+ 
   'Cancelled':'#EE4137',
-  'New Project Rejected':'#DFDFDF',
-  'Deadline Extend Under Approval':'#F88282',
   'ToDo Achieved':'#62B134',
   'ToDo Completed':'#62B134',
-  'Cancellation Under Approval':'#EE4137',
   'other':'#d0d0d0'
 };
 prj_statuses:any=[];
@@ -4430,7 +4430,7 @@ loadGanttChart(){
                {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date().getTime(),new Date(prj.DeadLine).getTime()],
-                fillColor:'#dcdcdc',
+                fillColor:'#bebebe42',
                 index:_index
                }
             ];
@@ -4441,19 +4441,19 @@ loadGanttChart(){
               {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date(prj.DPG).getTime(),new Date(prj.maxDeadline).getTime()],
-                fillColor:'#0089FB',
+                fillColor:this.all_status['InProcess'],
                 index:_index
               },
               {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date(prj.maxDeadline).getTime(),new Date().getTime()],
-                fillColor:'#EE4137',
+                fillColor:this.all_status['Delay'],
                 index:_index
               },
               {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date().getTime(),new Date(prj.DeadLine).getTime()],
-                fillColor:'#f1f1f1',
+                fillColor:'#bebebe42',
                 index:_index
               }
             ];
@@ -4477,7 +4477,7 @@ loadGanttChart(){
             [{
               x:`${prj.Project_Name} (${prj.Project_Code})`,
               y:[new Date(prj.DPG).getTime(),new Date(prj.maxDeadline).getTime()],
-              fillColor:'#0089FB',
+              fillColor:this.all_status['InProcess'],
               index:_index
               },
               {
@@ -4508,23 +4508,70 @@ loadGanttChart(){
 
 
 
-// Desired height per row in pixels
-const rowHeight = 40;
-const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
-let chartHeight = rowHeight * dataPoints*(_series.length<10?2:1);
-chartHeight=chartHeight<200?200:chartHeight;
-
+const rowHeight=35;
+let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+100;
+let max_Xvalue=new Date();
+max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
 var options = {
   series: _series,
   chart: {
-    height: chartHeight,
-    type: 'rangeBar'
+    height: chartHeight+'px',
+    type: 'rangeBar',
+    events: {
+      updated: ()=>{ 
+
+        const chartContainer = document.querySelector("#chartdiv3");
+        const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
+        let textElements = xAxisLabels.querySelectorAll('text');
+        const hrline:any=document.querySelector('#chartdiv3 .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
+        const linewth=hrline.getAttribute('x2');
+        const dateGcHl:any = document.querySelector('.prjs-gantt-dates .dates-label');
+        dateGcHl.style.width=linewth+'px';  
+        const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
+        dateGcHv.innerHTML=''; 
+        textElements.forEach(te => {
+          const clonedTe = te.cloneNode(true);
+          clonedTe.setAttribute('y', '65%');
+          clonedTe.setAttribute('fill', '#000');
+          dateGcHv.appendChild(clonedTe);
+        });
+
+      
+
+      
+        const gcharttable:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
+        const trsnfvalue=gcharttable.getAttribute('transform');
+        console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
+        gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
+        console.log('gcharttable:',gcharttable);
+
+
+          const ctrlbtns:any=document.querySelector('#chartdiv3 .apexcharts-toolbar');
+          ctrlbtns.style.backgroundColor='rgb(255 255 255 / 65%)';
+          ctrlbtns.style.padding='4px 6px 7px 5px';
+          ctrlbtns.style.border='2px solid #b3b3b3';
+          const ganttCtrls:any=document.querySelector('.prjs-Ganttchart .gantt-ctrls-btns');
+          ganttCtrls.innerHTML='';
+          ganttCtrls.append(ctrlbtns);
+          
+         
+          const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
+          yaxis.querySelectorAll('text').forEach(v=>{
+             v.setAttribute('x','-150');
+             v.setAttribute('text-anchor','start');
+          });
+          console.log(yaxis);  
+
+       },
+
+      
+    }
   },
   plotOptions: {
     bar: {
       horizontal: true,
-      barHeight: '58%', // Adjust to fill the available space
+      barHeight: '48%', // Adjust to fill the available space
       rangeBarGroupRows: true
     }
   },
@@ -4532,8 +4579,6 @@ var options = {
   fill: {
     type: 'solid'
   },
-
-
 
   dataLabels: {
     enabled:false,
@@ -4547,6 +4592,9 @@ var options = {
       // else if(label == 'Water colors project')
       //   text = '5 days delay.';
       // return text;
+      
+      
+      // return opts.w.config.series[opts.seriesIndex].name;
       return '';
     },
     style: {
@@ -4554,22 +4602,43 @@ var options = {
     }
   },
 
-
-
   xaxis: {
     type: 'datetime',
     position: 'top', // This moves the x-axis to the top
     labels: {
-      show: true
+      show: true,
+      style: {
+        offsetY: 10, // Adjust this value to add space below the labels
+        colors:'#fff'
+      }
     },
     axisBorder: {
       show: true
     },
     axisTicks: {
       show: true
+    },
+    max:max_Xvalue.getTime()
+  },
+  yaxis: {
+    labels: {
+      style: {
+        fontSize: '12px',       
+        fontFamily: 'Arial, sans-serif', 
+        color: '#333',          
+        textAnchor: 'start'    
+      },
+      formatter: function(value) {
+        if (isNaN(value)) {
+            let str=value.substring(0,value.lastIndexOf('('));
+            
+            return str;
+        } else 
+          return value;
+        
+      }
     }
   },
-
 
   grid: {
     yaxis: {
@@ -4668,36 +4737,32 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
     }
   },
 
-
   annotations: {
-    xaxis: [
-      {
-        x: todays_date,
-        borderColor: '#5867dd',
-        borderWidth: 2, // Increase line width
-        label: {
-          style: {
-            color: '#fff',
-            background: '#5867dd',
-            fontFamily: 'Lucida Sans Unicode', // Attractive font family
-            fontWeight: 'normal', // Bold text
-            fontSize: '9px', // Increase font size for better visibility
-            padding: {
-              left: 6,
-              right: 6,
-              top: 3,
-              bottom: 3
-            },
-            borderRadius: '5px', // Rounded corners
-            // textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)', // Add shadow to make text stand out
+    xaxis: [{
+      x: todays_date,
+      borderColor: '#5867dd',
+      borderWidth: 2,
+      label: {
+        style: {
+          color: '#fff',
+          background: '#5867dda5',
+          fontFamily: 'Lucida Sans Unicode',
+          fontWeight: 'normal',
+          fontSize: '9px',
+          padding: {
+            left: 4,
+            right: 4,
+            top: 2,
+            bottom: 2
           },
-          text: 'Today',
-          textAnchor: 'start', // Align text to the start (left) of the label
-          offsetX: 9, // Horizontal offset to position it to the right of the line
-          offsetY: 0 // Slight vertical offset to fine-tune position
-        }
+          borderRadius: '5px',
+        },
+        text: 'Today',
+        textAnchor: 'start',
+        offsetX: -13,
+        offsetY: -20
       }
-    ]
+    }]
   }
 
 

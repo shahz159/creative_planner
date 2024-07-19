@@ -1014,6 +1014,15 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
 
  }
 
+ characterCount: number = 0;
 
+ updateCharacterCount(): void {
+ 
+   // Create a temporary div element to strip out HTML tags
+   const tempElement = document.createElement('div');
+   tempElement.innerHTML = this._Description;
+   const textContent = tempElement.textContent || tempElement.innerText || '';
+   this.characterCount = textContent.length;
+ }
 
 }

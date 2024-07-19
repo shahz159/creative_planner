@@ -4777,6 +4777,29 @@ input.search-input {
   opacity: 0;
   cursor: pointer;
 }
+
+
+.prjs-Ganttchart .prjs-gantt-dates{
+  background-color:#fff;  
+  position: relative;
+  top: 28px;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+.prjs-Ganttchart .gantt-ctrls-btns{
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.apexcharts-yaxis-label {
+  white-space: pre-wrap; /* Allow text to wrap */
+  overflow: visible; /* Prevent text from being clipped */
+}
 .kt-widget__details {
   min-width: 90px;
 }
