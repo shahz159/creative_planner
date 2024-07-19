@@ -484,6 +484,8 @@ export class MeetingDetailsComponent implements OnInit {
   meetingDuration: any;
   meetings_Recurrence: any;
   completionReports_Status:any=[];
+  totalUser_Scheduledjson:any;
+  completionReports:any;
 
 
   meeting_details() {
@@ -492,7 +494,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      console.log("EventScheduledjson", this.EventScheduledjson[0].Recurrence);
+     
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -502,7 +504,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-    
+      this.totalUser_Scheduledjson=this.User_Scheduledjson.length
+      console.log("User_Scheduledjson", this.User_Scheduledjson);
       this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
         const statusOrder = { "Accepted": 1, "Pending": 2, "May be": 3, "Rejected": 4 };
         return statusOrder[a.Status] - statusOrder[b.Status];
@@ -514,13 +517,15 @@ export class MeetingDetailsComponent implements OnInit {
         return 0;
       });
     
-      var getTotalCount= this.orderedItems.filter(item=> item.Status==='Accepted'|| item.onlineDuration );
+      var getTotalCount= this.orderedItems.filter(item=> item.Status==='Accepted' || item.onlineDuration );
    
       this.completionReports_Status=getTotalCount.length + 1 
 
       this.meetings_Recurrence = this.EventScheduledjson[0].Recurrence
 
-
+      var getTotalCounts= this.orderedItems.filter(item=> item.Status==='Accepted' || item.onlineStatus=='Start' );
+   
+      this.completionReports=getTotalCounts.length + 1 
 
 
       this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
@@ -1245,8 +1250,8 @@ export class MeetingDetailsComponent implements OnInit {
         // 69 var recordProjects=this.Project_code.map(item=>item.stringval)
         // 69 this.ProjectListArray=this.ProjectListArray.filter(item=>!recordProjects.includes(item.Project_Code))
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        // console.log(this.ProjectListArray,'ProjectListArray');
-
+        console.log(this.ProjectListArray,'ProjectListArray');
+        this.companies_Arr=JSON.parse(data['Client_json']);
 
 
         this.originalProjectList = this.ProjectListArray
@@ -2199,15 +2204,14 @@ export class MeetingDetailsComponent implements OnInit {
       }
      
       this.Notes_Type.trim();
-    
+    debugger
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
-      this._calenderDto.Meeting_notes = this.Notes_Type==""?null:this.Notes_Type;
+      this._calenderDto.Meeting_notes = this.Notes_Type=="<div><br></div><div></div>" || this.Notes_Type==" " ?"":this.Notes_Type;
       this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
-
-      console.log(this._calenderDto, 'Private notes');
+      // console.log(this._calenderDto, 'Private notes');
       this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
         (data => {
           console.log(data, 'Private notes');
@@ -5596,30 +5600,49 @@ sortbyCurrent_Time(){
 
   isFilteredOn:boolean=false;
   searchingResult: boolean = false;
-  onProjectSearch(inputtext: any) {
-    this.searchingResult = true;
-    this.CalenderService.NewGetProjectandsubtaskDrp(inputtext).subscribe((res: any) => {
-      // console.log(res);
-      if (res) {
-        this.ProjectListArray = JSON.parse(res['Projectlist']);
-        //  console.log("project name searched result:",this.ProjectListArray);
-        this.searchingResult = false;
-      }
-
-    })
+  inputTyped:string;
+  onProjectSearch(inputtext:any){
+  
+     if(this.searchingResult==false){
+      const filterobj=this.basedOnFilter;
+  
+      this.isFilteredOn=(this.basedOnFilter.byuser||this.basedOnFilter.bycompany);  //  on the filter dot if applied.
+  
+      this.searchingResult=true;
+      this.CalenderService.NewGetProjectandsubtaskDrp(inputtext,filterobj).subscribe((res:any)=>{
+          console.log(res);
+          if(res){
+            this.ProjectListArray=JSON.parse(res['Projectlist']);
+             console.log("project name searched result:",this.ProjectListArray);
+            this.searchingResult=false;
+  
+            if(this.inputTyped!=undefined){
+               const newsearch=this.inputTyped;
+               this.inputTyped=undefined;
+               this.onProjectSearch(newsearch);
+            }
+  
+          }
+      });
+     }
+     else
+     this.inputTyped=inputtext;
+  
   }
+  
 
+  choosedItems:any=[];
   basedOnFilter:any={};
 
   projectmodal() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
   }
-  close_projectmodal() {
-    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-    document.getElementById("projectmodal").style.display = "none";
-    this.Assigntext = ''
-  }
+  // close_projectmodal() {
+  //   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+  //   document.getElementById("projectmodal").style.display = "none";
+  //   this.Assigntext = ''
+  // }
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
     document.getElementById("filter-icon").classList.add("active");
@@ -5628,6 +5651,9 @@ sortbyCurrent_Time(){
     document.getElementById("project-filter").classList.remove("show");
     document.getElementById("filter-icon").classList.remove("active");
   }
+
+  companies_Arr:any;
+
 
   projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
 
@@ -5645,16 +5671,17 @@ sortbyCurrent_Time(){
     if(modaltype!='PROJECT')
       this.onInputSearch('');
   }
-  // close_projectmodals(){
-  //   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-  //   document.getElementById("projectmodal").style.display = "none";
-  //   this.choosedItems=[];   // clear selections.
-  //   this.isFilteredOn=false;
-  //   this.basedOnFilter.byuser=null;
-  //   this.basedOnFilter.bycompany=null;    // clear filter applied.
-  //   this.FilteredResults=[];             // clear filtered result.
-  //   this.projectmodaltype=undefined; // no model open.
-  // }
+  close_projectmodal(){
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("projectmodal").style.display = "none";
+    this.Assigntext = ''
+    this.choosedItems=[];   // clear selections.
+    this.isFilteredOn=false;
+    this.basedOnFilter.byuser=null;
+    this.basedOnFilter.bycompany=null;    // clear filter applied.
+    this.FilteredResults=[];             // clear filtered result.
+    this.projectmodaltype=undefined; // no model open.
+  }
   FilteredResults:any=[];  
 
   onInputSearch(inputText:any){
@@ -5695,6 +5722,151 @@ sortbyCurrent_Time(){
     });
     this.FilteredResults=result;
   }
+
+
+
+
+
+  keepChoosedItems(){
+    switch(this.projectmodaltype)
+    {
+        case 'PROJECT':{
+          if(!this.MasterCode) // if MasterCode is null,undefined,'',0
+            this.MasterCode=[];
+  
+          this.MasterCode=[...this.MasterCode, ...this.choosedItems.map(item=>item.Project_Code)]; // selected prj codes
+          this.projectsSelected=[...this.projectsSelected,...this.choosedItems.map(item=>({ Project_Code:item.Project_Code, Project_Name:item.Project_Name, BlockNameProject:item.BlockNameProject, TM_DisplayName:item.TM_DisplayName }))]; // selected prj objs
+          this.close_projectmodal();
+        };break;
+  
+        case 'PORTFOLIO':{
+              if (!this.Portfolio)   // if Portfolio is null,undefined,''
+              this.Portfolio = [];
+  
+             this.Portfolio=[...this.Portfolio,...this.choosedItems];  // array of portfolio ids.
+             this.close_projectmodal();
+        };break;
+  
+       case 'DMS':{
+            if(!this.SelectDms)   // if SelectDms is null,undefined,''
+              this.SelectDms=[];
+  
+            this.SelectDms=[...this.SelectDms,...this.choosedItems];   // array of all selected dms id.
+            this.close_projectmodal();
+       };break;
+  
+       case 'PARTICIPANT':{
+        if(!this.ngEmployeeDropdown)
+           this.ngEmployeeDropdown=[];
+  
+          this.ngEmployeeDropdown=[...this.ngEmployeeDropdown,...this.choosedItems];
+          this.close_projectmodal();
+       };break;
+  
+    }
+  
+  }
+
+
+
+
+
+
+
+
+  discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:string){
+    switch(listtype){
+       case 'PROJECT':{
+              const i=this.MasterCode.findIndex(pc=>pc==item);
+              this.MasterCode.splice(i,1);
+              this.projectsSelected.splice(i,1);
+       };break;
+       case 'PORTFOLIO':{
+            const i=this.Portfolio.findIndex(ptf=>ptf==item);
+            this.Portfolio.splice(i,1);
+  
+       };break;
+       case 'DMS':{
+             const i=this.SelectDms.findIndex(m=>m==item);
+             this.SelectDms.splice(i,1);
+  
+       };break;
+       case 'PARTICIPANT':{
+            const i=this.ngEmployeeDropdown.findIndex(em=>em==item);
+            this.ngEmployeeDropdown.splice(i,1);
+  
+       };break;
+       default:{};
+    }
+  
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  onItemChoosed(choosed:any,choosedItem:any){
+    if(choosed){
+      this.choosedItems.push(choosedItem);
+    }
+    else{
+      const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='PROJECT')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
+      if(i>-1)
+      this.choosedItems.splice(i,1);
+
+      // when removing already selected items
+      if(this.projectmodaltype==='PROJECT'){
+            const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
+            if(j>-1){
+              this.MasterCode.splice(j,1);
+              this.projectsSelected.splice(j,1);
+            }
+      }
+      else{
+        const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+        const j=ary.findIndex(item=>item==choosedItem);
+        if(j>-1)
+        ary.splice(j,1);
+      }
+         // when removing already selected items
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
