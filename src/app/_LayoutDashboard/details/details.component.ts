@@ -9686,21 +9686,29 @@ loadActionsGrantt(){
   const options = {
     series: _series,
     chart: {
+     
       height: chartHeight+'px',
       type: 'rangeBar',
       animations: {
         enabled: false // Disable animations to improve performance
       },
+    
       events: {
         updated: ()=>{ 
         
                 const chartContainer = document.querySelector("#actnsfull-graph");
+
+                // const grphbx:any=chartContainer.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical');
+                // grphbx.setAttribute('transform','translate(160,40)');
+
+
                 const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
                 let textElements = xAxisLabels.querySelectorAll('text');
                 const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
                 console.log('hrline is:',hrline);
                 const linewth=hrline.getAttribute('x2');
                 const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
+                
                 dateGcHl.style.width=linewth+'px';  
                 const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
                 dateGcHv.innerHTML=''; 
@@ -9721,11 +9729,38 @@ loadActionsGrantt(){
                 ganttCtrls.innerHTML='';
                 ganttCtrls.append(ctrlbtns);
 
-                // const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
-                // yaxis.querySelectorAll('text').forEach(v=>{
-                //    v.setAttribute('x','-150');
-                //    v.setAttribute('text-anchor','start');
-                // });
+// yaxis label adjustments
+              const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
+              const textelms:any=yaxis.querySelectorAll('text');
+              const shouldwrap:boolean=Array.from(textelms).some((te:any)=>te.querySelector('title').textContent.length>20);
+              if(shouldwrap){  
+                    textelms.forEach((te:any)=>{
+                        te.setAttribute('x','-135');
+                        te.setAttribute('text-anchor','start');
+
+                        const fullname=te.querySelector('title').textContent;
+                        const maxl=20;
+                        const strl=fullname.length;
+                        if(strl>maxl){
+                             te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
+                             
+                             const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                             tspan1.textContent=fullname.substring(0,20);
+                             const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                             tspan2.setAttribute('x','-135');
+                             tspan2.setAttribute('dy','15.6');
+                             let fullname2=fullname.slice(20);
+                             fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
+                             tspan2.textContent=fullname2;
+
+                             te.appendChild(tspan1);
+                             te.appendChild(tspan2);
+                        }
+
+                    });
+              }
+
+// yaxis label adjustments
 
                 const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
                 const trsnfvalue=gcharttable.getAttribute('transform');
@@ -9780,21 +9815,44 @@ loadActionsGrantt(){
           color: '#333',          
           textAnchor: 'start'    
         },
-        formatter: function(value) {
+
+
+
+
+        formatter:function(value) {
           if (isNaN(value)) {
-              let str=value.substring(0,value.lastIndexOf('('));
+              let str=value.substring(0,value.lastIndexOf('(')); 
               str=str.trim();
-              const maxl=20;
-              if(str.length<=maxl)
-                return str;
-              else 
-                {
-                    return [str.substring(0,maxl),str.slice(maxl)];
-                }
-              
+              return str;
           } else 
             return value;
         }
+
+
+
+
+        // function(value) {
+        //   if (isNaN(value)) {
+        //       let str=value.substring(0,value.lastIndexOf('(')); 
+        //       str=str.trim();   
+        //       const maxl=20;
+        //       if(str.length<=maxl)
+        //         return str;
+        //       else 
+        //         {
+        //             return [str.substring(0,maxl),str.slice(maxl)];
+        //         }
+              
+        //   } else 
+        //     return value;
+        // }
+
+
+
+
+
+
+
       }
     },
     grid: {
@@ -9811,7 +9869,7 @@ loadActionsGrantt(){
       padding: {
         top: 35,
         right: 10,
-        bottom: 20,
+        bottom: 15,
         left: 0
       }
     },
@@ -9895,7 +9953,8 @@ loadActionsGrantt(){
           offsetX: -13,
           offsetY: -20
         }
-      }]
+      }],
+     
     }
     
   };
@@ -9911,6 +9970,7 @@ loadActionsGrantt(){
 
 
 }
+  
 
 
 

@@ -919,7 +919,7 @@ export class DashboardComponent implements OnInit {
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = id;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => {  
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing111");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -1966,9 +1966,12 @@ export class DashboardComponent implements OnInit {
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
-
         var vLink_Details = "Link_Details";
-        element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+        // let link_d=this.Link_Details;  debugger  
+        debugger
+        let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        link_d=this.anchoredIt(link_d);
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
 
         var vDescription = "Description";
@@ -2348,7 +2351,9 @@ debugger
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
           var vLink_Details = "Link_Details";
-          element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+          let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          link_d=this.anchoredIt(link_d);
+          element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
           var vDescription = "Description";
           element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -3853,7 +3858,6 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {  
         this.loading = false;
-        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -6853,6 +6857,34 @@ close_graph_div(){
 
 
 
+
+
+// anchor the link (helper) start
+anchoredIt(inputstr){
+  let inputdes=inputstr;
+  const urlregex=/\bhttps?:\/\/[^\s<]+[^\s<.,:;"')\]]\b/g;
+  const urlInAnchorRegex = /<a\s+[^>]*href=['"]([^'"]+)['"][^>]*>.*?<\/a>/gi;
+  let matches = inputdes.match(urlInAnchorRegex);
+  if(matches){
+       matches.forEach((achor) => {
+          inputdes=inputdes.replace(achor,achor.match(urlregex)[0]);
+       });
+  }
+
+  let alllinks=[];
+  inputdes.match(urlregex).forEach((linkstr,index)=>{
+      const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
+      alllinks.push(alink); 
+      inputdes=inputdes.replace(linkstr,`@link@-${index}`); 
+  });
+  inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
+      inputdes=inputdes.replace(place,alllinks[index]);
+   });
+  return inputdes;
+}
+
+
+//anchor the link (helper) end
 
 
 
