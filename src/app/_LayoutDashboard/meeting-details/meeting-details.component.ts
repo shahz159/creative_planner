@@ -23,11 +23,42 @@ import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/ma
 import { eventNames } from 'process';
 import { Console } from 'console';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
+
 
 @Component({
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css'],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 
 })
 export class MeetingDetailsComponent implements OnInit {
@@ -80,7 +111,6 @@ export class MeetingDetailsComponent implements OnInit {
         // 'textColor',
         // 'backgroundColor',
         'customClasses',
-        'link',
         'unlink',
         'insertImage',
         'insertVideo',
@@ -2204,14 +2234,14 @@ export class MeetingDetailsComponent implements OnInit {
       }
      
       this.Notes_Type.trim();
-    debugger
+
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
-      this._calenderDto.Meeting_notes = this.Notes_Type=="<div><br></div><div></div>" || this.Notes_Type==" " ?"":this.Notes_Type;
+      this._calenderDto.Meeting_notes = this.Notes_Type=="<div><br></div><div></div>" || this.Notes_Type==" " || this.isNotesTypeEmpty(this.Notes_Type) ?"":this.Notes_Type;
       this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
-      // console.log(this._calenderDto, 'Private notes');
+    
       this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
         (data => {
           console.log(data, 'Private notes');
@@ -2220,10 +2250,21 @@ export class MeetingDetailsComponent implements OnInit {
           // this.GetMeetingnotes_data(); 
           // window.close();
         });
-      // this.Notes_Type=' '
+   
     }
 
   }
+
+
+  isNotesTypeEmpty(notes: string): boolean {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = notes;
+
+    // Remove all font tags and get the text content
+    const sanitizedText = tempDiv.innerText.replace(/\s+/g, '');
+    return sanitizedText.length === 0;
+  }
+
 
   @ViewChild('ANGEDITOR') angulareditor:any;
   savePastedText(event:any){
@@ -3704,7 +3745,7 @@ _EndDate1:any;
 notProvided1:any;
 
   customrecurrencemodal() {
-    debugger
+ 
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -3775,24 +3816,24 @@ notProvided1:any;
     }
 }
 
-// selectedDay(days) {
+selectedDay(days) {
 
-//   //Checked the day
-//   let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
-//   this.dayArr1[objIndex].checked = days.target.checked;
-//   // this.Recurr_arr.push(days.target.value);
+  //Checked the day
+  let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
+  this.dayArr1[objIndex].checked = days.target.checked;
+  // this.Recurr_arr.push(days.target.value);
  
-//   if(days.target.checked&&this.notProvided1=='dayarr1')
-//     this.notProvided1="";
-// }
+  if(days.target.checked&&this.notProvided1=='dayarr1')
+    this.notProvided1="";
+}
 
-// selectmonthlydays(day) {
-//   let objIndex = this.MonthArr1.findIndex((obj => obj.value == day.target.value));
-//   this.MonthArr1[objIndex].checked = day.target.checked;
-//   // this.calendar.updateTodaysDate();
-//   if(day.target.checked&&this.notProvided1=='montharr1')
-//     this.notProvided1="";
-// }
+selectmonthlydays(day) {
+  let objIndex = this.MonthArr1.findIndex((obj => obj.value == day.target.value));
+  this.MonthArr1[objIndex].checked = day.target.checked;
+  // this.calendar.updateTodaysDate();
+  if(day.target.checked&&this.notProvided1=='montharr1')
+    this.notProvided1="";
+}
 
 
 bindCustomRecurrenceValues(){
@@ -4339,7 +4380,7 @@ sortbyCurrent_Time(){
   Online_method(event) {
 
     if (event.target.checked) {
-      document.getElementById("Descrip_Name12").style.display = "block";
+      document.getElementById("Descrip_Name12").style.display = "flex";
       this._onlinelink = event.target.checked;
       // alert(this._onlinelink)
     }
@@ -4352,11 +4393,7 @@ sortbyCurrent_Time(){
   }
 
 
-
-
   Locationfulladd: string;
-
-
 
   public handleAddressChange(address: Address) {
 
@@ -5200,8 +5237,10 @@ sortbyCurrent_Time(){
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
         var vLink_Details = "Link_Details";
-        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
-
+        let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        link_d=this.anchoredIt(link_d);
+        element[vLink_Details] = this.Link_Details == undefined ? "" : link_d;
+    
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -5590,7 +5629,7 @@ sortbyCurrent_Time(){
 
 
   Select_flag(val) {
-
+    alert(val)
     this._PopupConfirmedValue = val;
 
   }
@@ -5658,7 +5697,7 @@ sortbyCurrent_Time(){
   projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
 
   projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
-    debugger
+
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
     this.projectmodaltype=modaltype;
@@ -5950,7 +5989,7 @@ onParticipantFilter(){
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("History_sidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    this.GetPreviousdate_meetingdata()
+    this.GetPreviousdate_meetingdata();
   }
   closeHistoryInfo() {
     document.getElementById("History_sidebar").classList.remove("kt-quick-panel--on");
@@ -5965,6 +6004,12 @@ onParticipantFilter(){
   toggleDropdown() {
     this.activeAgendaIndex = 0
     this.showDropdown = !this.showDropdown;
+  }
+
+
+  toggleDropdowns() {
+    this.activeAgendaIndex = 0
+    this.showDropdown = false;
   }
 
   previous_filter() {
@@ -6261,12 +6306,15 @@ NewGetRecurrenceMeetings(meetings_HTR){
      
 
       this.previousmeetings.forEach(meeting => {
+    
         if (meeting.Addguest.length > 3) {
-          const remainingGuestsCount = meeting.Addguest.length - 3;
+          const remainingGuests = meeting.Addguest.slice(3);
           meeting.Addguest = meeting.Addguest.slice(0, 3);
-          meeting['RemainingGuestsCount'] = remainingGuestsCount;
+          meeting['RemainingGuests'] = remainingGuests.map(data=>data.TM_DisplayName)
+          meeting['RemainingGuestsCount'] = remainingGuests.length;
+
         } else {
-          meeting['RemainingGuestsCount'] = 0;
+          meeting['RemainingGuests'] = [];
         }
       });
 
@@ -6282,9 +6330,10 @@ NewGetRecurrenceMeetings(meetings_HTR){
 
       this.upcomingmeetings.forEach(meeting => {
         if (meeting.Addguest.length > 3) {
-          const remainingGuestsCount = meeting.Addguest.length - 3;
+          const remainingGuests = meeting.Addguest.slice(3);
           meeting.Addguest = meeting.Addguest.slice(0, 3);
-          meeting['RemainingGuestsCount'] = remainingGuestsCount;
+          meeting['RemainingGuests'] = remainingGuests.map(data=>data.TM_DisplayName)
+          meeting['RemainingGuestsCount'] = remainingGuests.length;
         } else {
           meeting['RemainingGuestsCount'] = 0;
         }
@@ -6310,5 +6359,101 @@ Meeting_method(event){
  }
 
 //////////////////////////////////////////////////// Meeting Sidebar sectoion End ////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////// Request access sectoion Start ////////////////////////////////////////////////////////////
+
+
+  Usercomment: string = '';
+  isRequestDialogOpen: boolean = false;
+  isRequestSent: boolean = false;
+  ishide:boolean=true;
+  formFieldsRequired:boolean=false;
+
+openRequestDialog() {
+  this.isRequestDialogOpen = true;
+  $('.hide-button').addClass('d-none');
+}
+
+closeRequestDialog() {
+  this.isRequestDialogOpen = false;
+  this.Usercomment = '';
+  $('.hide-button').removeClass('d-none');
+}
+
+
+sendRequest(): void {
+
+  if (!this.Usercomment){
+    this.formFieldsRequired=true;
+    return
+  }
+  else{
+    this.formFieldsRequired=false;
+
+    // this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+   
+    //   this.closeRequestDialog();
+    //   Swal.fire('Request Sent Successfully');
+    //   this.isRequestSent = true;
+    //   this.ishide=false
+    //   $('.hide-content').addClass('d-none');
+
+    //    });
+
+  }
+}
+
+getShorterName(name:string|undefined){
+  if(name)
+   return name.split(' ').map(wrd=>wrd[0]).slice(0,2).join('')
+  return '';
+}
+
+
+
+
+
+anchoredIt(inputstr){
+  let inputdes=inputstr;
+  const urlregex=/\bhttps?:\/\/[^\s<]+[^\s<.,:;"')\]]\b/g;
+  const urlInAnchorRegex = /<a\s+[^>]*href=['"]([^'"]+)['"][^>]*>.*?<\/a>/gi;
+  let matches = inputdes.match(urlInAnchorRegex);
+  if(matches){
+       matches.forEach((achor) => {
+          inputdes=inputdes.replace(achor,achor.match(urlregex)[0]);
+       });
+  }
+  let alllinks=[];
+  let matches2=inputdes.match(urlregex);
+  if(matches2){
+       matches2.forEach((linkstr,index)=>{
+        const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
+       alllinks.push(alink);
+       inputdes=inputdes.replace(linkstr,`@link@-${index}`);
+        });
+         inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
+       inputdes=inputdes.replace(place,alllinks[index]);
+    });
+  }
+  return inputdes;
+}
+// let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+//  link_d=this.anchoredIt(link_d);
+
+//////////////////////////////////////////////////// Request access sectoion end ////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
 
 } 

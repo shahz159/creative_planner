@@ -6740,7 +6740,7 @@ onRecurrenceTypeChange(val:any){
 
 bindCustomRecurrenceValues(){
 
-
+debugger
 if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
   this.notProvided1='dayarr1';
   return;

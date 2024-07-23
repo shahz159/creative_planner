@@ -1681,7 +1681,7 @@
                    
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == true || delayMeeting == false)">
+                <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
                         <div class="kt-note-icon" style="align-self:flex-start">
                         <svg xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -2191,9 +2191,8 @@
                                             </span>
                                             <ng-container *ngIf="urlUserID_Password">
                                                 <div class="meeting-link-access">
-                                                    <span >
-                                                    {{urlUserID_Password}}
-                                                </span>
+                                                    <span [innerHTML]="urlUserID_Password">
+                                                    </span>                                                
                                                </div>
                                             </ng-container>
                                           
@@ -4870,7 +4869,7 @@
                                             <li class="dropdown-header">Filter by</li>
                                           
                                             <li>
-                                                <button [ngClass]="{'active':filterconfig.filterby=='Agenda'}"   class="btn btn-filtr" (click)="GetPreviousdate_meetingdata();toggleDropdown();setFilterInfo('Agenda',filterconfig.sortby);previous_filter();"                                              >
+                                                <button [ngClass]="{'active':filterconfig.filterby=='Agenda'}"   class="btn btn-filtr" (click)="GetPreviousdate_meetingdata();toggleDropdowns();setFilterInfo('Agenda',filterconfig.sortby);previous_filter();"                                              >
                                                     <div class="d-flex align-items-center">
                                                           
                                                             <span aria-hidden="true" class="side-icns" >
@@ -5425,7 +5424,7 @@
                 <h4 class="mb-0">Meetings
                 </h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
-                    (click)="closeHistoryInfo()">
+                    (click)="closeHistoryInfo();">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none">
                         <path d="M1.22998 5.40527H14.55" stroke="#7E7E7E" stroke-linecap="round"
@@ -5548,7 +5547,7 @@
                                                     
                                                 </div>
 
-                                                <div class="pn-part-group dropdown" *ngIf="item.RemainingGuestsCount">
+                                                <div class="pn-part-group dropdown" *ngIf="item.RemainingGuestsCount" title="{{item.RemainingGuests}}" >
                                                     <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <span class="pn-part-item">+{{item.RemainingGuestsCount}}</span>
                                                         <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
@@ -6136,7 +6135,7 @@
                                                   </div> -->
                                                  
                                               </div>
-                                              <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount">
+                                              <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount"   title="{{data.RemainingGuests}}">
                                                 <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <span class="pn-part-item">+{{data.RemainingGuestsCount}}</span>
                                                     <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
@@ -6305,8 +6304,6 @@
                     </div>
                   </div>
                </div>
-
-]
             <div class="accordion accordion-attendes-notes" *ngIf="totalAssign" id="AssignTask_List">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="AssignTaskOne">
@@ -8827,8 +8824,8 @@
                     class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"
                         (click)="OnSubmitReSchedule(1)">Update</button> &nbsp;
-                    <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
-                         (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp;
+                    <!-- <button type="submit" class="btn btn-dull btn-sm" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false"
+                         (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp; -->
                     <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
                 </div>
                 <div *ngIf=" pending_status==true && editTask==true " class="form-group mb-0">
@@ -9099,15 +9096,14 @@
                 <div class="rescontent" style="color: #3c4043;">
                     <div id="div_thisevent" class="form-check mb-3">
                         <label class="form-check-label">
-                            <input type="radio" id="r1" (click)="Select_flag(1)" name="optradio"><span class="ml-2">This
-                                Event
-                                Only</span>
+                            <input type="radio" id="r1" (click)="Select_flag(1)" name="optradio"><span class="ml-2">
+                                This Event Only</span>
                         </label>
                     </div>
                     <div class="form-check mb-3">
                         <label class="form-check-label">
-                            <input type="radio" id="r2" (click)="Select_flag(2)" name="optradio"><span class="ml-2">This
-                                and Following Events</span>
+                            <input type="radio" id="r2" (click)="Select_flag(2)" name="optradio"><span class="ml-2">
+                                This and Following Events</span>
                         </label>
                     </div>
                     <!-- <div class="form-check">
@@ -9220,10 +9216,6 @@
     </div>
   </div>
   <!-- customrecurrence Modal End -->
-
-
-
-
 
 
 
@@ -9580,77 +9572,110 @@
 
 
  <!--  Access denied Start -->
+
 <ng-template #accessdenied>
-    <div class="d-flex-cen flex-1 ng-star-inserted access-denied-header " >
-        <div class="kt-inbox__info">
-            <div class="kt-inbox__sender">
-                <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;
-            font-weight:bold; font-family:Lucida Sans Unicode">
-            <!-- {{getShorterName(projectInfo.Owner)}} -->
-        </span>
-            </div>
-        </div>
-        <div class="kt-inbox__details d-flex-center">
-            <div>
-                <div class="kt-inbox__message"><span class="kt-inbox__subject    fs-5">
-
-                    <!-- {{projectInfo&&projectInfo.Project_Name}}  -->
-                </span></div>
-                <div class="kt-inbox__labels">
-
+            <div class="d-flex-cen flex-1 ng-star-inserted access-denied-header"  *ngFor="let item of EventScheduledjson">
+                <div class="kt-inbox__info">
+                    <div class="kt-inbox__sender">
+                        <span style=" background-color: rgba(88, 103, 221, 0.1); border-radius: 50%; padding: 1em; color: #5867dd;
+                    font-weight:bold; font-family:Lucida Sans Unicode">
+                    <!-- {{getShorterName(projectInfo.Owner)}} -->
+                    {{getShorterName(item.Created_by)}}
+                </span>
+                    </div>
+                </div>
+                <div class="kt-inbox__details d-flex-center">
+                    <div>
+                        <div class="kt-inbox__message"><span class="kt-inbox__subject    fs-5">
+                                <!-- {{projectInfo&&projectInfo.Project_Name}} -->
+                                {{item.Task_Name}}
+                             </span></div>
+                        <div class="kt-inbox__labels">
+                            <!-- <span
+                                class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline  fs-7  p-1 m-1"
+                                [ngClass]="{
+                                'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval',
+                                'Delay':projectInfo.Status==='Delay' || projectInfo.Status==='Cancellation Under Approval',
+                                'Inprocess':projectInfo.Status==='InProcess',
+                                'Done':projectInfo.Status==='Completed',
+                                'NewProjectRejected':projectInfo.Status==='New Project Rejected',
+                                'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
+                                'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
+                                'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
+                                'Cancelled':projectInfo.Status==='Cancelled',
+                                'Hold':projectInfo.Status==='Project Hold',
+                                'New_Project_Under_Approval':projectInfo.Status==='Under Approval',
+                                'Not_Started': projectInfo.Status==='Not Started',
+                                'todo-achieved':projectInfo.Status==='ToDo Achieved',
+                                'todo-completed':projectInfo.Status==='ToDo Completed'
+                                }"
+                                >{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
+                                days ':projectInfo.Status === 'Under Approval' ? 'New approval' : projectInfo.Status==='InProcess'?
+                                'In-process' : projectInfo.Status=='Under Approval'?'New approval' :projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval"
+                                :projectInfo.Status== "Completion Under Approval" ? "Completion approval" :projectInfo.Status=='Forward Under Approval'? "Forward approval" : projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
+                                :projectInfo.Status=='InProcess'?'In-process': projectInfo.Status}} 
+                                </span> -->
+                                Completed
+                            <span
+                                class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
+                                title="Owner">
+                                <!-- {{projectInfo.Owner}} -->
+                                {{item.Created_by}}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="d-flex align-items-md-center flex-column">
+            <div class="container">
+                <div class="d-flex align-items-md-center flex-column">
+                    <div class="text-center acc-section">
+                        <h1 class="text-primary main_acc">Access denied 503 !</h1>
+                        <h5 class="acc-desc  user-not-found-msg  hide-content">
+                            Unfortunately, we did not find you in this project.
+                        </h5>
+                        <div  class="mt-4">
+                            <button
+                            class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
+                            </button>
+                        </div>
 
+                        <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
+                        be added. Happy streaming!
+                        </h5>
 
-            <div class="text-center acc-section">
-                <h1 class="text-primary main_acc">Access denied 503 !</h1>
-                <h5 class="acc-desc  user-not-found-msg  hide-content">
-                    Unfortunately, we did not find you in this Meeting.
-                </h5>
-                <div  class="mt-4"><button
-                    class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request Access</button>
-                   </div>
-
-                <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
-                  be added. Happy Streaming!</h5>
-
-                </div>
-                <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
+            </div>
+            <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
 
                 <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
-                <div class="col-lg-7 m-auto">
-                <div class="kt-card-cmt">
+                    <div class="col-lg-7 m-auto">
+                    <div class="kt-card-cmt">
                     <textarea [(ngModel)]="Usercomment"
                         class="form-control form-control-solid kt-user-503-cmt" [ngClass]="{'error-border': !Usercomment&&formFieldsRequired}" rows="4" name="application"
                         value="" placeholder="Add Your comment"></textarea>
                         <div *ngIf="!Usercomment&&formFieldsRequired" style="color:red">Comment required!</div>
 
-                    <!-- <div class="text-end mb-1 mt-4">
+                    <div class="text-end mb-1 mt-4">
                         <a (click)=" closeRequestDialog()" class="btn btn-sm btn-secondary mr-2">
                             Clear</a>
-                        <button   class="btn btn-sm btn-info mr-2"
+                        <button (click)="sendRequest(); "  class="btn btn-sm btn-info mr-2"
                             data-bs-target="#kt_modal_new_address" data-bs-toggle="modal">
-                            Send Request
+                            Send request
                         </button>
 
-                    </div> -->
+                    </div>
+                    </div>
                 </div>
                 </div>
+
+                <div class="acc-img_sec">
+                    <div class="acc-denied_img">
+                        <img class="img-fluid" src="./assets/images/AccessDenied503.png" alt="image">
+                    </div>
                 </div>
-            <div class="acc-img_sec">
-                <div class="acc-denied_img">
-                    <img class="img-fluid" src="./assets/images/AccessDenied503.png" alt="image">
-                </div>
+
             </div>
-
-        </div>
-    </div>
+      </div>
 </ng-template>
-
 
  <!-- Access denied End -->
 
@@ -9762,17 +9787,6 @@
      </div>
    </div> -->
  <!-- Project Modal End -->
-
-
-
-
-
-
-
-
-
-
-
 
 
 
