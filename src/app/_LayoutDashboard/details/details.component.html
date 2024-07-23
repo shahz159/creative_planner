@@ -5930,7 +5930,7 @@
                           </svg> </span>Activity log</h4>
 
 
-                          <!-- <div class="kt-flter-ic-b br-0 actvs-flr-btn">
+                          <div class="kt-flter-ic-b br-0 actvs-flr-btn d-none  ">
 
                             <div class="dropdown">
                                 <a type="button" id="Filter_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle">
@@ -5942,16 +5942,16 @@
                                 <div id="dropd" aria-labelledby="Filter_btn" class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter">
 
                                     <ul class="drop-ul p-1 filtr-config-option ">
-                                        <li class="dropdown-header">Filter by</li>
+                                        <li class="dropdown-header">Activity type</li>
                                       <div class="actns-filtr-scroll">
                                         <li class="mr-2" >
-                                            <button class="btn btn-filtr">
+                                            <button class="btn btn-filtr" [ngClass]="{'active2':actvsFltrBy.activityType=='all'}" (click)="arrangeActivitiesBy('all',actvsFltrBy.empType)" >
                                                 <div class="d-flex align-items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-border-all" viewBox="0 0 16 16">
                                                         <path d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
                                                     </svg>
-                                                    <div class="fil-lbl">All</div>
-                                                    <span class="chck-icn ng-star-inserted">
+                                                    <div class="fil-lbl">Show all</div>
+                                                    <span *ngIf="actvsFltrBy.activityType=='all'"  class="chck-icn ng-star-inserted">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2">
                                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
                                                             </path>
@@ -5961,7 +5961,7 @@
                                             </button>
                                         </li>
                                         <li class="mr-2">
-                                            <button class="btn btn-filtr">
+                                            <button class="btn btn-filtr"  [ngClass]="{'active2':actvsFltrBy.activityType==actvType}"    *ngFor="let actvType of actvs_types"   (click)="arrangeActivitiesBy(actvType,actvsFltrBy.empType)">
                                                 <div class="d-flex align-items-center">
 
                                                     <ng-container>
@@ -5975,8 +5975,8 @@
 
                                                     </ng-container>
 
-                                                    <div class="fil-lbl">New Action</div>
-                                                    <span class="chck-icn ng-star-inserted">
+                                                    <div class="fil-lbl">{{actvType}}</div>
+                                                    <span *ngIf="actvsFltrBy.activityType==actvType" class="chck-icn ng-star-inserted">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2">
                                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
                                                             </path>
@@ -5990,7 +5990,7 @@
                                         <li class="dropdown-header">Sort by employee</li>
                                   <div class="actns-filtr-scroll">
                                         <li class="mr-2">
-                                            <button class="btn btn-filtr">
+                                            <button class="btn btn-filtr"  (click)="arrangeActivitiesBy(actvsFltrBy.activityType,'all')"  [ngClass]="{'active2':actvsFltrBy.empType=='all'}" >
                                                 <div class="d-flex align-items-center" style="margin-left: -2px;">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -6000,10 +6000,10 @@
                                                         <path
                                                             d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
                                                     </svg>
-                                                    <div class="fil-lbl ml-1">All</div>
+                                                    <div class="fil-lbl ml-1">Show all</div>
 
 
-                                                    <span class="chck-icn ng-star-inserted">
+                                                    <span *ngIf="actvsFltrBy.empType=='all'" class="chck-icn ng-star-inserted">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                             width="16" height="16"
                                                             fill="currentColor"
@@ -6019,7 +6019,9 @@
                                         </li>
 
                                         <li class="mr-2">
-                                            <button *ngFor="let emp of emps_of_actvs" class="btn btn-filtr">
+                                            <button *ngFor="let emp of emps_of_actvs" class="btn btn-filtr"
+                                            [ngClass]="{'active2':actvsFltrBy.empType==emp}"
+                                            (click)="arrangeActivitiesBy(actvsFltrBy.activityType,emp)">
                                                 <div class="d-flex align-items-center">
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -6032,7 +6034,7 @@
                                                         </path>
                                                     </svg>
                                                     <div class="fil-lbl">{{emp}}</div>
-                                                    <span class="chck-icn ng-star-inserted">
+                                                    <span *ngIf="actvsFltrBy.empType==emp"  class="chck-icn ng-star-inserted">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                             width="16" height="16"
                                                             fill="currentColor"
@@ -6051,7 +6053,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>          -->
+                        </div>         
 
 
 
@@ -6078,7 +6080,9 @@
                    </div>
                 </ng-container>
                 <ng-template #GotActivitiesResult>
-                  <div class="timeline" *ngFor="let data of activitiesOf==='PROJECT-ACTIVITIES'?Activity_List:ActionActivity_List">
+
+                    
+                  <div class="timeline" *ngFor="let data of activitiesOf==='PROJECT-ACTIVITIES'?FilteredPrjActivities:ActionActivity_List">
 
                       <!-- <div class="timeline-item">
                           <div class="timeline-line w-40px"></div>

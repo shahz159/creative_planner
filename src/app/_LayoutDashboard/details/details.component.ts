@@ -1142,7 +1142,30 @@ this.prjPIECHART.render();
           });
    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-        
+   this.arrangeActivitiesBy('all','all');
+   this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
+   this.actvs_types=[];
+   
+
+
+   let actvs_done=this.Activity_List.map(actv_=>{
+    const prjdetChanged:boolean=['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(actv_.Value);
+    const actdetChanged:boolean=[/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/].some(rg=>rg.test(actv_.Value));
+    return /New Action- ".*"/.test(actv_.Value)?'New Action':
+                /Project Deadline changed \d+(?:th|nd|rd|st) Time/.test(actv_.Value)?'Project Deadline changed':
+                /Timeline added .*/.test(actv_.Value)?'Timeline added':
+                prjdetChanged?'Project Details changed':
+                actdetChanged?'Actions Details changed':
+                /Action Complete- ".*"/.test(actv_.Value)?'Action Complete':
+                /Action -".*" Hold/.test(actv_.Value)?'Action Hold':
+                /Action -".*" Deadline changed/.test(actv_.Value)?'Action Deadline changed':  
+                actv_.Value;  
+   });
+
+ 
+   actvs_done=Array.from(new Set(actvs_done));
+   this.actvs_types=[...actvs_done];
+   console.log('actvs_done:',actvs_done);
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
           console.log(this.firstFiveRecords,"ffffive ffffffffffffffff")
@@ -9663,21 +9686,29 @@ loadActionsGrantt(){
   const options = {
     series: _series,
     chart: {
+     
       height: chartHeight+'px',
       type: 'rangeBar',
       animations: {
         enabled: false // Disable animations to improve performance
       },
+    
       events: {
         updated: ()=>{ 
         
                 const chartContainer = document.querySelector("#actnsfull-graph");
+
+                // const grphbx:any=chartContainer.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical');
+                // grphbx.setAttribute('transform','translate(160,40)');
+
+
                 const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
                 let textElements = xAxisLabels.querySelectorAll('text');
                 const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
                 console.log('hrline is:',hrline);
                 const linewth=hrline.getAttribute('x2');
                 const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
+                
                 dateGcHl.style.width=linewth+'px';  
                 const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
                 dateGcHv.innerHTML=''; 
@@ -9698,11 +9729,38 @@ loadActionsGrantt(){
                 ganttCtrls.innerHTML='';
                 ganttCtrls.append(ctrlbtns);
 
-                // const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
-                // yaxis.querySelectorAll('text').forEach(v=>{
-                //    v.setAttribute('x','-150');
-                //    v.setAttribute('text-anchor','start');
-                // });
+// yaxis label adjustments
+              const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
+              const textelms:any=yaxis.querySelectorAll('text');
+              const shouldwrap:boolean=Array.from(textelms).some((te:any)=>te.querySelector('title').textContent.length>20);
+              if(shouldwrap){  
+                    textelms.forEach((te:any)=>{
+                        te.setAttribute('x','-135');
+                        te.setAttribute('text-anchor','start');
+
+                        const fullname=te.querySelector('title').textContent;
+                        const maxl=20;
+                        const strl=fullname.length;
+                        if(strl>maxl){
+                             te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
+                             
+                             const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                             tspan1.textContent=fullname.substring(0,20);
+                             const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                             tspan2.setAttribute('x','-135');
+                             tspan2.setAttribute('dy','15.6');
+                             let fullname2=fullname.slice(20);
+                             fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
+                             tspan2.textContent=fullname2;
+
+                             te.appendChild(tspan1);
+                             te.appendChild(tspan2);
+                        }
+
+                    });
+              }
+
+// yaxis label adjustments
 
                 const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
                 const trsnfvalue=gcharttable.getAttribute('transform');
@@ -9757,13 +9815,44 @@ loadActionsGrantt(){
           color: '#333',          
           textAnchor: 'start'    
         },
-        formatter: function(value) {
+
+
+
+
+        formatter:function(value) {
           if (isNaN(value)) {
-              let str=value.substring(0,value.lastIndexOf('('));
+              let str=value.substring(0,value.lastIndexOf('(')); 
+              str=str.trim();
               return str;
           } else 
             return value;
         }
+
+
+
+
+        // function(value) {
+        //   if (isNaN(value)) {
+        //       let str=value.substring(0,value.lastIndexOf('(')); 
+        //       str=str.trim();   
+        //       const maxl=20;
+        //       if(str.length<=maxl)
+        //         return str;
+        //       else 
+        //         {
+        //             return [str.substring(0,maxl),str.slice(maxl)];
+        //         }
+              
+        //   } else 
+        //     return value;
+        // }
+
+
+
+
+
+
+
       }
     },
     grid: {
@@ -9780,7 +9869,7 @@ loadActionsGrantt(){
       padding: {
         top: 35,
         right: 10,
-        bottom: 20,
+        bottom: 15,
         left: 0
       }
     },
@@ -9864,7 +9953,8 @@ loadActionsGrantt(){
           offsetX: -13,
           offsetY: -20
         }
-      }]
+      }],
+     
     }
     
   };
@@ -9880,6 +9970,7 @@ loadActionsGrantt(){
 
 
 }
+  
 
 
 
@@ -9902,11 +9993,37 @@ onActnsGanttClosed(){
 
 // PROJECT auditor, Transfer functionality end.
 
-
-
-// Activities Filter start.
 emps_of_actvs:any=[];
 actvs_types:any=[];
+actvsFltrBy:{ activityType:string, empType:string }={ activityType:'all',empType:'all' };
+FilteredPrjActivities:any=[];
+
+arrangeActivitiesBy(acttype:string,emptype:string){
+     this.actvsFltrBy.activityType=acttype;
+     this.actvsFltrBy.empType=emptype;
+
+const checkmatch=(actvy)=>{
+    const regexarr=[
+      /Project Deadline changed \d+(?:th|nd|rd|st) Time/,
+      /Timeline added .*/,
+      /Action Complete- ".*"/,
+      /New Action- ".*"/,
+    ];
+    const a=regexarr.some(re=>re.test(actvy));
+    const b=regexarr.some(re=>re.test(this.actvsFltrBy.activityType));
+    return a&&b;
+}
+
+
+     this.FilteredPrjActivities=this.Activity_List.filter((acv)=>{
+
+
+
+      const x=(this.actvsFltrBy.empType=='all'||acv.Modifiedby==this.actvsFltrBy.empType);
+      const y=(this.actvsFltrBy.activityType=='all'||(acv.Value==this.actvsFltrBy.activityType?true:checkmatch(acv.Value)));
+            return x&&y;
+     });
+}
 
 characterCount: number = 0;
 

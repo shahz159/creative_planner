@@ -29,7 +29,7 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 
- 
+
 
 
 //import { FilterPipe } from 'path-to-filter-pipe';
@@ -58,9 +58,9 @@ import { MeetingDetailsComponent } from '../meeting-details/meeting-details.comp
     AsyncPipe,
     MatCheckboxModule,
     ScrollingModule
-   
+
     ],
-  providers: [ 
+  providers: [
     ProjectUnplannedTaskComponent, ToDoProjectsComponent, MoreDetailsComponent, DatePipe, ProjectsSummaryComponent,
      MeetingDetailsComponent,MeetingReportComponent, CreateProjectComponent
    ],
