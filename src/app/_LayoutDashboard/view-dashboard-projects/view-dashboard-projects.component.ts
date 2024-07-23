@@ -129,6 +129,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
   openInfo(prjCode:string,actCode:string) {
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    debugger
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     if(prjCode&&actCode)
       this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
@@ -238,6 +239,7 @@ console.log(this._ProjectDataList,'_ProjectDataList')
 
 
   getDelayProjects(type) {
+    debugger
     this.projectsDataTable = false;
     this.AssignedTask = true;
     this.delayType=type;
@@ -573,7 +575,7 @@ console.log(this._ProjectDataList,'_ProjectDataList')
       this.service._GetAssignedProjects(this._ObjCompletedProj).
         subscribe(data => {
 
-          this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']); 
+          this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
 
           this._CurrentpageRecords = this._AssignedProjectsList.length;
           //Type
@@ -1082,4 +1084,3 @@ openAssignedProject(assignId:string) {
 
 
 
- 

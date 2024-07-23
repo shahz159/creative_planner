@@ -821,7 +821,7 @@
                                                         {{item1.Delaydays}}
                                                             days
 
-                                                     <span     class="">{{item1.Status}}
+                                                     <span class="">{{item1.Status}}
 
                                                      </span>
                                                       </span>
@@ -947,7 +947,7 @@
                                                 </td>
                                               </ng-container>
 
-                                              <td  *ngIf="!showDeletedPrjOnly" data-toggle="tooltip" data-placement="top"
+                                              <td *ngIf="!showDeletedPrjOnly" data-toggle="tooltip" data-placement="top"
                                               title="RACIS">
                                               <div class="kt-widget__details">
                                                   <div class="kt-section__content kt-section__content--solid">
@@ -1034,39 +1034,45 @@
 
                                         <ng-container *ngIf="showDeletedPrjOnly">
                                              <td>
-                                    <ng-container *ngIf="item1.Delaydays>0;  else delayy">
+
                                               <div *ngIf="item1.Status=='Delay'">
-                                                <span  *ngIf="item1.Delaydays>0"
-                                                    class="Delay_color font-weight-400">
-                                                    {{item1.Delaydays}}
-                                                            days
-
-
-                                                <span
-                                                    class="">
-                                                    <strong>{{item1.Status}}
-                                                        </strong>
-                                                      </span>
+                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{item1.Delaydays}} days
+                                                <span class="">{{item1.Status}}</span>
                                                 </span>
-                                            </div>
-                                          </ng-container>
+                                             </div>
 
-                                          <ng-template #delayy > <span
-                                            class="Delay_color font-weight-400">
-                                            <strong>{{item1.Status}}
-                                                </strong>
-                                              </span> </ng-template>
-                                              <!-- <div *ngIf="item1.Status=='Delay'">
+  <!-- <div *ngIf="item1.Status.trim().endsWith('Delay')">
                                                 <span
                                                     class="Delay_color font-weight-400">{{item1.Status}}
-
+                                                  </span>
                                                 <span *ngIf="item1.Delaydays>0"
                                                     class=" delayDays">
                                                     <strong>{{item1.Delaydays}}
-                                                        days</strong>
+                                                        days Delay</strong>
                                                       </span>
-                                                </span>
+
                                             </div> -->
+
+<!--
+<span  *ngIf="item1.Delaydays>0&&item1.Status=='Delay'">
+                                              <span
+
+
+
+                                                class=" Delay_color font-weight-400 ">
+                                                {{item1.Delaydays}}
+                                                    days
+
+
+                                            </span>
+                                          </span>
+                                          <span *ngIf="item1.Status.trim().endsWith('Delay')">
+                                            <span     class="Delay_color font-weight-400">{{item1.Status}}
+
+                                            </span>
+</span> -->
+
+
                                             <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                 <span
                                                     class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
@@ -1178,6 +1184,11 @@
                                                     >{{item1.Status}}
                                                 </span>
                                             </div>
+
+                                            <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')">
+                                              <span class="Delay_color font-weight-400">{{item1.Status}}</span>
+                                           </div>
+
                                             </td>
                                         </ng-container>
 
@@ -1353,13 +1364,13 @@
                                                 </div>
                                             </div>
                                            <div class="prjs-Ganttchart d-flex flex-column">
-                                                   <div class="gantt-ctrls-btns"></div> 
-                                                   <div class="prjs-gantt-dates"> 
+                                                   <div class="gantt-ctrls-btns"></div>
+                                                   <div class="prjs-gantt-dates">
                                                         <div class="dates-label bg-white ">
                                                                 <svg  width="100%" height="30px">
                                                                     <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
                                                                         <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
-                                                                            
+
                                                                         </g>
                                                                     </g>
                                                                 </svg>
@@ -1375,8 +1386,8 @@
 
 
 
-                                           
-                                            
+
+
                                         </div>
                                     </div>
                                 </div>

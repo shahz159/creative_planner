@@ -622,6 +622,7 @@ submitDar() {
   }
 
   newDetails(pcode) {
+    debugger
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
@@ -631,6 +632,7 @@ submitDar() {
 
 
   newDetailsaction(pcode,acode:string|undefined) {
+    debugger
 let qparams='';
     if(acode!==undefined){
       qparams=`?actionCode=${acode}`;

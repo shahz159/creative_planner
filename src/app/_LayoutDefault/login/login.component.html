@@ -33,13 +33,13 @@
             <div class="kt-login__body" style="padding:25px 30px; border-radius: 5px;">
               <div class="kt-login__logo mb-4">
                 <a href="#">
-                  <img src="../../../assets/icons/Artboard Copy.png" width="100px">
+                  <img src="./assets/icons/Artboard Copy.png" width="100px">
                 </a>
               </div>
               <div class="kt-login__signin">
                 <div class="kt-login__head">
                   <h2 style="font-size: 2rem;color: #67666e; text-align: left;display: flex;align-items: center;">
-                    Hey,hello <svg width="40px" height="40px" viewBox="0 0 80 80" fill="none"
+                    Hello, Welcome back! <svg width="40px" height="40px" viewBox="0 0 80 80" fill="none"
                       xmlns="http://www.w3.org/2000/svg">
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -223,7 +223,7 @@
                   </h2>
                   <p style="    text-align: left;
                   color: #8c8989;
-                  font-size: 14px;">Please enter your login details below</p>
+                  font-size: 14px;">Please enter your login credentials</p>
                 </div>
                 <div class="kt-login__form">
 
@@ -232,9 +232,9 @@
                       <input class="form-control" type="text" placeholder="UserName" autocomplete="off"
                         formControlName="userid">
                       <div *ngIf="submitted && f.userid.errors" class="help-block">
-                        <div *ngIf="f.userid.errors.required" class="text-info"><b>UserName is required !</b></div>
+                        <div *ngIf="f.userid.errors.required" class="text-info"><b>UserName required!</b></div>
                       </div>
-                      <p *ngIf="InValidUserName" class="text-danger"><strong>In correct username</strong></p>
+                      <p *ngIf="InValidUserName" class="text-danger"><strong>Incorrect username</strong></p>
                     </div>
                     <div class="form-group position-relative"
                       [ngClass]="{ 'has-error': submitted && f.password.errors }">
@@ -264,7 +264,7 @@
                       </a>
 
                       <div *ngIf="submitted && f.password.errors" class="help-block">
-                        <div *ngIf="f.password.errors.required" class="text-info"><b>Password is required !</b></div>
+                        <div *ngIf="f.password.errors.required" class="text-info"><b>Password required!</b></div>
                       </div>
                     </div>
                     <p *ngIf="message" class="text-center error" class="text-danger"><strong>{{message}}</strong></p>
@@ -326,5 +326,5 @@
   </div>
 </div>
 <div *ngIf="showLoader" class="logo-loader" id="snap">
-  <img src="../../../assets/gif/logo-gif.gif">
+  <img src="./assets/gif/logo-gif.gif">
 </div>
