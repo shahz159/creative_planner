@@ -79,11 +79,37 @@ export const MY_FORMATS = {
   }
 };
 moment.locale('en');
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
 
 @Component({
   selector: 'app-portfolio-projects',
   templateUrl: './portfolio-projects.component.html',
-  styleUrls: ['./portfolio-projects.component.css']
+  styleUrls: ['./portfolio-projects.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
 
 export class PortfolioProjectsComponent implements OnInit {
@@ -4386,7 +4412,7 @@ all_status={
   'New Project Rejected':'#BA68C8',
   'Deadline Extend Under Approval':'#F9A825',
   'Cancellation Under Approval':'#EF5350',
- 
+
   'Cancelled':'#EE4137',
   'ToDo Achieved':'#62B134',
   'ToDo Completed':'#62B134',
@@ -4519,7 +4545,7 @@ var options = {
     height: chartHeight+'px',
     type: 'rangeBar',
     events: {
-      updated: ()=>{ 
+      updated: ()=>{
 
         const chartContainer = document.querySelector("#chartdiv3");
         const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
@@ -4527,9 +4553,9 @@ var options = {
         const hrline:any=document.querySelector('#chartdiv3 .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
         const linewth=hrline.getAttribute('x2');
         const dateGcHl:any = document.querySelector('.prjs-gantt-dates .dates-label');
-        dateGcHl.style.width=linewth+'px';  
-        const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
-        dateGcHv.innerHTML=''; 
+        dateGcHl.style.width=linewth+'px';
+        const dateGcHv:any=dateGcHl.querySelector('#this-is-head');
+        dateGcHv.innerHTML='';
         textElements.forEach(te => {
           const clonedTe = te.cloneNode(true);
           clonedTe.setAttribute('y', '65%');
@@ -4537,9 +4563,9 @@ var options = {
           dateGcHv.appendChild(clonedTe);
         });
 
-      
 
-      
+
+
         const gcharttable:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
         const trsnfvalue=gcharttable.getAttribute('transform');
         console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
@@ -4554,18 +4580,18 @@ var options = {
           const ganttCtrls:any=document.querySelector('.prjs-Ganttchart .gantt-ctrls-btns');
           ganttCtrls.innerHTML='';
           ganttCtrls.append(ctrlbtns);
-          
-         
+
+
           const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
           yaxis.querySelectorAll('text').forEach(v=>{
              v.setAttribute('x','-150');
              v.setAttribute('text-anchor','start');
           });
-          console.log(yaxis);  
+          console.log(yaxis);
 
        },
 
-      
+
     }
   },
   plotOptions: {
@@ -4592,8 +4618,8 @@ var options = {
       // else if(label == 'Water colors project')
       //   text = '5 days delay.';
       // return text;
-      
-      
+
+
       // return opts.w.config.series[opts.seriesIndex].name;
       return '';
     },
@@ -4623,19 +4649,19 @@ var options = {
   yaxis: {
     labels: {
       style: {
-        fontSize: '12px',       
-        fontFamily: 'Arial, sans-serif', 
-        color: '#333',          
-        textAnchor: 'start'    
+        fontSize: '12px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#333',
+        textAnchor: 'start'
       },
       formatter: function(value) {
         if (isNaN(value)) {
             let str=value.substring(0,value.lastIndexOf('('));
-            
+
             return str;
-        } else 
+        } else
           return value;
-        
+
       }
     }
   },
