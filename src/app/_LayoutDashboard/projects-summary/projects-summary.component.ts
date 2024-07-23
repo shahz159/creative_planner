@@ -1614,6 +1614,9 @@ onEmpSelected(selected:boolean,selectedItem:any){
    }
 }
 
+
+
+
 getNewFilterResult(){
 debugger
 this.edited = false
@@ -1926,7 +1929,6 @@ getObjOfpro(arr, id, idName) {
 
 enterStatus:any=[];
 onstatusSelected(e:any){
-
   const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Name===e.option.value);
 
   if(statusChoosed){

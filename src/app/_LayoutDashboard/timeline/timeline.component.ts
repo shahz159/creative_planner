@@ -58,14 +58,14 @@ export class TimelineComponent implements OnInit {
     public datepipe: DatePipe,
     private route : ActivatedRoute,
     private _adapter: DateAdapter<any>,
-    @Inject(MAT_DATE_LOCALE) private _locale: string
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
    }
 
   ObjSubTaskDTO: SubTaskDTO;
-  Current_user_ID: any;
+  Current_user_ID: any; 
   timelineList:any;
   Type:string;
   type1:string='My Timeline';

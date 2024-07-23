@@ -180,7 +180,6 @@ export class HeaderComponent implements OnInit {
   daterange() {
     document.getElementById("range-picker_header").classList.toggle("d-none");
     document.getElementById("main-section_header").classList.toggle("d-none");
-
   }
   applyleave(){
     document.getElementById("apply-leave").classList.add("open_sidebar");

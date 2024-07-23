@@ -577,11 +577,34 @@
     font-size: 13px;
     min-height: 24px;
 }
+.options.event {
+    border-radius: 3px;
+    background: #f5f5ff;
+    color: #527ce2;
+    font-weight: 400;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: normal;
+    font-size: 12px;
+    cursor: pointer;
+    min-height: 30px;
+}
+.options.event:hover{
+    background: #527ce2;
+    color: #fff;
+}
+.options.event svg{
+    width: 18px;
+    height: 18px;
+}
 
 .edit svg {
     width: 16px;
     height: 16px;
 }
+
 
 .edit {
     cursor: pointer;
@@ -2702,6 +2725,7 @@ div#DemoList-table div.demo i {
     grid-template-columns: 1fr 1fr;
     justify-content: space-evenly;
     align-items: center;
+    gap: 6px;
 }
 
 .edit-agendaname-btn {
@@ -6222,8 +6246,13 @@ span.time-value {
     color: #000;
     margin-top: 10px;
     text-align: justify;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-
+.meeting-attendance-date svg {
+    width: 16px;
+}
 ::ng-deep .modal-backdrop.fade.show {
     display: none;
 }
@@ -7922,4 +7951,42 @@ span.s-time {
 
 .notif-AutoComplete{
     background-color: #fdbc4a38 !important;
+}
+.auto-c {
+    background: #1ea7ff1a;
+    color: #1EA7FF;
+    font-weight: 600;
+    padding: 0.1em;
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+    line-height: 20px;
+    border-radius: 3px;
+    font-size: 13px;
+    min-height: 24px;
+    position: relative;
+}
+.auto-c-tool{
+    display: none;
+}
+.auto-c:hover .auto-c-tool{
+    display: block;
+    position: absolute;
+    transform: translate3d(-2px, 28px, 0px);
+    top: 0px;
+    right: 0;
+    will-change: transform;
+    float: left;
+    min-width: 45rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: .25rem;
+    z-index: 1000;
+    padding: 1rem;
+    box-shadow: 0px 0px 5px 1px #dfdddd;
 }
