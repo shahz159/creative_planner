@@ -1968,9 +1968,16 @@ export class DashboardComponent implements OnInit {
 
         var vLink_Details = "Link_Details";
         // let link_d=this.Link_Details;  debugger  
-        debugger
-        let link_d=this.Link_Details.replace(/&#160;/g, ' ');
-        link_d=this.anchoredIt(link_d);
+        // debugger
+        // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        // link_d=this.anchoredIt(link_d);
+
+
+        let link_d=this.Link_Details;
+        if(this.Link_Details){
+          link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          link_d=this.anchoredIt(link_d);
+        }
         element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
 
@@ -2153,7 +2160,7 @@ export class DashboardComponent implements OnInit {
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
-debugger
+
       // update code below
 
       this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -2351,8 +2358,16 @@ debugger
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
           var vLink_Details = "Link_Details";
-          let link_d=this.Link_Details.replace(/&#160;/g, ' ');
-          link_d=this.anchoredIt(link_d);
+          // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          // link_d=this.anchoredIt(link_d);
+
+          let link_d=this.Link_Details;
+          if(this.Link_Details){
+            link_d=this.Link_Details.replace(/&#160;/g, ' ');
+            link_d=this.anchoredIt(link_d);
+          }
+
+
           element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
           var vDescription = "Description";

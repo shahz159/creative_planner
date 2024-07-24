@@ -379,7 +379,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-
+   
   }
   Close_Repeat_Meeting() {
     document.getElementById("repeatModal").classList.remove("kt-quick-active--on");
@@ -1945,6 +1945,7 @@ export class MeetingDetailsComponent implements OnInit {
         }
 
         this.attendeesLists = JSON.parse(data['attendeesList'])
+        console.log(this.attendeesLists,'this.attendeesLists')
         this.Emp_Number = 0
       });
 
@@ -3021,7 +3022,7 @@ export class MeetingDetailsComponent implements OnInit {
           if (data['Checkdatetimejson'] != '') {
    
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-            console.log(this.AllAttendees_notes,'this.AllAttendees_notes')
+            // console.log(this.AllAttendees_notes,'this.AllAttendees_notes')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -4451,11 +4452,79 @@ sortbyCurrent_Time(){
 
 
 
+  // selectStartDate(event) {
+
+  //   event = moment(event);
+  //   this._StartDate = event;
+
+  //   let sd = event.format("YYYY-MM-DD").toString();
+  //   this._SEndDate = event.format("YYYY-MM-DD").toString();
+  //   this.minDate = sd;
+  //   this._calenderDto.Schedule_ID = this.Schedule_ID;
+  //   this._calenderDto.Scheduled_date = sd;
+  //   // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
+  //   //   if(data['message']=='1'){
+  //   //     this.pendingavailability==false;
+  //   //   }
+  //   //   else{
+  //   //     this.pendingavailability==true;
+  //   //   }
+  //   // });
+  //   var start = moment(this.minDate);
+  //   var end = moment(this.maxDate);
+  //   const format2 = "YYYY-MM-DD";
+  //   const d1 = new Date(moment(start).format(format2));
+  //   const d2 = new Date(moment(end).format(format2));
+  //   const date = new Date(d1.getTime());
+  //   this.daysSelectedII = [];
+  //   this.scstartdate = d1;
+  //   this.AllDatesSDandED = [];
+  //   var jsonData = {};
+  //   var columnName = "Date";
+  //   var columnNames = "StartTime";
+  //   var columnNamee = "EndTime";
+  //   var IsActive = "IsActive";
+  //   var Day = "Day";
+  //   var DayNum = "DayNum";
+
+  //   if (this.selectedrecuvalue == "0") {
+  //     // this._EndDate = event.value.format("YYYY-MM-DD").toString();
+  //     // this.maxDate = event.value.format("YYYY-MM-DD").toString();
+  //     jsonData[columnName] = (moment(date).format(format2));
+  //     jsonData[columnNames] = this.Startts;
+  //     jsonData[columnNamee] = this.Endtms;
+  //     jsonData[IsActive] = 1;
+  //     jsonData[Day] = event.format('dddd').substring(0, 3);
+  //     jsonData[DayNum] = event.format('DD').substring(0, 3);
+  //     this.AllDatesSDandED.push(jsonData);
+  //   }
+  //   else {
+  //     const dates = [];
+  //     while (date <= d2) {
+  //       dates.push(moment(date).format(format2));
+  //       var jsonData = {};
+  //       var columnName = "Date";
+  //       jsonData[columnName] = (moment(date).format(format2));
+  //       var columnNames = "StartTime";
+  //       jsonData[columnNames] = this.Startts;
+  //       var columnNamee = "EndTime";
+  //       jsonData[columnNamee] = this.Endtms;
+  //       var IsActive = "IsActive";
+  //       jsonData[IsActive] = 1;
+  //       var Day = "Day";
+  //       jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+  //       var DayNum = "DayNum";
+  //       jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+  //       this.AllDatesSDandED.push(jsonData);
+  //       date.setDate(date.getDate() + 1);
+  //     }
+  //   }
+
+
+  // }
   selectStartDate(event) {
 
-    event = moment(event);
     this._StartDate = event;
-
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
@@ -4519,8 +4588,40 @@ sortbyCurrent_Time(){
       }
     }
 
-  }
 
+
+    // valid starttimearr setting start.
+    let _inputdate=event;
+    let _currentdate=moment();
+    if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+    {
+        const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+        const index:number=this.StartTimearr.findIndex((item:any)=>{
+            const t=moment(item,'h:mm A');
+            const result=t>=ct;
+            return result;
+        });
+        this.validStartTimearr=this.StartTimearr.slice(index);
+
+    // verify whether starttime and endtime are valid or not. start
+    _currentdate.format('h:mm A');
+
+    const inputtime1=moment(this.Startts,'h:mm A');
+    const inputtime2=moment(this.Endtms,'h:mm A');
+    if(inputtime1<ct)
+      this.Startts=this.validStartTimearr[0];
+    if(inputtime2<ct)
+      this.Endtms=this.validStartTimearr[1];
+
+   // verify whether starttime and endtime are valid or not. end
+
+    }
+    else
+    this.validStartTimearr=[...this.StartTimearr];
+    // valid starttimearr setting end.
+
+
+  }
 
   onfocus(val) {
     //  console.log(val, "ttt");
@@ -4949,7 +5050,7 @@ sortbyCurrent_Time(){
     $('.bg-ovr1').removeClass('d-block');
 
     // $('.side_view').removeClass('position-fixed');
-    this.closefooter();
+    // this.closefooter();
   }
 
 
@@ -5031,7 +5132,7 @@ sortbyCurrent_Time(){
 
 
   closefooter() {
-    // $('.secfootr1').removeClass('opend');
+   
     document.getElementById("ft_body1").classList.toggle("go-up");
     document.getElementById("secfootr1").classList.toggle("opend");
     document.getElementById("main-foot1").classList.toggle("overflow-hidden");
@@ -5044,7 +5145,7 @@ sortbyCurrent_Time(){
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
-
+   if(this.Description_Type?(this.characterCount<500):true){
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
     var start = moment(this.minDate);
@@ -5237,8 +5338,15 @@ sortbyCurrent_Time(){
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
         var vLink_Details = "Link_Details";
-        let link_d=this.Link_Details.replace(/&#160;/g, ' ');
-        link_d=this.anchoredIt(link_d);
+        // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        // link_d=this.anchoredIt(link_d);
+
+        let link_d=this.Link_Details;
+        if(this.Link_Details){
+          link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          link_d=this.anchoredIt(link_d);
+        }
+
         element[vLink_Details] = this.Link_Details == undefined ? "" : link_d;
     
         var vDescription = "Description";
@@ -5403,7 +5511,7 @@ sortbyCurrent_Time(){
       alert('Please Select Valid Date and Time');
     }
   }
-
+}
 
 
 
@@ -6268,6 +6376,7 @@ onParticipantFilter(){
           this.maxDate = null;
           // this.TImetable();
           this.closeevearea();
+          this.Close_Repeat_Meeting();
 
         });
     }
@@ -6433,14 +6542,14 @@ anchoredIt(inputstr){
   let alllinks=[];
   let matches2=inputdes.match(urlregex);
   if(matches2){
-       matches2.forEach((linkstr,index)=>{
-        const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
-       alllinks.push(alink);
-       inputdes=inputdes.replace(linkstr,`@link@-${index}`);
-        });
-         inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
-       inputdes=inputdes.replace(place,alllinks[index]);
-    });
+          matches2.forEach((linkstr,index)=>{
+            const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
+            alllinks.push(alink);
+            inputdes=inputdes.replace(linkstr,`@link@-${index}`);
+           });
+           inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
+            inputdes=inputdes.replace(place,alllinks[index]);
+            });
   }
   return inputdes;
 }
@@ -6450,7 +6559,16 @@ anchoredIt(inputstr){
 //////////////////////////////////////////////////// Request access sectoion end ////////////////////////////////////////////////////////////
 
 
+characterCount: number = 0;
 
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.Description_Type;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
 
 
 
