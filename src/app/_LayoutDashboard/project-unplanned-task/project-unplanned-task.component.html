@@ -643,7 +643,7 @@
                                     <li  *ngIf="_TodoList.length>0" >
                                         <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList');taskside()"  >
                                             <div    class="d-flex align-items-center">
-                                                <span class="count task">{{_TodoList.length}}</span>
+                                                <span class="count untask"> {{_TodoList.length}}</span>
                                                 <div   class="fil-lbl">Unassign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -661,7 +661,7 @@
                                     <li  *ngIf="_CompletedList.length>0">
                                         <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed');completed()" >
                                             <div class="d-flex align-items-center">
-                                                <span class="count done">{{_CompletedList&&_CompletedList.length}}</span>
+                                                <span class="count compl">{{_CompletedList&&_CompletedList.length}}</span>
                                                 <div  class="fil-lbl">Completed</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -679,7 +679,7 @@
                                     <li *ngIf="ActionedSubtask_Json.length>0"  >
                                         <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask');showactprj()">
                                             <div class="d-flex align-items-center">
-                                                <span class="count action-to-project">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
+                                                <span class="count actio">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
                                                 <div   class="fil-lbl"    >Action to projects</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -697,8 +697,8 @@
                                     <li *ngIf="ActionedAssigned_Josn.length>0"  >
                                         <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned');showassign()" >
                                             <div class="d-flex align-items-center">
-                                                <span class="count assigned-task">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
-                                                <div class="fil-lbl"   >Assign task</div>
+                                                <span class="count task-ass">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
+                                                <div class="fil-lbl">Assign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         width="16" height="16"
@@ -767,7 +767,7 @@
                                     <div class="runway-card d-none"  id="taskdd">
                                       <div class="runway-card-header" id="headingOne" *ngIf="_TodoList.length>0">
                                           <a class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
-                                            <span>Unassign task<span class="task-count">11</span></span>
+                                            <span>Unassign task &nbsp;<span class="task-count unass">{{_TodoList.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>
@@ -899,7 +899,7 @@
                                     <div class="runway-card d-none" id="Completed">
                                       <div class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
                                           <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
-                                            <span>Completed</span>
+                                            <span>Completed &nbsp;<span class="task-count cou-com">{{_CompletedList&&_CompletedList.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>
@@ -947,7 +947,7 @@
                                     <div class="runway-card d-none" id='ActionToProjects'>
                                       <div class="runway-card-header" id="headingThree"   *ngIf="((ActionedSubtask_Json.length) > 0)">
                                           <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActionproject" aria-expanded="false" aria-controls="collapseActionproject">
-                                            <span>Action to projects</span>
+                                            <span>Action to projects &nbsp;<span class="task-count act-pro">{{ActionedSubtask_Json.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>
@@ -1008,7 +1008,7 @@
                                                                                         'kt-badge rejecteds': item.Status === 'Rejected',
                                                                                         'kt-badge project-complete-rejected': item.Status === 'Project Complete Rejected',
                                                                                         'kt-badge new-project-reject': item.Status === 'New Project Rejected',
-
+                                                                                        'kt-badge not-started': item.Status === 'Not Started',
                                                                                         ' kt-badge completion-under-approval': item.Status === 'Completion Under Approval',
                                                                                         'kt-badge deadline-extend-under-approval': item.Status === 'Deadline Extend Under Approval',
                                                                                         'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
@@ -1094,7 +1094,7 @@
                                                                               'kt-badge rejecteds': item.Status === 'Rejected',
                                                                               'kt-badge project-complete-rejected': item.Status === 'Project Complete Rejected',
                                                                               'kt-badge new-project-reject': item.Status === 'New Project Rejected',
-
+                                                                              'kt-badge not-started': item.Status === 'Not Started',
                                                                               ' kt-badge completion-under-approval': item.Status === 'Completion Under Approval',
                                                                               'kt-badge deadline-extend-under-approval': item.Status === 'Deadline Extend Under Approval',
                                                                               'kt-badge deadline-extend-under-approval': item.Status === 'Cancellation Under Approval',
@@ -1230,7 +1230,7 @@
                                     <div class="runway-card d-none" id="AssignedTask">
                                       <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
                                           <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
-                                           <span> Assigned Task/Project</span>
+                                           <span> Assigned Task/Project &nbsp;<span class="task-count ass-tas" >{{ActionedAssigned_Josn.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>

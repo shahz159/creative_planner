@@ -2154,7 +2154,7 @@ export class DashboardComponent implements OnInit {
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
-debugger
+
       // update code below
 
       this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -2352,8 +2352,16 @@ debugger
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
           var vLink_Details = "Link_Details";
-          let link_d=this.Link_Details.replace(/&#160;/g, ' ');
-          link_d=this.anchoredIt(link_d);
+          // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          // link_d=this.anchoredIt(link_d);
+
+          let link_d=this.Link_Details;
+          if(this.Link_Details){
+            link_d=this.Link_Details.replace(/&#160;/g, ' ');
+            link_d=this.anchoredIt(link_d);
+          }
+
+
           element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
           var vDescription = "Description";
@@ -6745,7 +6753,7 @@ onRecurrenceTypeChange(val:any){
 
 bindCustomRecurrenceValues(){
 
-
+debugger
 if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
   this.notProvided1='dayarr1';
   return;

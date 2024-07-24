@@ -2705,3 +2705,20 @@ color: #2786fb;
   padding: 5px;
   cursor: pointer;
 }
+.btn-dull {
+  background-color: #6C757D;
+  border-color: #6C757D;
+  color: #FFFFFF !important;
+}
+.btn-move-fws {
+  background-color: #6C757D;
+  color: #fff;
+  font-size: 14px;
+  border: 2px solid #6C757D;
+  opacity: 1;
+  font-size: 13px;
+  width: 120px;
+  letter-spacing: 0;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}

@@ -956,18 +956,21 @@ $(document).ready(function(){
   SearchbyText() {
     if(this.searchText ==''){
       this.searchResult = false;
+
       this.CurrentPageNo = 1;
       this.applyFilters();
+      this.edited = false
     }
     else{
       this.searchResult = true;
       this.CurrentPageNo = 1;
       this.applyFilters();
+      this.edited = false
     }
   }
 
   applyFilters() {
-    debugger
+
 this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;

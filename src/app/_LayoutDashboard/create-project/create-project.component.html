@@ -1449,8 +1449,8 @@
                                     (paste)="updateCharacterCount()"  [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
                                     <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
                                     <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
-                                    at least 5 words, maximum 500 characters are allowed</span>
-                                    <span *ngIf="characterCount > 0" >Characters with spaces {{characterCount}}</span>
+                                    at least 5 words, maximum 500 characters are allowed </span>
+                                    <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
                                    <span *ngIf="characterCount >500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
                                 </div>
@@ -2207,7 +2207,7 @@
                                               Attachment
 
 
-                                              <div *ngIf="fileAttachment.name.endsWith('.pdf')">
+                                              <div  *ngIf="fileAttachment && fileAttachment.name && fileAttachment.name.endsWith('.pdf')">
                                                 <svg width="120px" height="120px" viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="corol-icn">
                                                   <path
                                                     d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z">
@@ -2215,7 +2215,7 @@
                                                 </svg>
                                               </div>
 
-                                              <div *ngIf="fileAttachment.name.endsWith('.jpeg')||fileAttachment.name.endsWith('.jpg')">
+                                              <div *ngIf="fileAttachment?.name && (fileAttachment.name.endsWith('.jpeg') || fileAttachment.name.endsWith('.jpg'))">
                                                 <svg width="120px" height="120px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2503,7 +2503,7 @@
                                   *ngIf="PrjActionsInfo[currentActionView].Sourcefile">
                                   <div class="kt-info-lable-v  file-attachment ">
                                     Attachment
-                                    <div *ngIf="fileAttachment.name.endsWith('.pdf')">
+                                    <div  *ngIf="fileAttachment && fileAttachment.name && fileAttachment.name.endsWith('.pdf')">
                                       <svg width="120px" height="120px" viewBox="0 0 32 32" aria-hidden="true" focusable="false" class="corol-icn">
                                         <path
                                           d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm14.688 3.613c0 .435-.153.726-.305 1.306-.305-1.306-.305-2.322 0-3.193.152 0 .152-.145.152-.145l.153.145v.145c.152.145.152.726 0 1.452v.29zM9.048 21.37c.153-.145.458-.29.762-.436-.914 1.742-1.829 2.613-2.743 2.759.152-.436.914-1.452 1.981-2.323zm14.785-2.613c0 .145.152.145.152.145v.145h-.457c-.762 0-1.829-.29-2.896-.725v-.146h.305c2.134 0 2.744.436 2.896.581zm.61 1.161c.305-.29.457-.725.61-.87 0-.29 0-.581-.153-.872-.457-.725-1.677-1.016-3.506-1.016-.61 0-1.219.145-1.981.145-.61-.29-.915-.58-1.372-.87-.914-.871-1.829-2.178-2.439-3.775v-.145c.61-1.887 1.067-4.21 0-5.226-.304-.145-.61-.29-.914-.29h-.305c-.61 0-1.067.58-1.22 1.161-.609 2.033-.304 3.049.306 4.79-.458 1.307-.915 2.759-1.677 4.21-.61 1.016-1.067 1.887-1.524 2.613-.61.29-1.067.58-1.372.726-1.83 1.016-2.744 2.323-2.896 3.048 0 .29 0 .436.152.726v.145l.763.436c.152.145.304.145.61.145 1.219 0 2.743-1.452 4.572-4.5.152-.145.152-.145.305-.145 1.524-.58 3.505-.871 6.096-1.161 1.525.725 3.354 1.016 4.573 1.016a3.17 3.17 0 0 0 1.372-.29zm-9.908-5.66c.61 1.306 1.525 2.467 2.287 3.338.152.145.305.29.61.435-1.22.145-3.049.58-5.03 1.307h-.305c.305-.58.61-1.016.914-1.597.61-1.307 1.22-2.468 1.524-3.484z">
@@ -2511,7 +2511,7 @@
                                       </svg>
                                     </div>
 
-                                    <div *ngIf="fileAttachment.name.endsWith('.jpeg')||fileAttachment.name.endsWith('.jpg')">
+                                    <div *ngIf="fileAttachment?.name && (fileAttachment.name.endsWith('.jpeg') || fileAttachment.name.endsWith('.jpg'))">
                                       <svg width="120px" height="120px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2576,6 +2576,8 @@
                                 </div>
                                 <div class="kt-ctv-btn-two">
                                   <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button> -->
+                                  <button type="button" class="btn btn-move-fws my-ct-v-btn "
+                                  (click)="back_to_options()">Back to option</button>&nbsp;
                                   <button type="button" class="btn btn-move-fw my-ct-v-btn btn-info"
                                     (click)="sendApproval()">Submit project</button>
                                 </div>
@@ -2716,8 +2718,8 @@
                                 [(ngModel)]="ProjeditDescription"    (input)="updateCharacterCount_Desc()"
                                 (paste)="updateCharacterCount_Desc()" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
                                 <!-- <span *ngIf="!ProjectDescription&&notProvided" style="color:rgb(217,48,37)">Please enter description</span> -->
-                                <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed</span>
-                                <span *ngIf="characterCount_Desc > 0" >Characters with spaces {{characterCount_Desc}}</span>
+                                <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed </span>
+                                <span *ngIf="characterCount_Desc > 0" > {{characterCount_Desc}} Characters with spaces</span>
                                 <span *ngIf="characterCount_Desc > 500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
                           </div>
                       </div>
@@ -2973,7 +2975,7 @@
                       <div class="form-group mb-0">
                           <div class="kt-info-lable-v">End date</div>
                               <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
-                                <input class="form-control curser-pointer" [(ngModel)]="End_Date"     (dateChange)="End_Date=End_Date>Start_Date?End_Date:null;"
+                                <input class="form-control curser-pointer" [(ngModel)]="End_Date"     (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;"
                                     [min]="Start_Date" [matDatepicker]="strtEditsPicker"
                                     (click)="strtEditsPicker.open();"
                                      placeholder="Select end date"
@@ -3095,8 +3097,8 @@
                               [(ngModel)]="ProjectDescription"  (input)="updateCharacterCount_Action()"
                               (paste)="updateCharacterCount_Action()"   (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
                               <span *ngIf="!ProjectDescription&&notProvided" style="color:red">Please enter action description </span>
-                              <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed</span>
-                              <span *ngIf="characterCount_Action > 0" >Characters with spaces {{characterCount_Action}}</span>
+                              <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed </span>
+                              <span *ngIf="characterCount_Action > 0" > {{characterCount_Action}} Characters with spaces</span>
                               <span *ngIf="characterCount_Action>500" style="color:red">Maximum 500 characters are allowed</span>
                         </div>
                     </div>
@@ -3358,7 +3360,7 @@
                 <div class="col-lg-12 mt-3">
                     <div class="form-group text-end">
 
-                      <button type="submit"  (click)="alterAction(); " class="btn btn-info w-110 ml-2" >Update</button>
+                      <button type="submit"  (click)="alterAction()" class="btn btn-info w-110 ml-2" >Update</button>
                       <button (click)="closeAction_details_edit()" class="btn w-110 btn-secondary ml-2" >Cancel</button>
 
                     </div>

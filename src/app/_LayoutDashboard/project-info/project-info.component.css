@@ -610,11 +610,11 @@ background-color: #eaf2fd !important;
 }
 
 .P_In_Progress{
-  background-color: #1B272D !important;
+  background-color: #64B5F6 !important;
 }
 
 .bg-inprogress {
-  background-color: #1B272D !important;
+  background-color: #64B5F6 !important;
   }
 
 .ToDo{
@@ -640,7 +640,7 @@ color:white !important;
   }
 
   .P_Not_Started{
-    background-color: #b2d732 !important;
+    background-color: #9C27B0 !important;
   }
 
 
@@ -1215,7 +1215,7 @@ span.Rq_date_V {
 
 .new-project{
 
-  color:#B2D732
+  color: #9C27B0 !important;
 }
 .not-started{
   background-color: #888888 !important;

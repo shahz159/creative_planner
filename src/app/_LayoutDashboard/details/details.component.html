@@ -6077,7 +6077,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>         
+                        </div>
 
 
 
@@ -6105,7 +6105,7 @@
                 </ng-container>
                 <ng-template #GotActivitiesResult>
 
-                    
+
                   <div class="timeline" *ngFor="let data of activitiesOf==='PROJECT-ACTIVITIES'?FilteredPrjActivities:ActionActivity_List">
 
                       <!-- <div class="timeline-item">
@@ -11588,18 +11588,20 @@
                   </div>
               </div> -->
 
+              <div class="kt-portlet__foot py-3">
+                <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
 
-              <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
+                  <button  type="submit" class="btn btn-info w-110 ml-2"
+                  (click)="onSubmitBtnClicked()">Submit</button>
 
-                <button  type="submit" class="btn btn-info w-110 ml-2"
-                (click)="onSubmitBtnClicked()">Submit</button>
+                  <button *ngIf="draftid==0" type="cancel" class="btn btn-dull ml-3"
+                  (click)="Insert_indraft()">Save draft</button>
 
-                <button *ngIf="draftid==0" type="cancel" class="btn btn-dull ml-3"
-                (click)="Insert_indraft()">Save draft</button>
+                  <button type="cancel" class="btn btn-secondary ml-3" (click)="meetingsViewOn=true; closeschd();">Close</button>
 
-                <button type="cancel" class="btn btn-secondary ml-3" (click)="meetingsViewOn=true; closeschd();">Close</button>
+                      </div>
+              </div>
 
-                    </div>
 
 
 
@@ -11748,7 +11750,7 @@
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
-                              <span *ngIf="characterCount > 0" >Characters with spaces {{characterCount}}</span>
+                              <span *ngIf="characterCount > 0" >{{characterCount}} Characters with spaces</span>
                               <span *ngIf="characterCount>=500"  style="color:red"> description should not exceed 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
@@ -12252,7 +12254,7 @@
                                   [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()"
                                   (paste)="updateCharacterCount_Action()" ></textarea>
                           </div>
-                          <span *ngIf="characterCount_Action > 0" >Characters with spaces {{characterCount_Action}}</span>
+                          <span *ngIf="characterCount_Action > 0" >{{characterCount_Action}} Characters with spaces</span>
                           <span *ngIf="characterCount_Action >=500"  style="color:red">    description should not exceed 500 characters.</span>
                           <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>

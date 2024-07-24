@@ -65,7 +65,7 @@ export class TimelineComponent implements OnInit {
    }
 
   ObjSubTaskDTO: SubTaskDTO;
-  Current_user_ID: any; 
+  Current_user_ID: any;
   timelineList:any;
   Type:string;
   type1:string='My Timeline';
@@ -189,6 +189,7 @@ export class TimelineComponent implements OnInit {
   }
 
   sortTimeline(sort){
+    debugger
     this.sortType=sort;
 
     if(sort=='Date'){
@@ -212,8 +213,8 @@ export class TimelineComponent implements OnInit {
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList;  
-          console.log(this.darArray);
+          this.darArray=this.timelineList;
+          console.log( this.darArray,'project dar array')
           this._CurrentpageRecords=this.timelineList.length;
           if(this.timelineList.length == 0){
             this.showtimeline=false;
