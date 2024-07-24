@@ -5483,10 +5483,10 @@
         <div class="kt-portlet__body pb-0 pt-3">
             <ul class="nav nav-tabs" id="myMeeting" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meeting</button>
+                  <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meetings</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming Meeting</button>
+                  <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming meetings</button>
                 </li>
               </ul>
               <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">
@@ -6072,9 +6072,10 @@
                 </div>
                  
                 <div class="tab-pane fade" id="upcomingmeeting" role="tabpanel" aria-labelledby="upcomingmeeting-tab">
-                    <ng-container *ngIf="totalupcomingmeetings>0;else upcomingmeetingsNoData">
-                    <div class="card" *ngFor="let data of upcomingmeetings;let i = index;">
-                        <a class="pn-card" (click)="OnCardClickUpcoming(data.Schedule_ID)">
+                    <div class="historymeeting-accordion  accordion">
+                        <ng-container *ngIf="totalupcomingmeetings>0;else upcomingmeetingsNoData">
+                         <div class="card" *ngFor="let data of upcomingmeetings;let i = index;">
+                            <a class="pn-card" (click)="OnCardClickUpcoming(data.Schedule_ID)">
                           <div class="pn-left">
                               <div class="pn-main-date">
                                   <div class="pn-date-head pn-month">
@@ -6229,16 +6230,16 @@
                             </div>
                             </a>
                     
-                  </div>
-                </ng-container>
-                <ng-template #upcomingmeetingsNoData>
-                  <div  style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;">
-                  <img width="20%" height="20%" src="./assets/images/nomeeting.png" />
-                  <h3 class="blank-txt fs-3 notimeline-present-label">No meetings scheduled.</h3>
-                  </div>
-                </ng-template>
-                </div>
-              
+                        </div>
+                        </ng-container>
+                            <ng-template #upcomingmeetingsNoData>
+                            <div  style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;">
+                            <img width="20%" height="20%" src="./assets/images/nomeeting.png" />
+                            <h3 class="blank-txt fs-3 notimeline-present-label">No meetings scheduled.</h3>
+                            </div>
+                            </ng-template>
+                        </div>
+                    </div>
                </div>
 
         </div>
@@ -9666,7 +9667,7 @@
                         <h5 class="acc-desc  user-not-found-msg  hide-content">
                             Unfortunately, we did not find you in this project.
                         </h5>
-                        <div  class="mt-4">
+                        <!-- <div  class="mt-4">
                             <button
                             class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
                             </button>
@@ -9674,7 +9675,7 @@
 
                         <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
                         be added. Happy streaming!
-                        </h5>
+                        </h5> -->
 
             </div>
             <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
