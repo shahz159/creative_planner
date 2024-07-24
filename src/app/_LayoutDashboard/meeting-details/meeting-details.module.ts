@@ -27,10 +27,7 @@ import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 
 @NgModule({
   declarations: [
-    MeetingDetailsComponent,
-    TimeDiffPipe
-    
-    
+    MeetingDetailsComponent
   ],
   imports: [
     CommonModule,

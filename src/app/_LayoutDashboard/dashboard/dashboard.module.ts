@@ -49,8 +49,7 @@ FullCalendarModule.registerPlugins([
 @NgModule({
   declarations: [
     DashboardComponent,
-    DatePickerFormatDirective,
-    TimeDiffPipe
+    DatePickerFormatDirective
     // DefaultComponent,
     //SidebarComponent
     //SidebarComponent
