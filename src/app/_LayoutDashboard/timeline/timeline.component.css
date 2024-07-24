@@ -33,7 +33,7 @@
     max-width: 80%;
 }
 .pro-name.pro-link{
-    color: #5867dd;
+    color: #5867dd !important;
 }
 .header-date{
     color: #333;
@@ -196,7 +196,7 @@
     background-color: rgb(21, 21, 42) !important;
     background-color: #6e6d76 !important;
   }
-  
+
   .time-table th {
     color: #ffffff;
     padding: 10px;
@@ -260,7 +260,7 @@
   .tags-tag:hover .tags-remove {
     display: block;
   }
-  
+
   .u-common-icon {
     pointer-events: none;
     color: #aaa;
@@ -492,4 +492,8 @@ a.dropdown-item{
 
 
 
+.blur{
 
+  color: #5867dd !important;
+  cursor: pointer;
+}

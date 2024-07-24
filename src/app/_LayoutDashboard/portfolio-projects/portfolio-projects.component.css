@@ -4780,7 +4780,7 @@ input.search-input {
 
 
 .prjs-Ganttchart .prjs-gantt-dates{
-  background-color:#fff;  
+  background-color:#fff;
   position: relative;
   top: 28px;
   z-index: 1;
@@ -4814,4 +4814,12 @@ input.search-input {
   height: 25px;
   background: #deecf8;
   color: #2786fb;
+}
+.btn-dull {
+  background-color: #6C757D;
+  border-color: #6C757D;
+  color: #FFFFFF !important;
+}
+.w-110 {
+  width: 100px;
 }

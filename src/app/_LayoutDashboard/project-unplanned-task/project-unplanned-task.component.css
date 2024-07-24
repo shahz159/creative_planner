@@ -1875,7 +1875,7 @@ span.count {
     margin-right: 4px;
     padding: 0px 2px;
     font-size: 11px;
-    width: 24px;
+    width: 30px;
     height: 24px;
     line-height: 2.2;
 }
@@ -2085,7 +2085,7 @@ span.count {
 }
 
 .completion-under-approval {
-    color: black !important;
+    color: white !important;
     background-color: #81C784 !important;
     padding: 2px 8px;
     border-radius: 2px
@@ -3314,12 +3314,44 @@ span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
     margin-bottom: 10px;
 }
 span.task-count {
-    width: 20px;
-    height: 20px;
     display: inline-block;
     background-color: #5e68a230;
     color: #5e68a2;
     text-align: center;
     border-radius: 2px;
     margin-left: 5px;
+    padding: 0px 4px;
+}
+.untask{
+  background-color: #90A4AE !important;
+}
+.compl{
+  background-color: #388E3C !important;
+}
+.actio{
+  background-color: #0D47A1 !important;
+}
+.task-ass{
+  background-color: #607D8B !important;
+}
+.unass{
+  background-color: #90A4AE !important;
+  color: white !important;
+}
+.cou-com{
+  background-color: #388E3C !important;
+  color: white !important;
+}
+.act-pro{
+  background-color:#0D47A1 !important;
+  color: white !important;
+}
+.ass-tas{
+  background-color: #607D8B !important;
+  color: white !important;
+}
+.not-started{
+  background-color: #E0E0E0 !important;
+  color: black !important;
+  padding: 2px 10px;
 }
