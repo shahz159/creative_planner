@@ -16,7 +16,7 @@ import { MeetingReportComponent } from '../meeting-report/meeting-report.compone
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-// import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
+import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 
 
 
@@ -27,10 +27,7 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 @NgModule({
   declarations: [
-    MeetingDetailsComponent,
-    // TimeDiffPipe
-    
-    
+    MeetingDetailsComponent
   ],
   imports: [
     CommonModule,

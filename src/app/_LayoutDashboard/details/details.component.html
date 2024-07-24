@@ -11728,7 +11728,7 @@
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
-                              <span *ngIf="characterCount > 0" >Characters with spaces {{characterCount}}</span>
+                              <span *ngIf="characterCount > 0" >{{characterCount}} Characters with spaces</span>
                               <span *ngIf="characterCount>=500"  style="color:red"> description should not exceed 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
@@ -12232,7 +12232,7 @@
                                   [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()"
                                   (paste)="updateCharacterCount_Action()" ></textarea>
                           </div>
-                          <span *ngIf="characterCount_Action > 0" >Characters with spaces {{characterCount_Action}}</span>
+                          <span *ngIf="characterCount_Action > 0" >{{characterCount_Action}} Characters with spaces</span>
                           <span *ngIf="characterCount_Action >=500"  style="color:red">    description should not exceed 500 characters.</span>
                           <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>

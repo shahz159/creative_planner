@@ -4534,7 +4534,7 @@ loadGanttChart(){
 
 
 
-const rowHeight=35;
+const rowHeight=45;
 let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+100;
 let max_Xvalue=new Date();
 max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
@@ -4580,14 +4580,46 @@ var options = {
           const ganttCtrls:any=document.querySelector('.prjs-Ganttchart .gantt-ctrls-btns');
           ganttCtrls.innerHTML='';
           ganttCtrls.append(ctrlbtns);
+          
+
 
 
           const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
-          yaxis.querySelectorAll('text').forEach(v=>{
-             v.setAttribute('x','-150');
-             v.setAttribute('text-anchor','start');
+          const textelms:any=yaxis.querySelectorAll('text');
+          const shouldwrap:boolean=Array.from(textelms).some((te:any)=>te.querySelector('title').textContent.length>20);
+          if(shouldwrap){
+            textelms.forEach((te:any)=>{
+              te.setAttribute('x','-135');
+              te.setAttribute('text-anchor','start');
+
+              const fullname=te.querySelector('title').textContent;
+              const maxl=20;
+              const strl=fullname.length;
+              if(strl>maxl){
+                   te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
+                   
+                   const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                   tspan1.textContent=fullname.substring(0,20);
+                   const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                   tspan2.setAttribute('x','-135');
+                   tspan2.setAttribute('dy','15.6');
+                   let fullname2=fullname.slice(20);
+                   fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
+                   tspan2.textContent=fullname2;
+
+                   te.appendChild(tspan1);
+                   te.appendChild(tspan2);
+              }
+
           });
-          console.log(yaxis);
+          }
+
+          // const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
+          // yaxis.querySelectorAll('text').forEach(v=>{
+          //    v.setAttribute('x','-150');
+          //    v.setAttribute('text-anchor','start');
+          // });
+          // console.log(yaxis);  
 
        },
 
@@ -4597,7 +4629,7 @@ var options = {
   plotOptions: {
     bar: {
       horizontal: true,
-      barHeight: '48%', // Adjust to fill the available space
+      barHeight: '38%', // Adjust to fill the available space
       rangeBarGroupRows: true
     }
   },
@@ -4649,15 +4681,15 @@ var options = {
   yaxis: {
     labels: {
       style: {
-        fontSize: '12px',
-        fontFamily: 'Arial, sans-serif',
-        color: '#333',
-        textAnchor: 'start'
+        fontSize: '11px',       
+        fontFamily: 'Arial, sans-serif', 
+        color: '#333',          
+        textAnchor: 'start'    
       },
       formatter: function(value) {
         if (isNaN(value)) {
             let str=value.substring(0,value.lastIndexOf('('));
-
+            str=str.trim();
             return str;
         } else
           return value;
@@ -4669,7 +4701,7 @@ var options = {
   grid: {
     yaxis: {
       lines: {
-        show: true
+        show: true, 
       }
     },
     xaxis: {
@@ -4682,7 +4714,8 @@ var options = {
       right: 10,
       bottom: 20, // Add padding to the bottom to create space below the controller buttons
       left: 0
-    }
+    },
+    
   },
   legend: { show:false },
   tooltip: {

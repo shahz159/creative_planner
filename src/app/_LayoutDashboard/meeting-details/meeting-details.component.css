@@ -577,9 +577,11 @@
     font-size: 13px;
     min-height: 24px;
 }
+
 .options.event {
     border-radius: 3px;
-    background: #f5f5ff;
+    background: #f5f5ff00;
+    border: 1px solid #527ce2;
     color: #527ce2;
     font-weight: 400;
     padding: 4px;
@@ -591,11 +593,13 @@
     cursor: pointer;
     min-height: 30px;
 }
-.options.event:hover{
+
+.options.event:hover {
     background: #527ce2;
     color: #fff;
 }
-.options.event svg{
+
+.options.event svg {
     width: 18px;
     height: 18px;
 }
@@ -775,8 +779,9 @@ span.kt-meeting-status-icon {
 
 .kt-project-notes {
     border-radius: 3px;
-    background: #F5F5FF;
-    padding: 4px;
+    background: #f5f5ff00;
+    border: 1px solid #527ce2;
+    padding: 3px;
     color: #527CE2;
     font-size: 12px;
     cursor: pointer;
@@ -6250,9 +6255,11 @@ span.time-value {
     align-items: center;
     justify-content: space-between;
 }
+
 .meeting-attendance-date svg {
     width: 16px;
 }
+
 ::ng-deep .modal-backdrop.fade.show {
     display: none;
 }
@@ -6682,7 +6689,7 @@ li.deadline-timeline-item:first-child:after {
     padding: 0px 4px;
 }
 
-.notif-AutoComplete{
+.notif-AutoComplete {
     background-color: #fdbc4a38 !important;
 }
 
@@ -6697,7 +6704,9 @@ li.deadline-timeline-item:first-child:after {
     border-radius: 0px 0px 4px 4px;
     border-radius: 0 0 5px 5px;
     outline: 0 !important;
-    padding-top: 20px !important;
+    /* padding-top: 20px !important; */
+    /* padding-top: 12; */
+
 
 }
 
@@ -7080,10 +7089,12 @@ ul.schedule-select-user-list li {
     overflow: hidden;
     width: 140px;
 }
+
 @media screen and (min-width: 1440px) {
     ul.schedule-select-user-list li {
         width: 240px;
     }
+
     .schedule-select-user-list-item .user-name {
         width: 180px;
     }
@@ -7245,6 +7256,7 @@ span.meeting-icon {
     background-color: #ebebeb;
     align-items: center;
 }
+
 .schedule-event.modal .modal-header .modal-title {
     font-weight: 500;
     font-size: 1.2rem;
@@ -7321,11 +7333,13 @@ span.meeting-icon {
     border-radius: 4px;
     cursor: pointer;
 }
-.modal-icon:hover{
+
+.modal-icon:hover {
     /* background: #e5e1e1; */
     background-color: #cbcbcb36;
 }
-#filter-icon.active{
+
+#filter-icon.active {
     /* background: #e5e1e1; */
     background-color: #c3c3c35c;
 }
@@ -7660,9 +7674,10 @@ span.project-name {
     background: #ebeff6;
     color: #2e88fc;
 }
+
 .schedule-badge:hover {
-  background-color: #f6f6f68c; 
-  transition-duration:0.5s;
+    background-color: #f6f6f68c;
+    transition-duration: 0.5s;
 }
 
 
@@ -7761,11 +7776,13 @@ span.project-name {
 .occ-title {
     padding: 0px 18px;
 }
+
 .btn-dull {
     background-color: #6C757D;
     border-color: #6C757D;
     color: #FFFFFF !important;
 }
+
 .meeting-offline {
     background-color: #f4f4f4;
     color: #868686;
@@ -7781,6 +7798,7 @@ span.project-name {
     font-weight: normal;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 .schedule-event .form-check-input:checked {
     background-color: #3699ff;
     border-color: #3699ff;
@@ -7876,6 +7894,7 @@ span.project-name {
     background-position: right center;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
 }
+
 .agenda-title-input {
     display: flex;
     padding: 2px 0px;
@@ -7949,9 +7968,10 @@ span.s-time {
 
 
 
-.notif-AutoComplete{
+.notif-AutoComplete {
     background-color: #fdbc4a38 !important;
 }
+
 .auto-c {
     background: #1ea7ff1a;
     color: #1EA7FF;
@@ -7965,10 +7985,12 @@ span.s-time {
     min-height: 24px;
     position: relative;
 }
-.auto-c-tool{
+
+.auto-c-tool {
     display: none;
 }
-.auto-c:hover .auto-c-tool{
+
+.auto-c .auto-csvg:hover~.auto-c-tool {
     display: block;
     position: absolute;
     transform: translate3d(-2px, 28px, 0px);
@@ -7989,4 +8011,216 @@ span.s-time {
     z-index: 1000;
     padding: 1rem;
     box-shadow: 0px 0px 5px 1px #dfdddd;
+}
+
+.repeat-day.active,
+.repeat-month.active {
+    color: white;
+    background-color: #1a73e8;
+}
+
+.repeat-day,
+.repeat-month {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+    font-weight: 500;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #f1f3f4;
+    color: #80868b;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    text-transform: capitalize;
+    position: relative;
+}
+
+.month-arr .repeat-day {
+    margin-bottom: 8px;
+}
+
+
+.rep-chk {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.access-denied-header {
+    border: 0;
+    padding: 0.2em;
+    background-color: white;
+    column-gap: 0.7em;
+    box-shadow: 0px 0px 5px #bfbfbf;
+}
+
+.acc-section {
+    padding: 50px 0 20px 0;
+}
+
+.main_acc {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.acc-desc {
+    color: #2F3539;
+}
+
+.kt-card-cmt {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 3px 4px 8px #c2c2c2ba;
+    margin-bottom: -20rem;
+    margin-top: -1rem;
+}
+
+.text-end {
+    text-align: end;
+}
+
+
+.meeting-notes ::ng-deep .angular-editor .angular-editor-wrapper .angular-editor-placeholder {
+    padding-top: 20px !important;
+}
+
+::ng-deep #mysideInfobar_schd .angular-editor-textarea {
+    min-height: 5rem !important;
+}
+
+ul#myTabMeetingAttendees {
+    margin-bottom: 0px;
+    border-bottom: 0px solid #dee2e6;
+}
+
+ul#myTabMeetingAttendees .nav-item .nav-link {
+    display: flex;
+    align-items: center;
+    border: 0px;
+}
+
+ul#myTabMeetingAttendees .nav-item {
+    margin-bottom: -6px;
+}
+
+/* after commit check this csss of attendees sidebar 
+ ul#myTabMeetingAttendees .nav-item .nav-link.active {
+    border-bottom: 2px solid #5867dd !important;
+} */
+
+.user-requset-item {
+    background-color: #5867dd0d;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.user-requset-item:hover {
+    transform: scale(1.01);
+}
+
+.user-request-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #3c3c3c;
+}
+
+.user-request-info-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.info-item {
+    color: #7c8094;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.info-item svg {
+    width: 20px;
+    height: 20px;
+}
+
+  
+  .tot{
+    background-color:#64B5F6  !important
+  }
+
+
+  .count-height {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .count-height .justify-content-between .kt-checkbox {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  /* width */
+.count-height::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  /* Track */
+  .count-height::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  .count-height::-webkit-scrollbar-thumb {
+    background: #f1f1f1;
+  }
+  
+  /* Handle on hover */
+  .count-height::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+  }
+  span.count {
+    background: #9886eb;
+    padding: 0px 4px;
+    color: #ffffff;
+    cursor: auto;
+    border-radius: 3px;
+    font-size: 10px;
+  }
+  .btn-filtr.active .count {
+    background: #5766d7;
+    color: #fff;
+  }
+  
+  .btn-filtr .count{
+    background: #717171;
+    color: #fff;
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 2px;
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    line-height: 2;
+  }
+  .icn-hvr.active .total-meeting-count{
+    color: #518ef6 !important;
+  }
+  li.agenda-participant .item-infos {
+    width: 100%;
+    margin-left: 0px;
 }
