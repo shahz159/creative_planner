@@ -29,6 +29,7 @@ import {
 } from '@angular/material-moment-adapter';
 import {  MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -141,7 +142,8 @@ export class ActionToProjectComponent implements OnInit {
     public _Todoproject: ToDoProjectsComponent,
     public _MoreDetails: MoreDetailsComponent,
     private route: ActivatedRoute,
-    public _meetingDetails:MeetingDetailsComponent
+    public _meetingDetails:MeetingDetailsComponent,
+    private projectMoreDetailsService: ProjectMoreDetailsService
   ) {
 
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
@@ -267,6 +269,7 @@ export class ActionToProjectComponent implements OnInit {
 
     });
 
+
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
@@ -284,6 +287,12 @@ export class ActionToProjectComponent implements OnInit {
         };
       });
   }
+
+
+
+
+
+
 
 
 
@@ -1017,7 +1026,7 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
  characterCount: number = 0;
 
  updateCharacterCount(): void {
- 
+
    // Create a temporary div element to strip out HTML tags
    const tempElement = document.createElement('div');
    tempElement.innerHTML = this._Description;

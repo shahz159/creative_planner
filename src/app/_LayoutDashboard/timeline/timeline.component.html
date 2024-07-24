@@ -118,11 +118,11 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <a class="pro-link" href="javascript:void(0)" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'" (click)="newDetails(item1.project_code)">{{item1.ProjectName }}</a>
+                                                        <a class="pro-link" href="javascript:void(0)" *ngIf="item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'" (click)="newDetails(item1.project_code.trim())">{{item1.ProjectName }}</a>
                                                         <a *ngIf="item1.Tasktype=='Lunch'">Lunch</a>
                                                         <a *ngIf="item1.Tasktype=='Personal'">Personal</a>
                                                         <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype }}</a>
-                                                        <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"  (click)=" newDetailsaction(item1.project_code,item1.ActionCode)" ><div class="desp-txt fs-7 actlabel-at-type">Action</div>{{item1.ActionName }}</a>
+                                                        <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"  (click)=" newDetailsaction(item1.project_code.trim(),item1.ActionCode.trim())" ><div class="desp-txt fs-7 actlabel-at-type">Action</div>{{item1.ActionName }}</a>
                                                     </td>
                                                     <td>{{item1.WorkAchieved}}</td>
                                                     <td>{{item1.starttime}}</td>
@@ -328,8 +328,8 @@
                                                         <div class="timeline-text fs-6">{{item1.date | date:'fullDate'}}</div>
                                                     </td>
                                                     <td>
-                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName" (click)="newDetailsaction(item.project_code,item.ActionCode)">
-                                                            <span class="desp-txt fs-7">Action</span><u>{{item1.ActionName }}</u></div>
+                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName" (click)="newDetailsaction(item1.project_code,item1.ActionCode)">
+                                                            <span class="desp-txt fs-7 ">Action</span><u class="blur">{{item1.ActionName }}</u></div>
                                                         {{item1.WorkAchieved}}
                                                     </td>
                                                     <td>{{item1.starttime}}</td>

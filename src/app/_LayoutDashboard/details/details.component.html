@@ -6053,7 +6053,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>         
+                        </div>
 
 
 
@@ -6081,7 +6081,7 @@
                 </ng-container>
                 <ng-template #GotActivitiesResult>
 
-                    
+
                   <div class="timeline" *ngFor="let data of activitiesOf==='PROJECT-ACTIVITIES'?FilteredPrjActivities:ActionActivity_List">
 
                       <!-- <div class="timeline-item">
@@ -11566,18 +11566,20 @@
                   </div>
               </div> -->
 
+              <div class="kt-portlet__foot py-3">
+                <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
 
-              <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
+                  <button  type="submit" class="btn btn-info w-110 ml-2"
+                  (click)="onSubmitBtnClicked()">Submit</button>
 
-                <button  type="submit" class="btn btn-info w-110 ml-2"
-                (click)="onSubmitBtnClicked()">Submit</button>
+                  <button *ngIf="draftid==0" type="cancel" class="btn btn-dull ml-3"
+                  (click)="Insert_indraft()">Save draft</button>
 
-                <button *ngIf="draftid==0" type="cancel" class="btn btn-dull ml-3"
-                (click)="Insert_indraft()">Save draft</button>
+                  <button type="cancel" class="btn btn-secondary ml-3" (click)="meetingsViewOn=true; closeschd();">Close</button>
 
-                <button type="cancel" class="btn btn-secondary ml-3" (click)="meetingsViewOn=true; closeschd();">Close</button>
+                      </div>
+              </div>
 
-                    </div>
 
 
 
