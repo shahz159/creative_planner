@@ -1064,14 +1064,7 @@
                                                                           (click)="onFilterConfigChanged({filterBy:'All',sortBy:filterConfig.sortby})"
                                                                           [ngClass]="{'active2':filterConfig.filterby==='All'}">
                                                                           <div class="d-flex align-items-center">
-                                                                              <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                  width="16" height="16"
-                                                                                  fill="currentColor"
-                                                                                  class="bi bi-border-all"
-                                                                                  viewBox="0 0 16 16">
-                                                                                  <path
-                                                                                      d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
-                                                                              </svg>
+                                                                              <div class="status-fltr fbx-actns-count fbx-total">{{TOTAL_ACTIONS}}</div>
                                                                               <div class="fil-lbl">All</div>
                                                                               <span
                                                                                   *ngIf="filterConfig.filterby==='All'"
@@ -1094,8 +1087,16 @@
                                                                           (click)="onFilterConfigChanged({filterBy:item.Status,sortBy:filterConfig.sortby})"
                                                                           [ngClass]="{'active2':filterConfig.filterby===item.Status}">
                                                                           <div class="d-flex align-items-center">
-
-                                                                              <ng-container [ngSwitch]="item.Status">
+                                                                                <div class="status-fltr fbx-actns-count" [ngClass]="{
+                                                                                    'fbx-completed':item.Status=='Completed',
+                                                                                    'fbx-inprocess':item.Status=='InProcess',
+                                                                                    'fbx-delay':item.Status=='Delay',
+                                                                                    'fbx-newaproval':item.Status=='Under Approval',
+                                                                                    'fbx-hold':item.Status=='Project Hold',
+                                                                                    'fbx-cancelled':item.Status=='Cancelled',
+                                                                                    'fbc-forward-apr':item.Status=='Forward Under Approval'
+                                                                                }">{{item.count?item.count:'&nbsp;'}}</div>
+                                                                             <!-- <ng-container [ngSwitch]="item.Status">
 
                                                                                   <svg *ngSwitchCase="'Completed'"
                                                                                       xmlns="http://www.w3.org/2000/svg"
@@ -1117,8 +1118,6 @@
                                                                                           d="M22.1348518,9.29226367 C23.2267866,7.46985556 25.220937,6.25 27.5,6.25 C30.9517797,6.25 33.75,9.04822031 33.75,12.5 C33.75,14.9447742 32.3463033,17.0616975 30.3008937,18.0887861 C30.496635,18.9487754 30.6,19.8438955 30.6,20.7631579 C30.6,27.3905749 25.227417,32.7631579 18.6,32.7631579 C11.972583,32.7631579 6.6,27.3905749 6.6,20.7631579 C6.6,14.1357409 11.972583,8.76315789 18.6,8.76315789 C19.830309,8.76315789 21.017374,8.94830757 22.1348518,9.29226367 Z M21.5207369,10.6747277 C20.5935222,10.40676 19.6135311,10.2631579 18.6,10.2631579 C12.8010101,10.2631579 8.1,14.964168 8.1,20.7631579 C8.1,26.5621478 12.8010101,31.2631579 18.6,31.2631579 C24.3989899,31.2631579 29.1,26.5621478 29.1,20.7631579 C29.1,20.0209066 29.0229827,19.2966436 28.8765035,18.5979246 C28.4336158,18.6974694 27.9729425,18.75 27.5,18.75 C24.0482203,18.75 21.25,15.9517797 21.25,12.5 C21.25,11.8650079 21.3446962,11.2521333 21.5207369,10.6747277 Z M18,23 C17.4477153,23 17,22.5522847 17,22 L17,16.75 C17,16.3357864 17.3357864,16 17.75,16 C18.1642136,16 18.5,16.3357864 18.5,16.75 L18.5,21.5 L22.25,21.5 C22.6642136,21.5 23,21.8357864 23,22.25 C23,22.6642136 22.6642136,23 22.25,23 L22.25,23 L18,23 Z M27.0117493,21.6315789 C26.6251499,21.6315789 26.3117493,21.3134655 26.3117493,20.9210526 C26.3117493,20.5286398 26.6251499,20.2105263 27.0117493,20.2105263 C27.3983486,20.2105263 27.7117493,20.5286398 27.7117493,20.9210526 C27.7117493,21.3134655 27.3983486,21.6315789 27.0117493,21.6315789 Z M10.2117493,21.6315789 C9.82514994,21.6315789 9.51174927,21.3134655 9.51174927,20.9210526 C9.51174927,20.5286398 9.82514994,20.2105263 10.2117493,20.2105263 C10.5983486,20.2105263 10.9117493,20.5286398 10.9117493,20.9210526 C10.9117493,21.3134655 10.5983486,21.6315789 10.2117493,21.6315789 Z M24.045587,27.4609192 C23.77222,27.1875522 23.7755524,26.7410043 24.0530302,26.4635265 C24.330508,26.1860487 24.7770559,26.1827163 25.0504229,26.4560833 C25.3237899,26.7294503 25.3204575,27.1759982 25.0429797,27.453476 C24.7655019,27.7309538 24.318954,27.7342862 24.045587,27.4609192 Z M12.166193,15.4028878 C11.892826,15.1295208 11.8961585,14.6829729 12.1736363,14.4054951 C12.4511141,14.1280173 12.897662,14.1246849 13.171029,14.3980519 C13.444396,14.6714189 13.4410636,15.1179668 13.1635858,15.3954446 C12.886108,15.6729224 12.4395601,15.6762548 12.166193,15.4028878 Z M13.171029,27.4440534 C12.897662,27.7174204 12.4511141,27.714088 12.1736363,27.4366102 C11.8961585,27.1591324 11.892826,26.7125845 12.166193,26.4392174 C12.4395601,26.1658504 12.886108,26.1691829 13.1635858,26.4466607 C13.4410636,26.7241385 13.444396,27.1706864 13.171029,27.4440534 Z M18.6117493,30.1578947 C18.2251499,30.1578947 17.9117493,29.8397813 17.9117493,29.4473684 C17.9117493,29.0549556 18.2251499,28.7368421 18.6117493,28.7368421 C18.9983486,28.7368421 19.3117493,29.0549556 19.3117493,29.4473684 C19.3117493,29.8397813 18.9983486,30.1578947 18.6117493,30.1578947 Z M18.6117493,13.1052632 C18.2251499,13.1052632 17.9117493,12.7871497 17.9117493,12.3947368 C17.9117493,12.002324 18.2251499,11.6842105 18.6117493,11.6842105 C18.9983486,11.6842105 19.3117493,12.002324 19.3117493,12.3947368 C19.3117493,12.7871497 18.9983486,13.1052632 18.6117493,13.1052632 Z M27.5,16.75 C28.1903559,16.75 28.75,16.1903559 28.75,15.5 C28.75,14.8096441 28.1903559,14.25 27.5,14.25 C26.8096441,14.25 26.25,14.8096441 26.25,15.5 C26.25,16.1903559 26.8096441,16.75 27.5,16.75 Z M27,8 C26.7238576,8 26.5,8.22385763 26.5,8.5 L26.5,12.5 C26.5,12.7761424 26.7238576,13 27,13 L28,13 C28.2761424,13 28.5,12.7761424 28.5,12.5 L28.5,12.5 L28.5,8.5 C28.5,8.22385763 28.2761424,8 28,8 L28,8 L27,8 Z" />
                                                                                   </svg>
 
-
-
                                                                                   <svg *ngSwitchCase="'Project Hold'" width="10px" height="10px" viewBox="0 0 24 24"
                                                                                       xmlns="http://www.w3.org/2000/svg">
                                                                                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1132,8 +1131,6 @@
                                                                                               fill="#acacac"></path>
                                                                                       </g>
                                                                                   </svg>
-
-
 
                                                                                   <svg *ngSwitchCase="'Cancelled'"
                                                                                       class="bi bi-border-all"
@@ -1160,7 +1157,6 @@
                                                                                           </path>
                                                                                       </g>
                                                                                   </svg>
-
 
                                                                                   <svg *ngSwitchCase="'InProcess'"
                                                                                       class="bi bi-border-all"
@@ -1224,11 +1220,9 @@
                                                                                               </g>
                                                                                           </g>
                                                                                       </switch>
-                                                                                  </svg>
+                                                                                  </svg> 
 
-
-
-                                                                              </ng-container>
+                                                                              </ng-container> -->
 
                                                                               <div class="fil-lbl">{{item.Status=='Under Approval'?'New approval':item.Status}}
                                                                               </div>
@@ -1316,19 +1310,10 @@
                                                                           (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'All'}) "
                                                                           [ngClass]="{'active2':filterConfig.sortby==='All'}"
                                                                           ng-reflect-ng-class="[object Object]">
-                                                                          <div class="d-flex align-items-center"
-                                                                              style="margin-left: -2px;">
-                                                                              <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                  width="16" height="16"
-                                                                                  fill="currentColor"
-                                                                                  class="bi bi-border-all"
-                                                                                  viewBox="0 0 16 16">
-                                                                                  <path
-                                                                                      d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
-                                                                              </svg>
+                                                                          <div class="d-flex align-items-center">
+                                                                              <div class="fbx-actns-count fbx-usercount">{{TOTAL_ACTIONS}}</div>
                                                                               <div class="fil-lbl ml-1">All</div>
-
-
+                                                                             
                                                                               <span
                                                                                   *ngIf="filterConfig.sortby==='All'"
                                                                                   class="chck-icn ng-star-inserted">
@@ -1349,21 +1334,15 @@
                                                                   <li class="mr-2" *ngFor="let item of filteremployee">
 
 
-                                                                      <button class="btn btn-filtr"
+                                                                      <!-- <button class="btn btn-filtr"
                                                                           (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:item.Team_Res})"
                                                                           [ngClass]="{'active2':filterConfig.sortby===item.Team_Res}"
                                                                           *ngIf="item.Team_Res==Current_user_ID"
                                                                           ng-reflect-ng-class="[object Object]">
-                                                                          <div class="d-flex align-items-center"><svg
-                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                  width="16" height="16"
-                                                                                  fill="currentColor"
-                                                                                  viewBox="0 0 16 16"
-                                                                                  class="bi bi-people">
-                                                                                  <path
-                                                                                      d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
-                                                                                  </path>
-                                                                              </svg>
+                                                                          <div class="d-flex align-items-center">
+                                                                           
+                                                                            <div class="fbx-actns-count">{{item.count}}</div>
+
                                                                               <div class="fil-lbl">My actions</div>
                                                                               <span class="chck-icn ng-star-inserted"
                                                                                   *ngIf="filterConfig.sortby===item.Responsible">
@@ -1378,22 +1357,16 @@
                                                                                   </svg>
                                                                               </span>
                                                                           </div>
-                                                                      </button>
+                                                                      </button> -->
 
                                                                       <button class="btn btn-filtr"
                                                                           (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:item.Team_Res})"
-                                                                          *ngIf="item.Team_Res!=Current_user_ID"
+                                                                         
                                                                           [ngClass]="{'active2':filterConfig.sortby===item.Team_Res}">
-                                                                          <div class="d-flex align-items-center"><svg
-                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                  width="16" height="16"
-                                                                                  fill="currentColor"
-                                                                                  viewBox="0 0 16 16"
-                                                                                  class="bi bi-people">
-                                                                                  <path
-                                                                                      d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
-                                                                                  </path>
-                                                                              </svg>
+                                                                          <div class="d-flex align-items-center">
+                                                                               
+                                                                            <div class="fbx-actns-count fbx-usercount">{{item.count}}</div>
+
                                                                               <div class="fil-lbl">
                                                                                   {{item.Responsible}}</div>
                                                                               <span class="chck-icn ng-star-inserted"
@@ -2829,10 +2802,10 @@
 
                                               <div *ngIf="requestType=='Project Complete'"
                                                   [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
-                                                  (click)="approvalClick('CONDITIONAL')">
+                                                  (click)="approvalClick('CONDITIONAL');  getca_Dropdowns(); ">
                                                   <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em; height: 1.2em;vertical-align: middle;fill: #007c05;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"/><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"/><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"/><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"/></svg>
-                                                  <span class="kt-detail-iconname">Conditional
-                                                    Accept</span></div>
+                                                  <span class="kt-detail-iconname">Handover/next version</span>
+                                              </div>
 
                                               <div
                                                   [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
@@ -2875,73 +2848,124 @@
 
 
                                                     <!-- Conditional Assign-->
-                                                    <div class="mt-2 ">
+                                                    <div *ngIf="selectedType == '2'"  class="mt-3 ">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="mb-2">
+                                                                <label>Project Name<span class="text-danger">*</span></label>
+                                                                <input type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="mb-2">
-                                                                    <label>Select Project Type<span class="text-danger">*</span></label>
-                                                                <ng-select required #action="ngModel" name="rej_type"
-                                                                    placeholder="Select Project Type" id="rej_type"
-                                                                    [(ngModel)]="rejectType" (change)="rejectApproval()">
-                                                                    <ng-option [value]="item.TypeID"
-                                                                        *ngFor="let item of reject_list">
-                                                                        {{item.RejectType}}
-                                                                    </ng-option>
-                                                                </ng-select>
+                                                                       <label>Select Project Type</label>
+                                                                        <ng-select placeholder="Select Project Type" id="ca_project_type" [(ngModel)]="sel_ptype">
+                                                                            <ng-option [value]="item.Typeid" *ngFor="let item of ProjectType_json">{{item.ProjectType}}</ng-option>
+                                                                        </ng-select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="mb-2">
-                                                                    <label>Select User<span class="text-danger">*</span></label>
-                                                                <ng-select required #action="ngModel" name="rej_type"
-                                                                    placeholder="Select User" id="rej_type"
-                                                                    [(ngModel)]="rejectType" (change)="rejectApproval()">
-                                                                    <ng-option [value]="item.TypeID"
-                                                                        *ngFor="let item of reject_list">
-                                                                        {{item.RejectType}}
-                                                                    </ng-option>
-                                                                </ng-select>
+                                                                    <label>Assign to<span class="text-danger">*</span></label>
+                                                                        <ng-select [items]="allUsers1" bindLabel="RACIS"
+                                                                        bindValue="Emp_No" groupBy="usergroup"
+                                                                        placeholder="Select employee"
+                                                                        [searchable]="true" name="RACIS"
+                                                                        [(ngModel)]="sel_user"
+                                                                        required></ng-select>
                                                                 </div>
-                                                            </div>
+                                                            </div> 
                                                         </div>
 
+
+                                                      <div *ngIf="['003','008'].includes(sel_ptype)" class="row mb-2">
+                                                        <div class="col-md-12 mt-3">
+                                                            <label class="input-icon Sub_In_ed">Submission type</label>
+                                                              <ng-select class="kt-form-vd curser-pointer" placeholder="Select submission type"  [(ngModel)]="sel_submtype">
+                                                                <ng-option [value]="item.SubmissionId" *ngFor="let item of Submission">{{item.SubmissionName}}</ng-option>
+                                                              </ng-select>
+                                                          </div>
+                                                      </div>
+
+
+                                                        <div *ngIf="['001','002','011'].includes(sel_ptype)" class="row mb-2">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                                    <label>Start date</label>
+                                                                    <div class="d-flex date-border">
+                                                                      <input class="form-control ng-pristine curser-pointer" [(ngModel)]="sel_sdate"
+                                                                        id="ca_date1" placeholder="Select start date" [matDatepicker]="ca_datepicker1"
+                                                                        (click)="ca_datepicker1.open()" [min]="todayDate"/>
+                                                                      <div class="input-group-text p-0">
+                                                                        <mat-datepicker-toggle matSuffix [for]="ca_datepicker1"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #ca_datepicker1></mat-datepicker>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                                    <label>End date</label>
+                                                                    <div class="d-flex date-border">
+                                                                      <input class="form-control ng-pristine curser-pointer" [(ngModel)]="sel_edate"  
+                                                                      id="ca_date2" placeholder="Select end date" [matDatepicker]="ca_datepicker2" 
+                                                                      (click)="ca_datepicker2.open();" [min]="sel_sdate"/>
+                                                                      <div class="input-group-text p-0">
+                                                                        <mat-datepicker-toggle matSuffix [for]="ca_datepicker2"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #ca_datepicker2></mat-datepicker>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                            </div>
+                                                        </div>
 
                                                         <div class="row mb-2">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
-                                                                    <label>Start date<span class="text-danger">*</span></label>
-                                                                    <div class="d-flex date-border">
-                                                                      <input class="form-control ng-pristine curser-pointer" name="date" [(ngModel)]="Prjstartdate" (input)="text()"    (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;"
-                                                                        id="d-date" placeholder="Select start date" [matDatepicker]="picker2"
-                                                                        (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
-                                                                        #SrtDate="ngModel" />
-                                                                      <div class="input-group-text p-0">
-                                                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                                                        <mat-datepicker #picker2></mat-datepicker>
-                                                                      </div>
-                                                                    </div>
+                                                            <div class="col-md-12 mt-3">
+
+                                                                <mat-form-field class="drp-dwn-field w-100">
+                                                                  <mat-label>Select portfolios</mat-label>
+                                                                  <mat-chip-list #ca_selectedPortfolioDrpDwn>
+                                                                    <mat-chip *ngFor="let ptfid of ngDropdwonPort2" class="Data_chip_kt"
+                                                                      (removed)="onca_PortfolioDeSelected(ptfid)">
+                                                                      {{getObjOf(_portfoliosList2,ptfid,'Portfolio_ID').Portfolio_Name}}
+                                                                      <button matChipRemove>
+                                                                        <mat-icon>cancel</mat-icon>
+                                                                      </button>
+                                                                    </mat-chip>
+                                                                  </mat-chip-list>
+                                                                  <div class="d-flex">
+                                                                    <input class="flex-1" [matChipInputFor]="ca_selectedPortfolioDrpDwn"
+                                                                      [matAutocomplete]="ca_PortfolioDrpDwn" #ca_portfolioTF />
+                                                                            <button *ngIf="iscaPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                                                                class="close-icon save-mat-selection "
+                                                                                (click)="iscaPortDrpDwnOpen=false;  ca_portfolioTF.value='';  closeAutocompleteDrpDwn('ca_PortfolioDrpDwn');">done</mat-icon>
+                                                                            </button>
+                                                                            <button *ngIf="!iscaPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                                                                class="add-icon"
+                                                                                (click)="iscaPortDrpDwnOpen=true; openAutocompleteDrpDwn('ca_PortfolioDrpDwn');">add</mat-icon>
+                                                                            </button>
+                                                            
                                                                   </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
-                                                                    <label>End date<span class="text-danger">*</span></label>
-                                                                    <div class="d-flex date-border">
-                                                                      <input class="form-control ng-pristine curser-pointer" [(ngModel)]="Prjenddate"  id="end-date"
-                                                                        placeholder="Select end date" [matDatepicker]="picker3" (click)="picker3.open();"
-                                                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null;findProjectType();Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null"/>
-                                                                      <div class="input-group-text p-0">
-                                                                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                                                                        <mat-datepicker #picker3></mat-datepicker>
-                                                                      </div>
-                                                                    </div>
-                                                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date</span>
-                                                                  </div>
-                                                            </div>
+                                                                  <mat-autocomplete aria-label="ca_PortfolioDrpDwn" #ca_PortfolioDrpDwn="matAutocomplete"
+                                                                    (optionSelected)="onca_PortfolioSelected($event); ca_portfolioTF.value=''; "
+                                                                    (opened)="iscaPortDrpDwnOpen=true" (closed)="iscaPortDrpDwnOpen=false; ">
+
+                                                                    <mat-option *ngFor="let pfl of _portfoliosList2|filter:ca_portfolioTF.value"
+                                                                      [value]="pfl.Portfolio_ID">
+                                                                      <mat-checkbox color="primary"
+                                                                        [checked]="ngDropdwonPort2.includes(pfl.Portfolio_ID)">{{pfl.Portfolio_Name}}</mat-checkbox>
+                                                                    </mat-option>
+
+                                                                  </mat-autocomplete>
+                                                                </mat-form-field>
+                                                              </div>
                                                         </div>
-                                                        <div>
+                                                        <!-- <div>
                                                             <label>Enter Comments<span class="text-danger">*</span></label>
                                                             <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
 
 
@@ -7070,7 +7094,7 @@
                                           </div>
                                         </div>
 
-
+                                       <ng-container *ngIf="Data.Role&&projectInfo">
                                         <div *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" class="d-flex">
                                             <button  (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
                                                 <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
@@ -7080,10 +7104,8 @@
                                                 <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
                                                 <span class="auditor-btn-text">&nbsp;remove</span>
                                             </button>
-
-
-
                                        </div>
+                                     </ng-container>
 
                                         <ng-container *ngIf="projectInfo">
                                          <div *ngIf="Data.isRemovable&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)" class="d-flex align-self-center">
@@ -14458,7 +14480,7 @@
 
                         <button (click)="filterActionsOnGantt('All')"    [ngClass]="{'active2':ganttActnsConfig.byuser==='All'}"   class="btn btn-filtr">
                             <div class="d-flex align-items-center">
-                                <svg width="18px" height="18px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project</title> <g id="Page-1" stroke-width="0.00512" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#7c7979" transform="translate(64.000000, 34.346667)"> <path d="M192,7.10542736e-15 L384,110.851252 L384,332.553755 L192,443.405007 L1.42108547e-14,332.553755 L1.42108547e-14,110.851252 L192,7.10542736e-15 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M341.333,157.655 L213.333,231.555 L213.333,381.82 L341.333333,307.920144 L341.333,157.655 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g></svg>
+                                <div class="fbx-actns-count fbx-usercount">{{TOTAL_ACTIONS}}</div>
                                 <div class="fil-lbl">All actions</div>
                                 <span class="chck-icn ng-star-inserted" *ngIf="ganttActnsConfig.byuser==='All'">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -14478,16 +14500,7 @@
 
                             <button  (click)="filterActionsOnGantt(item.Team_Res)"   [ngClass]="{'active2':ganttActnsConfig.byuser===item.Team_Res}"  class="btn btn-filtr">
                                 <div class="d-flex align-items-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="16"
-                                        fill="currentColor"
-                                        viewBox="0 0 16 16"
-                                        class="bi bi-people">
-                                        <path
-                                            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
-                                        </path>
-                                    </svg>
+                                    <div class="fbx-actns-count fbx-usercount">{{item.count}}</div>
                                     <div class="fil-lbl">{{item.Responsible}}</div>
                                     <span class="chck-icn ng-star-inserted" *ngIf="ganttActnsConfig.byuser===item.Team_Res">
                                         <svg xmlns="http://www.w3.org/2000/svg"

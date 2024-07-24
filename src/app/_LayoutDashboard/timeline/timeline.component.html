@@ -328,7 +328,7 @@
                                                         <div class="timeline-text fs-6">{{item1.date | date:'fullDate'}}</div>
                                                     </td>
                                                     <td>
-                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName" (click)="newDetailsaction(item.project_code,item.ActionCode)">
+                                                        <div class="timeline-text fs-6" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName" (click)="newDetailsaction(item1.project_code,item1.ActionCode)">
                                                             <span class="desp-txt fs-7">Action</span><u>{{item1.ActionName }}</u></div>
                                                         {{item1.WorkAchieved}}
                                                     </td>

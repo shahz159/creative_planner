@@ -156,7 +156,7 @@ export class TimelineComponent implements OnInit {
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         console.log(this.timelineList,"timelinedata")
         this.timelineDuration=(data[0]['TotalTime']);
-        this.darArray=this.timelineList;
+        this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
         this._CurrentpageRecords=this.timelineList.length;
         if(this.timelineList.length == 0){
           this.showtimeline=false;
@@ -212,7 +212,8 @@ export class TimelineComponent implements OnInit {
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList;
+          this.darArray=this.timelineList;  
+          console.log(this.darArray);
           this._CurrentpageRecords=this.timelineList.length;
           if(this.timelineList.length == 0){
             this.showtimeline=false;
