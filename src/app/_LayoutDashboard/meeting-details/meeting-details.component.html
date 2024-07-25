@@ -1913,7 +1913,7 @@
                                 
                                     <!-- <div  class="PA_title"><span>Meeting</span>
                                     </div> -->
-                                    <div class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
+                                    <div *ngIf="Meetingstatuscom!='Completed'"  class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 18 18" fill="none">
                                             <path
@@ -5483,10 +5483,10 @@
         <div class="kt-portlet__body pb-0 pt-3">
             <ul class="nav nav-tabs" id="myMeeting" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meeting</button>
+                  <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meetings</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming Meeting</button>
+                  <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming meetings</button>
                 </li>
               </ul>
               <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">
@@ -6072,6 +6072,7 @@
                 </div>
                  
                 <div class="tab-pane fade" id="upcomingmeeting" role="tabpanel" aria-labelledby="upcomingmeeting-tab">
+                    <div class="historymeeting-accordion  accordion"  id="accordionHistoryMeeting">
                     <ng-container *ngIf="totalupcomingmeetings>0;else upcomingmeetingsNoData">
                     <div class="card" *ngFor="let data of upcomingmeetings;let i = index;">
                         <a class="pn-card" (click)="OnCardClickUpcoming(data.Schedule_ID)">
@@ -6084,103 +6085,97 @@
                                   <div class="pn-date-footer pn-day">
                                     {{data.Schedule_date | date : 'EEEE'}}</div>
                               </div>
-                              <div class="pn-right">
-                                  <div class="pn-title">
-                                      <h4>{{data.Task_Name}}</h4>
-                                  </div>
-                                  <div class="d-flex align-items-center justify-content-between">
-                                      <div>
-                                          <div class="pn-details">
-                                              <div class="pn-label">Time</div>
-                                              <div class="pn-time">
-                                                {{data.Schedule_date | date : 'EEEE'}} {{data.St_Time}} - {{data.Ed_Time}} 
-                                              </div>
-                                          </div>
-                                      </div>
-                                    
-                                      <div class="pn-details">
-                                          <div class="pn-label">Location</div>
-                                          <div class="pn-time" *ngIf="data.Location">
-                                              {{data.Location}}
-                                          </div>
-
-                                          <div class="pn-time"  *ngIf="!data.Location">
-                                            Not Provided
+                             
+                            </div>
+                            <div class="pn-right">
+                                <div class="pn-title">
+                                    <h4>{{data.Task_Name}}</h4>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="pn-details">
+                                            <div class="pn-label">Time</div>
+                                            <div class="pn-time">
+                                              {{data.Schedule_date | date : 'EEEE'}} {{data.St_Time}} - {{data.Ed_Time}} 
+                                            </div>
                                         </div>
-                                      </div>
-                                      <div class="pn-details">
-                                          <div class="pn-label">Meeting Type</div>
-                                          <div class="pn-meeting-type">
-                                              <span *ngIf="data.OnlineLink==true">
-                                                    Online
-                                              </span>
-                                              <span *ngIf="data.OnlineLink == false">
-                                                    Offlined
-                                              </span>
+                                        <div class="pn-details">
+                                            <div class="pn-label">Location</div>
+                                            <div class="pn-time" *ngIf="data.Location">
+                                                {{data.Location}}
+                                            </div>
+    
+                                            <div class="pn-time"  *ngIf="!data.Location">
+                                              Not Provided
                                           </div>
-                                      </div>
-                                 
-                                      <div class="pn-details">
-                                          <div class="pn-label">Meeting Status</div>
-                                          <div  >
-                                              Not started
-                                          </div>
-                                          
-                                      </div>
-                                      
-  
-                                  </div>
-                                  <div class="m-line"></div>
-                                  <div>
-                                      <div class="pn-details">
-                                          <div class="pn-label">Organizer</div>
-                                          <div class="pn-org-name">
-                                              <div class="pn-user-initial">{{data.twoletowner}}</div>
-                                              <div>
-                                                  <p class="pn-user-name">{{data.Owner}}</p>
-                                                  <p class="pn-user-email">{{data.email}}</p>
-                                              </div>
-                                          </div>
-                                     
-                                          <div class="pn-details">
-                                              <div class="pn-label">Meeting Status</div>
-                                              <div  class="Kt-Pd-Status Done">
-                                                  Completed
-                                              </div>
-                                          </div>
-                                          
-      
-                                      </div>
-                                      <div class="m-line"></div>
-                                      <div>
-                                          <div class="pn-details">
-                                              <div class="pn-label">Organizer</div>
-                                              <div class="pn-org-name">
-                                                  <div class="pn-user-initial">M</div>
-                                                  <div>
-                                                      <p class="pn-user-name">Md Waseem Akram</p>
-                                                      <p class="pn-user-email">{{data.email}}</p>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="pn-details">
-                                              <div class="pn-label">Attendees</div>
-                                               <div class="pn-part" >
-                                                  <div class="pn-part-group" *ngFor="let upcom of data.Addguest">
-                                                      <span class="pn-part-item" title="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
-                                                  </div>
-                                                  <!-- <div class="pn-part-group" title="Md Waseem Akram">
-                                                      <span class="pn-part-item">A</span>
-                                                  </div>
-                                                  <div class="pn-part-group" title="Md Waseem Akram">
-                                                      <span class="pn-part-item">P</span>
-                                                  </div>
-                                                  <div class="pn-part-group" title="Md Waseem Akram">
-                                                      <span class="pn-part-item">S</span>
-                                                  </div> -->
-                                                 
-                                              </div>
-                                              <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount"   title="{{data.RemainingGuests}}">
+                                        </div>
+                                        <div class="pn-details">
+                                            <div class="pn-label">Meeting Type</div>
+                                            <div class="pn-meeting-type">
+                                                <span *ngIf="data.OnlineLink==true">
+                                                      Online
+                                                </span>
+                                                <span *ngIf="data.OnlineLink == false">
+                                                      Offlined
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="pn-details">
+                                            <div class="pn-label">Meeting Status</div>
+                                            <div  >
+                                                Not started
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                
+                                    <div class="m-line"></div>
+                                    <div>
+                                            <div class="pn-details">
+                                                <div class="pn-label">Organizer</div>
+                                                <div class="pn-org-name">
+                                                    <div class="pn-user-initial">{{data.twoletowner}}</div>
+                                                    <div>
+                                                        <p class="pn-user-name">{{data.Owner}}</p>
+                                                        <p class="pn-user-email">{{data.email}}</p>
+                                                    </div>
+                                                </div>
+                                        
+                                                <!-- <div class="pn-details">
+                                                    <div class="pn-label">Meeting Status</div>
+                                                    <div  class="Kt-Pd-Status Done">
+                                                        Completed
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <!-- <div class="pn-details">
+                                                <div class="pn-label">Organizer</div>
+                                                <div class="pn-org-name">
+                                                    <div class="pn-user-initial">M</div>
+                                                    <div>
+                                                        <p class="pn-user-name">Md Waseem Akram</p>
+                                                        <p class="pn-user-email">{{data.email}}</p>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="pn-details">
+                                                <div class="pn-label">Attendees</div>
+                                                <div class="pn-part" >
+                                                    <div class="pn-part-group" *ngFor="let upcom of data.Addguest">
+                                                        <span class="pn-part-item" title="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
+                                                    </div>
+                                                    <!-- <div class="pn-part-group" title="Md Waseem Akram">
+                                                        <span class="pn-part-item">A</span>
+                                                    </div>
+                                                    <div class="pn-part-group" title="Md Waseem Akram">
+                                                        <span class="pn-part-item">P</span>
+                                                    </div>
+                                                    <div class="pn-part-group" title="Md Waseem Akram">
+                                                        <span class="pn-part-item">S</span>
+                                                    </div> -->
+                                                
+                                                </div>
+                                                <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount"   title="{{data.RemainingGuests}}">
                                                 <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <span class="pn-part-item">+{{data.RemainingGuestsCount}}</span>
                                                     <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
@@ -6191,46 +6186,45 @@
                                                 </a>
                                                 
                                             </div>
-                                          </div>
-                                          <div class="pn-details mb-0">
-                                              <div class="pn-label">Meeting Actions</div>
-                                              <div class="pn-in-label-main">
-                                                  <div class="pn-in-label">
-                                                      <div class="pn-time">
-                                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="#717171" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="#717171"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="#717171"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="#717171"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="#717171"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="#717171"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="#717171"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="#717171" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="#717171"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="#717171" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
-                                                      </div>
-                                                  <div class="pn-ag-count" title="Agenda">
-                                                     {{data.AgendaCount}}
-                                                  </div>
-                                                  </div>
-                                                  <div class="px-2">|</div>
-                                                  <div class="pn-in-label">
-                                                      <div class="pn-timel">
-                                                          <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
-                                                      </div>
-                                                  <div class="pn-ag-count" title="Notes">
-                                                      {{data.NotesCount}}
-                                                  </div>
-                                                  </div>
-                                                  <div class="px-2">|</div>
-                                                  <div class="pn-in-label">
-                                                      <div class="pn-time">
-                                                          <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 19.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 12.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 5.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 5.5L4 6.5L7 3.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 12.5L4 13.5L7 10.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 19.5L4 20.5L7 17.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                      </div>
-                                                  <div class="pn-ag-count" title="Assign project">
-                                                      {{data.TaskCount}}
-                                                  </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                            </a>
-                    
+                                            </div>
+                                            <div class="pn-details mb-0">
+                                                <div class="pn-label">Meeting Actions</div>
+                                                <div class="pn-in-label-main">
+                                                    <div class="pn-in-label">
+                                                        <div class="pn-time">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="#717171" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="#717171"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="#717171"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="#717171"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="#717171"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="#717171"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="#717171"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="#717171" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="#717171"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="#717171" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
+                                                        </div>
+                                                    <div class="pn-ag-count" title="Agenda">
+                                                    {{data.AgendaCount}}
+                                                    </div>
+                                                    </div>
+                                                    <div class="px-2">|</div>
+                                                    <div class="pn-in-label">
+                                                        <div class="pn-timel">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
+                                                        </div>
+                                                    <div class="pn-ag-count" title="Notes">
+                                                        {{data.NotesCount}}
+                                                    </div>
+                                                    </div>
+                                                    <div class="px-2">|</div>
+                                                    <div class="pn-in-label">
+                                                        <div class="pn-time">
+                                                            <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 19.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 12.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 5.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 5.5L4 6.5L7 3.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 12.5L4 13.5L7 10.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 19.5L4 20.5L7 17.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                        </div>
+                                                    <div class="pn-ag-count" title="Assign project">
+                                                        {{data.TaskCount}}
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                   
+                                    </div>                             
+                             </div>
+                         </div>
+                         </a>
                   </div>
                 </ng-container>
+              </div>
                 <ng-template #upcomingmeetingsNoData>
                   <div  style="display:flex; flex-direction:column; align-items: center; justify-content:center; padding-top:15%;">
                   <img width="20%" height="20%" src="./assets/images/nomeeting.png" />
@@ -7974,7 +7968,7 @@
 
 
 
-    <div id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
+    <div  id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
         <div class="kt-portlet mb-0">
            
             <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
@@ -9569,6 +9563,7 @@
     </div>
 </div>
 
+
 </ng-container>
 </ng-container>
 
@@ -9664,9 +9659,9 @@
                     <div class="text-center acc-section">
                         <h1 class="text-primary main_acc">Access denied 503 !</h1>
                         <h5 class="acc-desc  user-not-found-msg  hide-content">
-                            Unfortunately, we did not find you in this project.
+                            Unfortunately, we did not find you in this meeting.
                         </h5>
-                        <div  class="mt-4">
+                        <!-- <div  class="mt-4">
                             <button
                             class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
                             </button>
@@ -9674,12 +9669,12 @@
 
                         <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
                         be added. Happy streaming!
-                        </h5>
+                        </h5> -->
 
             </div>
             <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
 
-                <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
+                <!-- <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
                     <div class="col-lg-7 m-auto">
                     <div class="kt-card-cmt">
                     <textarea [(ngModel)]="Usercomment"
@@ -9698,7 +9693,7 @@
                     </div>
                     </div>
                 </div>
-                </div>
+                </div> -->
 
                 <div class="acc-img_sec">
                     <div class="acc-denied_img">
@@ -9715,7 +9710,7 @@
 
  <div class="modal-backdrop show" id="schedule-event-modal-backdrop" style="display: none;"></div>
  <!-- Project Modal Start -->
-   <!-- <div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
+   <div class="schedule-event modal fade show" id="projectmodals" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
      <div class="modal-dialog modal-dialog-centered">
        <div class="modal-content">
          <div class="modal-header  gap-1">
@@ -9726,7 +9721,7 @@
                      </svg>
 
                      <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users to assign</h5>
-           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
+           <button type="button" class="close d-none" (click)="close_projectmodals()" aria-label="Close">
              <span aria-hidden="true">&times;</span>
            </button>
          </div>
@@ -9787,7 +9782,7 @@
                      </span>
                  </li>
 
-                 69!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
+                 <!-- 69!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
                      <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -9796,29 +9791,29 @@
                          </g>
                      </svg>
                      <span style="color:#757575" class="ml-2">No results found.</span>
-                 </div> --69
+                 </div> --69 -->
              </ul>
            </div>
          </div>
-         69!-- <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
+         <!-- 69!-- <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
 
                      <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees(item.Task_Name,item.Assign_Id)">Add</button>
                      <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()">Custom</button>
                      <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
 
-         </div> --69
+         </div> --69 -->
 
 
          <div class="modal-footer">
 
-            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees()">Assign</button>
-            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodal()">Custom</button>
-            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
+            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees();close_projectmodals()">Assign</button>
+            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodals()">Custom</button>
+            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodals()">Close</button>
 
         </div>
        </div>
      </div>
-   </div> -->
+   </div>
  <!-- Project Modal End -->
 
 

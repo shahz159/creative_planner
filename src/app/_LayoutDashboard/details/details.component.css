@@ -8188,3 +8188,80 @@ input.search-input {
 
 
 /* all actns view  start*/
+
+/* Actns filter box count css start*/
+.fbx-actns-count{
+  /* border: 1px solid currentColor; */
+  margin-right: 5px;
+  border-radius: 3px;
+  min-width: 1.8em;
+  padding-right: 0.1em;
+  padding-left: 0.1em;
+  font-size: 12px;
+  color:white;
+}
+
+/* .status-fltr.fbx-actns-count,.status-fltr.fbx-actns-count.active2{
+   color:white !important;
+   border:0 !important;
+} */
+
+
+.fbx-usercount{
+  background-color: #527ce2;
+}
+
+.fbx-total{
+   background-color:#35A79C;
+}
+
+.fbx-inprocess{
+  background-color:#64B5F6;
+}
+
+.fbx-delay{
+  background-color:#D32F2F;
+}
+
+.fbx-completed{
+  background-color:#388E3C;
+}
+
+.fbx-cancelled{
+  background-color:#D32F2F;
+}
+
+.fbx-newaproval{
+  background-color:#9C27B0;
+}
+
+.fbx-hold{
+  background-color:#795548;
+}
+
+.fbc-forward-apr{
+  background-color:#81C784;
+}
+
+/* Actns filter box count css end*/
+
+
+
+
+
+
+
+
+
+/* style at conditional accept section*/
+  .ca_loadingsp{
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 9px;
+    width: 20px;
+    height: 20px;
+    color:#5d76c3;
+  }
+
+/* style at conditional accept section*/

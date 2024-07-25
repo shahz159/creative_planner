@@ -1967,13 +1967,7 @@ export class DashboardComponent implements OnInit {
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
         var vLink_Details = "Link_Details";
-        // let link_d=this.Link_Details;  debugger  
-        // debugger
-        // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
-        // link_d=this.anchoredIt(link_d);
-
-
-        let link_d=this.Link_Details;
+        let link_d=this.Link_Details;  
         if(this.Link_Details){
           link_d=this.Link_Details.replace(/&#160;/g, ' ');
           link_d=this.anchoredIt(link_d);
@@ -6887,14 +6881,20 @@ anchoredIt(inputstr){
   }
 
   let alllinks=[];
-  inputdes.match(urlregex).forEach((linkstr,index)=>{
-      const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
-      alllinks.push(alink); 
-      inputdes=inputdes.replace(linkstr,`@link@-${index}`); 
-  });
-  inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
-      inputdes=inputdes.replace(place,alllinks[index]);
-   });
+  let matches2=inputdes.match(urlregex);
+  if(matches2){
+          matches2.forEach((linkstr,index)=>{
+            const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
+            alllinks.push(alink); 
+            inputdes=inputdes.replace(linkstr,`@link@-${index}`); 
+           });
+
+           inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
+            inputdes=inputdes.replace(place,alllinks[index]);
+            });
+  }
+
+  
   return inputdes;
 }
 

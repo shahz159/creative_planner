@@ -4523,6 +4523,13 @@ loadGanttChart(){
     }
 
 
+      if(data_ar.length==1){
+        if(data_ar[0].y[0]==data_ar[0].y[1]){
+                  data_ar[0].y[1]=data_ar[0].y[1]+86400000;
+        }
+      }
+
+
       const obj={
           name:prj.Status,
           data:data_ar
@@ -5499,7 +5506,7 @@ bindCustomRecurrenceValues(){
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.Description_Type.trim().length<=200):true)&&
+      (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -5656,7 +5663,17 @@ bindCustomRecurrenceValues(){
 
 
 
+  characterCount: number = 0;
 
+  updateCharacterCount(): void {
+  
+    // Create a temporary div element to strip out HTML tags
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = this.Description_Type;
+    const textContent = tempElement.textContent || tempElement.innerText || '';
+    this.characterCount = textContent.length;
+  }
+  
 
   // new code of portfolio meeting side bar end
 }
