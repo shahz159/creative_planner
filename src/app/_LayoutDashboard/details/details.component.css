@@ -868,7 +868,7 @@ span.kt-dt-l {
 }
 
 .P_Delay {
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
 }
 
 .Delay {
@@ -1511,7 +1511,7 @@ label.my-chosse-flv {
 
 .CompletionUnderApproval {
   background-color: #81C784 !important;
-  color: #000;
+  color: white !important;
 }
 
 .DeadlineExtend {
@@ -1530,8 +1530,8 @@ label.my-chosse-flv {
 }
 
 .ForwardUnderApproval {
-  background-color: #B2D732 !important;
-  color: #000 !important;
+  background-color: #9C27B0 !important;
+  color: white !important;
 }
 
 
@@ -1721,11 +1721,11 @@ span.B-Bot {
 }
 
 .P_In_Progress {
-  background-color: #1B272D !important;
+  background-color: #64B5F6!important;
 }
 
 .P_Not-Started {
-  background-color: #B2D732 !important;
+  background-color: #9C27B0 !important;
 }
 
 .P_Active {
@@ -1733,7 +1733,7 @@ span.B-Bot {
 }
 
 .P_Completion_under_Approval {
-  background-color: #B2D732 !important;
+  background-color: #81C784 !important;
 }
 
 .P_Slow {
@@ -1741,7 +1741,7 @@ span.B-Bot {
 }
 
 .P_Hold {
-  background-color: #E2D9BC !important;
+  background-color: #795548 !important;
 }
 
 .P_Done {
@@ -1758,24 +1758,24 @@ span.B-Bot {
 }
 
 .P_Completion_under_Approval {
-  background-color: #B2D732 !important;
+  background-color: #81C784 !important;
 }
 
 .P_ForwardUnderApproval {
-  background-color: #B2D732 !important;
+  background-color: #9C27B0 !important;
 }
 
 
 .P_Deadline_Extend_Under_Approval {
-  background-color: #F88282 !important;
+  background-color: #F9A825 !important;
 }
 
 .P_Enactive_Under_Approval {
-  background-color: #C9c1e6 !important;
+  background-color: #F44336 !important;
 }
 
 .P_New_Project_Rejected {
-  background-color: #DFDFDF !important;
+  background-color: #BA68C8 !important;
 }
 
 .P_New_todo {
@@ -1783,7 +1783,7 @@ span.B-Bot {
 }
 
 .P_Project_complete_rejected {
-  background-color: #FAF065 !important;
+  background-color: #F44336 !important;
 }
 
 .g-10 {
@@ -8146,7 +8146,7 @@ input.search-input {
 #actns-graphmodal .actns-graph-dv .actngantt-chart-holder{
    overflow-y: auto;
 }
- 
+
 .actnsGrph-of-user .sel-user{
   background-color: gray;
   color: white;
@@ -8167,8 +8167,8 @@ input.search-input {
 
 
 #actns-graphmodal .gantt-container{
-  flex-grow: 1; 
-  max-height: 60vh; 
+  flex-grow: 1;
+  max-height: 60vh;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
@@ -8188,3 +8188,80 @@ input.search-input {
 
 
 /* all actns view  start*/
+
+/* Actns filter box count css start*/
+.fbx-actns-count{
+  /* border: 1px solid currentColor; */
+  margin-right: 5px;
+  border-radius: 3px;
+  min-width: 1.8em;
+  padding-right: 0.1em;
+  padding-left: 0.1em;
+  font-size: 12px;
+  color:white;
+}
+
+/* .status-fltr.fbx-actns-count,.status-fltr.fbx-actns-count.active2{
+   color:white !important;
+   border:0 !important;
+} */
+
+
+.fbx-usercount{
+  background-color: #527ce2;
+}
+
+.fbx-total{
+   background-color:#35A79C;
+}
+
+.fbx-inprocess{
+  background-color:#64B5F6;
+}
+
+.fbx-delay{
+  background-color:#D32F2F;
+}
+
+.fbx-completed{
+  background-color:#388E3C;
+}
+
+.fbx-cancelled{
+  background-color:#D32F2F;
+}
+
+.fbx-newaproval{
+  background-color:#9C27B0;
+}
+
+.fbx-hold{
+  background-color:#795548;
+}
+
+.fbc-forward-apr{
+  background-color:#81C784;
+}
+
+/* Actns filter box count css end*/
+
+
+
+
+
+
+
+
+
+/* style at conditional accept section*/
+  .ca_loadingsp{
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 9px;
+    width: 20px;
+    height: 20px;
+    color:#5d76c3;
+  }
+
+/* style at conditional accept section*/

@@ -207,9 +207,15 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Request_type = obj.Request_type;
     this.obj_approvalDTO.Remarks = obj.Remarks;
-
+    
+    this.obj_approvalDTO.taskname=obj.taskname;
+    this.obj_approvalDTO.projecttype=obj.projecttype;
+    this.obj_approvalDTO.assignto=obj.assignto;
+    this.obj_approvalDTO.portfolioId=obj.portfolioId;
+    this.obj_approvalDTO.startdate=obj.startdate;
+    this.obj_approvalDTO.enddate=obj.enddate;
+    this.obj_approvalDTO.SubmissionType=obj.SubmissionType;
     return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertConditionalAcceptApprovalService", this.obj_approvalDTO);
-
   }
 
   InsertRejectApprovalService(obj: ApprovalDTO) {

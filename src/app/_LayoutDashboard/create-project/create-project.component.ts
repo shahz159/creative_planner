@@ -193,6 +193,24 @@ export class CreateProjectComponent implements OnInit {
 
 
 
+  actionCount:any
+  getActionCount(prjcode){
+
+    this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",res);
+    //   if ((res as any[]) && (res as any[]).length > 0 && res[0].deadlineList) {
+    //     this.actionCount = JSON.parse(res[0].deadlineList);
+    //     console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",this.actionCount)
+    // }
+
+
+
+
+    })
+  }
+
+
+
   Project_Type:any
 
   getProjectCreationDetails(){
@@ -308,6 +326,7 @@ export class CreateProjectComponent implements OnInit {
 
   //  this.Client=this.PrjClient;
    this.newProjectDetails(this.PrjCode);
+   this.getActionCount(this.PrjCode);
   }
 
 
@@ -1250,6 +1269,9 @@ getActionsDetails(){
 
 
 
+
+
+
 showActionDetails(index: number | undefined) {
   this.currentActionView = index;
 }
@@ -1339,7 +1361,7 @@ initializeSelectedValue() {
 projectEdit(val) {
 
 
-
+debugger
 
   this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
   this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
@@ -2046,6 +2068,8 @@ $('.sbs--basic li:nth-child(3)').addClass('active');
 //  opens the step-3 view
 
 this.newProjectDetails(this.draft_json[index].Project_Code);
+this.getActionCount(this.draft_json[index].Project_Code);
+
 // this.getActionsDetails();
 
 this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
@@ -2261,7 +2285,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
 
   alterAction(){
-
+debugger
 
 
 const dateone= new Date(this.projectInfo.EndDate)

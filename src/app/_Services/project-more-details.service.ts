@@ -19,6 +19,13 @@ export class ProjectMoreDetailsService {
       return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
   }
 
+  GetActionDeadlineList(projectcode:string){
+    this.ObjSubTaskDTO.Project_Code=projectcode;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetActionDeadlineList',this.ObjSubTaskDTO);
+  }
+
+
+
   getRequestAccessDetails(projectcode:string){
     this.ObjSubTaskDTO.Project_Code=projectcode;
       return this.http.post(this.rootUrl+'TestAPI/NewGetRequestAccessDetails',this.ObjSubTaskDTO);
@@ -67,7 +74,7 @@ NewUpdateProjectAuditor(project_code:string,empno:string,empToasAudit:string){
     this.ObjSubTaskDTO.Project_Code=project_code;
     this.ObjSubTaskDTO.Emp_No=empno;
     this.ObjSubTaskDTO.Remarks='';
-    this.ObjSubTaskDTO.auditor=empToasAudit; 
+    this.ObjSubTaskDTO.auditor=empToasAudit;
     return this.http.post(this.rootUrl+'Category/NewUpdateProjectAuditor',this.ObjSubTaskDTO);
 }
 
@@ -77,8 +84,8 @@ NewDeleteProjectRACIS(project_code:string,empno:string,auditor:any,teamsupport:a
   this.ObjSubTaskDTO.Emp_No=empno;
   this.ObjSubTaskDTO.Remarks=remarks;
   this.ObjSubTaskDTO.Team_Support=teamsupport;
-  this.ObjSubTaskDTO.auditor=auditor; 
-   
+  this.ObjSubTaskDTO.auditor=auditor;
+
   return this.http.post(this.rootUrl+'Category/NewDeleteProjectRACIS',this.ObjSubTaskDTO);
 }
 

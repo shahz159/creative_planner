@@ -28,4 +28,13 @@ export class ApprovalDTO {
     End_Date:any;
     PageNumber:number;
     RowsOfPage:number;
+
+    projecttype:string;
+    taskname:string;
+    assignto:string;
+    startdate:string;
+    enddate:string;
+    portfolioId:string;
+    SubmissionType:string;
+
 }

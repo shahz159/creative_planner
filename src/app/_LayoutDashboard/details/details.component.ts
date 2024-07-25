@@ -882,7 +882,7 @@ this.prjPIECHART.render();
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);
+      this.Submission = JSON.parse(res[0].submission_json);   console.log('submission_json:',this.Submission);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
@@ -2356,15 +2356,28 @@ currentStdAprView:number|undefined;
       console.log(this.singleapporval_json, "accept")
     }
     else if (this.selectedType == '2') {
+debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
+
+      this.approvalObj.taskname=this.sel_prjname;
+      this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
+      this.approvalObj.assignto=this.sel_user;
+      this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
+
+
+      this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
+      this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
+      this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
+
       if (this.comments == '' || this.comments == null) {
         this.approvalObj.Remarks = 'Accepted';
       }
       else {
         this.approvalObj.Remarks = this.comments;
       }
+
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
@@ -10060,6 +10073,64 @@ updateCharacterCount_Meeting(): void {
   const textContent = tempElement.textContent || tempElement.innerText || '';
   this.characterCount_Meeting = textContent.length;
 }
+
+
+// conditional accept functionality start
+
+_portfoliosList2:any=[];  // all portfolios list.
+ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
+iscaPortDrpDwnOpen:boolean=false;
+ProjectType_json:any;   // prj types
+allUsers1:any=[];       // all emps
+
+sel_prjname:string|undefined;
+sel_user:any;       // selected emp
+sel_ptype:any;     // selected prj type
+sel_sdate:any;    // selected start date.
+sel_edate:any;   // selected end date.    
+sel_submtype:any;  // selected submission type.
+
+onca_PortfolioSelected(e){
+  const prtfChoosed = this._portfoliosList2.find((p:any) => p.Portfolio_ID === e.option.value)
+  if (prtfChoosed) {
+    const index = this.ngDropdwonPort2.indexOf(prtfChoosed.Portfolio_ID)
+    if (index === -1) {
+         this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
+    }
+    else{ 
+         this.ngDropdwonPort2.splice(index,1);
+    }
+ }
+//  requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
+
+onca_PortfolioDeSelected(prtid:string){
+  const index=this.ngDropdwonPort2.indexOf(prtid);
+  if(index!==-1){
+   this.ngDropdwonPort2.splice(index,1);
+  }
+}
+
+
+
+getca_Dropdowns(){
+    // prj types    
+    this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
+    
+    // all emp list
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe((data) => {
+        this.allUsers1=(JSON.parse(data[0]['alluserlist']));
+    });
+
+    // portfolios list
+    this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe((data) => {
+      this._portfoliosList2 = data as [];  
+    });
+}
+// conditional accept functionality end
+
+
+
 
 
 

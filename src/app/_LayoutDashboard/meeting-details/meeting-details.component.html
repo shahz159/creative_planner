@@ -5483,10 +5483,10 @@
         <div class="kt-portlet__body pb-0 pt-3">
             <ul class="nav nav-tabs" id="myMeeting" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meeting</button>
+                  <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meetings</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming Meeting</button>
+                  <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming meetings</button>
                 </li>
               </ul>
               <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">
@@ -9563,6 +9563,7 @@
     </div>
 </div>
 
+
 </ng-container>
 </ng-container>
 
@@ -9658,9 +9659,9 @@
                     <div class="text-center acc-section">
                         <h1 class="text-primary main_acc">Access denied 503 !</h1>
                         <h5 class="acc-desc  user-not-found-msg  hide-content">
-                            Unfortunately, we did not find you in this project.
+                            Unfortunately, we did not find you in this meeting.
                         </h5>
-                        <div  class="mt-4">
+                        <!-- <div  class="mt-4">
                             <button
                             class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
                             </button>
@@ -9668,7 +9669,7 @@
 
                         <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
                         be added. Happy streaming!
-                        </h5>
+                        </h5> -->
 
             </div>
             <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
