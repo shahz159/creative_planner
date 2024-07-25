@@ -2800,12 +2800,8 @@
                                                      </g></g></g>
                                                     </svg>
 
-                                                    <span class="kt-detail-iconname">Tranfer</span>
+                                                    <span class="kt-detail-iconname">Transfer</span>
                                                 </div>
-
-
-
-                                              
 
                                               <div *ngIf="requestType=='Project Complete'"
                                                   [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
@@ -2831,14 +2827,15 @@
                                                             <label  *ngIf="selectedType=='5'">Project auditor<span class="text-danger">*</span></label>
                                                             <label *ngIf="selectedType=='6'">New Owner<span class="text-danger">*</span></label>
                                                         <ng-container  *ngIf="selectedType=='5'">
-                                                            <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
-                                                                placeholder="Select project auditor" id="prj_audit_ngsel"
-                                                                [(ngModel)]="emp_Auditor">
-                                                                <ng-option [value]="item.Emp_No"
-                                                                    *ngFor="let item of racisNonRacis">
-                                                                    {{item.RACIS}}
-                                                                </ng-option>
-                                                            </ng-select>
+                                                            <ng-select
+                                                            [ngClass]="{'error-border':!emp_Auditor&&notProvided}"
+                                                            [items]="allUsers1" bindLabel="RACIS"
+                                                            bindValue="Emp_No" groupBy="usergroup"
+                                                            placeholder="Select project auditor"
+                                                            id="prj_audit_ngsel"
+                                                            [searchable]="true" name="prj_audit_ngsel"
+                                                            [(ngModel)]="emp_Auditor"
+                                                            required></ng-select>
                                                         </ng-container>    
                                                         <ng-container  *ngIf="selectedType=='6'">
                                                             <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
