@@ -9674,7 +9674,7 @@
             </div>
             <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
 
-                <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
+                <!-- <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
                     <div class="col-lg-7 m-auto">
                     <div class="kt-card-cmt">
                     <textarea [(ngModel)]="Usercomment"
@@ -9693,7 +9693,7 @@
                     </div>
                     </div>
                 </div>
-                </div>
+                </div> -->
 
                 <div class="acc-img_sec">
                     <div class="acc-denied_img">
@@ -9710,7 +9710,7 @@
 
  <div class="modal-backdrop show" id="schedule-event-modal-backdrop" style="display: none;"></div>
  <!-- Project Modal Start -->
-   <!-- <div class="schedule-event modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
+   <div class="schedule-event modal fade show" id="projectmodals" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
      <div class="modal-dialog modal-dialog-centered">
        <div class="modal-content">
          <div class="modal-header  gap-1">
@@ -9721,7 +9721,7 @@
                      </svg>
 
                      <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users to assign</h5>
-           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
+           <button type="button" class="close d-none" (click)="close_projectmodals()" aria-label="Close">
              <span aria-hidden="true">&times;</span>
            </button>
          </div>
@@ -9782,7 +9782,7 @@
                      </span>
                  </li>
 
-                 69!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
+                 <!-- 69!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
                      <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -9791,29 +9791,29 @@
                          </g>
                      </svg>
                      <span style="color:#757575" class="ml-2">No results found.</span>
-                 </div> --69
+                 </div> --69 -->
              </ul>
            </div>
          </div>
-         69!-- <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
+         <!-- 69!-- <div class="modal-footer" *ngFor="let item of _TodoList; let i=index;">
 
                      <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees(item.Task_Name,item.Assign_Id)">Add</button>
                      <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id);close_projectmodal()">Custom</button>
                      <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
 
-         </div> --69
+         </div> --69 -->
 
 
          <div class="modal-footer">
 
-            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees()">Assign</button>
-            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodal()">Custom</button>
-            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal()">Close</button>
+            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees();close_projectmodals()">Assign</button>
+            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodals()">Custom</button>
+            <button type="button" class="btn btn-close-secondary" (click)="close_projectmodals()">Close</button>
 
         </div>
        </div>
      </div>
-   </div> -->
+   </div>
  <!-- Project Modal End -->
 
 

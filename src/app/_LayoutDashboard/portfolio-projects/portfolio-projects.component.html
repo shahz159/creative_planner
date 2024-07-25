@@ -1599,12 +1599,12 @@
                       <div class="card-toolbar">
                           <ul class="nav nav-tabs nav-bold nav-tabs-line">
                               <li class="nav-item">
-                                  <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+
                                       <span class="svg-icv-hd">
-                                          <i class="fas fa-share-alt"></i>
-                                      </span>
-                                      <span class="nav-text">Share portfolio</span>
-                                  </a>
+                                          <i class="fas fa-share-alt" style="font-size: 1.5em;"></i>
+                                      </span>&nbsp;
+                                      <span class="nav-share">Share portfolio</span>
+
                               </li>
 
                               <!-- <li class="nav-item">
@@ -1701,11 +1701,24 @@
                                         (opened)="isEmployeeDrpDwnOpen=true" (closed)="isEmployeeDrpDwnOpen=false; ">
                                     <ng-container *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)">
                                         <mat-option *ngIf="!_SharedToEmps.includes(emp.Emp_No)" [value]="emp.Emp_No">
-
                                             <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
                                                 {{emp.DisplayName}} - {{emp.TM_DisplayName}}
                                         </mat-option>
+
                                     </ng-container>
+
+                                    <mat-option *ngIf="(Employeshare|filter:employeeShare2TF.value).slice(0,1000).length==0" style="pointer-events:none;"  >
+                                      <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                          <g id="SVGRepo_iconCarrier">
+                                              <path d="M55.9,49.3l22.7-22.8c0.8-0.8,0.8-2,0-2.9l-2.7-2.9c-0.8-0.8-2-0.8-2.9,0L50.1,43.6c-0.5,0.5-1.4,0.5-1.9,0 l-22.8-23c-0.8-0.8-2-0.8-2.9,0l-2.9,2.9c-0.8,0.8-0.8,2,0,2.9l22.8,22.8c0.5,0.5,0.5,1.4,0,1.9L19.6,74c-0.8,0.8-0.8,2,0,2.9 l2.9,2.9c0.8,0.8,2,0.8,2.9,0l22.8-22.8c0.5-0.5,1.4-0.5,1.9,0l22.6,22.6c0.8,0.8,2,0.8,2.9,0l2.9-2.9c0.8-0.8,0.8-2,0-2.9 L55.9,51.2C55.3,50.6,55.3,49.8,55.9,49.3z"></path>
+                                          </g>
+                                      </svg>
+                                      <span style="color:#757575" class="ml-2">No results found.</span>
+                                  </mat-option>
+
+
 
 
                                      </mat-autocomplete>
@@ -1749,11 +1762,13 @@
                               <hr>
 
                               &nbsp;&nbsp;
+                              <ng-container *ngIf="_ShareDetailsList.length>0">
                               <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <div>
-                                            <h5 class="modal-title" id="exampleModalLabel"><strong>Shared details</strong></h5>
+                                            <h5 class="nav-share" id="exampleModalLabel"><strong>Shared details</strong></h5>
+                                            &nbsp;
                                             <h6 class="text-dark">Portfolio owner: <strong class="text-primary">{{_PortfolioOwner}}</strong>
                                             </h6>
                                         </div>
@@ -1803,6 +1818,7 @@
                                     </div> -->
                                 </div>
                             </div>
+                          </ng-container>
                           </form>
                       </div>
                   </div>
@@ -3646,9 +3662,11 @@
                   </div>
                   <div class="se-col-11">
                       <div class="form-group">
-                          <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
-                          <span *ngIf="Description_Type&&Description_Type.trim().length>200"  style="color:red">description should not exceed 200 characters.</span>
-                      </div>
+                          <angular-editor [(ngModel)]="Description_Type" 
+                          (input)="updateCharacterCount()" (paste)="updateCharacterCount()" [config]="config"></angular-editor>
+                          <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces </span>
+                          <span *ngIf="characterCount>=500"  style="color:red">    description should not exceed 500 characters.</span>
+                    </div>
                   </div>
               </div>
 
