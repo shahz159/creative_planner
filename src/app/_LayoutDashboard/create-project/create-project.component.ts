@@ -1330,7 +1330,7 @@ ProjeditDescription:any
 
 
 initializeSelectedValue() {
-
+   debugger
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -2288,7 +2288,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 debugger
 
 
-const dateone= new Date(this.projectInfo.EndDate)
+const dateone=new Date(this.projectInfo.EndDate)
 const datetwo= new Date(this.End_Date)
 
 if(dateone < datetwo){
@@ -2731,7 +2731,10 @@ updateCharacterCount_Action(): void {
 
 
 
-
+check_Enddate(){
+  debugger
+  this.End_Date = moment(this.Start_Date)<=moment(this.End_Date)?this.End_Date:null;
+}
 
 
 
