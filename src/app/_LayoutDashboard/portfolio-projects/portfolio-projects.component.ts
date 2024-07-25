@@ -4523,6 +4523,13 @@ loadGanttChart(){
     }
 
 
+      if(data_ar.length==1){
+        if(data_ar[0].y[0]==data_ar[0].y[1]){
+                  data_ar[0].y[1]=data_ar[0].y[1]+86400000;
+        }
+      }
+
+
       const obj={
           name:prj.Status,
           data:data_ar

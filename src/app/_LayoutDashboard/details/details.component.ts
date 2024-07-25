@@ -9606,7 +9606,7 @@ onTransferBtnClicked(){
 
 total_userActns:number|undefined;
 
-loadActionsGrantt(){
+loadActionsGantt(){
   const all_status={
     'Completed':'#388E3C',
     'InProcess':'#64B5F6',
@@ -9665,6 +9665,7 @@ loadActionsGrantt(){
       }
     } else {
       const colorvalue = actn_startd >= curdate && actn.Status === 'InProcess' ? '#dcdcdc' : color;
+
       data_ar = actn.Status === 'Delay' ? [
         {
           x: `${actn.Project_Name}(${actn.Project_Code})`,
@@ -9684,6 +9685,12 @@ loadActionsGrantt(){
           index: _index
         }];
     }
+
+      if(data_ar.length==1){
+        if(data_ar[0].y[0]==data_ar[0].y[1]){
+                  data_ar[0].y[1]=data_ar[0].y[1]+86400000;
+        }
+      }
 
     return {
       name: actn.Status,
@@ -9991,7 +9998,7 @@ ActnsGanttChart:any;
 ganttActnsConfig:{byuser:string}={byuser:'All'};
 filterActionsOnGantt(option:string){
      this.ganttActnsConfig.byuser=option;
-     this.loadActionsGrantt();
+     this.loadActionsGantt();
 }
 
 
