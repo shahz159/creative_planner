@@ -2771,9 +2771,20 @@
                                                       <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
                                                           (click)="approvalClick('EDIT')">Edit & Accept</button>
                                                   </div> -->
+
+                                                  <div
+                                                  [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'"
+                                                  (click)="approvalClick('ACCEPT')">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
+                                                  <span class="kt-detail-iconname">Accept</span></div>
+                                                <div
+                                                    [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
+                                                    (click)="approvalClick('REJECT')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #e81000;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"/></svg>
+                                                    <span class="kt-detail-iconname">Reject</span></div>
                                                 <div *ngIf="!projectAuditor&&requestType=='Project Complete'"  (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
-                                                  <span class="kt-detail-iconname">Project Audit</span>
+                                                  <span class="kt-detail-iconname">Audit</span>
                                                 </div>
 
 
@@ -2789,29 +2800,21 @@
                                                      </g></g></g>
                                                     </svg>
 
-                                                    <span class="kt-detail-iconname">Tranfer ownership</span>
+                                                    <span class="kt-detail-iconname">Tranfer</span>
                                                 </div>
 
 
 
-                                              <div
-                                                  [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'"
-                                                  (click)="approvalClick('ACCEPT')">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
-                                                  <span class="kt-detail-iconname">Accept</span></div>
+                                              
 
                                               <div *ngIf="requestType=='Project Complete'"
                                                   [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
                                                   (click)="approvalClick('CONDITIONAL');  getca_Dropdowns(); ">
                                                   <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em; height: 1.2em;vertical-align: middle;fill: #007c05;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"/><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"/><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"/><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"/></svg>
-                                                  <span class="kt-detail-iconname">Handover/next version</span>
+                                                  <span class="kt-detail-iconname">Next version</span>
                                               </div>
 
-                                              <div
-                                                  [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
-                                                  (click)="approvalClick('REJECT')">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #e81000;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"/></svg>
-                                                  <span class="kt-detail-iconname">Reject</span></div>
+                                             
                                                           <!---------- Reject Type html---------------->
 
                                                       </div>
@@ -2825,16 +2828,30 @@
                                                     <!-- Project Audit and Transfer ownership-->
                                                     <div  *ngIf="selectedType=='5'||selectedType=='6'" class="mt-2 ">
                                                         <div class="mb-2">
-                                                            <label>Select Employee<span class="text-danger">*</span></label>
-                                                        <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
-                                                            placeholder="Select Employee" id="prj_audit_ngsel"
-                                                            [(ngModel)]="emp_Auditor">
-                                                            <ng-option [value]="item.Emp_No"
-                                                                *ngFor="let item of racisNonRacis">
-                                                                {{item.RACIS}}
-                                                            </ng-option>
-                                                        </ng-select>
-                                                        <span *ngIf="!emp_Auditor&&notProvided" style="color:red">please select employee.</span>
+                                                            <label  *ngIf="selectedType=='5'">Project auditor<span class="text-danger">*</span></label>
+                                                            <label *ngIf="selectedType=='6'">New Owner<span class="text-danger">*</span></label>
+                                                        <ng-container  *ngIf="selectedType=='5'">
+                                                            <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
+                                                                placeholder="Select project auditor" id="prj_audit_ngsel"
+                                                                [(ngModel)]="emp_Auditor">
+                                                                <ng-option [value]="item.Emp_No"
+                                                                    *ngFor="let item of racisNonRacis">
+                                                                    {{item.RACIS}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                        </ng-container>    
+                                                        <ng-container  *ngIf="selectedType=='6'">
+                                                            <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
+                                                                placeholder="Select new owner" id="prj_audit_ngsel"
+                                                                [(ngModel)]="emp_Auditor">
+                                                                <ng-option [value]="item.Emp_No"
+                                                                    *ngFor="let item of racisNonRacis">
+                                                                    {{item.RACIS}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                        </ng-container>   
+                                                        <span *ngIf="selectedType=='5'&&!emp_Auditor&&notProvided" style="color:red">Project auditor required.</span>
+                                                        <span *ngIf="selectedType=='6'&&!emp_Auditor&&notProvided" style="color:red">New owner required.</span>
                                                         </div>
                                                         <div>
                                                             <label>Enter Comments<span class="text-danger">*</span></label>
@@ -2860,14 +2877,6 @@
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="mb-2">
-                                                                       <label>Select Project Type</label>
-                                                                        <ng-select placeholder="Select Project Type" id="ca_project_type" [(ngModel)]="sel_ptype">
-                                                                            <ng-option [value]="item.Typeid" *ngFor="let item of ProjectType_json">{{item.ProjectType}}</ng-option>
-                                                                        </ng-select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="mb-2">
                                                                     <label>Assign to<span class="text-danger">*</span></label>
                                                                         <ng-select [items]="allUsers1" bindLabel="RACIS"
                                                                         bindValue="Emp_No" groupBy="usergroup"
@@ -2877,6 +2886,15 @@
                                                                         required></ng-select>
                                                                 </div>
                                                             </div> 
+                                                            <div class="col-md-6">
+                                                                <div class="mb-2">
+                                                                       <label>Select Project Type</label>
+                                                                        <ng-select placeholder="Select Project Type" id="ca_project_type" [(ngModel)]="sel_ptype">
+                                                                            <ng-option [value]="item.Typeid" *ngFor="let item of ProjectType_json">{{item.ProjectType}}</ng-option>
+                                                                        </ng-select>
+                                                                </div>
+                                                            </div>
+                                                            
                                                         </div>
 
 
@@ -10056,8 +10074,11 @@
                         </div>
                         <div class="se-col-11">
                             <div class="form-group">
-                                <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
-                                <span *ngIf="Description_Type&&Description_Type.trim().length>200"  style="color:red">description should not exceed 200 characters.</span>
+                                <angular-editor [(ngModel)]="Description_Type" (input)="updateCharacterCount_Meeting()"
+                                (paste)="updateCharacterCount_Meeting()"
+                                 [config]="config"></angular-editor>
+                               <span *ngIf="characterCount_Meeting > 0" >{{characterCount_Meeting}} Characters with spaces </span>
+                                 <span *ngIf="characterCount_Meeting>=500"  style="color:red">    description should not exceed 500 characters.</span>
                             </div>
                         </div>
                     </div>

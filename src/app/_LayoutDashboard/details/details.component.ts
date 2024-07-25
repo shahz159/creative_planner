@@ -9007,7 +9007,7 @@ onSubmitBtnClicked() {
 debugger
   if (
     (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-    (this.Description_Type?(this.Description_Type.trim().length<=200):true)&&
+    (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
     this.Startts &&
     this.Endtms &&
     this.MinLastNameLength
@@ -10068,6 +10068,18 @@ updateCharacterCount_Action(): void {
   this.characterCount_Action = textContent.length;
 }
 
+
+
+characterCount_Meeting: number = 0;
+
+updateCharacterCount_Meeting(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.Description_Type;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Meeting = textContent.length;
+}
 
 
 // conditional accept functionality start
