@@ -10034,8 +10034,11 @@
                         </div>
                         <div class="se-col-11">
                             <div class="form-group">
-                                <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
-                                <span *ngIf="Description_Type&&Description_Type.trim().length>200"  style="color:red">description should not exceed 200 characters.</span>
+                                <angular-editor [(ngModel)]="Description_Type" (input)="updateCharacterCount_Meeting()"
+                                (paste)="updateCharacterCount_Meeting()"
+                                 [config]="config"></angular-editor>
+                               <span *ngIf="characterCount_Meeting > 0" >{{characterCount_Meeting}} Characters with spaces </span>
+                                 <span *ngIf="characterCount_Meeting>=500"  style="color:red">    description should not exceed 500 characters.</span>
                             </div>
                         </div>
                     </div>
