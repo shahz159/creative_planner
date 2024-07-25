@@ -5783,13 +5783,14 @@ sortbyCurrent_Time(){
 
   projectmodal() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-    document.getElementById("projectmodal").style.display = "block";
+    document.getElementById("projectmodals").style.display = "block";
+
   }
-  // close_projectmodal() {
-  //   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-  //   document.getElementById("projectmodal").style.display = "none";
-  //   this.Assigntext = ''
-  // }
+  close_projectmodals() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("projectmodals").style.display = "none";
+    this.Assigntext = ''
+  }
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
     document.getElementById("filter-icon").classList.add("active");
