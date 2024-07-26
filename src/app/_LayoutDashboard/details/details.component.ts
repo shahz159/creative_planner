@@ -1067,9 +1067,15 @@ this.prjPIECHART.render();
                obj.contribution=p.RespDuration;
             }
 
+            
             if(this.filteremployee){
               const hasActions:boolean=this.filteremployee.map(item=>item.Team_Res).includes(emp); 
               obj.isRemovable=(obj.Role.includes('Support')&&hasActions==false);
+            }
+            else {
+              // prj type is core,secondary and has 0 actions.
+              // prj type is std,routine,todo
+               obj.isRemovable=obj.Role.includes('Support');
             }
             
             return obj;
@@ -1095,6 +1101,7 @@ this.prjPIECHART.render();
 
 
         this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
+        this.allUsers1=(JSON.parse(data[0]['alluserlist']));
         
       });
 
@@ -7230,7 +7237,7 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
-getFilteredPrjActions(filterby:string='All',sortby:string='All'){   debugger
+getFilteredPrjActions(filterby:string='All',sortby:string='All'){   
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo;
@@ -9437,6 +9444,11 @@ emp_Auditor:string|undefined;
 empAuditor_remarks:string|undefined;
 
 
+
+
+
+
+
  
 onAuditorSelected(e){ debugger
   if(e.option.value){
@@ -9685,12 +9697,13 @@ loadActionsGantt(){
           index: _index
         }];
     }
-
+// when action startdate and enddate are same.
       if(data_ar.length==1){
         if(data_ar[0].y[0]==data_ar[0].y[1]){
                   data_ar[0].y[1]=data_ar[0].y[1]+86400000;
         }
       }
+// when action startdate and enddate are same.
 
     return {
       name: actn.Status,
@@ -9716,11 +9729,9 @@ loadActionsGantt(){
       events: {
         updated: ()=>{ 
         
+        try{
+          
                 const chartContainer = document.querySelector("#actnsfull-graph");
-
-                // const grphbx:any=chartContainer.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical');
-                // grphbx.setAttribute('transform','translate(160,40)');
-
 
                 const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
                 let textElements = xAxisLabels.querySelectorAll('text');
@@ -9787,6 +9798,13 @@ loadActionsGantt(){
                 console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
                 gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
                 console.log('gcharttable:',gcharttable);
+
+
+            }catch(e){
+              console.log('error while rending actns gantt chart:',e);
+            }
+
+
 
         },
 
@@ -10124,11 +10142,6 @@ getca_Dropdowns(){
     // prj types    
     this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
     
-    // all emp list
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe((data) => {
-        this.allUsers1=(JSON.parse(data[0]['alluserlist']));
-    });
-
     // portfolios list
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe((data) => {
       this._portfoliosList2 = data as [];  
