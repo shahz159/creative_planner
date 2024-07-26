@@ -763,7 +763,7 @@
 
                         <div class="row" >
                             <div class="col-lg-12" >
-                                <div class="accordion accordion-runway" id="accordionRunway">
+                                <div class="accordion accordion-runway" [ngClass]="getAccordionClass()" id="accordionRunway">
                                     <div class="runway-card d-none"  id="taskdd">
                                       <div class="runway-card-header" id="headingOne" *ngIf="_TodoList.length>0">
                                           <a class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
@@ -896,6 +896,8 @@
                                         </div>
                                       </div>
                                     </div>
+
+
                                     <div class="runway-card d-none" id="Completed">
                                       <div class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
                                           <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
@@ -944,6 +946,8 @@
                                         </div>
                                       </div>
                                     </div>
+
+
                                     <div class="runway-card d-none" id='ActionToProjects'>
                                       <div class="runway-card-header" id="headingThree"   *ngIf="((ActionedSubtask_Json.length) > 0)">
                                           <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActionproject" aria-expanded="false" aria-controls="collapseActionproject">
@@ -1227,6 +1231,7 @@
                                         </div>
                                       </div>
                                     </div>
+
                                     <div class="runway-card d-none" id="AssignedTask">
                                       <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
                                           <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
@@ -1547,6 +1552,7 @@
                                         </div>
                                       </div>
                                     </div>
+
                                   </div>
                             </div>
                         </div>

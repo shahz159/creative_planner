@@ -291,7 +291,7 @@
 <!-- employee matdropdown start -->
                                               <div class="col-md-6">
                                                 <div class="form-group mb-0" >
-                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter">
+                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter||[]">
                                                     <mat-label>Employees</mat-label>
                                                      <mat-chip-list #selected_employee>
                                                       <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
@@ -324,7 +324,7 @@
                                                   (opened)="isEmployeeDrpDwnOpen=true"     (closed)="isEmployeeDrpDwnOpen=false; ">
 
 
-                                                    <mat-option [value]="emp.Emp_No"  *ngFor="let emp of (EmpCountInFilter|filter:employee_searchtf.value).slice(0,1000)">
+                                                    <mat-option [value]="emp.Emp_No"  *ngFor="let emp of EmpCountInFilter?(EmpCountInFilter|filter:employee_searchtf.value).slice(0,1000):[]">
                                                         <mat-checkbox  color="primary" [checked]="emplyToselect?emplyToselect.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
                                                             {{emp.Name}}
                                                             - {{emp.Count}}
@@ -383,7 +383,7 @@
 <!-- project type matdropdown start -->
                                               <div class="col-md-6">
                                                 <div class="form-group mb-0" >
-                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter">
+                                                  <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter||[]">
                                                     <mat-label>Project type</mat-label>
                                                      <mat-chip-list #selected_projecttype>
                                                       <mat-chip *ngFor="let emptoshare of projtypeToselect" class="Data_chip_kt" (removed)="removeSelectedproject(emptoshare); getNewFilterResult();">
@@ -416,7 +416,7 @@
                                                   (opened)="isprojectDrpDwnOpen=true" (closed)="isprojectDrpDwnOpen=false; ">
 
 
-                                                    <mat-option [value]="emp.Block_No"  *ngFor="let emp of (TypeContInFilter|filter:project_searchtf.value).slice(0,1000)">
+                                                    <mat-option [value]="emp.Block_No"  *ngFor="let emp of TypeContInFilter?(TypeContInFilter|filter:project_searchtf.value).slice(0,1000):[]">
                                                         <mat-checkbox  color="primary" [checked]="projtypeToselect?projtypeToselect.indexOf(emp.Block_No)!==-1:false"></mat-checkbox>
                                                             {{emp.Name}}
                                                             - {{emp.Count}}
@@ -497,7 +497,7 @@
 
                                                 <div class="col-md-6">
                                                   <div class="form-group mb-0" >
-                                                    <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter">
+                                                    <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter||[]">
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
                                                         <mat-chip *ngFor="let emptoshare of enterStatus" class="Data_chip_kt" (removed)="removeSelectedstatus(emptoshare); getNewFilterResult();">
@@ -530,7 +530,7 @@
                                                     (opened)="isstatusDrpDwnOpen=true" (closed)="isstatusDrpDwnOpen=false; ">
 
 
-                                                      <mat-option [value]="emp.Name"  *ngFor="let emp of (StatusCountFilter|filter:status_searchtf.value).slice(0,1000)">
+                                                      <mat-option [value]="emp.Name"  *ngFor="let emp of StatusCountFilter?(StatusCountFilter|filter:status_searchtf.value).slice(0,1000):[]">
                                                           <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Name)!==-1:false"></mat-checkbox>
                                                               {{emp.Name}}
                                                               - {{emp.Count}}
@@ -959,6 +959,39 @@
                             <!--begin: Datatable -->
                             <!-- U hve to Work here Below div This is the DIV Bro -->
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                              <div class="row"  >
+                                <div class="search-filter"   >
+                                  <!-- {{searchText}} -->
+                                  <span class="search-filter" *ngFor="let emptoshare of comToselect"  >
+                                    {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}
+
+                                  </span>
+
+                                  <span class="search-filter"   *ngFor="let emptoshare of emplyToselect"  >
+
+                                    {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
+                                  </span>
+
+                                  <span class="search-filter" *ngFor="let emptoshare of projtypeToselect">
+
+                                  {{getObjOfpro(TypeContInFilter,emptoshare,'Block_No')?.Name}}
+                                  </span>
+
+                                  <span class="search-filter" *ngFor="let emptoshare of enterStatus">
+{{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                  </span>
+
+</div>
+
+
+
+
+
+<!-- <div class="search-filter" *ngFor="let emptoshare of comToselect"  >
+  {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name }},
+
+</div> -->
+                              </div>
                                 <div class="row">
                                     <div class="col-sm-12">
 

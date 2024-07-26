@@ -738,6 +738,10 @@ $(document).ready(function(){
           this.CompanyCountFilter=this.comToselect.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
           this.StatusCountFilter=this.enterStatus.length==0?JSON.parse(data[0]['Status_Json']):this.StatusCountFilter;
 
+console.log( JSON.parse(data[0]['Emp_Json']),'  this.EmpCountInFilter  this.EmpCountInFilter')
+console.log(JSON.parse(data[0]['ProjectType_Json']),' this.TypeContInFilter this.TypeContInFilter')
+console.log(JSON.parse(data[0]['CompanyType_Json']),' this.CompanyCountFilter this.CompanyCountFilter')
+console.log(JSON.parse(data[0]['Status_Json']),'this.StatusCountFilterthis.StatusCountFilterthis.StatusCountFilter')
 
           this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
           this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
@@ -1629,7 +1633,8 @@ this.edited = false
   this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.projtypeToselect.includes(item.Block_No));
   this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Name));
   // this.edited=true
-
+  console.log(this.checkedItems_Cmp,'ddddddddddddddddddddddddddddddddddddddddddddd')
+console.log(this.checkedItems_Emp,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
   this.selectedEmp_String = this.checkedItems_Emp.map(select => {
     return select.Emp_No;
   }).join(',');

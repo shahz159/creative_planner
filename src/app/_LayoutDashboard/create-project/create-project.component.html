@@ -2975,8 +2975,8 @@
                       <div class="form-group mb-0">
                           <div class="kt-info-lable-v">End date</div>
                               <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
-                                <input class="form-control curser-pointer" [(ngModel)]="End_Date"     (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;"
-                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"
+                                <input class="form-control curser-pointer" [(ngModel)]="End_Date"
+                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate()"
                                     (click)="strtEditsPicker.open();"
                                      placeholder="Select end date"
                                     class="form-control" name="date" />
@@ -3278,7 +3278,7 @@
                     <div class="kt-info-lable-v"> Start date</div>
                         <div class="date-border d-flex" [ngClass]="{'error-date':!Start_Date&&notProvided}">
                           <input type="text" class="form-control cursor-pointer"
-                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Allocated=Allocated=null;Start_Date= Start_Date>=previousdate?Start_Date:null"/>
+                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null"/>
                           <div class="input-group-text p-0">
                             <mat-datepicker-toggle matSuffix [for]="ActionstartDatepicker">
                             </mat-datepicker-toggle>
@@ -3295,7 +3295,7 @@
                     <div class="form-group mb-0">
                         <div class="kt-info-lable-v">End date</div>
                             <div class="date-border d-flex" [ngClass]="{'error-date':!End_Date&&notProvided}"  >
-                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="End_Date=Start_Date>End_Date?null:End_Date;Allocated=Allocated=null;"
+                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="check_Enddate()"
                                   [min]="Start_Date"   [matDatepicker]="ActionEnd_Datepicker"
 
                                   (click)="ActionEnd_Datepicker.open();"   placeholder="Select end date"
