@@ -3400,3 +3400,6 @@ td:nth-child(4) {
   cursor: pointer;
   /* Add padding or margins as needed */
 }
+.search-filter{
+  margin-left: 14px;
+}

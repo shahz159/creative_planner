@@ -2926,7 +2926,7 @@ hr.kt-left-hr {
 }
 
 .scrollbar1 {
-   max-height: calc(100vh - 450px);
+   max-height: calc(100vh - 430px);
 }
 
 .scrollbar1::-webkit-scrollbar-button {
@@ -3275,7 +3275,7 @@ span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
 }
 .accordion-runway {
     margin-top: 1rem;
-    height: calc(100vh - 220px)
+    height: calc(100vh - 200px)
 }
 .runway-card-body {
     padding: 10px;
@@ -3354,4 +3354,16 @@ span.task-count {
   background-color: #E0E0E0 !important;
   color: black !important;
   padding: 2px 10px;
+}
+.runway-1 .scrollbar1 {
+  max-height: calc(100vh - 270px);
+}
+.runway-2 .scrollbar1 {
+  max-height: calc(100vh - 320px);
+}
+.runway-3 .scrollbar1 {
+  max-height: calc(100vh - 380px);
+}
+.acc-runway-no-button .scrollbar1 {
+  max-height: calc(100vh - 200px);
 }

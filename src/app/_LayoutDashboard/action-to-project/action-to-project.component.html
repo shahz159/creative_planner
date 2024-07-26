@@ -220,13 +220,14 @@
             <label>End date :<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': (_edate && !_EndDate)}" >
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null" (input)="_edate=!_EndDate" />
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();" (input)="_edate=!_EndDate" />
 
              <div class="input-group-text p-0">
                     <mat-datepicker-toggle  matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
+            <span *ngIf="sameDateActions" style="color:orange">more than 3 actions ending on same date.</span>
             <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date</span>
             <!-- <div *ngIf="_actafter" style="color: red">Action cannot end after the project.</div> -->
         </div>
