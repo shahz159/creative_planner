@@ -4522,13 +4522,13 @@ loadGanttChart(){
 
     }
 
-
+// when project start date and end date are same.
       if(data_ar.length==1){
         if(data_ar[0].y[0]==data_ar[0].y[1]){
                   data_ar[0].y[1]=data_ar[0].y[1]+86400000;
         }
       }
-
+// when project start date and end date are same.
 
       const obj={
           name:prj.Status,
