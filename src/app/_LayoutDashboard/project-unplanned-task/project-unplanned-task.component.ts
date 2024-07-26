@@ -259,9 +259,11 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   rejectCount:any;
 
   getrunwayCount(){
+
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this.ProjectTypeService._GetCategoryCountforRunway(this._ObjCompletedProj).subscribe(
       (data) => {
+
         this.procount = JSON.parse(data[0]['Procount']);
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
@@ -278,6 +280,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           }
         });
       console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,"count");
+
       });
   }
 
@@ -344,7 +347,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   OnRadioClick(id) {
-debugger
+
     this._ObjAssigntaskDTO.TypeOfTask = "Update";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = id;
@@ -376,7 +379,7 @@ debugger
   }
 
   On_Uncheck(id) {
-    debugger
+
     this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = id;
@@ -567,7 +570,7 @@ debugger
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-    debugger
+
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -590,6 +593,7 @@ debugger
     // alert(this._Categoryid);
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
+
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
 
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
@@ -614,12 +618,13 @@ debugger
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
-        // alert(this.CountsAccepted);
+
         // console.log(this.CountsAccepted);
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
       this.totalproject()
-      document.getElementById('addtsk').classList.remove('d-none')
+      document.getElementById('addtsk').classList.remove('d-none');
+      document.getElementById("accordionRunway").classList.remove("acc-runway-no-button");
   }
 
 
@@ -1121,7 +1126,7 @@ totalproject(){
 
 
 taskside(){
-  debugger
+
   document.getElementById('taskdd').classList.remove('d-none')
   document.getElementById('Completed').classList.add('d-none')
   document.getElementById('ActionToProjects').classList.add('d-none')
@@ -1130,7 +1135,7 @@ taskside(){
 }
 
 completed(){
-  debugger
+
   document.getElementById('Completed').classList.remove('d-none')
   document.getElementById('taskdd').classList.add('d-none')
   document.getElementById('ActionToProjects').classList.add('d-none')
@@ -1156,7 +1161,7 @@ showassign(){
 activeButton: string = 'totalProjects';
 
 setActiveButton(buttonName: string) {
-  debugger
+
   this.activeButton = buttonName;
 }
 
@@ -1169,12 +1174,27 @@ items = [
 currentStatus: string = 'Accepted'; // Default to 'Accepted'
 
 setStatus(status: string) {
-  debugger
+
   this.currentStatus = status;
 }
 
 hideAddTask(){
-  document.getElementById('addtsk').classList.add('d-none')
+  document.getElementById('addtsk').classList.add('d-none');
+  document.getElementById('accordionRunway').classList.add('acc-runway-no-button');
+}
+
+getVisibleHeaderCount(): number {
+  let count = 0;
+  if (this._TodoList.length > 0) count++;
+  if (this._CompletedList && this._CompletedList.length > 0) count++;
+  if (this.ActionedSubtask_Json.length > 0) count++;
+  if (this.ActionedAssigned_Josn.length > 0) count++;
+  return count;
+}
+
+getAccordionClass(): string {
+  const count = this.getVisibleHeaderCount();
+  return count > 0 ? `runway-${count}` : '';
 }
 
 }

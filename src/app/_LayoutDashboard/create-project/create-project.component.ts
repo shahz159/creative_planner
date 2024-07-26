@@ -193,21 +193,19 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-  actionCount:any
-  getActionCount(prjcode){
+  // actionCount:any
+  // getActionCount(prjcode){
 
-    this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",res);
-    //   if ((res as any[]) && (res as any[]).length > 0 && res[0].deadlineList) {
-    //     this.actionCount = JSON.parse(res[0].deadlineList);
-    //     console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",this.actionCount)
-    // }
+  //   this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
+  //    this.actionCount = JSON.parse(res[0].deadlineList)
+  //    console.log(this.actionCount,' this.actionCount this.actionCount this.actionCount')
 
 
 
 
-    })
-  }
+
+  //   })
+  // }
 
 
 
@@ -326,7 +324,7 @@ export class CreateProjectComponent implements OnInit {
 
   //  this.Client=this.PrjClient;
    this.newProjectDetails(this.PrjCode);
-   this.getActionCount(this.PrjCode);
+  //  this.getActionCount(this.PrjCode);
   }
 
 
@@ -1620,6 +1618,17 @@ addreschange() {
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){
+debugger
+
+// if (this.actionCount.DeadLine==this.End_Date&&this.actionCount.count>3){
+//   Swal.fire({
+//     title:'invalid Date',
+//     text:'you have 3 action on that date',
+//     showCloseButton:true
+//    });
+//    return;
+// }
+
 
   const _prjstrtd= new Date(this.projectInfo.StartDate);
   const _prjendd= new Date(this.projectInfo.EndDate);
@@ -2068,7 +2077,7 @@ $('.sbs--basic li:nth-child(3)').addClass('active');
 //  opens the step-3 view
 
 this.newProjectDetails(this.draft_json[index].Project_Code);
-this.getActionCount(this.draft_json[index].Project_Code);
+// this.getActionCount(this.draft_json[index].Project_Code);
 
 // this.getActionsDetails();
 
