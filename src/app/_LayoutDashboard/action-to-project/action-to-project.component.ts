@@ -228,6 +228,8 @@ export class ActionToProjectComponent implements OnInit {
           placement:'left'
         });
 
+     this.getActionCount(this.pcode);
+
   }
   allocatedHour:any
 
@@ -778,7 +780,22 @@ debugger
     });
   }
   sweetAlert() {
-    debugger
+
+
+
+
+
+
+
+//     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
+//   Swal.fire({
+//     title:'invalid Date',
+//     text:'you have 3 action on that date',
+//     showCloseButton:true
+//    });
+//    return;
+// }
+
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
     const dateOne = new Date(this._EndDate);
@@ -1033,5 +1050,49 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
    const textContent = tempElement.textContent || tempElement.innerText || '';
    this.characterCount = textContent.length;
  }
+
+
+
+ actionCount:any
+ getActionCount(prjcode){
+
+   this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
+    this.actionCount = JSON.parse(res[0].deadlineList)
+    console.log(this.actionCount,' this.actionCount this.actionCount this.actionCount')
+
+   })
+ }
+
+
+// if (this.actionCount.DeadLine==this.End_Date&&this.actionCount.count>3){
+//   Swal.fire({
+//     title:'invalid Date',
+//     text:'you have 3 action on that date',
+//     showCloseButton:true
+//    });
+//    return;
+// }
+
+
+sameDateActions:boolean=false;
+hasSameDateActions(){
+debugger
+  const result:boolean=this.actionCount.some((item:any)=>{
+    debugger
+             const d1=moment(item.DeadLine).format("MM/DD/YYYY");
+             const d2=moment(this._EndDate).format("MM/DD/YYYY");
+             return (d1==d2&&item.count>3);
+  });
+  this.sameDateActions=result;
+}
+
+
+
+
+
+
+
+
+
 
 }
