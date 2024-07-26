@@ -69,6 +69,7 @@ export class MeetingDetailsComponent implements OnInit {
   URL_ProjectCode: any;
   currentAgendaView: any
   _MasterCode: string;
+  CurrentUser_fullname:any;
   
   subtask_loading:boolean=false;
   loading: boolean = false;
@@ -176,10 +177,12 @@ export class MeetingDetailsComponent implements OnInit {
       this._MasterCode = pcode;
     });
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.CurrentUser_fullname = localStorage.getItem("UserfullName");
+
     // this.getAttendeeTime();
 
     this.meeting_details();
-
+    // this.GetDMSList();
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
@@ -1679,7 +1682,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
+ 
   /////////////////////////////////////////// Meeting Attendees Side-Bar End /////////////////////////////////////////////////////////
 
 
@@ -2233,7 +2236,7 @@ export class MeetingDetailsComponent implements OnInit {
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
       }
-     
+     debugger
       this.Notes_Type.trim();
 
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
@@ -2280,7 +2283,6 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Meeting_notes = this.Notes_Type;
     this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
 
-
     this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
         console.log(data, 'Private notes');
@@ -2293,7 +2295,7 @@ export class MeetingDetailsComponent implements OnInit {
    
   }
 
-
+  private_User:any
 
 
   GetMeetingnotes_data() {
@@ -2311,9 +2313,25 @@ export class MeetingDetailsComponent implements OnInit {
           this.Notes_Type = ''
         } else {
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes'];
-          console.log('privet',this.Notes_Type)
+         
         }
         this.GetAttendeesnotes();
+
+        
+
+// debugger
+//          var Emp_No=this.EventScheduledjson[0].Emp_No.toString(); 
+//         if(Emp_No===this.Current_user_ID){
+//            this.private_User=this.EventScheduledjson[0].Created_by;
+          
+//         }else{
+//           var x =this.User_Scheduledjson.filter(item=>item.stringval == this.Current_user_ID);
+//           this.private_User=x.TM_DisplayName
+//           console.log('privet',x)
+//         }
+       
+      
+
 
       });
 
@@ -2492,6 +2510,53 @@ export class MeetingDetailsComponent implements OnInit {
     else {
       this.notifyService.showInfo("Request Cancelled", "Please select Attachment(s) to link");
     }
+
+
+
+
+
+
+
+
+
+
+     // portfolioName: string;
+
+  // DeletePortfolios(port_id: number) {
+
+  //   this.portfolio_Scheduledjson.forEach(element => {
+  //     if (port_id == element.numberval)
+  //       this.portfolioName = element.Portfolio_Name
+
+  //   });
+    
+  //   let String_Text = 'Delete';
+  //   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+  //     data: {
+  //       mode: 'delete',
+  //       title1: 'Confirmation ',
+  //       message1: this.portfolioName
+  //     }
+  //   });
+  //   confirmDialog.afterClosed().subscribe(result => {
+
+  //     this.Schedule_ID = this.Scheduleid;
+  //     this._calenderDto.Schedule_ID = this.Schedule_ID;
+  //     this._calenderDto.Emp_No = this.Current_user_ID;
+  //     this._calenderDto.Portfolio = port_id.toString();
+  //     this._calenderDto.flagid = 1
+  //     if (result === true) {
+  //       this.CalenderService.DeletePortfoliosOfMeeting(this._calenderDto).subscribe((data) => {
+  //         this.meeting_details()
+  //         this.notifyService.showSuccess("Deleted successfully ", '');
+  //       });
+  //     }
+  //     else {
+  //       this.notifyService.showError("Action Cancelled ", '');
+  //     }
+  //   });
+  // }
+
 
     /////////////////////////////////////////// List of Attchment sidebar End /////////////////////////////////////////////////////////
 
@@ -6098,13 +6163,24 @@ onParticipantFilter(){
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("History_sidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
+
+  
+    // this.NewGetRecurrenceMeetings(0);
     this.GetPreviousdate_meetingdata();
   }
+
   closeHistoryInfo() {
+    $("#previousmeeting-tab").addClass("active");
+    $("#previousmeeting").addClass("show active");
+    
+    $("#upcomingmeeting-tab").removeClass("active");
+    $("#upcomingmeeting").removeClass("show active");
+    
     document.getElementById("History_sidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "none";
+   
   }
   searchUser: any
 
@@ -6398,6 +6474,7 @@ totalpreviousmeetings:any;
 
 
 NewGetRecurrenceMeetings(meetings_HTR){
+  
   this.previousWithUpcoming_loader=true;
   this.previousmeetings=null;
   this.upcomingmeetings=null;
@@ -6572,7 +6649,9 @@ updateCharacterCount(): void {
 }
 
 
-
-
+isExpanded_Report: boolean = false;
+toggleView() {
+  this.isExpanded_Report = !this.isExpanded_Report;
+}
 
 } 

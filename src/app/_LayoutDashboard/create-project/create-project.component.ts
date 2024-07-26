@@ -2730,20 +2730,6 @@ updateCharacterCount_Action(): void {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 // calculateDateDifference(): void {
