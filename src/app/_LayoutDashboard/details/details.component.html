@@ -2432,8 +2432,8 @@
                         </g>
                     </svg>
                     <div class="d-flex flex-column">
-                        <span class="notif-msg" style="color: #ff2727;">Task submission delayed by {{taskDelayedby}} {{taskDelayedby>1?'days':'day'}}. Last submitted on {{projectInfo.taskSubmit|date:'fullDate'}}.</span>
-                        <span *ngIf="projectInfo" class="notif-msg" style="color: #ff2727;"> Total submissions : {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} </span>
+                        <span class="notif-msg" style="color: #ff2727;">Task submission delayed by {{taskDelayedby}} {{taskDelayedby>1?'days':'day'}}.<span *ngIf="projectInfo.taskSubmit"> Last submitted on {{projectInfo.taskSubmit|date:'fullDate'}}.</span></span>
+                        <span *ngIf="projectInfo" class="notif-msg" style="color: #ff2727;"> Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} </span>
                     </div>
                 </div>
 
@@ -2466,7 +2466,7 @@
                                 </g>
                             </g>
                         </svg>
-                        <span class="notif-msg" style="color : #00a2eb;">Total submissions: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} completed.</span>
+                        <span class="notif-msg" style="color : #00a2eb;">Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}}.</span>
                 </div>
         </ng-container>
 
