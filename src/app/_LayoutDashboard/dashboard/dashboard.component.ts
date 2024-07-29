@@ -473,6 +473,7 @@ export class DashboardComponent implements OnInit {
     this._subname = false;
     this._subname1 = false;
     this._lstMultipleFiales = [];
+    
   }
   onKeyPress() {
     // Check if the input field is empty
@@ -485,10 +486,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   ngOnInit() {
-
-
-
-
+   
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
@@ -589,7 +587,7 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     // this.Event_requests();
-
+   
 
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
@@ -611,7 +609,7 @@ export class DashboardComponent implements OnInit {
 
       if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
         if (myDiv.hasClass('d-block')) {
-          myDiv.removeClass('d-block');
+          //  myDiv.removeClass('d-block');
           $('.side_view').removeClass('position-fixed');
           $('#propse11').removeClass('show');
 
@@ -620,7 +618,7 @@ export class DashboardComponent implements OnInit {
       }
 
 
-
+   
       // hide search
       // if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
       //   if ($('.drop-search.show').hasClass('show')) {
@@ -687,6 +685,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+
+
+
+
   onFileChange(event) {
 
     if (event.target.files.length > 0) {
@@ -733,6 +735,11 @@ export class DashboardComponent implements OnInit {
     uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
 
   }
+  
+
+
+
+
 
   RemoveExistingFile(_id) {
 
@@ -762,7 +769,7 @@ export class DashboardComponent implements OnInit {
     this.Proposedate = event.value.format("YYYY-MM-DD").toString()
   }
   proposenewtime() {
-
+   
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.propose_date = this.Proposedate;
     this._calenderDto.propose_stt = this.PropStart;
@@ -2599,7 +2606,7 @@ export class DashboardComponent implements OnInit {
 
 
   viewconfirm() {
-   debugger
+
     const _arraytext = [];
     if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
       for (let index = 0; index < this.dayArr.length; index++) {
@@ -3409,7 +3416,7 @@ currentTime:any;
       _index = -1;
     }
     this.timingarryend = this.Time_End.splice(_index + 1);
-debugger
+
     this.EndTimearr = this.timingarryend;
     this.timearr1 = this.Startts.split(":");
     let vahr = this.timearr1[0];
@@ -3941,7 +3948,7 @@ debugger
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
-        debugger
+       
         var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
          this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
          
@@ -3978,7 +3985,7 @@ debugger
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-                       debugger
+                  
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
@@ -6203,7 +6210,7 @@ date_menu_close(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
-  debugger
+ 
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -6753,7 +6760,7 @@ onRecurrenceTypeChange(val:any){
 
 bindCustomRecurrenceValues(){
 
-debugger
+
 if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
   this.notProvided1='dayarr1';
   return;

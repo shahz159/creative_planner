@@ -1035,7 +1035,7 @@
                     </div>
 
 
-                    <div class="icons-right  curser-pointer" title="Start new meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && (delayMeeting==true && upcomingMeeting==false)" (click)="newMeetingDetails()">
+                    <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && (delayMeeting==true && upcomingMeeting==false)" (click)="newMeetingDetails()">
                             <span class="kt-meeting-status-icon">
                                 <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1050,7 +1050,8 @@
                     <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'&& (delayMeeting==false || upcomingMeeting==true)" (click)="newMeetingDetails()">
                         <span class="kt-meeting-status-icon">
                              <!-- <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" width="1em" height="1em" viewBox="0 0 24 24" class="iconify iconify--mdi"><path _ngcontent-frr-c390="" fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg> -->
-                             <svg xmlns="http://www.w3.org/2000/svg" width="128" height="132" viewBox="0 0 128 132" fill="none" style="
+                             <img width="22px" height="22px" src="./assets/images/start.png">
+                             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="128" height="132" viewBox="0 0 128 132" fill="none" style="
                              width: 22px;
                              height: 22px;
                          ">
@@ -1059,7 +1060,7 @@
                          <path d="M47 45C53.0005 47.4002 58.5976 50.4043 64.2852 53.4497C66.2547 54.5025 68.2287 55.5463 70.2031 56.5898C71.4534 57.2573 72.7034 57.9252 73.9531 58.5938C75.0891 59.199 76.2251 59.8042 77.3955 60.4277C80 62 80 62 81 64C74.73 64 68.46 64 62 64C62.2063 65.6912 62.4125 67.3825 62.625 69.125C62.6445 72.1602 62.6445 72.1602 62 75C57.7955 79.0924 52.3693 80.8523 47 83C47 70.46 47 57.92 47 45Z" fill="#F6F6F6"></path>
                          <path fill-rule="evenodd" clip-rule="evenodd" d="M83 96.4744C83 93.4312 84.2089 90.5126 86.3608 88.3608C88.5126 86.2089 91.4312 85 94.4744 85C97.5176 85 100.436 86.2089 102.588 88.3608C104.74 90.5126 105.949 93.4312 105.949 96.4744C105.949 99.5175 104.74 102.436 102.588 104.588C100.436 106.74 97.5176 107.949 94.4744 107.949C91.4312 107.949 88.5126 106.74 86.3608 104.588C84.2089 102.436 83 99.5175 83 96.4744ZM94.4744 89.5897C92.6485 89.5897 90.8973 90.3151 89.6062 91.6062C88.3151 92.8973 87.5898 94.6484 87.5898 96.4744C87.5898 98.3003 88.3151 100.051 89.6062 101.342C90.8973 102.634 92.6485 103.359 94.4744 103.359C96.3003 103.359 98.0514 102.634 99.3425 101.342C100.634 100.051 101.359 98.3003 101.359 96.4744C101.359 94.6484 100.634 92.8973 99.3425 91.6062C98.0514 90.3151 96.3003 89.5897 94.4744 89.5897Z" fill="#5F6368"></path>
                          <path fill-rule="evenodd" clip-rule="evenodd" d="M70.343 91.5108C69.061 93.359 68.5897 94.8063 68.5897 95.6538C68.5897 96.5014 69.061 97.9487 70.343 99.7969C71.5853 101.581 73.4273 103.518 75.7589 105.308C80.4313 108.894 86.8355 111.718 93.8333 111.718C100.831 111.718 107.235 108.894 111.908 105.308C114.239 103.518 116.081 101.581 117.324 99.7969C118.606 97.9487 119.077 96.5014 119.077 95.6538C119.077 94.8063 118.606 93.359 117.324 91.5108C116.081 89.727 114.239 87.7901 111.908 86.0001C107.235 82.414 100.831 79.5897 93.8333 79.5897C86.8355 79.5897 80.4313 82.414 75.7589 86.0001C73.4273 87.7901 71.5853 89.727 70.343 91.5108ZM72.9622 82.3589C78.2588 78.2954 85.6208 75 93.8333 75C102.046 75 109.408 78.2954 114.701 82.3589C117.354 84.3937 119.545 86.6641 121.093 88.8947C122.599 91.0641 123.667 93.4416 123.667 95.6538C123.667 97.8661 122.596 100.244 121.093 102.413C119.545 104.644 117.354 106.911 114.704 108.949C109.411 113.012 102.046 116.308 93.8333 116.308C85.6208 116.308 78.2588 113.012 72.9653 108.949C70.3124 106.914 68.1216 104.644 66.5733 102.413C65.0709 100.244 64 97.8661 64 95.6538C64 93.4416 65.0709 91.0641 66.5733 88.8947C68.1216 86.6641 70.3124 84.3967 72.9622 82.3589Z" fill="#5F6368"></path>
-                         </svg>
+                         </svg> -->
                         </span>
                 </div>
 
@@ -2147,7 +2148,7 @@
                             <!-- <button class="btn btn-sm btn-light-primary btn-pill footbtns">Add Note</button> -->
                         </div>
                         <div class="mt-3 collapse" id="propse">
-                            <div class="foot-calendar">
+                            <div class="foot-calendar"> 
                                 <input [matDatepicker]="basicDatepicker" (click)="basicDatepicker.open()"
                                     (dateChange)="proposecahngedate($event)" class="form-control"
                                     [min]="disablePreviousDate" [(ngModel)]="Proposedate">

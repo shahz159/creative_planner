@@ -6735,11 +6735,11 @@
                                         <div class="text-muted ml-2 fs-7">{{item.Created_by}}</div>
                                     </div>
                                     <div class="text-muted ml-1 fs-7 text-right">{{item.Created_date| date : 'dd-MM-YYYY'}}</div>
-                                    <!-- <div class="delte-attach">
+                                    <div class="delte-attach">
                                         <div class="icn">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 </div>
                              </div>
@@ -9614,31 +9614,6 @@
                                 {{item.Task_Name}}
                              </span></div>
                         <div class="kt-inbox__labels">
-                            <!-- <span
-                                class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline  fs-7  p-1 m-1"
-                                [ngClass]="{
-                                'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval',
-                                'Delay':projectInfo.Status==='Delay' || projectInfo.Status==='Cancellation Under Approval',
-                                'Inprocess':projectInfo.Status==='InProcess',
-                                'Done':projectInfo.Status==='Completed',
-                                'NewProjectRejected':projectInfo.Status==='New Project Rejected',
-                                'ForwardUnderApproval':projectInfo.Status==='Forward Under Approval',
-                                'CompletionUnderApproval':projectInfo.Status==='Completion Under Approval',
-                                'EnactiveUnderApproval':projectInfo.Status==='Enactive Under Approval',
-                                'Cancelled':projectInfo.Status==='Cancelled',
-                                'Hold':projectInfo.Status==='Project Hold',
-                                'New_Project_Under_Approval':projectInfo.Status==='Under Approval',
-                                'Not_Started': projectInfo.Status==='Not Started',
-                                'todo-achieved':projectInfo.Status==='ToDo Achieved',
-                                'todo-completed':projectInfo.Status==='ToDo Completed'
-                                }"
-                                >{{projectInfo.Status==='Delay'?' Delay '+projectInfo.Delaydays+'
-                                days ':projectInfo.Status === 'Under Approval' ? 'New approval' : projectInfo.Status==='InProcess'?
-                                'In-process' : projectInfo.Status=='Under Approval'?'New approval' :projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval"
-                                :projectInfo.Status== "Completion Under Approval" ? "Completion approval" :projectInfo.Status=='Forward Under Approval'? "Forward approval" : projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval"
-                                :projectInfo.Status=='InProcess'?'In-process': projectInfo.Status}} 
-                                </span> -->
-                               
                             <span
                                 class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
                                 title="Owner">
