@@ -36,7 +36,6 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StreamDashboardComponent } from './_LayoutDashboard/stream-dashboard/stream-dashboard.component';
 import { StreamCalendarComponent } from './_LayoutDashboard/stream-calendar/stream-calendar.component';
-import { TimeDiffPipe } from './Shared/time-diff.pipe';
 
 
 
@@ -59,7 +58,6 @@ import { TimeDiffPipe } from './Shared/time-diff.pipe';
     TimelineComponent,
     StreamDashboardComponent,
     StreamCalendarComponent,
-    TimeDiffPipe
     
     // MeetingReportComponent
    
