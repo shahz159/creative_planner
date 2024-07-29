@@ -3371,9 +3371,11 @@ export class DashboardComponent implements OnInit {
     });
     // this.Startts = this.Startts;
     let _index = this.StartTimearr.indexOf(this.PropStart);
+    
     this.EndTimearr = this.Alltimes.splice(_index + 1);
     // this.Startts = TSStart;
-    this.PurposeEnd = this.EndTimearr[0];
+    let x=12;
+    this.PurposeEnd = this.EndTimearr[x];
 
   }
 
