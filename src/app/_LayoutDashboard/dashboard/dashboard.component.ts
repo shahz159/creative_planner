@@ -610,7 +610,7 @@ export class DashboardComponent implements OnInit {
       if (!modaldv.is(e.target) && modaldv.has(e.target).length === 0) {
         if (myDiv.hasClass('d-block')) {
           //  myDiv.removeClass('d-block');
-          $('.side_view').removeClass('position-fixed');
+          // $('.side_view').removeClass('position-fixed');
           $('#propse11').removeClass('show');
 
           // document.getElementById("fltrs-drop").classList.remove("show-flts");
