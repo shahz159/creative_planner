@@ -50,7 +50,7 @@ FullCalendarModule.registerPlugins([
 @NgModule({
   declarations: [
     DashboardComponent,
-    DatePickerFormatDirective
+    DatePickerFormatDirective,
     // DefaultComponent,
     //SidebarComponent
     //SidebarComponent
