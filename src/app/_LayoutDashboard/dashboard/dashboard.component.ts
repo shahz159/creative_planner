@@ -3917,7 +3917,8 @@ currentTime:any;
           // document.getElementById("copy_data1").style.display = "flex";
           // document.getElementById("copy_data2").style.display = "flex";
         }
-        else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
+        else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
+        debugger
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
