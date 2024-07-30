@@ -3865,6 +3865,7 @@ currentTime:any;
   Isadmin: boolean;
   loading: boolean = false;
   statusofMeeting:any|undefined;
+  RecurrenceValue:any
 
   GetClickEventJSON_Calender(arg) {
     this.EventScheduledjson = [];
@@ -3903,8 +3904,9 @@ currentTime:any;
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
+        this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
-
+debugger
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
