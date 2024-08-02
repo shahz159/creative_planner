@@ -666,7 +666,7 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.sort = obj.sort;
     this.ObjSubTaskDTO.Start_Date = obj.Start_Date;
     this.ObjSubTaskDTO.End_Date = obj.End_Date;
-
+    this.ObjSubTaskDTO.selected_emp = obj.selected_emp
 
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineActivityforRACIS", this.ObjSubTaskDTO);
   }

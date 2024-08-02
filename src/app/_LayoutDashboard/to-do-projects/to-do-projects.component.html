@@ -1,3 +1,5 @@
+<ng-container *ngIf="userFound!==undefined;else pleasewait">
+  <ng-container *ngIf="(userFound===true)">
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="todo">
     <div class="row">
 
@@ -239,7 +241,7 @@
             <div class="col-lg-8 col-md-6 card">
                 <!-- <button (click)="generateSerial()">Testing....</button> -->
                 <p style="color:#aeb4b7;font-size: large;height: 100%; display: flex; align-items: center; justify-content: center;" [hidden]="paragraph_msg">Select the
-                    project from left panel to display result here.</p>
+                    project from left panel to display result here</p>
                 <div class="card-title pt-3" [hidden]="_topbar">
                     <div class="d-flex justify-content-between row" style="border-bottom: 1px solid #eee;">
 
@@ -923,7 +925,29 @@
         </div>
     </div>
 </div>
+</ng-container>
+</ng-container>
+<ng-template #pleasewait>
 
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>
 <!-- For Update Project-->
 <div id="mysideInfobar_ProjectsUpdate" class="sideInfobar animate-right offcanvas">
     <div class="px-4 pt-4 pb-1">

@@ -1,3 +1,5 @@
+<ng-container *ngIf="userFound!==undefined;else pleasewait">
+  <ng-container *ngIf="(userFound===true)">
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="sumdet">
     <!--Begin::Row    DIV ONE -->
     <div class="row">
@@ -1475,9 +1477,31 @@
         </div>
     </div>
 </div>
+  </ng-container>
+</ng-container>
 
 
+<ng-template #pleasewait>
 
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>
 
 <!-- Project actions info bar end -->
 

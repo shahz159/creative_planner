@@ -3130,6 +3130,14 @@ small.tlv-df {
 
 span.kt-at-count {
     font-size: 14px;
+    /* border-left: 1px solid #ccc; */
+    padding-left: 10px;
+    /* color: #6b6b6b; */
+}
+
+
+span.kt-at {
+    font-size: 14px;
     border-left: 1px solid #ccc;
     padding-left: 5px;
     color: #6b6b6b;
@@ -3798,7 +3806,7 @@ h5.card-ttle {
     padding-bottom: 20px;
     background-color: #f7f8fa;
     border-bottom: 1px solid #ebedf2;
-   
+
 } */
 .card-body2 {
     background-color: #f1f5f9;
@@ -8115,7 +8123,7 @@ ul#myTabMeetingAttendees .nav-item {
     margin-bottom: -6px;
 }
 
-/* after commit check this csss of attendees sidebar 
+/* after commit check this csss of attendees sidebar
  ul#myTabMeetingAttendees .nav-item .nav-link.active {
     border-bottom: 2px solid #5867dd !important;
 } */
@@ -8159,7 +8167,7 @@ ul#myTabMeetingAttendees .nav-item {
     height: 20px;
 }
 
-  
+
   .tot{
     background-color:#64B5F6  !important
   }
@@ -8178,17 +8186,17 @@ ul#myTabMeetingAttendees .nav-item {
 .count-height::-webkit-scrollbar {
     width: 3px;
   }
-  
+
   /* Track */
   .count-height::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
-  
+
   /* Handle */
   .count-height::-webkit-scrollbar-thumb {
     background: #f1f1f1;
   }
-  
+
   /* Handle on hover */
   .count-height::-webkit-scrollbar-thumb:hover {
     background: #ccc;
@@ -8205,7 +8213,7 @@ ul#myTabMeetingAttendees .nav-item {
     background: #5766d7;
     color: #fff;
   }
-  
+
   .btn-filtr .count{
     background: #717171;
     color: #fff;
@@ -8224,6 +8232,63 @@ ul#myTabMeetingAttendees .nav-item {
     width: 100%;
     margin-left: 0px;
 }
+/*new details page loading circle start*/
+
+.smart-glass {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 288px;
+  height: 388px;
+}
+
+.logo {
+  width: 288px;
+  height: 288px;
+  position: relative;
+}
+
+.circle {
+  padding: 20px;
+  border: 6px solid transparent;
+  border-top-color: #6388e3;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: connect 2.5s linear infinite;
+}
+
+.loader-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@keyframes connect {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/*new details page loading circle end*/
 .adminNotes-Completed{
     padding: 20px;
 }
@@ -8253,4 +8318,11 @@ ul#myTabMeetingAttendees .nav-item {
 }
 .delte-attach .icn svg:hover{
     color: #ff0202;
+}
+.mee-co{
+    background-color: #e2e2ff;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1;
+    color: #5051FA;
 }

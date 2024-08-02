@@ -497,3 +497,248 @@ a.dropdown-item{
   color: #5867dd !important;
   cursor: pointer;
 }
+/*new details page loading circle start*/
+
+.smart-glass {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 288px;
+  height: 388px;
+}
+
+.logo {
+  width: 288px;
+  height: 288px;
+  position: relative;
+}
+
+.circle {
+  padding: 20px;
+  border: 6px solid transparent;
+  border-top-color: #6388e3;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: connect 2.5s linear infinite;
+}
+
+.loader-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@keyframes connect {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/*new details page loading circle end*/
+.chck-icn {
+  display: none;
+}
+
+.active .chck-icn {
+  display: block;
+}
+.fil-lbl {
+  flex: 1;
+  text-align: left;
+}
+.divider {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+.dropdown-header {
+  /* Example styling for the dropdown header */
+  font-weight: bold;
+  padding: 10px;
+}
+.dropdown-header {
+  display: block;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 0;
+  font-size: .875rem;
+  color: #74788d;
+  white-space: nowrap;
+}
+.btn-filtr.active .count {
+  background: #5766d7;
+  color: #fff;
+}
+
+.btn-filtr .count{
+  background: #717171;
+  color: #fff;
+  border-radius: 3px;
+  margin-right: 4px;
+  padding: 0px 2px;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  line-height: 2;
+}
+.btn-filtr.active svg {
+  fill: #2786fb !important;
+}
+
+.btn-filtr.active svg {
+  fill: #2786fb !important;
+}
+
+.btn-filtr:hover {
+  background-color: #f2f4f7;
+  transition-duration: 0.27s;
+}
+
+.btn-filtr.active {
+  background-color: #f2f4f7;
+  transition-duration: 0.27s;
+}
+.btn-filtr svg {
+  fill: #5c5b5a;
+  width: 16px;
+  height: 16px;
+  margin: 0 5px;
+}
+
+.btn-filtr {
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-filtr.active {
+  color: #2786fb;
+  background: rgba(39, 134, 251, .1) !important;
+}
+span.count {
+  background: #9886eb;
+  padding: 0px 4px;
+  color: #ffffff;
+  cursor: auto;
+  border-radius: 3px;
+  font-size: 10px;
+}
+.btn-filtr.active .count {
+  background: #5766d7;
+  color: #fff;
+}
+
+.tot{
+  background-color:#64B5F6  !important
+}
+span.svg-icon {
+  color: #757575;
+}
+/*
+span.previous-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #0367e1;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -2px;
+  display: none;
+}
+
+
+/* .kt-flter-ic-b {
+  padding: 4px;
+  border: 1px solid #e2e5ec;
+  background-color: #fff;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  height: calc(1.5em + 1.3rem + 2px);
+  margin-left: 5px;
+  cursor: pointer;
+} */
+.kt-flter-ic-b .dropdown.filter-dot::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -1px;
+  background-color: #9e6df5;
+  width: 6px;
+  height: 6px;
+  display: block;
+  z-index: 9;
+  border-radius: 50px;
+}
+
+
+.dropdown-previous-filter.show {
+  display: block;
+}
+.drop-ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.dropdown-previous-filter {
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  right: 0px;
+  transform: translate3d(5px, 33px, 0px);
+  min-width: 18rem;
+  margin: 2px 0 0;
+  z-index: 1002;
+  animation: dropdown-menu-fade-in .3s ease 1, dropdown-menu-move-up .3s ease-out 1;
+  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+  padding: 1rem 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  display: none;
+}
+.dropdown-previous-filter.show {
+  display: block;
+}
+.kt-flter-ic-b {
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  border: 1px solid #d5d5d5;
+  margin-right: 6px;
+}
+.side-icns {
+  line-height: 1;
+}
+span.previous-dot.active {
+  display: block;
+}
+span.previous-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #0367e1;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -2px;
+  display: none;
+}

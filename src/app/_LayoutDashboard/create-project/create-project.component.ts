@@ -1029,7 +1029,7 @@ onProjectOwnerChanged(){
   template_json:any;
   draft_json:any;
   daysDifference:any
-
+  userFound:boolean|undefined;
   GetAssignedTaskDetails(){
 
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
@@ -1046,6 +1046,7 @@ onProjectOwnerChanged(){
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
+this.userFound = true
 
       this.draft_json=JSON.parse(res[0].draft_json);
       this.draft_json=this.draft_json.map(dft=>{
@@ -1056,9 +1057,6 @@ onProjectOwnerChanged(){
          d===1?'Yesterday':
          [2,3].includes(d)?d+' days ago':
          this.datepipe.transform(dft.CreatedOn,'dd-MM-yyyy')
-
-
-
 
 
 
@@ -1074,6 +1072,8 @@ onProjectOwnerChanged(){
 
       console.log(this.conditional_List,'--conditional prjs------------->')
       console.log(this.assigntask_json,'--assigntask_json--');
+
+
  });
   }
 
@@ -2750,9 +2750,31 @@ check_Enddate(){
 
 
 
+newDetails(pcode: string, source: string) {
+  debugger;
 
+  // Determine the name based on the source
+  let name: string;
+  if (source === 'meeting') {
+    name = 'Meeting-Details';
+  } else if (source === 'project') {
+    name = 'Details';
+  } else {
+    console.error('Unknown source');
+    return;
+  }
 
+  // Construct the URL and open the new window
+  const url = document.baseURI + name;
+  const myurl = `${url}/${pcode}`;
+  const myWindow = window.open(myurl, pcode);
 
+  if (myWindow) {
+    myWindow.focus();
+  } else {
+    console.error('Failed to open the window');
+  }
+}
 
 
 

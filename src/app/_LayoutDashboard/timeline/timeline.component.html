@@ -1,3 +1,6 @@
+<ng-container *ngIf="userFound!==undefined;else pleasewait">
+  <ng-container *ngIf="(userFound===true)">
+
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view" id="timepage">
 
     <div class="row">
@@ -11,8 +14,8 @@
                                 {{Type}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1)">{{type1}}</a>
-                                <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2)">{{type2}}</a>
+                                <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1);">{{type1}}</a>
+                                <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2);  setFilterInfo('Date',undefined); ">{{type2}}</a>
                             </div>
                         </div>
                     </div>
@@ -45,39 +48,189 @@
                         </div> -->
                         <div class="mr-2"><span>Total achievement hours: {{timelineDuration | number:'1.2-2'}} hrs</span></div>
 
-                        <div class="dropdown">
-                            <button class="btn-pill btn btn-sm btn-sort mr-2 dropdown-toggle no-after"
-                                id="srt-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-sort-down desc-ar" viewBox="0 0 16 16">
-                                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
-                                </svg>
 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up asc-ar" viewBox="0 0 16 16">
-                                    <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+
+
+
+
+
+
+
+    <div class="d-flex">
+                            <div class="kt-flter-ic-b br-0">
+                                <div class="dropdown">
+                                    <a type="button" id="Filter_btn" (click)="previous_filter()">
+                                      <ng-container >
+                                        <span class="previous-dot active" id="previous-dot"></span>
+                                    </ng-container>
+                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                      fill="currentColor" aria-hidden="true" role="img"
+                                      font-size="1.5rem" width="1em" height="1em"
+                                      viewBox="0 -1 17 17" class="iconify iconify--mdi">
+                                      <path
+                                          d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z">
+                                      </path>
                                   </svg>
-                                  <a class="ordr-a" href="javascritp:void(0)">{{sortType}}</a>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right sort-drop" aria-labelledby="srt-btn">
-                                <span class="sort-by pb-2">Sort by</span>
-                                <a [ngClass]="activeDate? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort1)">Date
-                                    <span *ngIf="activeDate==true">
-                                        <!-- <a class="sort-a" href="javascritp:void(0)">(desc)</a> -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
-                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                                        </svg>
-                                    </span>
-                                </a>
-                                <a [ngClass]="activeProject? 'dropdown-item active' : 'dropdown-item'" (click)="sortTimeline(sort2)">
-                                    Project
-                                    <span *ngIf="activeProject==true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check ckc-icn" viewBox="0 0 16 16">
-                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                                        </svg>
-                                    </span>
-                                </a>
-                                <!-- <a class="dropdown-item" (click)="notinAction()">User</a> -->
+                                  <!-- {{sortType}} -->
+                                    </a>
+                                    <div id="dropd" aria-labelledby="Filter_btn"
+                                        class="dropdown-previous-filter">
+                                        <ul class="drop-ul p-1 filtr-config-option ">
+                                            <li class="dropdown-header">Filter by</li>
+
+                                            <li>
+                                                <button [ngClass]="{'active':filterconfig.filterby=='Date'}"   class="btn btn-filtr" (click)="toggleDropdowns();previous_filter();sortTimeline(sort1);setFilterInfo('Date',filterconfig.sortby);"                                              >
+                                                    <div class="d-flex align-items-center">
+
+                                                            <span aria-hidden="true" class="side-icns" >
+                                                              <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"></path></g></svg>
+                                                             </span>
+                                                            <div class="fil-lbl">{{'Date'}}</div>
+                                                            <span
+                                                            class="chck-icn ng-star-inserted">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="16" height="16"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 16 16"
+                                                                class="bi bi-check2">
+                                                                <path
+                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            </li>
+                                            <li>
+                                              <ng-container *ngIf="Type =='My Timeline'">
+                                              <button [ngClass]="{'active':filterconfig.filterby=='Project'}"   class="btn btn-filtr" (click)="toggleDropdowns();previous_filter();sortTimeline(sort2);setFilterInfo('Project',filterconfig.sortby);"                                              >
+                                                  <div class="d-flex align-items-center">
+
+                                                          <span aria-hidden="true" class="side-icns"  >
+                                                            <svg id="summary" fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
+                                                           </span>
+                                                          <div class="fil-lbl">{{'Project'}}</div>
+                                                          <span
+                                                          class="chck-icn ng-star-inserted">
+                                                          <svg xmlns="http://www.w3.org/2000/svg"
+                                                              width="16" height="16"
+                                                              fill="currentColor"
+                                                              viewBox="0 0 16 16"
+                                                              class="bi bi-check2">
+                                                              <path
+                                                                  d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                              </path>
+                                                          </svg>
+                                                      </span>
+                                                  </div>
+                                              </button>
+                                            </ng-container>
+                                          </li>
+<ng-container *ngIf="Type !=='My Timeline'">
+                                            <li>
+                                              <button [ngClass]="{'active':filterconfig.filterby=='Employees'}" class="btn btn-filtr "  (click)="toggleDropdown();setFilterInfo('Employees',filterconfig.sortby);"                                               >
+                                                  <div class="d-flex align-items-center">
+                                                          <svg
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                          width="16" height="16"
+                                                          fill="currentColor"
+                                                          viewBox="0 0 16 16"
+                                                          class="bi bi-people">
+                                                          <path
+                                                              d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
+                                                          </path>
+                                                      </svg>
+                                                      <div class="fil-lbl">{{'Employees'}}</div>
+                                                      <span
+                                                      class="chck-icn ng-star-inserted">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                                          width="16" height="16"
+                                                          fill="currentColor"
+                                                          viewBox="0 0 16 16"
+                                                          class="bi bi-check2">
+                                                          <path
+                                                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                          </path>
+                                                      </svg>
+                                                  </span>
+                                                  </div>
+                                              </button>
+                                          </li>
+                                        </ng-container>
+
+
+
+                                            <ng-container *ngIf="showDropdown">
+                                            <li role="separator" class="divider"></li>
+                                            <li class="dropdown-header">Sort by employee</li>
+
+
+                                            <li>
+                                                <!-- <button [ngClass]="{'active':filterconfig.sortby=='All'}"  class="btn btn-filtr" (click)="getPreviousdate_ByFilter(1); setFilterInfo(filterconfig.filterby,'All');  "
+                                                  >
+                                                    <div class="d-flex align-items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="16" height="16"
+                                                            fill="currentColor"
+                                                            class="bi bi-border-all"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
+                                                        </svg>
+                                                        <div class="fil-lbl">All</div>
+                                                        <span
+                                                            class="chck-icn ng-star-inserted">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="16" height="16"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 16 16"
+                                                                class="bi bi-check2">
+                                                                <path
+                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </button> -->
+                                            </li>
+                                            <li *ngFor="let item of racisemplFilter;let i=index">
+
+                                                <button  [ngClass]="{'active':item.EmpId==filterconfig.sortby}"    class="btn btn-filtr" (click)=" timelineLog1(type2,item.EmpId); setFilterInfo(filterconfig.filterby,item.EmpId); previous_filter();" >
+                                                    <div class="d-flex align-items-center">
+
+
+
+                                                          <span class="count tot">{{item.count}}</span>
+                                                           <div  class="fil-lbl">
+                                                            {{item.EmpName}}</div>
+
+                                                        <span *ngIf="item.EmpId==filterconfig.sortby" class="chck-icn ng-star-inserted">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="16" height="16"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 16 16"
+                                                                class="bi bi-check2">
+                                                                <path
+                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </button>
+
+                                            </li>
+                                            <!-- <li class="view-more">
+                                                <a>View More</a>
+                                            </li> -->
+                                        </ng-container>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
+
+
                         </div>
+
                         <button type="button" class="btn btn-info btn-sm btn-fw" (click)="darcreate()"> Create timeline </button>
                     </div>
                 </div>
@@ -149,9 +302,10 @@
                                         [hidden]="_CurrentpageRecords<30">
                                         Load more!</button>
                                 </div>
+
                                 <div style="text-align:center" *ngIf="Type=='RACIS Timeline'">
                                      <button class="btn btn-info loadMore"
-                                    (click)="CurrentPageNo = CurrentPageNo + 1; loadMore1()"
+                                    (click)="CurrentPageNo = CurrentPageNo + 1; loadMore1();"
                                    [hidden]="_CurrentpageRecords<30">
                                    Load more!</button>
                                 </div>
@@ -577,3 +731,27 @@
 
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
+</ng-container></ng-container>
+
+
+<ng-template #pleasewait>
+
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>

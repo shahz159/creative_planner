@@ -1,5 +1,8 @@
+
 <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid side_view" id="project-creation-page">
   <div class="row">
+    <ng-container *ngIf="userFound!==undefined;else pleasewait">
+      <ng-container *ngIf="(userFound===true)">
     <div class="col-lg-12">
       <div class="kt-portlet kt-portlet--bordered-semi mb-2">
         <div class="kt-portlet__head">
@@ -19,6 +22,7 @@
             </div>
           </div>
         </div>
+
         <div class="col-lg-12">
           <div class="kt-portlet mb-1">
             <div class="Create_project_section">
@@ -496,7 +500,7 @@
                                                       d="M427.2 203c0-112.1-90.9-203-203-203C112.1-.2 21.2 90.6 21 202.6A202.9 202.9 0 0 0 161.5 396v101.7a14.3 14.3 0 0 0 14.3 14.3h96.4a14.3 14.3 0 0 0 14.3-14.3V396.1A203.2 203.2 0 0 0 427.2 203zm-271.6 0c0-90.8 137.3-90.8 137.3 0-.1 89.9-137.3 91-137.3 0z" fill="#3688FF"  />
                                                   </svg>
                                                 </span><span class="kt-act-ic-info" title="Source">{{record.source}} <span *ngIf="record.sourcename"
-                                                    title="Source name"> / {{ record.sourcename}} </span>
+                                                   title="Source name"> / {{ record.sourcename}} </span>
                                                 </span></div>
                                         </div>
                                       </div>
@@ -2577,7 +2581,7 @@
                                 <div class="kt-ctv-btn-two">
                                   <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button> -->
                                   <button type="button" class="btn btn-move-fws my-ct-v-btn "
-                                  (click)="back_to_options()">Back to option</button>&nbsp;
+                                  (click)="back_to_options()">Back to options</button>&nbsp;
                                   <button type="button" class="btn btn-move-fw my-ct-v-btn btn-info"
                                     (click)="sendApproval()">Submit project</button>
                                 </div>
@@ -3373,6 +3377,28 @@
 
 
   </div>
+</ng-container></ng-container>
+<ng-template #pleasewait>
+
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>
 
 <!----------------- add actions Start -------------->
 <div id="rightbar-overlay" (click)="closeActionSideBar(); closeInfos(); closeAction_details_edit(); "></div>

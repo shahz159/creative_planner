@@ -92,7 +92,7 @@ export class ToDoProjectsComponent implements OnInit {
   Coor: string; EmpNo_Coor: string;
   Support: string; EmpNo_Supp: string;
   Comp_No: string; ProjectBlock: string;
-
+  userFound:boolean |undefined
   GetProjectsByUserName() {
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
     this.ObjUserDetails.PageSize = 30;
@@ -103,6 +103,7 @@ export class ToDoProjectsComponent implements OnInit {
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
+      this.userFound = true
       if (this.selectedItem_Emp.length == 0) {
         this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
       }

@@ -603,7 +603,7 @@ export class NotificationComponent implements OnInit {
 
 
   applyFilters() {
-    
+
     debugger
 
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
@@ -633,7 +633,7 @@ export class NotificationComponent implements OnInit {
       .subscribe(data => {   debugger
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
 
-        
+
 
 
         //Emp
@@ -642,18 +642,18 @@ export class NotificationComponent implements OnInit {
         }
         else {
           let _empjsonnew=JSON.parse(data[0]['Employee_json']);
-          
+
 // new
           let _updateddata=_empjsonnew.filter(item=>item.Emp_No==this.selectedItem_Emp[0][0].Emp_No);
           if(_updateddata.length>0){
               _updateddata[0].checked=true;
               this.EmpCountInFilter = _updateddata;
-          } 
+          }
           else if(_updateddata.length==0){
              this.EmpCountInFilter=_empjsonnew;
              this.selectedItem_Emp.length=0;
           }
-// new            
+// new
 
         }
          //Request
@@ -752,7 +752,7 @@ export class NotificationComponent implements OnInit {
 
       });
 
-      
+
   }
 
   search_Type: any[];
@@ -954,9 +954,9 @@ acceptSelectedValues() {
         else {
           this.edited = true;
         }
-        
+
     });
-    
+
   }
   else{
     this.notifyService.showInfo("Please select atleast one project to approve",'');
@@ -1207,6 +1207,18 @@ onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
 
 // leave requests approval end
 
+onButtonClick(buttonId: string) {
+  const elements = document.getElementsByClassName('btn-filtr');
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].classList.remove('active');
+  }
+
+
+  if(buttonId=='tot')
+    document.getElementById('tot').classList.add('active');
+  else if(buttonId=='inn')
+    document.getElementById('inn').classList.add('active');
+}
 
 
 }
