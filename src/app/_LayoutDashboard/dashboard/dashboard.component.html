@@ -1221,7 +1221,12 @@
                                 *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 =='Pending' || Status1 =='May be'"
+                            <div class="box-cl"
+                            *ngIf="Meeting_status==true && RecurrenceValue=='Weekly'"
+                            style="background-color: #1dc9b7;">
+                            </div>
+
+                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be') && Meeting_status==false"
                                 style="border:4px solid #3788d8; ">
                             </div>
                             <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
