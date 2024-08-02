@@ -881,9 +881,13 @@ this.prjPIECHART.render();
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);   console.log('submission_json:',this.Submission);
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
+      debugger
+      this.Submission = JSON.parse(res[0].submission_json); 
+        console.log('submission_json:',this.Submission);
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];   
+         console.log('projectInfo:',this.projectInfo);
+     
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -1313,8 +1317,8 @@ this.prjPIECHART.render();
     }
     else{
       this.formFieldsRequired=false;
-
-      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+      var Scheduleid = '0'
+      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
         console.log(res,'openRequestDialog')
         this.closeRequestDialog();
         Swal.fire('Request Sent Successfully');

@@ -3160,8 +3160,9 @@ span.kt-dashboard-delay-cnt {
     align-items: center;
 }
 
-.agenda-item:hover .agenda-ctrl-btns .edit-agendaname-btn, .agenda-item:hover .agenda-ctrl-btns .remove-agenda-btn{
-    display:inline;
+.agenda-item:hover .agenda-ctrl-btns .edit-agendaname-btn,
+.agenda-item:hover .agenda-ctrl-btns .remove-agenda-btn {
+    display: inline;
 }
 
 
@@ -3227,6 +3228,7 @@ span.kt-dashboard-delay-cnt {
     stroke: #d5d5d5;
     background: transparent;
 }
+
 .editing-save:hover svg {
     fill: none;
     stroke: #73db76;
@@ -3383,7 +3385,7 @@ mat-icon.mat-icon.notranslate.curser-pointer {
 }
 
 
-.error-borderbottom{
+.error-borderbottom {
     border-bottom: 2px solid #ff6256 !important;
 }
 
@@ -3810,10 +3812,12 @@ ul.schedule-select-user-list li {
     overflow: hidden;
     width: 140px;
 }
+
 @media screen and (min-width: 1440px) {
     ul.schedule-select-user-list li {
         width: 240px;
     }
+
     .schedule-select-user-list-item .user-name {
         width: 180px;
     }
@@ -3975,6 +3979,7 @@ span.meeting-icon {
     background-color: #ebebeb;
     align-items: center;
 }
+
 .schedule-event.modal .modal-header .modal-title {
     font-weight: 500;
     font-size: 1.2rem;
@@ -4051,11 +4056,13 @@ span.meeting-icon {
     border-radius: 4px;
     cursor: pointer;
 }
-.modal-icon:hover{
+
+.modal-icon:hover {
     /* background: #e5e1e1; */
     background-color: #cbcbcb36;
 }
-#filter-icon.active{
+
+#filter-icon.active {
     /* background: #e5e1e1; */
     background-color: #c3c3c35c;
 }
@@ -4390,9 +4397,10 @@ span.project-name {
     background: #ebeff6;
     color: #2e88fc;
 }
+
 .schedule-badge:hover {
-  background-color: #f6f6f68c; 
-  transition-duration:0.5s;
+    background-color: #f6f6f68c;
+    transition-duration: 0.5s;
 }
 
 
@@ -4491,7 +4499,8 @@ span.project-name {
 .occ-title {
     padding: 0px 18px;
 }
-.meeting-offline{
+
+.meeting-offline {
     background-color: #f4f4f4;
     color: #868686;
     border-radius: 4px;
@@ -4515,43 +4524,48 @@ span.project-name {
 
 
 
-.prjact-search-field:focus-within svg{
-    stroke:#6388e3;
-    transform:scale(1.3);
-    transition-duration:0.4s;
- }
- .prjact-search-field:focus-within{
-   box-shadow:0 0 3px #cad9ff;
- }
- .prjact-search-field:not(.prjact-search-field:focus-within) svg{
-   stroke: rgb(192, 192, 192);
-   transform:scale(1);
-   transition-duration:0.2s;
- }
+.prjact-search-field:focus-within svg {
+    stroke: #6388e3;
+    transform: scale(1.3);
+    transition-duration: 0.4s;
+}
+
+.prjact-search-field:focus-within {
+    box-shadow: 0 0 3px #cad9ff;
+}
+
+.prjact-search-field:not(.prjact-search-field:focus-within) svg {
+    stroke: rgb(192, 192, 192);
+    transform: scale(1);
+    transition-duration: 0.2s;
+}
 
 ::ng-deep #cal-events .ng-dropdown-panel .ng-dropdown-panel-items {
     max-height: 200px;
 }
+
 #cal-events .schedule-dt-tm {
     font-size: 12px;
 
 }
- .picktime-box{
+
+.picktime-box {
     border: 1px solid #d3d3d3e0;
     border-radius: 7px;
     display: inline-block;
     min-width: 65px;
     padding: 0.07em 0.5em;
- }
+}
 
 
-::ng-deep .ng-select#task-selectprjfield .ng-select-container,::ng-deep .ng-select#task-selectactionfield .ng-select-container {
+::ng-deep .ng-select#task-selectprjfield .ng-select-container,
+::ng-deep .ng-select#task-selectactionfield .ng-select-container {
     border: 0px solid #ccc;
     border-bottom: 1px solid #a5a5a5;
     border-radius: 0px;
 }
 
-.actns-ldr{
+.actns-ldr {
     position: absolute;
     top: 10px;
     right: 40px;
@@ -4560,7 +4574,85 @@ span.project-name {
     height: 20px;
 }
 
-.acceptmeeting{
+.acceptmeeting {
     background-color: #3699FF !important;
     color: #fff !important;
+}
+
+.request-access-item {
+    position: relative;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 4px 8px;
+    transition: all 0.15s ease-in-out;
+    cursor: default;
+}
+.request-access-item:hover{
+    background-color:#f5f5f5;
+}
+.request-access-item-d-t-c {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+.request-access-item-event-t-c {
+    width: 100%;
+}
+.request-access-item-event-t-c .title {
+    font-size: 13px;
+    color: #000;
+}
+
+.request-access-item-event-t-c .company {
+    font-size: 11px;
+    color: #848484;
+}
+
+.request-access-item-event-u-d {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.request-access-item-event-u-d .username {
+    font-size: 11px;
+    color: #666666;
+}
+
+.request-access-item-event-u-d .date {
+    font-size: 11px;
+    color: #666666;
+}
+
+.request-access-item-h-action {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    background-color: #e4e4e4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    gap: 4px
+}
+
+.request-access-item:hover .request-access-item-h-action {
+    visibility: visible;
+}
+
+.request-access-item-h-action .icon {
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.request-access-item-h-action .icon.blue {
+    color: #6c85fe;
+}
+
+.request-access-item-h-action .icon.red {
+    color: #ff5252;
 }

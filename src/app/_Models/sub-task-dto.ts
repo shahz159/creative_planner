@@ -54,4 +54,5 @@ export class SubTaskDTO {
   EventNumber:string;
   auditor:string;
   owner:string;
+  Schedule_id:string
 }

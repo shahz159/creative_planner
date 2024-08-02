@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiurlService } from './apiurl.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
+import { CalenderDTO } from '../_Models/calender-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -38,10 +39,11 @@ export class ProjectMoreDetailsService {
      return this.http.post(this.rootUrl+'TestAPI/NewGetProjectTimelineList',this.ObjSubTaskDTO)
   }
 
-  NewInsertProjectRequestAccesss(Project_Code:string,Remarks:string,Emp_No:string){
+  NewInsertProjectRequestAccesss(Project_Code:string,Remarks:string,Emp_No:string,Scheduleid:string ){
     this.ObjSubTaskDTO.Project_Code=Project_Code;
     this.ObjSubTaskDTO.Remarks=Remarks;
     this.ObjSubTaskDTO.Emp_No=Emp_No;
+    this.ObjSubTaskDTO.Schedule_id=Scheduleid;
      return this.http.post(this.rootUrl+'Projects/NewInsertProjectRequestAccesss',this.ObjSubTaskDTO)
   }
 

@@ -1539,7 +1539,7 @@
 
                                     <!-- <div class="br-line"></div> -->
 
-                                    <a class="kt-inbox__icon" [ngClass]="{'active':totalguest}" title="Add Users" (click)="View_Meeting_Attendees()">
+                                    <a class="kt-inbox__icon" [ngClass]="{'active':totalguest}" title="Add Users" (click)="View_Meeting_Attendees();">
                                         <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16"
                                             xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi">
                                             <path
@@ -4100,20 +4100,21 @@
                         </path>
                     </svg>
                         <h4 class="m-0">Meeting attendees
-                            <span class="head-muted">{{User_Scheduledjson.length + 1}}
+                            <span class="head-muted mee-co">{{User_Scheduledjson.length + 1}}
                             </span>
                         </h4>
                       </button>
                     </li>
-                    <!-- after commit check this csss of attendees sidebar 
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="userrequest-tab" data-toggle="tab" data-target="#userrequest" type="button" role="tab" aria-controls="userrequest" aria-selected="false">
+                    <!-- after commit check this csss of attendees sidebar  -->
+                    <li class="nav-item" role="presentation" *ngIf="totalCountOfList">
+                      <button class="nav-link" id="userrequest-tab" data-toggle="tab" data-target="#userrequest" type="button" (click)="getMeetingApprovals()" role="tab" aria-controls="userrequest" aria-selected="false">
                         <svg width="24px" height="24px" viewBox="0 0 24 24"  class=" mr-2" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 14.0709C11.6734 14.0242 11.3395 14 11 14C7.13401 14 4 17.134 4 21H14M17.997 18C18.997 17 19.997 16.6046 19.997 15.5C19.997 14.3954 19.1016 13.5 17.997 13.5C17.0651 13.5 16.282 14.1374 16.06 15M17.997 21H18.007M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#858190" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                        <h4 class="m-0">User Request
-                            
+                        <h4 class="m-0">User Request 
                         </h4>
+                        <span class="head-muted mee-co ml-2"> {{totalCountOfList}}</span>
                       </button>
-                    </li> -->
+                  
+                    </li>
                   </ul>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                     (click)="close_meetingattendees_sideBar()">
@@ -4124,6 +4125,7 @@
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </a>
+                
             </div>
         </div>
 
@@ -4625,24 +4627,24 @@
                     <div class="kt-chat__messages">
                         <div class="user-request-main">
                             <!-- loop this -->
-                            <div class="user-requset-item">
+                            <div class="user-requset-item" *ngFor="let item of multiapproval_json">
                                 <div class="user-request-label">
-                                    <span>Wassem Akram(Jr.dot net developer)</span>
+                                    <span>{{item.TM_DisplayName}}</span>
                                 </div>
                                 <div class="user-request-info-detail">
                                     <div class="user-request-info">
                                         <div class="info-item">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" id="company-small-24px" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path id="company-small-24px-2" data-name="company-small-24px" d="M16,4H2A2.006,2.006,0,0,0,0,6V24H18V6A2.006,2.006,0,0,0,16,4ZM8,22V18h2v4Zm8,0H12V17a.945.945,0,0,0-1-1H7a.945.945,0,0,0-1,1v5H2V6H16ZM8,10H6V8H8Zm4,0H10V8h2ZM8,14H6V12H8Zm4,0H10V12h2Z" transform="translate(3 -2)"></path> <rect id="Retângulo_222" data-name="Retângulo 222" width="24" height="24" fill="none" opacity="0"></rect> </g></svg>
-                                            <span>Devbox software pvt ltd</span>
+                                            <span>{{item.Com_Name}}</span>
                                         </div>
                                         <div class="info-item">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 10H17M7 14H12M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="CurrentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                            <span>Jul 23 2024 3:39PM</span>
+                                            <span>{{item.Req_DL|date:'dd-MM-YYYY'}}</span>
                                         </div>
                                     </div>
                                     <div class="user-request-button">
-                                        <button class="btn btn-sm btn-outline-info mr-2">Approved</button>
-                                        <button class="btn btn-sm btn-outline-danger">Rejected</button>
+                                        <button class="btn btn-sm btn-outline-info mr-2" (click)="UpdateMeetingRequestAccess(item.Sno,'Accept')">Accept</button>
+                                        <button class="btn btn-sm btn-outline-danger" (click)="UpdateMeetingRequestAccess(item.Sno,'Reject')">Reject</button>
                                     </div>
                                 </div>
                             </div>
@@ -6735,11 +6737,11 @@
                                         <div class="text-muted ml-2 fs-7">{{item.Created_by}}</div>
                                     </div>
                                     <div class="text-muted ml-1 fs-7 text-right">{{item.Created_date| date : 'dd-MM-YYYY'}}</div>
-                                    <!-- <div class="delte-attach">
+                                    <div class="delte-attach" (click)="DeleteAttachment(item.file_id)">
                                         <div class="icn">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 </div>
                              </div>
@@ -6799,12 +6801,12 @@
                         <div class="kt-chat__toolbar mt-0">
                             <div class="kt_chat__actions w-100">
                                 <ng-container *ngIf="SelectedAttachmentFile==undefined">
-                                <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule()">
+                                <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitAttachment()">
                                     Upload </button>
                                 </ng-container>
 
                                 <ng-container *ngIf="SelectedAttachmentFile!=undefined">
-                                    <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitSchedule();attach_btn()">
+                                    <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitAttachment();attach_btn()">
                                         Upload </button>
                                     </ng-container>
 
@@ -7978,6 +7980,18 @@
                     </svg>
                 </a>
             </div>
+            <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
+            *ngIf="editTask==false && copyTask==false && eventRepeat==true">
+            <h4 class="m-0">Repeat {{ScheduleType}}</h4>
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                        d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+                    </path>
+                </svg>
+            </a>
+           </div>
         
             <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="TaskEvent-Sidebar">
                 <div class="schedule-event">
@@ -8021,7 +8035,7 @@
                                 (paste)="updateCharacterCount()"
                                  [config]="config"></angular-editor>
                                  <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces </span>
-                                 <span *ngIf="characterCount>=500"  style="color:red">    description should not exceed 500 characters.</span>
+                                 <span *ngIf="characterCount>=500"  style="color:red">  description should not exceed 500 characters.</span>
                             </div>
                         </div>
                     </div>
@@ -8850,7 +8864,7 @@
                          (click)="OnSubmitReSchedule(1);sweet_pending()">Update & mark pending</button> &nbsp; -->
                     <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeschd()">Close</button>
                 </div>
-                <div *ngIf=" pending_status==true && editTask==true " class="form-group mb-0">
+                <div *ngIf="pending_status==true && editTask==true " class="form-group mb-0">
                     <button type="submit" class="btn btn-info btn-sm"
                         (click)="OnSubmitReSchedule(2)">Update & Release</button>&nbsp;
                     <button type="submit" class="btn btn-dull btn-sm" [disabled]="!Endtms ||!Startts "
@@ -9519,7 +9533,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-info btn-sm mr-2" (click)="submitEventToRepeat()">Submit</button>
-              <!-- <button type="button" class="btn btn-info btn-sm mr-2" >Custom</button> -->
+              <button type="button" class="btn btn-info btn-sm mr-2" (click)="onCustomBtnClicked()" >Custom</button>
               <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="Close_Repeat_Meeting()" data-dismiss="modal">Close</button>
           </div>
       </div>
@@ -9631,20 +9645,20 @@
                         <h5 class="acc-desc  user-not-found-msg  hide-content">
                             Unfortunately, we did not find you in this meeting.
                         </h5>
-                        <!-- <div  class="mt-4">
+                        <div  class="mt-4" *ngIf="!isRequestSent">
                             <button
                             class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
                             </button>
                         </div>
 
-                        <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the owner of this project. Once it has been approved, you will
+                        <h5 class="acc-desc" *ngIf="isRequestSent">Your request has been sent to the admin of this meeting. Once it has been approved, you will
                         be added. Happy streaming!
-                        </h5> -->
+                        </h5>
 
             </div>
             <!-- <button  (click)="open()" class="btn btn-info mr-3 ng-star-inserted" >Request Access</button> -->
 
-                <!-- <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
+                <div *ngIf="isRequestDialogOpen" class="row w-100  Send-Request-Dialog" >
                     <div class="col-lg-7 m-auto">
                     <div class="kt-card-cmt">
                     <textarea [(ngModel)]="Usercomment"
@@ -9663,7 +9677,7 @@
                     </div>
                     </div>
                 </div>
-                </div> -->
+                </div>
 
                 <div class="acc-img_sec">
                     <div class="acc-denied_img">

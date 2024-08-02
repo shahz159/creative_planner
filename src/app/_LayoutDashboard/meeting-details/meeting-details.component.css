@@ -3130,6 +3130,14 @@ small.tlv-df {
 
 span.kt-at-count {
     font-size: 14px;
+    /* border-left: 1px solid #ccc; */
+    padding-left: 10px;
+    /* color: #6b6b6b; */
+}
+
+
+span.kt-at {
+    font-size: 14px;
     border-left: 1px solid #ccc;
     padding-left: 5px;
     color: #6b6b6b;
@@ -8253,4 +8261,11 @@ ul#myTabMeetingAttendees .nav-item {
 }
 .delte-attach .icn svg:hover{
     color: #ff0202;
+}
+.mee-co{
+    background-color: #e2e2ff;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1;
+    color: #5051FA;
 }

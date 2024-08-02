@@ -30,6 +30,9 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 
 
 export const MY_DATE_FORMATS = {
@@ -76,6 +79,7 @@ export class MeetingDetailsComponent implements OnInit {
   Current_user_ID: string;
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
   _calenderDto: CalenderDTO;
+  approvalObj: ApprovalDTO;
 
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
   notesContent: any;
@@ -140,6 +144,7 @@ export class MeetingDetailsComponent implements OnInit {
   };
   private refreshSubscription: Subscription;
   constructor(
+    private projectMoreDetailsService: ProjectMoreDetailsService,
     private CalenderService: CalenderService,
     private route: ActivatedRoute,
     public service: ProjectTypeService,
@@ -148,7 +153,8 @@ export class MeetingDetailsComponent implements OnInit {
     public ProjectTypeService: ProjectTypeService,
     private dialog: MatDialog,
     public router: Router,
-    public BsService: BsServiceService
+    public BsService: BsServiceService,
+    public approvalservice: ApprovalsService,
     // public signalRService: SignalRService
   ) {
 
@@ -157,6 +163,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._lstMultipleFiales = [];
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
+    this.approvalObj = new ApprovalDTO();
   }
 
 
@@ -164,6 +171,8 @@ export class MeetingDetailsComponent implements OnInit {
   _PopupConfirmedValue: number;
 
   ngOnInit(): void {
+
+    this.MinLastNameLength = true;
 
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
@@ -179,6 +188,8 @@ export class MeetingDetailsComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.CurrentUser_fullname = localStorage.getItem("UserfullName");
 
+
+    this.MinLastNameLength = true;
     // this.getAttendeeTime();
 
     this.meeting_details();
@@ -192,6 +203,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetTimeslabfordate();
     this.GetcompletedMeeting_data();
     this.agendaside(0);
+    this.getMeetingApprovals();
 
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
@@ -382,7 +394,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-   
+    //  this.meeting_details();
   }
   Close_Repeat_Meeting() {
     document.getElementById("repeatModal").classList.remove("kt-quick-active--on");
@@ -660,7 +672,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
-      //console.log('Attachments_ary',this.Attachments_ary);
+      console.log('Attachments_ary',this.Attachments_ary);
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -2453,7 +2465,7 @@ export class MeetingDetailsComponent implements OnInit {
   EventNumber: any;
   progress: number = 0;
 
-  OnSubmitSchedule() {
+  OnSubmitAttachment() {
 
     if (this.SelectedAttachmentFile != undefined) {
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
@@ -2510,6 +2522,366 @@ export class MeetingDetailsComponent implements OnInit {
     else {
       this.notifyService.showInfo("Request Cancelled", "Please select Attachment(s) to link");
     }
+  }
+
+
+
+
+  TImetable() {
+    let now = moment(new Date());
+    let _shr = now.hour();
+    let _s = now.minute();
+
+    if (_s >= 0 && _s < 15) {
+      this.Startts = this.formatTimes(_shr, 30);
+      this.Endtms = this.formatTimes(_shr, 45);
+    } else if (_s >= 15 && _s < 30) {
+      this.Startts = this.formatTimes(_shr, 45);
+      this.Endtms = this.formatTimes(_shr + 1, 0);
+    } else if (_s >= 30 && _s < 45) {
+      this.Startts = this.formatTimes(_shr + 1, 0);
+      this.Endtms = this.formatTimes(_shr + 1, 15);
+    } else if (_s >= 45 && _s < 59) {
+      this.Startts = this.formatTimes(_shr + 1, 15);
+      this.Endtms = this.formatTimes(_shr + 1, 30);
+    }
+  }
+
+
+  formatTimes(hour, minute) {
+    return moment({ hour, minute }).format("hh:mm A");
+  }
+
+
+
+
+  OnSubmitSchedule() { 
+    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+      this._subname1 = true;
+      return false;
+    }
+    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+      this._subname = true;
+      return false;
+    }
+
+    var now = new Date();
+    if(this.eventRepeat===false){
+      let timestamp = "";
+      timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+        + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+      this.EventNumber = timestamp;
+    }
+
+    let finalarray = [];
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+    // else if (this.selectedrecuvalue === "4") {
+    //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
+    // }
+    // else if (this.selectedrecuvalue === "5") {
+    //   this.daysSelectedII = this.getLastDaysOfEachMonth();
+    // }
+
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
+    if (finalarray.length > 0) {
+      finalarray.forEach(element => {
+     
+        const date1: Date = new Date(this._StartDate);
+        // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+        //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+        // }
+        // else {
+        //   this._SEndDate = this._StartDate;
+        // }
+        const date2: Date = new Date(this._SEndDate);
+
+        const diffInMs: number = date2.getTime() - date1.getTime();
+
+        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+        }
+        else {
+          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        }
+        // var dd = moment(date3).add(diffInDays, 'days')
+        // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        var dd = moment(date3).add(diffInDays, 'days')
+        console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
+        var SEndDates = "SEndDate";
+        element[SEndDates] = (dd.format(format2));
+
+        var vStartTime = "StartTime";
+        element[vStartTime] = this.Startts;
+
+        var vEndTime = "EndTime";
+        element[vEndTime] = this.Endtms;
+
+        var vEnd_date = "End_date";
+        element[vEnd_date] = this._EndDate;
+
+        var vIsDeleted = "IsDeleted";
+        element[vIsDeleted] = 0;
+
+        var vPending = "Pending_meeting";
+        element[vPending] = 0;
+
+        var vRecurrence = "Recurrence";
+        element[vRecurrence] = this.selectedrecuvalue;
+
+        var vRecurrence_value = "Recurrence_values";
+        element[vRecurrence_value] = _arraytext.toString();
+
+        var vEmp_No = "Emp_No";
+        element[vEmp_No] = this.Current_user_ID;
+
+        var vScheduleType = "ScheduleType";
+        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+
+        var vTitle_Name = "Title_Name";
+        element[vTitle_Name] = this.Title_Name;
+
+        var vMasterCode = "MasterCode";
+        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+
+        // var columnName = "Link_Type";
+        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+        var vUser_Name = "User_Name";
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+
+
+        var vLocation_Type = "Location_Type";
+        element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
+
+        var vLocation_fulladd = "FullAddress_loc";
+        element[vLocation_fulladd] = (this._meetingroom==true)?(this.Locationfulladd == undefined ? "" : this.Locationfulladd):'';
+
+        var vLocation_url = "Addressurl";
+        element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
+
+        var vOnlinelink = "Onlinelink";
+        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+        var vLink_Details = "Link_Details";
+        let link_d=this.Link_Details;  
+        if(this.Link_Details){
+          link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          link_d=this.anchoredIt(link_d);
+        }
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+
+
+        var vDescription = "Description";
+        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+        var vSubtask = "Subtask";
+        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+
+        var vEventNumber = "EventNumber";
+        element[vEventNumber] = this.EventNumber;
+
+        var vPortfolio_name = "Portfolio_name";
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+
+        var vDMS_Name = "DMS_Name";
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+
+
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas = JSON.stringify(this.allAgendas.length > 0 ? this.allAgendas : []);
+        element[vAgendas] = mtgAgendas;
+
+
+
+// dont provide unnecessary values to api when task is creating.
+       if(this.ScheduleType=='Task'){
+        element[vUser_Name]='';
+        element[vLocation_Type]='';
+        element[vLocation_fulladd]='';
+        element[vLocation_url]='';
+        element[vOnlinelink]=false;
+         element[vLink_Details]='';
+         element[vDescription]='';
+         element[vPortfolio_name]='';
+         element[vDMS_Name]='';
+         element[vAgendas]='[]';
+       }
+// dont provide unnecessary values to api when task is creating.
+
+
+        //
+      });
+
+      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      if (this.Schedule_ID != 0) {
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+
+      }
+      else {
+        this._calenderDto.Schedule_ID = 0;
+      }
+
+      let _attachmentValue = 0;
+      const frmData = new FormData();
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+      }
+      if (this._lstMultipleFiales.length > 0)
+        _attachmentValue = 1;
+      else
+        _attachmentValue = 0;
+
+      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+      console.log(JSON.stringify(finalarray), "finalarray")
+      this._calenderDto.draftid = this.draftid;
+
+
+      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+
+      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+        (data => {
+
+          if (_attachmentValue == 1) {
+            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+              (event: HttpEvent<any>) => {
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! ${this.progress}%`);
+                    break;
+                  case HttpEventType.Response:
+                    console.log('User successfully created!', event.body);
+
+                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    this._lstMultipleFiales = [];
+                    // empty(this._lstMultipleFiales);
+                    // alert(this._lstMultipleFiales.length);
+                    setTimeout(() => {
+                      this.progress = 0;
+                    }, 1500);
+
+                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                }
+              }
+            )
+          }
+          //UploadCalendarAttachmenst
+          // console.log(data, "m");
+          this._Message = data['message'];
+          if (this._Message == "Updated Successfully") {
+            if (this.draftid != 0) {
+              // this.Getdraft_datalistmeeting();
+              this.draftid = 0
+            }
+            this.notifyService.showSuccess(this._Message, "Success");
+          }
+          else {
+            this.notifyService.showError(this._Message, "Failed");
+          }
+
+
+          // this.GetScheduledJson();
+          this.Title_Name = null;
+          this.ngEmployeeDropdown = null;
+          this.Description_Type = null;
+          this.MasterCode = null;
+          this.projectsSelected = [];
+          this.Subtask = null;
+          this.Startts = null;
+          this.Endtms = null;
+          this.St_date = null;
+          this.Ed_date = null;
+          this._SEndDate = null;
+          this._SEndDate = moment().format("YYYY-MM-DD").toString();
+          this.Locationfulladd = null;
+          this._status = null;
+          this.SelectDms = null;
+          this.Location_Type = null;
+          this.Link_Details = null;
+          this._onlinelink = false;
+          this.Allocated_subtask = null;
+          this.TM_DisplayName = null;
+          this.Projectstartdate = "";
+          this.projectEnddate = null;
+          this.Status_project = null;
+          this.AllocatedHours = null;
+          this.daysSelectedII = [];
+          this.Avaliabletime = [];
+          this.timeslotsavl = [];
+          this.singleselectarry = [];
+          this.daysSelected = [];
+          // this.Recurr_arr = [];
+          this.selected = null;
+          this.TImetable();
+          this.Portfolio = null;
+          this.minDate = moment().format("YYYY-MM-DD").toString();
+          this.maxDate = null;
+          // this.calendar.updateTodaysDate();
+          this.TImetable();
+
+        });
+      this.closeschd();
+    }
+    else {
+      alert('Please Select Valid Date and Time');
+    }
+
+  }
 
 
 
@@ -2518,49 +2890,48 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
+     AttachmentName: string;
 
+     DeleteAttachment(attach_id: number) {
 
-     // portfolioName: string;
+    this.Attachments_ary.forEach(element => {
+      if (attach_id == element.file_id)
+        this.AttachmentName = element.File_Name
 
-  // DeletePortfolios(port_id: number) {
-
-  //   this.portfolio_Scheduledjson.forEach(element => {
-  //     if (port_id == element.numberval)
-  //       this.portfolioName = element.Portfolio_Name
-
-  //   });
+    });
     
-  //   let String_Text = 'Delete';
-  //   const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-  //     data: {
-  //       mode: 'delete',
-  //       title1: 'Confirmation ',
-  //       message1: this.portfolioName
-  //     }
-  //   });
-  //   confirmDialog.afterClosed().subscribe(result => {
+    // let String_Text = 'Delete';
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: this.AttachmentName
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
 
-  //     this.Schedule_ID = this.Scheduleid;
-  //     this._calenderDto.Schedule_ID = this.Schedule_ID;
-  //     this._calenderDto.Emp_No = this.Current_user_ID;
-  //     this._calenderDto.Portfolio = port_id.toString();
-  //     this._calenderDto.flagid = 1
-  //     if (result === true) {
-  //       this.CalenderService.DeletePortfoliosOfMeeting(this._calenderDto).subscribe((data) => {
-  //         this.meeting_details()
-  //         this.notifyService.showSuccess("Deleted successfully ", '');
-  //       });
-  //     }
-  //     else {
-  //       this.notifyService.showError("Action Cancelled ", '');
-  //     }
-  //   });
-  // }
+      this.Schedule_ID = this.Scheduleid;
+      this._calenderDto.Schedule_ID = this.Schedule_ID;
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.fileid  = attach_id.toString();
+      console.log(this._calenderDto,'this._calenderDto')
+      this._calenderDto.flagid = 1
+      if (result === true) {
+        this.CalenderService.DeleteAttachmentOfMeeting(this._calenderDto).subscribe((data) => {
+          this.meeting_details()
+          this.notifyService.showSuccess("Deleted successfully ", '');
+        });
+      }
+      else {
+        this.notifyService.showError("Action Cancelled ", '');
+      }
+    });
+  }
 
 
     /////////////////////////////////////////// List of Attchment sidebar End /////////////////////////////////////////////////////////
 
-  }
+
 
 
 
@@ -5150,11 +5521,15 @@ sortbyCurrent_Time(){
     this.SelectDms = null;
     this.MasterCode = null;
     this.Subtask = null;
-    this.Startts = null;
-    this.Endtms = null;
+    // this.Startts = null;
+    // this.Endtms = null;
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
+    this._meetingroom = false;
+    // document.getElementById("Location_Name").style.display = "none";
+    this._onlinelink = false;
+    document.getElementById("Descrip_Name12").style.display = "none";
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
@@ -5189,9 +5564,6 @@ sortbyCurrent_Time(){
     jsonData[DayNum] = moment().format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
     this.notProvided = false;
-
-
-
     this.subtashDrpLoading=false;
   }
 
@@ -5562,12 +5934,12 @@ sortbyCurrent_Time(){
           this.Attachment12_ary = [];
           // this.Recurr_arr = [];
           this.selected = null;
-          // this.TImetable();
+          this.TImetable();
           this.Portfolio = null;
           this.minDate = moment().format("YYYY-MM-DD").toString();
           this.maxDate = null;
           //69 this.calendar.updateTodaysDate();
-          // this.TImetable();
+          this.TImetable();
 
         });
       this.closeschd();
@@ -6463,6 +6835,207 @@ onParticipantFilter(){
   }
 
 
+  onCustomBtnClicked(){
+    $('#propse11').removeClass('show');
+    this.repeatEvent();
+   
+  }
+  
+
+  repeatEvent() {
+    document.getElementById("div_endDate_new").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
+  
+    this.editTask = false;
+    this.copyTask = false;
+    this.create = false;
+    this.eventRepeat=true;
+  
+  
+    this.Schedule_ID = this._calenderDto.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+   
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this.Schedule_ID = 0;   // schedule id.
+        this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
+        this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
+  
+        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
+        this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
+        this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+        this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
+        this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
+  
+        // if (this._FutureEventTasksCount > 0) {
+  
+        // }
+        // else if (this._FutureEventTasksCount == 0) {
+  
+        // }
+        this.Close_Repeat_Meeting();
+        document.getElementById("div_recurrence").style.display = "block";
+        document.getElementById("Monthly_121_new").style.display = "none";
+        document.getElementById("weekly_121_new").style.display = "none";
+        document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+  
+  
+        this.AllDatesSDandED = [];
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = (moment(this.minDate).format("YYYY-MM-DD"));//this.EventScheduledjson[0]['Schedule_date'];
+        var IsActive = "IsActive";
+        jsonData[IsActive] = 1;
+        var Day = "Day";
+        jsonData[Day] = "NA";
+        var DayNum = "DayNum";
+        jsonData[DayNum] = "NA";
+        this.AllDatesSDandED.push(jsonData);
+        this._StartDate = moment().format("YYYY-MM-DD").toString();
+        this.minDate = moment().format("YYYY-MM-DD").toString();
+        if (this.minDate > this._StartDate) {
+          this.minDate = this._StartDate;
+        }
+        this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+  
+
+
+     // valid starttimearr and endtimearr setting start.
+          let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+          let _currentdate=moment();
+          if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+          {
+              const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+              const index:number=this.StartTimearr.findIndex((item:any)=>{
+          
+                  const t=moment(item,'h:mm A');
+                  const result=t>=ct;
+                  return result;
+              });
+              this.validStartTimearr=this.StartTimearr.slice(index);
+          }
+          else
+          this.validStartTimearr=[...this.StartTimearr];
+
+         
+
+          this.timingarryend = [];
+          this.Time_End = [];
+          this.Time_End = [...this.StartTimearr];
+          let _index = this.Time_End.indexOf(this.Startts);
+          if (_index + 1 === this.Time_End.length) {
+            _index = -1;
+          }
+          this.timingarryend = this.Time_End.splice(_index + 1);
+          this.EndTimearr = this.timingarryend;
+          // valid starttimearr and endtimearr setting end.
+
+ 
+
+
+
+
+  
+  
+         if (this.ScheduleType == 'Event') {
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.GetProjectAndsubtashDrpforCalender();
+          this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+          this.MasterCode = [];
+          this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.arr.forEach(element => {
+            this.MasterCode.push(element.stringval);
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject, TM_DisplayName:element.TM_DisplayName });
+          });
+          this.Portfolio = [];
+          this.Portfolio1 = [];
+          this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
+          this.arr1.forEach(element => {
+            this.Portfolio.push(element.numberval);
+          });
+  
+          this.ngEmployeeDropdown = [];
+          this.ngEmployeeDropdown1 = [];
+          this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
+          this.arr2.forEach(element => {
+            this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+          });
+  
+  
+          this.SelectDms = [];
+          this.SelectDms1 = [];
+  
+          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+                 this.Memos_List = JSON.parse(data['JsonData']);
+                 console.log(this.Memos_List, "test iiii");
+  
+                 let arr3 = [];
+                 var str = (this.EventScheduledjson[0]['DMS_Name']);
+                 arr3 = str.split(",");
+                 for (var i = 0; i < arr3.length; i++) {
+                      this.Memos_List.forEach(element => {
+                        if (element.MailId == arr3[i]) {
+                          this.SelectDms.push(element.MailId);
+                        }
+                      });
+                 }
+  
+          });
+  
+  
+          this.Location_Type = (this.EventScheduledjson[0]['Location']);
+          this.Description_Type = (this.EventScheduledjson[0]['Description']);
+          document.getElementById("subtaskid").style.display = "none";
+          document.getElementById("Guest_Name").style.display = "flex";
+          document.getElementById("Location_Name").style.display = "none";
+          document.getElementById("Descrip_Name").style.display = "flex";
+          document.getElementById("core_viw121").style.display = "flex";
+          document.getElementById("core_viw123").style.display = "none";
+          document.getElementById("core_viw222").style.display = "flex";
+          document.getElementById("core_Dms").style.display = "flex";
+  
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+  
+         }
+  
+      });
+    this.closeevearea();
+  
+  }
+
+
+
+
+  onSubmitBtnClicked() {
+  
+    if (
+      (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
+      (this.Description_Type?(this.characterCount<500):true)&&
+      this.Startts &&
+      this.Endtms &&
+      this.MinLastNameLength
+      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+    ) {
+      this.OnSubmitSchedule();
+      this.notProvided = false;
+    }
+    else {
+      if ((!this.Title_Name)||this.Title_Name.trim().length<3||this.Title_Name.trim().length>100)
+        document.getElementById('dsb-evt-titleName').focus();
+      else if (this.ScheduleType === 'Event' && this.allAgendas.length === 0) { const agf: any = document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+
+      this.notProvided = true;
+    }
+  }
+
 //////////////////////////////////////////////////// Meeting Sidebar sectoion Start////////////////////////////////////////////////////////////
 
 
@@ -6583,19 +7156,66 @@ sendRequest(): void {
   }
   else{
     this.formFieldsRequired=false;
+    var Project_Code = null;
+    this.projectMoreDetailsService.NewInsertProjectRequestAccesss(Project_Code,this.Usercomment,this.Current_user_ID,this.Scheduleid).subscribe(res => {
+       console.log(res,'resrponse of the meeting details page');
+      this.closeRequestDialog();
+      Swal.fire('Request Sent Successfully');
+      this.isRequestSent = true;
+      this.ishide=false
+      $('.hide-content').addClass('d-none');
 
-    // this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
-   
-    //   this.closeRequestDialog();
-    //   Swal.fire('Request Sent Successfully');
-    //   this.isRequestSent = true;
-    //   this.ishide=false
-    //   $('.hide-content').addClass('d-none');
-
-    //    });
+       });
 
   }
 }
+
+
+multiapproval_json:any;
+totalCountOfList:any;
+requestaccessList:any;
+
+
+getMeetingApprovals(){
+
+  this.approvalObj.Schedule_Id=this.Scheduleid;
+  this.approvalObj.Emp_no =this.Current_user_ID;
+
+ this.approvalservice.NewGetMeetingApprovals(this.approvalObj).subscribe((data) => {
+
+   var multiapproval_json=data[0].multiapproval_json;
+   this.multiapproval_json=JSON.parse(multiapproval_json);
+   console.log(this.multiapproval_json,'testing 1233')
+   this.totalCountOfList=this.multiapproval_json.length;
+   this.requestaccessList=JSON.parse(data[0]['requestaccessList']);
+
+   this.requestaccessList.forEach((res)=>{
+      if(res.Submitted_By_EmpNo==this.Current_user_ID){      
+        this.isRequestSent = true;    
+      }
+   })    
+ })
+}
+
+
+UpdateMeetingRequestAccess(SNo,Type){
+
+  this.approvalObj.SNo=SNo;
+  this.approvalObj.Schedule_Id =this.Scheduleid;
+  this.approvalObj.Type = Type;
+
+ this.approvalservice.NewUpdateMeetingRequestAccess(this.approvalObj).subscribe((data) => {
+    console.log(data,'appraval data in the dashboard');
+    this.getMeetingApprovals();
+ })
+}
+
+
+
+
+
+
+
 
 getShorterName(name:string|undefined){
   if(name)
@@ -6653,5 +7273,7 @@ isExpanded_Report: boolean = false;
 toggleView() {
   this.isExpanded_Report = !this.isExpanded_Report;
 }
+
+
 
 } 
