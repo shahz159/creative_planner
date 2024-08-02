@@ -881,9 +881,13 @@ this.prjPIECHART.render();
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);   console.log('submission_json:',this.Submission);
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+      debugger
+      this.Submission = JSON.parse(res[0].submission_json);
+        console.log('submission_json:',this.Submission);
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
+         console.log('projectInfo:',this.projectInfo);
+
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -1315,8 +1319,8 @@ this.prjPIECHART.render();
     }
     else{
       this.formFieldsRequired=false;
-
-      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+      var Scheduleid = '0'
+      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
         console.log(res,'openRequestDialog')
         this.closeRequestDialog();
         Swal.fire('Request Sent Successfully');
@@ -7507,6 +7511,7 @@ isReleasingAction:boolean=false;
 newPrjreleasing:boolean=false;
 releasenewProject(){
 
+
   this.isReleasingAction=!(this.currentActionView===undefined||this.currentActionView===null);
 
   if(!this.hold_remarks||this.hold_remarks.trim()==''){
@@ -7516,7 +7521,7 @@ releasenewProject(){
 
   if(
     [this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(this.Current_user_ID)||
-    this.isReleasingAction?([this.projectActionInfo[this.currentActionView].Project_Owner,this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID)):true
+    (this.isReleasingAction?([this.projectActionInfo[this.currentActionView].Project_Owner,this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID)):true)
     ){
 
       this.approvalObj.Project_Code = this.isReleasingAction?this.projectActionInfo[this.currentActionView].Project_Code:this.URL_ProjectCode;
@@ -9444,11 +9449,6 @@ typeUserRemove:'AUDITOR'|'SUPPORT'|undefined;
 
 emp_Auditor:string|undefined;
 empAuditor_remarks:string|undefined;
-
-
-
-
-
 
 
 

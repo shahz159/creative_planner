@@ -251,6 +251,20 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
     this.obj_approvalDTO.isApproval = obj.isApproval;
 
     return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateNewProjectDetails", this.obj_approvalDTO);
-
   }
+
+  NewGetMeetingApprovals(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Schedule_Id=obj.Schedule_Id;
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetMeetingApprovals", this.obj_approvalDTO);
+  }
+
+  NewUpdateMeetingRequestAccess(obj: ApprovalDTO) {
+    this.obj_approvalDTO.SNo = obj.SNo;
+    this.obj_approvalDTO.Schedule_Id=obj.Schedule_Id;
+    this.obj_approvalDTO.Type = obj.Type;
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateMeetingRequestAccess", this.obj_approvalDTO);
+  }
+
+
 }

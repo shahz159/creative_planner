@@ -3130,6 +3130,14 @@ small.tlv-df {
 
 span.kt-at-count {
     font-size: 14px;
+    /* border-left: 1px solid #ccc; */
+    padding-left: 10px;
+    /* color: #6b6b6b; */
+}
+
+
+span.kt-at {
+    font-size: 14px;
     border-left: 1px solid #ccc;
     padding-left: 5px;
     color: #6b6b6b;
@@ -8281,3 +8289,40 @@ ul#myTabMeetingAttendees .nav-item {
 }
 
 /*new details page loading circle end*/
+.adminNotes-Completed{
+    padding: 20px;
+}
+.no-shadow{
+    box-shadow: none;
+}
+.delte-attach{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease-in-out;
+    overflow: hidden;
+}
+.delte-attach .icn svg{
+    width: 24px;
+    height: 24px;
+    color: #8c8c8c;
+}
+.kt-notification__item:hover .delte-attach{
+    width: 50px;
+}
+.delte-attach .icn svg:hover{
+    color: #ff0202;
+}
+.mee-co{
+    background-color: #e2e2ff;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1;
+    color: #5051FA;
+}

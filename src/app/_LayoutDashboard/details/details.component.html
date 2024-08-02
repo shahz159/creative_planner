@@ -2031,7 +2031,7 @@
           ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected','Project Hold'].includes(activity)||
           ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)) ||
           ((multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId))||
-          (projectInfo.Project_Block==='003')
+          (projectInfo.Project_Block==='003'&&projectInfo.totaltaskcount>0)
           ">
 
       <div class="kt-Note-msg  d-flex">
@@ -2415,64 +2415,60 @@
         </div>
 
 
-        <div class="notification" *ngIf="projectInfo.Project_Block==='003'"  [ngClass]="{'delay-notification':projectInfo.Status.toLowerCase().includes('delay'), 'underapproval-notification':projectInfo.Status=='InProcess'}" >
-            <ng-container *ngIf="projectInfo.Status.toLowerCase().includes('delay')">
-                <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <g>
-                            <path
-                                d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
-                            </path>
-                            <path
-                                d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
-                            </path>
-                        </g>
-                    </g>
-                </svg>
-
-                <div class="d-flex flex-column">
-                    <span class="notif-msg" style="color: #ff2727;">Task submission delayed by {{taskDelayedby}} {{taskDelayedby>1?'days':'day'}}. Last submitted on {{projectInfo.taskSubmit|date:'fullDate'}}.</span>
-                    <span *ngIf="projectInfo" class="notif-msg" style="color: #ff2727;"> Total submissions : {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} </span>
-                </div>
-            </ng-container>
-
-            <ng-container *ngIf="projectInfo.Status=='InProcess'&&projectInfo.totaltaskcount">
-                <svg fill="#00a2eb" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 47 47" xml:space="preserve">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <g>
-                            <g id="Layer_1_22_">
-                                <g>
-                                    <path
-                                        d="M6.12,38.52V5.136h26.962v28.037l5.137-4.243V2.568C38.219,1.15,37.07,0,35.652,0h-32.1C2.134,0,0.985,1.15,0.985,2.568 v38.519c0,1.418,1.149,2.568,2.567,2.568h22.408L22.33,38.52H6.12z">
-                                    </path>
-                                    <path
-                                        d="M45.613,27.609c-0.473-0.446-1.2-0.467-1.698-0.057l-11.778,9.734l-7.849-4.709c-0.521-0.312-1.188-0.219-1.603,0.229 c-0.412,0.444-0.457,1.117-0.106,1.613l8.506,12.037c0.238,0.337,0.625,0.539,1.037,0.543c0.004,0,0.008,0,0.012,0 c0.408,0,0.793-0.193,1.035-0.525l12.6-17.173C46.149,28.78,46.084,28.055,45.613,27.609z">
-                                    </path>
-                                    <path
-                                        d="M27.306,8.988H11.897c-1.418,0-2.567,1.15-2.567,2.568s1.149,2.568,2.567,2.568h15.408c1.418,0,2.566-1.15,2.566-2.568 S28.724,8.988,27.306,8.988z">
-                                    </path>
-                                    <path
-                                        d="M27.306,16.691H11.897c-1.418,0-2.567,1.15-2.567,2.568s1.149,2.568,2.567,2.568h15.408c1.418,0,2.566-1.149,2.566-2.568 C29.874,17.841,28.724,16.691,27.306,16.691z">
-                                    </path>
-                                    <path
-                                        d="M27.306,24.395H11.897c-1.418,0-2.567,1.15-2.567,2.568s1.149,2.568,2.567,2.568h15.408c1.418,0,2.566-1.15,2.566-2.568 C29.874,25.545,28.724,24.395,27.306,24.395z">
-                                    </path>
-                                </g>
+        <ng-container *ngIf="projectInfo.Project_Block==='003'">
+                <div *ngIf="projectInfo.Status.toLowerCase().includes('delay')" class="notification delay-notification">
+                    <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
+                                </path>
+                                <path
+                                    d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
+                                </path>
                             </g>
                         </g>
-                    </g>
-                </svg>
-                <!-- <span class="notif-msg" style="color : #00a2eb;">You have completed {{projectInfo.submissioncount}} of the {{projectInfo.totaltaskcount}} required submissions.</span> -->
-                <span class="notif-msg" style="color : #00a2eb;">Total submissions: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} completed.</span>
-            </ng-container>
+                    </svg>
+                    <div class="d-flex flex-column">
+                        <span class="notif-msg" style="color: #ff2727;">Task submission delayed by {{taskDelayedby}} {{taskDelayedby>1?'days':'day'}}.<span *ngIf="projectInfo.taskSubmit"> Last submitted on {{projectInfo.taskSubmit|date:'fullDate'}}.</span></span>
+                        <span *ngIf="projectInfo" class="notif-msg" style="color: #ff2727;"> Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} </span>
+                    </div>
+                </div>
 
-        </div>
-
+                <div *ngIf="(!projectInfo.Status.toLowerCase().includes('delay'))&&projectInfo.totaltaskcount>0" class="notification underapproval-notification">
+                        <svg fill="#00a2eb" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 47 47" xml:space="preserve">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <g>
+                                    <g id="Layer_1_22_">
+                                        <g>
+                                            <path
+                                                d="M6.12,38.52V5.136h26.962v28.037l5.137-4.243V2.568C38.219,1.15,37.07,0,35.652,0h-32.1C2.134,0,0.985,1.15,0.985,2.568 v38.519c0,1.418,1.149,2.568,2.567,2.568h22.408L22.33,38.52H6.12z">
+                                            </path>
+                                            <path
+                                                d="M45.613,27.609c-0.473-0.446-1.2-0.467-1.698-0.057l-11.778,9.734l-7.849-4.709c-0.521-0.312-1.188-0.219-1.603,0.229 c-0.412,0.444-0.457,1.117-0.106,1.613l8.506,12.037c0.238,0.337,0.625,0.539,1.037,0.543c0.004,0,0.008,0,0.012,0 c0.408,0,0.793-0.193,1.035-0.525l12.6-17.173C46.149,28.78,46.084,28.055,45.613,27.609z">
+                                            </path>
+                                            <path
+                                                d="M27.306,8.988H11.897c-1.418,0-2.567,1.15-2.567,2.568s1.149,2.568,2.567,2.568h15.408c1.418,0,2.566-1.15,2.566-2.568 S28.724,8.988,27.306,8.988z">
+                                            </path>
+                                            <path
+                                                d="M27.306,16.691H11.897c-1.418,0-2.567,1.15-2.567,2.568s1.149,2.568,2.567,2.568h15.408c1.418,0,2.566-1.149,2.566-2.568 C29.874,17.841,28.724,16.691,27.306,16.691z">
+                                            </path>
+                                            <path
+                                                d="M27.306,24.395H11.897c-1.418,0-2.567,1.15-2.567,2.568s1.149,2.568,2.567,2.568h15.408c1.418,0,2.566-1.15,2.566-2.568 C29.874,25.545,28.724,24.395,27.306,24.395z">
+                                            </path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="notif-msg" style="color : #00a2eb;">Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}}.</span>
+                </div>
+        </ng-container>
 
        </div>
       </div>
@@ -7123,7 +7119,7 @@
                                      </ng-container>
 
                                         <ng-container *ngIf="projectInfo">
-                                         <div *ngIf="Data.isRemovable&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)" class="d-flex align-self-center">
+                                         <div *ngIf="Data.isRemovable&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)" class="d-flex align-self-start">
                                                 <button (click)="openRemoveSADialog(i,'SUPPORT')" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
                                                     <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
                                                     <span *ngIf="Data.Role=='Support';else alsoAsSupport" class="auditor-btn-text">&nbsp;remove</span>
@@ -7134,8 +7130,8 @@
                                         <!--remarks on removing support/auditor-->
                                         <div class="mark-admin-drop" id="mark-admin-drop{{i}}">
                                             <div class="form-group mb-0">
-                                                <label *ngIf="typeUserRemove=='SUPPORT'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove</label>
-                                                <label *ngIf="typeUserRemove=='AUDITOR'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove</label>
+                                                <label *ngIf="typeUserRemove=='SUPPORT'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as support</label>
+                                                <label *ngIf="typeUserRemove=='AUDITOR'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as auditor</label>
                                                 <textarea [ngClass]="{'error-border':!sprtaudtr_remarks&&notProvided}"  placeholder="provide your remarks here." class="form-control remarks-input" [(ngModel)]="sprtaudtr_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                 <span *ngIf="!sprtaudtr_remarks&&notProvided" style="color:red" class="fs-8"  >remarks required.</span>
                                             </div>
@@ -7306,11 +7302,6 @@
                                         </mat-option>
 
 
-
-
-
-
-
                                       </mat-autocomplete>
                                   </mat-form-field>
                                   <button
@@ -7336,7 +7327,7 @@
                                         <input id="auditor-inputfield" #AuditorInputTF class="flex-1" [matChipInputFor]="selected_Auditor"
                                             [matAutocomplete]="AuditorSelectionDRPDWN" />
                                         <button *ngIf="isAuditorDrpDwnOpen"
-                                            class="bg-transparent border-0  curser-pointer"><mat-icon class="close-icon  save-mat-selection "
+                                            class="bg-transparent border-0 curser-pointer"><mat-icon class="close-icon  save-mat-selection "
                                                 (click)=" this.isAuditorDrpDwnOpen=false;   closeAutocompleteDrpDwn('auditor_DrpDwn');">done</mat-icon>
                                         </button>
                                         <button *ngIf="!isAuditorDrpDwnOpen" class="bg-transparent border-0">
@@ -7348,14 +7339,16 @@
                                         (opened)="isAuditorDrpDwnOpen=true"
                                         (closed)="isAuditorDrpDwnOpen=false; ">
 
-                                      <ng-container *ngFor="let emp of racisNonRacis|filter:AuditorInputTF.value.trim()">
-                                          <mat-option [value]="{empName:emp.RACIS, empNo:emp.Emp_No}" class="mat-font">
+                                      <ng-container *ngFor="let emp of allUsers1|filter:AuditorInputTF.value.trim()">
+
+                                          <mat-option *ngIf="(!projectAuditor)||projectAuditor.empNo!=emp.Emp_No" [value]="{empName:emp.RACIS, empNo:emp.Emp_No}" class="mat-font">
                                               <mat-checkbox color="primary" [checked]="selectedAuditor?(emp.Emp_No==selectedAuditor.empNo):false"></mat-checkbox>
                                               {{emp.RACIS}}
                                           </mat-option>
+
                                       </ng-container>
 
-                                      <mat-option *ngIf="(racisNonRacis|filter:AuditorInputTF.value.trim()).length==0" style="pointer-events:none;"  >
+                                      <mat-option *ngIf="(allUsers1|filter:AuditorInputTF.value.trim()).length==0" style="pointer-events:none;"  >
                                           <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                                               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -7365,11 +7358,6 @@
                                           </svg>
                                           <span style="color:#757575" class="ml-2">No results found.</span>
                                       </mat-option>
-
-
-
-
-
 
                                     </mat-autocomplete>
                                 </mat-form-field>

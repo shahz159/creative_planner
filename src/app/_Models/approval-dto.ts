@@ -36,5 +36,6 @@ export class ApprovalDTO {
     enddate:string;
     portfolioId:string;
     SubmissionType:string;
+    Schedule_Id:string
 
 }

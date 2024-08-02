@@ -404,6 +404,15 @@ DeletePortfoliosOfMeeting(obj: CalenderDTO) {
   return this.http.post(this.rootUrl + "CalenderAPI/NewUnLinkInMeetingDetails", this.obj_CalenderDTO)
 }
 
+
+DeleteAttachmentOfMeeting(obj: CalenderDTO) {
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  this.obj_CalenderDTO.fileid=obj.fileid;
+  this.obj_CalenderDTO.flagid=obj.flagid;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewDeleteMeetingAttachments", this.obj_CalenderDTO)
+}
+
 DeleteDMSOfMeeting(obj: CalenderDTO) {
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
@@ -460,7 +469,6 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
 
   return this.http.post(this.rootUrl+'CalenderAPI/NewGetRecurrenceMeetingsService',this.obj_CalenderDTO)
 }
-
 
 
 }

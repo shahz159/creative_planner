@@ -4622,6 +4622,15 @@ var options = {
           });
           }
 
+
+          textelms.forEach((label) => {
+            
+            label.addEventListener('click', (e)=>{
+              console.log('yaxis e:',e);
+                // this.newDetails();
+            });
+          });
+
           // const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
           // yaxis.querySelectorAll('text').forEach(v=>{
           //    v.setAttribute('x','-150');
@@ -4841,6 +4850,9 @@ var chart = new ApexCharts(document.querySelector("#chartdiv3"), options);
 chart.render();
 
 }
+
+
+
 
 
 

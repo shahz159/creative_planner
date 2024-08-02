@@ -55,7 +55,8 @@ export class CalenderDTO {
     filterbyCompany:string;
     filterbyUser:string;
     filterbyStatus:string;
-    Agendas:any
+    Agendas:any;
+    fileid :any
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;
