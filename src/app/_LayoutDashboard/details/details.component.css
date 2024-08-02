@@ -1021,13 +1021,12 @@ button.Kt-Approval-btns {
 .Add_Action_btn {
   background-color: #527ce2;
   border: 1px solid #527ce2;
-  font-size: 13px !important;
+  font-size: 12px !important;
   /* padding: 3px 5px; */
-  padding: 0.3em 0.6em 0.3em 0.6em;
+  padding: 0.4em 0.6em 0.3em 0.6em;
   border-radius: 4px !important;
   border-width: 1px !important;
-  font-weight: 400;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
   color: #fff;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -4444,6 +4443,21 @@ span.Rq_date_V {
 
 
 
+.newversion-notification{
+  column-gap: 6px;
+  background-color: #d8efff;
+}
+
+
+.newversion-notification .notif-msg .notif-msg-anchorlink{
+   color: #00a2eb;
+
+}
+
+.newversion-notification .notif-msg .notif-msg-anchorlink:hover{
+   text-decoration: underline !important;
+   cursor: pointer;
+}
 
 
 .statistics-ctrl-btns {
@@ -4457,8 +4471,6 @@ span.Rq_date_V {
 .statistics-ctrl-btns:hover {
   background-color: #f1f1f1;
 }
-
-
 
 
 
@@ -4638,7 +4650,7 @@ span.Kt-m-count {
   font-size: 13px !important;
   padding: 0.3em 0.6em 0.3em 0.6em;
   border-radius: 4px !important;
-  border-width: 1px !important;
+  border-width: 2px !important;
   font-weight: 400;
   color: #527ce2;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -4660,6 +4672,23 @@ span.Kt-m-count {
 .View_graph_act:hover a svg {
   fill: #ffffff !important;
 }
+
+
+.View_graph_act .view-graph-text{
+  max-width: 0;
+  display: inline-block;
+  text-wrap: nowrap;
+  overflow-x: hidden;
+  transition-duration: 0.5s;
+}
+
+.View_graph_act:hover .view-graph-text{
+  max-width: 100px;
+  transition-duration: 0.5s;
+}
+
+
+
 
 ::ng-deep .modal-backdrop.show {
   z-index: 1;
@@ -6602,14 +6631,38 @@ div#User_list_View.kt-quick-active--on {
 }
 
 
-.upgraded-type-prj{
-    position: absolute;
+.nextversion-type-prj{
+    /* position: absolute;
     right: 16px;
     top: 52px;
     padding: 0.3em 0.5em 0.3em 0.5em;
     border-radius: 2px;
     background-color: #85676778;
+    color: white; */
+    background-color: #27b044c9 !important;
     color: white;
+    font-weight: 500;
+    width: fit-content;
+    border-radius: 3px;
+
+}
+
+
+.nextversion-type-prj .prev-version-btn{
+  display: inline-block;
+  background-color: #7cea97;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border:0;
+  padding:0;
+  max-width: 0;
+  overflow-x: hidden;
+}
+
+
+.nextversion-type-prj:hover .prev-version-btn{
+   max-width: 50px;
+   transition-duration: 0.5s;
 }
 
 
@@ -8243,11 +8296,17 @@ input.search-input {
   background-color:#81C784;
 }
 
+.fbc-completion-apr{
+   background-color:#81C784;
+}
+
+.fbx-newprj-rejected{
+   background-color:#BA68C8;
+}
+
+
+
 /* Actns filter box count css end*/
-
-
-
-
 
 
 

@@ -1042,7 +1042,7 @@ onProjectOwnerChanged(){
           ...task,
           Duration: duration
         };
-      });
+      });   
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
@@ -1110,7 +1110,8 @@ onProjectOwnerChanged(){
 
   onButtonClick(value:any,id:number){
     debugger
-    this.bind_Project = [value]
+    this.bind_Project = [value];
+    console.log('bind project:',this.bind_Project);
     // this.duration=this.bind_Project[0].Duration;
 
     const cDate=new Date();
@@ -1128,6 +1129,7 @@ onProjectOwnerChanged(){
     this.Prjtype=this.bind_Project[0].Project_Type;
     this.duration=this.bind_Project[0].Duration+1;
     this.Allocated_Hours=this.bind_Project[0].Allocated;
+    this.prjsubmission=this.bind_Project[0].Submission_Type;
     this.fileAttachment = this.bind_Project[0].FileName;
     console.log(this.fileAttachment,"fileAttachmentfileAttachmentfileAttachmentfileAttachmentfileAttachment")
     const portfolios_ = this.bind_Project[0].Portfolio_Id;

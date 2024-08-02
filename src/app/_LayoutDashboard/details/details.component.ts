@@ -20,7 +20,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -28,7 +28,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar} from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Observable, Subscription } from 'rxjs';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -882,7 +882,7 @@ this.prjPIECHART.render();
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);   console.log('submission_json:',this.Submission);
+      this.Submission = JSON.parse(res[0].submission_json);  
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
@@ -1063,8 +1063,11 @@ this.prjPIECHART.render();
             console.log(this.PeopleOnProject,"sssssssss")
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-              if(p)
-               obj.contribution=p.RespDuration;
+              if(p){
+                  obj.contribution=p.RespDuration;
+                  obj.totalActionsCreated=p.SubtaskCount;
+              }
+             
             }
 
             
@@ -2015,7 +2018,7 @@ multipleback(){
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.completedoc = (this.complete_List[0]['Sourcefile']);   
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
@@ -2180,6 +2183,11 @@ currentStdAprView:number|undefined;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
+    this.Accept_active=false;
+    this.Reject_active=false;
+    this.Audit_active=false;
+    this.Transfer_active=false;
+    this.Conditional_Active=false;
   }
 
 
@@ -2362,8 +2370,7 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {
-debugger
+    else if (this.selectedType == '2') {    debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -3742,8 +3749,8 @@ check_allocation() {
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {
-        this._portfoliosList = data as [];
+      ((data) => {    
+        this._portfoliosList = data as [];    console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
@@ -4011,7 +4018,7 @@ check_allocation() {
 
 
 
-  updateMainProject() {
+  updateMainProject() {   
 // for checking whether mandatory fields are provided or not.
    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
@@ -4025,12 +4032,9 @@ check_allocation() {
   }
 // for checking whether mandatory fields are provided or not.
 
-
-
-
-    if (this.projectInfo.Project_Type == 'To do List') {
-      this.selectedFile = null;
-    }
+    // if (this.projectInfo.Project_Type == 'To do List') {
+    //   this.selectedFile = null;
+    // }
 
     if (this.isAction == false) {
       const fd = new FormData();
@@ -9706,8 +9710,8 @@ loadActionsGantt(){
       data: data_ar
     };
   });
-  const rowHeight=50;
-  let chartHeight=rowHeight*actions_list.length+100;
+  const rowHeight=55;
+  let chartHeight=rowHeight*actions_list.length+125;   console.log('chartHeight value is:',chartHeight);
   let max_Xvalue=curdate;
   max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
@@ -9775,7 +9779,7 @@ loadActionsGantt(){
                              tspan1.textContent=fullname.substring(0,20);
                              const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                              tspan2.setAttribute('x','-135');
-                             tspan2.setAttribute('dy','15.6');
+                             tspan2.setAttribute('dy','11.8');
                              let fullname2=fullname.slice(20);
                              fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
                              tspan2.textContent=fullname2;
@@ -9788,6 +9792,22 @@ loadActionsGantt(){
               }
 
 // yaxis label adjustments
+
+            Array.from(textelms).forEach((te:any,index)=>{ 
+                        const _a_res:any=actions_list[index].Responsible;
+                        const ypos=te.getAttribute('y');
+                        te.setAttribute('y',ypos-12);
+                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                        tspan3.setAttribute('x','-135');
+                        tspan3.setAttribute('dy','13');
+                        tspan3.style.fill='#543fff';
+                        tspan3.style.fontSize='0.7em';
+                        tspan3.style.fontWeight='bold';
+                        tspan3.style.fontFamily='Lucida Sans Unicode';
+                        tspan3.style.textTransform='capitalize';
+                        tspan3.textContent=_a_res;
+                        te.appendChild(tspan3);
+               });
 
                 const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
                 const trsnfvalue=gcharttable.getAttribute('transform');
@@ -9811,7 +9831,7 @@ loadActionsGantt(){
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: '35%',
+        barHeight: '32%',
         rangeBarGroupRows: true
       }
     },
@@ -9844,14 +9864,11 @@ loadActionsGantt(){
     yaxis: {
       labels: {
         style: {
-          fontSize: '12px',       
+          fontSize: '11px',       
           fontFamily: 'Arial, sans-serif', 
           color: '#333',          
           textAnchor: 'start'    
         },
-
-
-
 
         formatter:function(value) {
           if (isNaN(value)) {
@@ -9862,31 +9879,7 @@ loadActionsGantt(){
             return value;
         }
 
-
-
-
-        // function(value) {
-        //   if (isNaN(value)) {
-        //       let str=value.substring(0,value.lastIndexOf('(')); 
-        //       str=str.trim();   
-        //       const maxl=20;
-        //       if(str.length<=maxl)
-        //         return str;
-        //       else 
-        //         {
-        //             return [str.substring(0,maxl),str.slice(maxl)];
-        //         }
-              
-        //   } else 
-        //     return value;
-        // }
-
-
-
-
-
-
-
+ 
       }
     },
     grid: {
@@ -9989,7 +9982,27 @@ loadActionsGantt(){
         }
       }],
      
+    },
+
+
+    title:{
+      text: this.projectInfo.Project_Name,
+      align: 'left',
+      margin: 10,
+      offsetX: 0,
+      offsetY: 0,
+      floating: false,
+      style:{
+        fontSize: '15px',
+        fontWeight: 'bold',
+        fontFamily: 'Lucida Sans Unicode',
+        color: '#263238'
+      }
+      
     }
+
+
+    
     
   };
 
@@ -10138,17 +10151,23 @@ getca_Dropdowns(){
     // prj types    
     this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
     
-    // portfolios list
-    this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe((data) => {
+    //all portfolios list
+    this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
       this._portfoliosList2 = data as [];  
     });
 }
+
+
+goToProject(pcode) {
+  let name: string = 'Details';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${pcode}`;
+  var myWindow = window.open(myurl,pcode);
+  myWindow.focus();
+}
+
+
 // conditional accept functionality end
-
-
-
-
-
 
 }
 
