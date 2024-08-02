@@ -353,7 +353,7 @@ export class PortfolioProjectsComponent implements OnInit {
   //   this.Task_type(2)
   // }
 
-
+  userFound:boolean|undefined;
   _PortfolioDetailsById: any;
   _MessageIfNotOwner: string;
   createdBy:any;
@@ -396,6 +396,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
         console.log( this.Employeshare,'employeeeeeeeeeeee')
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
+        this.userFound = true
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
@@ -4587,7 +4588,7 @@ var options = {
           const ganttCtrls:any=document.querySelector('.prjs-Ganttchart .gantt-ctrls-btns');
           ganttCtrls.innerHTML='';
           ganttCtrls.append(ctrlbtns);
-          
+
 
 
 
@@ -4604,8 +4605,8 @@ var options = {
               const strl=fullname.length;
               if(strl>maxl){
                    te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
-                   
-                   const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+
+                   const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                    tspan1.textContent=fullname.substring(0,20);
                    const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                    tspan2.setAttribute('x','-135');
@@ -4626,7 +4627,7 @@ var options = {
           //    v.setAttribute('x','-150');
           //    v.setAttribute('text-anchor','start');
           // });
-          // console.log(yaxis);  
+          // console.log(yaxis);
 
        },
 
@@ -4688,10 +4689,10 @@ var options = {
   yaxis: {
     labels: {
       style: {
-        fontSize: '11px',       
-        fontFamily: 'Arial, sans-serif', 
-        color: '#333',          
-        textAnchor: 'start'    
+        fontSize: '11px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#333',
+        textAnchor: 'start'
       },
       formatter: function(value) {
         if (isNaN(value)) {
@@ -4708,7 +4709,7 @@ var options = {
   grid: {
     yaxis: {
       lines: {
-        show: true, 
+        show: true,
       }
     },
     xaxis: {
@@ -4722,7 +4723,7 @@ var options = {
       bottom: 20, // Add padding to the bottom to create space below the controller buttons
       left: 0
     },
-    
+
   },
   legend: { show:false },
   tooltip: {
@@ -5666,14 +5667,14 @@ bindCustomRecurrenceValues(){
   characterCount: number = 0;
 
   updateCharacterCount(): void {
-  
+
     // Create a temporary div element to strip out HTML tags
     const tempElement = document.createElement('div');
     tempElement.innerHTML = this.Description_Type;
     const textContent = tempElement.textContent || tempElement.innerText || '';
     this.characterCount = textContent.length;
   }
-  
+
 
   // new code of portfolio meeting side bar end
 }

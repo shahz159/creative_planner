@@ -307,7 +307,7 @@ export class ActionToProjectComponent implements OnInit {
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
         console.log(this.allUsers,"groupby");
-        console.log()
+
 
       });
   }

@@ -131,6 +131,7 @@ export class ProjectsAddComponent implements OnInit {
     this.GetProjectsByUserName();
     this.getDropdownsDataFromDB();
   }
+  userFound:boolean | undefined
   GetProjectsByUserName() {
     //this.LoadingBar_state.start();
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
@@ -147,6 +148,7 @@ export class ProjectsAddComponent implements OnInit {
         // this._totalProjectsCount = this._ProjectDataList.length;
         console.log("ProjectList----------->", this._ProjectDataList.length);
         console.log("ProjectListssssssssss----------->", this._ProjectDataList);
+        this.userFound = true
       }
     });
     this.getDropdownsDataFromDB();
@@ -965,9 +967,9 @@ allSelectedProjects:any=[];  // overall selection
 isAllPrjSelected:boolean=false;
 
 selectUnSelectProject(e,item){ debugger
-      if(e.checked){ 
+      if(e.checked){
           this.allSelectedProjects.push(item);
-      
+
           const allsel=this._ProjectDataList.every(item=>{
             return this.allSelectedProjects.map(p=>p.Project_Code).includes(item.Project_Code)
           })
@@ -1007,7 +1009,7 @@ addPrjsToPortflio() {
           if(this._portfolioId!==''){
             this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
           }
-        
+
 
            this._ProjectDataList.map(PRJ=>{
 
@@ -1045,9 +1047,9 @@ removePrjFromPortfolio(element:any){
      const index=this._ProjectDataList.findIndex(p=>p.Project_Code==pCode);
      if(index!=-1){
            delete this._ProjectDataList[index].addedIntoPortfolio;
-     } 
+     }
 
-  
+
 
   });
 

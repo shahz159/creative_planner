@@ -18,6 +18,8 @@ import Swal from 'sweetalert2';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
 import { ActivatedRoute } from '@angular/router';
+import { debug } from 'console';
+import { sort } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -76,6 +78,7 @@ export class TimelineComponent implements OnInit {
   sortType:string;
   sort1:string='Date';
   sort2:string='Project';
+  sort3:string = 'Employees';
   activeDate:boolean=false;
   activeProject:boolean=false;
   master_code:any;
@@ -141,6 +144,8 @@ export class TimelineComponent implements OnInit {
     this._adapter.setLocale(this._locale);
   }
 
+
+  userFound : boolean | undefined
   timelineLog(type){
 
     console.log("timelineLog input:",);
@@ -150,33 +155,48 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 30;
-
+    // this.ObjSubTaskDTO.selected_emp = 0
+    this.ObjSubTaskDTO.sort = null
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
       (data=>{
+
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         console.log(this.timelineList,"timelinedata")
         this.timelineDuration=(data[0]['TotalTime']);
         this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
+        this.userFound = true
         this._CurrentpageRecords=this.timelineList.length;
         if(this.timelineList.length == 0){
           this.showtimeline=false;
           this.timelineDuration=0;
         }
-      });
-  }
 
-  timelineLog1(type){
+      });
+
+// by default date
+      this.setFilterInfo('Date',undefined);
+
+  }
+  racisemplFilter:any
+
+  timelineLog1(type,empno:any){
     this.Type=type;
-    this.showtimeline=true;
+    this.showtimeline=true
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 30;
+    this.ObjSubTaskDTO.selected_emp=empno?empno:0 ;
+    this.ObjSubTaskDTO.sort = empno?'Employee':'Date';
 
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
       (data=>{
+
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+        this.racisemplFilter = JSON.parse(data[0]['RacisEmployee_Json'])
+
         this.darArray=this.timelineList;
+        console.log(this.darArray,"startdatastartdatastartdatastartdatastartdata")
         this._CurrentpageRecords=this.timelineList.length;
         if(this.timelineList.length == 0){
           this.showtimeline=false;
@@ -186,10 +206,15 @@ export class TimelineComponent implements OnInit {
       (data=>{
         this.timelineDuration=(data[0]['TotalTime']);
       });
+
+
   }
 
+
+  activeemployees:boolean = false;
   sortTimeline(sort){
     debugger
+    this.edited = false
     this.sortType=sort;
 
     if(sort=='Date'){
@@ -200,6 +225,9 @@ export class TimelineComponent implements OnInit {
       this.activeDate=false;
       this.activeProject=true;
     }
+    // if(sort=='Employees'){
+
+    // }
 
     if(this.Type=='My Timeline'){
       this.showtimeline=true;
@@ -224,11 +252,12 @@ export class TimelineComponent implements OnInit {
     }
     else if(this.Type=='RACIS Timeline'){
       this.showtimeline=true;
-
+debugger
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
       this.ObjSubTaskDTO.sort = sort;
+      this.ObjSubTaskDTO.selected_emp = 0
 
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
       (data=>{
@@ -265,6 +294,7 @@ export class TimelineComponent implements OnInit {
   }
 
   loadMore1() {
+
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = this.CurrentPageNo;
     this.ObjSubTaskDTO.PageSize = 30;
@@ -282,6 +312,7 @@ export class TimelineComponent implements OnInit {
       (data=>{
         this.timelineDuration=(data[0]['TotalTime']);
       });
+
   }
 
   loadMorebySort(){
@@ -788,7 +819,82 @@ prostate(actioncode:any){
 // functionality : file attachment is mandatory when action completion. end
 
 
+showDropdown = false;
+activeAgendaIndex: number = 0
+toggleDropdown() {
+  this.activeAgendaIndex = 0
+  this.showDropdown = !this.showDropdown;
+}
 
+filterconfig: {
+  filterby: 'Date' | 'Project' | 'Employees' ,
+  sortby: string
+} = { filterby: 'Date', sortby: 'Employees' };
+
+setFilterInfo(filterby:  'Date' |'Project' | 'Employees' , sortby: string | undefined) {
+  debugger
+  // this.activeAgendaIndex = 0
+  if(this.filterconfig.filterby!=filterby){
+     sortby=undefined;
+  }
+
+  this.filterconfig.filterby = filterby;
+  this.filterconfig.sortby = sortby;
+}
+
+previous_filter() {
+  document.getElementById("dropd").classList.toggle("show");
+
+}
+
+  toggleDropdowns() {
+    this.activeAgendaIndex = 0
+    this.showDropdown = false;
+    // document.getElementById('loadmore').classList.remove('d-none')
+  }
+
+
+
+  filterEmpTimeline(empno: string) {
+
+    // this.timelineList= this.timelineList.map(item => {debugger
+    //   return { ...item, Dardata: item.Dardata.filter(dar => dar.EmpName === EmpName) };
+    //  }).filter(item => item.Dardata.length > 0);
+
+    }
+
+
+    edited:boolean = false
+
+    getTimelineOfEmployee(empno:string,pageNo:number=1){
+      debugger
+      this.showtimeline=true;
+      this.ObjSubTaskDTO.Emp_No = empno;
+      this.ObjSubTaskDTO.PageNumber = pageNo;
+      this.ObjSubTaskDTO.PageSize = 30;
+
+        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+        (data=>{
+
+          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+          console.log(this.timelineList,"timelinedata")
+          this.timelineDuration=(data[0]['TotalTime']);
+          this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
+          this.userFound = true
+          this.edited = true
+          this._CurrentpageRecords=this.timelineList.length;
+          if(this.timelineList.length == 0){
+            this.showtimeline=false;
+            this.timelineDuration=0;
+          }
+        });
+        // this.hideloadmore()
+    }
+
+
+// hideloadmore(){
+//   document.getElementById('loadmore').classList.add('d-none')
+// }
 
 
 }

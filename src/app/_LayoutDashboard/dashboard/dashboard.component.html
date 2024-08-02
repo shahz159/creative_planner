@@ -1,3 +1,6 @@
+
+<ng-container *ngIf="userFound!==undefined;else pleasewait">
+  <ng-container *ngIf="(userFound===true)">
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0 side_view" id="kt_content">
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
@@ -470,7 +473,6 @@
             </div>
 
 
-
             <div id="pendlist" class="pend-section col-lg-3">
                 <div class="d-flex hedr-title">
                     <div class="">
@@ -590,6 +592,10 @@
                     </div>
                 </div>
             </div>
+
+
+
+
             <div id="Delaylist" class="pend-section col-lg-3">
                 <div class="d-flex hedr-title">
                     <div class="">
@@ -1203,6 +1209,29 @@
                    <span class="visually-hidden"></span>
                    </div>
                 </div>
+                <!-- <ng-container *ngIf="loading">
+                  <div class="smart-glass">
+                    <h1></h1>
+                    <div class="logo">
+                      <div class="circle">
+                        <div class="circle">
+                            <div class="circle">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hold-loader">
+                      <div class="loader-img">
+                        <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+                      </div>
+                     </div>
+                    </div>
+                  </div>
+                </ng-container> -->
+
+
+
+
+
                 <div class="" *ngFor="let item of EventScheduledjson">
                     <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
@@ -2116,7 +2145,7 @@
                                 data-target="#responsemodal" [ngClass]="{'acceptmeeting':statusofMeeting=='Accepted'}">Yes</button>
                             <button *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"
                                 class="btn btn-sm btn-light-primary btn-pill footbtns" [ngClass]="{'acceptmeeting':statusofMeeting=='Accepted'}"
-                                (click)="Action_event(1);Event_acceptandReject()">Yes  
+                                (click)="Action_event(1);Event_acceptandReject()">Yes
                             </button>
                             <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"
                                 class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
@@ -2943,8 +2972,8 @@
                             (paste)="updateCharacterCount()" [config]="config"></angular-editor>
                             <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces </span>
                             <span *ngIf="characterCount>=500"  style="color:red">    description should not exceed 500 characters.</span>
-                           
-                           
+
+
                         </div>
                     </div>
                 </div>
@@ -4638,7 +4667,7 @@
                                     {{prj.BlockNameProject}}
                                 </span>
                             </mat-checkbox>
-                         </span>                     
+                         </span>
                     </li>
                 </ng-container>
                     <div *ngIf="ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
@@ -4687,7 +4716,7 @@
                                     {{memo.Subject}}-{{memo.DisplayName}}
                                 </span>
                             </mat-checkbox>
-                        </span> 
+                        </span>
                     </li>
 
                     <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
@@ -4716,7 +4745,7 @@
                                 </span>
                             </mat-checkbox>
                         </span>
-                     
+
                     </li>
                     <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
                         <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
@@ -4805,7 +4834,7 @@
             <div class="mb-2" id="div_endDate_new">
                     <label>End Date</label>
                     <div class="endtill-date">
-                        <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" 
+                        <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"
                                 [(ngModel)]="_EndDate1"  placeholder="End Date"
                                 class="form-control" style="padding-left: 4rem !important;">
                             <span class="endtill-date-icon">
@@ -4911,3 +4940,26 @@
     </div>
   </div>
   <!-- customrecurrence Modal End -->
+</ng-container></ng-container>
+
+<ng-template #pleasewait>
+
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>

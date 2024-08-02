@@ -919,7 +919,7 @@ export class DashboardComponent implements OnInit {
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = id;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {  
+      ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing111");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -1128,7 +1128,7 @@ export class DashboardComponent implements OnInit {
     this.eventRepeat=false;
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {    
+      ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = 0;
@@ -1407,7 +1407,7 @@ export class DashboardComponent implements OnInit {
 
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => { 
+      ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -1521,7 +1521,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-  
+
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
@@ -1815,7 +1815,7 @@ export class DashboardComponent implements OnInit {
     return lastDays;
   }
 
-  OnSubmitSchedule() { 
+  OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1889,7 +1889,7 @@ export class DashboardComponent implements OnInit {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-     
+
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -1967,7 +1967,7 @@ export class DashboardComponent implements OnInit {
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
         var vLink_Details = "Link_Details";
-        let link_d=this.Link_Details;  
+        let link_d=this.Link_Details;
         if(this.Link_Details){
           link_d=this.Link_Details.replace(/&#160;/g, ' ');
           link_d=this.anchoredIt(link_d);
@@ -2366,7 +2366,7 @@ export class DashboardComponent implements OnInit {
 
           var vDescription = "Description";
           element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-      
+
           var vSubtask = "Subtask";
           element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
 
@@ -2916,7 +2916,7 @@ export class DashboardComponent implements OnInit {
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
     // this.Recurr_arr.push(days.target.value);
-   
+
     if(days.target.checked&&this.notProvided1=='dayarr1')
       this.notProvided1="";
   }
@@ -3865,7 +3865,7 @@ debugger
     $('.side_view').addClass('position-fixed');
     this._calenderDto.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {  
+      ((data) => {
         this.loading = false;
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
@@ -3899,7 +3899,7 @@ debugger
         console.log(this.EventScheduledjson, "Testing12");
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          
+
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
@@ -3936,7 +3936,7 @@ debugger
           // document.getElementById("act-btn").style.display = "none";
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
-       
+
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
@@ -3944,7 +3944,7 @@ debugger
         debugger
         var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
          this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
-         
+
         // console.log(this.statusofMeeting[0].Status, "12")
         this.dmsIdjson = [];
         if (this.DMS_Scheduledjson.length > 0) {
@@ -4352,7 +4352,7 @@ debugger
   dataBindEndTime: number;
   fetchDataTime: number;
   dataBindTime: number;
-
+userFound : boolean | undefined
   GetScheduledJson() {
 
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -4364,9 +4364,10 @@ debugger
 
         this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-
+console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
+        this.userFound = true
         console.log(this.Scheduledjson, "Testingssd");
 
         console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
@@ -4932,24 +4933,24 @@ debugger
   meetingDuration:any;
 
   meetingRestriction(actualMeeting){
-  
+
     const today = new Date();
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(today.getDate() - 8);
     const meetingDate = new Date(actualMeeting);
 
-   
+
     if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
         this.delayMeeting = true;
-        this.upcomingMeeting = false;  
-    } 
+        this.upcomingMeeting = false;
+    }
     // Check if meeting date is in the future
     else if (meetingDate > today) {
         this.upcomingMeeting = true;
         this.delayMeeting = false;
     } else {
         this.delayMeeting = false;
-        this.upcomingMeeting = false;  
+        this.upcomingMeeting = false;
         const durationMillis = meetingDate.getTime() - sevenDaysAgo.getTime();
         // Convert milliseconds to days and add 8 to start from 8 days
         var meetingDurations = Math.ceil(durationMillis / (1000 * 60 * 60 * 24)) - 7;
@@ -5339,7 +5340,7 @@ debugger
     if(this.draft_arry[0]['dms_id']){
        this.SelectDms=this.draft_arry[0]['dms_id'].split(',');
     }
-    else 
+    else
      this.SelectDms=[];
 
     this.ngEmployeeDropdown = [];
@@ -5825,11 +5826,11 @@ debugger
   //       ],
   //     }
   //   };
-  
+
   //   var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
   //   chart.render();
   // }
-  
+
 
   // bar graph
   // agenda in event creation start
@@ -6432,7 +6433,7 @@ repeatEvent() {
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
- 
+
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.Schedule_ID = 0;   // schedule id.
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
@@ -6576,7 +6577,7 @@ if(input_date<current_date){
   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-  
+
       const date1: Date = new Date(this._StartDate);
       const date2: Date = new Date(this._SEndDate);
 
@@ -6885,8 +6886,8 @@ anchoredIt(inputstr){
   if(matches2){
           matches2.forEach((linkstr,index)=>{
             const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
-            alllinks.push(alink); 
-            inputdes=inputdes.replace(linkstr,`@link@-${index}`); 
+            alllinks.push(alink);
+            inputdes=inputdes.replace(linkstr,`@link@-${index}`);
            });
 
            inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
@@ -6894,7 +6895,7 @@ anchoredIt(inputstr){
             });
   }
 
-  
+
   return inputdes;
 }
 
