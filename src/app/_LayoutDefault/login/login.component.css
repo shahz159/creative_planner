@@ -219,3 +219,7 @@
     opacity: 0;
     z-index: -1;
 }
+.new-f{
+    font-family: 'AvenirNextCyr-Bold', sans-serif; 
+    text-transform: uppercase;
+}
