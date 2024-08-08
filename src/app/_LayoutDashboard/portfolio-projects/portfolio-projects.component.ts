@@ -4420,11 +4420,14 @@ all_status={
   'other':'#d0d0d0'
 };
 prj_statuses:any=[];
+isGanttchartVisible:boolean=false;
 loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
 
 
   let _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
+  this.isGanttchartVisible=_ProjectsListBy_Pid1.length>0;
+  
   _ProjectsListBy_Pid1.sort((p1,p2)=>{
       let x=p1.Duration+(p1.Status=='Delay'?new Date(p1.DeadLine)>=new Date()?0:p1.Delaydays:0);
       let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
@@ -4543,7 +4546,7 @@ loadGanttChart(){
 
 
 const rowHeight=55;   // old 45
-let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+100;
+let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+125;
 let max_Xvalue=new Date();
 max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
