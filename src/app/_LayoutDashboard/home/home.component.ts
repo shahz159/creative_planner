@@ -279,7 +279,8 @@ export class HomeComponent implements OnInit {
     this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
       (data) => {
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
-        console.log(this._ListProjStat,"test");
+
+        console.log(this._ListProjStat,"testsssssssssssssssssssssssssssssssssssssss");
         this.NoOfRecordsPerPage = this._ListProjStat.length;
         // this.AllPortfolioslist = this._ListProjStat;
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
@@ -302,6 +303,7 @@ export class HomeComponent implements OnInit {
         }
         else {
           this.messageForEmpty = true;
+          this.userFound =   this.messageForEmpty
         }
       });
   }
@@ -491,7 +493,7 @@ export class HomeComponent implements OnInit {
   StatusDeselect() {
     this._PortProjStatus = "";
   }
-
+  userFound:boolean|undefined;
   totalProjs: number;
   HCountRejected: boolean;
   HCountDelay: boolean;

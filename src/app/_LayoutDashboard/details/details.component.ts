@@ -20,7 +20,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -28,7 +28,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar} from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Observable, Subscription } from 'rxjs';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -823,7 +823,7 @@ this.prjPIECHART.render();
   requestlist: any;
   approverequestlist: any=[];
   noapproverequestlist: any=[];
-  
+
   // getRequestAcessdetails(){
   //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
   //     this.requestlist=JSON.parse(res[0]['requestlist']);
@@ -881,13 +881,9 @@ this.prjPIECHART.render();
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
-      debugger
-      this.Submission = JSON.parse(res[0].submission_json); 
-        console.log('submission_json:',this.Submission);
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];   
-         console.log('projectInfo:',this.projectInfo);
-     
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
+      this.Submission = JSON.parse(res[0].submission_json);  
+      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -1058,22 +1054,25 @@ this.prjPIECHART.render();
           if(prj_auditor){
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
-// If project has project auditor        
+// If project has project auditor
 
-          
-          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{ 
+
+          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
             console.log(this.PeopleOnProject,"sssssssss")
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-              if(p)
-               obj.contribution=p.RespDuration;
+              if(p){
+                  obj.contribution=p.RespDuration;
+                  obj.totalActionsCreated=p.SubtaskCount;
+              }
+             
             }
 
-            
+
             if(this.filteremployee){
-              const hasActions:boolean=this.filteremployee.map(item=>item.Team_Res).includes(emp); 
+              const hasActions:boolean=this.filteremployee.map(item=>item.Team_Res).includes(emp);
               obj.isRemovable=(obj.Role.includes('Support')&&hasActions==false);
             }
             else {
@@ -1081,24 +1080,26 @@ this.prjPIECHART.render();
               // prj type is std,routine,todo
                obj.isRemovable=obj.Role.includes('Support');
             }
-            
+
             return obj;
           });
-  
+
 
         }
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+
       (data) => {
 
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
-        this.filteredEmployees = this.nonRacisList;    
+        this.filteredEmployees = this.nonRacisList;
 
         let RACISList = (JSON.parse(data[0]['RacisList']));
 
         if (RACISList && RACISList.length > 0) {
+
           const racisUserIds = RACISList.map((user: any) => user.Emp_No);
           this.userFound = racisUserIds.includes(this.Current_user_ID);
         }
@@ -1106,7 +1107,7 @@ this.prjPIECHART.render();
 
         this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
         this.allUsers1=(JSON.parse(data[0]['alluserlist']));
-        
+
       });
 
 
@@ -1137,7 +1138,7 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
-          
+
     // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
           let count:number=0;
           this.Activity_List.map((actv:any)=>{
@@ -1156,7 +1157,7 @@ this.prjPIECHART.render();
    this.arrangeActivitiesBy('all','all');
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=[];
-   
+
 
 
    let actvs_done=this.Activity_List.map(actv_=>{
@@ -1169,11 +1170,11 @@ this.prjPIECHART.render();
                 actdetChanged?'Actions Details changed':
                 /Action Complete- ".*"/.test(actv_.Value)?'Action Complete':
                 /Action -".*" Hold/.test(actv_.Value)?'Action Hold':
-                /Action -".*" Deadline changed/.test(actv_.Value)?'Action Deadline changed':  
-                actv_.Value;  
+                /Action -".*" Deadline changed/.test(actv_.Value)?'Action Deadline changed':
+                actv_.Value;
    });
 
- 
+
    actvs_done=Array.from(new Set(actvs_done));
    this.actvs_types=[...actvs_done];
    console.log('actvs_done:',actvs_done);
@@ -2019,7 +2020,7 @@ multipleback(){
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.completedoc = (this.complete_List[0]['Sourcefile']);   
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
@@ -2099,7 +2100,7 @@ currentStdAprView:number|undefined;
   }
 
   approvalClick(actionType) {
-    
+
   // clearing entered data if any.
     this.comments = "";
     this.empAuditor_remarks='';
@@ -2184,6 +2185,11 @@ currentStdAprView:number|undefined;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
+    this.Accept_active=false;
+    this.Reject_active=false;
+    this.Audit_active=false;
+    this.Transfer_active=false;
+    this.Conditional_Active=false;
   }
 
 
@@ -2366,8 +2372,7 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {
-debugger
+    else if (this.selectedType == '2') {    debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -2872,7 +2877,7 @@ debugger
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
-        console.log('Subtask_Res_List:',this.Subtask_Res_List);  
+        console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.Category_List);
@@ -3746,8 +3751,8 @@ check_allocation() {
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {
-        this._portfoliosList = data as [];
+      ((data) => {    
+        this._portfoliosList = data as [];    console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
@@ -4015,7 +4020,7 @@ check_allocation() {
 
 
 
-  updateMainProject() {
+  updateMainProject() {   
 // for checking whether mandatory fields are provided or not.
    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
       this.formFieldsRequired=true;
@@ -4029,12 +4034,9 @@ check_allocation() {
   }
 // for checking whether mandatory fields are provided or not.
 
-
-
-
-    if (this.projectInfo.Project_Type == 'To do List') {
-      this.selectedFile = null;
-    }
+    // if (this.projectInfo.Project_Type == 'To do List') {
+    //   this.selectedFile = null;
+    // }
 
     if (this.isAction == false) {
       const fd = new FormData();
@@ -6557,8 +6559,8 @@ holdcontinue(Pcode:any){
   minPrjDeadline:Date;
   HprocessDone:number=0;
 
-  onHoldDateChanged(){  
-    
+  onHoldDateChanged(){
+
     const d1=new Date(this.Holddate);
     const d2=new Date(this.projectInfo.EndDate);
     this.isEHsectionVisible=d1>d2;
@@ -6629,7 +6631,7 @@ holdcontinue(Pcode:any){
                   }).then((choice1:any)=>{
                       if(choice1.value===true)
                         this.holdcontinue(Pcode);
-                      else 
+                      else
                         this.HprocessDone=0;
                   });
             }
@@ -7225,7 +7227,7 @@ filterConfig:{filterby:string,sortby:string}={
          filterby:'All',
          sortby:'All'
 };
-onFilterConfigChanged({filterBy,sortBy}){ 
+onFilterConfigChanged({filterBy,sortBy}){
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
@@ -7241,7 +7243,7 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
-getFilteredPrjActions(filterby:string='All',sortby:string='All'){   
+getFilteredPrjActions(filterby:string='All',sortby:string='All'){
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo;
@@ -9428,7 +9430,7 @@ OnSubmitSchedule1() { debugger
     alert('Please Select Valid Date and Time');
   }
 
-}     
+}
 
 
 
@@ -9436,11 +9438,11 @@ OnSubmitSchedule1() { debugger
 // PROJECT auditor, Transfer functionality start.
 
 isAuditorDrpDwnOpen:boolean=false;
-selectedAuditor:any;   
+selectedAuditor:any;
 racisNonRacis:any=[]; // all emp list.
 sprtaudtr_remarks:string|undefined;   // remarks provided during removing of auditor or support member.
 p_index:number=-1;                // selection info.
-processingRemove:boolean=false;  
+processingRemove:boolean=false;
 typeUserRemove:'AUDITOR'|'SUPPORT'|undefined;
 
 
@@ -9459,10 +9461,10 @@ onAuditorSelected(e){ debugger
 }
 
 
-onAuditorSubmitClicked(){ 
+onAuditorSubmitClicked(){
   const selected_emp=this.selectedAuditor.empNo;
   this.projectMoreDetailsService.NewUpdateProjectAuditor(this.projectInfo.Project_Code,this.Current_user_ID,selected_emp).subscribe((res:any)=>{
-      
+
           if(res.message==1){
              this.notifyService.showSuccess(`${this.selectedAuditor.empName} set as Auditor`,'Success');
              this.selectedAuditor=undefined;
@@ -9470,9 +9472,9 @@ onAuditorSubmitClicked(){
           }else if(res.message==2){
              this.notifyService.showError(`Unable to set ${this.selectedAuditor.empName} as Auditor.`,'Failed.');
           }
-          else 
+          else
             this.notifyService.showError('Something went wrong.','');
-      
+
   });
 }
 
@@ -9487,7 +9489,7 @@ onChangeAuditorBtnClicked(){
     setTimeout(()=>{
       const auditorInput:any=document.querySelector('input#auditor-inputfield');
       auditorInput.click();
-    },300)  
+    },300)
 }
 
 
@@ -9495,9 +9497,9 @@ openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   if(this.p_index>-1){
     this.closeRemoveSADialog(this.p_index);
   }   // closing opened dialog if present.
-  
-  this.p_index=index; 
-  this.typeUserRemove=removalType;  
+
+  this.p_index=index;
+  this.typeUserRemove=removalType;
   document.getElementById(`mark-admin-drop${this.p_index}`).classList.add("show");
   let remarks_input:any=document.querySelector(`#mark-admin-drop${this.p_index} textarea.remarks-input`); remarks_input.focus();
   document.getElementById(`pOnPrj-user-row-${index}`).classList.add('pOnPrj-row-selection');
@@ -9513,7 +9515,7 @@ closeRemoveSADialog(index:number){ debugger
 }
 
 
-onSARemoveSubmit(){ 
+onSARemoveSubmit(){
 
    if(this.sprtaudtr_remarks&&this.sprtaudtr_remarks.trim()){
         const project_code=this.projectInfo.Project_Code;
@@ -9524,7 +9526,7 @@ onSARemoveSubmit(){
 
         this.processingRemove=true;
         this.projectMoreDetailsService.NewDeleteProjectRACIS(project_code,current_userid,auditor_empno,support_empno,remarks_).subscribe((res:any)=>{
-              console.log(res); 
+              console.log(res);
               this.processingRemove=false;
               if(res.message==1)
               {
@@ -9533,9 +9535,9 @@ onSARemoveSubmit(){
                 else if(this.typeUserRemove=='AUDITOR')
                   this.notifyService.showSuccess(`Removed ${this.PeopleOnProject[this.p_index].Emp_Name} as Auditor.`,'Success');
 
-                this.closeRemoveSADialog(this.p_index); 
+                this.closeRemoveSADialog(this.p_index);
                 this.GetPeopleDatils();
-               
+
               }
               else if(res.message==2){
 
@@ -9544,12 +9546,12 @@ onSARemoveSubmit(){
                 else if(this.typeUserRemove=='AUDITOR')
                   this.notifyService.showError(`unable to remove ${this.PeopleOnProject[this.p_index].Emp_Name} as Auditor of the project.`,'Failed');
               }
-              else 
+              else
               this.notifyService.showError('Something went wrong.','Failed');
-              
+
         });
    }
-   else 
+   else
    this.notProvided=true;
 
 }
@@ -9562,7 +9564,7 @@ onPrjAuditSubmitClicked(){
           this.notProvided=true;
           return;
       }
-      else 
+      else
         this.notProvided=false;
 
      const project_code:string=this.projectInfo.Project_Code;
@@ -9573,11 +9575,11 @@ onPrjAuditSubmitClicked(){
           console.log(res);
           if(res&&res.message){
               this.notifyService.showSuccess(res.message,'Success');
-             
+
               this.getProjectDetails(this.URL_ProjectCode);
               this.getapprovalStats();
           }
-          else 
+          else
             this.notifyService.showError('something went wrong.','Failed');
 
      })
@@ -9589,7 +9591,7 @@ onTransferBtnClicked(){
             this.notProvided=true;
             return;
         }
-        else 
+        else
           this.notProvided=false;
 
       const project_code:string=this.projectInfo.Project_Code;
@@ -9610,7 +9612,7 @@ onTransferBtnClicked(){
 }
 
 
- 
+
 
 
 
@@ -9630,7 +9632,7 @@ loadActionsGantt(){
     'New Project Rejected':'#BA68C8',
     'Deadline Extend Under Approval':'#F9A825',
     'Cancellation Under Approval':'#EF5350',
-   
+
     'Cancelled':'#EE4137',
     'ToDo Achieved':'#62B134',
     'ToDo Completed':'#62B134',
@@ -9649,7 +9651,7 @@ loadActionsGantt(){
     let data_ar = [];
     const actn_startd = new Date(actn.StartDate);
     const actn_endd = new Date(actn.EndDate);
-    
+
 
     if (actn_startd < curdate && actn_endd > curdate) {
       if (actn.Status === 'InProcess') {
@@ -9710,8 +9712,8 @@ loadActionsGantt(){
       data: data_ar
     };
   });
-  const rowHeight=50;
-  let chartHeight=rowHeight*actions_list.length+100;
+  const rowHeight=55;
+  let chartHeight=rowHeight*actions_list.length+125;   console.log('chartHeight value is:',chartHeight);
   let max_Xvalue=curdate;
   max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
@@ -9719,18 +9721,18 @@ loadActionsGantt(){
   const options = {
     series: _series,
     chart: {
-     
+
       height: chartHeight+'px',
       type: 'rangeBar',
       animations: {
         enabled: false // Disable animations to improve performance
       },
-    
+
       events: {
-        updated: ()=>{ 
-        
+        updated: ()=>{
+
         try{
-          
+
                 const chartContainer = document.querySelector("#actnsfull-graph");
 
                 const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
@@ -9739,10 +9741,10 @@ loadActionsGantt(){
                 console.log('hrline is:',hrline);
                 const linewth=hrline.getAttribute('x2');
                 const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
-                
-                dateGcHl.style.width=linewth+'px';  
-                const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
-                dateGcHv.innerHTML=''; 
+
+                dateGcHl.style.width=linewth+'px';
+                const dateGcHv:any=dateGcHl.querySelector('#this-is-head');
+                dateGcHv.innerHTML='';
                 textElements.forEach(te => {
                   const clonedTe = te.cloneNode(true);
                   clonedTe.setAttribute('y', '65%');
@@ -9751,7 +9753,7 @@ loadActionsGantt(){
                 });
 
                 const ctrlbtns:any=document.querySelector('#actnsfull-graph .apexcharts-toolbar');
-          
+
                 ctrlbtns.style.backgroundColor='rgb(255 255 255 / 65%)';
                 ctrlbtns.style.padding='4px 6px 7px 5px';
                 ctrlbtns.style.border='2px solid #b3b3b3';
@@ -9764,7 +9766,7 @@ loadActionsGantt(){
               const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
               const textelms:any=yaxis.querySelectorAll('text');
               const shouldwrap:boolean=Array.from(textelms).some((te:any)=>te.querySelector('title').textContent.length>20);
-              if(shouldwrap){  
+              if(shouldwrap){
                     textelms.forEach((te:any)=>{
                         te.setAttribute('x','-135');
                         te.setAttribute('text-anchor','start');
@@ -9774,12 +9776,12 @@ loadActionsGantt(){
                         const strl=fullname.length;
                         if(strl>maxl){
                              te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
-                             
-                             const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+
+                             const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                              tspan1.textContent=fullname.substring(0,20);
                              const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                              tspan2.setAttribute('x','-135');
-                             tspan2.setAttribute('dy','15.6');
+                             tspan2.setAttribute('dy','11.8');
                              let fullname2=fullname.slice(20);
                              fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
                              tspan2.textContent=fullname2;
@@ -9792,6 +9794,22 @@ loadActionsGantt(){
               }
 
 // yaxis label adjustments
+
+            Array.from(textelms).forEach((te:any,index)=>{ 
+                        const _a_res:any=actions_list[index].Responsible;
+                        const ypos=te.getAttribute('y');
+                        te.setAttribute('y',ypos-12);
+                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                        tspan3.setAttribute('x','-135');
+                        tspan3.setAttribute('dy','13');
+                        tspan3.style.fill='#543fff';
+                        tspan3.style.fontSize='0.7em';
+                        tspan3.style.fontWeight='bold';
+                        tspan3.style.fontFamily='Lucida Sans Unicode';
+                        tspan3.style.textTransform='capitalize';
+                        tspan3.textContent=_a_res;
+                        te.appendChild(tspan3);
+               });
 
                 const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
                 const trsnfvalue=gcharttable.getAttribute('transform');
@@ -9808,14 +9826,14 @@ loadActionsGantt(){
 
         },
 
-        
+
       }
-    
+
     },
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: '35%',
+        barHeight: '32%',
         rangeBarGroupRows: true
       }
     },
@@ -9843,54 +9861,27 @@ loadActionsGantt(){
         show: true
       },
       max:max_Xvalue.getTime()
-      
+
     },
     yaxis: {
       labels: {
         style: {
-          fontSize: '12px',       
+          fontSize: '11px',       
           fontFamily: 'Arial, sans-serif', 
           color: '#333',          
           textAnchor: 'start'    
         },
 
-
-
-
         formatter:function(value) {
           if (isNaN(value)) {
-              let str=value.substring(0,value.lastIndexOf('(')); 
+              let str=value.substring(0,value.lastIndexOf('('));
               str=str.trim();
               return str;
-          } else 
+          } else
             return value;
         }
 
-
-
-
-        // function(value) {
-        //   if (isNaN(value)) {
-        //       let str=value.substring(0,value.lastIndexOf('(')); 
-        //       str=str.trim();   
-        //       const maxl=20;
-        //       if(str.length<=maxl)
-        //         return str;
-        //       else 
-        //         {
-        //             return [str.substring(0,maxl),str.slice(maxl)];
-        //         }
-              
-        //   } else 
-        //     return value;
-        // }
-
-
-
-
-
-
-
+ 
       }
     },
     grid: {
@@ -9914,7 +9905,7 @@ loadActionsGantt(){
     legend: {
       show: false
     },
-    
+
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
@@ -9993,12 +9984,32 @@ loadActionsGantt(){
         }
       }],
      
+    },
+
+
+    title:{
+      text: this.projectInfo.Project_Name,
+      align: 'left',
+      margin: 10,
+      offsetX: 0,
+      offsetY: 0,
+      floating: false,
+      style:{
+        fontSize: '15px',
+        fontWeight: 'bold',
+        fontFamily: 'Lucida Sans Unicode',
+        color: '#263238'
+      }
+      
     }
+
+
+    
     
   };
 
 
- if(this.ActnsGanttChart){  
+ if(this.ActnsGanttChart){
     this.ActnsGanttChart.updateOptions(options);
  }
  else{
@@ -10008,7 +10019,7 @@ loadActionsGantt(){
 
 
 }
-  
+
 
 
 
@@ -10112,7 +10123,7 @@ sel_prjname:string|undefined;
 sel_user:any;       // selected emp
 sel_ptype:any;     // selected prj type
 sel_sdate:any;    // selected start date.
-sel_edate:any;   // selected end date.    
+sel_edate:any;   // selected end date.
 sel_submtype:any;  // selected submission type.
 
 onca_PortfolioSelected(e){
@@ -10122,7 +10133,7 @@ onca_PortfolioSelected(e){
     if (index === -1) {
          this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
     }
-    else{ 
+    else{
          this.ngDropdwonPort2.splice(index,1);
     }
  }
@@ -10142,17 +10153,23 @@ getca_Dropdowns(){
     // prj types    
     this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
     
-    // portfolios list
-    this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe((data) => {
+    //all portfolios list
+    this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
       this._portfoliosList2 = data as [];  
     });
 }
+
+
+goToProject(pcode) {
+  let name: string = 'Details';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${pcode}`;
+  var myWindow = window.open(myurl,pcode);
+  myWindow.focus();
+}
+
+
 // conditional accept functionality end
-
-
-
-
-
 
 }
 

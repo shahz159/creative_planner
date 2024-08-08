@@ -10,7 +10,7 @@
       <div class="kt-portlet kt-portlet--bordered-semi mb-2">
         <div class="kt-portlet__head">
           <div class="d-flex">
-            <div class="kt-portlet__head-label">
+            <div class="kt-portlet__head-label dropdown">
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -18,17 +18,62 @@
                 <strong *ngIf="sendtype=='Req'">Project approval</strong>
                 <strong *ngIf="sendtype=='Res'">Information</strong>
               </h3>
-              <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
+
+              <div class="dropdown-menu dropdown-menu-xl" id="dropd">
+
+                <div class="drop-ul">
+                    <!-- <li class="dropdown-header">Filter by</li> -->
+                    <span  (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1);onButtonClick('tot')">
+                        <button id="tot" class="btn btn-filtr active">
+                            <div class="d-flex align-items-center">
+                                <span class="count tot">{{WScount}}</span>
+                                <div  class="fil-lbl">Project approval</div>
+                                <span class="chck-icn">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="16" height="16"
+                                        fill="currentColor" class="bi bi-check2"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </button>
+                    </span>
+
+                    <!-- onButtonClick('inn') -->
+                    <span  (click)="showPrjAprv();Leaveapprovaltab(); titleinfo(); viewAll(type2);onButtonClick('inn')">
+                        <button  id="inn" class="btn btn-filtr">
+                            <div class="d-flex align-items-center">
+                                <span class="count in-pro">{{WRcount}}</span>
+                                <div class="fil-lbl">Information</div>
+                                <span class="chck-icn">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="16" height="16"
+                                        fill="currentColor" class="bi bi-check2"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </button>
+                    </span>
+                  </div>
+                  </div>
+              <!-- <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
                 <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
                   (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
-                  Project approval <span class="noti-cus">{{WScount}}</span>
+                  <span class="count">{{WScount}}</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="fil-lbl">Project approval</span>
                 </a>
 
                 <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Res' && selectedDropdown === 'Information') }"
                   (click)="showPrjAprv();Leaveapprovaltab(); titleinfo(); viewAll(type2); selectedDropdown = 'Information';">
-                  Information <span class="noti-cus">{{WRcount}}</span>
+                  <span class="count">{{WRcount}}</span>&nbsp; <span class="fil-lbl">Information</span>
                 </a>
-              </div>
+              </div> -->
 
               <div *ngIf="sendtype=='Req' && selectedItems.length >0">
                 <button class="btn btn-outline-success btn-sm mr-2 fs-7"
@@ -40,7 +85,7 @@
               </div>
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
-<!--
+
              <div class="kt-portlet__head-label">
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
@@ -60,7 +105,7 @@
                   Leave Responses
                 </a>
               </div>
-            </div> -->
+            </div>
           </div>
 
 

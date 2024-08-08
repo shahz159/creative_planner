@@ -16,7 +16,7 @@ export class SubTaskDTO {
   AssigntaskDetails_Json:string;
   ProjectPercentage:number;
   ProjectStatus:string;
-
+  selected_emp:any
   //Update Subtask Properties
   MasterCode:string;
   SubTask_ProjectCode:string;

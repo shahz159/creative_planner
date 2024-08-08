@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit,Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, OnInit,Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -32,7 +32,7 @@ import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.co
   styleUrls: ['./project-unplanned-task.component.css']
 })
 
-export class ProjectUnplannedTaskComponent implements OnInit {
+export class ProjectUnplannedTaskComponent implements OnInit{
   _ObjAssigntaskDTO: AssigntaskDTO;
   _ObjCompletedProj: CompletedProjectsDTO;
   CurrentUser_ID: string;
@@ -48,6 +48,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
+
+  isTodoProjectsLoaded:boolean=false;
+  isDropdownDataLoaded:boolean=false;
+  isCountsDataLoaded:boolean=false;
+
+
+
 
   constructor(public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -70,6 +77,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.disableAfterStartDate.setDate(this.disableAfterStartDate.getDate());
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+    this.isTodoProjectsLoaded=false;
+    this.isDropdownDataLoaded=false;
+    this.isCountsDataLoaded=false;
   }
 
   IfNoCategoryFound: string;
@@ -88,8 +98,14 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   // }
 
+
+
+
   ngOnInit(): void {
-    this.totalproject()
+
+
+    // this.totalproject()
+
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
@@ -159,14 +175,22 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     // }
   }
 
+
+  ngAfterViewInit(): void {
+     this.totalproject();
+  }
   newCatid:any;
+
   getCatid(){
+
+
     this.ProjectTypeService._GetRunwayCatId(this.CurrentUser_ID).subscribe(
       (data) => {
         this.newCatid=(data[0]['CategoryId']);
         this.GetTodoProjects();
       });
       this.router.navigate(["UnplannedTask/"]);
+
   }
 
   _Demotext: string = "";
@@ -218,7 +242,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   Clientjson:any;
   EmployeeLists:any;
   loading: boolean = false;
-
+  userFound:boolean | undefined
 
   GetAssigned_SubtaskProjects() {
     this.loading = true;
@@ -241,6 +265,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.EmployeeLists = JSON.parse(data[0]['EmployeeList']);
 
         this.FiterEmployee=this.EmployeeList;
+        this.userFound = true
+
         console.log("Data---->", this.FiterEmployee);
       });
   }
@@ -258,12 +284,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   pendingCount:any;
   rejectCount:any;
 
-  getrunwayCount(){
 
+  getrunwayCount(){
+    this.isCountsDataLoaded=false;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this.ProjectTypeService._GetCategoryCountforRunway(this._ObjCompletedProj).subscribe(
       (data) => {
-
+        this.isCountsDataLoaded=true;
         this.procount = JSON.parse(data[0]['Procount']);
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
@@ -289,16 +316,20 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   GetTodoProjects() {
+
+    this.isTodoProjectsLoaded=false;
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-
+        this.isTodoProjectsLoaded=true;
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
+        console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -306,11 +337,13 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
 
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
+
           this.IfNoTaskFound = "";
           this._Categoryid = data[0]["CategoryId"];
           this._CategoryName = data[0]["CategoryName"];
@@ -318,6 +351,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           this.Label_TaskName = false;
           this.Textbox_EditTaskName = true;
           this._taskName = "";
+
           /// Get Tasks On Category Click  /////
           this._ObjCompletedProj.PageNumber = 1;
           this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -343,7 +377,12 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
+
+
+
+
       });
+
   }
 
   OnRadioClick(id) {
@@ -465,15 +504,24 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.GetProjectsByUserName();
   }
 
+
+
+
+
   //Fetching Employee For Assigning Projects
   GetAssignFormEmployeeDropdownList() {
+
+    this.isDropdownDataLoaded=false;
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
+        this.isDropdownDataLoaded=true;
         this.EmployeeList = JSON.parse(data[0]&&data[0]['EmployeeList']);
-        //console.log(this.EmployeeList);
+
+
+
         this.dropdownSettings_Employee = {
           singleSelection: true,
           idField: 'Emp_No',
@@ -1196,6 +1244,10 @@ getAccordionClass(): string {
   const count = this.getVisibleHeaderCount();
   return count > 0 ? `runway-${count}` : '';
 }
+
+
+
+
 
 }
 

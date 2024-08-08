@@ -76,7 +76,7 @@ Dateselectionrange: string = 'Date selection range';
     //   endDate: moment().endOf('day')
     // };
   }
-
+  userFound:boolean | undefined
   _subtaskDiv: boolean;
   keyword = 'Subject';
   countries: any;
@@ -482,7 +482,7 @@ $(document).ready(function(){
         this._ProjectDataList = data;
          console.log("Summary Data---->",this._ProjectDataList);
 
-
+this.userFound = true
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
         this.cancelcount=this.ActualDataList[0]['cancelcount'];
@@ -1480,6 +1480,7 @@ this.edited = true
   }
 
   newDetails(pcode) {
+
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
