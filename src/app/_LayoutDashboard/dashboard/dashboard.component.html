@@ -636,8 +636,7 @@
                                                 <span class="date">{{item.Req_DL|date :'dd-MM-YYYY'}}</span>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </div>                                                                  
                                 </a>
                                 <div class="request-access-item-h-action" >
                                     <a class="icon blue" (click)="UpdateMeetingRequestAccess(item.Sno,item.Schedule_ID,'Accept')"><i class="fas fa-check"></i></a>
@@ -658,11 +657,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
 
             <div id="Delaylist" class="pend-section col-lg-3">
                 <div class="d-flex hedr-title">
@@ -699,17 +693,13 @@
                                         {{action.Delaydays}} days delay<br>
                                         <u>{{action.Master_Name}}</u>
                                     </div>
-
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
             <!-- Calendar Ends -->
             <!-- Activities -->
             <div class="col-lg-7" style="display: none;">
@@ -1258,9 +1248,6 @@
                         </span>
                     </div>
 
-
-
-
                     <div class="icons-right" data-toggle="tooltip" title="Close">
                         <span class="tool-span" (click)="closeevearea();">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
@@ -1310,24 +1297,47 @@
                             <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div> -->
-                            <div class="box-cl"
+                            <!--old <div class="box-cl"
                                 *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
                                 style="background-color: #3788d8;">
                             </div>
                             <div class="box-cl"
                                 *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
-                            </div>
-                            <div class="box-cl"
+                            </div> -->
+                            <!-- <div class="box-cl"
                             *ngIf="Meeting_status==true && RecurrenceValue=='Weekly'"
                             style="background-color: #1dc9b7;">
+                            </div> -->
+
+                          
+                       <!-- 
+                         <ng-container  *ngIf="(!['Rejected','Pending','May be'].includes(Status1)); else colorstatus">
+                            <div class="box-cl" *ngIf="Meeting_status==false" style="background-color: #3788d8;">
+                            </div>
+                            <div class="box-cl" *ngIf="Meeting_status==true" style="background-color: #1dc9b7;">
+                            </div>
+                         </ng-container>
+                         <ng-template #colorstatus>
+                          
+                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #3788d8;">
                             </div>
 
-                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be') && Meeting_status==false"
-                                style="border:4px solid #3788d8; ">
-                            </div>
+                           <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
+                           </div>
+
+                         </ng-template> -->
+                         <div class="box-cl" *ngIf="Meeting_status==true; else colordot" style="background-color: #1dc9b7;">
+                         </div>
+                         <ng-template #colordot>
                             <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
                             </div>
+                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #3788d8;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'" style="background-color: #3788d8;">
+                            </div>
+                         </ng-template>
+
 
                         </div>
                         <div class="title-right" id="">
@@ -3325,13 +3335,14 @@
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                         </div>
                     </div>
-                    <div class="se-col-11">
-                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+                    <div class="se-col-11" >
+                        <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
                             <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                 <span class="sr-only">Loading...</span>
-                            </div>
+                            </div>              
                         </div>
+                        <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
                         <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                             <li *ngFor="let empno of ngEmployeeDropdown">
                                <div class="schedule-select-user-list-item">
@@ -3345,10 +3356,12 @@
                                         <span (click)="discardChoosedItem('PARTICIPANT',empno)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                     </div>
                                </div>
+                                   
                             </li>
                         </ul>
                     </div>
                 </div>
+          
 
                 <div class="se-row">
                     <div class="se-col-1">
@@ -3428,6 +3441,11 @@
                         </ul>
                     </div>
                 </div>
+
+
+
+
+
                 <div class="se-row" id="core_viw222" style="display:none">
                     <div class="se-col-1">
                         <div class="label-icon">

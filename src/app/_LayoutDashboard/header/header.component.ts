@@ -257,6 +257,7 @@ export class HeaderComponent implements OnInit {
         this.ObjSubTaskDTO.PageNumber = 1;
         this.ObjSubTaskDTO.PageSize = 2;
         this.ObjSubTaskDTO.sort = this.selectedSort;
+        this.ObjSubTaskDTO.selected_emp = 0;
         this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
           (data => {
             this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
@@ -337,7 +338,7 @@ export class HeaderComponent implements OnInit {
       this.ObjSubTaskDTO.sort = this.selectedSort;
       this.ObjSubTaskDTO.Start_Date = this.timeFrom;
       this.ObjSubTaskDTO.End_Date = this.timeTo;
-
+      this.ObjSubTaskDTO.selected_emp = 0;
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
         (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
@@ -411,6 +412,7 @@ export class HeaderComponent implements OnInit {
       this.ObjSubTaskDTO.sort = this.selectedSort;
       this.ObjSubTaskDTO.Start_Date = null;
       this.ObjSubTaskDTO.End_Date = null;
+      this.ObjSubTaskDTO.selected_emp = 0;
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
         (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);

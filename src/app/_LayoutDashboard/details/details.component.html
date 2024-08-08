@@ -10996,12 +10996,13 @@
             </div>
         </div>
         <div class="se-col-11">
-            <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
                 <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
+              <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
             <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                 <li *ngFor="let empno of ngEmployeeDropdown">
                    <div class="schedule-select-user-list-item">

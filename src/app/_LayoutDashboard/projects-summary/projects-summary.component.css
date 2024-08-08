@@ -3403,6 +3403,12 @@ td:nth-child(4) {
 .search-filter{
   margin-left: 14px;
 }
+.kt-filterdetails {
+  display: flex;
+  margin-top: 5px;
+  background-color: #f3f6f9;
+  margin: 0px 0px 9px 0px;
+}
 /*new details page loading circle start*/
 
 .smart-glass {

@@ -1784,15 +1784,14 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked() {
-debugger
+
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
       (this.Description_Type?(this.characterCount<500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0  : true )
-      // && this.ngEmployeeDropdown.length>0
+      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true )
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -2101,9 +2100,10 @@ debugger
           if (this._Message == "Updated Successfully") {
             if (this.draftid != 0) {
               this.Getdraft_datalistmeeting();
-              this.draftid = 0
+              this.draftid = 0;
             }
             this.notifyService.showSuccess(this._Message, "Success");
+            this.Getdraft_datalistmeeting();
           }
           else {
             this.notifyService.showError(this._Message, "Failed");
@@ -2165,7 +2165,7 @@ debugger
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ): true)
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
@@ -2347,8 +2347,10 @@ debugger
           element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
           // var columnName = "Link_Type";
           // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+          alert('5')
           var vUser_Name = "User_Name";
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+           
 
 
 
@@ -3894,7 +3896,7 @@ currentTime:any;
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
-        this.Status1 = this.EventScheduledjson[0].Status;
+        this.Status1 = this.EventScheduledjson[0].Status.trim();
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
         this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
@@ -5211,7 +5213,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
+   
   }
 
   actyside() {
@@ -5235,6 +5237,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
   }
   Insert_indraft() {
+
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -5293,8 +5296,8 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         console.log(data, "ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
-
           this.draftcount = this.draftdata_meet.length;
+          console.log(this.draftdata_meet,'testing process')
         }
         else {
           this.draftdata_meet = null;
@@ -6957,7 +6960,12 @@ getMeetingApprovals(){
     var multiapproval_json=data[0].multiapproval_json;
     this.multiapproval_json=JSON.parse(multiapproval_json);
     this.totalCountOfList=this.multiapproval_json.length;
-     console.log(this.multiapproval_json,'appraval data in the dashboard')
+    if(this.totalCountOfList==0){
+      document.getElementById("requestlist").classList.remove("show");
+      document.getElementById("cal-main").classList.remove("col-lg-9");
+      document.getElementById("cal-main").classList.add("col-lg-12");
+    }
+    //  console.log(this.multiapproval_json,'appraval data in the dashboard')
   })
 }
 
@@ -6969,8 +6977,14 @@ UpdateMeetingRequestAccess(SNo,Schedule_Id,Type){
   this.approvalObj.Type = Type;
 
  this.approvalservice.NewUpdateMeetingRequestAccess(this.approvalObj).subscribe((data) => {
-    console.log(data,'appraval data in the dashboard');
+
+  if(data['Type']=='Accept'){
+    this.notifyService.showSuccess("Request access accept ", "Success");
+  }else if(data['Type']=='Reject'){
+    this.notifyService.showSuccess("Request access reject", "Success");
+  }
     this.getMeetingApprovals();
+    console.log(data,'appraval data in the dashboard3');
  })
 }
 
