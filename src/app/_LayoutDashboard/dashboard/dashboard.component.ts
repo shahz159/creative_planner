@@ -6986,4 +6986,28 @@ UpdateMeetingRequestAccess(SNo,Schedule_Id,Type){
     console.log(data,'appraval data in the dashboard3');
  })
 }
+
+
+
+sortbyCurrent_Time(){
+
+
+  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+  let _currentdate=moment();
+  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+  {
+      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+      const index:number=this.StartTimearr.findIndex((item:any)=>{
+          const t=moment(item,'h:mm A');
+          const result=t>=ct;
+          return result;
+      });
+      this.validStartTimearr=this.StartTimearr.slice(index);
+  }
+  else
+  this.validStartTimearr=[...this.StartTimearr];
+
+}
+
+
 }

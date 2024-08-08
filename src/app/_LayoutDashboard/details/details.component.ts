@@ -981,7 +981,7 @@ this.prjPIECHART.render();
             }
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
-    }
+     }
 
 
 
@@ -1011,10 +1011,21 @@ this.prjPIECHART.render();
     this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
     // setTimeout(() => this.drawStatistics(), 5000);
     setTimeout(()=>this.drawStatisticsNew(),3000);
+
+
+    // only used in project completion report concept
+    if(this.projectInfo&&this.projectInfo.Status=='Completed'){
+         this.prjRunFor=Math.abs(moment(this.projectInfo.StartDate).diff(moment(this.projectInfo.CD),'days'))+1;
+    }
+    // only used in project completion report concept
+
     });
+
+
+
   }
 
-
+  prjRunFor:number=0;
   uniqueName:any
   uniqueNamesArray:any
   firstthreeRecords:any
@@ -1138,46 +1149,45 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
+          // adding _type property
+          this.Activity_List.forEach((_actvy)=>{
+                 let result='others';
+                 if(_actvy.Value){
+                 const _Value=_actvy.Value.trim();
+                       result=/New Action- ".*"/.test(_Value)?'New Action':
+                              (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
+                              /Action Complete- ".*"/.test(_Value)?'Action Complete':
+                              /Action -".*" Hold/.test(_Value)?'Action Hold':
+                              /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
+                              ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
+                              [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
+                              _Value;
+                 }
+                 _actvy._type=result.trim();
+           });
+          // adding _type property
+         console.log('after foreach:',this.Activity_List);
 
-    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
-          let count:number=0;
-          this.Activity_List.map((actv:any)=>{
+          // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+                let count:number=0;
+                this.Activity_List.map((actv:any)=>{
 
-            if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
-               {   // actv.count : 2,3,4....
-                   let updatecount=(actv.count-count);
-                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=`Project Deadline changed ${updatecount+x} Time`;
-                   count+=1;
-               }
-              return actv;
-          });
-   // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+                  if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
+                    {   // actv.count : 2,3,4....
+                        let updatecount=(actv.count-count);
+                        let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                        actv.Value=`Project Deadline changed ${updatecount+x} Time`;
+                        count+=1;
+                    }
+                    return actv;
+                });
+         // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
    this.arrangeActivitiesBy('all','all');
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
-   this.actvs_types=[];
+   this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
 
-
-
-   let actvs_done=this.Activity_List.map(actv_=>{
-    const prjdetChanged:boolean=['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(actv_.Value);
-    const actdetChanged:boolean=[/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/].some(rg=>rg.test(actv_.Value));
-    return /New Action- ".*"/.test(actv_.Value)?'New Action':
-                /Project Deadline changed \d+(?:th|nd|rd|st) Time/.test(actv_.Value)?'Project Deadline changed':
-                /Timeline added .*/.test(actv_.Value)?'Timeline added':
-                prjdetChanged?'Project Details changed':
-                actdetChanged?'Actions Details changed':
-                /Action Complete- ".*"/.test(actv_.Value)?'Action Complete':
-                /Action -".*" Hold/.test(actv_.Value)?'Action Hold':
-                /Action -".*" Deadline changed/.test(actv_.Value)?'Action Deadline changed':
-                actv_.Value;
-   });
-
-
-   actvs_done=Array.from(new Set(actvs_done));
-   this.actvs_types=[...actvs_done];
-   console.log('actvs_done:',actvs_done);
+   console.log('actvs_types:',this.actvs_types);
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
           console.log(this.firstFiveRecords,"ffffive ffffffffffffffff")
@@ -3700,7 +3710,7 @@ check_allocation() {
 
   // timeline code end here
 
-
+ 
   AddPortfolio() {
     this.getPortfoliosDetails()
   }
@@ -7246,7 +7256,7 @@ clearFilterConfigs(){
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
-  let arr=this.projectActionInfo;
+  let arr=this.projectActionInfo?this.projectActionInfo:[];
   if(!(filterby==='All'&&sortby==='All'))
   {
     if(sortby!=='All'){
@@ -7851,11 +7861,11 @@ onGraphOptionChanged(option:string){
 }
 
 loadActivitiesByDate(d){
-
+  console.log(d);
   this.activitiesOnthat=this.getActivitiesOf(d);
   const currentDt=new Date();
   const dateClicked=new Date(d);
-  this.selectedactvy=(dateClicked.getDate()==currentDt.getDate())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
+  this.selectedactvy=(dateClicked.toDateString()==currentDt.toDateString())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
 }
 
 
@@ -10048,31 +10058,17 @@ actvsFltrBy:{ activityType:string, empType:string }={ activityType:'all',empType
 FilteredPrjActivities:any=[];
 
 arrangeActivitiesBy(acttype:string,emptype:string){
-     this.actvsFltrBy.activityType=acttype;
-     this.actvsFltrBy.empType=emptype;
-
-const checkmatch=(actvy)=>{
-    const regexarr=[
-      /Project Deadline changed \d+(?:th|nd|rd|st) Time/,
-      /Timeline added .*/,
-      /Action Complete- ".*"/,
-      /New Action- ".*"/,
-    ];
-    const a=regexarr.some(re=>re.test(actvy));
-    const b=regexarr.some(re=>re.test(this.actvsFltrBy.activityType));
-    return a&&b;
+  this.actvsFltrBy.activityType=acttype;
+  this.actvsFltrBy.empType=emptype;
+  this.FilteredPrjActivities=this.Activity_List.filter((actv)=>{
+    const x=(this.actvsFltrBy.empType=='all'||actv.Modifiedby==this.actvsFltrBy.empType);
+    const y=(this.actvsFltrBy.activityType=='all'||(actv._type==this.actvsFltrBy.activityType));
+    return x&&y; 
+  });
 }
 
 
-     this.FilteredPrjActivities=this.Activity_List.filter((acv)=>{
-
-
-
-      const x=(this.actvsFltrBy.empType=='all'||acv.Modifiedby==this.actvsFltrBy.empType);
-      const y=(this.actvsFltrBy.activityType=='all'||(acv.Value==this.actvsFltrBy.activityType?true:checkmatch(acv.Value)));
-            return x&&y;
-     });
-}
+ 
 
 characterCount: number = 0;
 

@@ -1448,7 +1448,7 @@ Prj_Code:any;
           this.new_cost = (this.requestDetails[0]['new_cost']);
           this.new_duration = (this.requestDetails[0]['new_duration']);
           this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
-          this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+          this.Submitted_By = (this.requestDetails[0]['Submitted_By']);   console.log('Submitted_By:',this.Submitted_By);
           const fullName = this.Submitted_By && this.Submitted_By.split(' ');
           this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials1 = this.initials1.toUpperCase();
@@ -1984,7 +1984,7 @@ Prj_Code:any;
   }
 
 
-  LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) { 
     let FileUrl: string;
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
