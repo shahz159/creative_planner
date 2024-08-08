@@ -2347,7 +2347,6 @@ export class DashboardComponent implements OnInit {
           element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
           // var columnName = "Link_Type";
           // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-          alert('5')
           var vUser_Name = "User_Name";
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
            
