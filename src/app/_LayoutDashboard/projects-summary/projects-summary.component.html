@@ -959,16 +959,16 @@
                             <!--begin: Datatable -->
                             <!-- U hve to Work here Below div This is the DIV Bro -->
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                              <div class="row"  >
-                                <div class="search-filter"   >
+                              <div class="row kt-filterdetails">
+                                <div class="search-filter">
                                   <!-- {{searchText}} -->
-                                  <span class="search-filter" *ngFor="let emptoshare of comToselect"  >
-                                    {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}
-
+                                  <span *ngIf="filterByResult==true">Filter by:</span>
+                                  <span class="search-filter" *ngFor="let emptoshare of comToselect">
+                                   {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}
                                   </span>
 
                                   <span class="search-filter"   *ngFor="let emptoshare of emplyToselect"  >
-
+                                    <span *ngIf="!comToselect && emplyToselect">Filter by :</span>
                                     {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
                                   </span>
 
@@ -978,19 +978,14 @@
                                   </span>
 
                                   <span class="search-filter" *ngFor="let emptoshare of enterStatus">
-{{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                       {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
                                   </span>
 
-</div>
+                               </div>
+                                <!-- <div class="search-filter" *ngFor="let emptoshare of comToselect"  >
+                                {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name }},
 
-
-
-
-
-<!-- <div class="search-filter" *ngFor="let emptoshare of comToselect"  >
-  {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name }},
-
-</div> -->
+                                </div> -->
                               </div>
                                 <div class="row">
                                     <div class="col-sm-12">

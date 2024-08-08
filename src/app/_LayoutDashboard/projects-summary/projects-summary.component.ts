@@ -730,18 +730,18 @@ $(document).ready(function(){
       this._objDropdownDTO.Selected_SearchText = this.searchText;
       this._objDropdownDTO.ActiveStatus = "Active";
       this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{
-
-
-
+          
           this.EmpCountInFilter=this.emplyToselect.length==0?JSON.parse(data[0]['Emp_Json']):this.EmpCountInFilter;
           this.TypeContInFilter=this.projtypeToselect.length==0?JSON.parse(data[0]['ProjectType_Json']):this.TypeContInFilter;
           this.CompanyCountFilter=this.comToselect.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
           this.StatusCountFilter=this.enterStatus.length==0?JSON.parse(data[0]['Status_Json']):this.StatusCountFilter;
 
-console.log( JSON.parse(data[0]['Emp_Json']),'  this.EmpCountInFilter  this.EmpCountInFilter')
-console.log(JSON.parse(data[0]['ProjectType_Json']),' this.TypeContInFilter this.TypeContInFilter')
-console.log(JSON.parse(data[0]['CompanyType_Json']),' this.CompanyCountFilter this.CompanyCountFilter')
-console.log(JSON.parse(data[0]['Status_Json']),'this.StatusCountFilterthis.StatusCountFilterthis.StatusCountFilter')
+       
+
+        console.log( JSON.parse(data[0]['Emp_Json']),'  this.EmpCountInFilter  this.EmpCountInFilter')
+        console.log(JSON.parse(data[0]['ProjectType_Json']),' this.TypeContInFilter this.TypeContInFilter')
+        console.log(JSON.parse(data[0]['CompanyType_Json']),' this.CompanyCountFilter this.CompanyCountFilter')
+        console.log(JSON.parse(data[0]['Status_Json']),'this.StatusCountFilterthis.StatusCountFilterthis.StatusCountFilter')
 
           this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
           this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
@@ -1622,16 +1622,23 @@ onEmpSelected(selected:boolean,selectedItem:any){
 }
 
 
-
+filterByResult:boolean=false
 
 getNewFilterResult(){
-debugger
+
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
   this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.comToselect.includes(item.Company_No));
   this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.projtypeToselect.includes(item.Block_No));
   this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Name));
+  
+  if(this.emplyToselect.length>0 || this.comToselect.length>0  ||this.projtypeToselect.length>0  ||this.enterStatus.length>0 ){
+    this.filterByResult =true;     
+  }else{
+    this.filterByResult =false;     
+  }
+ 
   // this.edited=true
   console.log(this.checkedItems_Cmp,'ddddddddddddddddddddddddddddddddddddddddddddd')
 console.log(this.checkedItems_Emp,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')

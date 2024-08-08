@@ -400,7 +400,6 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("repeatModal").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-
   }
 
   close_privatenote_sideBar() {
@@ -447,6 +446,14 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("upload_div").style.display = "block";
     document.getElementById("upload_btn").style.display = "none";
   }
+
+  
+  View_Activity() {
+    document.getElementById("Activity_Log").classList.add("kt-quick-panel--on");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("rightbar-overlay").style.display = "block";
+  }
+
 
   attach_btn() {
     document.getElementById("attach_heading").style.display = "block";
@@ -1023,15 +1030,15 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   addNewDMS() {
-
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
     this.GetDMSList();
-
   }
+
+
 
   loadingDMS: boolean;
 
@@ -2399,6 +2406,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   closedarBar() {
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -5582,7 +5590,16 @@ sortbyCurrent_Time(){
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
-   if(this.Description_Type?(this.characterCount<500):true){
+
+    if (
+      this.Title_Name &&
+      this.Startts &&
+      this.Endtms &&
+      this.MinLastNameLength
+      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)): true)
+      && (this.Description_Type?(this.characterCount<500):true)
+    ) {
+
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
     var start = moment(this.minDate);
@@ -5947,7 +5964,10 @@ sortbyCurrent_Time(){
     else {
       alert('Please Select Valid Date and Time');
     }
+  }else {
+    this.notProvided = true;
   }
+
 }
 
 
@@ -7022,7 +7042,7 @@ onParticipantFilter(){
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -7205,6 +7225,11 @@ UpdateMeetingRequestAccess(SNo,Type){
   this.approvalObj.Type = Type;
 
  this.approvalservice.NewUpdateMeetingRequestAccess(this.approvalObj).subscribe((data) => {
+  if(data['Type']=='Accept'){
+    this.notifyService.showSuccess("Request access accept ", "Success");
+  }else if(data['Type']=='Reject'){
+    this.notifyService.showSuccess("Request access reject", "Success");
+  }
     console.log(data,'appraval data in the dashboard');
     this.getMeetingApprovals();
  })

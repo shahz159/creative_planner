@@ -5522,7 +5522,7 @@ bindCustomRecurrenceValues(){
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.ScheduleType === 'Event' ?( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
