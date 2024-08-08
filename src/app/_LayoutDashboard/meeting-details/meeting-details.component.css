@@ -6384,7 +6384,7 @@ span.schedule-dt-muted {
     margin: 0;
     min-width: 40rem;
     box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
-    padding: 1rem 1rem;
+
     border-radius: 4px;
     font-size: 1rem;
     color: #212529;
@@ -6399,7 +6399,7 @@ span.schedule-dt-muted {
     left: 0px;
     right: auto;
     bottom: auto;
-    transform: translate3d(0px, 60px, 0px);
+    transform: translate3d(0px, 0px, 0px);
     margin-top: 0px;
     margin-bottom: 0.125rem;
     display: none;
@@ -6412,6 +6412,7 @@ span.schedule-dt-muted {
 .date-menu-item {
     display: flex;
     align-items: center;
+    padding: 1rem 1rem;
     gap: 10px;
 }
 
@@ -6438,22 +6439,13 @@ span.schedule-dt-muted {
     background: #f1f1f1;
 }
 
-.date-menu-close {
+.date-menu-action {
     position: absolute;
     bottom: 14px;
     right: 14px;
-    background-color: #e2e5ec;
-    border: 1px solid #e2e5ec;
-    color: #595d6e;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    border-radius: 0.2rem;
-    display: inline-block;
-    cursor: pointer;
-    font-weight: normal;
-    text-align: center;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 ::ng-deep .demo-inline-calendar-card {
@@ -6821,9 +6813,9 @@ li.deadline-timeline-item:first-child:after {
     line-height: 1;
 }
 
-.todo-main {
+/* .todo-main {
     border: 0px solid #e2e5ec;
-}
+} */
 
 .task-input {
     padding: 10px 10px 10px 16px;
@@ -7444,83 +7436,6 @@ li.modal-project-list-item {
 
 ::ng-deep .cdk-overlay-container {
     z-index: 9999;
-}
-
-.date-menu {
-    border: 0 !important;
-    margin: 0;
-    min-width: 40rem;
-    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
-    padding: 1rem 1rem;
-    border-radius: 4px;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    z-index: 95;
-    position: absolute;
-    will-change: transform;
-    top: 0px;
-    left: 0px;
-    right: auto;
-    bottom: auto;
-    transform: translate3d(0px, 60px, 0px);
-    margin-top: 0px;
-    margin-bottom: 0.125rem;
-    display: none;
-}
-
-.date-menu.show {
-    display: block;
-}
-
-.date-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.date-menu-calender {
-    width: 100%;
-}
-
-.date-menu-time {
-    width: 100%;
-}
-
-.date-menu .mat-card {
-    background: #f1f1f1;
-    padding: 0px;
-    box-shadow: none !important;
-}
-
-::ng-deep .date-menu .ng-select .ng-select-container {
-    border: 0px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-::ng-deep .date-menu .ng-select.ng-select-opened>.ng-select-container {
-    background: #f1f1f1;
-}
-
-.date-menu-close {
-    position: absolute;
-    bottom: 14px;
-    right: 14px;
-    background-color: #e2e5ec;
-    border: 1px solid #e2e5ec;
-    color: #595d6e;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    border-radius: 0.2rem;
-    display: inline-block;
-    cursor: pointer;
-    font-weight: normal;
-    text-align: center;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .endtill-date {
@@ -8414,4 +8329,86 @@ ul#myTabMeetingAttendees .nav-item {
 .actns-filtr-scroll::-webkit-scrollbar-thumb{
   background-color: #c5c5c5;
   border-radius:5px;
+}
+button.btn.btn-secondary.Custom-button {
+    background-color: #bebcbc;
+    border: 1px solid #bebcbc;
+    color: #473838;
+}
+.symbol-label.kt-bg-light-primary {
+    border-radius: 50%;
+}
+.svg-icon.svg-icon-info svg :not(.permanent):not(g) {
+    fill: #2786fb !important;
+}
+.drop-overlay {
+    z-index: 94;
+    position: fixed;
+    background-color: #0000005c;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.drop-overlay.show{
+    display: block;
+}
+.date-menu-heading {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #636469;
+    background-color: #ebeff6;
+    padding: 1rem;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.customrecurrence {
+    border: 0 !important;
+    margin: 0;
+    min-width: 40rem;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    z-index: 95;
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    right: auto;
+    bottom: auto;
+    transform: translate3d(-130px, 0px, 0px);
+    margin-top: 0px;
+    margin-bottom: 0.125rem;
+    display: none;
+}
+
+.customrecurrence.show {
+    display: block;
+}
+
+.customrecurrence-item {
+    padding: 1rem 1rem;
+}
+.customrecurrence-heading {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #636469;
+    background-color: #ebeff6;
+    padding: 1rem;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.customrecurrence-footer{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 1rem 1rem;
 }
