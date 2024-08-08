@@ -169,6 +169,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   activeAgendaIndex: number = 0
   _PopupConfirmedValue: number;
+  today: any = new Date().toISOString().substring(0, 10);
 
   ngOnInit(): void {
 
@@ -452,6 +453,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("Activity_Log").classList.add("kt-quick-panel--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.GetMeetingActivity();
   }
 
 
@@ -4190,9 +4192,10 @@ _EndDate1:any;
 notProvided1:any;
 
   customrecurrencemodal() {
-
-    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-    document.getElementById("customrecurrence").style.display = "block";
+    document.getElementById('drop-overlay').classList.add("show");
+    document.getElementById('customrecurrence').classList.add("show");
+    // document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    // document.getElementById("customrecurrence").style.display = "block";
 
     this.selectedrecuvalue1=this.selectedrecuvalue;
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
@@ -4213,8 +4216,10 @@ notProvided1:any;
 
 
   close_customrecurrencemodal() {
-    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-    document.getElementById("customrecurrence").style.display = "none";
+    // document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    // document.getElementById("customrecurrence").style.display = "none";
+    document.getElementById('drop-overlay').classList.remove("show");
+    document.getElementById('customrecurrence').classList.remove("show");
 
     document.getElementById("div_endDate_new").style.display = "none";
     document.getElementById("weekly_121_new").style.display = "none";
@@ -4325,12 +4330,12 @@ bindCustomRecurrenceValues(){
 
 
 
-  if (this.selectedrecuvalue == '0') {
-    this._PopupConfirmedValue = 1;
-  }
-  else {
-    this._PopupConfirmedValue = 2;
-  }
+  // if (this.selectedrecuvalue == '0') {
+  //   this._PopupConfirmedValue = 1;
+  // }
+  // else {
+  //   this._PopupConfirmedValue = 2;
+  // }
 
   this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
   var start = moment(this.minDate);
@@ -5838,6 +5843,7 @@ sortbyCurrent_Time(){
             this._calenderDto.flagid = 2;
         }
       }
+      console.log(this._PopupConfirmedValue, "finalarray");
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -6194,7 +6200,6 @@ sortbyCurrent_Time(){
 
 
   Select_flag(val) {
-    alert(val)
     this._PopupConfirmedValue = val;
 
   }
@@ -6680,9 +6685,13 @@ onParticipantFilter(){
 
   date_menu(dialogId: string) {
     document.getElementById(dialogId).classList.add("show");
+    document.getElementById('date-menu').classList.add("show");
+    document.getElementById('drop-overlay').classList.add("show");
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
+    document.getElementById('date-menu').classList.remove("show");
+    document.getElementById('drop-overlay').classList.remove("show");
   }
   ////////////////////////////////////// Repeat Meeting  section End /////////////////////////////////////////////
   activeIndex: number | null = null;
@@ -7238,10 +7247,6 @@ UpdateMeetingRequestAccess(SNo,Type){
 
 
 
-
-
-
-
 getShorterName(name:string|undefined){
   if(name)
    return name.split(' ').map(wrd=>wrd[0]).slice(0,2).join('')
@@ -7300,5 +7305,105 @@ toggleView() {
 }
 
 
+
+//////////////////////////////////////////////////// Activity sidebar start ////////////////////////////////////////////////////////////
+
+allActivityList:any=[];
+
+
+GetMeetingActivity(){
+  this.approvalObj.Schedule_Id=this.Scheduleid;
+
+  this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
+    this.allActivityList=JSON.parse(data[0].ActivityList)
+    console.log(data,'data321')
+    console.log(this.allActivityList,'allActivityList321')
+  })
+}
+
+//////////////////////////////////////////////////// Activity sidebar end ////////////////////////////////////////////////////////////
+
+viewconfirm() {
+
+  const _arraytext = [];
+  if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      if (this.dayArr[index].checked) {
+        const day = this.dayArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      if (this.MonthArr[index].checked == true) {
+        const day = this.MonthArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+  }
+  else {
+    _arraytext.push(this.maxDate);
+  }
+
+  // alert(this.maxDate)
+
+  // alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
+  // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
+  // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
+
+debugger
+  if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
+
+    //   Swal.fire({
+    //     title: 'Caution!',
+    //     text: 'This meeting will be moved to new scheduled date and the saved data will be lost. Do you want to continue?',
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Yes',
+    //     cancelButtonText: 'No'
+    //   }).then((response: any) => {
+    //     if (response.value) {
+
+
+    //   // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    //   // radio3.disabled = false;
+    //   // radio3.checked = false;
+    //   // document.getElementById("div_thisevent").style.display = "none";
+
+    //   this._PopupConfirmedValue = 1;
+    //     } else if (response.dismiss === Swal.DismissReason.cancel) {
+    //       Swal.fire(
+    //         'Cancelled',
+    //         'Meeting not moved.',
+    //         'error'
+    //       )
+    //     }
+    //   });
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+
+  }
+  else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
+    document.getElementById("div_thisevent").style.display = "block";
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+
+    // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    // radio3.disabled = false;
+    // radio3.checked = false;
+    this._PopupConfirmedValue = 1;
+
+  }
+
+  // alert(this._PopupConfirmedValue)
+}
 
 }
