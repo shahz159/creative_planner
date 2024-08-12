@@ -821,7 +821,7 @@
                                                    *ngIf="item1.Delaydays>=0"
                                                         class=" Delay_color font-weight-400 ">
                                                         {{item1.Delaydays}}
-                                                            days
+                                                        day(s)
 
                                                      <span class="">{{item1.Status}}
 
@@ -1038,7 +1038,7 @@
                                              <td>
 
                                               <div *ngIf="item1.Status=='Delay'">
-                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{item1.Delaydays}} days
+                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{item1.Delaydays}} day(s)
                                                 <span class="">{{item1.Status}}</span>
                                                 </span>
                                              </div>

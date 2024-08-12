@@ -1496,7 +1496,7 @@
 
                                                                           <span [ngSwitch]="action.Status">
                                                                               <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
-                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} days</span>
+                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} day(s)</span>
                                                                               <span *ngSwitchCase="'InProcess'" class="Status-In-progress">In-process</span>
                                                                               <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                               <span *ngSwitchCase="'Under Approval'">New action approval</span>
@@ -2669,7 +2669,7 @@
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
                                             <div class="kt-project-type " *ngSwitchCase="'Delay'">
-                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} days </div>
+                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} day(s) </div>
                                             </div>
 
                                             <div class="kt-project-type" *ngSwitchCase="'Completed'">
@@ -4489,7 +4489,7 @@
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                       <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} days
+                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
 
@@ -4543,7 +4543,7 @@
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                       <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} days
+                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
 
