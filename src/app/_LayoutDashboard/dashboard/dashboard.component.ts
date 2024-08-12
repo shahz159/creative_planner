@@ -5379,7 +5379,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
   closeschd() {
 
     // this.Insert_indraft();
-    document.getElementById('date-menu').classList.remove("show");
+    // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -6205,10 +6205,10 @@ onProjectSearch(inputtext:any){
 
 
   customrecurrencemodal() {
-    document.getElementById('drop-overlay').classList.add("show");
-    document.getElementById('customrecurrence').classList.add("show");
-    // document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-    // document.getElementById("customrecurrence").style.display = "block";
+    // document.getElementById('drop-overlay').classList.add("show");
+    // document.getElementById('customrecurrence').classList.add("show");
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("customrecurrence").style.display = "block";
 
     this.selectedrecuvalue1=this.selectedrecuvalue;
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
@@ -6225,8 +6225,10 @@ onProjectSearch(inputtext:any){
 
   }
   close_customrecurrencemodal() {
-    document.getElementById('drop-overlay').classList.remove("show");
-    document.getElementById('customrecurrence').classList.remove("show");
+    // document.getElementById('drop-overlay').classList.remove("show");
+    // document.getElementById('customrecurrence').classList.remove("show");
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("customrecurrence").style.display = "none";
 
     document.getElementById("div_endDate_new").style.display = "none";
     document.getElementById("weekly_121_new").style.display = "none";
@@ -6242,14 +6244,26 @@ onProjectSearch(inputtext:any){
     document.getElementById(dialogId).classList.add("show");
     document.getElementById('date-menu').classList.add("show");
     document.getElementById('drop-overlay').classList.add("show");
+
    
   }
   date_menu_close(dialogId:string){
     $(`#${dialogId}`).removeClass('show');
     document.getElementById('date-menu').classList.remove("show");
     document.getElementById('drop-overlay').classList.remove("show");
-  }
 
+  }
+  date_menu_modal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("datemenu").style.display = "block";
+   
+  }
+  date_menu_modal_close() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("datemenu").style.display = "none";
+   
+  
+  }
 
 datemen(dialogId:string){
   document.getElementById(dialogId).classList.add("show");

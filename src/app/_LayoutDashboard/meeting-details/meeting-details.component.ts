@@ -4192,10 +4192,10 @@ _EndDate1:any;
 notProvided1:any;
 
   customrecurrencemodal() {
-    document.getElementById('drop-overlay').classList.add("show");
-    document.getElementById('customrecurrence').classList.add("show");
-    // document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-    // document.getElementById("customrecurrence").style.display = "block";
+    // document.getElementById('drop-overlay').classList.add("show");
+    // document.getElementById('customrecurrence').classList.add("show");
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("customrecurrence").style.display = "block";
 
     this.selectedrecuvalue1=this.selectedrecuvalue;
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
@@ -4216,10 +4216,10 @@ notProvided1:any;
 
 
   close_customrecurrencemodal() {
-    // document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-    // document.getElementById("customrecurrence").style.display = "none";
-    document.getElementById('drop-overlay').classList.remove("show");
-    document.getElementById('customrecurrence').classList.remove("show");
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("customrecurrence").style.display = "none";
+    // document.getElementById('drop-overlay').classList.remove("show");
+    // document.getElementById('customrecurrence').classList.remove("show");
 
     document.getElementById("div_endDate_new").style.display = "none";
     document.getElementById("weekly_121_new").style.display = "none";
@@ -6688,11 +6688,26 @@ onParticipantFilter(){
     document.getElementById(dialogId).classList.add("show");
     document.getElementById('date-menu').classList.add("show");
     document.getElementById('drop-overlay').classList.add("show");
+
+   
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
     document.getElementById('date-menu').classList.remove("show");
     document.getElementById('drop-overlay').classList.remove("show");
+
+   
+  
+  }
+  date_menu_modal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("datemenu").style.display = "block";
+   
+  }
+  date_menu_modal_close() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("datemenu").style.display = "none";
+   
   
   }
   ////////////////////////////////////// Repeat Meeting  section End /////////////////////////////////////////////
@@ -7317,19 +7332,46 @@ GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
+    console.log(data,'data321')
     this.allActivityList=JSON.parse(data[0].ActivityList)
-
+    console.log(this.allActivityList,'allActivityList321')
 
     this.allActivityList = this.allActivityList.map(item => ({
       ...item,
-      Old_Value: item.Old_Value ? JSON.parse(item.Old_Value) : [],
-      New_Value: item.New_Value ? [JSON.parse(item.New_Value)] : []
+      Old_Value: this.isJson(item.Old_Value) ? JSON.parse(item.Old_Value) : [{ name: item.Old_Value }],
+      New_Value: this.isJson(item.New_Value) ? [JSON.parse(item.New_Value)] : [{ name: item.New_Value }]
     }));
-    console.log(data,'data321')
-    console.log(this.allActivityList,'allActivityList321')
+
+
+  this.allActivityList.forEach(activity => {
+  ['Old_Value', 'New_Value'].forEach(key => {
+    if (typeof activity[key] === 'string') {
+      activity[key] = JSON.parse(activity[key]);
+    }
+    if (activity[key] && Array.isArray(activity[key])) {
+      activity[key].forEach(item => {
+        if (item.name && item.name.includes('<font')) {
+          const div = document.createElement('div');
+          div.innerHTML = item.name;
+          item.name = div.textContent || div.innerText || '';
+        }
+      });
+    }
+  });
+});
+console.log(this.allActivityList,'allActivityList')
   })
 }
 
+
+isJson(value: string): boolean {
+  try {
+    JSON.parse(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
 //////////////////////////////////////////////////// Activity sidebar end ////////////////////////////////////////////////////////////
 
 viewconfirm() {

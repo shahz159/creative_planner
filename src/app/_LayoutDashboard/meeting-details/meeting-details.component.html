@@ -8032,7 +8032,7 @@
                                     <div class="row">
                                         <div class="col-md-6 schedule-br">
                                             <div class="form-group dt">
-                                                <div class="curser-pointer" (click)="date_menu('date-menu')">
+                                                <div class="curser-pointer" (click)="date_menu_modal()">
                                                     <div class="schedule-dt-tm">
                                                         <div>
                                                             <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
@@ -8059,7 +8059,7 @@
         
                                                 </div>
 
-                                                <div class="drop-overlay" id="drop-overlay" (click)="date_menu()"></div>
+                                                <!-- <div class="drop-overlay" id="drop-overlay" (click)="date_menu()"></div>
                                                 <div class="date-menu" id="date-menu">
                                                     <div class="date-menu-heading">
                                                         Select Date & Time
@@ -8099,7 +8099,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 
                                             </div>
         
@@ -8138,7 +8138,7 @@
                                                                 </ng-container>
                                                     </ng-container>
                                                 </div>
-                                                 <div class="drop-overlay" id="drop-overlay"></div>
+                                                 <!-- <div class="drop-overlay" id="drop-overlay"></div>
                                             <div class="customrecurrence" id="customrecurrence">
                                                 <div class="customrecurrence-heading">
                                                     Recurrence
@@ -8152,7 +8152,7 @@
                                                             <mat-option value="1">Daily</mat-option>
                                                             <mat-option value="2">Weekly</mat-option>
                                                             <mat-option value="3">Monthly</mat-option>
-                                                            <!-- <mat-option value="5">Last day of the month</mat-option> -->
+                                                     
                                                         </mat-select>
                                                     </div>
                                         
@@ -8218,7 +8218,7 @@
                                                     <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
                                                     <button type="button" class="btn btn-close-secondary" (click)="close_customrecurrencemodal()">Close</button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -9408,13 +9408,14 @@
                                         <div class="fs-6 mb-1 txtm-def"></div>
                                         <div class="fs-6 mb-2">
                                            {{item.Value}}<br>
-                                           <ng-container *ngFor="let data of item.Old_Value">
-                                            <span *ngIf="data.name !==''">From : {{data.name}}</span>
+                                        <ng-container *ngFor="let data of item.Old_Value">
+                                          <span *ngIf="data.name !==''">From : {{data.name}}</span>
                                         </ng-container>
                                         <ng-container *ngFor="let new_data of item.New_Value">
                                             <br> <span *ngIf="new_data.name !=='' ">To :
                                                 {{new_data.name}}</span>
-                                        </ng-container>                 
+                                        </ng-container>   
+
                                         </div>
                                         <div class="d-flex align-items-center mt-1 fs-6">
                                             <div class="d-flex align-items-center flex-1">
@@ -9424,10 +9425,10 @@
                                                         class="ng-star-inserted"> -->
                                                         <div data-toggle="tooltip" data-placement="top" title=""
                                                             class="user-icon-round" style="width: 25px; height: 25px;">
-                                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">M</span>
+                                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{item.TM_DisplayName[0]}}</span>
                                                         </div>
                                                 </div>
-                                                <div class="text-muted ml-2 fs-7">Md Waseem Akram</div>
+                                                <div class="text-muted ml-2 fs-7">{{item.TM_DisplayName}}</div>
                                             </div>
                                             <div class="text-muted ml-2 fs-7 d-flex align-items-center">
                                                 <span class="svg-icns">
@@ -9779,8 +9780,8 @@
                             </div>
                             
                         </div>
-                        <div class="date-menu" id="date-menu-1"   style=" min-width: 33rem; top: -340px; left: -8px;">
-                            <div class="date-menu-item">
+                        <div class="date-menu" id="date-menu-1">
+                            <div class="date-menu-item p-2">
                                 <div class="date-menu-action">
                                 <div class="btn btn-close-secondary" (click)="date_menu_close('date-menu-1')">Close</div>
                             </div>
@@ -10089,7 +10090,58 @@
  <!-- Project Modal End -->
 
 
+   <!-- datemenu Modal Start -->
+   <div class="datemenu modal fade show" id="datemenu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="datemenuLabel" aria-hidden="true"  style="display: none">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="datemenuLabel">Select Date & Time</h5>
+        </div>
+        <div class="modal-body">
 
+                <div class="date-menu-item">
+                   
+
+                    <div class="date-menu-calender">
+                        <mat-card class="demo-inline-calendar-card">
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                          </mat-card>
+                    </div>
+                    <div class="date-menu-time">
+                        <div class="mb-2">
+                            <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                            <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                                    {{item}}</ng-option>
+                            </ng-select>
+                            <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                        </div>
+                        <div class="">
+                            <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                            <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                [(ngModel)]="Endtms">
+                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                    {{item1}}
+                                    ({{
+                                        Startts|timeDiff:item1
+                                    }})
+                                </ng-option>
+                            </ng-select>
+                            <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-add-primary" (click)="date_menu_modal_close()">Done</button>
+            <button type="button" class="btn btn-close-secondary" (click)="date_menu_modal_close()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- datemenu Modal End -->
 
 
 

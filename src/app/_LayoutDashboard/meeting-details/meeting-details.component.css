@@ -6412,10 +6412,12 @@ span.schedule-dt-muted {
 .date-menu-item {
     display: flex;
     align-items: center;
-    padding: 1rem 1rem;
     gap: 10px;
+    padding: 1rem;
 }
-
+.modal-body .date-menu-item{
+    padding: 0px;
+}
 .date-menu-calender {
     width: 100%;
 }
@@ -8365,7 +8367,7 @@ button.btn.btn-secondary.Custom-button {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-.customrecurrence {
+/* .customrecurrence {
     border: 0 !important;
     margin: 0;
     min-width: 40rem;
@@ -8411,4 +8413,14 @@ button.btn.btn-secondary.Custom-button {
     align-items: center;
     gap: 6px;
     padding: 1rem 1rem;
+} */
+
+.datemenu.modal .modal-header {
+    background-color: #ebeff6;
+    align-items: center;
+}
+.datemenu.modal .modal-footer {
+    justify-content: flex-start;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #d2d2d2;
 }

@@ -4180,7 +4180,7 @@ li.modal-project-list-item {
     left: 0px;
     right: auto;
     bottom: auto;
-    /* transform: translate3d(0px, 60px, 0px); */
+
     transform: translate3d(0px, 0px, 0px);
     margin-top: 0px;
     margin-bottom: 0.125rem;
@@ -4197,7 +4197,9 @@ li.modal-project-list-item {
     gap: 10px;
     padding: 1rem 1rem;
 }
-
+.modal-body .date-menu-item{
+    padding: 0px;
+}
 .date-menu-calender {
     width: 100%;
 }
@@ -4729,7 +4731,7 @@ span.project-name {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-.customrecurrence {
+/* .customrecurrence {
     border: 0 !important;
     margin: 0;
     min-width: 40rem;
@@ -4775,4 +4777,13 @@ span.project-name {
     align-items: center;
     gap: 6px;
     padding: 1rem 1rem;
+} */
+.datemenu.modal .modal-header {
+    background-color: #ebeff6;
+    align-items: center;
+}
+.datemenu.modal .modal-footer {
+    justify-content: flex-start;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #d2d2d2;
 }

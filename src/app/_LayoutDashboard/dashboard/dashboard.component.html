@@ -3076,7 +3076,7 @@
                             <div class="row">
                                 <div class="col-md-6 schedule-br">
                                     <div class="form-group dt">
-                                        <div class="curser-pointer" (click)="date_menu('date-menu')">
+                                        <div class="curser-pointer" (click)="date_menu_modal()">
                                             <div class="schedule-dt-tm">
                                                 <div>
                                                     <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
@@ -3102,48 +3102,7 @@
                                         </ng-container>
 
                                         </div>
-                                        <div class="drop-overlay" id="drop-overlay" (click)="date_menu()"></div>
-                                        <div class="date-menu" id="date-menu">
-                                            <div class="date-menu-heading">
-                                                Select Date & Time
-                                            </div>
-                                            <div class="date-menu-item">
-                                               
-                                                <div class="date-menu-action">
-                                                    <button type="button" class="btn btn-add-primary" (click)="date_menu_close('date-menu')">Done</button>
-                                                    <button type="button" class="btn btn-close-secondary" (click)="date_menu_close('date-menu')">Close</button>
-                                                </div>
-                                                <div class="date-menu-calender">
-                                                    <mat-card class="demo-inline-calendar-card">
-                                                        <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
-                                                      </mat-card>
-                                                </div>
-                                                <div class="date-menu-time">
-                                                    <div class="mb-2">
-                                                        <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                                        <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
-                                                            placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
-                                                            <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
-                                                                {{item}}</ng-option>
-                                                        </ng-select>
-                                                        <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
-                                                    </div>
-                                                    <div class="">
-                                                        <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
-                                                        <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
-                                                            [(ngModel)]="Endtms">
-                                                            <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                                                {{item1}}
-                                                                ({{
-                                                                    Startts|timeDiff:item1
-                                                                }})
-                                                            </ng-option>
-                                                        </ng-select>
-                                                        <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
                                     </div>
 
                                 </div>
@@ -3181,7 +3140,7 @@
                                                         </ng-container>
                                                     </ng-container>
                                             </div>
-                                            <div class="drop-overlay" id="drop-overlay"></div>
+                                            <!-- <div class="drop-overlay" id="drop-overlay"></div>
                                             <div class="customrecurrence" id="customrecurrence">
                                                 <div class="customrecurrence-heading">
                                                     Recurrence
@@ -3195,7 +3154,7 @@
                                                             <mat-option value="1">Daily</mat-option>
                                                             <mat-option value="2">Weekly</mat-option>
                                                             <mat-option value="3">Monthly</mat-option>
-                                                            <!-- <mat-option value="5">Last day of the month</mat-option> -->
+                                                        
                                                         </mat-select>
                                                     </div>
                                         
@@ -3261,7 +3220,7 @@
                                                     <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
                                                     <button type="button" class="btn btn-close-secondary" (click)="close_customrecurrencemodal()">Close</button>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                 </div>
                             </div>
@@ -5033,89 +4992,6 @@
                         <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
                     </div>
             </div>
-
-
-            <!--new plan-->
-            <!-- <div class="d-flex align-items-center mb-5">
-                <div class="cr-label">Repeat Every</div>
-                <div class="cr-every">
-                    <div class="cr-every-number">
-                        <input type="number" class="form-control" value="1">
-                    </div>
-                    <div class="cr-every-select">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Yearly</option>
-                          </select>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center mb-5">
-                <div class="cr-label">Repeat On</div>
-                <div class="cr-on">
-                        <div class="d-flex">
-                            <ng-container *ngFor="let item of dayArr">
-                                <div
-                                    [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                                    <input (change)="selectedDay($event)" id="{{item.value}}"
-                                        type="checkbox" name="DaysChk" value="{{item.value}}"
-                                        class="rep-chk" />
-                                    {{item.Day}}
-                                </div>
-                            </ng-container>
-                        </div>
-                    <div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="skipholidaycheck">
-                            <label class="form-check-label" for="skipholidaycheck">
-                              Skip Holidays
-                            </label>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-start mb-5">
-                <div class="cr-label pt-3">Ends</div>
-                <div class="cr-end-main">
-                    <div class="cr-end-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
-                            <label class="form-check-label" for="exampleRadios1">
-                              Never
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                            <label class="form-check-label" for="exampleRadios2">
-                              On
-                            </label>
-                          </div>
-                          <div>
-                            <input class="form-control" type="text" placeholder="Readonly input here..." value="August 19, 2024" readonly>
-                          </div>
-                    </div>
-                    <div class="cr-end-2">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
-                            <label class="form-check-label" for="exampleRadios3">
-                              After
-                            </label>
-                          </div>
-                          <div class="occurences-div">
-                            <div><input type="number" class="form-control" value="13"></div>
-                            <div class="occ-title">Occurences</div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center mb-2">
-                <div class="cr-label">Summary</div>
-                <div class="cr-summary">
-                    Montly on the second Tuesday, until Jan 25,2025
-                </div>
-            </div> -->
-              <!--new plan-->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
@@ -5125,6 +5001,58 @@
     </div>
   </div>
   <!-- customrecurrence Modal End -->
+   <!-- datemenu Modal Start -->
+<div class="datemenu modal fade show" id="datemenu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="datemenuLabel" aria-hidden="true"  style="display: none">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="datemenuLabel">Select Date & Time</h5>
+        </div>
+        <div class="modal-body">
+
+                <div class="date-menu-item">
+                   
+
+                    <div class="date-menu-calender">
+                        <mat-card class="demo-inline-calendar-card">
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                          </mat-card>
+                    </div>
+                    <div class="date-menu-time">
+                        <div class="mb-2">
+                            <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                            <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                                    {{item}}</ng-option>
+                            </ng-select>
+                            <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                        </div>
+                        <div class="">
+                            <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                            <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                [(ngModel)]="Endtms">
+                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                    {{item1}}
+                                    ({{
+                                        Startts|timeDiff:item1
+                                    }})
+                                </ng-option>
+                            </ng-select>
+                            <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-add-primary" (click)="date_menu_modal_close()">Done</button>
+            <button type="button" class="btn btn-close-secondary" (click)="date_menu_modal_close()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- datemenu Modal End -->
 </ng-container></ng-container>
 
 <ng-template #pleasewait>
