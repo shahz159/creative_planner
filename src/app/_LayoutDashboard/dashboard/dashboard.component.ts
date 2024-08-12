@@ -1791,7 +1791,8 @@ export class DashboardComponent implements OnInit {
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true )
+      && (this.ScheduleType === 'Event' ?this.allAgendas.length > 0: true )
+      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -2165,7 +2166,7 @@ export class DashboardComponent implements OnInit {
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ): true)
+      && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
@@ -6237,18 +6238,25 @@ onProjectSearch(inputtext:any){
     this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
 
+  date_menu(dialogId:string){
+    document.getElementById(dialogId).classList.add("show");
+    document.getElementById('date-menu').classList.add("show");
+    document.getElementById('drop-overlay').classList.add("show");
+   
+  }
+  date_menu_close(dialogId:string){
+    $(`#${dialogId}`).removeClass('show');
+    document.getElementById('date-menu').classList.remove("show");
+    document.getElementById('drop-overlay').classList.remove("show");
+  }
 
 
-
-date_menu(dialogId:string){
+datemen(dialogId:string){
   document.getElementById(dialogId).classList.add("show");
-  document.getElementById('date-menu').classList.add("show");
-  document.getElementById('drop-overlay').classList.add("show");
+ 
 }
-date_menu_close(dialogId:string){
+date_menuclo(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
-  document.getElementById('date-menu').classList.remove("show");
-  document.getElementById('drop-overlay').classList.remove("show");
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
  

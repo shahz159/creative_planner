@@ -5601,7 +5601,7 @@ sortbyCurrent_Time(){
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)): true)
+      && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0  : true)
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
 
@@ -6682,6 +6682,7 @@ onParticipantFilter(){
   }
 
   //////////////////////////////////////// Repeat Meeting section Start ///////////////////////////////////////////
+  
 
   date_menu(dialogId: string) {
     document.getElementById(dialogId).classList.add("show");
@@ -6692,6 +6693,7 @@ onParticipantFilter(){
     document.getElementById(dialogId).classList.remove("show");
     document.getElementById('date-menu').classList.remove("show");
     document.getElementById('drop-overlay').classList.remove("show");
+  
   }
   ////////////////////////////////////// Repeat Meeting  section End /////////////////////////////////////////////
   activeIndex: number | null = null;
@@ -7051,7 +7053,7 @@ onParticipantFilter(){
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
+      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -7316,6 +7318,13 @@ GetMeetingActivity(){
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
     this.allActivityList=JSON.parse(data[0].ActivityList)
+
+
+    this.allActivityList = this.allActivityList.map(item => ({
+      ...item,
+      Old_Value: item.Old_Value ? JSON.parse(item.Old_Value) : [],
+      New_Value: item.New_Value ? [JSON.parse(item.New_Value)] : []
+    }));
     console.log(data,'data321')
     console.log(this.allActivityList,'allActivityList321')
   })
