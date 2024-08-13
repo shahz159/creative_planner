@@ -6249,8 +6249,8 @@ onProjectSearch(inputtext:any){
   }
   date_menu_close(dialogId:string){
     $(`#${dialogId}`).removeClass('show');
-    document.getElementById('date-menu').classList.remove("show");
-    document.getElementById('drop-overlay').classList.remove("show");
+    $('#date-menu').removeClass('show');
+    $('#drop-overlay').removeClass('show');
 
   }
   date_menu_modal() {

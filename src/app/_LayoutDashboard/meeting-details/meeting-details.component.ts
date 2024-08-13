@@ -4972,7 +4972,7 @@ sortbyCurrent_Time(){
 
   // }
   selectStartDate(event) {
-
+debugger
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -6686,19 +6686,20 @@ onParticipantFilter(){
 
   date_menu(dialogId: string) {
     document.getElementById(dialogId).classList.add("show");
-    document.getElementById('date-menu').classList.add("show");
-    document.getElementById('drop-overlay').classList.add("show");
+    // document.getElementById('date-menu').classList.add("show");
+    // document.getElementById('drop-overlay').classList.add("show");
+    $('#date-menu').addClass('show');
+    $('#drop-overlay').addClass('show');
 
    
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
-    document.getElementById('date-menu').classList.remove("show");
-    document.getElementById('drop-overlay').classList.remove("show");
+    $('#date-menu').removeClass('show');
+    $('#drop-overlay').removeClass('show');
+}
 
-   
-  
-  }
+
   date_menu_modal() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("datemenu").style.display = "block";
