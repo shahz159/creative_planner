@@ -2217,6 +2217,7 @@ Insert_indraft() {
     // empty all variables
     this.meetingList = [];
     this.meeting_arry = [];
+    this.characterCount=0;
     this.meetinglength = 0;
     this.allAgendas = [];
     this.upcomingMeetings = [];

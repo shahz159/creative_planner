@@ -482,7 +482,7 @@ $(document).ready(function(){
         this._ProjectDataList = data;
          console.log("Summary Data---->",this._ProjectDataList);
 
-this.userFound = true
+        this.userFound = true
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
         this.cancelcount=this.ActualDataList[0]['cancelcount'];

@@ -3453,7 +3453,11 @@ td:nth-child(4) {
   align-items: center;
   justify-content: center;
 }
-
+.New_Approval_Project{
+  display: flex;
+  width: max-content;
+  color: #979797;
+}
 
 @keyframes connect {
   0% {

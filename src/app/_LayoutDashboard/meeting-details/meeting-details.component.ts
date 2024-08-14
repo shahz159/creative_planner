@@ -1447,6 +1447,10 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.currentEventId = this.selectedValue;
 
+
+    if (this.agendaInputs != '') {
+      this.addAgenda()
+    }
     if (this.ngDropdwonPort != '') {
       this.Addportfolios_meetingreport()
     }
@@ -1511,6 +1515,28 @@ export class MeetingDetailsComponent implements OnInit {
         this.notifyService.showError("Action Cancelled ", '');
       }
     }
+
+
+    // else if (this.GetProjectEventValue != undefined && this.currentEventId != '') {
+    
+    //   this._calenderDto.Schedule_ID = this.Scheduleid;
+    //   this._calenderDto.Emp_No = this.Current_user_ID;
+    //   this._calenderDto.Project_Code = this.GetProjectEventValue.toString();
+    //   this._calenderDto.flagid = this.currentEventId == undefined ? 0 : this.currentEventId;
+
+    //   if (this._calenderDto.flagid == 1 || this._calenderDto.flagid == 2) {
+    //     this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
+    //       this.meeting_details()
+    //       this.notifyService.showSuccess("Deleted successfully ", '');
+    //       this.GetProjectEventValue = null
+    //     });
+    //   }
+    //   else {
+    //     this.notifyService.showError("Action Cancelled ", '');
+    //   }
+    // }
+
+
   }
 
 
@@ -4086,6 +4112,7 @@ export class MeetingDetailsComponent implements OnInit {
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.projectsSelected=[];
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
             this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject,  TM_DisplayName:element.TM_DisplayName });
@@ -5531,6 +5558,7 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.Subtask = null;
@@ -5546,6 +5574,7 @@ debugger
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
+   
     this.Location_Type = null;
     this.Allocated_subtask = null;
     this.Projectstartdate = "";
@@ -6991,6 +7020,7 @@ onParticipantFilter(){
           this.GetProjectAndsubtashDrpforCalender();
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
+          this.projectsSelected=[];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
@@ -7360,6 +7390,14 @@ GetMeetingActivity(){
     }
   });
 });
+
+
+this.allActivityList.forEach(item => {
+  if (Array.isArray(item.New_Value) && Array.isArray(item.New_Value[0])) {
+    item.New_Value = item.New_Value[0];
+  }
+});
+
 console.log(this.allActivityList,'allActivityList')
   })
 }

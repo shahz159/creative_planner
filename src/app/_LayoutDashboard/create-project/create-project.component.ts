@@ -782,6 +782,8 @@ onFileChanged(event: any) {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+
+    this.characterCount_Desc=0;
   }
 
   closeInfo() {
@@ -2261,6 +2263,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementById("rightbar-overlay").style.display = "none";
 
       this.notProvided=false;   // back to initial state.
+      this.characterCount_Action=0;
     }
     Sourcefile:any
     bindActionDetailsIntoForm() {

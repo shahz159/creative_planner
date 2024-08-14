@@ -1137,7 +1137,13 @@
                                                         <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add agenda and press 'enter key'." autofocus="true"
                                                         [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"/>
 
-                                                    <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                                                        <ng-container *ngIf="meetings_Recurrence==='Do not repeat'">
+                                                        <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                                                       </ng-container>
+
+                                                       <ng-container *ngIf="meetings_Recurrence!=='Do not repeat'">
+                                                        <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" data-target="#confirmpopup" data-toggle="modal">Add</button>
+                                                       </ng-container>
 
                                                     </div>
                                                 </div>
@@ -1509,14 +1515,14 @@
                                                 </svg>
                                             </a> -->
                                             
-                                            <!-- <a class="kt-inbox__icon ac-activity" (click)="View_Activity()" title="Activity Log">
+                                            <a class="kt-inbox__icon ac-activity" (click)="View_Activity()" title="Activity Log">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1"
                                                     stroke-width="1" class="iconify iconify--mdi">
                                                     <path
                                                         d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z"
                                                         fill="currentColor"></path>
                                                 </svg>
-                                            </a> -->
+                                            </a>
                                             <!-- <a class="kt-inbox__icon" title="timeline">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
@@ -2701,16 +2707,8 @@
                                             </div>
                                     </div> -->
 
-
-
-
-
-
-
                                     <hr class="dotted">
                                     <div class="meeting-notes" >
-
-
                                         <!-- <angular-editor [config]="config" [(ngModel)]="Notes_Type"
                                             (click)="onEditorFocus()"
                                             (focus)="onEditorFocus()"
@@ -2718,7 +2716,6 @@
                                             (keyup)="addBulletPointsOnEnter($event)">
                                         </angular-editor>  -->
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
-                                    
                                         <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
                                         <angular-editor #ANGEDITOR [config]="config" [(ngModel)]="Notes_Type"
                                         (keyup)="addBulletPointsOnEnter($event)" (paste)="addBulletPointsOnEnter($event)"></angular-editor>
@@ -3973,8 +3970,8 @@
 
                     <ng-container *ngFor="let item of EventScheduledjson">
 
-                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                        <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
+                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                    <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
                     </ng-container>
 
                     <ng-container *ngIf="ngDropdwonPort!=''">
@@ -8016,7 +8013,7 @@
                                     <angular-editor  [(ngModel)]="Description_Type" (input)="updateCharacterCount()"
                                     (paste)="updateCharacterCount()"
                                     [config]="config"></angular-editor>
-                                    <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces </span>
+                                    <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
                                     <span *ngIf="characterCount>=500"  style="color:red">  description should not exceed 500 characters.</span>
                                 </div>
                             </div>
@@ -8260,7 +8257,6 @@
                                             <span class="agenda-index">{{i+1}}.</span>
                                             <label [id]="'agendas-label-'+i" class="task-name">{{agenda.name}}</label>
                                             <input [id]="'agendas-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
-        
                                         <div class="agenda-ctrl-btns">
         
         
@@ -9409,10 +9405,10 @@
                                         <div class="fs-6 mb-2">
                                            {{item.Value}}<br>
                                         <ng-container *ngFor="let data of item.Old_Value">
-                                          <span *ngIf="data.name !==''">From : {{data.name}}</span>
+                                          <span *ngIf="data.name !=='' && data.name !==undefined">From : {{data.name}}</span>
                                         </ng-container>
                                         <ng-container *ngFor="let new_data of item.New_Value">
-                                            <br> <span *ngIf="new_data.name !=='' ">To :
+                                            <br> <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined">To :
                                                 {{new_data.name}}</span>
                                         </ng-container>   
 
@@ -9527,7 +9523,7 @@
                     <div class="mb-2" id="div_endDate_new">
                             <label>End Date</label>
                             <div class="endtill-date">
-                                <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="_StartDate"
+                                <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="today"
                                         [(ngModel)]="_EndDate1"  placeholder="End Date"
                                         class="form-control" style="padding-left: 4rem !important;">
                                     <span class="endtill-date-icon">
@@ -10078,7 +10074,6 @@
 
 
          <div class="modal-footer">
-
             <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees();close_projectmodals()">Assign</button>
             <button  type="button" class="btn btn-add-primary" (click)="GetProjectTypeList();close_projectmodals()">Custom</button>
             <button type="button" class="btn btn-close-secondary" (click)="close_projectmodals()">Close</button>
