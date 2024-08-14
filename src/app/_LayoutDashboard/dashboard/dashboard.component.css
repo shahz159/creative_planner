@@ -1087,6 +1087,18 @@ span.time-slt-md {
     ;
 }
 
+::ng-deep .fc-purple .fc-daygrid-event-dot,
+::ng-deep .fc-purple .fc-list-event-dot {
+    border-color: #9B30FF !important;
+    ;
+}
+
+::ng-deep .fc-purple {
+    border-color: #9B30FF !important;
+    color: #9B30FF !important;
+    /* text-decoration: line-through !important; */
+}
+
 ::ng-deep .fc-suc .fc-daygrid-event-dot,
 ::ng-deep .fc-suc .fc-list-event-dot {
     border-color: #1dc9b7 !important;
