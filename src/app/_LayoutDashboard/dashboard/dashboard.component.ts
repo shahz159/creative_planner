@@ -5399,6 +5399,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
