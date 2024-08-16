@@ -1253,6 +1253,8 @@
                                                         <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
                                                             <div *ngIf="item.Status=='Under Approval'">
                                                                 <span class="Under_Approval_color font-weight-400">New approval</span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                                </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Delay'">
                                                                 <span class=" font-weight-400"></span>
@@ -1307,6 +1309,8 @@
                                                            
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                                 <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
+                                                                </span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Cancelled'">

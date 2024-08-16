@@ -4787,3 +4787,20 @@ span.project-name {
     padding: 0.5rem 1rem;
     border-top: 1px solid #d2d2d2;
 }
+.dropdown.filter-cal-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-radius: 49px;
+    padding: 0px 16px;
+    width: auto;
+    margin-bottom: 6px;
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 1px 3px 1px rgb(60 64 67 / 15%);
+    background-color: rgba(255, 255, 255, 0.502);
+    color: #222;
+}
+.dropdown.filter-cal-dropdown a svg {
+    margin-right: 2px;
+    color: #6c6464;
+}
