@@ -607,6 +607,7 @@
             <div class="card-body p-0">
                 <div class="kt-info-box kt-info-project-box border-0 ng-star-inserted">
                     <h4 class="t-m-t">Tasks</h4>
+                     <!-- <button class="btn btn-secondary" >sample edit</button> -->
                     <!-- Messages If Not Found -->
             <h4 style="color:lightgray">{{IfNoTaskFound}}</h4>
             <!-- Messages End -->
@@ -777,7 +778,7 @@
                                       <div id="collapseUnassign" class="collapse" aria-labelledby="headingOne" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
                                             <div class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList; let i=index">
-                                                <div class="card-body p-2">
+                                                <div class="card-body p-2" (click)="unassign_edit(item.Assign_Id,item.Task_Name);" >
                                                     <div data-type="inbox" class="d-flex align-items-center my-1">
                                                         <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
                                                             <div class="kt-inbox__actions">
@@ -786,10 +787,11 @@
                                                                     [disabled]="item.TypeOfTask=='SUBTASK'" />
                                                             </div>
                                                         </div>
+
                                                         <!-- Working Now -->
-                                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
+                                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75" >
                                                             <div
-                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
+                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
                                                                 <span class="kt-inbox__subject"
                                                                     id="spnLabel_{{item.Assign_Id}}">
                                                                     {{item.Task_Name}}</span>
@@ -815,7 +817,7 @@
                                                         </div>
 
                                                        <div>
-                                                        <div class="d-flex align-items-center py-lg-0 py-2"
+                                                        <div class="d-flex align-items-center justify-content-end py-lg-0 py-2"
                                                         id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
                                                         <span matTooltip="Re-Name"
                                                             (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
@@ -850,12 +852,12 @@
                                                             </button>
                                                         </mat-menu>  -->
 
-                                                            <span matTooltip="Assign Project" (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2 cursor-pointer unassign-btn">
+                                                            <!-- <span matTooltip="Assign Project" (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2 cursor-pointer unassign-btn">
                                                                  <mat-icon>group</mat-icon>
                                                             </span>
                                                             <span matTooltip="Add Action To Project" (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2 cursor-pointer unassign-btn">
                                                                 <mat-icon>new_label</mat-icon>
-                                                           </span>
+                                                           </span> -->
                                                             <!-- <mat-icon title="Assign Project"  (click)="projectmodal();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
                                                             <mat-icon title="Add Action To Project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon> -->
@@ -919,7 +921,7 @@
                                                                 <span></span>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex align-items-center justify-content-between my-lg-0 my-2 w-100">
+                                                        <div class="d-flex align-items-center justify-content-between my-lg-0 my-2 w-100" >
                                                             <div
                                                                 class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
                                                                 <span
@@ -970,12 +972,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="action-div-item w-100">
-                                                            <div class="position-relative dropright">
+                                                            <div class="position-relative dropright" >
 
                                                             <a class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 
-                                                               <div class="dropdown-menu run-info-hover-menu">
+                                                               <div class="dropdown-menu run-info-hover-menu" >
                                                                     <div class="heading">
                                                                         <div>
                                                                             <small>Action to projects</small>
@@ -1253,12 +1255,12 @@
                                                                 <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
                                                             </div>
                                                         </div>
-                                                            <div class="action-div-item w-100">
+                                                            <div class="action-div-item w-100" >
                                                             <div class="position-relative dropright">
                                                                 <a class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 
-                                                               <div class="dropdown-menu run-info-hover-menu">
+                                                               <div class="dropdown-menu run-info-hover-menu" >
                                                                     <div class="heading">
                                                                         <div>
                                                                             <small>Assigned Task/Project</small>
@@ -1830,6 +1832,370 @@
     </div> -->
 <!-- </div> -->
 
+ <!-- unassign edit side bar start -->
+ <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
+  <div class="unassign-editsidebar-body">
+      <div class="unassign-editsidebar-head mb-0">
+          <div class="radioicon">
+              <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg>
+          </div>
+          <div class="radiotitle"  [ngClass]="{'error-vd': !selected_taskName&&formFieldsRequired}">
+              <input type="text"   class="form-control" id="unassigneditInput" placeholder="Enter title" [(ngModel)]="this.selected_taskName">
+              <div class="radio-actions" title="Rename" id="before-edit">
+                <div class="radio-actions-btn edit" (click)="before_edit()">
+                  <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F"></path> </g></svg>
+                </div>
+            </div>
+              <div class="radio-actions"  >
+                <div class="radio-actions-btn doner" id="after-edit" style="display: none;" (click)="OnTask_Renameofnew()">
+                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </div>
+                <div class="radio-actions-btn cancel" id="cancelid" (click)="showedit()" style="display: none;">
+                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13.06 12L17.48 7.57996C17.5537 7.5113 17.6128 7.4285 17.6538 7.3365C17.6948 7.2445 17.7168 7.14518 17.7186 7.04448C17.7204 6.94378 17.7018 6.84375 17.6641 6.75036C17.6264 6.65697 17.5703 6.57214 17.499 6.50092C17.4278 6.4297 17.343 6.37356 17.2496 6.33584C17.1562 6.29811 17.0562 6.27959 16.9555 6.28137C16.8548 6.28314 16.7555 6.30519 16.6635 6.34618C16.5715 6.38717 16.4887 6.44627 16.42 6.51996L12 10.94L7.58 6.51996C7.43782 6.38748 7.24978 6.31535 7.05548 6.31878C6.86118 6.32221 6.67579 6.40092 6.53838 6.53834C6.40096 6.67575 6.32225 6.86113 6.31882 7.05544C6.3154 7.24974 6.38752 7.43778 6.52 7.57996L10.94 12L6.52 16.42C6.37955 16.5606 6.30066 16.7512 6.30066 16.95C6.30066 17.1487 6.37955 17.3393 6.52 17.48C6.66062 17.6204 6.85125 17.6993 7.05 17.6993C7.24875 17.6993 7.43937 17.6204 7.58 17.48L12 13.06L16.42 17.48C16.5606 17.6204 16.7512 17.6993 16.95 17.6993C17.1488 17.6993 17.3394 17.6204 17.48 17.48C17.6204 17.3393 17.6993 17.1487 17.6993 16.95C17.6993 16.7512 17.6204 16.5606 17.48 16.42L13.06 12Z" fill="currentColor"></path> </g></svg>
+                </div>
+            </div>
+          </div>
+
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger">Please enter title</span>
+      </div>
+      <div class="unassign-editsidebar-radio">
+      <!-- Radio buttons group -->
+       <div class="d-flex align-items-center mb-2" style="gap: 20px;">
+          <div class="form-check">
+              <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')" checked>
+              <label class="form-check-label" for="projectRadio1">
+                Project/Task
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
+              <label class="form-check-label" for="projectRadio2">
+                Action to project
+              </label>
+            </div>
+       </div>
+
+  <div *ngIf="selectedOption === 'option1'">
+    <div class="form-group mb-0">
+      <label>Assign to : <strong><span style="color:rgb(217,48,37)">*</span></strong> </label>
+      <ng-select  #assign="ngModel"   required (change)="EmployeeOnSelecting($event)"   [ngClass]="{'error-vd': !Selec&&formFieldsRequired}"   [(ngModel)]="Selec"    placeholder="Select employee" >
+
+            <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
+              {{item.DisplayName }}
+          </ng-option>
+      </ng-select>
+      <span *ngIf="!Selec&&formFieldsRequired" style="color:red">Please enter assign</span>
+  </div>
+  &nbsp;
+        <!-- Divs that will be conditionally displayed -->
+        <div class="project-options-item-div" >
+          <div class="form-group mb-2">
+            <label>Project type :</label>
+            <ng-select  [(ngModel)]="selectedProjecttype" placeholder="Select project type">
+              <ng-option [value]="item.Exec_BlockNo" *ngFor="let item of ProjectTypelist"   (click)="todo()">
+                  {{item.Exec_BlockName }}
+              </ng-option>
+            </ng-select>
+        </div>
+        &nbsp;
+            <div class="form-group mb-2"  >
+              <mat-form-field class="drp-dwn-field w-100" *ngIf="PortfolioList">
+                <mat-label>Link Portfolio</mat-label>
+                 <mat-chip-list #selectedPortfolios>
+                  <mat-chip *ngFor="let prtfolioId of port_id" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtfolioId)">
+                    {{getObjOf(PortfolioList,prtfolioId,'Portfolio_ID')?.Portfolio_Name}}-{{getObjOf(PortfolioList,prtfolioId,'Portfolio_ID')?.TM_DisplayName}}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip>
+
+                </mat-chip-list>
+                <div class="d-flex">
+                  <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                      [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
+
+                  <button *ngIf="isPortfolioDrpDwnOpen"
+                      class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
+                      <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                      <button *ngIf="!isPortfolioDrpDwnOpen"
+                      class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
+                      <mat-icon class="add-icon"
+                          >add</mat-icon></button>
+                  </div>
+
+
+              <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
+              (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
+              (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
+
+              <mat-option *ngFor="let prt of (PortfolioList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Portfolio_ID">
+
+                <mat-checkbox  color="primary" [checked]="port_id?port_id.indexOf(prt.Portfolio_ID)!==-1:false"></mat-checkbox>
+                    {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
+            </mat-option>
+           </mat-autocomplete>
+          </mat-form-field>
+
+
+      </div>
+
+</div>
+
+<ng-container>
+<ng-container *ngIf="selectedProjecttype !=='003' && selectedProjecttype!=='008'" >
+<div class="d-flex gap-1 ">
+    <div class="form-group flex-1">
+        <label>Start date : </label>
+        <!-- <span class="text-danger">*</span> -->
+        <div class="input-group" (click)="startdatechecker()">
+            <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" (dateChange)="setMaxDate()" [(ngModel)]="_StartDate"
+                placeholder="Start date" class="form-control">
+            <div class="input-group-text p-0">
+                <mat-datepicker-toggle matSuffix  (click)="startdatechecker()" [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </div>
+        </div>
+        <div *ngIf="selectedProjecttype=='011'" style="color:grey">To do list not more than 3 Days </div>
+        <span *ngIf="noStartDate==true" style="color:red">Please select start date</span>
+    </div>
+
+<div class="form-group flex-1" *ngIf="_StartDate!=null">
+        <label>End date :</label>
+        <!-- <span class="text-danger">*</span> -->
+        <div class="input-group" (click)="datesCheck()">
+            <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjecttype==='011'?maxDate:''" [(ngModel)]="_EndDate" (dateChange)="_EndDate=_StartDate<_EndDate?(selectedProjecttype!=='011'?_EndDate:( _EndDate<=maxDate?_EndDate:null) ):null"
+                placeholder="End date" class="form-control">
+            <div class="input-group-text p-0">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </div>
+        </div>
+        <span *ngIf ="!_EndDate" style="color:red">Please select end date</span>
+    </div>
+    <div class="form-group flex-1" *ngIf="_StartDate==null">
+        <label>End date :</label>
+        <!-- <span class="text-danger">*</span> -->
+        <div class="input-group" (click)="enddateChecker()">
+            <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
+                (click)="picker2.open()"
+                placeholder="End Date" class="form-control" >
+            <div class="input-group-text p-0">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </div>
+        </div>
+    </div>
+</div>
+</ng-container>
+
+</ng-container>
+
+
+<div class="form-group">
+<label for="exampleFormControlFile1">Remarks</label>
+<textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+    style="height: 111px;"></textarea>
+</div>
+
+<div class="form-group  mb-2">
+<div class="custom-file pl-1">
+    <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+    <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+    <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+    <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+</div>
+</div>
+  </div>
+  <div *ngIf="selectedOption === 'option2'">
+    <!-- <div class="project-options-item-div" *ngIf="selectedOption === 'option2'">Content for Option 2</div> -->
+    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"  id="AssignedToEmp" >
+      <label> Assign to :<span class="text-danger">*</span> </label>
+
+      <ng-select id='AssignedToEmp'  bindLabel="RACIS"
+          bindValue="Emp_No" groupBy="usergroup"
+
+        placeholder="Select employee"
+          [searchable]="true" name="RACIS" [ngClass]="{'error-vd': !selectedEmpNo&&formFieldsRequired}"
+          [(ngModel)]="selectedEmpNo"
+          required
+
+          #assignedToEmpf="ngModel"
+          >
+          <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
+            {{item.DisplayName }}
+        </ng-option>
+
+
+      </ng-select>
+      <span *ngIf ="!selectedEmpNo&&formFieldsRequired" style="color:red">Please select employee to assign</span>
+  </div>
+
+
+
+
+
+
+    <div class="form-group">
+      <label>Select project :<span class="text-danger">*</span></label>
+      <ng-select required #action="ngModel" (change)="ProjectOnSelect();"  [ngClass]="{'error-vd':!selectedProjectCode && formFieldsRequired}" [(ngModel)]="selectedProjectCode" placeholder="Select project">
+          <ng-option [value]="item.Project_Code"  *ngFor="let item of _ProjectDataList">
+              {{item.Project_Name}}
+          </ng-option>
+      </ng-select>
+      <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project</span>
+    </div>
+
+    <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+      <label>Action owner  <strong >
+</strong></label>
+      <ng-select required #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
+          <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
+              <span>{{item.RACIS}} </span>
+          </ng-option>
+      </ng-select>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+   <div class="d-flex gap-1">
+     <div class="form-group flex-1 details-date">
+            <label>Start Date :<span class="text-danger">*</span></label>
+            <div class="d-flex date-border" [ngClass]="{'error-date': formFieldsRequired&&!_StartDate}">
+                <input matInput [matDatepicker]="picker3" (click)="picker3.open();this._EndDate=null" [ngClass]="{'error-vd':!_StartDate &&formFieldsRequired}"   [min]="disablePreviousDate" [(ngModel)]="_StartDate"
+                    placeholder="Start Date" class="form-control">
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                </div>
+
+            </div>
+            <span *ngIf="!_StartDate&&formFieldsRequired" class="text-danger">Please select start date</span>
+        </div>
+        <div class="form-group flex-1 details-date">
+            <label>End Date :<span class="text-danger">*</span></label>
+            <div class="d-flex date-border"  [ngClass]="{'error-date': formFieldsRequired&&!_EndDate}"  >
+                <input matInput [matDatepicker]="picker4"  (click)="picker4.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
+                    placeholder="End Date" class="form-control">
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                    <mat-datepicker #picker4></mat-datepicker>
+                </div>
+
+            </div>
+            <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date</span>
+        </div>
+ </div>
+
+<ng-container >
+
+ <div class="form-group" >                          <!--*ngIf;="selectedEmpNo == Current_user_ID"-->
+  <label>Allocated hours :<span class="text-danger">*</span></label>
+  <!-- [ngClass];="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
+  <input id="hour-input" #allocated="ngModel"   type="tel" class="form-control" pattern="[0-9]*"   placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='')"
+      (click)="alertMaxAllocation()"  (change)="_alchr=!_allocated"
+      [ngClass]="{'error-border': _allocated > maxAllocation}"
+      [ngClass]="{'error-border': (_allocated==0)}"
+
+      [ngClass]="{'error-border': this.formFieldsRequired&&!_allocated}"
+      >
+  <!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
+  <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
+  <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+  <span *ngIf="this.formFieldsRequired&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal </span>
+  <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
+  <span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
+  <!-- <span *ngIf="formFieldsRequired&&!_allocated" style="color:red"> Please enter allocated hour</span> -->
+
+</div>
+
+</ng-container>
+
+
+
+
+
+
+
+<div class="form-group">
+  <label for="exampleFormControlFile1">Remarks</label>
+  <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+      style="height: 111px;"></textarea>
+</div>
+
+    <div class="form-group  mb-2">
+      <div class="custom-file pl-1">
+          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+          <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+          <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+          <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+      </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <div class="unassign-editsidebar-footer" *ngIf="selectedOption === 'option1'">
+      <div class="footicon cls" (click)="unassign_closeInfo()">
+          <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
+          <span class="lbl-hdn">Close</span>
+        </div>
+      <div class="foottext">Created today</div>
+      <div class="sub-act">
+          <div class="footicon save" (click)="assignTasksub1()"  >
+              <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
+              <span class="lbl-hdn">Submit</span>
+            </div>
+          <!-- <div class="footicon delete">
+              <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+          </div> -->
+      </div>
+  </div>
+
+<ng-container *ngIf="selectedOption === 'option2'">
+  <div class="unassign-editsidebar-footer">
+    <div class="footicon cls" (click)="unassign_closeInfo();
+    resetActionvalue()">
+        <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
+        <span class="lbl-hdn">Close</span>
+      </div>
+    <div class="foottext">Created today</div>
+    <div class="sub-act">
+        <div class="footicon save" (click)="sweetAlert()"  >
+            <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
+            <span class="lbl-hdn">Submit</span>
+          </div>
+        <!-- <div class="footicon delete">
+            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        </div> -->
+    </div>
+</div>
+</ng-container>
+
+
+
+</div>
+<!-- unassign edit side bar end -->
 
 <div class="modal-backdrop show" id="schedule-event-modal-backdrop" style="display: none;"></div>
 <!-- Project Modal Start -->

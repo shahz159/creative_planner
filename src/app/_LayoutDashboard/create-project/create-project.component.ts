@@ -152,6 +152,7 @@ export class CreateProjectComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // this.deletingDraftactions()
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
 
     if (navigatingToCreateProject === 'true') {
@@ -400,6 +401,7 @@ export class CreateProjectComponent implements OnInit {
   this.service.GetRACISandNonRACISEmployeesforMoredetails(prjCode).subscribe(
     (data) => {
       this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+      console.log(this.owner_dropdown,"this.owner_dropdownthis.owner_dropdownthis.owner_dropdownthis.owner_dropdown")
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
     });
 
@@ -1270,6 +1272,8 @@ getActionsDetails(){
 
 
 
+
+
 showActionDetails(index: number | undefined) {
   this.currentActionView = index;
 }
@@ -1375,6 +1379,11 @@ this.notProvided=true;
 return;
 }
 
+//  if(constv = parseInt(this.Allocated) <=  this.projectInfo.Duration +1){
+//   this.notProvided = false
+//  }else{
+//   this.notProvided = true
+//  }
 //  this.setprojeditAllocation()
 //  if(this.Allocated <= this.maxAllocation){
 // this.notProvided=false
@@ -2021,7 +2030,7 @@ if(['003','008'].includes(this.Prjtype)){
 // DRAFT PROJECT CODE START.
 
 deleteDraft(index:number){
-
+debugger
     Swal.fire({
 
       showCancelButton:true,
@@ -2046,6 +2055,51 @@ deleteDraft(index:number){
          }
     });
 }
+
+
+// deletingDraftactions(){
+//   this.projectMoreDetailsService.NewDeleteDraftAction(this.PrjCode).subscribe((res)=>{
+//     console.log(res,'deleteding draft action adeldsfsdfsd')
+//    });
+// }
+
+Action_Code:any
+
+deletingDraftactions(index:number){
+debugger
+  Swal.fire({
+
+    showCancelButton:true,
+    showConfirmButton:true,
+    title:'Are you sure?',
+    text:`'${this.PrjActionsInfo[index].Project_Name}' will permanently deleted`,
+  }).then(choice=>{
+       if(choice.isConfirmed){
+        this.Action_Code=this.PrjActionsInfo[index].Project_Code;
+
+          this.projectMoreDetailsService.NewDeleteDraftAction(this.Action_Code).subscribe((res)=>{
+
+                   if(res['message']=='1'){
+                     this.notifyService.showSuccess(`'${this.PrjActionsInfo[index].Project_Name}' action is deleted`,"Deleted successfully");
+                    //  this.GetAssignedTaskDetails();
+                    this.openDraft(index)
+                   }
+                   else{
+                      this.notifyService.showError(`Failed to delete ${this.PrjActionsInfo[index].Project_Name}`,"Failed");
+                   }
+         });
+
+       }
+  });
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -2753,24 +2807,122 @@ newDetails(pcode: string, source: string) {
 
   // Determine the name based on the source
   let name: string;
-  if (source === 'meeting') {
+  if (source === 'Meeting') {
     name = 'Meeting-Details';
-  } else if (source === 'project') {
+    const url = document.baseURI + name;
+    const myurl = `${url}/${pcode}`;
+    const myWindow = window.open(myurl, pcode);
+    myWindow.focus();
+  } else if (source === 'Project') {
     name = 'Details';
-  } else {
-    console.error('Unknown source');
+    const url = document.baseURI + name;
+    const myurl = `${url}/${pcode}`;
+    const myWindow = window.open(myurl, pcode);
+    myWindow.focus();
+  }
+
+
+}
+
+updateDuration(){
+  const startDate = new Date(this.Start_Date);
+  const endDate = new Date(this.End_Date);
+
+  // Check if both dates are valid
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    alert('Invalid date(s)');
     return;
   }
 
-  // Construct the URL and open the new window
-  const url = document.baseURI + name;
-  const myurl = `${url}/${pcode}`;
-  const myWindow = window.open(myurl, pcode);
+  // Calculate the difference in milliseconds
+  const differenceInMs = endDate.getTime() - startDate.getTime();
 
-  if (myWindow) {
-    myWindow.focus();
-  } else {
-    console.error('Failed to open the window');
+  // Convert milliseconds to days
+  const millisecondsInDay = 1000 * 60 * 60 * 24;
+  const differenceInDays = Math.floor(differenceInMs / millisecondsInDay);
+
+  // Set the duration in days
+  this.projectInfo.Duration = differenceInDays;
+
+  // Alert the result
+  // alert(`${differenceInDays} days`);
+}
+
+ActionupdateDuration(){
+  const startDate = new Date(this.Start_Date);
+  const endDate = new Date(this.End_Date);
+
+  // Check if both dates are valid
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    alert('Invalid date(s)');
+    return;
+  }
+
+  // Calculate the difference in milliseconds
+  const differenceInMs = endDate.getTime() - startDate.getTime();
+
+  // Convert milliseconds to days
+  const millisecondsInDay = 1000 * 60 * 60 * 24;
+  const differenceInDays = Math.floor(differenceInMs / millisecondsInDay);
+
+  // Set the duration in days
+  this.ActionDuration = differenceInDays;
+
+  // Alert the result
+  // alert(`${differenceInDays} days`);
+}
+
+start_dt:any
+end_dt:any
+
+alertMaxAllocation() {
+  if (this.Start_Date == null || this.End_Date == null) {
+    this._message = "Start Date/End date missing!!"
+  }
+  else {
+    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+    this.start_dt=new Date(this.Start_Date);
+    this.end_dt=new Date(this.End_Date);
+
+    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+
+    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if(Difference_In_Days==0){
+      Difference_In_Days=-1;
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+    }
+    else{
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+    }
+    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+  }
+}
+
+maxAllocations: number;
+alertMaxAllocations() {
+  if (this.Start_Date == null || this.End_Date == null) {
+    this._message = "Start Date/End date missing!!"
+  }
+  else {
+    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+    this.start_dt=new Date(this.Start_Date);
+    this.end_dt=new Date(this.End_Date);
+
+    console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
+
+    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if(Difference_In_Days==0){
+      Difference_In_Days=-1;
+      this.maxAllocations = (-Difference_In_Days) * 10 / 1;
+    }
+    else{
+      this.maxAllocations = (-Difference_In_Days) * 10 / 1 +10;
+    }
+    console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
   }
 }
 

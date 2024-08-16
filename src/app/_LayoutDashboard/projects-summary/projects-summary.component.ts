@@ -722,6 +722,7 @@ this.userFound = true
   getDropdownsDataFromDB1(){
 
 
+
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
       this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
       this._objDropdownDTO.Selected_Status = this.selectedStatus_String;
@@ -729,9 +730,10 @@ this.userFound = true
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
       this._objDropdownDTO.ActiveStatus = "Active";
-      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{
 
+      this.service[this.Type=='RACIS Projects'?'GetDropDownsOwnerData_ForSummary':this.Type=='ALL Projects'?'GetDropDownsData_ForSummary':''](this._objDropdownDTO).subscribe((data:any)=>{
 
+debugger
 
           this.EmpCountInFilter=this.emplyToselect.length==0?JSON.parse(data[0]['Emp_Json']):this.EmpCountInFilter;
           this.TypeContInFilter=this.projtypeToselect.length==0?JSON.parse(data[0]['ProjectType_Json']):this.TypeContInFilter;
@@ -1032,6 +1034,7 @@ this.edited = true
       });
 
     //Filtering Checkbox de
+    this.filterMegadropdownclose()
     this.getDropdownsDataFromDB();
     }
     else if(this.Type=='RACIS Projects'){
@@ -1626,7 +1629,7 @@ onEmpSelected(selected:boolean,selectedItem:any){
 
 
 getNewFilterResult(){
-debugger
+
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
