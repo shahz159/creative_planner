@@ -3403,6 +3403,12 @@ td:nth-child(4) {
 .search-filter{
   margin-left: 14px;
 }
+.kt-filterdetails {
+  display: flex;
+  margin-top: 5px;
+  background-color: #f3f6f9;
+  margin: 0px 0px 9px 0px;
+}
 /*new details page loading circle start*/
 
 .smart-glass {
@@ -3447,7 +3453,11 @@ td:nth-child(4) {
   align-items: center;
   justify-content: center;
 }
-
+.New_Approval_Project{
+  display: flex;
+  width: max-content;
+  color: #979797;
+}
 
 @keyframes connect {
   0% {

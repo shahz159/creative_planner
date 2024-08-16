@@ -1784,15 +1784,15 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked() {
-debugger
+
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
       (this.Description_Type?(this.characterCount<500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0  : true )
-      // && this.ngEmployeeDropdown.length>0
+      && (this.ScheduleType === 'Event' ?this.allAgendas.length > 0: true )
+      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -2101,9 +2101,10 @@ debugger
           if (this._Message == "Updated Successfully") {
             if (this.draftid != 0) {
               this.Getdraft_datalistmeeting();
-              this.draftid = 0
+              this.draftid = 0;
             }
             this.notifyService.showSuccess(this._Message, "Success");
+            this.Getdraft_datalistmeeting();
           }
           else {
             this.notifyService.showError(this._Message, "Failed");
@@ -2165,7 +2166,7 @@ debugger
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
@@ -2347,11 +2348,10 @@ debugger
           element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
           // var columnName = "Link_Type";
           // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+         
           var vUser_Name = "User_Name";
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
-
-
-
+           
           var vLocation_Type = "Location_Type";
           element[vLocation_Type] = this._meetingroom==true?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2415,6 +2415,7 @@ debugger
               this._calenderDto.flagid = 2;
           }
         }
+        console.log(this._calenderDto.flagid, "finalarray");
         if (this.Schedule_ID != 0) {
           this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -2438,7 +2439,7 @@ debugger
         frmData.append("flag_id", this._calenderDto.flagid.toString());
         this._calenderDto.attachment = this.RemovedAttach.toString();
 
-        // console.log(JSON.stringify(finalarray), "finalarray");
+         
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
@@ -2697,9 +2698,7 @@ debugger
   }
 
   Select_flag(val) {
-
     this._PopupConfirmedValue = val;
-
   }
 
 
@@ -2709,8 +2708,8 @@ debugger
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
 
     document.getElementById("div_recurrence").style.display = "block";
@@ -3894,7 +3893,7 @@ currentTime:any;
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
-        this.Status1 = this.EventScheduledjson[0].Status;
+        this.Status1 = this.EventScheduledjson[0].Status.trim();
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
         this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
@@ -5211,7 +5210,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
+   
   }
 
   actyside() {
@@ -5235,6 +5234,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
   }
   Insert_indraft() {
+
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -5293,8 +5293,8 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         console.log(data, "ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
-
           this.draftcount = this.draftdata_meet.length;
+          console.log(this.draftdata_meet,'testing process')
         }
         else {
           this.draftdata_meet = null;
@@ -5379,7 +5379,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
   closeschd() {
 
     // this.Insert_indraft();
-    document.getElementById('date-menu').classList.remove("show");
+    // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -5399,6 +5399,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -6205,7 +6206,8 @@ onProjectSearch(inputtext:any){
 
 
   customrecurrencemodal() {
-
+    // document.getElementById('drop-overlay').classList.add("show");
+    // document.getElementById('customrecurrence').classList.add("show");
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -6224,6 +6226,8 @@ onProjectSearch(inputtext:any){
 
   }
   close_customrecurrencemodal() {
+    // document.getElementById('drop-overlay').classList.remove("show");
+    // document.getElementById('customrecurrence').classList.remove("show");
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("customrecurrence").style.display = "none";
 
@@ -6237,13 +6241,36 @@ onProjectSearch(inputtext:any){
     this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
 
+  date_menu(dialogId:string){
+    document.getElementById(dialogId).classList.add("show");
+    document.getElementById('date-menu').classList.add("show");
+    document.getElementById('drop-overlay').classList.add("show");
 
+   
+  }
+  date_menu_close(dialogId:string){
+    $(`#${dialogId}`).removeClass('show');
+    $('#date-menu').removeClass('show');
+    $('#drop-overlay').removeClass('show');
 
+  }
+  date_menu_modal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("datemenu").style.display = "block";
+   
+  }
+  date_menu_modal_close() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("datemenu").style.display = "none";
+   
+  
+  }
 
-date_menu(dialogId:string){
+datemen(dialogId:string){
   document.getElementById(dialogId).classList.add("show");
+ 
 }
-date_menu_close(dialogId:string){
+date_menuclo(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
@@ -6838,16 +6865,20 @@ else if(this.selectedrecuvalue==='3'){
      }
    });
 }
+console.log(this._PopupConfirmedValue)
 
 
 
 
-if (this.selectedrecuvalue == '0') {
-  this._PopupConfirmedValue = 1;
-}
-else {
-  this._PopupConfirmedValue = 2;
-}
+// if (this.selectedrecuvalue == '0') {
+//   this._PopupConfirmedValue = 1;
+// }
+// else if(this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()){
+//   this._PopupConfirmedValue = 1;
+// }
+// else {
+//   this._PopupConfirmedValue = 2;
+// }
 
 this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
 var start = moment(this.minDate);
@@ -6957,7 +6988,12 @@ getMeetingApprovals(){
     var multiapproval_json=data[0].multiapproval_json;
     this.multiapproval_json=JSON.parse(multiapproval_json);
     this.totalCountOfList=this.multiapproval_json.length;
-     console.log(this.multiapproval_json,'appraval data in the dashboard')
+    if(this.totalCountOfList==0){
+      document.getElementById("requestlist").classList.remove("show");
+      document.getElementById("cal-main").classList.remove("col-lg-9");
+      document.getElementById("cal-main").classList.add("col-lg-12");
+    }
+    //  console.log(this.multiapproval_json,'appraval data in the dashboard')
   })
 }
 
@@ -6969,9 +7005,37 @@ UpdateMeetingRequestAccess(SNo,Schedule_Id,Type){
   this.approvalObj.Type = Type;
 
  this.approvalservice.NewUpdateMeetingRequestAccess(this.approvalObj).subscribe((data) => {
-    console.log(data,'appraval data in the dashboard');
+
+  if(data['Type']=='Accept'){
+    this.notifyService.showSuccess("Request access accept ", "Success");
+  }else if(data['Type']=='Reject'){
+    this.notifyService.showSuccess("Request access reject", "Success");
+  }
     this.getMeetingApprovals();
+    console.log(data,'appraval data in the dashboard3');
  })
+}
+
+
+
+sortbyCurrent_Time(){
+
+
+  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+  let _currentdate=moment();
+  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+  {
+      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+      const index:number=this.StartTimearr.findIndex((item:any)=>{
+          const t=moment(item,'h:mm A');
+          const result=t>=ct;
+          return result;
+      });
+      this.validStartTimearr=this.StartTimearr.slice(index);
+  }
+  else
+  this.validStartTimearr=[...this.StartTimearr];
+
 }
 
 

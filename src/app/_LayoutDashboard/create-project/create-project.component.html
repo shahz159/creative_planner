@@ -1461,7 +1461,7 @@
                                     <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
                                     <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
                                     at least 5 words, maximum 500 characters are allowed </span>
-                                    <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces</span>
+                                    <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
                                    <span *ngIf="characterCount >500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
                                 </div>
@@ -1566,7 +1566,7 @@
                                     <!-- <span *ngIf="allocated.value && !isNumeric(allocated.value)">Alphabet will not accept
                                       {{maxAllocation}}
                                     </span> -->
-
+   
                                 </div>
                               </ng-container>
 
@@ -2730,7 +2730,7 @@
                                 (paste)="updateCharacterCount_Desc()" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
                                 <!-- <span *ngIf="!ProjectDescription&&notProvided" style="color:rgb(217,48,37)">Please enter description</span> -->
                                 <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed </span>
-                                <span *ngIf="characterCount_Desc > 0" > {{characterCount_Desc}} Characters with spaces</span>
+                                <span *ngIf="characterCount_Desc > 0" >Max Characters {{characterCount_Desc}}/500</span>
                                 <span *ngIf="characterCount_Desc > 500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
                           </div>
                       </div>
@@ -3108,7 +3108,7 @@
                               (paste)="updateCharacterCount_Action()"   (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
                               <span *ngIf="!ProjectDescription&&notProvided" style="color:red">Please enter action description </span>
                               <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed </span>
-                              <span *ngIf="characterCount_Action > 0" > {{characterCount_Action}} Characters with spaces</span>
+                              <span *ngIf="characterCount_Action > 0" >Max Characters {{characterCount_Action}}/500</span>
                               <span *ngIf="characterCount_Action>500" style="color:red">Maximum 500 characters are allowed</span>
                         </div>
                     </div>

@@ -1167,9 +1167,6 @@ acceptSelectedValues() {
 //  leave requests approval start
 leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined;
 onSubmitLRbtn(){
-
-
-
   let type:any;
   if(this.leaveDecision==='REJECTED'){
         // leave request rejected
@@ -1191,7 +1188,7 @@ onSubmitLRbtn(){
   this.approvalObj.Remarks=this.LeaveDetail[0].Remarks;
   this.approvalObj.From_Date=this.LeaveDetail[0].Start_Date;
   this.approvalObj.End_Date=this.LeaveDetail[0].End_Date;
-  this.approvalObj.sendFrom=this.leave_Requests[this.currentReqIndex].SubmittedBy.trim();
+  this.approvalObj.sendFrom='WS';
   this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
          console.log("approveleaveRequest:",res);
 

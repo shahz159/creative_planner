@@ -120,7 +120,7 @@
                                 <div class="kt-project-type">
 
                                     <div class="Kt-Pd-Status Delay black-text" *ngIf="item.Status=='Delay'">
-                                        Delay {{item.Delaydays}} days
+                                        Delay {{item.Delaydays}} day(s)
                                     </div>
 
 
@@ -190,7 +190,7 @@
                            </div> -->
                         <div class="kt-project-type  ">
                             <div class="Kt-Pd-Status Delay" *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
-                                <ng-container *ngIf="item.Status=='Delay'">Delay {{item.Delaydays}} days</ng-container>
+                                <ng-container *ngIf="item.Status=='Delay'">Delay {{item.Delaydays}} day(s)</ng-container>
                                 <ng-container *ngIf="item.Status!='Delay'">{{item.Status}}</ng-container>
                             </div>
                             <ng-template #notdelay_status>
@@ -310,18 +310,33 @@
                 </div>
                 <div class="kt-info-box border-0 p-0">
                     <div class="d-flex justify-content-end g-10">
+
+                        <div class="align-items-center justify-content-end d-flex">
+                            <div (click)="approvalClick('ACCEPT')" class="kt-detail-link" [ngClass]="{'active':Accept_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #028507; ;overflow: hidden;"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"></path></svg><span class="kt-detail-iconname">Accept</span></div>
+                            <div (click)="approvalClick('REJECT')" class="kt-detail-link" [ngClass]="{'active':Reject_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #e81000; ;overflow: hidden;"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"></path></svg><span class="kt-detail-iconname">Reject</span></div>
+                            <div (click)="approvalClick('AUDIT')" class="kt-detail-link" *ngIf="!projectAuditor&&requestType=='Project Complete'" [ngClass]="{'active':Audit_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #0086f1; overflow: hidden;"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"></path><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"></path><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"></path></svg><span class="kt-detail-iconname">Audit</span></div>
+                            <div (click)="approvalClick('TRANSFER')" class="kt-detail-link" *ngIf="requestType=='Project Complete'" [ngClass]="{'active':Transfer_active==true}"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1.2em" height="1.2em" viewBox="0 0 412.879 412.879" xml:space="preserve" style="fill: #0086f170; stroke: #0086f147;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><path  d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673 C234.816,259.745,199.982,176.808,199.982,176.808z"></path><path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path><path d="M383.687,329.941c-2.064-4.936-7.03-8.098-11.771-10.043l-32.05-14.756l-15.396-12.984l-24.692,24.562l10.348,69.186 c0.036,0.238-0.023,0.484-0.167,0.682l-10.92,14.943c-0.174,0.238-0.45,0.379-0.746,0.379c-0.295,0-0.571-0.141-0.745-0.379 l-10.918-14.943c-0.145-0.195-0.204-0.441-0.168-0.682l10.348-69.186l-24.692-24.562l-15.397,12.984l-32.048,14.756 c-4.743,1.945-10.207,6.34-11.772,10.043c0,0-34.834,82.938-15.94,82.938h202.674 C418.521,412.877,383.687,329.941,383.687,329.941z"></path><path d="M240.498,209.939c0.557,51.213,25.015,81.752,57.792,81.752s57.236-30.539,57.795-81.752 c0.355-35.539-16.57-56.807-57.795-56.807C257.064,153.133,240.135,174.401,240.498,209.939z"></path><path d="M201.348,31.93c41.489,0,78.794,23.886,96.431,60.586l-9.229,1.771c-2.341,0.449-4.266,2.112-5.046,4.365 c-0.781,2.252-0.303,4.75,1.258,6.554l27.264,31.512c1.279,1.48,3.129,2.307,5.045,2.307c0.418,0,0.839-0.038,1.258-0.119 c2.342-0.449,4.266-2.114,5.049-4.366l13.662-39.366c0.781-2.253,0.302-4.751-1.259-6.554c-1.56-1.804-3.966-2.639-6.304-2.188 l-11.475,2.203c-19.918-46.272-65.622-76.724-116.655-76.724c-5.529,0-10.011,4.48-10.011,10.01 C191.337,27.449,195.819,31.93,201.348,31.93z" style="stroke-width: 15px;"></path></g></g></g></svg><span class="kt-detail-iconname">Transfer</span></div>
+                            <div (click)="approvalClick('CONDITIONAL')" class="kt-detail-link" *ngIf="requestType=='Project Complete'" [ngClass]="{'active':Conditional_Active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #007c05; ;overflow: hidden;"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"></path><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"></path><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"></path><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"></path></svg><span class="kt-detail-iconname">Next version</span></div>
+                        </div>
+
+
                         <!-- <div class="col">
                     <div class="kt-info-lable-v">Approval*</div>
                 </div> -->
-                        <div>
+                        
+                       <!--replace with new btns <div>
                             <button
                                 [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
                                 (click)="approvalClick('ACCEPT')">Accept</button>
-                        </div>
+                        </div> replace with new btns-->
+
+
                         <!-- <div class="col" id="editaccept">
                     <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
                         (click)="approvalClick('EDIT')">Edit & Accept</button>
                 </div> -->
+
+                <!--  replace with new btns               
                         <div *ngIf="requestType=='Project Complete'">
                             <button
                                 [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
@@ -331,7 +346,9 @@
                             <button
                                 [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
                                 (click)="approvalClick('REJECT')">Reject</button>
-                        </div>
+                        </div> replace with new btns -->
+
+
                         <!---------- Reject Type html---------------->
                         <!-- <div class="col-lg-12 mt-3" [hidden]="!isTextAreaVisible">
                     <div *ngIf="isRejectOptionsVisible">
@@ -394,6 +411,166 @@
             </div>
             <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
                 <div class="kt-pdv">
+
+                        <!-- Project Audit and Transfer ownership-->
+                        <div  *ngIf="selectedType=='5'||selectedType=='6'" class="mt-2">
+                            <div class="mb-2">
+                                <label  *ngIf="selectedType=='5'">Project auditor<span class="text-danger">*</span></label>
+                                <label *ngIf="selectedType=='6'">New Owner<span class="text-danger">*</span></label>
+                            <ng-container  *ngIf="selectedType=='5'">
+                                <ng-select
+                                [ngClass]="{'error-border':!emp_Auditor&&notProvided}"
+                                [items]="allUsers1" bindLabel="RACIS"
+                                bindValue="Emp_No" groupBy="usergroup"
+                                placeholder="Select project auditor"
+                                id="prj_audit_ngsel"
+                                [searchable]="true" name="prj_audit_ngsel"
+                                [(ngModel)]="emp_Auditor"
+                                required></ng-select>
+                            </ng-container>    
+                            <ng-container  *ngIf="selectedType=='6'">
+                                <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
+                                    placeholder="Select new owner" id="prj_audit_ngsel"
+                                    [(ngModel)]="emp_Auditor">
+                                    <ng-option [value]="item.Emp_No"
+                                        *ngFor="let item of racisNonRacis">
+                                        {{item.RACIS}}
+                                    </ng-option>
+                                </ng-select>
+                            </ng-container>   
+                            <span *ngIf="selectedType=='5'&&!emp_Auditor&&notProvided" style="color:red">Project auditor required.</span>
+                            <span *ngIf="selectedType=='6'&&!emp_Auditor&&notProvided" style="color:red">New owner required.</span>
+                            </div>
+                            <div>
+                                <label>Enter Comments<span class="text-danger">*</span></label>
+                                <textarea [ngClass]="{'error-border':(!empAuditor_remarks||!empAuditor_remarks.trim())&&notProvided }"  [(ngModel)]="empAuditor_remarks" class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
+                                <span *ngIf="(!empAuditor_remarks||!empAuditor_remarks.trim())&&notProvided" style="color:red">please enter your comments.</span>
+                            </div>
+                        </div>
+                        <!-- Project Audit and Transfer ownership-->
+
+
+                         <!-- Conditional Assign-->
+                         <div *ngIf="selectedType == '2'"  class="mt-3 ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-2">
+                                    <label>Project Name<span class="text-danger">*</span></label>
+                                    <input type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label>Assign to<span class="text-danger">*</span></label>
+                                            <ng-select [items]="allUsers1" bindLabel="RACIS"
+                                            bindValue="Emp_No" groupBy="usergroup"
+                                            placeholder="Select employee"
+                                            [searchable]="true" name="RACIS"
+                                            [(ngModel)]="sel_user"
+                                            required></ng-select>
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                           <label>Select Project Type</label>
+                                            <ng-select placeholder="Select Project Type" id="ca_project_type" [(ngModel)]="sel_ptype">
+                                                <ng-option [value]="item.Typeid" *ngFor="let item of ProjectType_json">{{item.ProjectType}}</ng-option>
+                                            </ng-select>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+
+                          <div *ngIf="['003','008'].includes(sel_ptype)" class="row mb-2">
+                            <div class="col-md-12 mt-3">
+                                <label class="input-icon Sub_In_ed">Submission type</label>
+                                  <ng-select class="kt-form-vd curser-pointer" placeholder="Select submission type"  [(ngModel)]="sel_submtype">
+                                    <ng-option [value]="item.SubmissionId" *ngFor="let item of Submission">{{item.SubmissionName}}</ng-option>
+                                  </ng-select>
+                              </div>
+                          </div>
+
+
+                            <div *ngIf="['001','002','011'].includes(sel_ptype)" class="row mb-2">
+                                <div class="col-md-6">
+                                    <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                        <label>Start date</label>
+                                        <div class="d-flex date-border">
+                                          <input class="form-control ng-pristine curser-pointer" [(ngModel)]="sel_sdate"
+                                            id="ca_date1" placeholder="Select start date" [matDatepicker]="ca_datepicker1"
+                                            (click)="ca_datepicker1.open()" [min]="todayDate"/>
+                                          <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix [for]="ca_datepicker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #ca_datepicker1></mat-datepicker>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                        <label>End date</label>
+                                        <div class="d-flex date-border">
+                                          <input class="form-control ng-pristine curser-pointer" [(ngModel)]="sel_edate"  
+                                          id="ca_date2" placeholder="Select end date" [matDatepicker]="ca_datepicker2" 
+                                          (click)="ca_datepicker2.open();" [min]="sel_sdate"/>
+                                          <div class="input-group-text p-0">
+                                            <mat-datepicker-toggle matSuffix [for]="ca_datepicker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #ca_datepicker2></mat-datepicker>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-md-12 mt-3">
+
+                                    <mat-form-field class="drp-dwn-field w-100">
+                                      <mat-label>Select portfolios</mat-label>
+                                      <mat-chip-list #ca_selectedPortfolioDrpDwn>
+                                        <mat-chip *ngFor="let ptfid of ngDropdwonPort2" class="Data_chip_kt"
+                                          (removed)="onca_PortfolioDeSelected(ptfid)">
+                                          {{getObjOf(_portfoliosList2,ptfid,'Portfolio_ID').Portfolio_Name}}
+                                          <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                          </button>
+                                        </mat-chip>
+                                      </mat-chip-list>
+                                      <div class="d-flex">
+                                        <input class="flex-1" [matChipInputFor]="ca_selectedPortfolioDrpDwn"
+                                          [matAutocomplete]="ca_PortfolioDrpDwn" #ca_portfolioTF />
+                                                <button *ngIf="iscaPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                                    class="close-icon save-mat-selection "
+                                                    (click)="iscaPortDrpDwnOpen=false;  ca_portfolioTF.value='';  closeAutocompleteDrpDwn('ca_PortfolioDrpDwn');">done</mat-icon>
+                                                </button>
+                                                <button *ngIf="!iscaPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                                    class="add-icon"
+                                                    (click)="iscaPortDrpDwnOpen=true; openAutocompleteDrpDwn('ca_PortfolioDrpDwn');">add</mat-icon>
+                                                </button>
+                                
+                                      </div>
+                                      <mat-autocomplete aria-label="ca_PortfolioDrpDwn" #ca_PortfolioDrpDwn="matAutocomplete"
+                                        (optionSelected)="onca_PortfolioSelected($event); ca_portfolioTF.value=''; "
+                                        (opened)="iscaPortDrpDwnOpen=true" (closed)="iscaPortDrpDwnOpen=false; ">
+
+                                        <mat-option *ngFor="let pfl of _portfoliosList2|filter:ca_portfolioTF.value"
+                                          [value]="pfl.Portfolio_ID">
+                                          <mat-checkbox color="primary"
+                                            [checked]="ngDropdwonPort2.includes(pfl.Portfolio_ID)">{{pfl.Portfolio_Name}}</mat-checkbox>
+                                        </mat-option>
+
+                                      </mat-autocomplete>
+                                    </mat-form-field>
+                                  </div>
+                            </div>
+                          
+                        </div>
+                        <!-- Conditional Assign-->
+
+
                     <div *ngIf="isRejectOptionsVisible">
                         Reject type*
                         <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
@@ -443,7 +620,7 @@
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
                     <ng-container *ngIf="selectedType == '2'">
-                        Enter comments*
+                        Enter comments<span style="color:red">*</span>
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
@@ -465,6 +642,8 @@
 
                                     <!-- <button type="button" data-to="#pills-3-tab"  class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
                                     <span>
+
+
                                         <button (click)="submitApproval()" type="button" *ngIf="Accept_active"
                                             data-to="#pills-3-tab" class="btn btn-project-stv Bt-Submit"
                                             primary="true">Submit</button>
@@ -473,6 +652,14 @@
                                             *ngIf="Conditional_Active || Reject_active" data-to="#pills-3-tab"
                                             (click)="submitApproval()" [disabled]="!comments || !selectedType"
                                             primary="true">Submit</button>
+
+                                        <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit" primary="true"
+                                            (click)="onPrjAuditSubmitClicked()">Submit</button>
+                                        
+                                        <button *ngIf="Transfer_active" type="button" class="btn btn-project-stv Bt-Submit" primary="true"
+                                            (click)="onTransferBtnClicked()">Submit</button>
+
+
                                     </span>
                                 </div>
                             </div>
@@ -759,125 +946,168 @@
             </div>
         </div>
 
-        <div class="row mt-5 pb-3" *ngFor="let item of ProjectStatesJson">
-            <div class="col text-center">
-                <div class="kt-info-lable-v">
-                    Start date
+        <ng-container *ngFor="let item of ProjectStatesJson">
+            <div class="row mt-5 pb-3">
+                <div class="col text-center">
+                    <div class="kt-info-lable-v">
+                        Start date
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade">
+                        {{item.StartDate |date:'dd-MM-yyyy'}}
+                    </div>
                 </div>
-                <div class="kt-info-data-v bg-light-shade">
-                    {{item.StartDate |date:'dd-MM-yyyy'}}
+                <div class="col text-center">
+                    <div class="kt-info-lable-v"
+                        *ngIf="Project_type=='To do List' || Project_type=='Core Tasks' || Project_type=='Secondary Tasks'">
+                        Deadline
+                    </div>
+                    <div class="kt-info-lable-v" *ngIf="Project_type=='Standard Tasks' || Project_type=='Routine Tasks'">
+                        Submission
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade"
+                        *ngIf="Project_type=='Core Tasks' || Project_type=='To do List' || Project_type=='Secondary Tasks'">
+                        <!-- 09-04-2024 -->
+                        {{item.EndDate | date:'dd-MM-yyyy'}}
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade"
+                        *ngIf="Project_type=='Routine Tasks' || Project_type=='Standard Tasks'">
+                        {{item.Submissiontype }}
+                    </div>
                 </div>
-            </div>
-            <div class="col text-center">
-                <div class="kt-info-lable-v"
-                    *ngIf="Project_type=='To do List' || Project_type=='Core Tasks' || Project_type=='Secondary Tasks's">
-                    Deadline
+                <div class="col text-center">
+                    <div class="kt-info-lable-v">
+                        Duration
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade"
+                        *ngIf="Project_type=='Core Tasks'  || Project_type=='To do List' ||Project_type=='Secondary Tasks'">
+                        {{Difference_In_Days+1}} days
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade"
+                        *ngIf="Project_type=='Routine Tasks' || Project_type=='Standard Tasks'">
+                        Continuous
+                    </div>
                 </div>
-                <div class="kt-info-lable-v" *ngIf="Project_type=='Standard Tasks' || Project_type=='Routine Tasks'  ">
-                    Submission
+                <div class="col text-center">
+                    <div class="kt-info-lable-v">
+                        Allocated
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade"
+                        *ngIf="Project_type=='Core Tasks' || Project_type=='To do List' ||Project_type=='Secondary Tasks'">
+                        {{TotalWork_Hours.toLocaleString()}} hrs
+                    </div>
+                    <div class="kt-info-data-v bg-light-shade"
+                        *ngIf="Project_type=='Routine Tasks' || Project_type=='Standard Tasks'">
+                        <!-- {{item.AllocatedHours}} hrs -->
+                        {{item.StandardAllocatedHours}}
+                    </div>
                 </div>
-                <div class="kt-info-data-v bg-light-shade"
-                    *ngIf="Project_type=='Core Tasks' || Project_type=='To do List' || Project_type=='Secondary Tasks'">
-                    <!-- 09-04-2024 -->
-                    {{item.EndDate | date:'dd-MM-yyyy'}}
-                </div>
-                <div class="kt-info-data-v bg-light-shade"
-                    *ngIf="Project_type=='Routine Tasks' || Project_type=='Standard Tasks'">
-                    {{item.Submissiontype }}
-                </div>
-            </div>
-            <div class="col text-center">
-                <div class="kt-info-lable-v">
-                    Duration
-                </div>
-                <div class="kt-info-data-v bg-light-shade"
-                    *ngIf="Project_type=='Core Tasks'  || Project_type=='To do List' ||Project_type=='Secondary Tasks'">
-                    {{Difference_In_Days+1}} days
-                </div>
-                <div class="kt-info-data-v bg-light-shade"
-                    *ngIf="Project_type=='Routine Tasks' || Project_type=='Standard Tasks'">
-                    Continuous
-                </div>
-            </div>
-            <div class="col text-center">
-                <div class="kt-info-lable-v">
-                    Allocated
-                </div>
-                <div class="kt-info-data-v bg-light-shade"
-                    *ngIf="Project_type=='Core Tasks' || Project_type=='To do List' ||Project_type=='Secondary Tasks'">
-                    {{TotalWork_Hours.toLocaleString()}} hrs
-                </div>
-                <div class="kt-info-data-v bg-light-shade"
-                    *ngIf="Project_type=='Routine Tasks' || Project_type=='Standard Tasks'">
-                    <!-- {{item.AllocatedHours}} hrs -->
-                    {{item.StandardAllocatedHours}}
-                </div>
-            </div>
-            <!-- <div class="col text-center">
-                <div class="kt-info-lable-v">
-                    RACIS
-                </div>
-                <div class="kt-project-sts-data">
-                    <div class="kt-support-view">
-                        <div class="symbol-group symbol-hover flex-nowrap">
-
-                            <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
-                                data-bs-original-title="Michael Eberon" data-kt-initialized="1"
-                                class="symbol symbol-35px symbol-circle"><img alt="Pic"
-                                    src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-11.jpg">
-                            </div>
-                            <div data-bs-toggle="tooltip" aria-label="Michael Eberon"
-                                data-bs-original-title="Michael Eberon" data-kt-initialized="1"
-                                class="symbol symbol-35px symbol-circle"><img alt="Pic"
-                                    src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-17.jpg">
+                <div class="col text-center">
+                    <div class="kt-info-lable-v">
+                        RACIS
+                    <div class="kt-project-sts-data">
+                        <div class="kt-support-view">
+                            <div class="symbol-group symbol-hover flex-nowrap justify-content-center">
+                                <div class="symbol symbol-35px symbol-circle"  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden"
+                                data-kt-initialized="1"  *ngIf="firstRecord&&firstRecord != ''">
+                                <span class="symbol-label bg-warning text-inverse-warning fw-bold" title="{{three_Records[0]}}" >
+                                    {{firstRecord}}
+                                </span>
                             </div>
 
-                            <div data-bs-toggle="tooltip" aria-label="Barry Walter"
-                                data-bs-original-title="Barry Walter" data-kt-initialized="1"
-                                class="symbol symbol-35px symbol-circle"><img alt="Pic"
-                                    src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-12.jpg">
-                            </div><a href="#" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_view_users"
-                                class="symbol symbol-35px symbol-circle"><span
-                                    class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span></a>
+                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood"
+                                data-kt-initialized="1"  *ngIf="secondRecord&&secondRecord != ''">
+                                <span class="symbol-label bg-primary text-inverse-primary fw-bold" title="{{three_Records[1]}}">
+                                    {{secondRecord}}
+                                </span>
+                            </div>
+
+                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew"
+                                data-kt-initialized="1" *ngIf="thirdRecord&&thirdRecord != '' ">
+                                <span class="symbol-label bg-danger text-inverse-danger fw-bold" title="{{three_Records[2]}}" >
+                                    {{thirdRecord}}
+                                </span>
+                            </div>
+                            <a class="symbol symbol-35px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users" *ngIf="newArray&&newArray.length !=''" >
+                                <span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold" title="{{newArray}}" >+{{newArray&&newArray.length}}</span>
+                            </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div> -->
+               </div>
+            </div>
+       
 
-            <div class="col text-center">
-                <div class="kt-info-lable-v">
-                    RACIS
-                <div class="kt-project-sts-data">
-                    <div class="kt-support-view">
-                        <div class="symbol-group symbol-hover flex-nowrap justify-content-center">
-                            <div class="symbol symbol-35px symbol-circle"  data-bs-toggle="tooltip" data-bs-original-title="Alan Warden"
-                            data-kt-initialized="1"  *ngIf="firstRecord&&firstRecord != ''">
-                            <span class="symbol-label bg-warning text-inverse-warning fw-bold" title="{{three_Records[0]}}" >
-                                {{firstRecord}}
-                            </span>
+           <ng-container *ngIf="item.Status=='Completed'">
+                <div class="row mt-5 pb-3">
+                        <div class="col text-center" *ngIf="item.Sourcefile" title="{{item.Sourcefile}}">
+                                <div class="kt-info-lable-v">Complete attachment</div>
+                                <div class="kt-info-data-v" (click)="LoadDocument1(projectCode,item.IsCloud,item.Sourcefile,item.CompleteProofDoc,item.contenttype,item.Submittedby)">
+                                    <b class="word-break text-info curser-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
+                                        {{item.Sourcefile}}</b>
+                                </div>
                         </div>
 
-                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Susan Redwood"
-                            data-kt-initialized="1"  *ngIf="secondRecord&&secondRecord != ''">
-                            <span class="symbol-label bg-primary text-inverse-primary fw-bold" title="{{three_Records[1]}}">
-                                {{secondRecord}}
-                            </span>
+                        <div class="col text-center" *ngIf="item.CD" >
+                            <div class="kt-info-lable-v">
+                                Completed date
+                            </div>
+                            <div class="kt-info-data-v bg-light-shade">
+                                {{item.CD|date:'dd-MM-yyyy'}}
+                            </div>
                         </div>
-
-                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Perry Matthew"
-                            data-kt-initialized="1" *ngIf="thirdRecord&&thirdRecord != '' ">
-                            <span class="symbol-label bg-danger text-inverse-danger fw-bold" title="{{three_Records[2]}}" >
-                                {{thirdRecord}}
-                            </span>
+                
+                        <div class="col text-center" *ngIf="item.Remarks">
+                            <div class="kt-info-lable-v">
+                                Remarks
+                            </div>
+                            <div class="kt-info-data-v bg-light-shade"> 
+                                {{item.Remarks}}
+                            </div>
                         </div>
-                        <a class="symbol symbol-35px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users" *ngIf="newArray&&newArray.length !=''" >
-                            <span class="symbol-label bg-dark text-gray-300 fs-8 fw-bold" title="{{newArray}}" >+{{newArray&&newArray.length}}</span>
-                        </a>
+                
+                        <div class="col text-center" *ngIf="item.Submittedby">
+                            <div class="kt-info-lable-v">
+                                Submitted by
+                            </div>
+                            <div class="kt-info-data-v bg-light-shade">
+                                {{item.Submittedby}}
+                            </div>
+                        </div> 
+                </div>
+                <div class="row mt-5 pb-3">
+                    <div class="col text-center">
+                        <div class="kt-info-lable-v">
+                            Approved by
+                        </div>
+                        <div class="kt-info-data-v bg-light-shade">
+                            {{item.Approvedby}}
+                        </div>
+                    </div>
+            
+                    <div class="col text-center">
+                        <div class="kt-info-lable-v">
+                            Approved on
+                        </div>
+                        <div class="kt-info-data-v bg-light-shade">
+                            {{item.ApprovedDate|date:'dd-MM-yyyy'}}
+                        </div>
+                    </div>
+            
+                    <div class="col text-center">
+                        <div class="kt-info-lable-v">
+                            Approver's remarks
+                        </div>
+                        <div class="kt-info-data-v bg-light-shade">
+                            {{item.ApproveComments}}
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
+       </ng-container>
+      
 
 
 
@@ -885,23 +1115,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
-
-    </div>
     <!---------- Project States html---------------->
     <div class="kt-info-box border-0" *ngFor="let item of ProjectStatesJson">
         <!-- <div class="d-flex justify-content-between">
@@ -1505,7 +1718,7 @@
                         </span>
                     </div>
                     <div class="kt-project-type">
-                        <div class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">
+                        <div class="Kt-Pd-Status CompletionUnderApproval">
                             Completion approval</div>
                         <div class="Requested_user_info">
                             <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

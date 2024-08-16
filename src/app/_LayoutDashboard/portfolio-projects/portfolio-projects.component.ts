@@ -2217,6 +2217,7 @@ Insert_indraft() {
     // empty all variables
     this.meetingList = [];
     this.meeting_arry = [];
+    this.characterCount=0;
     this.meetinglength = 0;
     this.allAgendas = [];
     this.upcomingMeetings = [];
@@ -4420,11 +4421,14 @@ all_status={
   'other':'#d0d0d0'
 };
 prj_statuses:any=[];
+isGanttchartVisible:boolean=false;
 loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
 
 
   let _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
+  this.isGanttchartVisible=_ProjectsListBy_Pid1.length>0;
+  
   _ProjectsListBy_Pid1.sort((p1,p2)=>{
       let x=p1.Duration+(p1.Status=='Delay'?new Date(p1.DeadLine)>=new Date()?0:p1.Delaydays:0);
       let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
@@ -4542,8 +4546,8 @@ loadGanttChart(){
 
 
 
-const rowHeight=45;
-let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+100;
+const rowHeight=55;   // old 45
+let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+125;
 let max_Xvalue=new Date();
 max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
@@ -4572,8 +4576,6 @@ var options = {
         });
 
 
-
-
         const gcharttable:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
         const trsnfvalue=gcharttable.getAttribute('transform');
         console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
@@ -4588,8 +4590,6 @@ var options = {
           const ganttCtrls:any=document.querySelector('.prjs-Ganttchart .gantt-ctrls-btns');
           ganttCtrls.innerHTML='';
           ganttCtrls.append(ctrlbtns);
-
-
 
 
           const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
@@ -4610,7 +4610,7 @@ var options = {
                    tspan1.textContent=fullname.substring(0,20);
                    const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                    tspan2.setAttribute('x','-135');
-                   tspan2.setAttribute('dy','15.6');
+                   tspan2.setAttribute('dy','11');   // old 15.6 
                    let fullname2=fullname.slice(20);
                    fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
                    tspan2.textContent=fullname2;
@@ -4622,31 +4622,54 @@ var options = {
           });
           }
 
+          // add project code, project responsible info and hover effect to each yaxis label and open details on click
+          Array.from(textelms).forEach((te:any,index)=>{
+              const _p_code:any=_ProjectsListBy_Pid1[index].Project_Code;
+              const _p_res:any=_ProjectsListBy_Pid1[index].Team_Res;
+              te.style.cursor='pointer';
+              te.setAttribute('data-projectcode',_p_code);
+              te.setAttribute('data-projectres',_p_res);
 
-          textelms.forEach((label) => {
-            
-            label.addEventListener('click', (e)=>{
-              console.log('yaxis e:',e);
-                // this.newDetails();
-            });
+
+              const ypos=te.getAttribute('y');
+              te.setAttribute('y',ypos-12);
+
+              const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+              tspan3.setAttribute('x','-135');
+              tspan3.setAttribute('dy','13');
+              tspan3.style.fill='#543fff';
+              tspan3.style.fontSize='0.7em';
+              tspan3.style.fontWeight='bold';
+              tspan3.style.fontFamily='Lucida Sans Unicode';
+              tspan3.style.textTransform='capitalize';
+              tspan3.textContent=_p_res;
+              te.appendChild(tspan3);
+
           });
 
-          // const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
-          // yaxis.querySelectorAll('text').forEach(v=>{
-          //    v.setAttribute('x','-150');
-          //    v.setAttribute('text-anchor','start');
-          // });
-          // console.log(yaxis);
+          Array.from(textelms).forEach((te:any)=>{
+              te.addEventListener('click',()=>{
+                     const _prj_code=te.dataset.projectcode;
+                     this.newDetails(_prj_code);
+              });
+              te.addEventListener('mouseover',()=>{
+                   te.style.fill='#527ce2';
+              });
+
+              te.addEventListener('mouseout',()=>{
+                   te.style.fill='unset';
+              });
+          });
+        //add project code, project responsible info and hover effect to each yaxis label and open details on click
+ 
 
        },
-
-
     }
   },
   plotOptions: {
     bar: {
       horizontal: true,
-      barHeight: '38%', // Adjust to fill the available space
+      barHeight: '33%', // Adjust to fill the available space
       rangeBarGroupRows: true
     }
   },
@@ -4658,6 +4681,7 @@ var options = {
   dataLabels: {
     enabled:false,
     formatter: function(val, opts) {
+    
       // var label = opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].x;
       // let text;
       // if(label == 'Stream Planner work scheduling')
@@ -4679,12 +4703,12 @@ var options = {
 
   xaxis: {
     type: 'datetime',
-    position: 'top', // This moves the x-axis to the top
+    position: 'bottom', // This moves the x-axis to the top
     labels: {
       show: true,
       style: {
         offsetY: 10, // Adjust this value to add space below the labels
-        colors:'#fff'
+        colors:'#000'
       }
     },
     axisBorder: {
@@ -4838,8 +4862,29 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
         offsetX: -13,
         offsetY: -20
       }
-    }]
-  }
+    }],
+
+
+
+
+    
+  },
+
+
+  title: {
+    text: 'Portfolio - '+this._PortFolio_Namecardheader,
+    align: 'left',
+    margin: 10,
+    offsetX: 0,
+    offsetY: 0,
+    floating: false,
+    style: {
+      fontSize: '14px',
+      fontWeight: 'bold',
+      fontFamily: undefined,
+      color: '#263238'
+    },
+  },
 
 
 
@@ -4848,6 +4893,8 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
 
 var chart = new ApexCharts(document.querySelector("#chartdiv3"), options);
 chart.render();
+
+
 
 }
 
@@ -5523,7 +5570,7 @@ bindCustomRecurrenceValues(){
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.ScheduleType === 'Event' ?( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;

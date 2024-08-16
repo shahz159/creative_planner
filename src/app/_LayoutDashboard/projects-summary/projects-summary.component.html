@@ -961,16 +961,16 @@
                             <!--begin: Datatable -->
                             <!-- U hve to Work here Below div This is the DIV Bro -->
                             <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                              <div class="row"  >
-                                <div class="search-filter"   >
+                              <div class="row kt-filterdetails">
+                                <div class="search-filter">
                                   <!-- {{searchText}} -->
-                                  <span class="search-filter" *ngFor="let emptoshare of comToselect"  >
-                                    {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}
-
+                                  <span *ngIf="filterByResult==true">Filter by:</span>
+                                  <span class="search-filter" *ngFor="let emptoshare of comToselect">
+                                   {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}
                                   </span>
 
                                   <span class="search-filter"   *ngFor="let emptoshare of emplyToselect"  >
-
+                                    <span *ngIf="!comToselect && emplyToselect">Filter by :</span>
                                     {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
                                   </span>
 
@@ -980,19 +980,14 @@
                                   </span>
 
                                   <span class="search-filter" *ngFor="let emptoshare of enterStatus">
-{{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                       {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
                                   </span>
 
-</div>
+                               </div>
+                                <!-- <div class="search-filter" *ngFor="let emptoshare of comToselect"  >
+                                {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name }},
 
-
-
-
-
-<!-- <div class="search-filter" *ngFor="let emptoshare of comToselect"  >
-  {{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name }},
-
-</div> -->
+                                </div> -->
                               </div>
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -1263,7 +1258,7 @@
                                                                 <span class=" font-weight-400"></span>
                                                                 <span *ngIf="item.Delaydays>=0"
                                                                     class="Delay_color ">
-                                                                    <strong>{{item.Delaydays}} days Delay </strong>
+                                                                    <strong>{{item.Delaydays}} day(s) Delay </strong>
                                                                 </span>
                                                             </div>
                                                             <!-- Other Status -->
@@ -1305,8 +1300,11 @@
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                  <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                              </span>
+                                                              </span> 
+                                                              <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span>                                                        
                                                             </div>
+                                                           
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                                 <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
                                                                 </span>
@@ -1328,6 +1326,8 @@
                                                             <div *ngIf="item.Status=='Forward Under Approval'">
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                                </span> 
                                                             </div>
                                                             <div *ngIf="item.Status=='Project Complete Rejected'">
                                                                 <span class="Project_Complete_Rejected_color font-weight-400">Project

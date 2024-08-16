@@ -518,7 +518,20 @@
                                       <div class="d-flex">
                                           <div class="kt-project-name">
                                               <h4>{{projectInfo&&projectInfo.Project_Name}}</h4>
-                                              <!--this is new <div *ngIf="projectInfo&&projectInfo.VersionCode" class="upgraded-type-prj">Conditional</div> -->
+                                            <div  *ngIf="projectInfo&&( projectInfo.SourceCode&&projectInfo.SourceCode!=projectInfo.Project_Code+'ANG'  )"   class="nextversion-type-prj">
+                                                <button title="view previous version." class="prev-version-btn" (click)="goToProject(projectInfo.SourceCode)"   ><svg width="18px" height="20px" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2px"
+                                                        fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-1 mr-1" style="margin-bottom: 1px;">
+                                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                        <g id="SVGRepo_iconCarrier">
+                                                        <circle  cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round">
+                                                        </circle>
+                                                        <path d="M7 12H17M7 12L11 8M7 12L11 16" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </g>
+                                                    </svg>
+                                                </button>
+                                                    <span class="ml-1 mr-1">New version</span>
+                                            </div>
                                           </div>
 
                                       </div>
@@ -997,7 +1010,8 @@
                                       <div class="kt-project-type curser-pointer d-flex">
 
                                         <div *ngIf="projectActionInfo&&projectActionInfo.length>0"  class="allactns-graph curser-pointer mr-1" data-toggle="modal" data-target="#actns-graphmodal" (click)="filterActionsOnGantt('All')"   >
-                                            <svg width="15px" height="15px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" style="fill: currentColor;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path></g></svg>
+                                            <!-- <svg width="15px" height="15px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" style="fill: currentColor;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path></g></svg> -->
+                                            <i class="fas fa-chart-pie"></i>
                                             <span class="allactns-label fs-7 fw-bold">&nbsp;All actions</span>
                                         </div>
 
@@ -1082,20 +1096,23 @@
                                                                           </div>
                                                                       </button>
                                                                   </li>
-                                                                  <li class="mr-2" *ngFor="let item of filterstatus">
+                                                                  <li class="filter-by-status mr-2" *ngFor="let item of filterstatus">
                                                                       <button class="btn btn-filtr"
                                                                           (click)="onFilterConfigChanged({filterBy:item.Status,sortBy:filterConfig.sortby})"
                                                                           [ngClass]="{'active2':filterConfig.filterby===item.Status}">
                                                                           <div class="d-flex align-items-center">
-                                                                                <div class="status-fltr fbx-actns-count" [ngClass]="{
-                                                                                    'fbx-completed':item.Status=='Completed',
-                                                                                    'fbx-inprocess':item.Status=='InProcess',
-                                                                                    'fbx-delay':item.Status=='Delay',
-                                                                                    'fbx-newaproval':item.Status=='Under Approval',
-                                                                                    'fbx-hold':item.Status=='Project Hold',
-                                                                                    'fbx-cancelled':item.Status=='Cancelled',
-                                                                                    'fbc-forward-apr':item.Status=='Forward Under Approval'
-                                                                                }">{{item.count?item.count:'&nbsp;'}}</div>
+                                                                                <div [class]="'status-fltr fbx-actns-count '+(
+                                                                                     item.Status=='Completed'?'fbx-completed':
+                                                                                     item.Status=='InProcess'?'fbx-inprocess':
+                                                                                     item.Status=='Delay'?'fbx-delay':
+                                                                                     item.Status=='Under Approval'?'fbx-newaproval':
+                                                                                     item.Status=='Project Hold'?'fbx-hold':
+                                                                                     item.Status=='Cancelled'?'fbx-cancelled':
+                                                                                     item.Status=='Forward Under Approval'?'fbc-forward-apr':
+                                                                                     item.Status=='Completion Under Approval'?'fbc-completion-apr':
+                                                                                     item.Status=='New Project Rejected'?'fbx-newprj-rejected':
+                                                                                     'fbx-inprocess' 
+                                                                                     )">{{item.count?item.count:'&nbsp;'}}</div>
                                                                              <!-- <ng-container [ngSwitch]="item.Status">
 
                                                                                   <svg *ngSwitchCase="'Completed'"
@@ -1479,7 +1496,7 @@
 
                                                                           <span [ngSwitch]="action.Status">
                                                                               <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
-                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} days</span>
+                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} day(s)</span>
                                                                               <span *ngSwitchCase="'InProcess'" class="Status-In-progress">In-process</span>
                                                                               <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                               <span *ngSwitchCase="'Under Approval'">New action approval</span>
@@ -2031,7 +2048,8 @@
           ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected','Project Hold'].includes(activity)||
           ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)) ||
           ((multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId))||
-          (projectInfo.Project_Block==='003'&&projectInfo.totaltaskcount>0)
+          (projectInfo.Project_Block==='003'&&projectInfo.totaltaskcount>0)||
+          (projectInfo.Status=='Completed'&&projectInfo.VersionCode)
           ">
 
       <div class="kt-Note-msg  d-flex">
@@ -2470,6 +2488,15 @@
                 </div>
         </ng-container>
 
+
+  
+        <div *ngIf="projectInfo.Status=='Completed'&&projectInfo.VersionCode" class="notification newversion-notification">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg>
+            <span class="notif-msg fs-6" style="color:#00a2eb">This project has a new version <a class="notif-msg-anchorlink" (click)="goToProject(projectInfo.VersionCode)">click here to view the project </a></span>
+        </div>
+
+
+
        </div>
       </div>
       </ng-container>
@@ -2642,7 +2669,7 @@
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
                                             <div class="kt-project-type " *ngSwitchCase="'Delay'">
-                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} days </div>
+                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} day(s) </div>
                                             </div>
 
                                             <div class="kt-project-type" *ngSwitchCase="'Completed'">
@@ -2726,6 +2753,228 @@
                                           </ng-container>
                                       </p>
                                       </div>
+
+
+                             
+                                    <ng-container *ngIf="projectInfo&&projectInfo.Status=='Completed'">
+                                
+                                        <div class="legend-border mt-4 ng-star-inserted" style=" background-color: white;">
+                                            <div class="meeting-attendance-heading">Completion Report</div>
+                                            <div class="d-flex gap-1">
+                                                <fieldset class="meeting-attendance-item d-flex justify-content-between mt-2" style="padding-top: 0;">
+                                                    <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
+                                                    <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
+                                        
+                                                    <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
+                                                </fieldset>
+                                        
+                                                <fieldset class="meeting-attendance-item d-flex justify-content-between mt-2" style=" padding-top: 0;">
+                                                    <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
+                                                    <div class="meeting-attendance-count fs-7">{{projectInfo.Submittedby}}</div>
+                                                    <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="meeting-attendance">
+                                                <div class="meeting-attendance-item">
+                                                    <div class="meeting-attendance-count">{{projectActionInfo?projectActionInfo.length:0}}</div>
+                                                    <div class="meeting-attendance-title">Actions</div>
+                                                </div>
+                                                <div class="meeting-attendance-item">
+                                                    <div class="meeting-attendance-count">{{projectInfo.TotalHours}} hrs</div>
+                                                    <div class="meeting-attendance-title">DAR</div>
+                                                </div>
+                                                <div class="meeting-attendance-item">
+                                                    <div class="meeting-attendance-count">
+                                                       <span><span class="fs-5">{{projectInfo.StartDate|date:'dd/MM/yyyy'}}</span></span>
+                                                       <span>-</span>
+                                                       <span><span class="fs-5">{{projectInfo.CD|date:'dd/MM/yyyy'}}</span></span>
+                                                    </div>
+                                                    <div class="meeting-attendance-title">Period</div>
+                                                </div>
+                                                <div class="meeting-attendance-item">
+                                                    <div class="meeting-attendance-count"> {{prjRunFor+(prjRunFor>1?' days':' day')}}</div>
+                                                    <div class="meeting-attendance-title">Total</div>
+                                                </div>
+                                            </div>
+                                            <div id="meeting-attendance-accordion" class="accordion">
+                                                <div class="w-100 text-right">
+                                                    <button type="button" data-toggle="collapse" data-target="#meeting-attendance-accordion-collapse" aria-expanded="false" aria-controls="meeting-attendance-accordion-collapse" class="btn meeting-attendance-btn"><span>view more</span>
+                                                        <svg width="64px" height="64px"viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"> </g>
+                                                            <g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L12.5303 14.0303C12.2374 14.3232 11.7626 14.3232 11.4697 14.0303L7.46967 10.0303C7.17678 9.73744 7.17678 9.26256 7.46967 8.96967C7.76256 8.67678 8.23744 8.67678 8.53033 8.96967L12 12.4393L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z"fill="currentColor"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div id="meeting-attendance-accordion-collapse" aria-labelledby="headingOne"
+                                                    data-parent="#meeting-attendance-accordion" class="collapse show">
+                                                    <div class="meeting-attendance meeting-attendance-accordion-div" *ngIf="projectInfo">
+                                                        <div class="meeting-attendance-item" (click)="addNewDMS()">
+                                                            <div class="meeting-attendance-count">{{projectInfo.isDMS}}</div>
+                                                            <div class="meeting-attendance-title">DMS</div>
+                                                        </div>
+                                                        <div class="meeting-attendance-item" (click)="AddPortfolio()">
+                                                            <div class="meeting-attendance-count">{{projectInfo.isPortfolio}}</div>
+                                                            <div class="meeting-attendance-title">Portfolio</div>
+                                                        </div>
+                                                        <div class="meeting-attendance-item" (click)="View_User_list()" *ngIf="PeopleOnProject"  >
+                                                            <div class="meeting-attendance-count">{{PeopleOnProject.length}}</div>
+                                                            <div class="meeting-attendance-title">People</div>
+                                                        </div>
+                                                        <div class="meeting-attendance-item">
+                                                            <div class="meeting-attendance-count">{{projectInfo.isMeeting}}</div>
+                                                            <div class="meeting-attendance-title">Meetings</div>
+                                                        </div>
+                                                        
+                                                        <div class="meeting-attendance-item" (click)="Attachment_view()">
+                                                            <div class="meeting-attendance-count">{{projectInfo.isAttachment}}</div>
+                                                            <div class="meeting-attendance-title">Attachment</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        <div class="legend-border mt-4  d-none ">
+                                            <div class="meeting-attendance-heading">Completion Report</div>
+                    
+                                        
+                                            <div>
+
+                                          <div class="d-flex justify-content-between">
+                                              <div class="meeting-attendance-date">
+                                                 <!-- {{data.Complete_date |date:'EEEE,MMMM d, YYYY'}} -->
+                                                Wednesday, July 31, 2024 </div>
+                                              <div class="meeting-attendance-date">Md Waseem Akram</div>
+                                          </div>
+
+                                          <div class="d-flex justify-content-between">
+                                            <div class="meeting-attendance-date">
+                                               <!-- {{data.Complete_date |date:'EEEE,MMMM d, YYYY'}} -->
+                                              Wednesday, July 31, 2024 </div>
+                                            <div class="meeting-attendance-date">Md Waseem Akram</div>
+                                          </div>
+
+                                          </div>
+
+
+
+                    
+                                        <div class="meeting-attendance">
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">5 / 10</div>
+                                                <div class="meeting-attendance-title">Actions completed</div>
+                                            </div>
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">128 hrs</div>
+                                                <div class="meeting-attendance-title">DAR</div>
+                                            </div>
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">
+                                                    <span>
+                                                        <span class="fs-5">04/08/2024</span>
+                                                    <!-- <span class="time-value ml-1">PM</span> -->
+                                                   </span>
+                                                    <span>-</span>
+                                                    <span>
+                                                        <span class="fs-5">05/12/2024</span>
+                                                     <!-- <span class="time-value ml-1">PM</span> -->
+                                                   </span>
+                                                </div>
+                                                <div class="meeting-attendance-title">Start and end</div>
+                                            </div>
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">
+                                                    <!-- <span><span>20</span><span class="time-value">h</span></span>
+                                                    <span><span>12</span><span class="time-value">m</span></span> -->
+                                                   73 days
+                                                </div>
+                                                <div class="meeting-attendance-title">Duration</div>
+                                            </div>
+                    
+                                        </div>
+                                        <div class="accordion" id="meeting-attendance-accordion">
+                                            <div class="w-100 text-right">
+                                                                    <!-- (click)="toggleView()" -->
+                                                <button class="btn meeting-attendance-btn"  type="button" data-toggle="collapse" data-target="#meeting-attendance-accordion-collapse"
+                                                 aria-expanded="false" aria-controls="meeting-attendance-accordion-collapse">
+                                                 <span>view more</span>
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L12.5303 14.0303C12.2374 14.3232 11.7626 14.3232 11.4697 14.0303L7.46967 10.0303C7.17678 9.73744 7.17678 9.26256 7.46967 8.96967C7.76256 8.67678 8.23744 8.67678 8.53033 8.96967L12 12.4393L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z" fill="currentColor"></path> </g></svg>
+                                                </button>
+                                            </div>
+                                              <div id="meeting-attendance-accordion-collapse" class="collapse show" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
+                                                <div class="meeting-attendance meeting-attendance-accordion-div">
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">10</div>
+                                                        <div class="meeting-attendance-title">Agenda</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">20</div>
+                                                        <div class="meeting-attendance-title">Notes</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">50</div>
+                                                        <div class="meeting-attendance-title">Task</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">70</div>
+                                                        <div class="meeting-attendance-title">DMS</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">65</div>
+                                                        <div class="meeting-attendance-title">Portfolio</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">90</div>
+                                                        <div class="meeting-attendance-title">Project</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">2</div>
+                                                        <div class="meeting-attendance-title">Attachments</div>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                        </div>
+
+
+
+
+                                    </ng-container>
+
+
+
+
+
+
+
+
+
+
+
 
 
                                       <!-- Request type start  -->
@@ -2858,7 +3107,7 @@
 
 
                                                     <!-- Conditional Assign-->
-                                                    <div *ngIf="selectedType == '2'"  class="mt-3 ">
+                                                    <div *ngIf="selectedType == '2'"  class="mt-3">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="mb-2">
@@ -2978,7 +3227,7 @@
                                                             <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
                                                         </div> -->
                                                     </div>
-
+                                                    <!-- Conditional Assign-->
 
 
 
@@ -3139,17 +3388,17 @@
                                                           title="{{requestComments}}">{{requestComments}}</div>
                                                   </div>
 
-                                                  <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
+                                                  <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'&&completedoc">
                                                       <div class="kt-info-lable-v">Attachment</div>
 
                                                       <div class="">
                                                           <div class="attachment-view">
                                                               <span>
-                                                                  <svg _ngcontent-ldk-c393=""
+                                                                  <svg 
                                                                       xmlns="http://www.w3.org/2000/svg" width="16"
                                                                       height="16" fill="currentColor"
                                                                       viewBox="0 0 16 16" class="bi bi-paperclip">
-                                                                      <path _ngcontent-ldk-c393=""
+                                                                      <path 
                                                                           d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
                                                                       </path>
                                                                   </svg>
@@ -3179,11 +3428,11 @@
                                                       <div class="curser-pointer">
                                                           <div class="attachment-view">
                                                               <span>
-                                                                  <svg _ngcontent-ldk-c393=""
+                                                                  <svg
                                                                       xmlns="http://www.w3.org/2000/svg" width="16"
                                                                       height="16" fill="currentColor"
                                                                       viewBox="0 0 16 16" class="bi bi-paperclip">
-                                                                      <path _ngcontent-ldk-c393=""
+                                                                      <path
                                                                           d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
                                                                       </path>
                                                                   </svg>
@@ -3579,57 +3828,87 @@
                                               </div>
                                           </div>
                                       </div>
-                                      <div class="row mt-5 px-3" *ngIf="projectInfo&&projectInfo.Status=='Completed'">
-                                          <div *ngIf="projectInfo&&projectInfo.Sourcefile" class="col  text-center"
-                                              title=" {{projectInfo&&projectInfo.Sourcefile}}">
-                                              <div class="kt-info-lable-v">
-                                                  Complete attachment
-                                              </div>
-                                              <div class="kt-info-data-v"
-                                                  (click)="LoadDocument1(projectInfo&&projectInfo.IsCloud,projectInfo&&projectInfo.Sourcefile,projectInfo&&projectInfo.CompleteProofDoc,projectInfo&&projectInfo.contenttype,projectInfo&&projectInfo.Responsible)">
+                                      
+                                      <ng-container *ngIf="projectInfo&&projectInfo.Status=='Completed'">
+                                        <div class="row mt-5 px-3">
+                                            
+                                            <div *ngIf="projectInfo.Sourcefile" class="col text-center"
+                                                title=" {{projectInfo.Sourcefile}}">
+                                                <div class="kt-info-lable-v">
+                                                    Complete attachment
+                                                </div>
+                                                <div class="kt-info-data-v"
+                                                    (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">
 
-                                                  <b class="word-break text-info curser-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
-                                                      {{projectInfo&&projectInfo.Sourcefile}}</b>
-                                              </div>
-                                          </div>
+                                                    <b class="word-break text-info curser-pointer">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
+                                                        {{projectInfo.Sourcefile}}</b>
+                                                </div>
+                                            </div>
 
+                                            <div class="col  text-center" *ngIf="projectInfo.CD">
+                                                <div class="kt-info-lable-v">
+                                                    Completed date
+                                                </div>
+                                                <div class="kt-info-data-v" title="Completed date">
 
+                                                    {{projectInfo.CD | date : 'dd-MM-yyyy'}}
+                                                </div>
+                                            </div>
 
-                                          <div class="col  text-center" *ngIf="projectInfo&&projectInfo.Approvedby">
-                                              <div class="kt-info-lable-v">
-                                                  Approved by
-                                              </div>
-                                              <div class="kt-info-data-v" title="Approved by">
+                                            <div class="col  text-center"
+                                                *ngIf="projectInfo.Remarks !='undefined'">
+                                                <div class="kt-info-lable-v">
+                                                    Remarks
+                                                </div>
+                                                <div class="kt-info-data-v"
+                                                    title="{{projectInfo.Remarks}}">
+                                                    {{projectInfo.Remarks}}
+                                                </div>
+                                            </div>
 
-                                                  {{projectInfo&&projectInfo.Approvedby}}
-                                              </div>
-                                          </div>
+                                            <div class="col  text-center">
+                                                <div class="kt-info-lable-v">
+                                                    Submitted by
+                                                </div>
+                                                <div class="kt-info-data-v" *ngIf="projectInfo.Submittedby">
+                                                    {{projectInfo.Submittedby}}
+                                                </div>
+                                            </div>
+                                            
 
-                                          <div class="col  text-center" *ngIf="projectInfo&&projectInfo.CD">
-                                              <div class="kt-info-lable-v">
-                                                  Completed date
-                                              </div>
-                                              <div class="kt-info-data-v" title="Completed date">
+                                        </div>
 
-                                                  {{projectInfo&&projectInfo.CD | date : 'dd-MM-yyyy'}}
-                                              </div>
-                                          </div>
+                                        <div class="row mt-5 px-3">
 
-                                          <div class="col  text-center"
-                                              *ngIf="projectInfo&&projectInfo.Remarks !='undefined'">
-                                              <div class="kt-info-lable-v">
-                                                  Remarks
-                                              </div>
-                                              <div class="kt-info-data-v"
-                                                  title="{{projectInfo&&projectInfo.Remarks}}">
+                                                    <div class="col  text-center" *ngIf="projectInfo.Approvedby">
+                                                        <div class="kt-info-lable-v">
+                                                            Approved by
+                                                        </div>
+                                                        <div class="kt-info-data-v" title="Approved by">
+                                                            {{projectInfo.Approvedby}}
+                                                        </div>
+                                                    </div>
 
-                                                  {{projectInfo&&projectInfo.Remarks}}
-                                              </div>
-                                          </div>
+                                                    <div class="col  text-center">
+                                                        <div class="kt-info-lable-v">
+                                                            Approved on
+                                                        </div>
+                                                        <div class="kt-info-data-v" title="Approved date"  *ngIf="projectInfo.ApprovedDate">
+                                                            {{projectInfo.ApprovedDate|date:'dd-MM-yyyy'}}
+                                                        </div>
+                                                    </div>
 
-                                      </div>
-
+                                                    <div class="col  text-center">
+                                                        <div class="kt-info-lable-v">
+                                                            Approver's remarks
+                                                        </div>
+                                                        <div class="kt-info-data-v" *ngIf="projectInfo.ApproveComments">
+                                                            {{projectInfo.ApproveComments}}
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                      </ng-container>
 
 
                                       <!-- <div  *ngFor="let data of projectActionInfo">
@@ -3652,13 +3931,11 @@
 
 
                                                          <div class="View_graph_act  curser-pointer" *ngIf="!activitiesLoading">
-                                                          <a href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT'); graphOptionChanged=false;   " >
+                                                          <a class="d-flex align-items-center justify-content-center" href="javascript:void(0)" data-toggle="modal" data-target="#graphmodal" (click)="onGraphOptionChanged('PROJECT'); graphOptionChanged=false;   " >
                                                               <svg  width="14px" height="14px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path> </g></svg>
-                                                              View graph
+                                                              <span class="view-graph-text fw-bold">&nbsp;View graph</span>
                                                           </a>
                                                          </div>
-
-
 
 
                                                   </div>
@@ -3678,7 +3955,7 @@
                                                           <div class="timeline-item"
                                                               *ngFor="let item of firstFiveRecords">
                                                               <!--begin::Label-->
-                                                              <div class=" timeline-label fw-bold text-gray-800 fs-7">
+                                                              <div class=" timeline-label fw-bold text-gray-800 fs-7  mr-1">
                                                                   {{item.ModifiedDate}}
                                                                   <p
                                                                       class="kt-dt-l text-gray-400">{{formatTimes(item.ModifiedTime)}}
@@ -3688,7 +3965,90 @@
 
                                                               <!--begin::Badge-->
                                                               <div class="timeline-badge">
-                                                                  <i class="fa fa-genderless text-primary fs-1"></i>
+                                                                  <!--old <i class="fa fa-genderless text-primary fs-1"></i> -->
+
+                                                                  <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                                  <div class="symbol-label kt-bg-light-primary" style="width:30px; height:30px;">
+                                                                  <span class="svg-icon svg-icon-info">
+                                                                        <ng-container [ngSwitch]="item._type">
+                                        
+                                                                            <svg *ngSwitchCase="'New Action'"  viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#16da7e" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+                                                                            <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-673.000000, -81.000000)" id="Group" stroke="#20973e" stroke-width="2"> <g transform="translate(671.000000, 80.000000)" id="Shape"> <path d="M21.2,21 L3,21 L3,2.8"> </path> <path d="M14.118249,5.69446421 L18.3608897,9.9371049 L11.2898219,17.0081727 L7.04337311,17.0043646 L7.0471812,12.765532 L14.118249,5.69446421 Z M18.3608897,4.28025065 L19.7751033,5.69446421 C20.5561518,6.4755128 20.5561518,7.74184276 19.7751033,8.52289134 L18.3608897,9.9371049 L14.118249,5.69446421 L15.5324626,4.28025065 C16.3135112,3.49920207 17.5798411,3.49920207 18.3608897,4.28025065 Z"> </path> </g> </g> </g> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Project Forward'"  viewBox="0 -3.5 24 24" id="meteor-icon-kit__regular-forward" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5858 6H10C5.58172 6 2 9.5817 2 14V16.0312C2 16.5835 1.55228 17.0312 1 17.0312C0.447715 17.0312 0 16.5835 0 16.0312V14C0 8.4772 4.47715 4 10 4H15.5858L13.2929 1.70711C12.9024 1.31658 12.9024 0.68342 13.2929 0.29289C13.6834 -0.09763 14.3166 -0.09763 14.7071 0.29289L18.7071 4.29289C19.0976 4.68342 19.0976 5.31658 18.7071 5.70711L14.7071 9.7071C14.3166 10.0976 13.6834 10.0976 13.2929 9.7071C12.9024 9.3166 12.9024 8.6834 13.2929 8.2929L15.5858 6zM21.5858 5L18.2929 1.70711C17.9024 1.31658 17.9024 0.68342 18.2929 0.29289C18.6834 -0.09763 19.3166 -0.09763 19.7071 0.29289L23.7071 4.29289C24.0976 4.68342 24.0976 5.31658 23.7071 5.70711L19.7071 9.7071C19.3166 10.0976 18.6834 10.0976 18.2929 9.7071C17.9024 9.3166 17.9024 8.6834 18.2929 8.2929L21.5858 5z" fill="#6f6767"></path></g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Project Deadline changed'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                                <path d="M7.75 7.5C7.75 7.08579 7.41421 6.75 7 6.75C6.58579 6.75 6.25 7.08579 6.25 7.5H7.75ZM7 10H6.25C6.25 10.4142 6.58579 10.75 7 10.75V10ZM10 10.75C10.4142 10.75 10.75 10.4142 10.75 10C10.75 9.58579 10.4142 9.25 10 9.25V10.75ZM16.25 16.5C16.25 16.9142 16.5858 17.25 17 17.25C17.4142 17.25 17.75 16.9142 17.75 16.5H16.25ZM17 14H17.75C17.75 13.5858 17.4142 13.25 17 13.25V14ZM14 13.25C13.5858 13.25 13.25 13.5858 13.25 14C13.25 14.4142 13.5858 14.75 14 14.75V13.25ZM15.3634 10.3966C15.5825 10.7482 16.045 10.8556 16.3966 10.6366C16.7482 10.4175 16.8556 9.95497 16.6366 9.60341L15.3634 10.3966ZM13.9818 8.4222L13.7049 9.1192L13.7049 9.1192L13.9818 8.4222ZM11.0495 8.03299L11.125 8.77919L11.0495 8.03299ZM8.38042 8.98865L8.78697 9.6189C8.79737 9.61219 8.80761 9.60522 8.81767 9.59801L8.38042 8.98865ZM6.59346 9.24882C6.24538 9.47335 6.14522 9.93754 6.36974 10.2856C6.59427 10.6337 7.05846 10.7339 7.40654 10.5093L6.59346 9.24882ZM8.63656 13.6034C8.41753 13.2518 7.95497 13.1444 7.60341 13.3634C7.25184 13.5825 7.1444 14.045 7.36344 14.3966L8.63656 13.6034ZM10.0182 15.5778L10.2951 14.8808L10.2951 14.8808L10.0182 15.5778ZM15.6196 15.0114L15.213 14.3811C15.2026 14.3878 15.1924 14.3948 15.1823 14.402L15.6196 15.0114ZM17.4065 14.7512C17.7546 14.5267 17.8548 14.0625 17.6303 13.7144C17.4057 13.3663 16.9415 13.2661 16.5935 13.4907L17.4065 14.7512ZM6.25 7.5V10H7.75V7.5H6.25ZM7 10.75H10V9.25H7V10.75ZM17.75 16.5V14H16.25V16.5H17.75ZM17 13.25H14V14.75H17V13.25ZM16.6366 9.60341C16.1178 8.77067 15.2673 8.12594 14.2588 7.72521L13.7049 9.1192C14.4821 9.42802 15.0483 9.89079 15.3634 10.3966L16.6366 9.60341ZM14.2588 7.72521C13.2477 7.32347 12.097 7.17323 10.974 7.2868L11.125 8.77919C12.0226 8.68842 12.9302 8.81138 13.7049 9.1192L14.2588 7.72521ZM10.974 7.2868C9.85216 7.40025 8.78622 7.77437 7.94318 8.37928L8.81767 9.59801C9.4187 9.16674 10.2262 8.87007 11.125 8.77919L10.974 7.2868ZM7.97388 8.35839L6.59346 9.24882L7.40654 10.5093L8.78697 9.6189L7.97388 8.35839ZM7.36344 14.3966C7.88225 15.2293 8.73266 15.8741 9.74122 16.2748L10.2951 14.8808C9.51787 14.572 8.95169 14.1092 8.63656 13.6034L7.36344 14.3966ZM9.74122 16.2748C10.7523 16.6765 11.903 16.8268 13.026 16.7132L12.875 15.2208C11.9774 15.3116 11.0698 15.1886 10.2951 14.8808L9.74122 16.2748ZM13.026 16.7132C14.1478 16.5998 15.2138 16.2256 16.0568 15.6207L15.1823 14.402C14.5813 14.8333 13.7738 15.1299 12.875 15.2208L13.026 16.7132ZM16.0261 15.6416L17.4065 14.7512L16.5935 13.4907L15.213 14.3811L16.0261 15.6416ZM8 4.75H16V3.25H8V4.75ZM19.25 8V16H20.75V8H19.25ZM16 19.25H8V20.75H16V19.25ZM4.75 16V8H3.25V16H4.75ZM8 19.25C6.20507 19.25 4.75 17.7949 4.75 16H3.25C3.25 18.6234 5.37665 20.75 8 20.75V19.25ZM19.25 16C19.25 17.7949 17.7949 19.25 16 19.25V20.75C18.6234 20.75 20.75 18.6234 20.75 16H19.25ZM16 4.75C17.7949 4.75 19.25 6.20507 19.25 8H20.75C20.75 5.37665 18.6234 3.25 16 3.25V4.75ZM8 3.25C5.37665 3.25 3.25 5.37665 3.25 8H4.75C4.75 6.20507 6.20507 4.75 8 4.75V3.25Z" fill="#6183f5"></path> </g>
+                                                                            </svg>
+                                                                            <svg *ngSwitchCase="'Action Deadline changed'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                                <path d="M7.75 7.5C7.75 7.08579 7.41421 6.75 7 6.75C6.58579 6.75 6.25 7.08579 6.25 7.5H7.75ZM7 10H6.25C6.25 10.4142 6.58579 10.75 7 10.75V10ZM10 10.75C10.4142 10.75 10.75 10.4142 10.75 10C10.75 9.58579 10.4142 9.25 10 9.25V10.75ZM16.25 16.5C16.25 16.9142 16.5858 17.25 17 17.25C17.4142 17.25 17.75 16.9142 17.75 16.5H16.25ZM17 14H17.75C17.75 13.5858 17.4142 13.25 17 13.25V14ZM14 13.25C13.5858 13.25 13.25 13.5858 13.25 14C13.25 14.4142 13.5858 14.75 14 14.75V13.25ZM15.3634 10.3966C15.5825 10.7482 16.045 10.8556 16.3966 10.6366C16.7482 10.4175 16.8556 9.95497 16.6366 9.60341L15.3634 10.3966ZM13.9818 8.4222L13.7049 9.1192L13.7049 9.1192L13.9818 8.4222ZM11.0495 8.03299L11.125 8.77919L11.0495 8.03299ZM8.38042 8.98865L8.78697 9.6189C8.79737 9.61219 8.80761 9.60522 8.81767 9.59801L8.38042 8.98865ZM6.59346 9.24882C6.24538 9.47335 6.14522 9.93754 6.36974 10.2856C6.59427 10.6337 7.05846 10.7339 7.40654 10.5093L6.59346 9.24882ZM8.63656 13.6034C8.41753 13.2518 7.95497 13.1444 7.60341 13.3634C7.25184 13.5825 7.1444 14.045 7.36344 14.3966L8.63656 13.6034ZM10.0182 15.5778L10.2951 14.8808L10.2951 14.8808L10.0182 15.5778ZM15.6196 15.0114L15.213 14.3811C15.2026 14.3878 15.1924 14.3948 15.1823 14.402L15.6196 15.0114ZM17.4065 14.7512C17.7546 14.5267 17.8548 14.0625 17.6303 13.7144C17.4057 13.3663 16.9415 13.2661 16.5935 13.4907L17.4065 14.7512ZM6.25 7.5V10H7.75V7.5H6.25ZM7 10.75H10V9.25H7V10.75ZM17.75 16.5V14H16.25V16.5H17.75ZM17 13.25H14V14.75H17V13.25ZM16.6366 9.60341C16.1178 8.77067 15.2673 8.12594 14.2588 7.72521L13.7049 9.1192C14.4821 9.42802 15.0483 9.89079 15.3634 10.3966L16.6366 9.60341ZM14.2588 7.72521C13.2477 7.32347 12.097 7.17323 10.974 7.2868L11.125 8.77919C12.0226 8.68842 12.9302 8.81138 13.7049 9.1192L14.2588 7.72521ZM10.974 7.2868C9.85216 7.40025 8.78622 7.77437 7.94318 8.37928L8.81767 9.59801C9.4187 9.16674 10.2262 8.87007 11.125 8.77919L10.974 7.2868ZM7.97388 8.35839L6.59346 9.24882L7.40654 10.5093L8.78697 9.6189L7.97388 8.35839ZM7.36344 14.3966C7.88225 15.2293 8.73266 15.8741 9.74122 16.2748L10.2951 14.8808C9.51787 14.572 8.95169 14.1092 8.63656 13.6034L7.36344 14.3966ZM9.74122 16.2748C10.7523 16.6765 11.903 16.8268 13.026 16.7132L12.875 15.2208C11.9774 15.3116 11.0698 15.1886 10.2951 14.8808L9.74122 16.2748ZM13.026 16.7132C14.1478 16.5998 15.2138 16.2256 16.0568 15.6207L15.1823 14.402C14.5813 14.8333 13.7738 15.1299 12.875 15.2208L13.026 16.7132ZM16.0261 15.6416L17.4065 14.7512L16.5935 13.4907L15.213 14.3811L16.0261 15.6416ZM8 4.75H16V3.25H8V4.75ZM19.25 8V16H20.75V8H19.25ZM16 19.25H8V20.75H16V19.25ZM4.75 16V8H3.25V16H4.75ZM8 19.25C6.20507 19.25 4.75 17.7949 4.75 16H3.25C3.25 18.6234 5.37665 20.75 8 20.75V19.25ZM19.25 16C19.25 17.7949 17.7949 19.25 16 19.25V20.75C18.6234 20.75 20.75 18.6234 20.75 16H19.25ZM16 4.75C17.7949 4.75 19.25 6.20507 19.25 8H20.75C20.75 5.37665 18.6234 3.25 16 3.25V4.75ZM8 3.25C5.37665 3.25 3.25 5.37665 3.25 8H4.75C4.75 6.20507 6.20507 4.75 8 4.75V3.25Z" fill="#6183f5"></path> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Project Hold'" viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pause [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-227.000000, -3765.000000)" fill="#8f8153"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M172,3605 C171.448,3605 171,3605.448 171,3606 L171,3612 C171,3612.552 171.448,3613 172,3613 C172.552,3613 173,3612.552 173,3612 L173,3606 C173,3605.448 172.552,3605 172,3605 M177,3606 L177,3612 C177,3612.552 176.552,3613 176,3613 C175.448,3613 175,3612.552 175,3612 L175,3606 C175,3605.448 175.448,3605 176,3605 C176.552,3605 177,3605.448 177,3606" id="pause-[#ffffff]"> </path> </g> </g> </g> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Action Hold'" viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pause [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-227.000000, -3765.000000)" fill="#8f8153"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M172,3605 C171.448,3605 171,3605.448 171,3606 L171,3612 C171,3612.552 171.448,3613 172,3613 C172.552,3613 173,3612.552 173,3612 L173,3606 C173,3605.448 172.552,3605 172,3605 M177,3606 L177,3612 C177,3612.552 176.552,3613 176,3613 C175.448,3613 175,3612.552 175,3612 L175,3606 C175,3605.448 175.448,3605 176,3605 C176.552,3605 177,3605.448 177,3606" id="pause-[#ffffff]"> </path> </g> </g> </g> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Project Release'" width="15px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z" stroke="#21b03e" stroke-width="0" stroke-linejoin="round"></path> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Support team added'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#1f79ef" style="width: 15px; height: 15px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 20V19C4 16.2386 6.23858 14 9 14H12.75M17.5355 13.9645V17.5M17.5355 17.5V21.0355M17.5355 17.5H21.0711M17.5355 17.5H14M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#1f79ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'Timeline added'" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 15px;height: 15px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>ic_fluent_timeline_24_regular</title><g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="ic_fluent_timeline_24_regular" fill="#0f9990" fill-rule="nonzero"> <path d="M15.2496718,13 C16.2161701,13 16.9996718,13.7835017 16.9996718,14.75 L16.9996718,19.25 C16.9996718,20.2164983 16.2161701,21 15.2496718,21 L3.74967178,21 C2.78317347,21 1.99967178,20.2164983 1.99967178,19.25 L1.99967178,14.75 C1.99967178,13.7835017 2.78317347,13 3.74967178,13 L15.2496718,13 Z M20.9999472,14.8988691 L20.9996863,20.25 C20.9996863,20.6642136 20.6638999,21 20.2496863,21 C19.8699905,21 19.5561953,20.7178461 19.5065329,20.3517706 L19.4996863,20.25 L19.499308,14.9117103 C19.7315928,14.9693895 19.9745687,15 20.2246942,15 C20.4927784,15 20.7526497,14.9648361 20.9999472,14.8988691 Z M15.2496718,14.5 L3.74967178,14.5 C3.6116006,14.5 3.49967178,14.6119288 3.49967178,14.75 L3.49967178,19.25 C3.49967178,19.3880712 3.6116006,19.5 3.74967178,19.5 L15.2496718,19.5 C15.387743,19.5 15.4996718,19.3880712 15.4996718,19.25 L15.4996718,14.75 C15.4996718,14.6119288 15.387743,14.5 15.2496718,14.5 Z M20.2494639,10.0919271 C21.3032635,10.0919271 22.1575368,10.9462004 22.1575368,12 C22.1575368,13.0537996 21.3032635,13.9080729 20.2494639,13.9080729 C19.1956643,13.9080729 18.341391,13.0537996 18.341391,12 C18.341391,10.9462004 19.1956643,10.0919271 20.2494639,10.0919271 Z M15.2452829,3 C16.2117813,3 16.9952829,3.78350169 16.9952829,4.75 L16.9952829,9.25 C16.9952829,10.2164983 16.2117813,11 15.2452829,11 L3.74528294,11 C2.77878463,11 1.99528294,10.2164983 1.99528294,9.25 L1.99528294,4.75 C1.99528294,3.8318266 2.70239322,3.07880766 3.60175573,3.0058012 L3.74528294,3 L15.2452829,3 Z M15.2452829,4.5 L3.74528294,4.5 L3.68796024,4.50660268 C3.57751636,4.53251318 3.49528294,4.63165327 3.49528294,4.75 L3.49528294,9.25 C3.49528294,9.38807119 3.60721176,9.5 3.74528294,9.5 L15.2452829,9.5 C15.3833541,9.5 15.4952829,9.38807119 15.4952829,9.25 L15.4952829,4.75 C15.4952829,4.61192881 15.3833541,4.5 15.2452829,4.5 Z M20.2496863,3 C20.6293821,3 20.9431773,3.28215388 20.9928397,3.64822944 L20.9996863,3.75 L20.9999472,9.10113095 C20.7526497,9.0351639 20.4927784,9 20.2246942,9 C19.9745687,9 19.7315928,9.03061049 19.499308,9.0882897 L19.4996863,3.75 C19.4996863,3.33578644 19.8354727,3 20.2496863,3 Z"> </path> </g> </g> </g>
+                                                                            </svg>
+                                        
+                                                                        
+                                                                            <svg *ngSwitchCase="'Approved Project'"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                                            </svg>
+                                                                            
+                                        
+                                                                            <svg *ngSwitchCase="'Approved Action'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                                <g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important"></path></g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'New Project Rejected'" fill="#ff0000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
+                                                                            </svg>
+                                        
+                                                                            <svg *ngSwitchCase="'New Project'" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="  width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project-new</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#0287ca" transform="translate(64.000000, 34.346667)"> <path d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g>
+                                                                            </svg>
+                                        
+                                                                            <ng-container *ngSwitchCase="'Project Complete'">
+                                                                                <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                                                        <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                                                                </svg>
+                                                                                
+                                                                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left:7.2px;top: -3.5px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                                                </svg>
+                                                                            </ng-container>
+                                        
+                                                                            <ng-container *ngSwitchCase="'Action Complete'">
+                                                                                <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                                                        <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                                                                </svg>
+                                                                                
+                                                                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left: 7.2px;top:-3.5px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                                                </svg>
+                                                                            </ng-container>
+                                        
+                                        
+                                                                            <svg *ngSwitchDefault xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 24 24" fill="none">
+                                                                            <path opacity="0.3"  d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z" fill="black"></path> 
+                                                                            <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="black"></path>
+                                                                            </svg>
+                                        
+                                                                        </ng-container>
+                                                                  </span>
+                                                                  </div>
+                                                                </div>
+
                                                               </div>
                                                               <!--end::Badge-->
 
@@ -4129,7 +4489,7 @@
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                       <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} days
+                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
 
@@ -4183,7 +4543,7 @@
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                       <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} days
+                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
 
@@ -5965,7 +6325,8 @@
                           </svg> </span>Activity log</h4>
 
 
-                          <div class="kt-flter-ic-b br-0 actvs-flr-btn d-none  ">
+                          <div *ngIf="activitiesOf==='PROJECT-ACTIVITIES'" class="kt-flter-ic-b br-0 actvs-flr-btn">
+                            <span *ngIf="actvsFltrBy.activityType!='all'||actvsFltrBy.empType!='all'" class="filter-dot" style="position: absolute; right: 0;top: 4px;"></span>
 
                             <div class="dropdown">
                                 <a type="button" id="Filter_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle">
@@ -5998,17 +6359,83 @@
                                         <li class="mr-2">
                                             <button class="btn btn-filtr"  [ngClass]="{'active2':actvsFltrBy.activityType==actvType}"    *ngFor="let actvType of actvs_types"   (click)="arrangeActivitiesBy(actvType,actvsFltrBy.empType)">
                                                 <div class="d-flex align-items-center">
-
-                                                    <ng-container>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 19 19">
-                                                            <path
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                d="M10,1 C14.9682329,1.00562018 18.9943798,5.03176707 19,10 C19,14.9705627 14.9705627,19 10,19 C5.02943725,19 1,14.9705627 1,10 C1,5.02943725 5.02943725,1 10,1 Z M9.99773756,2.99999872 C6.13400675,2.99999872 3,6.13400675 3,9.99999872 C3,13.8659932 6.13400675,16.9999987 10,16.9999987 C13.8659932,16.9999987 17,13.8659932 17,10.0022624 C16.9957197,6.21736145 13.9923299,3.13520869 10.2383509,3.00432339 L9.99773756,2.99999872 Z M14.7071311,6.79289322 C15.067615,7.15337718 15.0953446,7.72060824 14.7903197,8.11289944 L14.7071311,8.20710678 L8.98000123,13.9342366 L5.73275407,10.0492796 C5.37856063,9.62552792 5.43494869,8.99487882 5.85870033,8.64068538 C6.24985569,8.31373759 6.81730237,8.3366344 7.18087006,8.67538372 L7.2672945,8.76663165 L9.11102428,10.973056 L13.2929175,6.79289322 C13.6834418,6.40236893 14.3166068,6.40236893 14.7071311,6.79289322 Z" />
+                                                    <span class="svg-icon svg-icon-2 svg-icon-info">
+                                                    <ng-container [ngSwitch]="actvType">
+                                        
+                                                        <svg *ngSwitchCase="'New Action'"  viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#16da7e" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+                                                        <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-673.000000, -81.000000)" id="Group" stroke="#20973e" stroke-width="2"> <g transform="translate(671.000000, 80.000000)" id="Shape"> <path d="M21.2,21 L3,21 L3,2.8"> </path> <path d="M14.118249,5.69446421 L18.3608897,9.9371049 L11.2898219,17.0081727 L7.04337311,17.0043646 L7.0471812,12.765532 L14.118249,5.69446421 Z M18.3608897,4.28025065 L19.7751033,5.69446421 C20.5561518,6.4755128 20.5561518,7.74184276 19.7751033,8.52289134 L18.3608897,9.9371049 L14.118249,5.69446421 L15.5324626,4.28025065 C16.3135112,3.49920207 17.5798411,3.49920207 18.3608897,4.28025065 Z"> </path> </g> </g> </g> </g>
                                                         </svg>
-
+                    
+                                                        <svg *ngSwitchCase="'Project Forward'"  viewBox="0 -3.5 24 24" id="meteor-icon-kit__regular-forward" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5858 6H10C5.58172 6 2 9.5817 2 14V16.0312C2 16.5835 1.55228 17.0312 1 17.0312C0.447715 17.0312 0 16.5835 0 16.0312V14C0 8.4772 4.47715 4 10 4H15.5858L13.2929 1.70711C12.9024 1.31658 12.9024 0.68342 13.2929 0.29289C13.6834 -0.09763 14.3166 -0.09763 14.7071 0.29289L18.7071 4.29289C19.0976 4.68342 19.0976 5.31658 18.7071 5.70711L14.7071 9.7071C14.3166 10.0976 13.6834 10.0976 13.2929 9.7071C12.9024 9.3166 12.9024 8.6834 13.2929 8.2929L15.5858 6zM21.5858 5L18.2929 1.70711C17.9024 1.31658 17.9024 0.68342 18.2929 0.29289C18.6834 -0.09763 19.3166 -0.09763 19.7071 0.29289L23.7071 4.29289C24.0976 4.68342 24.0976 5.31658 23.7071 5.70711L19.7071 9.7071C19.3166 10.0976 18.6834 10.0976 18.2929 9.7071C17.9024 9.3166 17.9024 8.6834 18.2929 8.2929L21.5858 5z" fill="#6f6767"></path></g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'Project Deadline changed'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                            <path d="M7.75 7.5C7.75 7.08579 7.41421 6.75 7 6.75C6.58579 6.75 6.25 7.08579 6.25 7.5H7.75ZM7 10H6.25C6.25 10.4142 6.58579 10.75 7 10.75V10ZM10 10.75C10.4142 10.75 10.75 10.4142 10.75 10C10.75 9.58579 10.4142 9.25 10 9.25V10.75ZM16.25 16.5C16.25 16.9142 16.5858 17.25 17 17.25C17.4142 17.25 17.75 16.9142 17.75 16.5H16.25ZM17 14H17.75C17.75 13.5858 17.4142 13.25 17 13.25V14ZM14 13.25C13.5858 13.25 13.25 13.5858 13.25 14C13.25 14.4142 13.5858 14.75 14 14.75V13.25ZM15.3634 10.3966C15.5825 10.7482 16.045 10.8556 16.3966 10.6366C16.7482 10.4175 16.8556 9.95497 16.6366 9.60341L15.3634 10.3966ZM13.9818 8.4222L13.7049 9.1192L13.7049 9.1192L13.9818 8.4222ZM11.0495 8.03299L11.125 8.77919L11.0495 8.03299ZM8.38042 8.98865L8.78697 9.6189C8.79737 9.61219 8.80761 9.60522 8.81767 9.59801L8.38042 8.98865ZM6.59346 9.24882C6.24538 9.47335 6.14522 9.93754 6.36974 10.2856C6.59427 10.6337 7.05846 10.7339 7.40654 10.5093L6.59346 9.24882ZM8.63656 13.6034C8.41753 13.2518 7.95497 13.1444 7.60341 13.3634C7.25184 13.5825 7.1444 14.045 7.36344 14.3966L8.63656 13.6034ZM10.0182 15.5778L10.2951 14.8808L10.2951 14.8808L10.0182 15.5778ZM15.6196 15.0114L15.213 14.3811C15.2026 14.3878 15.1924 14.3948 15.1823 14.402L15.6196 15.0114ZM17.4065 14.7512C17.7546 14.5267 17.8548 14.0625 17.6303 13.7144C17.4057 13.3663 16.9415 13.2661 16.5935 13.4907L17.4065 14.7512ZM6.25 7.5V10H7.75V7.5H6.25ZM7 10.75H10V9.25H7V10.75ZM17.75 16.5V14H16.25V16.5H17.75ZM17 13.25H14V14.75H17V13.25ZM16.6366 9.60341C16.1178 8.77067 15.2673 8.12594 14.2588 7.72521L13.7049 9.1192C14.4821 9.42802 15.0483 9.89079 15.3634 10.3966L16.6366 9.60341ZM14.2588 7.72521C13.2477 7.32347 12.097 7.17323 10.974 7.2868L11.125 8.77919C12.0226 8.68842 12.9302 8.81138 13.7049 9.1192L14.2588 7.72521ZM10.974 7.2868C9.85216 7.40025 8.78622 7.77437 7.94318 8.37928L8.81767 9.59801C9.4187 9.16674 10.2262 8.87007 11.125 8.77919L10.974 7.2868ZM7.97388 8.35839L6.59346 9.24882L7.40654 10.5093L8.78697 9.6189L7.97388 8.35839ZM7.36344 14.3966C7.88225 15.2293 8.73266 15.8741 9.74122 16.2748L10.2951 14.8808C9.51787 14.572 8.95169 14.1092 8.63656 13.6034L7.36344 14.3966ZM9.74122 16.2748C10.7523 16.6765 11.903 16.8268 13.026 16.7132L12.875 15.2208C11.9774 15.3116 11.0698 15.1886 10.2951 14.8808L9.74122 16.2748ZM13.026 16.7132C14.1478 16.5998 15.2138 16.2256 16.0568 15.6207L15.1823 14.402C14.5813 14.8333 13.7738 15.1299 12.875 15.2208L13.026 16.7132ZM16.0261 15.6416L17.4065 14.7512L16.5935 13.4907L15.213 14.3811L16.0261 15.6416ZM8 4.75H16V3.25H8V4.75ZM19.25 8V16H20.75V8H19.25ZM16 19.25H8V20.75H16V19.25ZM4.75 16V8H3.25V16H4.75ZM8 19.25C6.20507 19.25 4.75 17.7949 4.75 16H3.25C3.25 18.6234 5.37665 20.75 8 20.75V19.25ZM19.25 16C19.25 17.7949 17.7949 19.25 16 19.25V20.75C18.6234 20.75 20.75 18.6234 20.75 16H19.25ZM16 4.75C17.7949 4.75 19.25 6.20507 19.25 8H20.75C20.75 5.37665 18.6234 3.25 16 3.25V4.75ZM8 3.25C5.37665 3.25 3.25 5.37665 3.25 8H4.75C4.75 6.20507 6.20507 4.75 8 4.75V3.25Z" fill="#6183f5"></path> </g>
+                                                        </svg>
+                                                        <svg *ngSwitchCase="'Action Deadline changed'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                            <path d="M7.75 7.5C7.75 7.08579 7.41421 6.75 7 6.75C6.58579 6.75 6.25 7.08579 6.25 7.5H7.75ZM7 10H6.25C6.25 10.4142 6.58579 10.75 7 10.75V10ZM10 10.75C10.4142 10.75 10.75 10.4142 10.75 10C10.75 9.58579 10.4142 9.25 10 9.25V10.75ZM16.25 16.5C16.25 16.9142 16.5858 17.25 17 17.25C17.4142 17.25 17.75 16.9142 17.75 16.5H16.25ZM17 14H17.75C17.75 13.5858 17.4142 13.25 17 13.25V14ZM14 13.25C13.5858 13.25 13.25 13.5858 13.25 14C13.25 14.4142 13.5858 14.75 14 14.75V13.25ZM15.3634 10.3966C15.5825 10.7482 16.045 10.8556 16.3966 10.6366C16.7482 10.4175 16.8556 9.95497 16.6366 9.60341L15.3634 10.3966ZM13.9818 8.4222L13.7049 9.1192L13.7049 9.1192L13.9818 8.4222ZM11.0495 8.03299L11.125 8.77919L11.0495 8.03299ZM8.38042 8.98865L8.78697 9.6189C8.79737 9.61219 8.80761 9.60522 8.81767 9.59801L8.38042 8.98865ZM6.59346 9.24882C6.24538 9.47335 6.14522 9.93754 6.36974 10.2856C6.59427 10.6337 7.05846 10.7339 7.40654 10.5093L6.59346 9.24882ZM8.63656 13.6034C8.41753 13.2518 7.95497 13.1444 7.60341 13.3634C7.25184 13.5825 7.1444 14.045 7.36344 14.3966L8.63656 13.6034ZM10.0182 15.5778L10.2951 14.8808L10.2951 14.8808L10.0182 15.5778ZM15.6196 15.0114L15.213 14.3811C15.2026 14.3878 15.1924 14.3948 15.1823 14.402L15.6196 15.0114ZM17.4065 14.7512C17.7546 14.5267 17.8548 14.0625 17.6303 13.7144C17.4057 13.3663 16.9415 13.2661 16.5935 13.4907L17.4065 14.7512ZM6.25 7.5V10H7.75V7.5H6.25ZM7 10.75H10V9.25H7V10.75ZM17.75 16.5V14H16.25V16.5H17.75ZM17 13.25H14V14.75H17V13.25ZM16.6366 9.60341C16.1178 8.77067 15.2673 8.12594 14.2588 7.72521L13.7049 9.1192C14.4821 9.42802 15.0483 9.89079 15.3634 10.3966L16.6366 9.60341ZM14.2588 7.72521C13.2477 7.32347 12.097 7.17323 10.974 7.2868L11.125 8.77919C12.0226 8.68842 12.9302 8.81138 13.7049 9.1192L14.2588 7.72521ZM10.974 7.2868C9.85216 7.40025 8.78622 7.77437 7.94318 8.37928L8.81767 9.59801C9.4187 9.16674 10.2262 8.87007 11.125 8.77919L10.974 7.2868ZM7.97388 8.35839L6.59346 9.24882L7.40654 10.5093L8.78697 9.6189L7.97388 8.35839ZM7.36344 14.3966C7.88225 15.2293 8.73266 15.8741 9.74122 16.2748L10.2951 14.8808C9.51787 14.572 8.95169 14.1092 8.63656 13.6034L7.36344 14.3966ZM9.74122 16.2748C10.7523 16.6765 11.903 16.8268 13.026 16.7132L12.875 15.2208C11.9774 15.3116 11.0698 15.1886 10.2951 14.8808L9.74122 16.2748ZM13.026 16.7132C14.1478 16.5998 15.2138 16.2256 16.0568 15.6207L15.1823 14.402C14.5813 14.8333 13.7738 15.1299 12.875 15.2208L13.026 16.7132ZM16.0261 15.6416L17.4065 14.7512L16.5935 13.4907L15.213 14.3811L16.0261 15.6416ZM8 4.75H16V3.25H8V4.75ZM19.25 8V16H20.75V8H19.25ZM16 19.25H8V20.75H16V19.25ZM4.75 16V8H3.25V16H4.75ZM8 19.25C6.20507 19.25 4.75 17.7949 4.75 16H3.25C3.25 18.6234 5.37665 20.75 8 20.75V19.25ZM19.25 16C19.25 17.7949 17.7949 19.25 16 19.25V20.75C18.6234 20.75 20.75 18.6234 20.75 16H19.25ZM16 4.75C17.7949 4.75 19.25 6.20507 19.25 8H20.75C20.75 5.37665 18.6234 3.25 16 3.25V4.75ZM8 3.25C5.37665 3.25 3.25 5.37665 3.25 8H4.75C4.75 6.20507 6.20507 4.75 8 4.75V3.25Z" fill="#6183f5"></path> </g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'Project Hold'" viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pause [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-227.000000, -3765.000000)" fill="#8f8153"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M172,3605 C171.448,3605 171,3605.448 171,3606 L171,3612 C171,3612.552 171.448,3613 172,3613 C172.552,3613 173,3612.552 173,3612 L173,3606 C173,3605.448 172.552,3605 172,3605 M177,3606 L177,3612 C177,3612.552 176.552,3613 176,3613 C175.448,3613 175,3612.552 175,3612 L175,3606 C175,3605.448 175.448,3605 176,3605 C176.552,3605 177,3605.448 177,3606" id="pause-[#ffffff]"> </path> </g> </g> </g> </g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'Action Hold'" viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff" style="width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pause [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-227.000000, -3765.000000)" fill="#8f8153"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M172,3605 C171.448,3605 171,3605.448 171,3606 L171,3612 C171,3612.552 171.448,3613 172,3613 C172.552,3613 173,3612.552 173,3612 L173,3606 C173,3605.448 172.552,3605 172,3605 M177,3606 L177,3612 C177,3612.552 176.552,3613 176,3613 C175.448,3613 175,3612.552 175,3612 L175,3606 C175,3605.448 175.448,3605 176,3605 C176.552,3605 177,3605.448 177,3606" id="pause-[#ffffff]"> </path> </g> </g> </g> </g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'Project Release'" width="15px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z" stroke="#21b03e" stroke-width="0" stroke-linejoin="round"></path> </g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'Support team added'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#1f79ef" style="width: 15px; height: 15px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 20V19C4 16.2386 6.23858 14 9 14H12.75M17.5355 13.9645V17.5M17.5355 17.5V21.0355M17.5355 17.5H21.0711M17.5355 17.5H14M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#1f79ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'Timeline added'" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 15px;height: 15px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>ic_fluent_timeline_24_regular</title><g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="ic_fluent_timeline_24_regular" fill="#0f9990" fill-rule="nonzero"> <path d="M15.2496718,13 C16.2161701,13 16.9996718,13.7835017 16.9996718,14.75 L16.9996718,19.25 C16.9996718,20.2164983 16.2161701,21 15.2496718,21 L3.74967178,21 C2.78317347,21 1.99967178,20.2164983 1.99967178,19.25 L1.99967178,14.75 C1.99967178,13.7835017 2.78317347,13 3.74967178,13 L15.2496718,13 Z M20.9999472,14.8988691 L20.9996863,20.25 C20.9996863,20.6642136 20.6638999,21 20.2496863,21 C19.8699905,21 19.5561953,20.7178461 19.5065329,20.3517706 L19.4996863,20.25 L19.499308,14.9117103 C19.7315928,14.9693895 19.9745687,15 20.2246942,15 C20.4927784,15 20.7526497,14.9648361 20.9999472,14.8988691 Z M15.2496718,14.5 L3.74967178,14.5 C3.6116006,14.5 3.49967178,14.6119288 3.49967178,14.75 L3.49967178,19.25 C3.49967178,19.3880712 3.6116006,19.5 3.74967178,19.5 L15.2496718,19.5 C15.387743,19.5 15.4996718,19.3880712 15.4996718,19.25 L15.4996718,14.75 C15.4996718,14.6119288 15.387743,14.5 15.2496718,14.5 Z M20.2494639,10.0919271 C21.3032635,10.0919271 22.1575368,10.9462004 22.1575368,12 C22.1575368,13.0537996 21.3032635,13.9080729 20.2494639,13.9080729 C19.1956643,13.9080729 18.341391,13.0537996 18.341391,12 C18.341391,10.9462004 19.1956643,10.0919271 20.2494639,10.0919271 Z M15.2452829,3 C16.2117813,3 16.9952829,3.78350169 16.9952829,4.75 L16.9952829,9.25 C16.9952829,10.2164983 16.2117813,11 15.2452829,11 L3.74528294,11 C2.77878463,11 1.99528294,10.2164983 1.99528294,9.25 L1.99528294,4.75 C1.99528294,3.8318266 2.70239322,3.07880766 3.60175573,3.0058012 L3.74528294,3 L15.2452829,3 Z M15.2452829,4.5 L3.74528294,4.5 L3.68796024,4.50660268 C3.57751636,4.53251318 3.49528294,4.63165327 3.49528294,4.75 L3.49528294,9.25 C3.49528294,9.38807119 3.60721176,9.5 3.74528294,9.5 L15.2452829,9.5 C15.3833541,9.5 15.4952829,9.38807119 15.4952829,9.25 L15.4952829,4.75 C15.4952829,4.61192881 15.3833541,4.5 15.2452829,4.5 Z M20.2496863,3 C20.6293821,3 20.9431773,3.28215388 20.9928397,3.64822944 L20.9996863,3.75 L20.9999472,9.10113095 C20.7526497,9.0351639 20.4927784,9 20.2246942,9 C19.9745687,9 19.7315928,9.03061049 19.499308,9.0882897 L19.4996863,3.75 C19.4996863,3.33578644 19.8354727,3 20.2496863,3 Z"> </path> </g> </g> </g>
+                                                        </svg>
+                    
+                                                    
+                                                        <svg *ngSwitchCase="'Approved Project'"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                        </svg>
+                                                        
+                    
+                                                        <svg *ngSwitchCase="'Approved Action'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 15px; height: 15px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                            <g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important"></path></g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'New Project Rejected'" fill="#ff0000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
+                                                        </svg>
+                    
+                                                        <svg *ngSwitchCase="'New Project'" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="  width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project-new</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#0287ca" transform="translate(64.000000, 34.346667)"> <path d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g>
+                                                        </svg>
+                    
+                                                        <ng-container *ngSwitchCase="'Project Complete'">
+                                                            <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                                    <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                                            </svg>
+                                                            
+                                                            <!-- <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: relative;left:20.2px; top:158px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                            </svg> -->
+                                                        </ng-container>
+                    
+                                                        <ng-container *ngSwitchCase="'Action Complete'">
+                                                            <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                                    <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                                            </svg>
+                                                            
+                                                            <!-- <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left: 20.2px; top:158px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                            </svg> -->
+                                                        </ng-container>
+                    
+                    
+                                                        <svg *ngSwitchDefault xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3"  d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z" fill="black"></path> 
+                                                        <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="black"></path>
+                                                        </svg>
+                    
                                                     </ng-container>
+                                                    </span>
 
                                                     <div class="fil-lbl">{{actvType}}</div>
                                                     <span *ngIf="actvsFltrBy.activityType==actvType" class="chck-icn ng-star-inserted">
@@ -6088,7 +6515,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                          </div>
 
 
 
@@ -6187,7 +6614,10 @@
                           <div class="timeline-icon symbol symbol-circle symbol-40px ng-star-inserted">
                               <div class="symbol-label kt-bg-light-primary">
                                   <span class="svg-icon svg-icon-2 svg-icon-info">
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     
+                                    
+                                    
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                           viewBox="0 0 24 24" fill="none">
                                           <path opacity="0.3"
                                               d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z"
@@ -6195,7 +6625,86 @@
                                           <path
                                               d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z"
                                               fill="black"></path>
-                                      </svg>
+                                      </svg> -->
+
+                                <ng-container [ngSwitch]="data._type">
+                                   
+                                    <svg *ngSwitchCase="'New Action'"  viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#16da7e" style="width: 18px; height: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+                                       <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-673.000000, -81.000000)" id="Group" stroke="#20973e" stroke-width="2"> <g transform="translate(671.000000, 80.000000)" id="Shape"> <path d="M21.2,21 L3,21 L3,2.8"> </path> <path d="M14.118249,5.69446421 L18.3608897,9.9371049 L11.2898219,17.0081727 L7.04337311,17.0043646 L7.0471812,12.765532 L14.118249,5.69446421 Z M18.3608897,4.28025065 L19.7751033,5.69446421 C20.5561518,6.4755128 20.5561518,7.74184276 19.7751033,8.52289134 L18.3608897,9.9371049 L14.118249,5.69446421 L15.5324626,4.28025065 C16.3135112,3.49920207 17.5798411,3.49920207 18.3608897,4.28025065 Z"> </path> </g> </g> </g> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Project Forward'"  viewBox="0 -3.5 24 24" id="meteor-icon-kit__regular-forward" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5858 6H10C5.58172 6 2 9.5817 2 14V16.0312C2 16.5835 1.55228 17.0312 1 17.0312C0.447715 17.0312 0 16.5835 0 16.0312V14C0 8.4772 4.47715 4 10 4H15.5858L13.2929 1.70711C12.9024 1.31658 12.9024 0.68342 13.2929 0.29289C13.6834 -0.09763 14.3166 -0.09763 14.7071 0.29289L18.7071 4.29289C19.0976 4.68342 19.0976 5.31658 18.7071 5.70711L14.7071 9.7071C14.3166 10.0976 13.6834 10.0976 13.2929 9.7071C12.9024 9.3166 12.9024 8.6834 13.2929 8.2929L15.5858 6zM21.5858 5L18.2929 1.70711C17.9024 1.31658 17.9024 0.68342 18.2929 0.29289C18.6834 -0.09763 19.3166 -0.09763 19.7071 0.29289L23.7071 4.29289C24.0976 4.68342 24.0976 5.31658 23.7071 5.70711L19.7071 9.7071C19.3166 10.0976 18.6834 10.0976 18.2929 9.7071C17.9024 9.3166 17.9024 8.6834 18.2929 8.2929L21.5858 5z" fill="#6f6767"></path></g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Project Deadline changed'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                        <path d="M7.75 7.5C7.75 7.08579 7.41421 6.75 7 6.75C6.58579 6.75 6.25 7.08579 6.25 7.5H7.75ZM7 10H6.25C6.25 10.4142 6.58579 10.75 7 10.75V10ZM10 10.75C10.4142 10.75 10.75 10.4142 10.75 10C10.75 9.58579 10.4142 9.25 10 9.25V10.75ZM16.25 16.5C16.25 16.9142 16.5858 17.25 17 17.25C17.4142 17.25 17.75 16.9142 17.75 16.5H16.25ZM17 14H17.75C17.75 13.5858 17.4142 13.25 17 13.25V14ZM14 13.25C13.5858 13.25 13.25 13.5858 13.25 14C13.25 14.4142 13.5858 14.75 14 14.75V13.25ZM15.3634 10.3966C15.5825 10.7482 16.045 10.8556 16.3966 10.6366C16.7482 10.4175 16.8556 9.95497 16.6366 9.60341L15.3634 10.3966ZM13.9818 8.4222L13.7049 9.1192L13.7049 9.1192L13.9818 8.4222ZM11.0495 8.03299L11.125 8.77919L11.0495 8.03299ZM8.38042 8.98865L8.78697 9.6189C8.79737 9.61219 8.80761 9.60522 8.81767 9.59801L8.38042 8.98865ZM6.59346 9.24882C6.24538 9.47335 6.14522 9.93754 6.36974 10.2856C6.59427 10.6337 7.05846 10.7339 7.40654 10.5093L6.59346 9.24882ZM8.63656 13.6034C8.41753 13.2518 7.95497 13.1444 7.60341 13.3634C7.25184 13.5825 7.1444 14.045 7.36344 14.3966L8.63656 13.6034ZM10.0182 15.5778L10.2951 14.8808L10.2951 14.8808L10.0182 15.5778ZM15.6196 15.0114L15.213 14.3811C15.2026 14.3878 15.1924 14.3948 15.1823 14.402L15.6196 15.0114ZM17.4065 14.7512C17.7546 14.5267 17.8548 14.0625 17.6303 13.7144C17.4057 13.3663 16.9415 13.2661 16.5935 13.4907L17.4065 14.7512ZM6.25 7.5V10H7.75V7.5H6.25ZM7 10.75H10V9.25H7V10.75ZM17.75 16.5V14H16.25V16.5H17.75ZM17 13.25H14V14.75H17V13.25ZM16.6366 9.60341C16.1178 8.77067 15.2673 8.12594 14.2588 7.72521L13.7049 9.1192C14.4821 9.42802 15.0483 9.89079 15.3634 10.3966L16.6366 9.60341ZM14.2588 7.72521C13.2477 7.32347 12.097 7.17323 10.974 7.2868L11.125 8.77919C12.0226 8.68842 12.9302 8.81138 13.7049 9.1192L14.2588 7.72521ZM10.974 7.2868C9.85216 7.40025 8.78622 7.77437 7.94318 8.37928L8.81767 9.59801C9.4187 9.16674 10.2262 8.87007 11.125 8.77919L10.974 7.2868ZM7.97388 8.35839L6.59346 9.24882L7.40654 10.5093L8.78697 9.6189L7.97388 8.35839ZM7.36344 14.3966C7.88225 15.2293 8.73266 15.8741 9.74122 16.2748L10.2951 14.8808C9.51787 14.572 8.95169 14.1092 8.63656 13.6034L7.36344 14.3966ZM9.74122 16.2748C10.7523 16.6765 11.903 16.8268 13.026 16.7132L12.875 15.2208C11.9774 15.3116 11.0698 15.1886 10.2951 14.8808L9.74122 16.2748ZM13.026 16.7132C14.1478 16.5998 15.2138 16.2256 16.0568 15.6207L15.1823 14.402C14.5813 14.8333 13.7738 15.1299 12.875 15.2208L13.026 16.7132ZM16.0261 15.6416L17.4065 14.7512L16.5935 13.4907L15.213 14.3811L16.0261 15.6416ZM8 4.75H16V3.25H8V4.75ZM19.25 8V16H20.75V8H19.25ZM16 19.25H8V20.75H16V19.25ZM4.75 16V8H3.25V16H4.75ZM8 19.25C6.20507 19.25 4.75 17.7949 4.75 16H3.25C3.25 18.6234 5.37665 20.75 8 20.75V19.25ZM19.25 16C19.25 17.7949 17.7949 19.25 16 19.25V20.75C18.6234 20.75 20.75 18.6234 20.75 16H19.25ZM16 4.75C17.7949 4.75 19.25 6.20507 19.25 8H20.75C20.75 5.37665 18.6234 3.25 16 3.25V4.75ZM8 3.25C5.37665 3.25 3.25 5.37665 3.25 8H4.75C4.75 6.20507 6.20507 4.75 8 4.75V3.25Z" fill="#6183f5"></path> </g>
+                                    </svg>
+                                    <svg *ngSwitchCase="'Action Deadline changed'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                        <path d="M7.75 7.5C7.75 7.08579 7.41421 6.75 7 6.75C6.58579 6.75 6.25 7.08579 6.25 7.5H7.75ZM7 10H6.25C6.25 10.4142 6.58579 10.75 7 10.75V10ZM10 10.75C10.4142 10.75 10.75 10.4142 10.75 10C10.75 9.58579 10.4142 9.25 10 9.25V10.75ZM16.25 16.5C16.25 16.9142 16.5858 17.25 17 17.25C17.4142 17.25 17.75 16.9142 17.75 16.5H16.25ZM17 14H17.75C17.75 13.5858 17.4142 13.25 17 13.25V14ZM14 13.25C13.5858 13.25 13.25 13.5858 13.25 14C13.25 14.4142 13.5858 14.75 14 14.75V13.25ZM15.3634 10.3966C15.5825 10.7482 16.045 10.8556 16.3966 10.6366C16.7482 10.4175 16.8556 9.95497 16.6366 9.60341L15.3634 10.3966ZM13.9818 8.4222L13.7049 9.1192L13.7049 9.1192L13.9818 8.4222ZM11.0495 8.03299L11.125 8.77919L11.0495 8.03299ZM8.38042 8.98865L8.78697 9.6189C8.79737 9.61219 8.80761 9.60522 8.81767 9.59801L8.38042 8.98865ZM6.59346 9.24882C6.24538 9.47335 6.14522 9.93754 6.36974 10.2856C6.59427 10.6337 7.05846 10.7339 7.40654 10.5093L6.59346 9.24882ZM8.63656 13.6034C8.41753 13.2518 7.95497 13.1444 7.60341 13.3634C7.25184 13.5825 7.1444 14.045 7.36344 14.3966L8.63656 13.6034ZM10.0182 15.5778L10.2951 14.8808L10.2951 14.8808L10.0182 15.5778ZM15.6196 15.0114L15.213 14.3811C15.2026 14.3878 15.1924 14.3948 15.1823 14.402L15.6196 15.0114ZM17.4065 14.7512C17.7546 14.5267 17.8548 14.0625 17.6303 13.7144C17.4057 13.3663 16.9415 13.2661 16.5935 13.4907L17.4065 14.7512ZM6.25 7.5V10H7.75V7.5H6.25ZM7 10.75H10V9.25H7V10.75ZM17.75 16.5V14H16.25V16.5H17.75ZM17 13.25H14V14.75H17V13.25ZM16.6366 9.60341C16.1178 8.77067 15.2673 8.12594 14.2588 7.72521L13.7049 9.1192C14.4821 9.42802 15.0483 9.89079 15.3634 10.3966L16.6366 9.60341ZM14.2588 7.72521C13.2477 7.32347 12.097 7.17323 10.974 7.2868L11.125 8.77919C12.0226 8.68842 12.9302 8.81138 13.7049 9.1192L14.2588 7.72521ZM10.974 7.2868C9.85216 7.40025 8.78622 7.77437 7.94318 8.37928L8.81767 9.59801C9.4187 9.16674 10.2262 8.87007 11.125 8.77919L10.974 7.2868ZM7.97388 8.35839L6.59346 9.24882L7.40654 10.5093L8.78697 9.6189L7.97388 8.35839ZM7.36344 14.3966C7.88225 15.2293 8.73266 15.8741 9.74122 16.2748L10.2951 14.8808C9.51787 14.572 8.95169 14.1092 8.63656 13.6034L7.36344 14.3966ZM9.74122 16.2748C10.7523 16.6765 11.903 16.8268 13.026 16.7132L12.875 15.2208C11.9774 15.3116 11.0698 15.1886 10.2951 14.8808L9.74122 16.2748ZM13.026 16.7132C14.1478 16.5998 15.2138 16.2256 16.0568 15.6207L15.1823 14.402C14.5813 14.8333 13.7738 15.1299 12.875 15.2208L13.026 16.7132ZM16.0261 15.6416L17.4065 14.7512L16.5935 13.4907L15.213 14.3811L16.0261 15.6416ZM8 4.75H16V3.25H8V4.75ZM19.25 8V16H20.75V8H19.25ZM16 19.25H8V20.75H16V19.25ZM4.75 16V8H3.25V16H4.75ZM8 19.25C6.20507 19.25 4.75 17.7949 4.75 16H3.25C3.25 18.6234 5.37665 20.75 8 20.75V19.25ZM19.25 16C19.25 17.7949 17.7949 19.25 16 19.25V20.75C18.6234 20.75 20.75 18.6234 20.75 16H19.25ZM16 4.75C17.7949 4.75 19.25 6.20507 19.25 8H20.75C20.75 5.37665 18.6234 3.25 16 3.25V4.75ZM8 3.25C5.37665 3.25 3.25 5.37665 3.25 8H4.75C4.75 6.20507 6.20507 4.75 8 4.75V3.25Z" fill="#6183f5"></path> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Project Hold'" viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff" style="width: 18px; height: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pause [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-227.000000, -3765.000000)" fill="#8f8153"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M172,3605 C171.448,3605 171,3605.448 171,3606 L171,3612 C171,3612.552 171.448,3613 172,3613 C172.552,3613 173,3612.552 173,3612 L173,3606 C173,3605.448 172.552,3605 172,3605 M177,3606 L177,3612 C177,3612.552 176.552,3613 176,3613 C175.448,3613 175,3612.552 175,3612 L175,3606 C175,3605.448 175.448,3605 176,3605 C176.552,3605 177,3605.448 177,3606" id="pause-[#ffffff]"> </path> </g> </g> </g> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Action Hold'" viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" stroke="#ffffff" style="width: 18px; height: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pause [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-227.000000, -3765.000000)" fill="#8f8153"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M172,3605 C171.448,3605 171,3605.448 171,3606 L171,3612 C171,3612.552 171.448,3613 172,3613 C172.552,3613 173,3612.552 173,3612 L173,3606 C173,3605.448 172.552,3605 172,3605 M177,3606 L177,3612 C177,3612.552 176.552,3613 176,3613 C175.448,3613 175,3612.552 175,3612 L175,3606 C175,3605.448 175.448,3605 176,3605 C176.552,3605 177,3605.448 177,3606" id="pause-[#ffffff]"> </path> </g> </g> </g> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Project Release'" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z" stroke="#21b03e" stroke-width="0" stroke-linejoin="round"></path> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Support team added'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#1f79ef" style="width: 22px; height: 22px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 20V19C4 16.2386 6.23858 14 9 14H12.75M17.5355 13.9645V17.5M17.5355 17.5V21.0355M17.5355 17.5H21.0711M17.5355 17.5H14M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#1f79ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'Timeline added'" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 24px;height: 24px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>ic_fluent_timeline_24_regular</title><g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="ic_fluent_timeline_24_regular" fill="#0f9990" fill-rule="nonzero"> <path d="M15.2496718,13 C16.2161701,13 16.9996718,13.7835017 16.9996718,14.75 L16.9996718,19.25 C16.9996718,20.2164983 16.2161701,21 15.2496718,21 L3.74967178,21 C2.78317347,21 1.99967178,20.2164983 1.99967178,19.25 L1.99967178,14.75 C1.99967178,13.7835017 2.78317347,13 3.74967178,13 L15.2496718,13 Z M20.9999472,14.8988691 L20.9996863,20.25 C20.9996863,20.6642136 20.6638999,21 20.2496863,21 C19.8699905,21 19.5561953,20.7178461 19.5065329,20.3517706 L19.4996863,20.25 L19.499308,14.9117103 C19.7315928,14.9693895 19.9745687,15 20.2246942,15 C20.4927784,15 20.7526497,14.9648361 20.9999472,14.8988691 Z M15.2496718,14.5 L3.74967178,14.5 C3.6116006,14.5 3.49967178,14.6119288 3.49967178,14.75 L3.49967178,19.25 C3.49967178,19.3880712 3.6116006,19.5 3.74967178,19.5 L15.2496718,19.5 C15.387743,19.5 15.4996718,19.3880712 15.4996718,19.25 L15.4996718,14.75 C15.4996718,14.6119288 15.387743,14.5 15.2496718,14.5 Z M20.2494639,10.0919271 C21.3032635,10.0919271 22.1575368,10.9462004 22.1575368,12 C22.1575368,13.0537996 21.3032635,13.9080729 20.2494639,13.9080729 C19.1956643,13.9080729 18.341391,13.0537996 18.341391,12 C18.341391,10.9462004 19.1956643,10.0919271 20.2494639,10.0919271 Z M15.2452829,3 C16.2117813,3 16.9952829,3.78350169 16.9952829,4.75 L16.9952829,9.25 C16.9952829,10.2164983 16.2117813,11 15.2452829,11 L3.74528294,11 C2.77878463,11 1.99528294,10.2164983 1.99528294,9.25 L1.99528294,4.75 C1.99528294,3.8318266 2.70239322,3.07880766 3.60175573,3.0058012 L3.74528294,3 L15.2452829,3 Z M15.2452829,4.5 L3.74528294,4.5 L3.68796024,4.50660268 C3.57751636,4.53251318 3.49528294,4.63165327 3.49528294,4.75 L3.49528294,9.25 C3.49528294,9.38807119 3.60721176,9.5 3.74528294,9.5 L15.2452829,9.5 C15.3833541,9.5 15.4952829,9.38807119 15.4952829,9.25 L15.4952829,4.75 C15.4952829,4.61192881 15.3833541,4.5 15.2452829,4.5 Z M20.2496863,3 C20.6293821,3 20.9431773,3.28215388 20.9928397,3.64822944 L20.9996863,3.75 L20.9999472,9.10113095 C20.7526497,9.0351639 20.4927784,9 20.2246942,9 C19.9745687,9 19.7315928,9.03061049 19.499308,9.0882897 L19.4996863,3.75 C19.4996863,3.33578644 19.8354727,3 20.2496863,3 Z"> </path> </g> </g> </g>
+                                    </svg>
+
+                                  
+                                    <svg *ngSwitchCase="'Approved Project'"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                    </svg>
+                                      
+
+                                    <svg *ngSwitchCase="'Approved Action'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important"></path></g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'New Project Rejected'" fill="#ff0000" height="64px" width="64px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 20px; height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
+                                    </svg>
+
+                                    <svg *ngSwitchCase="'New Project'" width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="  width: 24px;height: 24px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project-new</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#0287ca" transform="translate(64.000000, 34.346667)"> <path d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g>
+                                    </svg>
+
+                                    <ng-container *ngSwitchCase="'Project Complete'">
+                                        <svg style="width:23px !important; height:30px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                        </svg>
+                                        
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left: 12.2px;top: 2px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                        </svg>
+                                    </ng-container>
+
+                                    <ng-container *ngSwitchCase="'Action Complete'">
+                                        <svg style="width:23px !important; height:30px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                        </svg>
+                                        
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left: 12.2px;top: 2px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                        </svg>
+                                    </ng-container>
+
+
+                                    <svg *ngSwitchDefault xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                       <path opacity="0.3"  d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z" fill="black"></path> 
+                                       <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="black"></path>
+                                    </svg>
+
+                                </ng-container>
+
+
+                            
                                   </span>
                               </div>
                           </div>
@@ -7099,7 +7608,7 @@
                                             <span *ngFor="let role of Data.Role.split(', ')">
                                               <span >{{ role }}</span>
                                             </span>
-                                            <div *ngIf="Data.contribution"  [title]="Data.contribution+' actions'"   class="prctg-in-project">
+                                            <div *ngIf="Data.contribution"  [title]="Data.totalActionsCreated+' actions'"   class="prctg-in-project">
                                                 <span class="bg-transparent text-body">{{((Data.contribution/totalSubtaskHours)*100).toFixed(1)}}%</span>
                                             </div>
                                           </div>
@@ -10062,7 +10571,7 @@
                                 <angular-editor [(ngModel)]="Description_Type" (input)="updateCharacterCount_Meeting()"
                                 (paste)="updateCharacterCount_Meeting()"
                                  [config]="config"></angular-editor>
-                               <span *ngIf="characterCount_Meeting > 0" >{{characterCount_Meeting}} Characters with spaces </span>
+                               <span *ngIf="characterCount_Meeting > 0" >Max Characters {{characterCount_Meeting}}/500</span>
                                  <span *ngIf="characterCount_Meeting>=500"  style="color:red">    description should not exceed 500 characters.</span>
                             </div>
                         </div>
@@ -10487,12 +10996,13 @@
             </div>
         </div>
         <div class="se-col-11">
-            <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
                 <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
+              <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
             <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                 <li *ngFor="let empno of ngEmployeeDropdown">
                    <div class="schedule-select-user-list-item">
@@ -11756,7 +12266,7 @@
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
-                              <span *ngIf="characterCount > 0" >{{characterCount}} Characters with spaces</span>
+                              <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
                               <span *ngIf="characterCount>=500"  style="color:red"> description should not exceed 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
@@ -12260,7 +12770,7 @@
                                   [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()"
                                   (paste)="updateCharacterCount_Action()" ></textarea>
                           </div>
-                          <span *ngIf="characterCount_Action > 0" >{{characterCount_Action}} Characters with spaces</span>
+                          <span *ngIf="characterCount_Action > 0" >Max Characters {{characterCount_Action}}/500</span>
                           <span *ngIf="characterCount_Action >=500"  style="color:red">    description should not exceed 500 characters.</span>
                           <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>
