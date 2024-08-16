@@ -273,4 +273,10 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
      return this.http.post(this.rootUrl+"ApprovalAPI/NewGetLeaveComments",this.obj_approvalDTO);
   }
 
+ 
+  NewGetMeetingActivity(obj: ApprovalDTO){
+    this.obj_approvalDTO.Schedule_Id=obj.Schedule_Id;
+    return this.http.post(this.rootUrl+"ApprovalAPI/NewGetMeetingActivity",this.obj_approvalDTO);
+  }
+  
 }

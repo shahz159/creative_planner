@@ -1085,8 +1085,51 @@ selectUnselectPagePrjs(evt){ debugger
     console.log("allSelectedProjects:",this.allSelectedProjects);
 }
 
+Team_Res:any;
+Project_Code:any;
+Team_Autho:any
 
 // portfolio new end
+LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
+  if (iscloud == false) {
+    if (this.Team_Autho == this.Team_Res) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+
+    }
+    else if (this.Team_Autho !=  this.Team_Res) {
+      FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
 
 }

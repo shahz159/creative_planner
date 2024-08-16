@@ -2091,25 +2091,27 @@ a.kt-inbox__icon:hover svg path {
 }
 
 .kt-bg-light-primary {
-  background-color: #5867dd1a !important;
+  /* background-color: #5867dd1a !important; */
+  background-color: #ffffff1a !important;
+  border: 1px solid #d2d5e5;
 }
 
 .svg-icon {
   line-height: 1;
 }
 
-.svg-icon.svg-icon-2 svg {
+/* .svg-icon.svg-icon-2 svg {
   height: 1.5rem !important;
   width: 1.5rem !important;
-}
+} */
 
-.svg-icon.svg-icon-info svg {
+/* .svg-icon.svg-icon-info svg {
   fill: #2786fb !important;
 }
 
 .svg-icon.svg-icon-info svg :not(.permanent):not(g) {
   fill: #2786fb !important;
-}
+} */
 
 .timeline .timeline-content {
   width: 100%;
@@ -8467,3 +8469,13 @@ span.time-value {
 }
 
 /*completion report css end */
+.diff-div {
+  background: #f9f9f9;
+}
+.kt-detail-link {
+  border: 1px solid #9fbbff;
+  background-color: #5a82e11f;
+}
+.kt-detail-iconname{
+ color: #5d5d5d;
+}

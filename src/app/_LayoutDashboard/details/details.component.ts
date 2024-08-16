@@ -1532,6 +1532,8 @@ multipleback(){
 
   closeInfo() {   debugger
     this._remarks = ''
+    this.characterCount=0;
+    this.characterCount_Action=0;
     this.selectedFile=null;
     this._inputAttachments='';
     this.formFieldsRequired=false;
@@ -4619,6 +4621,8 @@ debugger
     this.meetingList = [];
     this.meeting_arry = [];
     this.meetinglength = 0;
+    this.characterCount_Meeting=0;
+    this.Description_Type=null;
 
     this.upcomingMeetings = [];
     this.todaymeetings = [];
@@ -5923,6 +5927,8 @@ getChangeSubtaskDetais(Project_Code) {
     this.SelectDms = [];
     this.MasterCode = null;
     this.Subtask = null;
+    this.characterCount_Meeting=0;
+    this.Description_Type=null;
     this.Startts = null;
     this.Endtms = null;
     this.SelectStartdate = null;

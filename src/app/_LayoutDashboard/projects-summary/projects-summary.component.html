@@ -1253,12 +1253,14 @@
                                                         <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
                                                             <div *ngIf="item.Status=='Under Approval'">
                                                                 <span class="Under_Approval_color font-weight-400">New approval</span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                                </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Delay'">
                                                                 <span class=" font-weight-400"></span>
                                                                 <span *ngIf="item.Delaydays>=0"
                                                                     class="Delay_color ">
-                                                                    <strong>{{item.Delaydays}} days Delay </strong>
+                                                                    <strong>{{item.Delaydays}} day(s) Delay </strong>
                                                                 </span>
                                                             </div>
                                                             <!-- Other Status -->
@@ -1300,10 +1302,15 @@
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                  <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                              </span>
+                                                              </span> 
+                                                              <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span>                                                        
                                                             </div>
+                                                           
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                                 <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
+                                                                </span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Cancelled'">
@@ -1323,6 +1330,8 @@
                                                             <div *ngIf="item.Status=='Forward Under Approval'">
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                                </span> 
                                                             </div>
                                                             <div *ngIf="item.Status=='Project Complete Rejected'">
                                                                 <span class="Project_Complete_Rejected_color font-weight-400">Project

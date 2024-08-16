@@ -722,7 +722,14 @@ debugger
 
 
       });
-    });
+
+
+
+
+
+      });
+
+
    }
 
 
@@ -837,7 +844,8 @@ debugger
     }
   }
 
-  closeInfo() {  
+  closeInfo() {
+     this.characterCount=0;
     // alert(this._Urlid);
     if(this._Urlid==2){
       debugger

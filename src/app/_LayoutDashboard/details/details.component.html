@@ -1496,7 +1496,7 @@
 
                                                                           <span [ngSwitch]="action.Status">
                                                                               <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
-                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} days</span>
+                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} day(s)</span>
                                                                               <span *ngSwitchCase="'InProcess'" class="Status-In-progress">In-process</span>
                                                                               <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                               <span *ngSwitchCase="'Under Approval'">New action approval</span>
@@ -2669,7 +2669,7 @@
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
                                             <div class="kt-project-type " *ngSwitchCase="'Delay'">
-                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} days </div>
+                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} day(s) </div>
                                             </div>
 
                                             <div class="kt-project-type" *ngSwitchCase="'Completed'">
@@ -4275,7 +4275,7 @@
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                       <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} days
+                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
 
@@ -4329,7 +4329,7 @@
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
                                                       <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} days
+                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
 
@@ -10366,7 +10366,7 @@
                                 <angular-editor [(ngModel)]="Description_Type" (input)="updateCharacterCount_Meeting()"
                                 (paste)="updateCharacterCount_Meeting()"
                                  [config]="config"></angular-editor>
-                               <span *ngIf="characterCount_Meeting > 0" >{{characterCount_Meeting}} Characters with spaces </span>
+                               <span *ngIf="characterCount_Meeting > 0" >Max Characters {{characterCount_Meeting}}/500</span>
                                  <span *ngIf="characterCount_Meeting>=500"  style="color:red">    description should not exceed 500 characters.</span>
                             </div>
                         </div>
@@ -12061,7 +12061,7 @@
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
-                              <span *ngIf="characterCount > 0" >{{characterCount}} Characters with spaces</span>
+                              <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
                               <span *ngIf="characterCount>=500"  style="color:red"> description should not exceed 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
@@ -12565,7 +12565,7 @@
                                   [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()"
                                   (paste)="updateCharacterCount_Action()" ></textarea>
                           </div>
-                          <span *ngIf="characterCount_Action > 0" >{{characterCount_Action}} Characters with spaces</span>
+                          <span *ngIf="characterCount_Action > 0" >Max Characters {{characterCount_Action}}/500</span>
                           <span *ngIf="characterCount_Action >=500"  style="color:red">    description should not exceed 500 characters.</span>
                           <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>

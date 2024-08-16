@@ -720,7 +720,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -2217,6 +2217,7 @@ Insert_indraft() {
     // empty all variables
     this.meetingList = [];
     this.meeting_arry = [];
+    this.characterCount=0;
     this.meetinglength = 0;
     this.allAgendas = [];
     this.upcomingMeetings = [];

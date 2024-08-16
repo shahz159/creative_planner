@@ -1087,6 +1087,18 @@ span.time-slt-md {
     ;
 }
 
+::ng-deep .fc-purple .fc-daygrid-event-dot,
+::ng-deep .fc-purple .fc-list-event-dot {
+    border-color: #9B30FF !important;
+}
+
+::ng-deep .fc-purple {
+    border-color: #9B30FF !important;
+    /* color: #9B30FF !important; */
+    /* background: #c095e9; */
+    /* text-decoration: line-through !important; */
+}
+
 ::ng-deep .fc-suc .fc-daygrid-event-dot,
 ::ng-deep .fc-suc .fc-list-event-dot {
     border-color: #1dc9b7 !important;
@@ -4166,7 +4178,6 @@ li.modal-project-list-item {
     margin: 0;
     min-width: 40rem;
     box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
-    padding: 1rem 1rem;
     border-radius: 4px;
     font-size: 1rem;
     color: #212529;
@@ -4181,7 +4192,8 @@ li.modal-project-list-item {
     left: 0px;
     right: auto;
     bottom: auto;
-    transform: translate3d(0px, 60px, 0px);
+
+    transform: translate3d(0px, 0px, 0px);
     margin-top: 0px;
     margin-bottom: 0.125rem;
     display: none;
@@ -4195,8 +4207,11 @@ li.modal-project-list-item {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 1rem 1rem;
 }
-
+.modal-body .date-menu-item{
+    padding: 0px;
+}
 .date-menu-calender {
     width: 100%;
 }
@@ -4220,22 +4235,13 @@ li.modal-project-list-item {
     background: #f1f1f1;
 }
 
-.date-menu-close {
+.date-menu-action {
     position: absolute;
     bottom: 14px;
     right: 14px;
-    background-color: #e2e5ec;
-    border: 1px solid #e2e5ec;
-    color: #595d6e;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    border-radius: 0.2rem;
-    display: inline-block;
-    cursor: pointer;
-    font-weight: normal;
-    text-align: center;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .endtill-date {
@@ -4712,4 +4718,101 @@ span.project-name {
 
 .request-access-item-h-action .icon.red {
     color: #ff5252;
+}
+.drop-overlay {
+    z-index: 94;
+    position: fixed;
+    background-color: #0000005c;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.drop-overlay.show{
+    display: block;
+}
+.date-menu-heading {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #636469;
+    background-color: #ebeff6;
+    padding: 1rem;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+/* .customrecurrence {
+    border: 0 !important;
+    margin: 0;
+    min-width: 40rem;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    z-index: 95;
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    right: auto;
+    bottom: auto;
+    transform: translate3d(-130px, 0px, 0px);
+    margin-top: 0px;
+    margin-bottom: 0.125rem;
+    display: none;
+}
+
+.customrecurrence.show {
+    display: block;
+}
+
+.customrecurrence-item {
+    padding: 1rem 1rem;
+}
+.customrecurrence-heading {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #636469;
+    background-color: #ebeff6;
+    padding: 1rem;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.customrecurrence-footer{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 1rem 1rem;
+} */
+.datemenu.modal .modal-header {
+    background-color: #ebeff6;
+    align-items: center;
+}
+.datemenu.modal .modal-footer {
+    justify-content: flex-start;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #d2d2d2;
+}
+.dropdown.filter-cal-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-radius: 49px;
+    padding: 0px 16px;
+    width: auto;
+    margin-bottom: 6px;
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 1px 3px 1px rgb(60 64 67 / 15%);
+    background-color: rgba(255, 255, 255, 0.502);
+    color: #222;
+}
+.dropdown.filter-cal-dropdown a svg {
+    margin-right: 2px;
+    color: #6c6464;
 }

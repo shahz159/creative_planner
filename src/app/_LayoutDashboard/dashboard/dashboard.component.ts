@@ -1791,7 +1791,8 @@ export class DashboardComponent implements OnInit {
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true )
+      && (this.ScheduleType === 'Event' ?this.allAgendas.length > 0: true )
+      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -2165,7 +2166,7 @@ export class DashboardComponent implements OnInit {
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ): true)
+      && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
       && (this.Description_Type?(this.characterCount<500):true)
     ) {
       this.notProvided = false;
@@ -2347,13 +2348,10 @@ export class DashboardComponent implements OnInit {
           element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
           // var columnName = "Link_Type";
           // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-          alert('5')
+         
           var vUser_Name = "User_Name";
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
            
-
-
-
           var vLocation_Type = "Location_Type";
           element[vLocation_Type] = this._meetingroom==true?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2417,6 +2415,7 @@ export class DashboardComponent implements OnInit {
               this._calenderDto.flagid = 2;
           }
         }
+        console.log(this._calenderDto.flagid, "finalarray");
         if (this.Schedule_ID != 0) {
           this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -2440,7 +2439,7 @@ export class DashboardComponent implements OnInit {
         frmData.append("flag_id", this._calenderDto.flagid.toString());
         this._calenderDto.attachment = this.RemovedAttach.toString();
 
-        // console.log(JSON.stringify(finalarray), "finalarray");
+         
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
@@ -2699,9 +2698,7 @@ export class DashboardComponent implements OnInit {
   }
 
   Select_flag(val) {
-
     this._PopupConfirmedValue = val;
-
   }
 
 
@@ -2711,8 +2708,8 @@ export class DashboardComponent implements OnInit {
   Task_type(value) {
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
 
     document.getElementById("div_recurrence").style.display = "block";
@@ -5380,7 +5377,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
   closeschd() {
 
     // this.Insert_indraft();
-    document.getElementById('date-menu').classList.remove("show");
+    // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -5400,6 +5397,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -6206,7 +6204,8 @@ onProjectSearch(inputtext:any){
 
 
   customrecurrencemodal() {
-
+    // document.getElementById('drop-overlay').classList.add("show");
+    // document.getElementById('customrecurrence').classList.add("show");
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -6225,6 +6224,8 @@ onProjectSearch(inputtext:any){
 
   }
   close_customrecurrencemodal() {
+    // document.getElementById('drop-overlay').classList.remove("show");
+    // document.getElementById('customrecurrence').classList.remove("show");
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("customrecurrence").style.display = "none";
 
@@ -6238,13 +6239,36 @@ onProjectSearch(inputtext:any){
     this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
 
+  date_menu(dialogId:string){
+    document.getElementById(dialogId).classList.add("show");
+    document.getElementById('date-menu').classList.add("show");
+    document.getElementById('drop-overlay').classList.add("show");
 
+   
+  }
+  date_menu_close(dialogId:string){
+    $(`#${dialogId}`).removeClass('show');
+    $('#date-menu').removeClass('show');
+    $('#drop-overlay').removeClass('show');
 
+  }
+  date_menu_modal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("datemenu").style.display = "block";
+   
+  }
+  date_menu_modal_close() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("datemenu").style.display = "none";
+   
+  
+  }
 
-date_menu(dialogId:string){
+datemen(dialogId:string){
   document.getElementById(dialogId).classList.add("show");
+ 
 }
-date_menu_close(dialogId:string){
+date_menuclo(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
 }
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
@@ -6839,16 +6863,20 @@ else if(this.selectedrecuvalue==='3'){
      }
    });
 }
+console.log(this._PopupConfirmedValue)
 
 
 
 
-if (this.selectedrecuvalue == '0') {
-  this._PopupConfirmedValue = 1;
-}
-else {
-  this._PopupConfirmedValue = 2;
-}
+// if (this.selectedrecuvalue == '0') {
+//   this._PopupConfirmedValue = 1;
+// }
+// else if(this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()){
+//   this._PopupConfirmedValue = 1;
+// }
+// else {
+//   this._PopupConfirmedValue = 2;
+// }
 
 this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
 var start = moment(this.minDate);

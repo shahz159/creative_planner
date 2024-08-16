@@ -616,7 +616,7 @@
         <div class="kt-portlet__body kt-portlet__body_scroll p-0">
             <div class="tab-content" id="time-tabbview">
                 <div class="tab-pane fade show active" id="mytime_1" role="tabpanel" aria-labelledby="mytime-1">
-                    <div class="text-center py-4" style="color: lightgrey" *ngIf="showtimeline==false">
+                    <div class="text-center py-4" style="color: lightgrey" *ngIf="this.showtimeline==false">
                         <h5>No timeline found for '{{selectedSort}}' filter.</h5>
                     </div>
 
@@ -782,7 +782,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="racis_1" role="tabpanel" aria-labelledby="racis_1">
-                    <div class="text-center py-4" style="color: lightgrey" *ngIf="showtimeline==false">
+                    <div class="text-center py-4" style="color: lightgrey" *ngIf="this.showtimeline == false">
                         <h5>No timeline found for '{{selectedSort}}' filter.</h5>
                     </div>
                     <div class="timeline" *ngFor="let item of timelineList;let i=index">

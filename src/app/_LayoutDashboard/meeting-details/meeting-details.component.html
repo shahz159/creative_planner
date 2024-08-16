@@ -1137,7 +1137,13 @@
                                                         <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add agenda and press 'enter key'." autofocus="true"
                                                         [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"/>
 
-                                                    <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                                                        <ng-container *ngIf="meetings_Recurrence==='Do not repeat'">
+                                                        <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                                                       </ng-container>
+
+                                                       <ng-container *ngIf="meetings_Recurrence!=='Do not repeat'">
+                                                        <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" data-target="#confirmpopup" data-toggle="modal">Add</button>
+                                                       </ng-container>
 
                                                     </div>
                                                 </div>
@@ -1180,9 +1186,9 @@
                                                                                     <span  class="agenda-details-item-count">{{taskcount[i].count}}</span>
                                                                                 </div>
                                                                                 <!-- <div class="a-v-line"></div> -->
-                                                                                <div class="agenda-details-item">
+                                                                                <div class="agenda-details-item active">
                                                                                     <span class="a-icon">
-                                                                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
+                                                                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                                                 
                                                                                 </span>
                                                                                     <span  class="agenda-details-item-count">{{notescount[i].count}}</span>
@@ -1509,14 +1515,14 @@
                                                 </svg>
                                             </a> -->
                                             
-                                            <a class="kt-inbox__icon ac-activity" (click)="View_Activity()" title="Activity Log">
+                                            <!-- <a class="kt-inbox__icon ac-activity" (click)="View_Activity()" title="Activity Log">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1"
                                                     stroke-width="1" class="iconify iconify--mdi">
                                                     <path
                                                         d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z"
                                                         fill="currentColor"></path>
                                                 </svg>
-                                            </a>
+                                            </a> -->
                                             <!-- <a class="kt-inbox__icon" title="timeline">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
@@ -1846,40 +1852,40 @@
                             
                             </div>
                             <div class="accordion" id="meeting-attendance-accordion">
-                                <div class="w-100 text-right">
+                                <!-- <div class="w-100 text-right">
                                     <button class="btn meeting-attendance-btn" (click)="toggleView()" type="button"  data-toggle="collapse" data-target="#meeting-attendance-accordion-collapse"
                                     aria-expanded="false" aria-controls="meeting-attendance-accordion-collapse">     
                                     <span>{{isExpanded_Report ? 'View Less' : 'View More'}}</span>
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L12.5303 14.0303C12.2374 14.3232 11.7626 14.3232 11.4697 14.0303L7.46967 10.0303C7.17678 9.73744 7.17678 9.26256 7.46967 8.96967C7.76256 8.67678 8.23744 8.67678 8.53033 8.96967L12 12.4393L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z" fill="currentColor"></path> </g></svg>
                                     </button> 
-                                </div>
-                                <div id="meeting-attendance-accordion-collapse" class="collapse" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
+                                </div> -->
+                                <div id="meeting-attendance-accordion-collapse" class="collapse show" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
                                     <div class="meeting-attendance meeting-attendance-accordion-div">
                                         <div class="meeting-attendance-item" >
                                             <div class="meeting-attendance-count">{{data.AgendaCount}}</div>
                                             <div class="meeting-attendance-title">Agenda</div>
                                         </div>
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Slide_meeting()" >
                                             <div class="meeting-attendance-count">{{data.NotesCount}}</div>
                                             <div class="meeting-attendance-title">Notes</div>
                                         </div>
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Slide_AssignTask()">
                                             <div class="meeting-attendance-count">{{data.TaskCount}}</div>
-                                            <div class="meeting-attendance-title">Task</div>
+                                            <div class="meeting-attendance-title">Tasks</div>
                                         </div>
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="addNewDMS()">
                                             <div class="meeting-attendance-count">{{data.DMSCount}}</div>
                                             <div class="meeting-attendance-title">DMS</div>
                                         </div>
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="AddPortfolio()">
                                             <div class="meeting-attendance-count">{{data.PortCount}}</div>
                                             <div class="meeting-attendance-title">Portfolio</div>
                                         </div>
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer"  (click)="AddProjects()">
                                             <div class="meeting-attendance-count">{{data.ProjectCount}}</div>
                                             <div class="meeting-attendance-title">Project</div>
                                         </div>
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Attachment_views()">
                                             <div class="meeting-attendance-count">{{data.AttachmentCount}}</div>
                                             <div class="meeting-attendance-title">Attachments</div>
                                         </div>
@@ -2701,16 +2707,8 @@
                                             </div>
                                     </div> -->
 
-
-
-
-
-
-
                                     <hr class="dotted">
                                     <div class="meeting-notes" >
-
-
                                         <!-- <angular-editor [config]="config" [(ngModel)]="Notes_Type"
                                             (click)="onEditorFocus()"
                                             (focus)="onEditorFocus()"
@@ -2718,7 +2716,6 @@
                                             (keyup)="addBulletPointsOnEnter($event)">
                                         </angular-editor>  -->
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
-                                    
                                         <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
                                         <angular-editor #ANGEDITOR [config]="config" [(ngModel)]="Notes_Type"
                                         (keyup)="addBulletPointsOnEnter($event)" (paste)="addBulletPointsOnEnter($event)"></angular-editor>
@@ -3973,8 +3970,8 @@
 
                     <ng-container *ngFor="let item of EventScheduledjson">
 
-                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                        <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
+                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                    <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
                     </ng-container>
 
                     <ng-container *ngIf="ngDropdwonPort!=''">
@@ -8016,7 +8013,7 @@
                                     <angular-editor  [(ngModel)]="Description_Type" (input)="updateCharacterCount()"
                                     (paste)="updateCharacterCount()"
                                     [config]="config"></angular-editor>
-                                    <span *ngIf="characterCount > 0" > {{characterCount}} Characters with spaces </span>
+                                    <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
                                     <span *ngIf="characterCount>=500"  style="color:red">  description should not exceed 500 characters.</span>
                                 </div>
                             </div>
@@ -8032,7 +8029,7 @@
                                     <div class="row">
                                         <div class="col-md-6 schedule-br">
                                             <div class="form-group dt">
-                                                <div class="curser-pointer" (click)="date_menu('date-menu')">
+                                                <div class="curser-pointer" (click)="date_menu_modal()">
                                                     <div class="schedule-dt-tm">
                                                         <div>
                                                             <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
@@ -8058,10 +8055,18 @@
                                                 </ng-container>
         
                                                 </div>
+
+                                                <!-- <div class="drop-overlay" id="drop-overlay" (click)="date_menu()"></div>
                                                 <div class="date-menu" id="date-menu">
+                                                    <div class="date-menu-heading">
+                                                        Select Date & Time
+                                                    </div>
                                                     <div class="date-menu-item">
-                                                        <div class="date-menu-close" (click)="date_menu_close('date-menu')">Close</div>
-                                                        <div class="date-menu-calender">
+                                                        <div class="date-menu-action">
+                                                            <button type="button" class="btn btn-add-primary" (click)="date_menu_close('date-menu')">Done</button>
+                                                            <button type="button" class="btn btn-close-secondary" (click)="date_menu_close('date-menu')">Close</button>
+                                                        </div>
+                                                         <div class="date-menu-calender">
                                                             <mat-card class="demo-inline-calendar-card">
                                                                 <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
                                                             </mat-card>
@@ -8091,7 +8096,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
+                                                
                                             </div>
         
                                         </div>
@@ -8129,6 +8135,87 @@
                                                                 </ng-container>
                                                     </ng-container>
                                                 </div>
+                                                 <!-- <div class="drop-overlay" id="drop-overlay"></div>
+                                            <div class="customrecurrence" id="customrecurrence">
+                                                <div class="customrecurrence-heading">
+                                                    Recurrence
+                                                </div>
+                                                <div class="customrecurrence-item">
+                                                    <div class="form-group flex-1">
+                                                        <label>Repeat</label>
+                                                        <mat-select name="Select Type" placeholder="Do not repeat"
+                                                            [(value)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
+                                                            <mat-option value="0">Do not repeat</mat-option>
+                                                            <mat-option value="1">Daily</mat-option>
+                                                            <mat-option value="2">Weekly</mat-option>
+                                                            <mat-option value="3">Monthly</mat-option>
+                                                     
+                                                        </mat-select>
+                                                    </div>
+                                        
+                                        
+                                                    <div>
+                                                        <div class="ml-0 form-group" style="display: none;" id="weekly_121_new">
+                                                            <label class="">Days</label>
+                                                            <div class="pt-1">
+                                                                <div class="d-flex">
+                                                                    <ng-container *ngFor="let item of dayArr1">
+                                                                        <div
+                                                                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                                            <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                                                type="checkbox" name="DaysChk" value="{{item.value}}"
+                                                                                class="rep-chk" />
+                                                                            {{item.Day}}
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                                <span *ngIf="notProvided1==='dayarr1'" class="fs-7" style="color:red">choose a day.</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ml-0 form-group" style="display: none;" id="Monthly_121_new">
+                                                            <label class="">Day</label>
+                                                            <div class="pt-1">
+                                                                <div class="d-flex flex-wrap">
+                                                                    <ng-container *ngFor="let item of MonthArr1">
+                                                                        <div
+                                                                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                                            <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                                                                type="checkbox" name="monthChk" value="{{item.value}}"
+                                                                                class="rep-chk" />
+                                                                            {{item.Day}}
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                                <span *ngIf="notProvided1==='montharr1'" class="fs-7" style="color:red">choose a day.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                        
+                                                    <div class="mb-2" id="div_endDate_new">
+                                                            <label>End Date</label>
+                                                            <div class="endtill-date">
+                                                                <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"
+                                                                        [(ngModel)]="_EndDate1"  placeholder="End Date" [min]="today"
+                                                                        class="form-control" style="padding-left: 4rem !important;">
+                                                                    <span class="endtill-date-icon">
+                                                                        <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #div_endDatepicker></mat-datepicker>
+                                                                    </span>
+                                                               <span *ngIf="notProvided1==='enddate1'&&!_EndDate1" class="fs-7" style="color:red">end date required.</span>
+                                                            </div>
+                                                            <div *ngIf="_EndDate1" class="schedule-dt-text">
+                                                                <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                                                                <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
+                                                            </div>
+                                                    </div>
+                                        
+                                                </div>
+                                                <div class="customrecurrence-footer">
+                                                    <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
+                                                    <button type="button" class="btn btn-close-secondary" (click)="close_customrecurrencemodal()">Close</button>
+                                                </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -8170,7 +8257,6 @@
                                             <span class="agenda-index">{{i+1}}.</span>
                                             <label [id]="'agendas-label-'+i" class="task-name">{{agenda.name}}</label>
                                             <input [id]="'agendas-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="agenda.name"/>
-        
                                         <div class="agenda-ctrl-btns">
         
         
@@ -8285,13 +8371,13 @@
                                 </div>
                             </div>
                             <div class="se-col-11">
-                                <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}" [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PARTICIPANT')">
+                                <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PARTICIPANT')">
                                     <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
                                     <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
-                            <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
+                            <!-- <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span> -->
                                 <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                                     <li *ngFor="let empno of ngEmployeeDropdown">
                                     <div class="schedule-select-user-list-item">
@@ -9285,7 +9371,7 @@
                 </div>
 
                 <div class="Activity_Log_vh kt-portlet__body kt-portlet__body_scroll">
-                    <div class="kt-chat__messages">
+                    <div class="kt-chat__messages" *ngFor="let item of allActivityList">
                     <!-- <ng-container *ngIf="activitiesLoading;else GotActivitiesResult">
                         <div class="sidebar-content-loading">
                             <div class="spinner-border text-secondary" style="width:40px; height:40px;" role="status">
@@ -9317,11 +9403,15 @@
                                     <div class="overflow-auto pt-2 pr-3">
                                         <div class="fs-6 mb-1 txtm-def"></div>
                                         <div class="fs-6 mb-2">
-                                            Project Complete<br>
-                                            <!-- <span *ngIf="data.oldValue !==''">From : {{data.oldValue}}</span>
-                                            <br> <span *ngIf="data.oldValue !==''; else newvalue">To :
-                                                {{data.NewValue}}</span> -->
-                                        Please accept new project                          
+                                           {{item.Value}}<br>
+                                        <ng-container *ngFor="let data of item.Old_Value">
+                                          <span *ngIf="data.name !=='' && data.name !==undefined">From : {{data.name}}</span>
+                                        </ng-container>
+                                        <ng-container *ngFor="let new_data of item.New_Value">
+                                            <br> <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined">To :
+                                                {{new_data.name}}</span>
+                                        </ng-container>   
+
                                         </div>
                                         <div class="d-flex align-items-center mt-1 fs-6">
                                             <div class="d-flex align-items-center flex-1">
@@ -9331,10 +9421,10 @@
                                                         class="ng-star-inserted"> -->
                                                         <div data-toggle="tooltip" data-placement="top" title=""
                                                             class="user-icon-round" style="width: 25px; height: 25px;">
-                                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">M</span>
+                                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{item.TM_DisplayName[0]}}</span>
                                                         </div>
                                                 </div>
-                                                <div class="text-muted ml-2 fs-7">Md Waseem Akram</div>
+                                                <div class="text-muted ml-2 fs-7">{{item.TM_DisplayName}}</div>
                                             </div>
                                             <div class="text-muted ml-2 fs-7 d-flex align-items-center">
                                                 <span class="svg-icns">
@@ -9346,7 +9436,7 @@
                                                         </path>
                                                     </svg>
                                                 </span>
-                                                <span>02-08-2024 </span>
+                                                <span>{{item.Modified_date | date : 'dd-MM-YYYY'}} </span>
                                                 <span class="svg-icns time-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18"
                                                         height="18">
@@ -9356,7 +9446,7 @@
                                                         </path>
                                                     </svg>
                                                 </span>
-                                                <span>12:51 PM</span>
+                                                <span>{{item.Modified_date | date : 'hh:mm a'}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -9433,7 +9523,7 @@
                     <div class="mb-2" id="div_endDate_new">
                             <label>End Date</label>
                             <div class="endtill-date">
-                                <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="_StartDate"
+                                <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="today"
                                         [(ngModel)]="_EndDate1"  placeholder="End Date"
                                         class="form-control" style="padding-left: 4rem !important;">
                                     <span class="endtill-date-icon">
@@ -9686,9 +9776,11 @@
                             </div>
                             
                         </div>
-                        <div class="date-menu" id="date-menu-1"   style=" min-width: 33rem; top: -340px; left: -8px;">
-                            <div class="date-menu-item">
-                                <div class="date-menu-close" (click)="date_menu_close('date-menu-1')">Close</div>
+                        <div class="date-menu" id="date-menu-1">
+                            <div class="date-menu-item p-2">
+                                <div class="date-menu-action">
+                                <div class="btn btn-close-secondary" (click)="date_menu_close('date-menu-1')">Close</div>
+                            </div>
                                 <div class="date-menu-calender">
                                     <mat-card class="demo-inline-calendar-card">
                                         <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
@@ -9725,9 +9817,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info btn-sm mr-2" (click)="submitEventToRepeat()">Submit</button>
-                    <button type="button" class="btn btn-info btn-sm mr-2" (click)="onCustomBtnClicked()" >Custom</button>
-                    <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="Close_Repeat_Meeting()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info btn-sm mr-2" (click)="submitEventToRepeat();date_menu_close()">Submit</button>
+                    <button type="button" class="btn btn-info btn-sm mr-2" (click)="onCustomBtnClicked();Close_Repeat_Meeting()" >Custom</button>
+                    <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="Close_Repeat_Meeting();date_menu_close()" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -9982,9 +10074,8 @@
 
 
          <div class="modal-footer">
-
             <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees();close_projectmodals()">Assign</button>
-            <button  type="button" class="btn btn-secondary Custom-button" (click)="GetProjectTypeList();close_projectmodals()">Custom</button>
+            <button  type="button" class="btn btn-add-primary" (click)="GetProjectTypeList();close_projectmodals()">Custom</button>
             <button type="button" class="btn btn-close-secondary" (click)="close_projectmodals()">Close</button>
 
         </div>
@@ -9994,7 +10085,58 @@
  <!-- Project Modal End -->
 
 
+   <!-- datemenu Modal Start -->
+   <div class="datemenu modal fade show" id="datemenu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="datemenuLabel" aria-hidden="true"  style="display: none">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="datemenuLabel">Select Date & Time</h5>
+        </div>
+        <div class="modal-body">
 
+                <div class="date-menu-item">
+                   
+
+                    <div class="date-menu-calender">
+                        <mat-card class="demo-inline-calendar-card">
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                          </mat-card>
+                    </div>
+                    <div class="date-menu-time">
+                        <div class="mb-2">
+                            <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                            <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                                    {{item}}</ng-option>
+                            </ng-select>
+                            <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                        </div>
+                        <div class="">
+                            <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                            <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                [(ngModel)]="Endtms">
+                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                    {{item1}}
+                                    ({{
+                                        Startts|timeDiff:item1
+                                    }})
+                                </ng-option>
+                            </ng-select>
+                            <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-add-primary" (click)="date_menu_modal_close()">Done</button>
+            <button type="button" class="btn btn-close-secondary" (click)="date_menu_modal_close()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- datemenu Modal End -->
 
 
 
