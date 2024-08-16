@@ -267,4 +267,10 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
   }
 
 
+  NewGetLeaveComments(obj:ApprovalDTO){
+     this.obj_approvalDTO.Emp_no=obj.Emp_no;
+     this.obj_approvalDTO.Request_type=obj.Request_type;
+     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetLeaveComments",this.obj_approvalDTO);
+  }
+
 }

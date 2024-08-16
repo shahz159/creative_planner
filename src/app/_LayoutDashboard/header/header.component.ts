@@ -10,27 +10,61 @@ import { AuthService } from 'src/app/_Services/auth.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ActivatedRoute } from '@angular/router';
 import { TimelineComponent } from '../timeline/timeline.component';
+import * as moment from 'moment';
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
+import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS,} from '@angular/material-moment-adapter';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+  providers:[]
+};
 
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
 export class HeaderComponent implements OnInit {
 
 
   constructor(public service: ProjectTypeService,private router: Router,
-
     private route: ActivatedRoute,
     private authService: AuthService,private notifyService: NotificationService,
-    public loadingBarServce:LoadingBarService) {
+    public loadingBarServce:LoadingBarService,
+    ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.notificationDTO = new NotificationActivityDTO();
+    this.aprvDtoObj=new ApprovalDTO();
    }
    loadingBar_state = this.loadingBarServce.useRef('http');
   notificationDTO: NotificationActivityDTO;
   ObjSubTaskDTO: SubTaskDTO;
+  aprvDtoObj:ApprovalDTO;
   _fullname: string;
   timelineList: any;
   timelineType: string;
@@ -78,6 +112,17 @@ export class HeaderComponent implements OnInit {
         animateFill: true,
         inertia: true,
       });
+
+
+      tippy('#applyfor-leave', {
+        content: "Apply leave",
+        arrow: true,
+        animation: 'scale-extreme',
+        theme: 'gradient',
+        animateFill: true,
+        inertia: true,
+      });
+
 
       this.newfeaturetippy=tippy('#streamfeature', {
         content: "New features",
@@ -183,21 +228,45 @@ export class HeaderComponent implements OnInit {
   }
   applyleave(){
     document.getElementById("apply-leave").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("leave-aprv-rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this.getLA_drpdwns();
   }
+  
   closeleave(){
     document.getElementById("apply-leave").classList.remove("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("leave-aprv-rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+
+
+// clear form inputs and set to default.
+    this.allLeavesTypes=[];
+    this.allCountriesList=[];
+    this.min_date=new Date();
+    this.max_date=undefined;
+    this.max_date2=undefined
+    this.invalidStartDate=false;
+    this.invalidEndDate=false;
+    this.notProvided=false;
+    
+    this.selectedLeaveType=undefined;
+    this.dayType='full';
+    this.tripType='local';
+    this.selectedCountry=undefined;
+    this.travelType='with family';
+    this.leaveStartsOn=undefined;
+    this.leaveEndsOn=undefined;
+    this.leaveDuration=0;
+    this.leave_remark=undefined;
+// clear form inputs and set to default.
+    console.log('closed closed....')
   }
   closeInfo() {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-
   }
 
   closeevearea2() {
@@ -249,7 +318,6 @@ export class HeaderComponent implements OnInit {
 
           });
       }
-
       else if (type == this.type2) {
         this.timelineType = type;
         this.timelineList = null;
@@ -517,5 +585,198 @@ export class HeaderComponent implements OnInit {
         myWindow.focus();
       }
 
+
+
+
+
+// leave application start
+allLeavesTypes:any=[];
+allCountriesList:any=[];
+min_date:Date=new Date();
+max_date:Date|undefined;
+max_date2:Date|undefined;
+invalidStartDate:boolean=false;
+invalidEndDate:boolean=false;
+notProvided:boolean=false;
+
+selectedLeaveType:number|undefined;
+dayType:'full'|'first half'|'second half'='full';
+tripType:'local'|'international'='local';
+selectedCountry:string|undefined;
+travelType:'with family'|'alone'='with family';
+leaveStartsOn:any;
+leaveEndsOn:any;
+leaveDuration:number=0;
+leave_remark:string|undefined;
+
+
+// validateInputDates(){
+//   if(this.leaveStartsOn&&this.leaveEndsOn&&this.selectedLeaveType){
+//     debugger
+//     const invalid_sd=this.leaveStartsOn<this.min_date||this.leaveEndsOn>this.max_date;
+//     this.invalidStartDate=invalid_sd;
+
+
+//     const invalid_ed=this.leaveEndsOn<this.leaveStartsOn;
+//     this.invalidEndDate=invalid_ed;
+
+    
+//     // const sd_invalid=this.leaveStartsOn<this.min_date;
+//     // this.invalidStartDate=sd_invalid;
+
+//     // const ed_invalid=this.leaveEndsOn>this.max_date;
+
+//     // this.invalidStartDate=true;
+//     // this.invalidEndDate=true;
+//   }
+// }
+
+validateInputDates(){
+   if(this.leaveStartsOn&&this.leaveEndsOn){   
+       this.invalidStartDate=this.leaveStartsOn.toDate()>this.leaveEndsOn.toDate();
+       this.invalidEndDate=this.leaveEndsOn.toDate()<this.leaveStartsOn.toDate();
+
+       if(this.selectedLeaveType){
+        this.invalidStartDate=this.leaveStartsOn.toDate()<this.min_date||this.leaveStartsOn.toDate()>this.max_date;
+       }
+   }
+}
+
+
+
+
+onDatesChanged(e:any){
+   
+   this.validateInputDates();
+   let duration=0;
+   if(this.leaveStartsOn&&this.leaveEndsOn){
+      duration=Math.abs(moment(this.leaveStartsOn).diff(moment(this.leaveEndsOn),'days'))+1;
+   }
+   this.leaveDuration=duration;
+} 
+
+
+onLeaveTypeChanged(lvtype:any){
+
+     switch(lvtype)
+     {
+         case 1:{
+          const d=new Date();
+          d.setMonth(d.getMonth()+3);
+          d.setHours(0,0,0,0);
+          this.min_date=d;
+
+          const d2=new Date();
+          d2.setMonth(d2.getMonth()+6);
+          d2.setHours(0,0,0,0);
+          this.max_date=d2;
+
+         };break; // annual leave
+         case 2:{
+            const d=new Date();
+            d.setDate(d.getDate()+7);
+            d.setHours(0,0,0,0);
+            this.min_date=d;  
+         };break; // Emergency leave
+         case 3:{
+           const d=new Date();
+           d.setDate(d.getDate()+7);
+           d.setHours(0,0,0,0);
+           this.min_date=d;
+
+           const d2=new Date();
+           d2.setMonth(d2.getMonth()+1);
+           d2.setHours(0,0,0,0);
+           this.max_date=d2;
+
+
+         };break; // casual leave
+         case 4:{
+          const d=new Date();
+          d.setDate(d.getDate()+7);
+          d.setHours(0,0,0,0);
+          this.min_date=d;
+
+         };break; // umrah leave
+         case 5:{
+          const d=new Date();
+          d.setDate(d.getDate()+7);
+          d.setHours(0,0,0,0);
+          this.min_date=d;
+
+         };break; // hajj leave
+         default:{ };break;
+     }
+     this.validateInputDates();
+
+}
+
+
+
+
+
+getLA_drpdwns(){
+    this.service.NewGetLeaveDetails(this.Current_user_ID).subscribe((res:any)=>{
+          console.log('leaves:',res);
+          if(res){
+            this.allLeavesTypes=JSON.parse(res[0].LeaveType_drp);
+            this.allCountriesList=JSON.parse(res[0].Countries);
+            console.log('lc:',this.allLeavesTypes,this.allCountriesList);
+          }
+    });
+}
+
+
+
+onLeaveSubmit(){
+
+  if(!(
+        this.selectedLeaveType&&
+        (this.leaveStartsOn&&this.invalidStartDate==false)&&
+        (this.leaveEndsOn&&this.invalidEndDate==false)&&
+        (this.tripType=='international'?this.selectedCountry:true)&&
+        (this.leave_remark&&this.leave_remark.trim())
+      )){
+     this.notProvided=true;
+     return;
+  }
+
+
+
+  this.aprvDtoObj.Emp_no=this.Current_user_ID;
+  this.aprvDtoObj.LeaveType=this.selectedLeaveType;
+  this.aprvDtoObj.TripType=this.tripType;
+  this.aprvDtoObj.Type=this.dayType;
+  this.aprvDtoObj.Travel=this.travelType;
+  this.aprvDtoObj.FromDate=this.leaveStartsOn.format('YYYY-MM-DD');
+  this.aprvDtoObj.ToDate=this.leaveEndsOn.format('YYYY-MM-DD');  
+  this.aprvDtoObj.LeaveDays=this.leaveDuration;
+  this.aprvDtoObj.Remarks=this.leave_remark;  
+  if(this.tripType=='local'){
+    this.aprvDtoObj.Country='Saudi Arabia';
+    this.aprvDtoObj.CountryId='SA';
+  }
+  else if(this.tripType=='international'){
+    this.aprvDtoObj.Country=this.allCountriesList.find((item:any)=>item.Initials==this.selectedCountry).CountryName;
+    this.aprvDtoObj.CountryId=this.selectedCountry;
+  }
+
+  this.service.NewNewInsertEmployeeLeave(this.aprvDtoObj).subscribe((res:any)=>{
+       console.log('leave submit:',res);
+        if(res){
+          this.notifyService.showSuccess(res.message,'Success');   
+          this.closeleave();   
+        }
+  });
+}
+
+
+
+
+
+
+
+
+// leave application end
 
 }

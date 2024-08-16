@@ -313,7 +313,7 @@
             </span>
         </div>
         <div class="kt-header__topbar-item">
-            <span
+            <span id="applyfor-leave"
                 class="kt-header__topbar-icon kt-header__topbar-icon--success mr-2"  (click)="applyleave()">
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon"  fill="currentColor" style="width: 23px;height: 23px;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M352 318.144c125.44 0 228.864 120.064 110.08 344.512-39.04 73.728 43.328 91.264 129.92 111.232 66.56 15.36 78.016 46.016 79.744 97.088l0.256 27.264-0.128 59.904H32.128v-79.168l0.64-17.792c3.008-45.248 17.024-72.96 79.232-87.296l35.968-8.384 17.344-4.48c62.272-16.768 108.16-40.064 76.608-98.368-119.104-219.84-17.792-344.512 110.08-344.512z m0 64c-97.6 0-139.2 92.416-53.76 250.048 33.984 62.848 18.304 123.136-37.12 158.72-25.152 16.128-49.408 24.832-97.28 36.608l-51.584 12.096c-12.672 3.392-15.616 7.36-16.192 26.496l-0.064 28.032h511.936l0.128-21.504c-0.192-24.832-2.368-29.312-16.256-33.024l-25.088-5.824c-65.984-15.296-96-24.576-125.376-44.032-53.888-35.712-68.608-95.104-35.84-157.056 84.992-160.512 43.648-250.56-53.504-250.56z m289.408-350.72a384 384 0 0 1 83.2 748.544l-15.232 4.48-16.96-61.696a320.128 320.128 0 1 0-344.576-495.36l-8.256 12.16-53.632-35.008A383.872 383.872 0 0 1 641.408 31.424zM640 222.144v187.008l134.272 77.568-32 55.424L576 446.144v-224h64z"></path></svg> -->
             <svg  fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"  version="1.1" x="0px" y="0px" viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve" style="width: 26px; height: 24px;">
@@ -868,6 +868,7 @@
     </div>
 </div>
 
+<div id="leave-aprv-rightbar-overlay" (click)="closeleave()"></div>
 <!-- Apply Leave Start -->
 <div id="apply-leave" class="apply-leave sideInfobar animate-right offcanvas">
     <div class="kt-portlet mb-0">
@@ -889,32 +890,37 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="leavetype">LEAVE TYPE</label>
-                        <select class="selectpicker form-control" title="Select leave type">
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
+                      <div class="form-group">
+                        <label for="leavetype">Leave Type<span style="color:red">*</span></label>
+                        <ng-select [ngClass]="{'error-vd':(!selectedLeaveType&&notProvided)}" placeholder="Select leave type" [(ngModel)]="selectedLeaveType" class="selectpicker form-control" title="Select leave type"  (change)="onLeaveTypeChanged($event)">
+                            <ng-option *ngFor="let item of allLeavesTypes" [value]="item.LeaveId">{{item.LeaveType}}</ng-option>
+                        </ng-select>
+                        <span *ngIf="selectedLeaveType==1">Max 6 months and Min 3 months before</span>
+                        <span *ngIf="selectedLeaveType==2">Min 1 week before</span>
+                        <span *ngIf="selectedLeaveType==3">Max 1 month and Min 1 week before</span>
+                        <span *ngIf="selectedLeaveType==4">Min 1 week before and only 1 day on saturday per year</span>
+                        <span *ngIf="selectedLeaveType==5">Min 1 week before</span>
+                        <span *ngIf="!selectedLeaveType&&notProvided" style="color:red">please select leave type.</span>
                       </div>
                 </div>
+
                 <div class="col-md-6">
-                    <label for="daytype">DAY TYPE</label>
+                    <label for="daytype">Day Type</label>
                     <div class="radioleavetype">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="daytyperadio" id="Full" value="option1" checked>
+                            <input class="form-check-input" type="radio" name="daytyperadio" id="Full" value="FULL" [checked]="dayType=='full'" (click)=" dayType='full'; " />
                             <label class="form-check-label" for="Full">
                               Full
                             </label>
                           </div>
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="daytyperadio" id="firsthalf" value="option2">
+                            <input class="form-check-input" type="radio" name="daytyperadio" id="firsthalf" value="FIRST_HALF"  [checked]="dayType=='first half'" (click)=" dayType='first half'; "/>
                             <label class="form-check-label" for="firsthalf">
                               First half
                             </label>
                           </div>
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="daytyperadio" id="secondhalf" value="option3">
+                            <input class="form-check-input" type="radio" name="daytyperadio" id="secondhalf" value="SECOND_HALF" [checked]="dayType=='second half'" (click)=" dayType='second half'; "/>
                             <label class="form-check-label" for="secondhalf">
                               Second half
                             </label>
@@ -924,16 +930,16 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="daytype">TRIP TYPE</label>
+                    <label for="daytype">Trip type</label>
                     <div class="radioleavetype">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="triptyperadio" id="local" value="option1" checked>
+                            <input class="form-check-input" type="radio" name="triptyperadio" id="local" value="LOCAL" [checked]="tripType=='local'"  (click)=" tripType='local'; "  />
                             <label class="form-check-label" for="local">
                               Local
                             </label>
                           </div>
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="triptyperadio" id="international" value="option2">
+                            <input class="form-check-input" type="radio" name="triptyperadio" id="international" value="INTERNATIONAL" [checked]="tripType=='international'" (click)=" tripType='international'; "  />
                             <label class="form-check-label" for="international">
                               International
                             </label>
@@ -941,16 +947,16 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="daytype">TRAVEL TYPE</label>
+                    <label for="daytype">Travel type</label>
                     <div class="radioleavetype">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="traveltyperadio" id="withfamily" value="option1" checked>
+                            <input class="form-check-input" type="radio" name="traveltyperadio" id="withfamily" value="WITH_FAMILY" [checked]="travelType=='with family'" (click)="travelType='with family'; " />
                             <label class="form-check-label" for="withfamily">
                               With family
                             </label>
                           </div>
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="traveltyperadio" id="alone" value="option2">
+                            <input class="form-check-input" type="radio" name="traveltyperadio" id="alone" value="ALONE" [checked]="travelType=='alone'" (click)="travelType='alone';"  />
                             <label class="form-check-label" for="alone">
                               Alone
                             </label>
@@ -958,38 +964,53 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="tripType=='international'">
                 <div class="col-md-6">
-                    <label for="to">From</label>
-                    <div class="leave-date">
-                        <input [matDatepicker]="frompicker"   placeholder="Start Date"
+                    <div class="form-group">
+                        <label for="leavetype">Select country</label>
+                        <ng-select [ngClass]="{'error-vd':(!selectedCountry&&notProvided)}" placeholder="Select country" class="selectpicker form-control" title="Select leave type" [(ngModel)]="selectedCountry">
+                            <ng-option *ngFor="let item of allCountriesList" [value]="item.Initials">{{item.CountryName}}</ng-option>
+                        </ng-select>
+                        <span *ngIf="!selectedCountry&&notProvided" style="color:red">please provide country name.</span>
+                      </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="to">From<span style="color:red;">*</span></label>
+                    <div class="leave-date mb-0">
+                        <input [ngClass]="{'error-border':((!leaveStartsOn&&notProvided)||invalidStartDate)}" [min]="min_date"  [max]="max_date"  (dateChange)="onDatesChanged($event)"  [(ngModel)]="leaveStartsOn" [matDatepicker]="frompicker"  placeholder="Start Date" (click)="frompicker.open()"
                                 class="form-control">
                             <span class="leave-date-icon">
                                 <mat-datepicker-toggle matSuffix [for]="frompicker"></mat-datepicker-toggle>
                                 <mat-datepicker #frompicker></mat-datepicker>
                             </span>
                     </div>
+                    <span *ngIf="leaveStartsOn&&invalidStartDate" style="color:red">invalid start date.</span>   
+                    <span *ngIf="!leaveStartsOn&&notProvided" style="color:red">start date required.</span>
                 </div>
-                <div class="col-md-6">
-                    <label for="to">TO</label>
-                    <div class="leave-date">
-                        <input [matDatepicker]="topicker"   placeholder="End Date"
+                <div class="col-md-6 mb-3">
+                    <label for="to">To<span style="color:red">*</span></label>
+                    <div class="leave-date mb-0">
+                        <input [ngClass]="{'error-border':((!leaveEndsOn&&notProvided)||invalidEndDate)}" [min]="leaveStartsOn" (dateChange)="onDatesChanged($event)"  [(ngModel)]="leaveEndsOn"  [matDatepicker]="topicker"   placeholder="End Date" (click)="topicker.open()"
                                 class="form-control">
                             <span class="leave-date-icon">
                                 <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
                                 <mat-datepicker #topicker></mat-datepicker>
                             </span>
                     </div>
+                    <span *ngIf="leaveEndsOn&&invalidEndDate" style="color:red;">invalid end date.</span>    
+                    <span *ngIf="!leaveEndsOn&&notProvided" style="color:red">end date required.</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group ">
                         <label for="daysapplied">DAYS APPLIED</label>
-                        <input class="form-control" type="text" value="2" readonly>
+                        <input class="form-control days-applied-box" type="text" value="2" readonly [value]="leaveDuration" />
                       </div>
                 </div>
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="form-group">
                         <label for="status">STATUS</label>
                         <select class="selectpicker form-control" title="Select status type">
@@ -998,20 +1019,21 @@
                             <option value="3">Three</option>
                         </select>
                       </div>
-                </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="Remarks">Remarks</label>
-                        <textarea class="form-control" id="Remarks" rows="3" placeholder="Type here reason for leave...."></textarea>
-                      </div>
+                        <label for="Remarks">Remarks<span style="color:red">*</span></label>
+                        <textarea [ngClass]="{'error-border':(!leave_remark&&notProvided)}" [(ngModel)]="leave_remark" class="form-control" id="Remarks" rows="3" placeholder="Type here reason for leave...."></textarea>
+                        <span *ngIf="(!leave_remark&&notProvided)" style="color:red">remarks required.</span>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="kt-portlet__foot py-3">
             <div class="form-group mb-0">
-                <button type="submit" class="btn btn-info btn-sm mr-2">Apply Leave</button>
+                <button type="submit" class="btn btn-info btn-sm mr-2" (click)="onLeaveSubmit()">Apply Leave</button>
                 <button type="cancel" class="btn btn-secondary btn-sm" (click)="closeleave()">Cancel</button>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SortDirective } from '../projects-summary/sort.directive';
 import { ProjectsSummaryModule } from '../projects-summary/projects-summary.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -17,7 +18,8 @@ import { ProjectsSummaryModule } from '../projects-summary/projects-summary.modu
     FormsModule,ReactiveFormsModule,
     NotificationRoutingModule,
     Ng2SearchPipeModule,
-    ProjectsSummaryModule
+    ProjectsSummaryModule,
+    MatDatepickerModule
   ],
   exports:[
     NotificationComponent

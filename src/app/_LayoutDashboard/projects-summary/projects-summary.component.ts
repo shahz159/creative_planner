@@ -720,7 +720,7 @@ this.userFound = true
 
 
   getDropdownsDataFromDB1(){
-
+debugger
 
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
       this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -729,14 +729,15 @@ this.userFound = true
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
       this._objDropdownDTO.ActiveStatus = "Active";
-      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{
-          
+
+      this.service[this.Type=='RACIS Projects'?'GetDropDownsOwnerData_ForSummary':this.Type=='ALL Projects'?'GetDropDownsData_ForSummary':''](this._objDropdownDTO).subscribe((data:any)=>{
+          debugger
           this.EmpCountInFilter=this.emplyToselect.length==0?JSON.parse(data[0]['Emp_Json']):this.EmpCountInFilter;
           this.TypeContInFilter=this.projtypeToselect.length==0?JSON.parse(data[0]['ProjectType_Json']):this.TypeContInFilter;
           this.CompanyCountFilter=this.comToselect.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
           this.StatusCountFilter=this.enterStatus.length==0?JSON.parse(data[0]['Status_Json']):this.StatusCountFilter;
 
-       
+        
 
         console.log( JSON.parse(data[0]['Emp_Json']),'  this.EmpCountInFilter  this.EmpCountInFilter')
         console.log(JSON.parse(data[0]['ProjectType_Json']),' this.TypeContInFilter this.TypeContInFilter')

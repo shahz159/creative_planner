@@ -4614,7 +4614,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
-  closeInfo() {
+  closeInfo() {  
     // document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
@@ -4622,8 +4622,6 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-
-
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -6961,9 +6959,12 @@ getMeetingApprovals(){
     this.multiapproval_json=JSON.parse(multiapproval_json);
     this.totalCountOfList=this.multiapproval_json.length;
     if(this.totalCountOfList==0){
-      document.getElementById("requestlist").classList.remove("show");
-      document.getElementById("cal-main").classList.remove("col-lg-9");
-      document.getElementById("cal-main").classList.add("col-lg-12");
+      // document.getElementById("requestlist").classList.remove("show");
+      $('#requestlist').removeClass('show');
+      $('#cal-main').removeClass('col-lg-9');
+      $('#cal-main').removeClass('col-lg-12');
+      // document.getElementById("cal-main").classList.remove("col-lg-9");
+      // document.getElementById("cal-main").classList.add("col-lg-12");
     }
     //  console.log(this.multiapproval_json,'appraval data in the dashboard')
   })

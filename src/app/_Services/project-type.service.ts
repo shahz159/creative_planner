@@ -24,6 +24,7 @@ import { CategoryDTO } from '../_Models/category-dto';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { AuthenticationDTO } from '../_Models/authentication-dto';
+import { ApprovalDTO } from '../_Models/approval-dto';
 //import { BarChartComponent } from '../_Views/bar-chart/bar-chart.component';
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,7 @@ export class ProjectTypeService {
   _objDARAchievement: DarDTO;
   _ObjAssigntaskDTO: AssigntaskDTO;
   _userobj: AuthenticationDTO;
+  aprvDtoObj:ApprovalDTO;
 
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
     this.ObjprojectTypeDto = new ProjecttypeDTO;
@@ -81,6 +83,7 @@ export class ProjectTypeService {
     this.ObjDto = new ProjectDetailsDTO();
     this._ObjProjectDTO = new ProjectDetailsDTO();
     this._userobj = new AuthenticationDTO();
+    this.aprvDtoObj= new ApprovalDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
 
@@ -1018,5 +1021,34 @@ export class ProjectTypeService {
     this.ObjDto.message = url;
     return this.http.post(this.rootUrl + 'Notification/NewGetPathFileExtention', this.ObjDto);
   }
+
+
+
+  NewGetLeaveDetails(emp_no:string){
+        this.aprvDtoObj.Emp_no=emp_no;
+        return this.http.post(this.rootUrl+'ApprovalAPI/NewGetLeaveDetails',this.aprvDtoObj);
+  }
+
+
+  NewNewInsertEmployeeLeave(obj){
+     this.aprvDtoObj.Emp_no=obj.Emp_no;
+     this.aprvDtoObj.LeaveType=obj.LeaveType;
+     this.aprvDtoObj.TripType=obj.TripType;
+     this.aprvDtoObj.Type=obj.Type;
+     this.aprvDtoObj.Travel=obj.Travel;
+     this.aprvDtoObj.FromDate=obj.FromDate;  
+     this.aprvDtoObj.ToDate=obj.ToDate;      
+     this.aprvDtoObj.LeaveDays=obj.LeaveDays;
+     this.aprvDtoObj.Remarks=obj.Remarks;
+     this.aprvDtoObj.Country=obj.Country;
+     this.aprvDtoObj.CountryId=obj.CountryId;    
+     return this.http.post(this.rootUrl+'ApprovalAPI/NewNewInsertEmployeeLeave',this.aprvDtoObj);
+  }
+
+
+
+
+
+
 
 }
