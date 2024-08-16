@@ -499,8 +499,8 @@
                                                     <path
                                                       d="M427.2 203c0-112.1-90.9-203-203-203C112.1-.2 21.2 90.6 21 202.6A202.9 202.9 0 0 0 161.5 396v101.7a14.3 14.3 0 0 0 14.3 14.3h96.4a14.3 14.3 0 0 0 14.3-14.3V396.1A203.2 203.2 0 0 0 427.2 203zm-271.6 0c0-90.8 137.3-90.8 137.3 0-.1 89.9-137.3 91-137.3 0z" fill="#3688FF"  />
                                                   </svg>
-                                                </span><span class="kt-act-ic-info" title="Source">{{record.source}} <span *ngIf="record.sourcename"
-                                                   title="Source name"> / {{ record.sourcename}} </span>
+                                                </span><span class="kt-act-ic-info "  [ngClass]="{'cursor-pointer': record.source!== 'Runway','pro-link':record.source!== 'Runway'}"   title="Source">{{record.source}} <span  *ngIf="record.sourcename" (click)="newDetails(record.Code,record.source)"
+                                                   title="Source name">    / {{ record.sourcename}} </span>
                                                 </span></div>
                                         </div>
                                       </div>
@@ -1259,7 +1259,13 @@
                                       </div>
                                       <div class="kt-p-action-Status">
                                         <span class="Not_Started_color">Not Started</span>
-
+                                        <span class="adjust_delete" (click)="deletingDraftactions(i)"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                          aria-hidden="true" role="img" font-size="1.5rem" width="1em" height="1em"
+                                          viewBox="0 0 24 24" class="iconify iconify--mdi">
+                                          <path _ngcontent-otf-c186="" fill="#f33535"
+                                            d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                                          </path>
+                                        </svg></span>
                                         <!-- <span [ngSwitch]="action.Status">
                                           <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
                                           <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay
@@ -1273,6 +1279,7 @@
                                             class="Status-In-progress">{{action&&action.Status}}</span>
                                         </span> -->
                                       </div>
+
                                     </div>
                                   </div>
                                 </div>
@@ -1980,7 +1987,7 @@
                               <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                 <div class="PA_title w-100">
                                   <span class="label">Project</span>
-                                  <span class="PA_Edit_btn m-2  curser-pointer  " (click)="Project_details_edit();updateCharacterCount_Desc()">
+                                  <span class="PA_Edit_btn m-2  curser-pointer  " (click)="Project_details_edit();updateCharacterCount_Desc();alertMaxAllocation();">
                                     <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="15"
                                       height="15">
                                       <path
@@ -2791,20 +2798,19 @@
                               [(ngModel)]="Owner_Name" readonly />
                       </ng-template> -->
                       <ng-container
-                      *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
-                      && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
+                    >
                       <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
-                              [disabled]="item.Emp_No==selectedOwnResp">
-                              {{item.RACIS}}
+                          <ng-option [value]="item.EmpNo" *ngFor="let item of owner_json"
+                             >
+                              {{item.EmpName}}
                           </ng-option>
                       </ng-select>
                   </ng-container>
-                  <ng-template #ownwerEdit>
-                      <input type="text" (click)="displaymessagemain('Owner')" class="form-control readonly"
-                          [(ngModel)]="selectedOwner" readonly />
+                  <!-- <ng-template #ownwerEdit>
+                      <input type="text"  class="form-control "
+                          [(ngModel)]="selectedOwner"  />
 
-                  </ng-template>
+                  </ng-template> -->
 
                       </div>
                   </div>
@@ -2900,8 +2906,8 @@
                       <div class="input-icon Sub_In_ed">
                           <!-- <input type="text" placeholder="SAR 00.00"  class="form-control readonly"
                           readonly  /> -->
-                          <input type="text" class="form-control readonly" placeholder="SAR 00.00"
-                          value="{{projectInfo && projectInfo.Project_Cost | currency:'SAR '}}" (click)="displaymessagemain('Cost')" readonly />
+                          <input type="text" class="form-control " placeholder="SAR 00.00"
+                          value="{{projectInfo && projectInfo.Project_Cost | currency:'SAR '}}"   />
                       </div>
 
                   </div>
@@ -2980,7 +2986,7 @@
                           <div class="kt-info-lable-v">End date</div>
                               <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
                                 <input class="form-control curser-pointer" [(ngModel)]="End_Date"
-                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate()"
+                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate();updateDuration()"
                                     (click)="strtEditsPicker.open();"
                                      placeholder="Select end date"
                                     class="form-control" name="date" />
@@ -2999,8 +3005,8 @@
                       <div class="kt-info-lable-v"> Duration</div>
                   <div class="input-icon Sub_In_ed"
                         *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                        <input type="text" class="form-control readonly" (click)="displaymessagemain('Duration')" value="{{projectInfo.Duration +1}} days "
-                            placeholder="Enter duration" readonly />
+                        <input type="text" class="form-control "  value="{{projectInfo.Duration +1}} days "
+                            placeholder="Enter duration"  />
 
                  </div>
 
@@ -3018,7 +3024,7 @@
                       <div class="kt-info-lable-v"> Allocated hours
                           <div class="input-icon Sub_In_ed" >
                               <input    (input)="validateInput()"
-                              (keypress)="restrictToNumbers($event)" (click)="displaymessagemain('Allocated hour')"  class="form-control readonly" [(ngModel)]="Allocated" pattern="[0-9]*"    min="0" readonly/>
+                              (keypress)="restrictToNumbers($event)"   class="form-control " [(ngModel)]="Allocated" pattern="[0-9]*"    min="0" />
                           </div>
                           <span *ngIf=" Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
                           </span>
@@ -3157,7 +3163,7 @@
                          Owner
                     </div>
                     <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
-                         <input type="text" (click)="editable('Owner')" class="form-control readonly" [(ngModel)]="selectedOwner" readonly />
+                         <input type="text"  class="form-control " [(ngModel)]="selectedOwner"  />
                     </div>
                 </div>
             </div>
@@ -3225,8 +3231,8 @@
                                 </path>
                             </svg></span> Cost </div>
                     <div class="input-icon Sub_In_ed">
-                        <input *ngIf="PrjActionsInfo&&PrjActionsInfo[currentActionView]"  type="text"  (click)="editable('cost')" class="form-control readonly" placeholder="SAR 00.00"
-                        value="{{PrjActionsInfo[currentActionView].Project_Cost | currency:'SAR '}}" readonly />
+                        <input *ngIf="PrjActionsInfo&&PrjActionsInfo[currentActionView]"  type="text"   class="form-control " placeholder="SAR 00.00"
+                        value="{{PrjActionsInfo[currentActionView].Project_Cost | currency:'SAR '}}"  />
                     </div>
                 </div>
             </div>
@@ -3282,7 +3288,7 @@
                     <div class="kt-info-lable-v"> Start date</div>
                         <div class="date-border d-flex" [ngClass]="{'error-date':!Start_Date&&notProvided}">
                           <input type="text" class="form-control cursor-pointer"
-                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null"/>
+                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;this.End_Date=null"/>
                           <div class="input-group-text p-0">
                             <mat-datepicker-toggle matSuffix [for]="ActionstartDatepicker">
                             </mat-datepicker-toggle>
@@ -3299,7 +3305,7 @@
                     <div class="form-group mb-0">
                         <div class="kt-info-lable-v">End date</div>
                             <div class="date-border d-flex" [ngClass]="{'error-date':!End_Date&&notProvided}"  >
-                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="check_Enddate()"
+                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="check_Enddate();ActionupdateDuration();this.Allocated = null"
                                   [min]="Start_Date"   [matDatepicker]="ActionEnd_Datepicker"
 
                                   (click)="ActionEnd_Datepicker.open();"   placeholder="Select end date"
@@ -3318,8 +3324,8 @@
                 <div class="form-group mb-2 Ic_ed">
                     <div class="kt-info-lable-v"> Duration</div>
                     <div class="input-icon Sub_In_ed">
-                          <input type="text" class="form-control readonly" (click)="editable('duration')"  value="{{ActionDuration +1}} days "
-                              placeholder="Select duration" readonly />
+                          <input type="text" class="form-control "   value="{{ActionDuration +1}} days "
+                              placeholder="Select duration"  />
                     </div>
                   </div>
                 </div>
@@ -3329,9 +3335,9 @@
                     <div class="kt-info-lable-v"> Allocated hours
 
                         <div class="input-icon Sub_In_ed">
-                          <input   class="form-control readonly" placeholder="Enter allocated hour"
+                          <input   class="form-control " placeholder="Enter allocated hour"
                             [(ngModel)]="Allocated" pattern="[0-9]*" (input)="validateInput()"
-                            (keypress)="restrictToNumbers($event)"  (click)="editable('Allocated')"    readonly
+                            (keypress)="restrictToNumbers($event)"   (click)="alertMaxAllocation()"
                                />
                               <span *ngIf=" Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
                               </span>
@@ -3339,7 +3345,11 @@
                               hours. Please enter the hours less than or equal to <b>{{maxactAllocation}}</b> hours!</span>
 
                             <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
-
+                            <span *ngIf="Allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
+                            <span *ngIf="Allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+                            <span *ngIf="!Allocated" style="color:red">Allocated hours required. Hours should not be in decimal </span>
+                            <span *ngIf="(Allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
+                            <span *ngIf="this.Start_Date == null || this.End_Date == null" >{{ _message}} </span>
                       </div>
 
 

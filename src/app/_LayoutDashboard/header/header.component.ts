@@ -208,7 +208,6 @@ export class HeaderComponent implements OnInit {
   }
 
   timelineLog(type) {
-    debugger
     this.showtimeline = true;
     if (this.selectedSort == 'custom') {
       this.customTimeline();
@@ -230,7 +229,7 @@ export class HeaderComponent implements OnInit {
             this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
             console.log( this.timelineList, "mytimeline")
             this.timelineDuration = (data[0]['TotalTime']);
-            if (this.timelineList.length == 0) {
+            if (this.timelineList.length <0) {
               this.showtimeline = false;
               this.timelineDuration = 0;
             }
@@ -262,10 +261,11 @@ export class HeaderComponent implements OnInit {
           (data => {
             this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
             console.log( this.timelineList, "RACIStimeline")
-            if (this.timelineList.length == 0) {
+                if (this.timelineList&&this.timelineList.length < 0) {
               this.showtimeline = false;
               this.timelineDuration = 0;
             }
+
             const hrstippy = document.getElementById('hrs-tippy');
             tippy('.tippy', {
               content: hrstippy.innerHTML,
@@ -277,7 +277,9 @@ export class HeaderComponent implements OnInit {
               inertia: true,
               placement: 'top'
             });
+
           });
+
         this.service._GetTimelineDurationforRACIS(this.ObjSubTaskDTO).subscribe
           (data => {
             this.timelineDuration = (data[0]['TotalTime']);
@@ -309,7 +311,7 @@ export class HeaderComponent implements OnInit {
         (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration = (data[0]['TotalTime']);
-          if (this.timelineList.length == 0) {
+          if (this.timelineList.length === 0) {
             this.showtimeline = false;
             this.timelineDuration = 0;
           }
@@ -342,7 +344,7 @@ export class HeaderComponent implements OnInit {
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
         (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-          if (this.timelineList.length == 0) {
+          if (this.timelineList.length === 0) {
             this.showtimeline = false;
             this.timelineDuration = 0;
           }
@@ -382,8 +384,9 @@ export class HeaderComponent implements OnInit {
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
         (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
+          console.log(this.timelineList,'testing timeline')
           this.timelineDuration = (data[0]['TotalTime']);
-          if (this.timelineList.length == 0) {
+          if (this.timelineList.length === 0) {
             this.showtimeline = false;
             this.timelineDuration = 0;
           }
@@ -416,7 +419,8 @@ export class HeaderComponent implements OnInit {
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
         (data => {
           this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
-          if (this.timelineList.length == 0) {
+          console.log(this.timelineList,'this.timelinelist racis checking')
+          if (this.timelineList.length === 0) {
             this.showtimeline = false;
             this.timelineDuration = 0;
           }

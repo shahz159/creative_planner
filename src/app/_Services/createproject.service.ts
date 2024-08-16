@@ -10,9 +10,9 @@ import { ProjectDetailsDTO } from '../_Models/project-details-dto';
 export class CreateprojectService {
   readonly rootUrl = this.commonUrl.apiurl;
   ObjSubTaskDTO: SubTaskDTO;
-  constructor(private http:HttpClient,private commonUrl: ApiurlService) { 
+  constructor(private http:HttpClient,private commonUrl: ApiurlService) {
     this.ObjSubTaskDTO=new SubTaskDTO();
-  } 
+  }
   NewGetProjectCreationDetails(){
      this.ObjSubTaskDTO.Emp_No=localStorage.getItem('EmpNo');
      return this.http.post(this.rootUrl + "Projects/NewGetProjectCreationDetails",this.ObjSubTaskDTO);
@@ -50,7 +50,11 @@ export class CreateprojectService {
   }
 
 
-  GetCPProjectCost(prjDTO:ProjectDetailsDTO){ 
+
+
+
+
+  GetCPProjectCost(prjDTO:ProjectDetailsDTO){
       return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',prjDTO);
   }
 

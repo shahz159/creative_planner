@@ -8,6 +8,7 @@ export class SubTaskDTO {
   portfolio_id:any;
   End_Date: Date;
   Modified_DT: Date;
+  message:any
   SubProject_DeadLine:Date;
   SubProject_Status :string;
   Project_Cost:number;

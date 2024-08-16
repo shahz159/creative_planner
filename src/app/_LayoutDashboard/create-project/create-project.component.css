@@ -2779,3 +2779,20 @@ color: #2786fb;
 }
 
 /*new details page loading circle end*/
+.adjust_delete{
+  position: absolute;
+  top: 31%;
+  right: 9%;
+  border: 1px solid #ffb1b9;
+  border-radius: 5px;
+  background-color: #ffe4e4;
+  color: #f33535;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pro-link{
+  color: #5867dd !important;
+}

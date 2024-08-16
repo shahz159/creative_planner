@@ -20,6 +20,14 @@ export class ProjectMoreDetailsService {
       return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
   }
 
+
+  NewDeleteDraftAction(projectcode:string){
+    this.ObjSubTaskDTO.Project_Code = projectcode
+    this.ObjSubTaskDTO.Emp_No = localStorage.getItem('EmpNo')
+    return this.http.post(this.rootUrl+'Projects/NewDeleteDraftAction',this.ObjSubTaskDTO);
+  }
+
+
   GetActionDeadlineList(projectcode:string){
     this.ObjSubTaskDTO.Project_Code=projectcode;
     return this.http.post(this.rootUrl+'TestAPI/NewGetActionDeadlineList',this.ObjSubTaskDTO);
