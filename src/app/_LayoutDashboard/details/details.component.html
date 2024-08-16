@@ -2795,7 +2795,9 @@
                                                 </fieldset>
                                             </div>
                                             <div class="meeting-attendance">
-                                                <div class="meeting-attendance-item meeting-attendance-item-hover curser-pointer"  data-toggle="modal" data-target="#actns-graphmodal"  (click)="filterActionsOnGantt('All')">
+                                                <div class="meeting-attendance-item "    [ngClass]="{'meeting-attendance-item-hover curser-pointer':projectActionInfo&&projectActionInfo.length>0}"  
+                                                [attr.data-toggle]="(projectActionInfo&&projectActionInfo.length>0)?'modal':''"
+                                                [attr.data-target]="(projectActionInfo&&projectActionInfo.length>0)?'#actns-graphmodal':''"  (click)="(projectActionInfo&&projectActionInfo.length>0)?filterActionsOnGantt('All'):''">
                                                     <div class="meeting-attendance-count">{{projectActionInfo?projectActionInfo.length:0}}</div>
                                                     <div class="meeting-attendance-title">Actions</div>
                                                 </div>
