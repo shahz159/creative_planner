@@ -1048,7 +1048,17 @@ export class ProjectTypeService {
 
 
 
+  GetTimelineSubmissionStatus(empno:string){
+       this.ObjSubTaskDTO.Emp_No=empno;
+       return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineSubmissionStatus',this.ObjSubTaskDTO);
+  }
 
+
+  NewInsertTimelineReport(empno:string,submDate:string){
+    this.ObjSubTaskDTO.Emp_No=empno;
+    this.ObjSubTaskDTO.submissionDate=submDate;
+    return this.http.post(this.rootUrl+'ApprovalAPI/NewInsertTimelineReport',this.ObjSubTaskDTO);
+  }
 
 
 }

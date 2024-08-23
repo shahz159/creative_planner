@@ -887,15 +887,6 @@ tr.action-row:hover {
     color: white;
 }
 
-/* .timeline:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 44px;
-    width: 3px;
-    height: 26%;
-    background: #c9c9c9;
-  } */
 .timeline .timeline-container {
     position: relative;
     margin-bottom: 16px

@@ -1040,8 +1040,8 @@ textarea.form-control {
   display: inline-block;
   padding: 0px 5px;
   line-height: 2;
-
-  border-radius: 17px;
+  border-bottom:1px dashed #ccc;
+  /* border-radius: 17px; */
 }
 .previous-comments li a:hover {
   background-color: #ededed;
@@ -1303,4 +1303,12 @@ span.count {
 }
 .previous-comments .prvcmt-chip:active a{
   background-color: #c7c7c7;
+}
+
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+  border: 1px solid #F44336 !important;
 }

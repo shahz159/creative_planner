@@ -135,7 +135,6 @@ export class TimelineComponent implements OnInit {
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
     // this.french();
-
   }
 
 
@@ -171,6 +170,10 @@ export class TimelineComponent implements OnInit {
           this.timelineDuration=0;
         }
 
+        if(this.sortType==this.sort1){
+        this.addStatusIntoDarArr();
+        }
+       
       });
 
 // by default date
@@ -207,13 +210,12 @@ export class TimelineComponent implements OnInit {
         this.timelineDuration=(data[0]['TotalTime']);
       });
 
-
+       
   }
 
 
   activeemployees:boolean = false;
   sortTimeline(sort){
-    debugger
     this.edited = false
     this.sortType=sort;
 
@@ -241,7 +243,10 @@ export class TimelineComponent implements OnInit {
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList;
+          this.darArray=this.timelineList; 
+          if(this.sortType==this.sort1){
+            this.addStatusIntoDarArr();
+          }
           console.log( this.darArray,'project dar array')
           this._CurrentpageRecords=this.timelineList.length;
           if(this.timelineList.length == 0){
@@ -290,6 +295,10 @@ debugger
         if (this.timelineList) {
           this._CurrentpageRecords = this.timelineList.length;
         }
+        if(this.sortType==this.sort1){
+          this.addStatusIntoDarArr();
+        }
+
       });
   }
 
@@ -895,6 +904,117 @@ previous_filter() {
 // hideloadmore(){
 //   document.getElementById('loadmore').classList.add('d-none')
 // }
+
+
+
+/* timeline submit start */
+
+
+
+
+
+
+
+
+
+submitTL(submDate:string)
+{
+
+  Swal.fire({
+    title: "Timeline Submit",
+    text: `Are you sure to submit the timeline of ${submDate}`,
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  })
+    .then((option) => {
+      if (option.isConfirmed) {  debugger
+         const empno=this.Current_user_ID;
+         const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
+         this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
+               console.log(res);
+
+          if(res&&res.message){    
+               if(res.message=='1'){
+                    Swal.fire(
+                      'Timeline Submitted successfully.',
+                      `date : ${submDate}`,
+                      'success'
+                    );
+                   this.timelineLog(this.type1);  
+                    // rebind
+               }
+               else if(res.message=='2'||res.message!='2'){
+                Swal.fire(
+                  'Failed to submit timeline.',
+                  `date : ${submDate}`,
+                  'error'
+                );
+               }
+          }
+          else{
+            Swal.fire({
+              icon: 'error',
+              title: 'Something went wrong!',
+              text: 'An issue occurred while processing your request. Please review the timeline before try again.',
+            });
+          }       
+
+         });
+    
+      }
+      else {
+        Swal.fire(
+          'Timeline not submitted',
+          `date : ${submDate}`,
+          'error'
+        );
+       
+      }
+    })
+    .catch(e => console.log(e));
+}
+
+
+
+
+addStatusIntoDarArr(){
+  this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{
+    if(res){
+        const submission_json=JSON.parse(res[0].submission_json);
+        if(submission_json){
+          this.darArray.forEach((tm:any)=>{
+            const d1=new Date(tm.SubmissionDate);
+            d1.setHours(0,0,0,0);
+            const tm_submitted=submission_json.find(item=>{
+                const d2=new Date(item.SubmissionDate);
+                return d1.getTime()==d2.getTime();
+            });
+
+            if(tm_submitted)
+              tm.DarStatus=tm_submitted.Status; 
+            else{
+              debugger
+              tm.DarStatus='Not Submitted';
+              const crtdate=new Date();
+              const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
+              tm.submitable=daysDiff<=1;
+            } 
+         });
+        }
+      
+        console.log('123 darArray:',this.darArray);
+        console.log('GetTimelineSubmissionStatus:',submission_json);
+    }
+});
+}
+
+
+
+
+
+
+/* timeline submit end */
 
 
 }

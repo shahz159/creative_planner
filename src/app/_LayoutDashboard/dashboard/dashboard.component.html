@@ -4813,7 +4813,8 @@
                 <ng-container *ngFor="let prj of ProjectListArray">
                     <li *ngIf="!(MasterCode&&MasterCode.includes(prj.Project_Code))" class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)">
+                            <!-- MasterCode&&MasterCode.includes(prj.Project_Code) -->
+                            <mat-checkbox [checked]="choosedItems.getPcodes().includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj);">
                                 <span class="project-name">
                                     {{prj.BlockNameProject}}
                                 </span>
@@ -4839,7 +4840,8 @@
             <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
                     <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
+                            <!-- Portfolio&&Portfolio.includes(prtf.portfolio_id) -->
+                            <mat-checkbox [checked]="choosedItems.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
                                 <span class="project-name">
                                     {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
                                 </span>
@@ -4862,7 +4864,8 @@
 
                     <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)">
+                            <!-- SelectDms&&SelectDms.includes(memo.MailId) -->
+                            <mat-checkbox [checked]="choosedItems.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)">
                                 <span class="project-name">
                                     {{memo.Subject}}-{{memo.DisplayName}}
                                 </span>
@@ -4885,7 +4888,8 @@
             <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
                     <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
+                            <!-- ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No) -->
+                            <mat-checkbox [checked]="choosedItems.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
                                 <span style="display:flex; align-items: center; gap: 5px;">
                                     <span class="project-user-image">
                                         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
@@ -4913,9 +4917,11 @@
         </div>
         <div class="modal-footer">
             <ng-container *ngIf="projectmodaltype">
-                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                    <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
+                <!--  *ngIf="projectmodaltype==='PROJECT'"    -->
+                    <button id="keep-items-btn1" [ngClass]="{'d-none':projectmodaltype!='PROJECT'}"  [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <!-- *ngIf="projectmodaltype!=='PROJECT'"   -->
+                    <button id="keep-items-btn2" [ngClass]="{'d-none':projectmodaltype=='PROJECT'}"   [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button  type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
             </ng-container>
         </div>
       </div>

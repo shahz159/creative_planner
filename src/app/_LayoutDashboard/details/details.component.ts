@@ -7497,7 +7497,7 @@ closeNewPrjReleaseSideBar() {
 
 getRejectType() {
   this.approvalObj.Project_Code = this.URL_ProjectCode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {  
     this.activity = data[0]["activity"];
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
@@ -10173,6 +10173,13 @@ goToProject(pcode) {
   myWindow.focus();
 }
 
+expandRemarks(id:string){
+     const remark_sec=document.getElementById(id);
+     if(remark_sec.classList.contains('compl-remarks-span'))
+        remark_sec.classList.remove('compl-remarks-span');
+     else 
+        remark_sec.classList.add('compl-remarks-span');
+}
 
 // conditional accept functionality end
 
