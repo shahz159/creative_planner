@@ -170,7 +170,7 @@
 
                       <li class="nav-item">
                           <a class="nav-link text-active-primary py-5 me-6 ">
-                              DMS </a>
+                            S-Mail </a>
                       </li>
 
                       <li class="nav-item">
@@ -1009,7 +1009,7 @@
                                       </div>
                                       <div class="kt-project-type curser-pointer d-flex">
 
-                                        <div *ngIf="projectActionInfo&&projectActionInfo.length>0"  class="allactns-graph curser-pointer mr-1" data-toggle="modal" data-target="#actns-graphmodal" (click)="filterActionsOnGantt('All')"   >
+                                        <div *ngIf="projectActionInfo&&projectActionInfo.length>0"  class="allactns-graph curser-pointer mr-1" data-toggle="modal" data-target="#actns-graphmodal" (click)="filterActionsOnGantt('All')">
                                             <!-- <svg width="15px" height="15px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" style="fill: currentColor;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path></g></svg> -->
                                             <i class="fas fa-chart-pie"></i>
                                             <span class="allactns-label fs-7 fw-bold">&nbsp;All actions</span>
@@ -1708,12 +1708,12 @@
                                       <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                          <ng-container *ngIf="isDMS>0">
                                               <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                               height="29" title="View or link SM"  >
+                                               height="29" title="View or link S-Mail"  >
                                             </ng-container>
                                             <ng-container *ngIf="isDMS==0">
                                               <img width="22px" class="black-white"
                                               src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
-                                              title="View or link SM">
+                                              title="View or link S-Mail">
                                             </ng-container>
                                           </a>
                                       <div class="br-line"></div>
@@ -2761,27 +2761,49 @@
                                         <div class="legend-border mt-4 ng-star-inserted" style=" background-color: white;">
                                             <div class="meeting-attendance-heading">Completion Report</div>
                                             <div class="d-flex gap-1">
-                                                <fieldset class="meeting-attendance-item d-flex justify-content-between mt-2" style="padding-top: 0;">
+                                                <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
                                                     <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
-                                                    <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
-                                        
-                                                    <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
+                                                   <div class="d-flex justify-content-between">
+                                                        <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
+                                                        <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
+                                                   </div>
+                                                   <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
+                                                    <span class="text-muted fs-8 compl-remarks-span">{{projectInfo.ApproveComments}}</span>
+                                                   </div>
+                                                    
                                                 </fieldset>
                                         
-                                                <fieldset class="meeting-attendance-item d-flex justify-content-between mt-2" style=" padding-top: 0;">
+                                                <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
                                                     <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
-                                                    <div class="meeting-attendance-count fs-7">{{projectInfo.Submittedby}}</div>
-                                                    <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="meeting-attendance-count fs-7">{{projectInfo.Submittedby}}</div>
+                                                        <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
+                                                    </div>
+                                                    <div class="d-flex gap-4">
+                                                        <span class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks">{{projectInfo.Remarks}}</span>
+                                                        <span [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0  prj-complfile-hover  "> 
+                                                            <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
+                                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                <g id="SVGRepo_iconCarrier">
+                                                                    <path  d="M20 7V6.8C20 5.11984 20 4.27976 19.673 3.63803C19.3854 3.07354 18.9265 2.6146 18.362 2.32698C17.7202 2 16.8802 2 15.2 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H12.5M12.5 11H8M11.5 15H8M16 7H8M18 18V12.5C18 11.6716 18.6716 11 19.5 11C20.3284 11 21 11.6716 21 12.5V18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18V14"
+                                                                      stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                   </div>
                                                 </fieldset>
                                             </div>
                                             <div class="meeting-attendance">
-                                                <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-item "    [ngClass]="{'meeting-attendance-item-hover curser-pointer':projectActionInfo&&projectActionInfo.length>0}"  
+                                                [attr.data-toggle]="(projectActionInfo&&projectActionInfo.length>0)?'modal':''"
+                                                [attr.data-target]="(projectActionInfo&&projectActionInfo.length>0)?'#actns-graphmodal':''"  (click)="(projectActionInfo&&projectActionInfo.length>0)?filterActionsOnGantt('All'):''">
                                                     <div class="meeting-attendance-count">{{projectActionInfo?projectActionInfo.length:0}}</div>
                                                     <div class="meeting-attendance-title">Actions</div>
                                                 </div>
                                                 <div class="meeting-attendance-item">
                                                     <div class="meeting-attendance-count">{{projectInfo.TotalHours}} hrs</div>
-                                                    <div class="meeting-attendance-title">DAR</div>
+                                                    <div class="meeting-attendance-title">Achieved Hours</div>
                                                 </div>
                                                 <div class="meeting-attendance-item">
                                                     <div class="meeting-attendance-count">
@@ -2789,30 +2811,19 @@
                                                        <span>-</span>
                                                        <span><span class="fs-5">{{projectInfo.CD|date:'dd/MM/yyyy'}}</span></span>
                                                     </div>
-                                                    <div class="meeting-attendance-title">Period</div>
+                                                    <div class="meeting-attendance-title">Project Duration</div>
                                                 </div>
                                                 <div class="meeting-attendance-item">
                                                     <div class="meeting-attendance-count"> {{prjRunFor+(prjRunFor>1?' days':' day')}}</div>
-                                                    <div class="meeting-attendance-title">Total</div>
+                                                    <div class="meeting-attendance-title">Duration</div>
                                                 </div>
                                             </div>
-                                            <div id="meeting-attendance-accordion" class="accordion">
-                                                <div class="w-100 text-right">
-                                                    <button type="button" data-toggle="collapse" data-target="#meeting-attendance-accordion-collapse" aria-expanded="false" aria-controls="meeting-attendance-accordion-collapse" class="btn meeting-attendance-btn"><span>view more</span>
-                                                        <svg width="64px" height="64px"viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"> </g>
-                                                            <g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L12.5303 14.0303C12.2374 14.3232 11.7626 14.3232 11.4697 14.0303L7.46967 10.0303C7.17678 9.73744 7.17678 9.26256 7.46967 8.96967C7.76256 8.67678 8.23744 8.67678 8.53033 8.96967L12 12.4393L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z"fill="currentColor"></path>
-                                                            </g>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <div id="meeting-attendance-accordion-collapse" aria-labelledby="headingOne"
-                                                    data-parent="#meeting-attendance-accordion" class="collapse show">
+                                            <div id="meeting-attendance-accordion">
+                                                <div aria-labelledby="headingOne">
                                                     <div class="meeting-attendance meeting-attendance-accordion-div" *ngIf="projectInfo">
                                                         <div class="meeting-attendance-item" (click)="addNewDMS()">
                                                             <div class="meeting-attendance-count">{{projectInfo.isDMS}}</div>
-                                                            <div class="meeting-attendance-title">DMS</div>
+                                                            <div class="meeting-attendance-title">S-Mail</div>
                                                         </div>
                                                         <div class="meeting-attendance-item" (click)="AddPortfolio()">
                                                             <div class="meeting-attendance-count">{{projectInfo.isPortfolio}}</div>
@@ -2941,7 +2952,7 @@
                                                     </div>
                                                     <div class="meeting-attendance-item" >
                                                         <div class="meeting-attendance-count">70</div>
-                                                        <div class="meeting-attendance-title">DMS</div>
+                                                        <div class="meeting-attendance-title">S-Mail</div>
                                                     </div>
                                                     <div class="meeting-attendance-item" >
                                                         <div class="meeting-attendance-count">65</div>
@@ -2964,17 +2975,6 @@
 
 
                                     </ng-container>
-
-
-
-
-
-
-
-
-
-
-
 
 
                                       <!-- Request type start  -->
@@ -3828,92 +3828,6 @@
                                               </div>
                                           </div>
                                       </div>
-                                      
-                                      <ng-container *ngIf="projectInfo&&projectInfo.Status=='Completed'">
-                                        <div class="row mt-5 px-3">
-                                            
-                                            <div *ngIf="projectInfo.Sourcefile" class="col text-center"
-                                                title=" {{projectInfo.Sourcefile}}">
-                                                <div class="kt-info-lable-v">
-                                                    Complete attachment
-                                                </div>
-                                                <div class="kt-info-data-v"
-                                                    (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">
-
-                                                    <b class="word-break text-info curser-pointer">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
-                                                        {{projectInfo.Sourcefile}}</b>
-                                                </div>
-                                            </div>
-
-                                            <div class="col  text-center" *ngIf="projectInfo.CD">
-                                                <div class="kt-info-lable-v">
-                                                    Completed date
-                                                </div>
-                                                <div class="kt-info-data-v" title="Completed date">
-
-                                                    {{projectInfo.CD | date : 'dd-MM-yyyy'}}
-                                                </div>
-                                            </div>
-
-                                            <div class="col  text-center"
-                                                *ngIf="projectInfo.Remarks !='undefined'">
-                                                <div class="kt-info-lable-v">
-                                                    Remarks
-                                                </div>
-                                                <div class="kt-info-data-v"
-                                                    title="{{projectInfo.Remarks}}">
-                                                    {{projectInfo.Remarks}}
-                                                </div>
-                                            </div>
-
-                                            <div class="col  text-center">
-                                                <div class="kt-info-lable-v">
-                                                    Submitted by
-                                                </div>
-                                                <div class="kt-info-data-v" *ngIf="projectInfo.Submittedby">
-                                                    {{projectInfo.Submittedby}}
-                                                </div>
-                                            </div>
-                                            
-
-                                        </div>
-
-                                        <div class="row mt-5 px-3">
-
-                                                    <div class="col  text-center" *ngIf="projectInfo.Approvedby">
-                                                        <div class="kt-info-lable-v">
-                                                            Approved by
-                                                        </div>
-                                                        <div class="kt-info-data-v" title="Approved by">
-                                                            {{projectInfo.Approvedby}}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col  text-center">
-                                                        <div class="kt-info-lable-v">
-                                                            Approved on
-                                                        </div>
-                                                        <div class="kt-info-data-v" title="Approved date"  *ngIf="projectInfo.ApprovedDate">
-                                                            {{projectInfo.ApprovedDate|date:'dd-MM-yyyy'}}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col  text-center">
-                                                        <div class="kt-info-lable-v">
-                                                            Approver's remarks
-                                                        </div>
-                                                        <div class="kt-info-data-v" *ngIf="projectInfo.ApproveComments">
-                                                            {{projectInfo.ApproveComments}}
-                                                        </div>
-                                                    </div>
-                                        </div>
-                                      </ng-container>
-
-
-                                      <!-- <div  *ngFor="let data of projectActionInfo">
-                 {{data.Remarks}}
-                </div> -->
 
 
                                       <div class="Dividing-line"></div>
@@ -5479,7 +5393,7 @@
                   title="Not Linked">
 
                </ng-container>
-              </a> View or link SM
+              </a> View or link S-Mail
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar() ">
@@ -5518,7 +5432,7 @@
           <div class="matchip-drp-dwn">
 
               <mat-form-field class="drp-dwn-field">
-                  <mat-label>Select DMS</mat-label>
+                  <mat-label>Select S-Mail</mat-label>
                   <mat-chip-list #selectedmemoslist>
                       <mat-chip *ngFor="let memo of selectedMemos" class="Data_chip_kt"
                           (removed)="removeSelectedMemo(memo)">
@@ -6543,7 +6457,7 @@
                 </ng-container>
                 <ng-template #GotActivitiesResult>
 
-
+                  <ng-container *ngIf="(activitiesOf==='PROJECT-ACTIVITIES'?FilteredPrjActivities:ActionActivity_List).length>0; else EmptyFilteredPrjActivities">
                   <div class="timeline" *ngFor="let data of activitiesOf==='PROJECT-ACTIVITIES'?FilteredPrjActivities:ActionActivity_List">
 
                       <!-- <div class="timeline-item">
@@ -6878,6 +6792,15 @@
 
 
                   </div>
+                  </ng-container>
+                  <ng-template #EmptyFilteredPrjActivities>
+                        <div class="no-prjact-found mt-5">
+                            <img class="no-prjact-found-img"
+                                src="./assets/images/noActionPresent.png" />
+                            <h3 class="blank-txt fs-5 no-prjact-found-label">No activities found.</h3>
+                        </div>
+                  </ng-template>
+
                 </ng-template>
               </div>
           </div>
@@ -8310,10 +8233,10 @@
               </div>
               <div class="form-group">
                   <label for="exampleFormControlFile1"> Remark <span class="text-danger">*</span></label>
-                  <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks" [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
+                  <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks" [ngClass]="{'error-border': !(_remarks&&_remarks.trim())&&formFieldsRequired}"
                       placeholder="Enter project remark if any" style="height: 160px; margin: 0px;"></textarea>
                   <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
-                  <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
+                  <span *ngIf="!(_remarks&&_remarks.trim())&&formFieldsRequired" style="color:red">Please enter remark</span>
               </div>
 
               <div class="form-group mb-1">

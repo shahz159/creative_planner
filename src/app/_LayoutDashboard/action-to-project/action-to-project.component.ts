@@ -168,7 +168,6 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this._projcode = false;
     this._desbool = false;
     this._subname = false;
@@ -259,7 +258,9 @@ export class ActionToProjectComponent implements OnInit {
           this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
-          this.allocatedHour= this.createproject.projectInfo.AllocatedHours
+          if(this.createproject.projectInfo){
+            this.allocatedHour= this.createproject.projectInfo.AllocatedHours;
+          }
           const dateOne = new Date(this.disablePreviousDate);
           const dateTwo = new Date(this.ProjectStartDate);
           if(dateTwo > dateOne){
@@ -890,7 +891,7 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
-  Clear_Feilds() {
+  Clear_Feilds() {   debugger
     this.selectedProjectCodelist = [];
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;

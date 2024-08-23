@@ -2276,7 +2276,7 @@ div#DemoList-table div.demo i {
     overflow: hidden;
     color: #455963;
     /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); */
-    border: 1px solid #e2e5ec;
+    border: 1px solid #c8c8c8;
     border-radius: 4px;
 }
 
@@ -2397,7 +2397,7 @@ div#DemoList-table div.demo i {
 /* color: #455963; */
 /* }  */
 
-.task-input::-moz-placeholder {
+/* .task-input::-moz-placeholder {
     color: #a8b5bb;
 }
 
@@ -2407,7 +2407,7 @@ div#DemoList-table div.demo i {
 
 .task-input::placeholder {
     color: #a8b5bb;
-}
+} */
 
 .task-input:focus {
     /* box-shadow: 0 -1px 0 #bdcdd6 inset; */
@@ -2535,16 +2535,16 @@ div#DemoList-table div.demo i {
     color: #455963;
 }
 
-.task-input::-moz-placeholder {
+/* .task-input::-moz-placeholder {
     color: #a8b5bb;
 }
 
 .task-input:-ms-input-placeholder {
     color: #a8b5bb;
-}
+} */
 
 .task-input::placeholder {
-    color: #a8b5bb;
+    color: #99999a;
 }
 
 .task-input:focus {
@@ -4445,6 +4445,15 @@ span.kt-dt-cnt-view {
 
 .Done {
     background-color: #62B134 !important;
+    color: #fff !important;
+}
+
+.purple {
+    background-color: #9b30ff !important;
+    color: #fff !important;
+}
+.Expired{
+    background-color: #cf052d !important;
     color: #fff !important;
 }
 
@@ -6820,9 +6829,14 @@ li.deadline-timeline-item:first-child:after {
 } */
 
 .task-input {
-    padding: 10px 10px 10px 16px;
+    /* padding: 10px 10px 10px 16px; */
+    padding: 7px 10px 7px 16px;
 }
-
+.todo-main .btn-secondary {
+    background-color: #aeaeb2;
+    border: 1px solid #aeaeb2;
+    color: #fdfdfd;
+}
 .form-group.dt {
     position: relative;
     margin-bottom: 0px;
@@ -8423,4 +8437,20 @@ button.btn.btn-secondary.Custom-button {
     justify-content: flex-start;
     padding: 0.5rem 1rem;
     border-top: 1px solid #d2d2d2;
+}
+.agenda-details-item.active{
+    background-color: #5867dd08;
+    border: 1px solid #4157ff;
+    color: #0072ff;
+}
+.agenda-details-item.active .agenda-details-item-count{
+    color: #0072ff;
+}
+.list-sep-name {
+    color: #0000008a;
+    margin-bottom: 0.5rem;
+}
+#projectmodals li.modal-project-list-item {
+    margin-top: 0px;
+    margin-bottom: 1.5em;
 }

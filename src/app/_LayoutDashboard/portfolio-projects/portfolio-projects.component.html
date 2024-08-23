@@ -863,7 +863,10 @@
                                                   <div *ngIf="item1.Status=='Under Approval'">
                                                       <span
                                                           class="new-project font-weight-400 ">{{ (item1.Status === 'Under Approval') ? 'New approval' : item1.Status }}</span>
-                                                      <br>
+                                                          <span class="New_Approval_Project font-weight-400">{{ (item1.Pendingapprover === 'Under Approval') ? 'New approval' : item1.Pendingapprover}}
+                                                        </span>
+                                                          <br>
+
                                                   </div>
                                                   <div *ngIf="item1.Status=='Not Started'">
                                                     <span
@@ -880,19 +883,22 @@
                                                       <span
                                                           class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion approval":item1.Status}}
                                                       </span>
+                                                    
                                                       <span class="attach-tippy">
                                                         <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                    <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                     <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
                                                        <div style="width: max-content;">Submit by: <h6>{{item1.Submitby}} </h6></div>
                                                         <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                     </span>
-
+                                                    <span class="New_Approval_Project font-weight-400">{{item1.Pendingapprover=="Completion Under Approval" ? "Completion approval":item1.Pendingapprover}}
+                                                    </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                       <span
                                                           class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
                                                       </span>
-
+                                                      <span class="New_Approval_Project font-weight-400">{{item1.Pendingapprover=="Cancellation Under Approval" ? "Cancellation approval":item1.Pendingapprover}}
+                                                    </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Cancelled'">
                                                       <span
@@ -904,6 +910,8 @@
                                                       <span
                                                           class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
                                                       </span>
+                                                      <span class="New_Approval_Project font-weight-400">{{item1.Pendingapprover=="Forward Under Approval"? "Forward approval":item1.Pendingapprover}}
+                                                    </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='New Project'">
                                                       <span class="New-project font-weight-400"

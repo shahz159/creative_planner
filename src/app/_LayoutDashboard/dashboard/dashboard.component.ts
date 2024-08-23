@@ -3884,12 +3884,13 @@ currentTime:any;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
+       
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-        console.log(this.EventScheduledjson, "Testing1");
+         console.log(this.Isadmin, "Testing12");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -3902,19 +3903,19 @@ currentTime:any;
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this.creation_date = this.EventScheduledjson[0].Created_date;
-        console.log(this.creation_date, "creation_date");
+      
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-
+        console.log(this.Meeting_status, "Meeting_status");
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
-debugger
-        console.log(this.EventScheduledjson, "Testing12");
+
+       
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
@@ -4014,6 +4015,7 @@ debugger
         this.creation_date = this.EventScheduledjson[0].Created_date;
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        console.log(this.Meeting_status, "Meeting_status");
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
 
@@ -4111,6 +4113,7 @@ debugger
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        console.log(this.Meeting_status, "Meeting_status");
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.creation_date = this.EventScheduledjson[0].Created_date;
         // console.log(this.EventScheduledjson, "Testing12");
@@ -4364,6 +4367,13 @@ debugger
     console.log("--------------->", this.selectedFile)
   }
 
+  user_Type:any=0;
+
+  sortMeetingCalender(user_Types){
+   this.user_Type=user_Types;
+   this.GetScheduledJson()
+  }
+
 
   fetchDataStartTime: number;
   fetchDataEndTime: number;
@@ -4371,10 +4381,11 @@ debugger
   dataBindEndTime: number;
   fetchDataTime: number;
   dataBindTime: number;
-userFound : boolean | undefined
+  userFound : boolean | undefined;
   GetScheduledJson() {
-
+ 
     this._calenderDto.EmpNo = this.Current_user_ID;
+       this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
@@ -4383,7 +4394,7 @@ userFound : boolean | undefined
 
         this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
@@ -4611,7 +4622,7 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
-  closeInfo() {
+  closeInfo() {  
     // document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
@@ -4619,8 +4630,6 @@ console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-
-
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -6989,8 +6998,10 @@ getMeetingApprovals(){
     this.multiapproval_json=JSON.parse(multiapproval_json);
     this.totalCountOfList=this.multiapproval_json.length;
     if(this.totalCountOfList==0){
-      document.getElementById("requestlist").classList.remove("show");
-      document.getElementById("cal-main").classList.remove("col-lg-9");
+      // document.getElementById("requestlist").classList.remove("show");
+      $("#requestlist").removeClass("show");
+      // document.getElementById("cal-main").classList.remove("col-lg-9");
+      $("#cal-main").removeClass("col-lg-9");
       document.getElementById("cal-main").classList.add("col-lg-12");
     }
     //  console.log(this.multiapproval_json,'appraval data in the dashboard')

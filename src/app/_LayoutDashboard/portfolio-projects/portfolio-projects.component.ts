@@ -720,7 +720,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";

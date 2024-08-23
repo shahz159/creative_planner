@@ -307,6 +307,13 @@
                     <div class="d-flex-cen">
                         <h5 class="kt-portlet__head-title mr-3">
                             <i class="far fa-calendar-alt"></i> My Calendar
+                            <span *ngIf="user_Type==0">- All meetings </span>
+                            <span *ngIf="user_Type==1">- My meetings </span>
+                            <span *ngIf="user_Type==2">- Confirm meetings </span>
+                            <span *ngIf="user_Type==3">- Pending meetings</span>
+                            <span *ngIf="user_Type==4">- Rejected meetings </span>
+                            <span *ngIf="user_Type==5">- Done Attended </span>
+                            <span *ngIf="user_Type==6">- Done Not Attended </span>
                         </h5>
                     </div>
 
@@ -344,13 +351,66 @@
                         </div>
 
                         <!-- <button class="btn btn-sm btn-info mb-2" (click)="openschd()">schedule</button> -->
-                        <div class="dropdown" style="margin-top: 11px;">
-                            <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button"
-                                aria-haspopup="true" aria-expanded="false">{{Project_Mode}}</a>
+                        <div class="dropdown filter-cal-dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span>
+                                    <span *ngIf="user_Type==0|| user_Type==1||user_Type==2||user_Type==3||user_Type==4||user_Type==5||user_Type==6" id="previous-dot" class="previous-dot active"></span>
+                                    <svg width="26px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 6H19M21 12H16M21 18H16M7 20V13.5612C7 13.3532 7 13.2492 6.97958 13.1497C6.96147 13.0615 6.93151 12.9761 6.89052 12.8958C6.84431 12.8054 6.77934 12.7242 6.64939 12.5617L3.35061 8.43826C3.22066 8.27583 3.15569 8.19461 3.10948 8.10417C3.06849 8.02393 3.03853 7.93852 3.02042 7.85026C3 7.75078 3 7.64677 3 7.43875V5.6C3 5.03995 3 4.75992 3.10899 4.54601C3.20487 4.35785 3.35785 4.20487 3.54601 4.10899C3.75992 4 4.03995 4 4.6 4H13.4C13.9601 4 14.2401 4 14.454 4.10899C14.6422 4.20487 14.7951 4.35785 14.891 4.54601C15 4.75992 15 5.03995 15 5.6V7.43875C15 7.64677 15 7.75078 14.9796 7.85026C14.9615 7.93852 14.9315 8.02393 14.8905 8.10417C14.8443 8.19461 14.7793 8.27583 14.6494 8.43826L11.3506 12.5617C11.2207 12.7242 11.1557 12.8054 11.1095 12.8958C11.0685 12.9761 11.0385 13.0615 11.0204 13.1497C11 13.2492 11 13.3532 11 13.5612V17L7 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </span>
+                            <!-- <span>
+                                {{Project_Mode}}
+                            </span> -->
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" (click)="userProjects()">My</a>
-                                <a class="dropdown-item" (click)="teamProjects()">My Team</a>
-                                <a class="dropdown-item" (click)="allProjects()">All</a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==0}"  (click)="sortMeetingCalender(0)"><span class="s-dot allm"></span><span class="di-t">All meetings </span>
+                                    <ng-container *ngIf="user_Type==0">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                       </ng-container>
+                                </a>
+                                
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==1}" (click)="sortMeetingCalender(1)"><span class="s-dot mym"></span><span class="di-t">My meetings </span>
+                                    <ng-container *ngIf="user_Type==1">
+                                    <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                   </ng-container>
+                                </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==2}"  (click)="sortMeetingCalender(2)"><span class="s-dot conm"></span><span class="di-t">Confirm meetings </span>
+                                    <ng-container *ngIf="user_Type==2">
+                                    <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                </ng-container>
+                                </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==3}" (click)="sortMeetingCalender(3)"><span class="s-dot penm"></span><span class="di-t">Pending meetings </span>
+                                    <ng-container *ngIf="user_Type==3">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                 </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==4}"  (click)="sortMeetingCalender(4)">
+                                    <span class="s-dot rejm"></span> <span class="di-t">Rejected meetings </span>
+                                    <ng-container *ngIf="user_Type==4">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                </a>
+                                
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==5}" (click)="sortMeetingCalender(5)"> <span class="s-dot comnotm"></span>
+                                     <span class="di-t"> <div style="line-height: 12px;">
+                                        <div>Done</div>
+                                        <small style="color: #a2a2a2">Attended</small>
+                                    </div>
+                                </span>                    
+                                    <ng-container *ngIf="user_Type==5">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==6}"  (click)="sortMeetingCalender(6)"> <span class="s-dot comnotm"></span>
+                                    <span class="di-t"> 
+                                        <div style="line-height: 12px;">
+                                        <div>Done</div>
+                                        <small style="color: #a2a2a2">Not Attended</small>
+                                    </div></span>  
+                                    <ng-container *ngIf="user_Type==6">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1095,11 +1155,11 @@
                     </div> -->
                     <div class="met-done curser-pointer"
                     *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="newMeetingDetails()">
-                    <span></span><small>Completed</small>
+                    <span></span><small>Done</small>
                     </div>
 
 
-                    <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && (delayMeeting==true && upcomingMeeting==false)" (click)="newMeetingDetails()">
+                    <div class="icons-right curser-pointer " [ngClass]="{'icon-active': AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'" (click)="newMeetingDetails()">
                             <span class="kt-meeting-status-icon">
                                 <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1107,15 +1167,25 @@
                                     <path style="stroke:none;fill-rule:nonzero;fill: #5f6368;fill-opacity:1;" d="M 4.46875 6.625 C 4.507812 6.625 4.550781 6.625 4.59375 6.625 C 4.683594 6.621094 4.773438 6.621094 4.859375 6.625 C 4.996094 6.625 5.128906 6.621094 5.261719 6.621094 C 5.347656 6.621094 5.4375 6.621094 5.523438 6.621094 C 5.582031 6.621094 5.582031 6.621094 5.640625 6.621094 C 5.933594 6.621094 6.21875 6.664062 6.441406 6.867188 C 6.652344 7.09375 6.699219 7.3125 6.691406 7.617188 C 6.667969 7.851562 6.578125 7.992188 6.414062 8.15625 C 6.125 8.351562 5.875 8.378906 5.53125 8.375 C 5.492188 8.375 5.449219 8.375 5.40625 8.375 C 5.316406 8.378906 5.226562 8.378906 5.140625 8.375 C 5.003906 8.375 4.871094 8.378906 4.738281 8.378906 C 4.652344 8.378906 4.5625 8.378906 4.476562 8.378906 C 4.4375 8.378906 4.398438 8.378906 4.359375 8.378906 C 4.066406 8.378906 3.78125 8.335938 3.558594 8.132812 C 3.347656 7.90625 3.300781 7.6875 3.308594 7.382812 C 3.332031 7.148438 3.421875 7.007812 3.585938 6.84375 C 3.875 6.648438 4.125 6.621094 4.46875 6.625 Z M 4.46875 6.625 "></path>
                                     </g>
                                     </svg> -->
-                                    <img width="22px" height="22px" src="./assets/images/start.png">
+                                    <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Media / Play_Circle"> <g id="Vector"> <path d="M3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10 15V9L15 12L10 15Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g> </g></svg>
+                                    <!-- <img width="22px" height="22px" src="./assets/images/start.png"> -->
+                                    <ng-container *ngIf="AdminMeeting_Status==1">
+                                        <span  *ngIf="Isadmin==true" class="meet-blink">Live</span>
+                                        <span *ngIf="Isadmin==false" class="meet-blink">Join</span>
+                                       </ng-container>
                             </span>
+                            
                     </div>
+                   
+                            
 
-                    <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'&& (delayMeeting==false || upcomingMeeting==true)" (click)="newMeetingDetails()">
+
+
+                    <!-- <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'&& (delayMeeting==false || upcomingMeeting==true)" (click)="newMeetingDetails()">
                         <span class="kt-meeting-status-icon">
-                             <!-- <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" width="1em" height="1em" viewBox="0 0 24 24" class="iconify iconify--mdi"><path _ngcontent-frr-c390="" fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg> -->
+                             69!-- <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" width="1em" height="1em" viewBox="0 0 24 24" class="iconify iconify--mdi"><path _ngcontent-frr-c390="" fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg> --69
                              <img width="22px" height="22px" src="./assets/images/start.png">
-                             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="128" height="132" viewBox="0 0 128 132" fill="none" style="
+                             69!-- <svg xmlns="http://www.w3.org/2000/svg" width="128" height="132" viewBox="0 0 128 132" fill="none" style="
                              width: 22px;
                              height: 22px;
                          ">
@@ -1124,9 +1194,9 @@
                          <path d="M47 45C53.0005 47.4002 58.5976 50.4043 64.2852 53.4497C66.2547 54.5025 68.2287 55.5463 70.2031 56.5898C71.4534 57.2573 72.7034 57.9252 73.9531 58.5938C75.0891 59.199 76.2251 59.8042 77.3955 60.4277C80 62 80 62 81 64C74.73 64 68.46 64 62 64C62.2063 65.6912 62.4125 67.3825 62.625 69.125C62.6445 72.1602 62.6445 72.1602 62 75C57.7955 79.0924 52.3693 80.8523 47 83C47 70.46 47 57.92 47 45Z" fill="#F6F6F6"></path>
                          <path fill-rule="evenodd" clip-rule="evenodd" d="M83 96.4744C83 93.4312 84.2089 90.5126 86.3608 88.3608C88.5126 86.2089 91.4312 85 94.4744 85C97.5176 85 100.436 86.2089 102.588 88.3608C104.74 90.5126 105.949 93.4312 105.949 96.4744C105.949 99.5175 104.74 102.436 102.588 104.588C100.436 106.74 97.5176 107.949 94.4744 107.949C91.4312 107.949 88.5126 106.74 86.3608 104.588C84.2089 102.436 83 99.5175 83 96.4744ZM94.4744 89.5897C92.6485 89.5897 90.8973 90.3151 89.6062 91.6062C88.3151 92.8973 87.5898 94.6484 87.5898 96.4744C87.5898 98.3003 88.3151 100.051 89.6062 101.342C90.8973 102.634 92.6485 103.359 94.4744 103.359C96.3003 103.359 98.0514 102.634 99.3425 101.342C100.634 100.051 101.359 98.3003 101.359 96.4744C101.359 94.6484 100.634 92.8973 99.3425 91.6062C98.0514 90.3151 96.3003 89.5897 94.4744 89.5897Z" fill="#5F6368"></path>
                          <path fill-rule="evenodd" clip-rule="evenodd" d="M70.343 91.5108C69.061 93.359 68.5897 94.8063 68.5897 95.6538C68.5897 96.5014 69.061 97.9487 70.343 99.7969C71.5853 101.581 73.4273 103.518 75.7589 105.308C80.4313 108.894 86.8355 111.718 93.8333 111.718C100.831 111.718 107.235 108.894 111.908 105.308C114.239 103.518 116.081 101.581 117.324 99.7969C118.606 97.9487 119.077 96.5014 119.077 95.6538C119.077 94.8063 118.606 93.359 117.324 91.5108C116.081 89.727 114.239 87.7901 111.908 86.0001C107.235 82.414 100.831 79.5897 93.8333 79.5897C86.8355 79.5897 80.4313 82.414 75.7589 86.0001C73.4273 87.7901 71.5853 89.727 70.343 91.5108ZM72.9622 82.3589C78.2588 78.2954 85.6208 75 93.8333 75C102.046 75 109.408 78.2954 114.701 82.3589C117.354 84.3937 119.545 86.6641 121.093 88.8947C122.599 91.0641 123.667 93.4416 123.667 95.6538C123.667 97.8661 122.596 100.244 121.093 102.413C119.545 104.644 117.354 106.911 114.704 108.949C109.411 113.012 102.046 116.308 93.8333 116.308C85.6208 116.308 78.2588 113.012 72.9653 108.949C70.3124 106.914 68.1216 104.644 66.5733 102.413C65.0709 100.244 64 97.8661 64 95.6538C64 93.4416 65.0709 91.0641 66.5733 88.8947C68.1216 86.6641 70.3124 84.3967 72.9622 82.3589Z" fill="#5F6368"></path>
-                         </svg> -->
+                         </svg> --69
                         </span>
-                </div>
+                </div> -->
 
 
                     <!-- <div class="met-done curser-pointer"
@@ -1332,9 +1402,11 @@
                          <ng-template #colordot>
                             <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
                             </div>
-                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #3788d8;">
+                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #9B30FF;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'" style="background-color: #3788d8;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Isadmin==true" style="background-color: #3788d8;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Isadmin==false" style="background-color: #9B30FF;">
                             </div>
                          </ng-template>
 
@@ -1346,14 +1418,24 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
+                                        {{item.Recurrence}}
+                                    </span>
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                        {{item.Schedule_Type}}
+                                    </span>
+                                    <span
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false"
+                                        style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
                                     <span *ngIf="Meeting_status==true" style="height: 18px;"
@@ -1712,7 +1794,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">DMS</div>
+                                <div class="main-s pro-nm">S-Mail</div>
                             </div>
                         </div>
                     </div>
@@ -2120,7 +2202,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">DMS</div>
+                                <div class="main-s pro-nm">S-Mail</div>
                             </div>
                         </div>
                     </div>

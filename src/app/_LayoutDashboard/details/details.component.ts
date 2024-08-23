@@ -41,7 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
-import { ThisReceiver } from '@angular/compiler';
+
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -1158,6 +1158,7 @@ this.prjPIECHART.render();
                               (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
                               /Action Complete- ".*"/.test(_Value)?'Action Complete':
                               /Action -".*" Hold/.test(_Value)?'Action Hold':
+                              /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
                               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
                               ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
                               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
@@ -1529,7 +1530,7 @@ multipleback(){
 }
 
 
-  closeInfo() {
+  closeInfo() {   debugger
     this._remarks = ''
     this.characterCount=0;
     this.characterCount_Action=0;
@@ -1759,12 +1760,13 @@ multipleback(){
     this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data: any) => {
-
+        this.isLoadingData=false;
         console.log("inside GetDMS_Memos:", data);
         if (data && data.length > 0) { // if data is not [] means there will be atleast one memo present in the project.
+           this.isLoadingData=true;
           this._LinkService._GetMemosSubject(data[0]['JsonData']).
             subscribe((data: any) => {
-
+              this.isLoadingData=false;
               if (data.JsonData) {
                 this.projectMemos = JSON.parse(data.JsonData);
                 this._linkedMemos = this.projectMemos.length;
@@ -1783,9 +1785,7 @@ multipleback(){
                 console.log("this memosOptions:", this.memosOptions)
 
               }
-
               console.log("get memo subject:", this.projectMemos);
-              this.isLoadingData=false;
             });
         }
         else {   // if data is [] and length is 0.   means if there is not even one memo present in the project.
@@ -4034,13 +4034,16 @@ check_allocation() {
 
   updateMainProject() {   
 // for checking whether mandatory fields are provided or not.
-   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
-      this.formFieldsRequired=true;
-      return;
-   }
 
 
-  if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!this._remarks)){
+  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && 
+  (!(this.selectedFile&&this._remarks&&this._remarks.trim()))){
+    this.formFieldsRequired=true;
+    return;
+ }
+
+
+  if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!(this._remarks&&this._remarks.trim()))){
      this.formFieldsRequired=true;
      return;
   }
@@ -10049,7 +10052,7 @@ filterActionsOnGantt(option:string){
 
 
 onActnsGanttClosed(){
-    this.ActnsGanttChart=null;
+    this.ActnsGanttChart=null; 
     this.ganttActnsConfig={byuser:'All'};
     this.total_userActns=undefined;
 }
@@ -10172,6 +10175,8 @@ goToProject(pcode) {
 
 
 // conditional accept functionality end
+
+///
 
 }
 

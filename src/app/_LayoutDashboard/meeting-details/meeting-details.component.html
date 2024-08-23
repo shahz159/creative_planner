@@ -1132,18 +1132,18 @@
                                                     </div> -->
 
                                                     <div  [ngClass]="{'error-border': agendaInput?.length>100}" class="agenda-input-field">
-                                                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
+                                                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
 
-                                                        <input class="task-input ml-2" id="todo-input" name="text" placeholder="Add agenda and press 'enter key'." autofocus="true"
+                                                        <input class="task-input" id="todo-input" name="text" placeholder="Add agenda and press 'enter key'." autofocus="true"
                                                         [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()"/>
 
-                                                        <ng-container *ngIf="meetings_Recurrence==='Do not repeat'">
+                                                        <ng-container >
                                                         <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                                                        </ng-container>
 
-                                                       <ng-container *ngIf="meetings_Recurrence!=='Do not repeat'">
+                                                       <!-- <ng-container *ngIf="meetings_Recurrence!=='Do not repeat'">
                                                         <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" data-target="#confirmpopup" data-toggle="modal">Add</button>
-                                                       </ng-container>
+                                                       </ng-container> -->
 
                                                     </div>
                                                 </div>
@@ -1178,17 +1178,17 @@
                                                                         <div class="d-flex align-items-center justify-content-between">
                                                                             <div class="agenda-count">Agenda {{i+1}}</div>
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item">
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentTaskCount[i]?.TaskCount > 0}">
                                                                                     <span class="a-icon">                                
-                                                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="#858190" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 
                                                                                 </span>
                                                                                     <span  class="agenda-details-item-count">{{taskcount[i].count}}</span>
                                                                                 </div>
                                                                                 <!-- <div class="a-v-line"></div> -->
-                                                                                <div class="agenda-details-item">
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount > 0}">
                                                                                     <span class="a-icon">
-                                                                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
+                                                                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                                                 
                                                                                 </span>
                                                                                     <span  class="agenda-details-item-count">{{notescount[i].count}}</span>
@@ -1279,7 +1279,7 @@
                                                                         <div class="d-flex align-items-center justify-content-between">
                                                                             <div class="agenda-count">Agenda {{i+1}}</div>
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item">
+                                                                                <div class="agenda-details-item"  [ngClass]="{'active': CurrentTaskCount[i]?.TaskCount > 0}">
                                                                                     <span class="a-icon">                                
                                                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="#858190" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 
@@ -1287,7 +1287,7 @@
                                                                                     <span  class="agenda-details-item-count">{{item.TaskCount}}</span>
                                                                                 </div>
                                                                                 <!-- <div class="a-v-line"></div> -->
-                                                                                <div class="agenda-details-item">
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount > 0}">
                                                                                     <span class="a-icon">
                                                                                         <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                                                 
@@ -1425,7 +1425,7 @@
                                             <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
                                                 <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                    height="29" title="View or link SM">
+                                                    height="29" title="View or link S-Mail">
 
                                                 </ng-container >
                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
@@ -1598,7 +1598,7 @@
                                                         fill="currentcolor" id="video" />
                                                 </svg>
                                             </span>
-                                            <span class="kt-meeting-status-title">Completed</span>
+                                            <span class="kt-meeting-status-title">Done</span>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
                                         
@@ -1633,7 +1633,7 @@
 
 
                                         <ng-container *ngIf="Isadmin==true && delayMeeting==true">
-                                            <div class="kt-meeting-status started mt-0" *ngIf="!meetingInProgress && !meetingStopped" (click)="startMeeting();InsertAttendeeMeetingTime()">
+                                            <div class="kt-meeting-status started mt-0" *ngIf="!meetingInProgress && !meetingStopped" (click)="startMeeting();InsertAttendeeMeetingTime();">
                                                 <span class="kt-meeting-status-icon" >
                                                     <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                         version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -1809,7 +1809,7 @@
                         </div>
                         <div class="meeting-attendance-main" *ngIf="Meetingstatuscom=='Completed'">
                             <div class="legend-border" *ngFor="let data of CompletedMeeting_notes;let i = index ">
-                                <div class="meeting-attendance-heading">Completion Report</div>
+                                <div class="meeting-attendance-heading">Meeting Report</div>
 
                                 <div class="meeting-attendance-date">{{data.Complete_date |date:'EEEE,MMMM d, YYYY'}}
                                 <span  class="auto-c" *ngIf="Meetingstatuscom=='Completed' && AutoComplete == true">Auto complete meeting                         
@@ -1849,17 +1849,17 @@
                                     </div>
                                     <div class="meeting-attendance-title">Meeting duration</div>
                                 </div>
-                            
+        
                             </div>
                             <div class="accordion" id="meeting-attendance-accordion">
-                                <div class="w-100 text-right">
+                                <!-- <div class="w-100 text-right">
                                     <button class="btn meeting-attendance-btn" (click)="toggleView()" type="button"  data-toggle="collapse" data-target="#meeting-attendance-accordion-collapse"
                                     aria-expanded="false" aria-controls="meeting-attendance-accordion-collapse">     
                                     <span>{{isExpanded_Report ? 'View Less' : 'View More'}}</span>
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L12.5303 14.0303C12.2374 14.3232 11.7626 14.3232 11.4697 14.0303L7.46967 10.0303C7.17678 9.73744 7.17678 9.26256 7.46967 8.96967C7.76256 8.67678 8.23744 8.67678 8.53033 8.96967L12 12.4393L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z" fill="currentColor"></path> </g></svg>
                                     </button> 
-                                </div>
-                                <div id="meeting-attendance-accordion-collapse" class="collapse" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
+                                </div> -->
+                                <div id="meeting-attendance-accordion-collapse" class="collapse show" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
                                     <div class="meeting-attendance meeting-attendance-accordion-div">
                                         <div class="meeting-attendance-item" >
                                             <div class="meeting-attendance-count">{{data.AgendaCount}}</div>
@@ -1875,7 +1875,7 @@
                                         </div>
                                         <div class="meeting-attendance-item cursor-pointer" (click)="addNewDMS()">
                                             <div class="meeting-attendance-count">{{data.DMSCount}}</div>
-                                            <div class="meeting-attendance-title">DMS</div>
+                                            <div class="meeting-attendance-title">S-Mail</div>
                                         </div>
                                         <div class="meeting-attendance-item cursor-pointer" (click)="AddPortfolio()">
                                             <div class="meeting-attendance-count">{{data.PortCount}}</div>
@@ -2207,7 +2207,7 @@
                                                             height="16">
                                                     </span>
                                                     <span class="label-name">
-                                                        DMS
+                                                        S-Mail
                                                     </span>
                                                 </div>
                                             </div>
@@ -2225,7 +2225,7 @@
                                                     </div>
                                                 </ng-container>
                                                 <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                                    <div class="dark-title">No DMS link in the meeting</div>
+                                                    <div class="dark-title">No S-Mail link in the meeting</div>
                                                 </ng-container>
                                                 </div>
                                             </div>
@@ -2742,8 +2742,8 @@
                                                     </div>
                                                     
                                                     <div class="agenda-input-field">
-                                                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="icon" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#c4c4c4"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="#dedede"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="#e0e0e0"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="#e0e0e0"></path></g></svg>
-                                                        <input class="task-input ml-2" id="todo-input" name="text"
+                                                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
+                                                        <input class="task-input" id="todo-input" name="text"
                                                             [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)"
                                                             placeholder="Add a new task..." autofocus="true"
                                                             (input)="onInputChange()"
@@ -2949,7 +2949,7 @@
 
         <!--   Assign Project Start      -->
 
-            <div class="accordion accordion-attendes-notes " *ngIf="assigncount" id="Assign_List">
+            <div class="accordion accordion-attendes-notes" *ngIf="assigncount" id="Assign_List">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="AssignOne">
                         <a class="accordion-button" type="button" data-toggle="collapse"
@@ -2971,7 +2971,7 @@
                             </div>
                         </a>
                     </h2>
-                    <div id="Assign_notes" class="accordion-collapse collapse"
+                    <div id="Assign_notes" class="accordion-collapse collapse show"
                         aria-labelledby="AssignOne" data-parent="#Assign_List">
                         <div class="accordion-body"*ngIf="ActionedAssigned_Josn.length>0" >
                             <ul class="attendees-note-userlist" *ngFor="let item of ActionedAssigned_Josn">
@@ -3265,7 +3265,7 @@
                                             </div>
                                         </a>
                                     </h2>
-                                    <div id="Action_notes" class="accordion-collapse collapse"
+                                    <div id="Action_notes" class="accordion-collapse collapse show"
                                         aria-labelledby="ActionOnes" data-parent="#Action_lists">
                                         <div class="accordion-body">
                                             <ul class="attendees-note-userlist"  *ngFor="let item of ActionedSubtask_Json">
@@ -3757,13 +3757,13 @@
                             <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">
                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
                                     <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                        height="29" title="Link DMS">
+                                        height="29" title="Link S-Mail">
 
                                     </ng-container >
                                     <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
                                     <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Link DMS" class="black-white ng-star-inserted">
                                 </ng-container>
-                            </a> Link DMS
+                            </a> Link S-Mail
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeLinkSideBar()">
@@ -3798,7 +3798,7 @@
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                         <div class="matchip-drp-dwn">
                             <mat-form-field class="drp-dwn-field ">
-                                <mat-label>Select DMSs</mat-label>
+                                <mat-label>Select S-Mail</mat-label>
                                 <mat-chip-list #selectedTeamMembers>
                                     <mat-chip *ngFor="let data of selectedEmploy_DMS" class="Data_chip_kt"
                                         (removed)="RemoveDMS(data)">
@@ -3863,6 +3863,15 @@
                                 <ng-container *ngIf="Isadmin==true">
                                 <ng-container *ngFor="let item of EventScheduledjson">
                                     <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                        
+
+                                          <!-- <div class="kt-inbox__datetime">
+                                            <small>dec 31,2020,
+                                                10:02:55 AM
+                                            </small>
+                                        </div>
+                                      -->
+
                                         <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
                                 </ng-container>
                                 <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
@@ -4271,7 +4280,8 @@
                                                     <span >{{getInitials(item.TM_DisplayName)}}</span>
                                                         <span class="statusicn" aria-hidden="true">
                                                             <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
-                                                                *ngIf="item.Status=='Accepted' ||item.onlineStatus=='Start' || item.onlineDuration">
+                                                                *ngIf="item.Status=='Accepted'">
+                                                                <!-- *ngIf="item.Status=='Accepted' ||item.onlineStatus=='Start' || item.onlineDuration"> -->
                                                                 <path fill="#CEEAD6"
                                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
                                                                 </path>
@@ -5549,10 +5559,12 @@
                                                     <div class="pn-details">
                                                         <div class="pn-label">Meeting Status</div>
                                                         <div  class="Kt-Pd-Status Done" *ngIf="item.Meeting_status;else Meeting_status">
-                                                            Completed
+                                                            Done
                                                         </div>
                                                         <ng-template #Meeting_status>
-                                                            Uncompleted
+                                                            <div  class="Kt-Pd-Status Expired " >
+                                                                Expired
+                                                            </div>
                                                         </ng-template>
                                                     </div>
                                                     
@@ -6118,10 +6130,9 @@
                                                 </div>
                                                 <div class="pn-details">
                                                     <div class="pn-label">Meeting Status</div>
-                                                    <div  >
-                                                        Not started
+                                                    <div  class="Kt-Pd-Status purple " >
+                                                        Upcoming
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
                                         
@@ -8506,7 +8517,7 @@
                             </div>
                             <div class="se-col-11">
                                 <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('DMS')">
-                                    <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add dms')}}</div>
+                                    <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add S-Mail')}}</div>
                                     <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                         <span class="sr-only">Loading...</span>
                                     </div>
@@ -9063,7 +9074,7 @@
                         <ng-container *ngFor="let prj of ProjectListArray">
                             <li *ngIf="!(MasterCode&&MasterCode.includes(prj.Project_Code))" class="modal-project-list-item">
                                 <span>
-                                    <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)">
+                                    <mat-checkbox [checked]="choosedItems.getPcodes().includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)">
                                         <span class="project-name">
                                             {{prj.BlockNameProject}}
                                         </span>
@@ -9089,7 +9100,7 @@
                     <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
                             <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
                                 <span>
-                                    <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
+                                    <mat-checkbox [checked]="choosedItems.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
                                         <span class="project-name">
                                             {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
                                         </span>
@@ -9112,7 +9123,7 @@
 
                             <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
                                 <span>
-                                    <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)">
+                                    <mat-checkbox [checked]="choosedItems.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)">
                                         <span class="project-name">
                                             {{memo.Subject}}-{{memo.DisplayName}}
                                         </span>
@@ -9135,7 +9146,7 @@
                     <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
                             <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
                                 <span>
-                                    <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
+                                    <mat-checkbox [checked]="choosedItems.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
                                         <span style="display:flex; align-items: center; gap: 5px;">
                                             <span class="project-user-image">
                                                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
@@ -9668,10 +9679,10 @@
                         <div class="left-icon">
                             <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
                                 <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                    height="29" title="Link DMS">
+                                    height="29" title="Link S-Mail">
                                 </ng-container >
                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Link DMS" class="black-white ng-star-inserted">
+                                <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Link sm" class="black-white ng-star-inserted">
                             </ng-container>                   
                         </div>
                         <div class="rgt-des">
@@ -9684,7 +9695,7 @@
                                         {{totaldms}}
                                     </ng-container>
                                 </span>
-                                    DMS</div>
+                                S-Mail</div>
                             </div>
                         </div>
                     </div>
@@ -9989,7 +10000,7 @@
                          </path>
                      </svg>
 
-                     <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users to assign</h5>
+                     <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select users</h5>
            <button type="button" class="close d-none" (click)="close_projectmodals()" aria-label="Close">
              <span aria-hidden="true">&times;</span>
            </button>
@@ -10002,18 +10013,15 @@
 
              <input  class="search-input" [(ngModel)]="Assigntext" type="search" placeholder="Search" aria-label="Search" />
 
-             <div class="modal-icon mr-1 curser-pointer"  id="filter-icon" (click)="project_filter()">
+             <div class="modal-icon mr-1 curser-pointer"  id="filter-icon" (click)="project_filters()">
                  <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
              </div>
-             <div class="modal-icon curser-pointer" (click)="GetAssigned_SubtaskProjects()">
+             <div class="modal-icon curser-pointer" (click)="GetAssigned_SubtaskProjects();clearFilter();">
                  <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
              </div>
            </div>
            <div class="position-relative">
-             <div id="project-filter" class="project-filter">
-
-
-
+             <div id="project-filter1" class="project-filter">
                  <div class="project-filter-item">
                      <div class="item-label">Company</div>
                      <div class="item-select">
@@ -10031,15 +10039,17 @@
 
 
                  <div class="project-filter-footer">
-                     <button type="button" class="btn btn-add-primary" (click)="AddCom();close_project_filter()">Submit</button>
-                     <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
+                     <button type="button" class="btn btn-add-primary" (click)="AddCom();close_project_filters()">Submit</button>
+                     <button type="button" class="btn btn-close-secondary"  (click)="close_project_filters()">Close</button>
                  </div>
              </div>
 
              <ul class="modal-project-list" id="participant-list" >
-                 <li class="modal-project-list-item" *ngFor="let data of FiterEmployee | filter :Assigntext;let i =index">
+                <ng-container *ngIf="filteredEmployees">
+                <div class="list-sep-name" *ngIf="(filteredEmployees | filter : Assigntext).length>0">Meeting attendees</div>
+                 <li class="modal-project-list-item" *ngFor="let data of filteredEmployees | filter : Assigntext;let i =index">
                      <span>
-                         <mat-checkbox  (change)="onCheckboxChange($event, data)"  color="primary"></mat-checkbox>
+                         <mat-checkbox [checked]="selectedAttendeesList.has(data)"  (change)="onCheckboxChange($event, data)"  color="primary"></mat-checkbox>
                      </span>
                      <span style="display:flex; align-items: center; gap: 5px;">
                          <span class="project-user-image">
@@ -10050,7 +10060,25 @@
                          </span>
                      </span>
                  </li>
+                </ng-container>
 
+                <ng-container *ngIf="filteredEmployees">
+                 <div class="list-sep-name" *ngIf="(FiterEmployee|filter:Assigntext).length>0">Other users</div>
+                 
+                 <li class="modal-project-list-item" *ngFor="let data of FiterEmployee | filter : Assigntext;let i =index">
+                     <span>
+                         <mat-checkbox [checked]="selectedAttendeesList.has(data)"  (change)="onCheckboxChange($event, data)"  color="primary"></mat-checkbox>
+                     </span>
+                     <span style="display:flex; align-items: center; gap: 5px;">
+                         <span class="project-user-image">
+                             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                         </span>
+                         <span class="project-name">
+                            {{data.DisplayName}}
+                         </span>
+                     </span>
+                 </li>
+                </ng-container>
                  <!-- 69!-- <div class="w-100 h-100 d-flex align-items-center justify-content-center ">
                      <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -10074,7 +10102,7 @@
 
 
          <div class="modal-footer">
-            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees();close_projectmodals()">Assign</button>
+            <button  type="button" class="btn btn-add-primary" (click)="addSelectedEmployees();close_projectmodals()">Assign <span *ngIf="assignCount">({{assignCount}})</span> </button>
             <button  type="button" class="btn btn-add-primary" (click)="GetProjectTypeList();close_projectmodals()">Custom</button>
             <button type="button" class="btn btn-close-secondary" (click)="close_projectmodals()">Close</button>
 

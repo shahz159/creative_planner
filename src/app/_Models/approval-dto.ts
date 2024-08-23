@@ -38,4 +38,14 @@ export class ApprovalDTO {
     SubmissionType:string;
     Schedule_Id:string
 
+
+    LeaveType:number;
+    LeaveDays:number;
+    TripType:string;
+    Travel:string;
+    FromDate:any;
+    ToDate:any;
+    Country:string;
+    CountryId:string;
+
 }

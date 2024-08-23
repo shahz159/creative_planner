@@ -889,10 +889,13 @@
         </svg>
       </a>
     </div>
-    <div class="mb-3 mt-3 px-3">
-      <div class="leave-title">Team member information</div>
-      <div class="grid px-3 pt-3">
-        <div class="col text-center cnt-ovrl">
+
+    <div class="d-flex gap-1 mb-3 mt-2 px-3">
+       
+    <div class="card col-lg-6 pr-0 pl-0">
+      <div class="card-header leave-title">Team member information</div>
+      <div class="grid p-0 pt-3">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Name
           </div>
@@ -900,7 +903,7 @@
             {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             TM I.D No
           </div>
@@ -908,23 +911,23 @@
             {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Position
           </div>
           <div class="kt-info-data-v">
-
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Position}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Department
           </div>
           <div class="kt-info-data-v">
-
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Department}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Company
           </div>
@@ -934,10 +937,10 @@
         </div>
       </div>
     </div>
-    <div class="mb-3 px-3">
-      <div class="leave-title">Leave details</div>
-      <div class="grid px-3 pt-3">
-        <div class="col text-center cnt-ovrl">
+    <div class="card col-lg-6 pr-0 pl-0">
+      <div class="card-header leave-title">Leave details</div>
+      <div class="grid p-0 pt-3">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Leave type
           </div>
@@ -945,7 +948,7 @@
             {{LeaveDetail&&LeaveDetail[0].LeaveType}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Trip
           </div>
@@ -953,7 +956,7 @@
             {{LeaveDetail&&LeaveDetail[0].Trip}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Type
           </div>
@@ -961,7 +964,7 @@
             {{LeaveDetail&&LeaveDetail[0].Type}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Travel
           </div>
@@ -969,7 +972,7 @@
             {{LeaveDetail&&LeaveDetail[0].Travel}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Duration
           </div>
@@ -978,7 +981,7 @@
             date:'dd-MM-yyyy'}}
           </div>
         </div>
-        <div class="col text-center cnt-ovrl">
+        <div class="col text-center cnt-ovrl px-3 pt-2">
           <div class="kt-info-lable-v">
             Applied days
           </div>
@@ -988,15 +991,23 @@
         </div>
       </div>
     </div>
+
+    </div>
+
+
+
+
     <div class="mb-3 px-3">
-      <div class="leave-title">Remarks</div>
-      <div class="">
+     
+      <div class="leave-title card card-header p-2">Remarks</div>
+      <div class="card p-1">
         <div class="cnt-ovrl">
           <div class="kt-info-data-v">
-            Please approve my leave request
+            {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Req_Comments}}
           </div>
         </div>
       </div>
+
     </div>
 
     <div class="mb-3 action-div px-3">
@@ -1030,6 +1041,36 @@
               </g>
             </svg></span></div> Action
       </div>
+      <!-- <div class="">
+       <div class="d-flex justify-content-end pr-3 mt-2">
+          <div class="align-items-center justify-content-end d-flex">
+          
+            <div class="kt-detail-link" [ngClass]="{'active':leaveDecision=='APPROVE'}" (click)="onDecisionChanged('APPROVE')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon"style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #028507; ;overflow: hidden;">
+                <path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"></path>
+              </svg>
+              <span class="kt-detail-iconname">Accept</span>
+            </div>
+            <div class="kt-detail-link" [ngClass]="{'active':leaveDecision=='REJECTED'}" (click)="onDecisionChanged('REJECTED')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #e81000; ;overflow: hidden;">
+                <path  d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"></path>
+              </svg>
+              <span class="kt-detail-iconname">Reject</span>
+            </div>
+             <div class="kt-detail-link" [ngClass]="{'active':leaveDecision=='APPROVEBUT'}"  (click)="onDecisionChanged('APPROVEBUT')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #007c05; ;overflow: hidden;">
+                <path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"></path>
+                <path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"></path>
+                <path  d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"></path>
+                <path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"></path>
+              </svg>
+              <span class="kt-detail-iconname">Conditional Accept</span>
+            </div>
+
+          </div>
+        </div> 
+      </div> -->
+
       <div class="d-check px-3">
         <div class="form-check">
           <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
@@ -1053,22 +1094,56 @@
           </label>
         </div>
       </div>
+
+    <div *ngIf="leaveDecision=='APPROVEBUT'" class="text-muted px-3 mt-3">Accept leave approval with new dates</div>
+    <div *ngIf="leaveDecision=='APPROVEBUT'" class="row px-3 mt-1">
+          <div class="form-group input-group col-lg-6" id="conditional-startdate">
+            <label>From<span class="text-danger">*</span></label>
+            <div class="input-group">
+                <input [(ngModel)]="lv_startdate"  matInput [matDatepicker]="leaveStartdatePicker" (click)="leaveStartdatePicker.open();"
+                    placeholder="Select Start date" class="form-control" name="leave-sdate" />
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="leaveStartdatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #leaveStartdatePicker></mat-datepicker>
+                </div>
+            </div>
+            <!-- <span style="color:red">Please select start date</span> -->
+        </div>
+        <div class="form-group input-group col-lg-6" id="conditional-enddate">
+          <label>To<span class="text-danger">*</span></label>
+          <div class="input-group">
+              <input [(ngModel)]="lv_enddate"  matInput [matDatepicker]="leaveEnddatePicker" (click)="leaveEnddatePicker.open();"
+                  placeholder="Select End date" class="form-control" name="leave-edate" />
+              <div class="input-group-text p-0">
+                  <mat-datepicker-toggle matSuffix [for]="leaveEnddatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #leaveEnddatePicker></mat-datepicker>
+              </div>
+          </div>
+          <!-- <span style="color:red">Please select start date</span> -->
+        </div>
+      
+    </div>
+
+ 
+
       <div class="px-3 mb-3">
         <label>Comments</label>
-        <textarea id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-        <div class="previous-comments">
-          <ul>
-            <li>
-              <a href="javascript:void(0)">previous comment 1</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">previous comment 2</a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">previous comment 3</a>
-            </li>
-          </ul>
+        <textarea placeholder="Enter comments here." [(ngModel)]="aprv_cmts" id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+  
+        <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
+        <ng-template #prvCmtsLoaded>
+          <div *ngIf="previousCmts&&previousCmts.length>0" class="previous-comments">
+            <span class="fs-9 d-block text-right pr-2 pt-1 text-muted">previous comments</span>
+              <ul  class="d-flex gap-1 pt-1 flex-wrap">
+                <li *ngFor="let item of previousCmts" class="prvcmt-chip">
+                  <a (click)="putCmts(item.Req_Comments)" href="javascript:void(0)">{{item.Req_Comments}}</a>
+                </li>
+              </ul>
+          </div>
+        </ng-template>
+
       </div>
     </div>
     <div class="px-3 mb-3">
@@ -1583,13 +1658,13 @@
         <div class="previous-comments">
           <ul>
             <li>
-              <a href="javascript:void(0)">previous comment 1</a>
+              <a href="javascript:void(0)">ok done</a>
             </li>
             <li>
-              <a href="javascript:void(0)">previous comment 2</a>
+              <a href="javascript:void(0)">sorry, cannot approve at a moment</a>
             </li>
             <li>
-              <a href="javascript:void(0)">previous comment 3</a>
+              <a href="javascript:void(0)">please check given dates.</a>
             </li>
           </ul>
         </div>
