@@ -8087,13 +8087,13 @@ input.search-input {
 }
 
 .logo {
-  width: 288px;
-  height: 288px;
+  width: 255px;
+  height: 255px;
   position: relative;
 }
 
 .circle {
-  padding: 20px;
+  padding: 16px;
   border: 6px solid transparent;
   border-top-color: #6388e3;
   border-radius: 50%;
@@ -8103,8 +8103,8 @@ input.search-input {
 }
 
 .loader-img {
-  width: 80px;
-  height: 80px;
+  width: 65px;
+  height: 65px;
   border-radius: 100%;
   overflow: hidden;
   position: absolute;
@@ -8446,6 +8446,28 @@ span.time-value {
 .meeting-attendance-date svg {
   width: 16px;
 }
+
+.prj-complfile-hover:hover{
+  background-color: #ecf2ff85;
+  border-radius: 4px;
+}
+
+
+.compl-remarks-span{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em; 
+}
+
+
+.meeting-attendance-item-hover:hover{
+  background-color: #f4f4f43d;
+}
+
 /*completion report css end */
 .diff-div {
   background: #f9f9f9;

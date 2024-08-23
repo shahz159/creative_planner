@@ -958,3 +958,31 @@ span.leave-date-icon {
 ::ng-deep span.kt-header__topbar-icon svg:focus {
     outline: none;
   }
+
+
+.days-applied-box{
+    background-color: #f0f0f0 !important;
+    color: #333333 !important;
+    cursor: default;
+}  
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+  border: 1px solid #F44336 !important;
+}
+
+
+#leave-aprv-rightbar-overlay{
+background-color: rgba(50, 58, 70, .2);
+position: absolute;
+left: 0;
+right: 0;
+top: 0;
+bottom: 0;
+display: none;
+z-index: 998;
+transition: all .2s ease-out;
+cursor: pointer;
+}

@@ -1166,6 +1166,11 @@ acceptSelectedValues() {
 
 //  leave requests approval start
 leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined;
+aprv_cmts:string|undefined;
+lv_startdate:any;
+lv_enddate:any;
+previousCmts:any=[];
+cmts_Loading:boolean=false;
 onSubmitLRbtn(){
   let type:any;
   if(this.leaveDecision==='REJECTED'){
@@ -1198,8 +1203,36 @@ onSubmitLRbtn(){
 }
 
 onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
-  this.leaveDecision=decision
+  this.leaveDecision=decision;
+  this.lrprev_comments();
 }
+
+
+lrprev_comments()
+{
+    let aprvDto=new ApprovalDTO();
+    aprvDto.Emp_no=this.Current_user_ID;
+    aprvDto.Request_type=(this.leaveDecision=='APPROVE'||this.leaveDecision=='APPROVEBUT')?'Approved Leave':'Leave Rejected';
+    this.cmts_Loading=true;
+    this.approvalservice.NewGetLeaveComments(aprvDto).subscribe((res:any)=>{
+     this.cmts_Loading=false;
+     if(res)
+     {
+      this.previousCmts=JSON.parse(res.previousComments_JSON);
+      console.log('prev cmts:',this.previousCmts);            
+     }
+    }); 
+}
+
+putCmts(cmt:string)
+{
+   if(!this.aprv_cmts)
+      this.aprv_cmts='';
+   this.aprv_cmts=this.aprv_cmts+cmt;
+}
+
+
+
 
 
 // leave requests approval end

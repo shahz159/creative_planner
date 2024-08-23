@@ -4622,7 +4622,7 @@ currentTime:any;
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
-  closeInfo() {
+  closeInfo() {  
     // document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
@@ -4630,8 +4630,6 @@ currentTime:any;
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-
-
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
