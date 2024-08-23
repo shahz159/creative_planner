@@ -917,6 +917,11 @@ a.ordr-a {
     position: relative;
     margin-bottom: 1.5rem;
 }
+.Stream-planner-font{
+    color: #518EF6;
+    font-family: AvenirNextCyr-Bold, sans-serif;
+    text-transform: uppercase;
+}
 span.leave-date-icon {
     position: absolute;
     top: 0;

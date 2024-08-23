@@ -170,7 +170,7 @@
 
                       <li class="nav-item">
                           <a class="nav-link text-active-primary py-5 me-6 ">
-                              DMS </a>
+                            S-Mail </a>
                       </li>
 
                       <li class="nav-item">
@@ -1708,12 +1708,12 @@
                                       <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                          <ng-container *ngIf="isDMS>0">
                                               <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                               height="29" title="View or link SM"  >
+                                               height="29" title="View or link S-Mail"  >
                                             </ng-container>
                                             <ng-container *ngIf="isDMS==0">
                                               <img width="22px" class="black-white"
                                               src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
-                                              title="View or link SM">
+                                              title="View or link S-Mail">
                                             </ng-container>
                                           </a>
                                       <div class="br-line"></div>
@@ -2812,7 +2812,7 @@
                                                     <div class="meeting-attendance meeting-attendance-accordion-div" *ngIf="projectInfo">
                                                         <div class="meeting-attendance-item" (click)="addNewDMS()">
                                                             <div class="meeting-attendance-count">{{projectInfo.isDMS}}</div>
-                                                            <div class="meeting-attendance-title">DMS</div>
+                                                            <div class="meeting-attendance-title">S-Mail</div>
                                                         </div>
                                                         <div class="meeting-attendance-item" (click)="AddPortfolio()">
                                                             <div class="meeting-attendance-count">{{projectInfo.isPortfolio}}</div>
@@ -2941,7 +2941,7 @@
                                                     </div>
                                                     <div class="meeting-attendance-item" >
                                                         <div class="meeting-attendance-count">70</div>
-                                                        <div class="meeting-attendance-title">DMS</div>
+                                                        <div class="meeting-attendance-title">S-Mail</div>
                                                     </div>
                                                     <div class="meeting-attendance-item" >
                                                         <div class="meeting-attendance-count">65</div>
@@ -5479,7 +5479,7 @@
                   title="Not Linked">
 
                </ng-container>
-              </a> View or link SM
+              </a> View or link S-Mail
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar() ">
@@ -5518,7 +5518,7 @@
           <div class="matchip-drp-dwn">
 
               <mat-form-field class="drp-dwn-field">
-                  <mat-label>Select DMS</mat-label>
+                  <mat-label>Select S-Mail</mat-label>
                   <mat-chip-list #selectedmemoslist>
                       <mat-chip *ngFor="let memo of selectedMemos" class="Data_chip_kt"
                           (removed)="removeSelectedMemo(memo)">
