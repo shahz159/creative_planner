@@ -3639,3 +3639,101 @@ margin-left: -1px;
   background-color: #dde1ff;
   border-color: #5867dd;
 }
+div#ProjectAssignpending.kt-action-panel--on{
+width: 34% !important;
+}
+.ProjectAssignpending-body{
+  padding: 1.5rem;
+  height: calc(100vh - 58px);
+  color: #686868;
+  overflow: auto;
+}
+#unassigneditInput {
+  text-align: left;
+}
+
+div#openactionassign.kt-action-panel--on{
+  width: 34% !important;
+}
+.openactionassign-body{
+  padding: 1.5rem;
+  height: calc(100vh - 58px);
+  color: #686868;
+  overflow: auto;
+}
+.readonly{
+  color: #ccc!important;
+font-size: inherit;
+  cursor: not-allowed !important;
+  background-color: #ffffff;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.form-control[readonly] {
+  background-color: #ffffff;
+}
+
+ .readonly .mat-datepicker-toggle {
+  cursor: not-allowed !important;
+}
+
+.post{
+  margin-left: 257px  !important;
+}
+.not-all{
+
+    cursor: not-allowed !important;
+
+}
+.close-icon {
+  color: #f4f3f3;
+  background-color: gray;
+  border-radius: 50%;
+}
+
+.close-icon:hover {
+  color: #e0e0e0;
+  transform: none;
+}
+.save-mat-selection{
+  font-size: 17px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #646C9A;
+}
+.save-mat-selection:hover{
+  background-color: #3D4991;
+  transform: none;
+  color: white;
+}
+.non-clickable {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6; /* Optional: Makes the container look disabled */
+
+}
+.ng-select.ng-select.disabled {
+  cursor: not-allowed !important;
+  background-color: #f5f5f5 !important; /* Change to a lighter background color to indicate disabled state */
+  opacity: 0.6;
+}
+
+/* Additional styling to make the disabled state more apparent */
+.ng-select.ng-select.disabled .ng-select-container {
+  background-color: #e9ecef !important; /* Light gray background for disabled state */
+  color: #6c757d !important; /* Gray text color for disabled state */
+  opacity: 0.6;
+}
+
+/* Optional: Make sure the options also reflect the disabled state */
+.ng-select.ng-select.disabled .ng-option {
+  cursor: not-allowed !important; /* Ensure the cursor remains not-allowed */
+  opacity: 0.6;
+}
+.posts{
+  margin-left: 257px !important;
+  width: 94px;
+}

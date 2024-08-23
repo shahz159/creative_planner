@@ -222,6 +222,7 @@ export class CreateProjectComponent implements OnInit {
          this.Client_json=JSON.parse(res[0].Client_json);
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
+         console.log(this.Responsible_json,"Responsible_jsonResponsible_jsonResponsible_jsonResponsible_jsonResponsible_json")
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
@@ -403,6 +404,7 @@ export class CreateProjectComponent implements OnInit {
       this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
       console.log(this.owner_dropdown,"this.owner_dropdownthis.owner_dropdownthis.owner_dropdownthis.owner_dropdown")
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
+      console.log(this.responsible_dropdown,'responsible_dropdownresponsible_dropdownresponsible_dropdownresponsible_dropdown')
     });
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
@@ -417,6 +419,7 @@ export class CreateProjectComponent implements OnInit {
 
           if (data != null && data != undefined) {
               this.PrjSupport=JSON.parse(data[0]['RacisList']);
+              console.log(this.PrjSupport,'this.PrjSupportthis.PrjSupportthis.PrjSupportthis.PrjSupport')
 
               console.log("draft support:",this.PrjSupport)
               this.PrjSupport=this.PrjSupport.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
@@ -430,6 +433,10 @@ export class CreateProjectComponent implements OnInit {
 
 
 }
+
+
+
+
 
   setMaxAllocation() {
 
@@ -928,6 +935,22 @@ this.isPrjDesValid=this.isValidString(this.PrjDes,5);
   }
 
 
+gottoPrevious(){
+          $('.right-side-dv').removeClass('d-none');
+          $('.add_tema_tab').show();
+          $('.Project_details_tab').hide();
+          $('.Add_action_tab').hide();
+          $('.sbs--basic .active').addClass('finished');
+          $('.sbs--basic li').removeClass('active');
+          $('.sbs--basic li:nth-child(2)').addClass('active');
+          $('.sbs--basic li:nth-child(3)').removeClass('active');
+          $('.sbs--basic li:nth-child(3)').removeClass('finished');
+          $('.action-left-view').addClass('d-none');
+
+}
+
+
+
   Move_to_Add_action_tab(){
     $('.action-left-view').removeClass('d-none');
     $('.Add_action_tab').show();
@@ -1046,7 +1069,7 @@ onProjectOwnerChanged(){
           ...task,
           Duration: duration
         };
-      });   
+      });
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
@@ -1368,6 +1391,16 @@ projectEdit(val) {
 
 
 debugger
+if (this.Allocated <= this.maxAllocation){
+  this.notProvided = false
+}
+else{
+  this.notProvided = true
+  return
+}
+
+
+
 
   this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
   this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
@@ -2356,6 +2389,15 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 debugger
 
 
+if (this.Allocated <= this.maxAllocation){
+  this.notProvided = false
+}
+else{
+  this.notProvided = true
+  return
+}
+
+
 const dateone=new Date(this.projectInfo.EndDate)
 const datetwo= new Date(this.End_Date)
 
@@ -2517,7 +2559,7 @@ this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
             this.closeAction_details_edit();
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Updated successfully" + "Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
             this.getActionsDetails();
             this.closeAction_details_edit();
           }
@@ -2907,6 +2949,7 @@ alertMaxAllocation() {
 
 maxAllocations: number;
 alertMaxAllocations() {
+  debugger
   if (this.Start_Date == null || this.End_Date == null) {
     this._message = "Start Date/End date missing!!"
   }
@@ -2930,9 +2973,6 @@ alertMaxAllocations() {
     console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
   }
 }
-
-
-
 
 
 }

@@ -827,9 +827,18 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTaskwithAgenda", this._ObjAssigntaskDTO);
   }
 
+
   _InsertAssignTaskServie(fd) {
+    debugger
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
+
+
+  updatePendingtask(fd) {
+
+    return this.http.post(this.rootUrl + "Notification/NewUpdateAssignTask", fd);
+  }
+
 
   _InsertDARServie(obj: ProjectDetailsDTO) {
     this.ObjDto.Emp_No = obj.Emp_No;
