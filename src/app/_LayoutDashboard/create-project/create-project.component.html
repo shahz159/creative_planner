@@ -1566,7 +1566,7 @@
                                     <!-- <span *ngIf="allocated.value && !isNumeric(allocated.value)">Alphabet will not accept
                                       {{maxAllocation}}
                                     </span> -->
-   
+
                                 </div>
                               </ng-container>
 
@@ -2827,8 +2827,7 @@
                             <div class="" *ngIf="projectInfo">
                               <ng-container *ngIf="projectInfo.isRespActive=='1'">
                                 <ng-container
-                                    *ngIf="(projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
-                                    && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
+                                   >
 
                                     <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}"   [(ngModel)]="selectedOwnResp"    placeholder="Select new responsible">
                                         <ng-option [value]="item.Emp_No"       *ngFor="let item of responsible_dropdown"
@@ -2960,7 +2959,7 @@
                 <div class="form-group mb-0">
                   <div class="kt-info-lable-v"> Start date</div>
                       <div class="date-border d-flex " [ngClass]="{'error-date':!Start_Date&&notProvided}">
-                        <input  class="form-control curser-pointer"   [(ngModel)]="Start_Date" [min]="todayDate"   (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()"
+                        <input  class="form-control curser-pointer"   [(ngModel)]="Start_Date" [min]="todayDate"   (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;End_Date=null" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()"
                          placeholder="Select start date" />
                          <div class="input-group-text p-0">
                           <mat-datepicker-toggle matSuffix [for]="startEditsPicker">
@@ -2986,7 +2985,7 @@
                           <div class="kt-info-lable-v">End date</div>
                               <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
                                 <input class="form-control curser-pointer" [(ngModel)]="End_Date"
-                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate();updateDuration()"
+                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate();updateDuration();alertMaxAllocation()"
                                     (click)="strtEditsPicker.open();"
                                      placeholder="Select end date"
                                     class="form-control" name="date" />
@@ -3163,7 +3162,7 @@
                          Owner
                     </div>
                     <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
-                         <input type="text"  class="form-control " [(ngModel)]="selectedOwner"  />
+                         <input type="text"  class="form-control " [(ngModel)]="selectedOwner"   />
                     </div>
                 </div>
             </div>

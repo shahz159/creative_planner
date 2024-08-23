@@ -170,7 +170,7 @@
 
                       <li class="nav-item">
                           <a class="nav-link text-active-primary py-5 me-6 ">
-                              DMS </a>
+                            S-Mail </a>
                       </li>
 
                       <li class="nav-item">
@@ -1708,12 +1708,12 @@
                                       <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                          <ng-container *ngIf="isDMS>0">
                                               <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                               height="29" title="View or link SM"  >
+                                               height="29" title="View or link S-Mail"  >
                                             </ng-container>
                                             <ng-container *ngIf="isDMS==0">
                                               <img width="22px" class="black-white"
                                               src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29"
-                                              title="View or link SM">
+                                              title="View or link S-Mail">
                                             </ng-container>
                                           </a>
                                       <div class="br-line"></div>
@@ -2825,7 +2825,7 @@
                                                     <div class="meeting-attendance meeting-attendance-accordion-div" *ngIf="projectInfo">
                                                         <div class="meeting-attendance-item" (click)="addNewDMS()">
                                                             <div class="meeting-attendance-count">{{projectInfo.isDMS}}</div>
-                                                            <div class="meeting-attendance-title">DMS</div>
+                                                            <div class="meeting-attendance-title">S-Mail</div>
                                                         </div>
                                                         <div class="meeting-attendance-item" (click)="AddPortfolio()">
                                                             <div class="meeting-attendance-count">{{projectInfo.isPortfolio}}</div>
@@ -2848,6 +2848,132 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        <div class="legend-border mt-4  d-none ">
+                                            <div class="meeting-attendance-heading">Completion Report</div>
+                    
+                                        
+                                            <div>
+
+                                          <div class="d-flex justify-content-between">
+                                              <div class="meeting-attendance-date">
+                                                 <!-- {{data.Complete_date |date:'EEEE,MMMM d, YYYY'}} -->
+                                                Wednesday, July 31, 2024 </div>
+                                              <div class="meeting-attendance-date">Md Waseem Akram</div>
+                                          </div>
+
+                                          <div class="d-flex justify-content-between">
+                                            <div class="meeting-attendance-date">
+                                               <!-- {{data.Complete_date |date:'EEEE,MMMM d, YYYY'}} -->
+                                              Wednesday, July 31, 2024 </div>
+                                            <div class="meeting-attendance-date">Md Waseem Akram</div>
+                                          </div>
+
+                                          </div>
+
+
+
+                    
+                                        <div class="meeting-attendance">
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">5 / 10</div>
+                                                <div class="meeting-attendance-title">Actions completed</div>
+                                            </div>
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">128 hrs</div>
+                                                <div class="meeting-attendance-title">DAR</div>
+                                            </div>
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">
+                                                    <span>
+                                                        <span class="fs-5">04/08/2024</span>
+                                                    <!-- <span class="time-value ml-1">PM</span> -->
+                                                   </span>
+                                                    <span>-</span>
+                                                    <span>
+                                                        <span class="fs-5">05/12/2024</span>
+                                                     <!-- <span class="time-value ml-1">PM</span> -->
+                                                   </span>
+                                                </div>
+                                                <div class="meeting-attendance-title">Start and end</div>
+                                            </div>
+                                            <div class="meeting-attendance-item">
+                                                <div class="meeting-attendance-count">
+                                                    <!-- <span><span>20</span><span class="time-value">h</span></span>
+                                                    <span><span>12</span><span class="time-value">m</span></span> -->
+                                                   73 days
+                                                </div>
+                                                <div class="meeting-attendance-title">Duration</div>
+                                            </div>
+                    
+                                        </div>
+                                        <div class="accordion" id="meeting-attendance-accordion">
+                                            <div class="w-100 text-right">
+                                                                    <!-- (click)="toggleView()" -->
+                                                <button class="btn meeting-attendance-btn"  type="button" data-toggle="collapse" data-target="#meeting-attendance-accordion-collapse"
+                                                 aria-expanded="false" aria-controls="meeting-attendance-accordion-collapse">
+                                                 <span>view more</span>
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L12.5303 14.0303C12.2374 14.3232 11.7626 14.3232 11.4697 14.0303L7.46967 10.0303C7.17678 9.73744 7.17678 9.26256 7.46967 8.96967C7.76256 8.67678 8.23744 8.67678 8.53033 8.96967L12 12.4393L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z" fill="currentColor"></path> </g></svg>
+                                                </button>
+                                            </div>
+                                              <div id="meeting-attendance-accordion-collapse" class="collapse show" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
+                                                <div class="meeting-attendance meeting-attendance-accordion-div">
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">10</div>
+                                                        <div class="meeting-attendance-title">Agenda</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">20</div>
+                                                        <div class="meeting-attendance-title">Notes</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">50</div>
+                                                        <div class="meeting-attendance-title">Task</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">70</div>
+                                                        <div class="meeting-attendance-title">S-Mail</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">65</div>
+                                                        <div class="meeting-attendance-title">Portfolio</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">90</div>
+                                                        <div class="meeting-attendance-title">Project</div>
+                                                    </div>
+                                                    <div class="meeting-attendance-item" >
+                                                        <div class="meeting-attendance-count">2</div>
+                                                        <div class="meeting-attendance-title">Attachments</div>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                        </div>
+
+
 
 
                                     </ng-container>
@@ -5273,7 +5399,7 @@
                   title="Not Linked">
 
                </ng-container>
-              </a> View or link SM
+              </a> View or link S-Mail
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar() ">
@@ -5312,7 +5438,7 @@
           <div class="matchip-drp-dwn">
 
               <mat-form-field class="drp-dwn-field">
-                  <mat-label>Select DMS</mat-label>
+                  <mat-label>Select S-Mail</mat-label>
                   <mat-chip-list #selectedmemoslist>
                       <mat-chip *ngFor="let memo of selectedMemos" class="Data_chip_kt"
                           (removed)="removeSelectedMemo(memo)">

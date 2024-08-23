@@ -391,7 +391,7 @@ export class MeetingReportComponent implements OnInit {
   leave: boolean = false;
 
   leavemeet(event: any) {
-  
+  debugger
     this.StatusType=true;
     if(this.StatusType==true){
       // this.stopTimer();

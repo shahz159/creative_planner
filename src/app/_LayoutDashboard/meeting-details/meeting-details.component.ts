@@ -528,10 +528,15 @@ export class MeetingDetailsComponent implements OnInit {
   totalCompletedAgenda: any;
   urlUserID_Password: any;
   Endtms: any;
+  EventAction_type:any;
 
   meeting_details_1() {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
+
+
+
+
 
   delayMeeting: any;
   upcomingMeeting: any;
@@ -540,11 +545,14 @@ export class MeetingDetailsComponent implements OnInit {
   completionReports_Status:any=[];
   totalUser_Scheduledjson:any;
   completionReports:any;
-
+  CurrentNotesCount:any;
+  CurrentTaskCount:any;
+  
 
   meeting_details() {
-
+ 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
+
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
@@ -610,9 +618,10 @@ export class MeetingDetailsComponent implements OnInit {
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
 
+      this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
+      this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
-
-
+      console.log(this.CurrentNotesCount,'CurrentNotesCount')
 
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
         this.hasStatusOne = true;
@@ -624,7 +633,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.completedAgendaList = this.Agendas_List.filter(item => item.Status == 1)
       this.totalCompletedAgenda = this.completedAgendaList.length;
 
-      //console.log(this.totalAgendaList,'sdfb')
+    
 
       var x = this.Agendas_List.length;
 
@@ -786,7 +795,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.status_Type = 'Start';
     this.startTime = new Date();
     let currentDate = new Date();
-
+    
     // Get the current time components
     let currentHours = currentDate.getHours();
     let currentMinutes = currentDate.getMinutes();
@@ -940,7 +949,8 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  startMeetingOfAttendees() {
+  startMeetingOfAttendees() {   
+    this.Event_acceptandReject(1);
     this.meetingOfAttendees = false;
     this.play = true;
     this.status_Type = 'Start';
@@ -987,6 +997,35 @@ export class MeetingDetailsComponent implements OnInit {
 
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
+
+
+
+
+
+  Event_acceptandReject(val) {
+    this.EventAction_type=val
+    if (this.EventAction_type == 1) {
+     
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.flagid = this.EventAction_type;
+      this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        });
+      this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+      this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+      this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+        ((data) => {
+        
+          this._Message = data['message'];
+        });
+
+    }
+  }
+
+
+
+
 
   endTimeAtd: any
 
@@ -2236,7 +2275,7 @@ export class MeetingDetailsComponent implements OnInit {
   StatusType: boolean = true;
 
   leavemeet(event: any) {
-
+debugger
     this.StatusType = true;
     if (this.StatusType == true) {
       this.leave = true;
@@ -2283,8 +2322,17 @@ export class MeetingDetailsComponent implements OnInit {
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
       }
-     debugger
+  
       this.Notes_Type.trim();
+
+      if (this.Notes_Type) {
+        this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
+      }else{
+        this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
+      }
+
+
+
 
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
@@ -3154,6 +3202,10 @@ export class MeetingDetailsComponent implements OnInit {
             // this.editorFocused=false;
             //this.GetAssignTask();
             this.notifyService.showSuccess("Successfully", "Added");
+
+          
+              this.CurrentTaskCount[this.currentAgendaView].TaskCount = 1;
+         
           });
       }
     } else {
@@ -3164,6 +3216,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   selectedAttendeesList = new Set<any>();
+  assignCount:any
 
   onCheckboxChange(event: any, employee: any) {
     if (event.checked) {
@@ -3171,6 +3224,7 @@ export class MeetingDetailsComponent implements OnInit {
     } else {
       this.selectedAttendeesList.delete(employee);
     }
+    this.assignCount = this.selectedAttendeesList.size;
     console.log('Selected Employees:', this.selectedAttendeesList);
   }
 
@@ -3291,7 +3345,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
 
@@ -3315,6 +3369,12 @@ export class MeetingDetailsComponent implements OnInit {
 
   }
 
+  clearFilter(){
+    this.selectedAttendeesList.clear();
+    this.assignCount=0
+  }
+
+  filteredEmployees:any;
 
 
   GetAssigned_SubtaskProjects() {
@@ -3329,26 +3389,46 @@ export class MeetingDetailsComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
 
-        // this.CategoryList = JSON.parse(data[0]['CategoryList']);
-        this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
-        this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+                // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+                this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+                this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
 
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        this.Clientjson = JSON.parse(data[0]['Client_json'])
-        //console.log(this.ActionedAssigned_Josn,"ActionedAssigned_Josn");
+                this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+                this.Clientjson = JSON.parse(data[0]['Client_json'])
+          
 
-        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-
-
-        this.assigncount = this.ActionedAssigned_Josn.length;
-        this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+                this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
 
 
-        this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
-        this.FiterEmployee = this.EmployeeList;
+                this.assigncount = this.ActionedAssigned_Josn.length;
+                this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+
+
+                this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
+                this.FiterEmployee = this.EmployeeList;
+     
+
+                 const orderedEmpNos = new Set(this.orderedItems.map(item => item.stringval));
+
+                  this.filteredEmployees = this.FiterEmployee.filter((employee) => {
+                    const isCreatedBy = employee.TM_DisplayName === this.Createdby;
+                    const isInOrderedEmpNos = orderedEmpNos.has(employee.Emp_No);
+
+                    // Return true for objects that match your conditions
+                    return isCreatedBy || isInOrderedEmpNos;
+                  });
+
+                  // Remove the filtered objects from the original array
+                  this.FiterEmployee = this.FiterEmployee.filter((employee) => {
+                    const isCreatedBy = employee.TM_DisplayName === this.Createdby;
+                    const isInOrderedEmpNos = orderedEmpNos.has(employee.Emp_No);
+
+                    // Return false to remove objects that match your conditions
+                    return !(isCreatedBy || isInOrderedEmpNos);
+                  });
 
       });
-
+  
   }
 
 
@@ -3377,6 +3457,7 @@ export class MeetingDetailsComponent implements OnInit {
             this._Demotext = "";
             this.notifyService.showInfo("Successfully", message);
             this.GetAssigned_SubtaskProjects();
+            this.CurrentTaskCount[this.currentAgendaView].TaskCount=0;
           });
       }
       else {
@@ -3488,6 +3569,7 @@ export class MeetingDetailsComponent implements OnInit {
             this.taskcount[i].count += 1;
         });    // 2. update new task count data.
 
+       
         this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
         if (this.meetingStarted || this.meetingStarted != true) {
 
@@ -6280,7 +6362,9 @@ debugger
   close_projectmodals() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("projectmodals").style.display = "none";
-    this.Assigntext = ''
+    this.Assigntext = '';
+    this.selectedAttendeesList.clear();
+    this.assignCount=0
   }
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
@@ -6288,6 +6372,15 @@ debugger
   }
   close_project_filter() {
     document.getElementById("project-filter").classList.remove("show");
+    document.getElementById("filter-icon").classList.remove("active");
+  }
+
+  project_filters() {
+    document.getElementById("project-filter1").classList.add("show");
+    document.getElementById("filter-icon").classList.add("active");
+  }
+  close_project_filters() {
+    document.getElementById("project-filter1").classList.remove("show");
     document.getElementById("filter-icon").classList.remove("active");
   }
 
@@ -6304,8 +6397,14 @@ debugger
     const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
     if(searchField)searchField.focus();
 
-    if(modaltype==='PROJECT')
-    this.onProjectSearch('');
+    // if(modaltype==='PROJECT')
+    // this.onProjectSearch('');
+    if(modaltype==='PROJECT'){
+      this.onProjectSearch('');
+      this.choosedItems.getPcodes=()=>{
+          return this.choosedItems.map(item=>item.Project_Code);
+      }
+    }
 
     if(modaltype!='PROJECT')
       this.onInputSearch('');
@@ -6351,7 +6450,7 @@ debugger
     }
 
     const result=arrtype.filter(item=>{
-
+     
       const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
       let nameMatched:boolean=false;
       if(unselected)
@@ -6463,6 +6562,7 @@ debugger
 
 
   onItemChoosed(choosed:any,choosedItem:any){
+    
     if(choosed){
       this.choosedItems.push(choosedItem);
     }
@@ -6472,19 +6572,20 @@ debugger
       this.choosedItems.splice(i,1);
 
       // when removing already selected items
-      if(this.projectmodaltype==='PROJECT'){
-            const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
-            if(j>-1){
-              this.MasterCode.splice(j,1);
-              this.projectsSelected.splice(j,1);
-            }
-      }
-      else{
-        const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
-        const j=ary.findIndex(item=>item==choosedItem);
-        if(j>-1)
-        ary.splice(j,1);
-      }
+      // if(this.projectmodaltype==='PROJECT'){
+      //       const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
+      //       if(j>-1){
+      //         this.MasterCode.splice(j,1);
+      //         this.projectsSelected.splice(j,1);
+      //       }
+      // }
+      // else{
+       
+      //   const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+      //   const j=ary.findIndex(item=>item==choosedItem);
+      //   if(j>-1)
+      //   ary.splice(j,1);
+      // }
          // when removing already selected items
     }
 }
