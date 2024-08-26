@@ -16,12 +16,14 @@
     z-index: 14;
 }
 .sticky-header{
-    margin-top: 0px;
-    z-index: 14;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0px;
-    font-size: 18px;
+  margin-top: 0px;
+  z-index: 14;
+  position: sticky;
+  top: 0px;
+  font-size: 18px;
+  padding: 10px 0px;
+  margin-bottom: 0px;
+  gap: 8px;
 }
 .pro-name {
     cursor: pointer;
@@ -756,3 +758,64 @@ span.previous-dot {
 background-color: #c5c5c5;
 border-radius:5px;
 }
+
+
+/*timeline submit start css*/
+
+.tl-status{
+  color: white;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.tl-status.tl-submitted{
+  background-color: #388e3c30 !important;
+  color: #388e3c !important;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tl-status.tl-notsubmitted{
+  background-color: #88888836 !important;
+  color: #888888 !important;
+}
+
+.tl-status.tl-underaprvl{
+  background-color: #9C27B0 !important;
+  color: white !important;
+}
+
+.tl-status.tl-suspend{
+  background-color: #795548 !important;
+  color: white !important;
+}
+
+
+
+
+.tl-status.tl-submitted{
+  background-color: #388e3c30 !important;
+  color: #388e3c !important;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tl-status.tl-notsubmitted{
+  background-color: #88888836 !important;
+  color: #888888 !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tl-status.tl-notsubmitted{
+
+}
+
+
+
+
+
+/*timeline submit end css*/

@@ -830,9 +830,18 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTaskwithAgenda", this._ObjAssigntaskDTO);
   }
 
+
   _InsertAssignTaskServie(fd) {
+    debugger
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
+
+
+  updatePendingtask(fd) {
+
+    return this.http.post(this.rootUrl + "Notification/NewUpdateAssignTask", fd);
+  }
+
 
   _InsertDARServie(obj: ProjectDetailsDTO) {
     this.ObjDto.Emp_No = obj.Emp_No;
@@ -1048,7 +1057,17 @@ export class ProjectTypeService {
 
 
 
+  GetTimelineSubmissionStatus(empno:string){
+       this.ObjSubTaskDTO.Emp_No=empno;
+       return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineSubmissionStatus',this.ObjSubTaskDTO);
+  }
 
+
+  NewInsertTimelineReport(empno:string,submDate:string){
+    this.ObjSubTaskDTO.Emp_No=empno;
+    this.ObjSubTaskDTO.submissionDate=submDate;
+    return this.http.post(this.rootUrl+'ApprovalAPI/NewInsertTimelineReport',this.ObjSubTaskDTO);
+  }
 
 
 }

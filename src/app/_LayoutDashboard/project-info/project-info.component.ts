@@ -311,7 +311,7 @@ Prj_Code:any;
   Approver_Name: any;
   Approver_No: any;
   isRequest: any;
-
+  projectActionInfo:any
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
@@ -320,6 +320,7 @@ Prj_Code:any;
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
           this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json']);
+          console.log(this.ProjectInfoJson,"this.ProjectInfoJsonthis.ProjectInfoJsonthis.ProjectInfoJson")
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
           this.Approver_No = this.ProjectStatesJson[0]['ApproverEmpNo'];
           this.isRequest = this.ProjectStatesJson[0]['request_type'];
@@ -335,6 +336,7 @@ Prj_Code:any;
 
           if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json'] != undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
+            console.log( this.Action_countJson," this.Action_countJson this.Action_countJson this.Action_countJson this.Action_countJson")
             this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);
             this.Action_countJson.forEach((item) => {
 
@@ -401,6 +403,8 @@ Prj_Code:any;
           this.EmpNo_Own = this.ProjectInfoJson[0]['OwnerEmpNo'];
           this.EmpNo_Res = this.ProjectInfoJson[0]['ResponsibleEmpNo'];
           this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
+          // this.projectActionInfo =this.ProjectNameJson[0]['Action_Json']
+          // console.log(this.projectActionInfo,'this.projectActionInfo')
           // alert(this.EmpNo_Own);
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectNameJson[0]['Team_Res'];
@@ -415,7 +419,7 @@ Prj_Code:any;
           if(this.ProjectStatesJson[0].Status=='Completion Under Approval'){
             this.get_Dropdowns_data();
           }
-          
+
 
         }
       });
@@ -453,7 +457,7 @@ Prj_Code:any;
       this.router.navigate(["/backend/ProjectsSummary/"]);
 
     }
-    else if (this._Urlid == '2') { 
+    else if (this._Urlid == '2') {
       this.BsService.bs_SelectedPortId.subscribe(c => { this.port_id = c });
       // alert(this.port_id);
       this.router.navigate(["../portfolioprojects/" + this.port_id + "/"]);
@@ -1178,7 +1182,7 @@ Prj_Code:any;
         this.Audit_active=false;
         this.Transfer_active=true;
       };break;
-        
+
       default: { }
     }
     this.isTextAreaVisible = true;
@@ -1241,7 +1245,7 @@ Prj_Code:any;
       console.log(this.singleapporval_json, "accept")
 
     }
-    else if (this.selectedType == '2') {   
+    else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -1984,7 +1988,7 @@ Prj_Code:any;
   }
 
 
-  LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) { 
+  LoadDocument1(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
     let FileUrl: string;
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
@@ -2227,7 +2231,7 @@ GetRacisPeople(){
       if(prj_auditor){
         this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
       }
-      // If project has project auditor 
+      // If project has project auditor
     }
   )
 }
@@ -2249,7 +2253,7 @@ sel_prjname:string|undefined;  // proj name provided.
 sel_user:any;       // selected emp
 sel_ptype:any;     // selected prj type
 sel_sdate:any;    // selected start date.
-sel_edate:any;   // selected end date.    
+sel_edate:any;   // selected end date.
 sel_submtype:any;  // selected submission type.
 ProjectType_json:any;
 Submission:any;
@@ -2281,20 +2285,20 @@ get_Dropdowns_data(){
   });
 
   this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
-    this._portfoliosList2 = data as [];  
+    this._portfoliosList2 = data as [];
     console.log('porfolios found:',this._portfoliosList2);
 
-    // include current portfolio 
+    // include current portfolio
     if(this._Urlid=='2'){
-      this.BsService.bs_SelectedPortId.subscribe(prfid => { 
+      this.BsService.bs_SelectedPortId.subscribe(prfid => {
         this.ngDropdwonPort2=[prfid];
        });
     }
-    // include current portfolio 
-    
+    // include current portfolio
+
 
   });
-  
+
 }
 
 
@@ -2313,10 +2317,10 @@ onca_PortfolioSelected(e){
     if (index === -1) {
          this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
     }
-    else{ 
+    else{
          this.ngDropdwonPort2.splice(index,1);
     }
-    
+
  }
 //  requestAnimationFrame(()=>this.customTrigger.openPanel());
 }
@@ -2341,7 +2345,7 @@ onPrjAuditSubmitClicked(){
           this.notProvided=true;
           return;
          }
-         else 
+         else
          this.notProvided=false;
 
       const project_code:string=this.projectCode;
@@ -2354,9 +2358,9 @@ onPrjAuditSubmitClicked(){
               this.notifyService.showSuccess(res.message,'Success');
               this.LoadProjectDetails();
               this.getapprovalStats();
-             
+
           }
-          else 
+          else
             this.notifyService.showError('something went wrong.','Failed');
 
       })
@@ -2367,7 +2371,7 @@ onTransferBtnClicked(){
               this.notProvided=true;
               return;
           }
-          else 
+          else
             this.notProvided=false;
 
           const project_code:string=this.projectCode;

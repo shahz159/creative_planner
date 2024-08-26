@@ -6298,6 +6298,40 @@ datemen(dialogId:string){
 date_menuclo(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
 }
+
+selectedItemsTippy:any;
+updateTippyItems(){
+  let newstr='';
+  let names=[];
+  switch(this.projectmodaltype)
+  {
+      case 'PROJECT':{
+         names=this.choosedItems.map((obj)=>obj.BlockNameProject);
+      };break;
+      case 'DMS':{
+         names=this.Memos_List.filter(item=>this.choosedItems.includes(item.MailId)).map(obj=>obj.Subject);
+      };break;
+      case 'PARTICIPANT':{
+         names=this._EmployeeListForDropdown.filter(item=>this.choosedItems.includes(item.Emp_No)).map(obj=>obj.DisplayName);
+      };break;
+      case 'PORTFOLIO':{
+         names=this.Portfoliolist_1.filter(item=>this.choosedItems.includes(item.portfolio_id)).map(obj=>obj.Portfolio_Name);
+      };break;
+  }
+
+  if(names&&names.length){
+      newstr=`
+      <div class='p-1'>
+        <div class='fs-6 mb-3 text-info'>(${names.length}) choosed</div>
+        <ul type='i' class='pl-3'>
+          ${names.map(item=>`<li class='fs-7 mb-1'>${item}</li>`).join('')}
+        </ul> 
+      </div>
+      `;
+  }
+  this.selectedItemsTippy[0].setContent(newstr);
+}
+
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
  
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
@@ -6306,11 +6340,28 @@ projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
   const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
   if(searchField)searchField.focus();
 
-  if(modaltype==='PROJECT')
-  this.onProjectSearch('');
+  if(modaltype==='PROJECT'){
+    this.onProjectSearch('');
+    this.choosedItems.getPcodes=()=>{
+        return this.choosedItems.map(item=>item.Project_Code);
+    }
+  }
 
-  if(modaltype!='PROJECT')
+  if(modaltype!='PROJECT'){
     this.onInputSearch('');
+  }
+   
+  setTimeout(()=>{
+    this.selectedItemsTippy=tippy((this.projectmodaltype=='PROJECT')?'#keep-items-btn1':'#keep-items-btn2', {
+      content: '',
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: '',
+      placement: 'left',
+      allowHTML: true
+    });
+  },1000)
+  
 }
 close_projectmodal(){
   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -6342,7 +6393,7 @@ updateCharacterCount(): void {
 companies_Arr:any;
 basedOnFilter:any={};
 projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
-choosedItems:any=[];
+choosedItems:any=new Array();
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
 discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:string){
@@ -6412,7 +6463,7 @@ keepChoosedItems(){
 
 }
 
-onItemChoosed(choosed:any,choosedItem:any){
+onItemChoosed(choosed:boolean,choosedItem:any){
     if(choosed){
       this.choosedItems.push(choosedItem);
     }
@@ -6422,22 +6473,25 @@ onItemChoosed(choosed:any,choosedItem:any){
       this.choosedItems.splice(i,1);
 
       // when removing already selected items
-      if(this.projectmodaltype==='PROJECT'){
-            const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
-            if(j>-1){
-              this.MasterCode.splice(j,1);
-              this.projectsSelected.splice(j,1);
-            }
-      }
-      else{
-        const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
-        const j=ary.findIndex(item=>item==choosedItem);
-        if(j>-1)
-        ary.splice(j,1);
-      }
+      // if(this.projectmodaltype==='PROJECT'){
+      //       const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
+      //       if(j>-1){
+      //         this.MasterCode.splice(j,1);
+      //         this.projectsSelected.splice(j,1);
+      //       }
+      // }
+      // else{
+      //   const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+      //   const j=ary.findIndex(item=>item==choosedItem);
+      //   if(j>-1)
+      //   ary.splice(j,1);
+      // }
          // when removing already selected items
     }
+
+    this.updateTippyItems();
 }
+
 
 onPortfolioFilter(){
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
@@ -6502,6 +6556,20 @@ clearAppliedFiltered(){
 }
 
 // new design of select prj,select memo, select portfo, select participants.....etc end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
