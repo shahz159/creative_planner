@@ -6306,7 +6306,7 @@ updateTippyItems(){
   if(names&&names.length){
       newstr=`
       <div class='p-1'>
-        <div class='fs-6 mb-3 text-info'>(${names.length}) choosed</div>
+        <div class='fs-6 mb-3 text-info'>(${names.length}) selected</div>
         <ul type='i' class='pl-3'>
           ${names.map(item=>`<li class='fs-7 mb-1'>${item}</li>`).join('')}
         </ul> 
