@@ -950,7 +950,10 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   startMeetingOfAttendees() {   
-    this.Event_acceptandReject(1);
+    if(this.Isadmin==false){
+      this.Event_acceptandReject(1);
+    }
+   
     this.meetingOfAttendees = false;
     this.play = true;
     this.status_Type = 'Start';
