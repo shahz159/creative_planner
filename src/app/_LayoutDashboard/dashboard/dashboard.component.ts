@@ -7134,6 +7134,6 @@ sortbyCurrent_Time(){
   this.validStartTimearr=[...this.StartTimearr];
 
 }
-
+editorPlaceholder: string = 'Meeting link';
 
 }

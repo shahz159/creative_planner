@@ -28,6 +28,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
+import { ShareModule } from 'src/app/Shared/share/share.module';
 
 
 
@@ -57,7 +58,8 @@ import { MeetingDetailsComponent } from '../meeting-details/meeting-details.comp
     ReactiveFormsModule,
     AsyncPipe,
     MatCheckboxModule,
-    ScrollingModule
+    ScrollingModule,
+    ShareModule
 
     ],
   providers: [
