@@ -323,7 +323,7 @@ Prj_Code:any;
           console.log(this.ProjectInfoJson,"this.ProjectInfoJsonthis.ProjectInfoJsonthis.ProjectInfoJson")
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
           this.Approver_No = this.ProjectStatesJson[0]['ApproverEmpNo'];
-          this.isRequest = this.ProjectStatesJson[0]['request_type'];
+          this.isRequest = this.ProjectStatesJson[0]['request_type'];   console.log('this.isRequest:',this.isRequest);
           this.ProjectType_json=JSON.parse(data[0]['ProjectBlock']);
           this.Submission=JSON.parse(data[0]['submission_json']);
 

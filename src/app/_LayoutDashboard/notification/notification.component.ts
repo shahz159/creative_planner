@@ -124,7 +124,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = type;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
-      (data) => { debugger
+      (data) => { 
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
@@ -413,7 +413,12 @@ export class NotificationComponent implements OnInit {
   }
 
   LeaveDetail: any;
-  myLeaveDetails:any;
+  // myLeaveDetails:any;
+  empInformation:any;
+  empLeaveDetails:any;
+  managerApproval:any;
+  hrApproval:any;
+
   currentReqIndex: number = -1;
   currentResIndex:number=0;
   notProvided:boolean=false;
@@ -458,25 +463,65 @@ export class NotificationComponent implements OnInit {
   }
 
 
-  leaveform(index,currentuser,leavecode){
+  // leaveform(index,currentuser,leavecode){
   
+  //   this.currentResIndex=index;
+
+
+
+  //   this.approvalservice.GetEmployeeLeaveDetail(currentuser, leavecode).subscribe((data) => {
+  //       console.log("responssesse:",data);
+  //       // this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
+  //       // console.log("leave deatils asdf:",this.myLeaveDetails);
+       
+  //     });
+
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  //   document.getElementById("leave_requisition_form_slider_bar").classList.add("kt-quick-panel--on");
+  //   $('#leave_requisition_form_slider_bar').addClass('open_requisition_sidebar_info');
+  // }
+
+
+
+  viewLeaveResponseDetails(index:number,leaveCode:string,requestType:string){
     this.currentResIndex=index;
-    this.approvalservice.GetEmployeeLeaveDetail(currentuser, leavecode).subscribe((data) => {
-        console.log("responssesse:",data);
-        this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
-        console.log("leave deatils asdf:",this.myLeaveDetails);
-        // this.myLeaveDetails=JSON.parse(data[0]['LeaveResponsedetails']);
-        // console.log('asdf:',this.myLeaveDetails);
-      });
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.Leave_Code=leaveCode;
+    this.approvalObj.Request_type=requestType;
 
+    this.approvalservice.NewGetEmployeeLeaveResponse(this.approvalObj).subscribe((res:any)=>{
+            console.log('NewGetEmployeeLeaveResponse  data: ',res);
+             if(res){
+              this.empInformation=JSON.parse(res[0].EmpInformation);
+              this.empLeaveDetails=JSON.parse(res[0].EmpLeaveDetails);
+              
+              const mngAprv=JSON.parse(res[0].ManagerApproval);
+              if(mngAprv&&mngAprv.length>0){
+                 this.managerApproval=mngAprv[0];
+                 this.managerApproval.duration=Math.abs(moment(mngAprv[0].Start_Date).diff(moment(mngAprv[0].End_Date),'days'))+1;
+              }
+              
+              const hrAprvl=JSON.parse(res[0].HRApproval);
+              if(hrAprvl&&hrAprvl.length>0){
+                  this.managerApproval=hrAprvl[0];
+                  this.hrApproval=hrAprvl[1];
+                  this.managerApproval.duration=Math.abs(moment(this.managerApproval.Start_Date).diff(moment(this.managerApproval.End_Date),'days'))+1;
+                  this.hrApproval.duration=Math.abs(moment(this.hrApproval.Start_Date).diff(moment(this.hrApproval.End_Date),'days'))+1;
+              }
+              else 
+              this.hrApproval=null;
 
-
+             }   
+    });
 
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("leave_requisition_form_slider_bar").classList.add("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').addClass('open_requisition_sidebar_info');
   }
+
+
   close_requisition_form() {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -581,7 +626,7 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  isTypeChecked(item) {  debugger
+  isTypeChecked(item) {  
     let arr = [];
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
@@ -652,7 +697,7 @@ export class NotificationComponent implements OnInit {
 
   applyFilters() {
 
-    debugger
+    
 
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -678,7 +723,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
-      .subscribe(data => {   debugger
+      .subscribe(data => {   
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
 
 
@@ -1311,11 +1356,7 @@ putCmts(cmt:string)
 }
 
 
-
-
-
 // leave requests approval end
-
 onButtonClick(buttonId: string) {
   const elements = document.getElementsByClassName('btn-filtr');
   for (let i = 0; i < elements.length; i++) {

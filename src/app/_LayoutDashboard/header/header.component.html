@@ -887,7 +887,7 @@
         <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
             <div class="apply-heading">
                 <h3>Apply for leave</h3>
-                <p>You have <span class="highlight">7 casual leaves, 2 sick leaves</span> in your account.</p>
+                <p class="d-none">You have <span class="highlight">7 casual leaves, 2 sick leaves</span> in your account.</p>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -980,7 +980,7 @@
                 <div class="col-md-6 mb-3">
                     <label for="to">From<span style="color:red;">*</span></label>
                     <div class="leave-date mb-0">
-                        <input [ngClass]="{'error-border':((!leaveStartsOn&&notProvided)||invalidStartDate)}" [min]="min_date"  [max]="max_date"  (dateChange)="onDatesChanged($event)"  [(ngModel)]="leaveStartsOn" [matDatepicker]="frompicker"  placeholder="Start Date" (click)="frompicker.open()"
+                        <input [ngClass]="{'error-border':((!leaveStartsOn&&notProvided)||invalidStartDate)}" [min]="min_date"  [max]="max_date"  (dateChange)="onDatesChanged()"  [(ngModel)]="leaveStartsOn" [matDatepicker]="frompicker"  placeholder="Start Date" (click)="frompicker.open()"
                                 class="form-control">
                             <span class="leave-date-icon">
                                 <mat-datepicker-toggle matSuffix [for]="frompicker"></mat-datepicker-toggle>
@@ -989,11 +989,12 @@
                     </div>
                     <span *ngIf="leaveStartsOn&&invalidStartDate" style="color:red">invalid start date.</span>   
                     <span *ngIf="!leaveStartsOn&&notProvided" style="color:red">start date required.</span>
+                    <p *ngIf="selectedLeaveType==4" class="text-primary">Umrah leave cannot be more than 1 day and must be on saturday.</p>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="to">To<span style="color:red">*</span></label>
                     <div class="leave-date mb-0">
-                        <input [ngClass]="{'error-border':((!leaveEndsOn&&notProvided)||invalidEndDate)}" [min]="leaveStartsOn" (dateChange)="onDatesChanged($event)"  [(ngModel)]="leaveEndsOn"  [matDatepicker]="topicker"   placeholder="End Date" (click)="topicker.open()"
+                        <input [ngClass]="{'error-border':((!leaveEndsOn&&notProvided)||invalidEndDate)}" [min]="leaveStartsOn" [max]="max_date2" (dateChange)="onDatesChanged()"  [(ngModel)]="leaveEndsOn"  [matDatepicker]="topicker"   placeholder="End Date" (click)="topicker.open()"
                                 class="form-control">
                             <span class="leave-date-icon">
                                 <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
@@ -1002,8 +1003,13 @@
                     </div>
                     <span *ngIf="leaveEndsOn&&invalidEndDate" style="color:red;">invalid end date.</span>    
                     <span *ngIf="!leaveEndsOn&&notProvided" style="color:red">end date required.</span>
+                    <p *ngIf="selectedLeaveType==1" class="text-primary">Annual leave cannot be more than 30 days.</p>
+                    <p *ngIf="selectedLeaveType==2" class="text-primary">Emergency leave cannot be more than 10 days.</p>
+                    <p *ngIf="selectedLeaveType==3" class="text-primary">Casual leave cannot be more than 3 days.</p>
+                    <p *ngIf="selectedLeaveType==5" class="text-primary">Hajj leave cannot be more than 10 days.</p>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group ">

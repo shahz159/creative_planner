@@ -4453,11 +4453,11 @@ span.Rq_date_V {
 
 .newversion-notification .notif-msg .notif-msg-anchorlink{
    color: #00a2eb;
+   text-decoration: underline !important;
 
 }
 
 .newversion-notification .notif-msg .notif-msg-anchorlink:hover{
-   text-decoration: underline !important;
    cursor: pointer;
 }
 
@@ -8476,7 +8476,7 @@ span.time-value {
 }
 .kt-detail-link {
   border: 1px solid #9fbbff;
-  background-color: #5a82e11f;
+  background-color: #5a82e108;
 }
 .kt-detail-iconname{
  color: #5d5d5d;
@@ -8563,3 +8563,19 @@ span.time-value {
 .timeline .timeline-container .timeline-body .timeline-content {
   color: #999;
 } 
+
+
+.completed-with-delay{
+    background-color: #d32f2f33;
+    color: #dc3545;
+    font-weight: 600;
+    padding: 0.09em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    line-height: 23px;
+    border-radius: 2px;
+    font-size: 10px;
+    min-height: 24px;
+    position: absolute;
+    right: 14px;
+}
