@@ -697,10 +697,14 @@
                                                                   'Hold':projectInfo.Status==='Project Hold',
                                                                   'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval',
                                                                   'Delay':projectInfo.Project_Block=='003'&&projectInfo.Status.includes('Delay')
-                                                                  }">
+                                                                  }"   [attr.title]="(projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' day(s)' + ' Delay ': '') ||
+                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status : '')"
+                                                                  
+                                                              
+                                                                  >
                                                           {{
                                                           projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
-                                                          projectInfo.Status==='Delay'?'Delay '+projectInfo.Delaydays+' days':
+                                                          projectInfo.Status==='Delay'? getDelayText(projectInfo):
                                                           projectInfo.Status==='Under Approval' ? 'New approval':
                                                           projectInfo.Status==='InProcess'?'In-process':
                                                           projectInfo.Status=='Under Approval'?'New approval':
@@ -708,8 +712,7 @@
                                                           projectInfo.Status== "Completion Under Approval"?"Completion approval":
                                                           projectInfo.Status=='Forward Under Approval'? "Forward approval":
                                                           projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
-                                                          projectInfo.Status=='InProcess'?'In-process':
-                                                          projectInfo.Status
+                                                          projectInfo.Status=='InProcess'?'In-process': getStandardText(projectInfo)
                                                           }}
 
                                                       </div>
@@ -1498,7 +1501,7 @@
 
                                                                           <span [ngSwitch]="action.Status">
                                                                               <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
-                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">Delay {{action&&action.Delaydays}} day(s)</span>
+                                                                              <span *ngSwitchCase="'Delay'" class="Status-Delay">{{getDelayText(action)}}</span>
                                                                               <span *ngSwitchCase="'InProcess'" class="Status-In-progress">In-process</span>
                                                                               <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
                                                                               <span *ngSwitchCase="'Under Approval'">New action approval</span>
@@ -2049,7 +2052,7 @@
           projectInfo.Status==='Not Started'||
           projectInfo.Status==='Project Hold'||
           ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)||
-          ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)) ||
+          ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == standardjson[0].approvalEmpID)) ||
           ((multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId))||
           (projectInfo.Project_Block==='003'&&projectInfo.totaltaskcount>0)||
           (projectInfo.Status=='Completed'&&projectInfo.VersionCode)||
@@ -2340,7 +2343,7 @@
         </ng-container>
 
 
-        <div *ngIf="(totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)" class="notification stdtask-underapproval-notification">
+        <div *ngIf="(totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == standardjson[0].approvalEmpID)" class="notification stdtask-underapproval-notification curser-pointer" (click)="ApprovalSideBar()">
             <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
                 enable-background="new 0 0 64 64" xml:space="preserve" style="
@@ -2696,8 +2699,8 @@
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
                                             <div class="kt-project-type " *ngSwitchCase="'Delay'">
-                                                  
-                                                  <div class="Kt-Pd-Status Delay">Delay {{projectInfo&&projectInfo.Delaydays}} day(s) </div>
+                                                  <div class="Kt-Pd-Status Delay"  [attr.title]="projectInfo.Delaydays? projectInfo.Delaydays + ' day(s)' + ' Delay ': '' ">
+                                                    {{getDelayText(projectInfo&&projectInfo)}}</div>
                                             </div>
 
                                             <div class="kt-project-type d-flex" *ngSwitchCase="'Completed'">
@@ -2767,8 +2770,8 @@
                                               </div> -->
 
                                           <ng-container *ngSwitchDefault>
-                                            <div  *ngIf="projectInfo&&projectInfo.Project_Block=='003'"  class="kt-project-type ">
-                                                <div class="Kt-Pd-Status Delay">{{projectInfo.Status}}</div>
+                                            <div  *ngIf="projectInfo&&projectInfo.Project_Block=='003'"  class="kt-project-type" title="{{projectInfo.Status}}">
+                                                <div class="Kt-Pd-Status Delay">{{getStandardText(projectInfo)}}</div>
                                              </div>
                                           </ng-container>
 
@@ -4445,9 +4448,9 @@
                                               <div [ngSwitch]="projectActionInfo[currentActionView].Status"
                                                   *ngIf="!requestType && Current_user_ID  != approval_Emp">
 
-                                                  <div *ngSwitchCase="'Delay'" class="kt-project-type">
-                                                      <div class="Kt-Pd-Status Delay">Delay
-                                                          {{projectActionInfo[currentActionView].Delaydays }} day(s)
+                                                  <div *ngSwitchCase="'Delay'" class="kt-project-type" [attr.title]="projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' day(s)' + ' Delay ' :''">
+                                                      <div class="Kt-Pd-Status Delay">
+                                                        {{ getDelayText(projectActionInfo[currentActionView]) }}
                                                       </div>
                                                   </div>
 
@@ -4500,7 +4503,7 @@
                                                   *ngIf="requestType && Current_user_ID  == approval_Emp">
 
                                                   <div *ngSwitchCase="'Delay'" class="kt-project-type">
-                                                      <div class="Kt-Pd-Status Delay">Delay
+                                                      <div class="Kt-Pd-Status Delay" >Delay
                                                           {{projectActionInfo[currentActionView].Delaydays }} day(s)
                                                       </div>
                                                   </div>
@@ -5480,8 +5483,27 @@
       </li>
       <li class="kt-nav__item px-4">
           <div class="matchip-drp-dwn">
+  
+                <div class="se-col-11">
+                    <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('DMS')">
+                        <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S-Mail':'Add S-Mail')}}</div>
+                        <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <ul class="schedule-select-list" *ngIf="loading==false"  >
+                        <li *ngFor="let memoid of SelectDms">
+                           <div class="schedule-select-list-item">
+                            <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
+                            <span (click)="discardChoosedItem('DMS',memoid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                           </div>
+                           <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
+                        </li>
+                    </ul>
+                </div>
+             
 
-              <mat-form-field class="drp-dwn-field">
+              <!-- <mat-form-field class="drp-dwn-field">
                   <mat-label>Select S-Mail</mat-label>
                   <mat-chip-list #selectedmemoslist>
                       <mat-chip *ngFor="let memo of selectedMemos" class="Data_chip_kt"
@@ -5500,10 +5522,6 @@
                       <button *ngIf="!isDMSDrpDwnOpen" class="bg-transparent border-0"><mat-icon class="add-icon"
                               (click)="openMemoDrpDwn()">add</mat-icon></button>
                   </div>
-
-
-
-
 
                   <mat-autocomplete #memoDrpDown="matAutocomplete"   #DMSDROPDOWN
                   (optionSelected)="onMemoClicked($event); dmsSelectTF.value=''; "
@@ -5527,18 +5545,9 @@
                     </svg>
                     <span style="color:#757575" class="ml-2">No results found.</span>
                 </mat-option>
-
-
-
-
-
                   </ng-container>
-
               </mat-autocomplete>
-
-              </mat-form-field>
-
-
+              </mat-form-field> -->
 
               <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn "
                   (click)="addDMSToTheProject()">Link</button>
@@ -5630,7 +5639,39 @@
           <div class="kt-nav__separator"></div>
       </li>
       <div class="d-flex align-items-end p-3" style="column-gap:10px">
-          <mat-form-field class="drp-dwn-field w-100">
+
+
+
+
+                   
+                    <div class="se-col-11">
+                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PORTFOLIO');">
+                            <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
+                            <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+                            <li *ngFor="let prtfid of Portfolio">
+                                <div class="schedule-select-list-item">
+                                <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
+                                <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                </div>
+                                <div class="schedule-select-list-user">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').DisplayName}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                  
+
+
+
+
+
+
+
+
+
+          <!-- <mat-form-field class="drp-dwn-field w-100">
               <mat-label>Select portfolio(s)</mat-label>
               <mat-chip-list #selectedportfolioslist>
                   <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
@@ -5675,7 +5716,7 @@
 
 
               </mat-autocomplete>
-          </mat-form-field>
+          </mat-form-field> -->
           <button class="btn btn-label-primary btn-upper mb-4"
               (click)="addProjectToPortfolio()">Link</button>
 
@@ -10430,13 +10471,6 @@
                         </div>
 
 
-
-
-
-
-
-
-
                     </div>
             </div>
         </div>
@@ -11113,11 +11147,6 @@
         </mat-option>
 
 
-
-
-
-
-
       </mat-autocomplete>
   </mat-form-field>
 
@@ -11209,39 +11238,33 @@
 
 </div> -->
 
-<div class="se-row" id="core_Dms" style="display:none">
-  <div class="se-col-1">
-      <div class="label-icon">
-          <img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" >
-      </div>
-  </div>
-  <div class="se-col-11">
-      <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('DMS')">
-          <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add dms')}}</div>
-          <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
-              <span class="sr-only">Loading...</span>
-          </div>
-      </div>
-      <ul class="schedule-select-list" *ngIf="loading==false"  >
-          <li *ngFor="let memoid of SelectDms">
-             <div class="schedule-select-list-item">
-              <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
-              <span (click)="discardChoosedItem('DMS',memoid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
-             </div>
-             <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
-          </li>
-      </ul>
-  </div>
-</div>
+                        <div class="se-row" id="core_Dms" style="display:none">
+                        <div class="se-col-1">
+                            <div class="label-icon">
+                                <img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" >
+                            </div>
+                        </div>
+                        <div class="se-col-11">
+                            <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('DMS')">
+                                <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S-Mail':'Add S-Mail')}}</div>
+                                <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <ul class="schedule-select-list" *ngIf="loading==false"  >
+                                <li *ngFor="let memoid of SelectDms">
+                                    <div class="schedule-select-list-item">
+                                    <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
+                                    <span (click)="discardChoosedItem('DMS',memoid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                    </div>
+                                    <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        </div>
 
 
                       </div>
-
-
-
-
-
-
 
 
                       <div class="form-group se-row " id="core_viw123">

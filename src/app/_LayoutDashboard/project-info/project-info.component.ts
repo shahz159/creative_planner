@@ -311,6 +311,7 @@ Prj_Code:any;
   Approver_Name: any;
   Approver_No: any;
   isRequest: any;
+  actionList:any
   projectActionInfo:any
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
@@ -326,6 +327,8 @@ Prj_Code:any;
           this.isRequest = this.ProjectStatesJson[0]['request_type'];   console.log('this.isRequest:',this.isRequest);
           this.ProjectType_json=JSON.parse(data[0]['ProjectBlock']);
           this.Submission=JSON.parse(data[0]['submission_json']);
+          // this.actionList=JSON.parse(data[0]['Action_List']);
+          // console.log( this.actionList," this.actionList this.actionList")
 
           if(this.Approver_No && this.Approver_No==this.Current_user_ID){
             this.getapprovalStats();
@@ -336,7 +339,7 @@ Prj_Code:any;
 
           if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json'] != undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
-            console.log( this.Action_countJson," this.Action_countJson this.Action_countJson this.Action_countJson this.Action_countJson")
+            console.log( this.Action_countJson," this.Action_countJson this.Action_countJson")
             this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);
             this.Action_countJson.forEach((item) => {
 
@@ -370,6 +373,7 @@ Prj_Code:any;
           }
 
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
+          console.log( this.ProjectStatesJson," this.ProjectStatesJson this.ProjectStatesJson this.ProjectStatesJson")
 
           // console.log(this.ProjectInfoList,"pt");
           // this.ifcategoryZero = this.ProjectInfoList['CompleteReportType'];
@@ -403,11 +407,13 @@ Prj_Code:any;
           this.EmpNo_Own = this.ProjectInfoJson[0]['OwnerEmpNo'];
           this.EmpNo_Res = this.ProjectInfoJson[0]['ResponsibleEmpNo'];
           this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
-          // this.projectActionInfo =this.ProjectNameJson[0]['Action_Json']
-          // console.log(this.projectActionInfo,'this.projectActionInfo')
+
+          this.projectActionInfo =JSON.parse(this.ProjectStatesJson[0]['Action_List'])
+          console.log(this.projectActionInfo,'this.projectActionInfo')
           // alert(this.EmpNo_Own);
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectNameJson[0]['Team_Res'];
+
           // Date Diff In Days...
           this.date1 = moment(this.date1);
           this.date2 = moment(this.date2);

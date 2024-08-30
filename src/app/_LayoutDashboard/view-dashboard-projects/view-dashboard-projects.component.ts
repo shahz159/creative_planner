@@ -71,6 +71,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
+    private route: ActivatedRoute,
     private router: Router, private activatedRoute: ActivatedRoute,
     public createproject: CreateProjectComponent
 
@@ -94,24 +95,50 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.A2Z = true;
     this.Z2A = false;
     this._subtaskDiv = true;   debugger
-    this.Mode = this.activatedRoute.snapshot.params.Mode;
-    if(this.Mode=='DelayProjects'){
-      this.delayType=this.delayType1;
-      this.getDelayProjects(this.delayType1);
-    }
-    else if(this.Mode=='AssignedActions'){
-      this.getAssignedActions('TOME');
-    }
-    else{
-      this.GetCompletedProjects();
-    }
-    this.getAssignedProjects(this.type1);
-    this.router.navigate(["../ViewProjects/" + this.Mode]);
+    this.activatedRoute.queryParams.subscribe(params => {
+      const section = params['section'];
+
+      if (section) {
+        // Handle the case when you are coming from the dashboard
+        if (section === 'Projects') {
+          this.getDelayProjects(this.delayType1);
+        } else if (section === 'Actions') {
+          this.getDelayProjects(this.delayType2);
+        } else if (section === 'Assigned Project') {
+          this.Mode = this.activatedRoute.snapshot.params['Mode'];
+          this.getAssignedProjects(this.type1);
+          this.router.navigate(["../ViewProjects/" + this.Mode]);
+        }
+      } else {
+        // Handle the case when you are on this page or coming from another page
+        this.Mode = this.activatedRoute.snapshot.params['Mode'];
+        if (this.Mode === 'DelayProjects') {
+          this.getDelayProjects(this.delayType1);
+        } else if (this.Mode === 'AssignedActions') {
+          this.getAssignedActions('TOME');
+        } else {
+          this.GetCompletedProjects();
+        }
+        this.getAssignedProjects(this.type1);
+        this.router.navigate(["../ViewProjects/" + this.Mode]);
+      }
+    });
+
+
+    // this.route.queryParams.subscribe(params => {
+    //   const section=params.section;
+    //   this.getDelayProjects(section=='Projects'?this.delayType1:section=='Actions'?this.delayType2:this.delayType1);
+    // });
+
+
     // this.notFoundData=true;
     //this.AssignedTask = true;
     //this.projectsDataTable = false;
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
+
+
+
   initials: string;
   SubmissionType: string;
   SubmissionType1: string; StandardDuration: string;
@@ -301,7 +328,7 @@ console.log(this._ProjectDataList,'_ProjectDataList')
   Type: String;
 
   getAssignedProjects(type) {
-
+debugger
     let EmpNo = this.Current_user_ID;
     if (this.Mode == "AssignedTask") {
       this.AssignedTask = false;
@@ -1068,6 +1095,15 @@ openAssignedProject(assignId:string) {
 //   myWindow.focus();
 }
 
+
+
+getFormattedDelay(delayDays: any): string {
+  let delayText = '';
+  if (delayDays >= 365) {
+    const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+    else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+    else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+    else { delayText = `${delayDays} days`; } return `${delayText} Delay`; }
 
 
 

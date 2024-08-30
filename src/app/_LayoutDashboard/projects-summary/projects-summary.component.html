@@ -206,9 +206,10 @@
 
 
                                                     <mat-option [value]="emp.Company_No"  *ngFor="let emp of (CompanyCountFilter|filter:company_searchtf.value).slice(0,1000)">
-                                                        <mat-checkbox  color="primary"  [checked]="comToselect?comToselect.indexOf(emp.Company_No)!==-1:false"></mat-checkbox>
-                                                            {{emp.Name}}
-                                                            - {{emp.Count}}
+                                                      <div style="display: flex; align-items: center;">
+                                                      <mat-checkbox  color="primary"  [checked]="comToselect?comToselect.indexOf(emp.Company_No)!==-1:false"></mat-checkbox>
+                                                      <span style="margin-left: 10px;" >      {{emp.Name}} </span>
+                                                           <span style="margin-left: auto;"  > {{emp.Count}} </span></div>
                                                     </mat-option>
 
                                                </mat-autocomplete>
@@ -327,9 +328,10 @@
 
 
                                                     <mat-option [value]="emp.Emp_No"  *ngFor="let emp of EmpCountInFilter?(EmpCountInFilter|filter:employee_searchtf.value).slice(0,1000):[]">
-                                                        <mat-checkbox  color="primary" [checked]="emplyToselect?emplyToselect.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
-                                                            {{emp.Name}}
-                                                            - {{emp.Count}}
+                                                      <div style="display: flex; align-items: center;">
+                                                      <mat-checkbox  color="primary" [checked]="emplyToselect?emplyToselect.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
+                                                     <span  style="margin-left: 10px;" >      {{emp.Name}} </span>
+                                                           <span style="margin-left: auto;"> {{emp.Count}}</span></div>
                                                     </mat-option>
 
                                                </mat-autocomplete>
@@ -419,9 +421,10 @@
 
 
                                                     <mat-option [value]="emp.Block_No"  *ngFor="let emp of TypeContInFilter?(TypeContInFilter|filter:project_searchtf.value).slice(0,1000):[]">
-                                                        <mat-checkbox  color="primary" [checked]="projtypeToselect?projtypeToselect.indexOf(emp.Block_No)!==-1:false"></mat-checkbox>
-                                                            {{emp.Name}}
-                                                            - {{emp.Count}}
+                                                      <div style="display: flex; align-items: center;">
+                                                      <mat-checkbox  color="primary" [checked]="projtypeToselect?projtypeToselect.indexOf(emp.Block_No)!==-1:false"></mat-checkbox>
+                                                       <span style="margin-left: 10px;">    {{emp.Name}}</span>
+                                                           <span  style="margin-left: auto;">{{emp.Count}} </span></div>
                                                     </mat-option>
 
                                                </mat-autocomplete>
@@ -533,9 +536,10 @@
 
 
                                                       <mat-option [value]="emp.Name"  *ngFor="let emp of StatusCountFilter?(StatusCountFilter|filter:status_searchtf.value).slice(0,1000):[]">
-                                                          <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Name)!==-1:false"></mat-checkbox>
-                                                              {{emp.Name}}
-                                                              - {{emp.Count}}
+                                                        <div style="display: flex; align-items: center;">
+                                                        <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Name)!==-1:false"></mat-checkbox>
+                                                          <span style="margin-left: 10px;">   {{emp.Name =='Under Approval'?'New approval' :emp.Name=="Cancellation Under Approval"?"Cancellation approval": emp.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :emp.Name== "Completion Under Approval" ? "Completion approval" :emp.Name=='Forward Under Approval'? "Forward approval" :emp.Name=='InProcess'?'In-process':emp.Name}}
+                                                          </span><span style="margin-left: auto;">{{emp.Count}}</span></div>
                                                       </mat-option>
 
                                                  </mat-autocomplete>
@@ -1245,8 +1249,15 @@
                                                                     <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
                                                                      <ng-container *ngSwitchDefault>
                                                                         <span class="Delay_color font-weight-400" *ngIf="item.Status.toLowerCase().includes('delay')"><strong>{{item.Status}}</strong></span>
-                                                                        <span class="Not_Started font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{item.Status}}</span>
-                                                                     </ng-container>
+                                                                       <div class="attach-tippy" *ngIf="item.Status !== 'Not yet achieved'" >
+                                                                        <span class="vi font-weight-400 st-line"> {{item.Status}} Delay</span>
+                                                                        <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{getFormattedDelay(getStatusNumber(item.Status)) }}</span>
+                                                                      </div>
+                                                                      <div  *ngIf="item.Status === 'Not yet achieved'" >
+                                                                        <!-- <span class="vi font-weight-400 "> {{item.Status}} </span> -->
+                                                                        <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{(item.Status) }}</span>
+                                                                      </div>
+                                                                      </ng-container>
 
                                                             </ng-container>
                                                         </ng-container>
@@ -1256,13 +1267,28 @@
                                                                 <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                                 </span>
                                                             </div>
-                                                            <div *ngIf="item.Status=='Delay'">
-                                                                <span class=" font-weight-400"></span>
-                                                                <span *ngIf="item.Delaydays>=0"
-                                                                    class="Delay_color ">
-                                                                    <strong>{{item.Delaydays}} day(s) Delay </strong>
+                                                            <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
+                                                                <span class="vi font-weight-400 st-line"> {{item.Delaydays}} Days Delay</span>
+                                                                <span
+                                                                    class="Delay_color " >
+                                                                    <strong>{{getFormattedDelay(item.Delaydays)}}</strong>
                                                                 </span>
+
                                                             </div>
+
+<!--
+                                                            <span class="attach-tippy">
+
+                                                            </span> -->
+<!--
+                                                            <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                              <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                                                               <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span> -->
+
+
+
+
+
                                                             <!-- Other Status -->
 
                                                             <div *ngIf="item.Status=='InProcess'">
@@ -1302,11 +1328,11 @@
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                  <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                              </span> 
+                                                              </span>
                                                               <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span>                                                        
+                                                            </span>
                                                             </div>
-                                                           
+
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                                 <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
                                                                 </span>
@@ -1331,7 +1357,7 @@
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
                                                                 <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                                </span> 
+                                                                </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Project Complete Rejected'">
                                                                 <span class="Project_Complete_Rejected_color font-weight-400">Project

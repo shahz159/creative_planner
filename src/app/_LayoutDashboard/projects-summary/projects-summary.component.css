@@ -3316,7 +3316,7 @@ td:nth-child(4) {
   align-items: center;
   justify-content: center;
   padding: 12px;
-  background-color: #646C9A;
+  background-color: #388E3C !important;
 }
 
 .save-mat-selection:hover {
@@ -3470,3 +3470,6 @@ td:nth-child(4) {
 }
 
 /*new details page loading circle end*/
+.vi{
+  color:#D32F2F !important ;
+}

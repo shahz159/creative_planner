@@ -105,15 +105,25 @@ export class StreamDashboardComponent implements OnInit {
 
 
 
-  Delay_Click() {
+  Delay_Click(type) {
+debugger
+
+if (type === 'Assigned Project'){
+let Mode : string = 'AssignedTask'
+var url = document.baseURI + this.page_Name;
+var myurl = `${url}/${Mode}?section=${type}`;
+// console.log(myurl)
+var myWindow = window.open(myurl);
+myWindow.focus();
+}else {
     let Mode: string = "DelayProjects";
     var url = document.baseURI + this.page_Name;
-    var myurl = `${url}/${Mode}`;
+    var myurl = `${url}/${Mode}?section=${type}`;
     // console.log(myurl)
     var myWindow = window.open(myurl);
     myWindow.focus();
 
-  }
+  }  }
 
   AssignedActions_Click() {
     let Mode: string = "AssignedActions"

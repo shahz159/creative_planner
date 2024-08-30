@@ -950,7 +950,10 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   startMeetingOfAttendees() {   
-    this.Event_acceptandReject(1);
+    if(this.Isadmin==false){
+      this.Event_acceptandReject(1);
+    }
+   
     this.meetingOfAttendees = false;
     this.play = true;
     this.status_Type = 'Start';
@@ -1200,10 +1203,12 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   AddDMS_meetingreport() {
+
+
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Dms = this.selectedEmploy_DMS.map(item => item.MailId).toString()
+    this._calenderDto.Dms = this.SelectDms.toString()
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
 
     if (this._calenderDto.Dms) {
@@ -1212,7 +1217,7 @@ export class MeetingDetailsComponent implements OnInit {
 
           if (data.message == '1' || this._calenderDto.flagid == null || this._calenderDto.flagid != null) {
             this.notifyService.showSuccess("DMS added successfully", "Success");
-            this.selectedEmploy_DMS = [];
+            this.SelectDms = [];
             this.meeting_details();
             this.GetMemosByEmployeeId()
           }
@@ -1301,9 +1306,12 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   closeLinkSideBar() {
-    this.ngDropdwonPort = [];
-    this.selectedEmploy_Projects = [];
-    this.selectedEmploy_DMS = [];
+    // this.ngDropdwonPort = [];
+    this.Portfolio = [];
+    // this.selectedEmploy_Projects = [];
+    this.projectsSelected = [];
+    // this.selectedEmploy_DMS = [];
+    this.SelectDms = [];
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("LinkSideBar2").classList.remove("kt-quick-panel--on");
     if (this.fruitInputpro && this.fruitInputpro.nativeElement.value != undefined) {
@@ -1490,13 +1498,13 @@ export class MeetingDetailsComponent implements OnInit {
     if (this.agendaInputs != '') {
       this.addAgenda()
     }
-    if (this.ngDropdwonPort != '') {
+    if (this.Portfolio != '') {
       this.Addportfolios_meetingreport()
     }
-    else if (this.selectedEmploy_DMS != '') {
+    else if (this.SelectDms != '') {
       this.AddDMS_meetingreport();
     }
-    else if (this.selectedEmploy_Projects != '') {
+    else if (this.projectsSelected != '') {
       this.Addproject_meetingreport();
 
     }
@@ -1584,7 +1592,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Portfolio = this.ngDropdwonPort.map(item => item.portfolio_id).toString()
+    this._calenderDto.Portfolio = this.Portfolio.toString();
 
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
     if (this._calenderDto.Portfolio != '') {
@@ -1594,7 +1602,7 @@ export class MeetingDetailsComponent implements OnInit {
           this.GetProjectAndsubtashDrpforCalender()
           this.meeting_details();
           this.notifyService.showSuccess("Portfolio added successfully", "Success");
-          this.ngDropdwonPort = [];
+          this.Portfolio = [];
         });
     } else {
       this.notifyService.showInfo("Request Cancelled", "Please select Portfolio(s) to link");
@@ -1860,17 +1868,17 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   Addproject_meetingreport() {
-
+  
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Project_Code = this.selectedEmploy_Projects.map(item => item.Project_Code).join(',');
+    this._calenderDto.Project_Code = this.projectsSelected.map(item => item.Project_Code).join(',');
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
 
     if (this._calenderDto.Project_Code) {
       this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe
         (data => {
-          this.selectedEmploy_Projects = []
+          this.projectsSelected = [];
           this.meeting_details();
           this.notifyService.showSuccess("Project added successfully", "Success");
           this.GetProjectAndsubtashDrpforCalender()
@@ -6387,9 +6395,9 @@ debugger
   companies_Arr:any;
 
 
-  projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
+  projectmodaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'|undefined;
 
-  projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
+  projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'){
 
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
@@ -6441,7 +6449,7 @@ debugger
        selectedinto='Portfolio';
        property_name='portfolio_id';
     }
-    else if(this.projectmodaltype=='DMS')
+    else if(this.projectmodaltype=='S-Mail')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
@@ -6485,7 +6493,7 @@ debugger
              this.close_projectmodal();
         };break;
 
-       case 'DMS':{
+       case 'S-Mail':{
             if(!this.SelectDms)   // if SelectDms is null,undefined,''
               this.SelectDms=[];
 
@@ -6620,7 +6628,7 @@ debugger
           case 'PORTFOLIO':{
             this.onPortfolioFilter();
           };break;
-          case 'DMS':{
+          case 'S-Mail':{
             this.onDMSFilter();
           };break;
           case 'PARTICIPANT':{
@@ -7596,5 +7604,6 @@ debugger
 
   // alert(this._PopupConfirmedValue)
 }
+
 
 }

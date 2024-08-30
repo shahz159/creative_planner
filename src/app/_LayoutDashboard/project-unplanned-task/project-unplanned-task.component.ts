@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { AfterViewInit,ViewChild, Component, OnInit,Renderer2,ViewChildren,QueryList } from '@angular/core';
+import { ViewChild, Component, OnInit,Renderer2,ViewChildren,QueryList } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -32,7 +32,7 @@ import {  ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.component';
-
+declare var $: any;
 @Component({
   selector: 'app-project-unplanned-task',
   templateUrl: './project-unplanned-task.component.html',
@@ -137,10 +137,10 @@ export class ProjectUnplannedTaskComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.getRACISandNonRACIS()
-    this.GetProjectsByUserName()
+    this.getRACISandNonRACIS();
+    this.GetProjectsByUserName();
     // this.totalproject()
-    this.getProjectTypeList()
+    this.getProjectTypeList();
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
@@ -151,7 +151,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
       (data) => {
         this.PortfolioList = data as PortfolioDTO;
         console.log(this.PortfolioList,"portfoliosubn;");
-      })
+      });
 
       tippy('#tippy1', {
         content: "Runway tasks",
@@ -214,12 +214,16 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     //     // delay: [1000, 200]
     //   });
     // }
+    this.totalproject();
+    // this.initAutosize();
   }
 
 
-  ngAfterViewInit(): void {
-     this.totalproject();
-  }
+
+  // ngAfterViewInit(): void {
+
+  // }
+
   newCatid:any;
 
   getCatid(){
@@ -390,7 +394,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
       console.log(this._TodoList,"this._TodoListthis._TodoListthis._TodoListthis._TodoListthis._TodoList")
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-
+        console.log(this.ActionedSubtask_Json,"this.ActionedSubtask_Json")
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
 
@@ -1365,17 +1369,22 @@ showassign(){
   document.getElementById('Completed').classList.add('d-none')
   document.getElementById('taskdd').classList.add('d-none')
 }
-
+selected_date:any
 selected_taskId:any;
 selected_taskName:any;
-unassign_edit(id:any,taskname:any){
+unassign_edit(id:any,taskname:any,date:any){
   this.selected_taskId=id;
-  this.selected_taskName=taskname;
+  this.selected_taskName=taskname.trim();
+  this.selected_date = date
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // this.initAutosize('unassigneditside1')
   this.port_id = []
+  this.employeSelect = null
   this.selectedProjecttype = null
+
+
   // this.toggleProjectoptions('option1')
 }
 
@@ -1400,12 +1409,12 @@ editTaskat:number|undefined= undefined;
 editassignPending(i:any){
   debugger
   this.editTaskat=i;
-  this.task__name = this.ActionedAssigned_Josn[i].Task_Name;
+  this.task__name = this.ActionedAssigned_Josn[i].Task_Name.trim();
   this.employeSelect=(this.ActionedAssigned_Josn[i].Emp_No)?this.ActionedAssigned_Josn[i].Emp_No.split(','):[];
   // Portfolio_Id
   this.Start__Date  =this.ActionedAssigned_Josn[i].Start_Date;
   this.End__Date =this.ActionedAssigned_Josn[i].End_Date
-  this.__remarks= this.ActionedAssigned_Josn[i].Remarks
+  this.__remarks= this.ActionedAssigned_Josn[i].Remarks || '';
   this.port_id=(this.ActionedAssigned_Josn[i].Portfolio_Id)?this.ActionedAssigned_Josn[i].Portfolio_Id.split(','):[];
   this.assign_Id = this.ActionedAssigned_Josn[i].Assign_Id
   this.fileAttachment = this.ActionedAssigned_Josn[this.editTaskat]&&this.ActionedAssigned_Josn[this.editTaskat].FileName;
@@ -1420,11 +1429,10 @@ editassignPending(i:any){
    // this.Prjenddate = this.bind_Project[0].End_Date
 
 
-
-
   document.getElementById('ProjectAssignpending').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // this.initAutosize('unassigneditside2')
 }
 
 
@@ -1768,7 +1776,7 @@ assignTasksub1(){
 debugger
 
 
-  if(this.Selec ==null || this.Selec == undefined &&this.selected_taskName==null|| this.selected_taskName == undefined || this.selected_taskName ==""){
+  if(this.employeSelect ==null || this.employeSelect == undefined &&this.selected_taskName==null|| this.selected_taskName == undefined || this.selected_taskName.trim() ==""){
     this.formFieldsRequired = true
 return
   }
@@ -1812,10 +1820,10 @@ else{
 
 
   const fd = new FormData();
-  fd.append("TaskName", this.selected_taskName);
+  fd.append("TaskName", this.selected_taskName.trim());
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
-  fd.append("AssignTo", this.Selec);
+  fd.append("AssignTo", this.employeSelect);
   fd.append("Portfolio_Id", this.port_id);
   fd.append("StartDate", datestrStart);
   fd.append("EndDate", datestrEnd);
@@ -1862,7 +1870,7 @@ else{
 
 resetAssign(){
   this.selectedProjecttype = null
-  this.Selec  = null
+  this.employeSelect  = null
   this.port_id  = null
   this._remarks  = null
   this.file=null
@@ -2253,12 +2261,16 @@ pendingUpdatesection(){
 
   debugger
 
-  if (!this.task__name?.trim() || !this.employeSelect?.length) {
-    this.formFieldsRequired = true;
-    return
-  } else {
-    this.formFieldsRequired = false;
+
+
+  if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
+    this.formFieldsRequired = true
+return
   }
+else{
+  this.formFieldsRequired = false
+}
+
 
 
       var datestrStart;
@@ -2314,9 +2326,8 @@ pendingUpdatesection(){
       }
 
 
-
     const fd = new FormData();
-    fd.append("TaskName", this.task__name);
+    fd.append("TaskName", this.task__name.trim());
     fd.append("Desc", '');
     fd.append("ProjectType", this.Proj_type);
     // fd.append("AssignTo", this.assign_to);
@@ -2364,7 +2375,30 @@ pendingUpdatesection(){
 
 
 
+ initAutosize(area:string): void {
+    function autosize() {
+      debugger
+      var $text = $(`#${area}`);
 
+      $text.each(function () {
+        $(this).attr('rows', 1);
+        resize($(this));
+      });
+
+      $text.on('input', function () {
+        resize($(this));
+      });
+
+      function resize($element) {
+        $element.css({
+          'height': 'auto',
+          'min-height': '34px'
+        });
+        $element.css('height', $element[0].scrollHeight + 'px');
+      }
+    }
+    autosize();
+  }
 }
 
 // new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)

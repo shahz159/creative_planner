@@ -242,6 +242,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     // get all project details from the api.
     this.getapprovalStats();
+    this.getstandardapprovalStats();
     this.getusername();
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
@@ -251,6 +252,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
+    // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
@@ -878,7 +880,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   requestaccessList:any=[];
   deadlineExtendlist:any;
-  totaldeadlineExtend:any
+  totaldeadlineExtend:any;
+  // projectActionDelay:any;
+  // projectDelay:any;
 
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
@@ -938,6 +942,30 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
       }
 
+
+      // this.projectActionDelay = this.projectActionInfo.map((action) => {
+      //   let delayText = '';
+      
+      //   if (action.Delaydays >= 365) {
+      //     const years = Math.floor(action.Delaydays / 365);
+      //     delayText = years === 1 ? '1 year' : `${years} years`;
+      //   } else if (action.Delaydays >= 30) {
+      //     const months = Math.floor(action.Delaydays / 30);
+      //     delayText = months === 1 ? '1 month' : `${months} months`;
+      //   } else if (action.Delaydays >= 7) {
+      //     const weeks = Math.floor(action.Delaydays / 7);
+      //     delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+      //   } else {
+      //     delayText = `${action.Delaydays} days`;
+      //   }
+      
+      //   return {
+      //     ...action,
+      //     Delaydays: delayText
+      //   };
+      // });
+      
+  
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1047,12 +1075,58 @@ export class DetailsComponent implements OnInit, AfterViewInit {
    
 
     });
-
-
-
   }
 
   completionOffset:number=0;
+
+
+  getDelayText(action: any): string {
+    if (!action || action.Delaydays == null) return '';
+  
+    let delayText = '';
+  
+    if (action.Delaydays >= 365) {
+      const years = Math.floor(action.Delaydays / 365);
+      delayText = years === 1 ? '1 year' : `${years} years`;
+    } else if (action.Delaydays >= 30) {
+      const months = Math.floor(action.Delaydays / 30);
+      delayText = months === 1 ? '1 month' : `${months} months`;
+    } else if (action.Delaydays >= 7) {
+      const weeks = Math.floor(action.Delaydays / 7);
+      delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+    } else {
+      delayText = `${action.Delaydays} day(s)`;
+    }
+  
+    return delayText + ' Delay';
+  }
+  
+  
+  getStandardText(action: any): string {
+    if (!action?.Status) return '';
+  
+    const days = parseInt(action.Status);
+    if (isNaN(days)) return action.Status; // Return original status if it's not a number
+  
+    const periods = [
+      { unit: 'year', duration: 365 },
+      { unit: 'month', duration: 30 },
+      { unit: 'week', duration: 7 }
+    ];
+  
+    for (const { unit, duration } of periods) {
+      const count = Math.floor(days / duration);
+      if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
+    }
+  
+    return `${days} day${days === 1 ? '' : 's'}`;
+  }
+  
+  
+  
+  
+  
+
   prjRunFor:number=0;
   uniqueName:any
   uniqueNamesArray:any
@@ -1861,14 +1935,14 @@ multipleback(){
   // ADD DMS STARTS HERE
   addDMSToTheProject() {
     try {
-
-      if (this.selectedMemos.length) {
+      this.SelectDms=this.SelectDms.map((item)=>({"MailId": item}))
+      if (this.SelectDms.length) {
         // when user has selected memo.  when selectedMemos.length>0
         let totalmemos = [];
         if (this.projectMemos)
           totalmemos = this.projectMemos.map((item: any) => ({ MailId: item.MailId })); // get current memos list.
 
-        let newmemos = this.selectedMemos.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
+        let newmemos = this.SelectDms.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
         newmemos.forEach((memo: { MailId: number }) => {
           totalmemos.push(memo);
         });   // adding selected memos to the totalmemos
@@ -1878,7 +1952,7 @@ multipleback(){
         let appId: number = 101;//this._ApplicationId;
         let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
         let userid: number = +this.Current_user_ID;
-        console.log("here we go", projectcode, appId, dmsMemo, userid);
+      
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated successfully") {
@@ -1886,8 +1960,6 @@ multipleback(){
           }
 
         });
-
-
       }
       else {
         // when user tries to click addlink btn without selecting memo.   when selectedMemos.length=0
@@ -1900,7 +1972,7 @@ multipleback(){
       this.notifyService.showInfo("Request Cancelled", "Error!");
     }
     this.GetMemosByEmployeeId();    // get new data.
-    this.selectedMemos = new Array();
+    this.SelectDms = new Array();
     // this.closeLinkSideBar();         //closes the sidebar.
   }
   // ADD DMS END HERE
@@ -2128,6 +2200,7 @@ currentStdAprView:number|undefined;
       this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
       this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
 
+      console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
       // if(this.standardjson.length>0){
       //     this.isApprovalSection=true;
       //     this.isTextAreaVisible=false;
@@ -3791,7 +3864,8 @@ check_allocation() {
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {    
-        this._portfoliosList = data as [];    console.log('porfolios at details:',this._portfoliosList);
+        this._portfoliosList = data as [];   
+         console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
@@ -3808,6 +3882,27 @@ check_allocation() {
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
+
+
+   
+    this._calenderDto = new CalenderDTO();
+
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Project_Code = null;
+    this.GetProjectAndsubtashDrpforCalender();
+
+    // this._calenderDto.Emp_No = this.Current_user_ID;
+    // console.log("Portfoliolist_1:",this._calenderDto.Emp_No);
+    // this._calenderDto.Project_Code = this.URL_ProjectCode;
+    // this.CalenderService.GetCalenderProjectandsubList(this.URL_ProjectCode).subscribe
+    // ((data) => {
+ 
+    //   this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+
+    //   console.log("Portfoliolist_1:",this.Portfoliolist_1);
+
+    // });
+    
   }
 
 
@@ -3877,25 +3972,26 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-    if(this._SelectedPorts==' '||this._SelectedPorts==null){
+    if(this.Portfolio==' '||this.Portfolio==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
     }
-
-
-
-    this.selectedportID = JSON.stringify(this._SelectedPorts);
-    // console.log(this.selectedportID,"portids");
+     
+    this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
+    this.selectedportID = JSON.stringify(this.Portfolio);
     if (this.selectedportID != null) {
+     
       this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
       this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
       this.objPortfolioDto.Emp_No = this.Current_user_ID;
       this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
         subscribe((data) => {
+         
           this._Message = (data['message']);
-          if (this._Message == 'Updated successfully') {
+          debugger
+          if (this._Message == 'Updated Successfully') { 
             this.getPortfoliosDetails();
-            this._SelectedPorts=null;
+            this.Portfolio=[];
             this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
           } else {
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
@@ -4985,11 +5081,13 @@ config: AngularEditorConfig = {
 
 
 
-
+ onfocus(val) {
+    console.log(val, "ttt");
+  }
 
 
 Task_type(value:number){
-
+  
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
@@ -4997,7 +5095,7 @@ Task_type(value:number){
   this._PopupConfirmedValue = 1;
   // this.MinLastNameLength = true;
   this._subname = false;
-  this._calenderDto = new CalenderDTO;
+  this._calenderDto = new CalenderDTO();
   this.BlockNameProject1 = [];
   this._lstMultipleFiales = [];
   this._labelName = "Schedule Date :";
@@ -5101,7 +5199,35 @@ Task_type(value:number){
       })
 
 
+                  // valid starttimearr and endtimearr setting start.
+                  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+                  let _currentdate=moment();
+                  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                  {
+                      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                      const index:number=this.StartTimearr.findIndex((item:any)=>{
+                          const t=moment(item,'h:mm A');
+                          const result=t>=ct;
+                          return result;
+                      });
+                      this.validStartTimearr=this.StartTimearr.slice(index);
+                  }
+                  else
+                  this.validStartTimearr=[...this.StartTimearr];
 
+
+
+                  this.timingarryend = [];
+                  this.Time_End = [];
+                  this.Time_End = [...this.StartTimearr];
+                  debugger
+                  let _index = this.Time_End.indexOf(this.Startts);
+                  if (_index + 1 === this.Time_End.length) {
+                    _index = -1;
+                  }
+                  this.timingarryend = this.Time_End.splice(_index + 1);
+                  this.EndTimearr = this.timingarryend;
+                  // valid starttimearr and endtimearr setting end.
     })
 
 
@@ -5278,9 +5404,10 @@ debugger
 
   subtashDrpLoading:boolean = false
   GetProjectAndsubtashDrpforCalender() {
-
+   
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
+        
         this.subtashDrpLoading=false;
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
@@ -5291,8 +5418,7 @@ debugger
          });    // to change the order : first racis people and then rest
 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        console.log(this.Portfoliolist_1, "Project List Array");
-
+        
 
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
@@ -5500,6 +5626,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
+    debugger
     this._StartDate = event.value;
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -6071,10 +6198,6 @@ getChangeSubtaskDetais(Project_Code) {
       this._subname1 = true;
       return false;
     }
-
-
-
-
 
     if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
       this._subname = true;
@@ -8816,6 +8939,7 @@ onProjectSearch(inputtext:any){
 }
 
   onInputSearch(inputText:any){
+    debugger
     let keyname;
     let arrtype;
     let selectedinto;
@@ -8884,6 +9008,7 @@ onProjectSearch(inputtext:any){
       this.isFilteredOn=false;
   }
   onPortfolioFilter(){
+    debugger
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
@@ -9062,7 +9187,7 @@ Meeting_method(event){
  }
 
  projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
-  debugger
+ 
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -9106,6 +9231,8 @@ getObjOf(arr, id, idName) {
   return '';
 }
 
+
+validStartTimearr:any=[];
 changeScheduleType(val:number){
   if(val==1)
   {  // Task
@@ -9143,6 +9270,8 @@ changeScheduleType(val:number){
     document.getElementById("meeting-online-add").style.display = "flex";
     document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
 
+
+   
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }

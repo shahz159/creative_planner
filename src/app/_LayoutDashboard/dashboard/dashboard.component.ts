@@ -769,6 +769,10 @@ export class DashboardComponent implements OnInit {
     this.date_menu_close('date-menu-1');
     $('#propse11').removeClass('show');
     this.closefooter();
+
+    $("#ft_body").removeClass("go-up");
+    $("#secfootr").addClass("opend");
+    $("#main-foot").addClass("overflow-hidden");
   }
   // Scheduling Work
   // Start Here
@@ -1728,7 +1732,7 @@ export class DashboardComponent implements OnInit {
   }
 
   LastLengthValidation11() {
-    if (this.Title_Name.trim().length < 3) {
+    if (this.Title_Name&&(this.Title_Name.trim().length < 3)) {
       this.MinLastNameLength = false;
     }
     else {
@@ -3913,7 +3917,7 @@ currentTime:any;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
-
+debugger
 
        
         document.getElementById("deleteendit").style.display = "flex";
@@ -3931,7 +3935,10 @@ currentTime:any;
         debugger
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
-          document.getElementById("main-foot").style.display = "flex";
+        
+            document.getElementById("main-foot").style.display = "flex";
+          
+         
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
           // document.getElementById("copy_data2").style.display = "none";
@@ -4385,7 +4392,7 @@ currentTime:any;
   GetScheduledJson() {
  
     this._calenderDto.EmpNo = this.Current_user_ID;
-       this._calenderDto.User_Type=this.user_Type;
+    this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
@@ -5833,9 +5840,18 @@ currentTime:any;
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
   penhide1() {
-    document.getElementById("pendlist1").classList.remove("show");
-    document.getElementById("cal-main").classList.remove("col-lg-9");
-    document.getElementById("cal-main").classList.add("col-lg-12");
+    
+    // document.getElementById("pendlist1").classList.remove("show");
+    // document.getElementById("cal-main").classList.remove("col-lg-9");
+    // document.getElementById("cal-main").classList.add("col-lg-12");
+    const pendlist1 = document.getElementById("pendlist1");
+    const calMain = document.getElementById("cal-main");
+  
+    if (pendlist1 && calMain) {
+      pendlist1.classList.remove("show");
+      calMain.classList.remove("col-lg-9");
+      calMain.classList.add("col-lg-12");
+    }
   }
   penhide2() {
     document.getElementById("Delaylist").classList.remove("show");
@@ -6306,7 +6322,7 @@ updateTippyItems(){
   if(names&&names.length){
       newstr=`
       <div class='p-1'>
-        <div class='fs-6 mb-3 text-info'>(${names.length}) choosed</div>
+        <div class='fs-6 mb-3 text-info'>(${names.length}) selected</div>
         <ul type='i' class='pl-3'>
           ${names.map(item=>`<li class='fs-7 mb-1'>${item}</li>`).join('')}
         </ul> 
@@ -7070,7 +7086,9 @@ getMeetingApprovals(){
       $("#requestlist").removeClass("show");
       // document.getElementById("cal-main").classList.remove("col-lg-9");
       $("#cal-main").removeClass("col-lg-9");
-      document.getElementById("cal-main").classList.add("col-lg-12");
+      // document.getElementById("cal-main").classList.add("col-lg-12");
+      $("#cal-main").addClass("col-lg-12");
+
     }
     //  console.log(this.multiapproval_json,'appraval data in the dashboard')
   })
@@ -7116,6 +7134,6 @@ sortbyCurrent_Time(){
   this.validStartTimearr=[...this.StartTimearr];
 
 }
-
+editorPlaceholder: string = 'Meeting link';
 
 }

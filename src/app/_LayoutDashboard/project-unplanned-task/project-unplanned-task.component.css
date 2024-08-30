@@ -3702,7 +3702,8 @@ font-size: inherit;
   align-items: center;
   justify-content: center;
   padding: 12px;
-  background-color: #646C9A;
+  /* background-color: #646C9A; */
+  background-color: #388E3C !important;
 }
 .save-mat-selection:hover{
   background-color: #3D4991;
@@ -3712,7 +3713,7 @@ font-size: inherit;
 .non-clickable {
   pointer-events: none;
   cursor: not-allowed;
-  opacity: 0.6; /* Optional: Makes the container look disabled */
+  opacity: 0.7; /* Optional: Makes the container look disabled */
 
 }
 .ng-select.ng-select.disabled {
@@ -3734,6 +3735,28 @@ font-size: inherit;
   opacity: 0.6;
 }
 .posts{
-  margin-left: 257px !important;
+  /* margin-left: 257px !important; */
   width: 94px;
+  height: 31px;
 }
+.runway-textarea{
+  resize: none;
+  overflow: hidden;
+  width: 100%;
+  outline: none;
+  border: 0;
+}
+/* .runway-textarea1{
+  resize: none;
+  overflow: hidden;
+  width: 100%;
+  outline: none;
+  border: 0;
+}
+.runway-textarea2{
+  resize: none;
+  overflow: hidden;
+  width: 100%;
+  outline: none;
+  border: 0;
+} */

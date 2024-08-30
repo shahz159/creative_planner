@@ -214,7 +214,7 @@ export class HeaderComponent implements OnInit {
   }
 
   viewTimeline() {
-
+debugger
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -234,7 +234,7 @@ export class HeaderComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.getLA_drpdwns();
   }
-  
+
   closeleave(){
     document.getElementById("apply-leave").classList.remove("open_sidebar");
     document.getElementById("leave-aprv-rightbar-overlay").style.display = "none";
@@ -251,7 +251,7 @@ export class HeaderComponent implements OnInit {
     this.invalidStartDate=false;
     this.invalidEndDate=false;
     this.notProvided=false;
-    
+
     this.selectedLeaveType=undefined;
     this.dayType='full';
     this.tripType='local';
@@ -697,7 +697,7 @@ onDatesChanged(){
       duration=Math.abs(moment(this.leaveStartsOn).diff(moment(this.leaveEndsOn),'days'))+1;
    }
    this.leaveDuration=duration;
-} 
+}
 
 
 onLeaveTypeChanged(lvtype:any){
@@ -820,9 +820,9 @@ onLeaveSubmit(){
   this.aprvDtoObj.Type=this.dayType;
   this.aprvDtoObj.Travel=this.travelType;
   this.aprvDtoObj.FromDate=this.leaveStartsOn.format('YYYY-MM-DD');
-  this.aprvDtoObj.ToDate=this.leaveEndsOn.format('YYYY-MM-DD');  
+  this.aprvDtoObj.ToDate=this.leaveEndsOn.format('YYYY-MM-DD');
   this.aprvDtoObj.LeaveDays=this.leaveDuration;
-  this.aprvDtoObj.Remarks=this.leave_remark;  
+  this.aprvDtoObj.Remarks=this.leave_remark;
   if(this.tripType=='local'){
     this.aprvDtoObj.Country='Saudi Arabia';
     this.aprvDtoObj.CountryId='SA';
@@ -835,8 +835,8 @@ onLeaveSubmit(){
   this.service.NewNewInsertEmployeeLeave(this.aprvDtoObj).subscribe((res:any)=>{
        console.log('leave submit:',res);
         if(res){
-          this.notifyService.showSuccess(res.message,'Success');   
-          this.closeleave();   
+          this.notifyService.showSuccess(res.message,'Success');
+          this.closeleave();
         }
   });
 }
