@@ -1,3 +1,4 @@
+import { forEach } from '@angular-devkit/schematics';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, QueryList, ViewChildren,ViewChild } from '@angular/core';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
@@ -135,6 +136,7 @@ $(document).ready(function(){
 
    // dropdowns data
     this.getDropdownsDataFromDB1();
+    // this.changingdaysinweek(this.index)
   }
 
 
@@ -429,6 +431,7 @@ $(document).ready(function(){
     // this.applyFilters();
     // alert(this.isChecked);
   }
+
     GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
@@ -480,6 +483,13 @@ $(document).ready(function(){
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
+
+
+
+
+
+
+
          console.log("Summary Data---->",this._ProjectDataList);
 
         this.userFound = true
@@ -505,12 +515,39 @@ $(document).ready(function(){
           this.emptyspace=true;
         }
       this.getDropdownsDataFromDB();
+      debugger
+
+      // this.changeDaysInWeek()
+
       });
     }
 
 
   }
 
+
+  getFormattedDelay(delayDays: any): string {
+    let delayText = '';
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+      else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+      else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+      else { delayText = `${delayDays} days`; } return `${delayText} Delay`; }
+
+
+
+      getStatusNumber(status: string): number {
+        const match = status.match(/\d+/); // Find digits in the string
+        return match ? parseInt(match[0], 10) : null; // Convert to number, or return null if no number found
+      }
+
+
+
+
+
+
+// index:any
+dates:any
   LastPage:number;
   lastPagerecords:number;
   duplicateofCompany:any[]=[]
@@ -1018,6 +1055,7 @@ this.edited = true
       .subscribe(data => {
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
+        console.log(this._ProjectDataList,"this._ProjectDataListthis._ProjectDataListthis._ProjectDataList")
         this._CurrentpageRecords = this._ProjectDataList.length;
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
@@ -1063,7 +1101,7 @@ this.edited = true
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
           this._CurrentpageRecords = this._ProjectDataList.length;
-
+          console.log('this._ProjectDataList:tjhis,this',this._ProjectDataList);
     console.log('lastPagerecords:',this.lastPagerecords);
     console.log('CurrentPageNo:',this.CurrentPageNo);
     console.log('_CurrentpageRecords:',this._CurrentpageRecords);
@@ -2012,6 +2050,8 @@ isInvalidDate(date: moment.Moment) {
   // Example logic for invalid dates
   return date.weekday() === 0 || date.weekday() === 6; // Disable weekends
 }
+
+
 
 
 }

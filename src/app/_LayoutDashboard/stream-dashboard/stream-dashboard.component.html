@@ -1280,7 +1280,7 @@
                             <div class="card-title">Project Status</div>
                             <div class="action-tile">
                                 <div>
-                                    <div class="action-tile-item-v1" (click)="Delay_Click()"  >
+                                    <div class="action-tile-item-v1"  (click)="Delay_Click('Assigned Project')" >
                                         <div class="action-tile-item-count-v1 gr assign">{{this.DelayCount}}/{{DelayActionCount}}</div>
                                         <div class="action-tile-item-name-v1">Assigned Projects</div>
                                     </div>
@@ -1298,14 +1298,16 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="action-tile-item-v1" (click)="Delay_Click()">
-                                        <div class="action-tile-item-count-v1 re-1 delay">{{DelayCount}}/{{DelayActionCount}}</div>
+                                    <div class="action-tile-item-v1" (click)="Delay_Click('Projects')">
+                                        <div class="action-tile-item-count-v1 re-1 delay">{{DelayCount}}</div>
                                         <div class="action-tile-item-name-v1">Delay Projects</div>
                                     </div>
-                                    <div class="action-tile-item-v1" (click)="Delay_Click()">
-                                        <div class="action-tile-item-count-v1 re-2 delay">{{DelayCount}}/{{DelayActionCount}}</div>
+
+                                    <div class="action-tile-item-v1" (click)="Delay_Click('Actions')">
+                                        <div class="action-tile-item-count-v1 re-2 delay">{{DelayActionCount}}</div>
                                         <div class="action-tile-item-name-v1">Delay Actions</div>
                                     </div>
+
                                     <div class="action-tile-item-v1" (click)="ExpiryInOneMonth_Click()">
                                         <div class="action-tile-item-count-v1 re-3 delayinone">{{TotalExpiryInMonth}}</div>
                                         <div class="action-tile-item-name-v1">Delay in 1 Month</div>

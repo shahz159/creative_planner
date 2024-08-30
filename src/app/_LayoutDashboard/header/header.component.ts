@@ -213,7 +213,7 @@ export class HeaderComponent implements OnInit {
   }
 
   viewTimeline() {
-
+debugger
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -233,7 +233,7 @@ export class HeaderComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.getLA_drpdwns();
   }
-  
+
   closeleave(){
     document.getElementById("apply-leave").classList.remove("open_sidebar");
     document.getElementById("leave-aprv-rightbar-overlay").style.display = "none";
@@ -250,7 +250,7 @@ export class HeaderComponent implements OnInit {
     this.invalidStartDate=false;
     this.invalidEndDate=false;
     this.notProvided=false;
-    
+
     this.selectedLeaveType=undefined;
     this.dayType='full';
     this.tripType='local';
@@ -624,7 +624,7 @@ leave_remark:string|undefined;
 //     const invalid_ed=this.leaveEndsOn<this.leaveStartsOn;
 //     this.invalidEndDate=invalid_ed;
 
-    
+
 //     // const sd_invalid=this.leaveStartsOn<this.min_date;
 //     // this.invalidStartDate=sd_invalid;
 
@@ -636,7 +636,7 @@ leave_remark:string|undefined;
 // }
 
 validateInputDates(){
-   if(this.leaveStartsOn&&this.leaveEndsOn){   
+   if(this.leaveStartsOn&&this.leaveEndsOn){
        this.invalidStartDate=this.leaveStartsOn.toDate()>this.leaveEndsOn.toDate();
        this.invalidEndDate=this.leaveEndsOn.toDate()<this.leaveStartsOn.toDate();
 
@@ -650,14 +650,14 @@ validateInputDates(){
 
 
 onDatesChanged(e:any){
-   
+
    this.validateInputDates();
    let duration=0;
    if(this.leaveStartsOn&&this.leaveEndsOn){
       duration=Math.abs(moment(this.leaveStartsOn).diff(moment(this.leaveEndsOn),'days'))+1;
    }
    this.leaveDuration=duration;
-} 
+}
 
 
 onLeaveTypeChanged(lvtype:any){
@@ -680,7 +680,7 @@ onLeaveTypeChanged(lvtype:any){
             const d=new Date();
             d.setDate(d.getDate()+7);
             d.setHours(0,0,0,0);
-            this.min_date=d;  
+            this.min_date=d;
          };break; // Emergency leave
          case 3:{
            const d=new Date();
@@ -753,9 +753,9 @@ onLeaveSubmit(){
   this.aprvDtoObj.Type=this.dayType;
   this.aprvDtoObj.Travel=this.travelType;
   this.aprvDtoObj.FromDate=this.leaveStartsOn.format('YYYY-MM-DD');
-  this.aprvDtoObj.ToDate=this.leaveEndsOn.format('YYYY-MM-DD');  
+  this.aprvDtoObj.ToDate=this.leaveEndsOn.format('YYYY-MM-DD');
   this.aprvDtoObj.LeaveDays=this.leaveDuration;
-  this.aprvDtoObj.Remarks=this.leave_remark;  
+  this.aprvDtoObj.Remarks=this.leave_remark;
   if(this.tripType=='local'){
     this.aprvDtoObj.Country='Saudi Arabia';
     this.aprvDtoObj.CountryId='SA';
@@ -768,8 +768,8 @@ onLeaveSubmit(){
   this.service.NewNewInsertEmployeeLeave(this.aprvDtoObj).subscribe((res:any)=>{
        console.log('leave submit:',res);
         if(res){
-          this.notifyService.showSuccess(res.message,'Success');   
-          this.closeleave();   
+          this.notifyService.showSuccess(res.message,'Success');
+          this.closeleave();
         }
   });
 }

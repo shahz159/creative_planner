@@ -814,20 +814,19 @@
 
                                             <ng-container *ngIf="!showDeletedPrjOnly">
                                                 <td>
-                                                  <div *ngIf="item1.Status=='Delay'">
-                                                      <span
+                                                  <div *ngIf="item1.Status=='Delay'"  class="attach-tippy">
+                                                    <span class="vi  st-line"> {{item1.Delaydays}} Days Delay</span>
+                                                    <span *ngIf="item1.Delaydays>=0" class=" Delay_color font-weight-400 ">
+                                                      {{getFormattedDelay(item1.Delaydays)}}
 
 
-                                                   *ngIf="item1.Delaydays>=0"
-                                                        class=" Delay_color font-weight-400 ">
-                                                        {{item1.Delaydays}}
-                                                        day(s)
+                                                      <span class="">{{item1.Status}}
 
-                                                     <span class="">{{item1.Status}}
-
-                                                     </span>
                                                       </span>
+                                                    </span>
                                                   </div>
+
+
                                                   <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                       <span
                                                           class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
@@ -883,7 +882,7 @@
                                                       <span
                                                           class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion approval":item1.Status}}
                                                       </span>
-                                                    
+
                                                       <span class="attach-tippy">
                                                         <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
                                                      <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
