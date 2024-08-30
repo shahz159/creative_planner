@@ -5054,11 +5054,13 @@ config: AngularEditorConfig = {
 
 
 
-
+ onfocus(val) {
+    console.log(val, "ttt");
+  }
 
 
 Task_type(value:number){
-
+  
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
@@ -5170,34 +5172,35 @@ Task_type(value:number){
       })
 
 
-  // valid starttimearr and endtimearr setting start.
-  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
-  let _currentdate=moment();
-  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-  {
-      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-      const index:number=this.StartTimearr.findIndex((item:any)=>{
-          const t=moment(item,'h:mm A');
-          const result=t>=ct;
-          return result;
-      });
-      this.validStartTimearr=this.StartTimearr.slice(index);
-  }
-  else
-  this.validStartTimearr=[...this.StartTimearr];
+                  // valid starttimearr and endtimearr setting start.
+                  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+                  let _currentdate=moment();
+                  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                  {
+                      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                      const index:number=this.StartTimearr.findIndex((item:any)=>{
+                          const t=moment(item,'h:mm A');
+                          const result=t>=ct;
+                          return result;
+                      });
+                      this.validStartTimearr=this.StartTimearr.slice(index);
+                  }
+                  else
+                  this.validStartTimearr=[...this.StartTimearr];
 
 
 
-  this.timingarryend = [];
-  this.Time_End = [];
-  this.Time_End = [...this.StartTimearr];
-  let _index = this.Time_End.indexOf(this.Startts);
-  if (_index + 1 === this.Time_End.length) {
-    _index = -1;
-  }
-  this.timingarryend = this.Time_End.splice(_index + 1);
-  this.EndTimearr = this.timingarryend;
-  // valid starttimearr and endtimearr setting end.
+                  this.timingarryend = [];
+                  this.Time_End = [];
+                  this.Time_End = [...this.StartTimearr];
+                  debugger
+                  let _index = this.Time_End.indexOf(this.Startts);
+                  if (_index + 1 === this.Time_End.length) {
+                    _index = -1;
+                  }
+                  this.timingarryend = this.Time_End.splice(_index + 1);
+                  this.EndTimearr = this.timingarryend;
+                  // valid starttimearr and endtimearr setting end.
     })
 
 
@@ -5596,6 +5599,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
+    debugger
     this._StartDate = event.value;
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -6167,10 +6171,6 @@ getChangeSubtaskDetais(Project_Code) {
       this._subname1 = true;
       return false;
     }
-
-
-
-
 
     if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
       this._subname = true;
