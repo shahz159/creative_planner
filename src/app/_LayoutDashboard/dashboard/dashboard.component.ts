@@ -769,6 +769,10 @@ export class DashboardComponent implements OnInit {
     this.date_menu_close('date-menu-1');
     $('#propse11').removeClass('show');
     this.closefooter();
+
+    $("#ft_body").removeClass("go-up");
+    $("#secfootr").addClass("opend");
+    $("#main-foot").addClass("overflow-hidden");
   }
   // Scheduling Work
   // Start Here
@@ -1728,7 +1732,7 @@ export class DashboardComponent implements OnInit {
   }
 
   LastLengthValidation11() {
-    if (this.Title_Name.trim().length < 3) {
+    if (this.Title_Name&&(this.Title_Name.trim().length < 3)) {
       this.MinLastNameLength = false;
     }
     else {
@@ -3913,7 +3917,7 @@ currentTime:any;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
-
+debugger
 
        
         document.getElementById("deleteendit").style.display = "flex";
@@ -3931,7 +3935,10 @@ currentTime:any;
         debugger
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
-          document.getElementById("main-foot").style.display = "flex";
+        
+            document.getElementById("main-foot").style.display = "flex";
+          
+         
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
           // document.getElementById("copy_data2").style.display = "none";
@@ -4385,7 +4392,7 @@ currentTime:any;
   GetScheduledJson() {
  
     this._calenderDto.EmpNo = this.Current_user_ID;
-       this._calenderDto.User_Type=this.user_Type;
+    this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
@@ -5833,9 +5840,18 @@ currentTime:any;
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
   penhide1() {
-    document.getElementById("pendlist1").classList.remove("show");
-    document.getElementById("cal-main").classList.remove("col-lg-9");
-    document.getElementById("cal-main").classList.add("col-lg-12");
+    
+    // document.getElementById("pendlist1").classList.remove("show");
+    // document.getElementById("cal-main").classList.remove("col-lg-9");
+    // document.getElementById("cal-main").classList.add("col-lg-12");
+    const pendlist1 = document.getElementById("pendlist1");
+    const calMain = document.getElementById("cal-main");
+  
+    if (pendlist1 && calMain) {
+      pendlist1.classList.remove("show");
+      calMain.classList.remove("col-lg-9");
+      calMain.classList.add("col-lg-12");
+    }
   }
   penhide2() {
     document.getElementById("Delaylist").classList.remove("show");
@@ -6282,6 +6298,40 @@ datemen(dialogId:string){
 date_menuclo(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
 }
+
+selectedItemsTippy:any;
+updateTippyItems(){
+  let newstr='';
+  let names=[];
+  switch(this.projectmodaltype)
+  {
+      case 'PROJECT':{
+         names=this.choosedItems.map((obj)=>obj.BlockNameProject);
+      };break;
+      case 'DMS':{
+         names=this.Memos_List.filter(item=>this.choosedItems.includes(item.MailId)).map(obj=>obj.Subject);
+      };break;
+      case 'PARTICIPANT':{
+         names=this._EmployeeListForDropdown.filter(item=>this.choosedItems.includes(item.Emp_No)).map(obj=>obj.DisplayName);
+      };break;
+      case 'PORTFOLIO':{
+         names=this.Portfoliolist_1.filter(item=>this.choosedItems.includes(item.portfolio_id)).map(obj=>obj.Portfolio_Name);
+      };break;
+  }
+
+  if(names&&names.length){
+      newstr=`
+      <div class='p-1'>
+        <div class='fs-6 mb-3 text-info'>(${names.length}) selected</div>
+        <ul type='i' class='pl-3'>
+          ${names.map(item=>`<li class='fs-7 mb-1'>${item}</li>`).join('')}
+        </ul> 
+      </div>
+      `;
+  }
+  this.selectedItemsTippy[0].setContent(newstr);
+}
+
 projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
  
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
@@ -6290,11 +6340,28 @@ projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
   const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
   if(searchField)searchField.focus();
 
-  if(modaltype==='PROJECT')
-  this.onProjectSearch('');
+  if(modaltype==='PROJECT'){
+    this.onProjectSearch('');
+    this.choosedItems.getPcodes=()=>{
+        return this.choosedItems.map(item=>item.Project_Code);
+    }
+  }
 
-  if(modaltype!='PROJECT')
+  if(modaltype!='PROJECT'){
     this.onInputSearch('');
+  }
+   
+  setTimeout(()=>{
+    this.selectedItemsTippy=tippy((this.projectmodaltype=='PROJECT')?'#keep-items-btn1':'#keep-items-btn2', {
+      content: '',
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: '',
+      placement: 'left',
+      allowHTML: true
+    });
+  },1000)
+  
 }
 close_projectmodal(){
   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -6326,7 +6393,7 @@ updateCharacterCount(): void {
 companies_Arr:any;
 basedOnFilter:any={};
 projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
-choosedItems:any=[];
+choosedItems:any=new Array();
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
 discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:string){
@@ -6396,7 +6463,7 @@ keepChoosedItems(){
 
 }
 
-onItemChoosed(choosed:any,choosedItem:any){
+onItemChoosed(choosed:boolean,choosedItem:any){
     if(choosed){
       this.choosedItems.push(choosedItem);
     }
@@ -6406,22 +6473,25 @@ onItemChoosed(choosed:any,choosedItem:any){
       this.choosedItems.splice(i,1);
 
       // when removing already selected items
-      if(this.projectmodaltype==='PROJECT'){
-            const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
-            if(j>-1){
-              this.MasterCode.splice(j,1);
-              this.projectsSelected.splice(j,1);
-            }
-      }
-      else{
-        const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
-        const j=ary.findIndex(item=>item==choosedItem);
-        if(j>-1)
-        ary.splice(j,1);
-      }
+      // if(this.projectmodaltype==='PROJECT'){
+      //       const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
+      //       if(j>-1){
+      //         this.MasterCode.splice(j,1);
+      //         this.projectsSelected.splice(j,1);
+      //       }
+      // }
+      // else{
+      //   const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+      //   const j=ary.findIndex(item=>item==choosedItem);
+      //   if(j>-1)
+      //   ary.splice(j,1);
+      // }
          // when removing already selected items
     }
+
+    this.updateTippyItems();
 }
+
 
 onPortfolioFilter(){
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
@@ -6486,6 +6556,20 @@ clearAppliedFiltered(){
 }
 
 // new design of select prj,select memo, select portfo, select participants.....etc end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7002,7 +7086,9 @@ getMeetingApprovals(){
       $("#requestlist").removeClass("show");
       // document.getElementById("cal-main").classList.remove("col-lg-9");
       $("#cal-main").removeClass("col-lg-9");
-      document.getElementById("cal-main").classList.add("col-lg-12");
+      // document.getElementById("cal-main").classList.add("col-lg-12");
+      $("#cal-main").addClass("col-lg-12");
+
     }
     //  console.log(this.multiapproval_json,'appraval data in the dashboard')
   })

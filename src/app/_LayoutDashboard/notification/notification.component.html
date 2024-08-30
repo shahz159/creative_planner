@@ -86,7 +86,7 @@
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
 
-             <!-- <div class="kt-portlet__head-label">
+             <div class="kt-portlet__head-label">
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -105,7 +105,7 @@
                   Leave Responses
                 </a>
               </div>
-            </div> -->
+            </div>
           </div>
 
 
@@ -1073,21 +1073,21 @@
 
       <div class="d-check px-3">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" [checked]="leaveDecision=='APPROVE'"
             (click)="onDecisionChanged('APPROVE')" />
           <label class="form-check-label" for="flexRadioDefault1">
             Approved
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"  [checked]="leaveDecision=='APPROVEBUT'"
             (click)="onDecisionChanged('APPROVEBUT')" />
           <label class="form-check-label" for="flexRadioDefault2">
             Approved but from and before date
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" [checked]="leaveDecision=='REJECTED'"
             (click)="onDecisionChanged('REJECTED')" />
           <label class="form-check-label" for="flexRadioDefault3">
             Rejected
@@ -1097,57 +1097,68 @@
 
     <div *ngIf="leaveDecision=='APPROVEBUT'" class="text-muted px-3 mt-3">Accept leave approval with new dates</div>
     <div *ngIf="leaveDecision=='APPROVEBUT'" class="row px-3 mt-1">
-          <div class="form-group input-group col-lg-6" id="conditional-startdate">
+          <div class="form-group col-lg-6 mb-2" id="conditional-startdate">
             <label>From<span class="text-danger">*</span></label>
             <div class="input-group">
-                <input [(ngModel)]="lv_startdate"  matInput [matDatepicker]="leaveStartdatePicker" (click)="leaveStartdatePicker.open();"
-                    placeholder="Select Start date" class="form-control" name="leave-sdate" />
+                <input [min]="this.LeaveDetail[0].VacFrom"   [ngClass]="{'error-border':!lv_startdate&&notProvided}" [(ngModel)]="lv_startdate"  matInput [matDatepicker]="leaveStartdatePicker" (click)="leaveStartdatePicker.open();"
+                    placeholder="Select Start date" class="form-control" name="leave-sdate"  (dateChange)="lv_enddate=null;"/>
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="leaveStartdatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #leaveStartdatePicker></mat-datepicker>
                 </div>
             </div>
-            <!-- <span style="color:red">Please select start date</span> -->
+            <span *ngIf="!lv_startdate&&notProvided" style="color:red">Please select start date</span>
         </div>
-        <div class="form-group input-group col-lg-6" id="conditional-enddate">
+        <div class="form-group col-lg-6 mb-2" id="conditional-enddate">
           <label>To<span class="text-danger">*</span></label>
           <div class="input-group">
-              <input [(ngModel)]="lv_enddate"  matInput [matDatepicker]="leaveEnddatePicker" (click)="leaveEnddatePicker.open();"
+              <input [min]="lv_startdate"   [ngClass]="{'error-border':!lv_enddate&&notProvided}" [(ngModel)]="lv_enddate"  matInput [matDatepicker]="leaveEnddatePicker" (click)="leaveEnddatePicker.open();"
                   placeholder="Select End date" class="form-control" name="leave-edate" />
               <div class="input-group-text p-0">
                   <mat-datepicker-toggle matSuffix [for]="leaveEnddatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #leaveEnddatePicker></mat-datepicker>
               </div>
           </div>
-          <!-- <span style="color:red">Please select start date</span> -->
+          <span *ngIf="!lv_enddate&&notProvided" style="color:red">Please select end date</span>
         </div>
       
     </div>
+    <div *ngIf="leaveDecision=='APPROVEBUT'" class="px-3 text-info mb-2">Please confirm with Team Member before changing the dates of his vacation.</div>
 
  
 
       <div class="px-3 mb-3">
-        <label>Comments</label>
-        <textarea placeholder="Enter comments here." [(ngModel)]="aprv_cmts" id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-  
-        <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2" role="status">
+        <label>Comments<span style="color:red">*</span></label>
+        <textarea [ngClass]="{'error-border':!aprv_cmts&&notProvided}" placeholder="Enter comments here." [(ngModel)]="aprv_cmts" id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+        <span *ngIf="!aprv_cmts&&notProvided"  style="color:red">please enter your comments</span>
+        <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2 d-block" role="status">
           <span class="sr-only">Loading...</span>
         </div>
         <ng-template #prvCmtsLoaded>
-          <div *ngIf="previousCmts&&previousCmts.length>0" class="previous-comments">
+          <!-- <div *ngIf="previousCmts&&previousCmts.length>0" class="previous-comments">
             <span class="fs-9 d-block text-right pr-2 pt-1 text-muted">previous comments</span>
               <ul  class="d-flex gap-1 pt-1 flex-wrap">
                 <li *ngFor="let item of previousCmts" class="prvcmt-chip">
                   <a (click)="putCmts(item.Req_Comments)" href="javascript:void(0)">{{item.Req_Comments}}</a>
                 </li>
               </ul>
+          </div> -->
+
+          <div *ngIf="previousCmts&&previousCmts.length>0"  class="previous-comments">
+            <span class="fs-9 d-block text-right pr-2 pt-1 text-muted">previous comments</span>
+            <ul>
+              <li *ngFor="let item of previousCmts">
+                <a (click)="putCmts(item.Req_Comments)"  href="javascript:void(0)">{{item.Req_Comments}}</a>
+              </li>
+            </ul>
           </div>
         </ng-template>
 
       </div>
     </div>
     <div class="px-3 mb-3">
-      <button type="submit" class="btn btn-sm btn-primary" style="width: 25%;" (click)="onSubmitLRbtn()">Submit</button>
+      <button type="submit" class="btn btn-primary" style="width: 15%;" (click)="onSubmitLRbtn()">Submit</button>
+      <button class="btn btn-secondary ml-2" style="width: 15%;" (click)="close_requisition_Info()">Cancel</button>
     </div>
 
   </div>
@@ -1431,7 +1442,7 @@
 </div>
 
 <!--leave requisition start-->
-<div id="leave_requisition_slider_bar" class="leave-requisition-slider-bar animate-right d-none">
+<!-- <div id="leave_requisition_slider_bar" class="leave-requisition-slider-bar animate-right d-none">
   <div class="kt-portlet--body mb-0">
     <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
       <div class="d-flex align-items-center">
@@ -1515,7 +1526,7 @@
             Position
           </div>
           <div class="kt-info-data-v">
-            <!-- {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}} -->
+         
           </div>
         </div>
         <div class="col text-center cnt-ovrl">
@@ -1523,7 +1534,7 @@
             Department
           </div>
           <div class="kt-info-data-v">
-            <!-- {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}} -->
+          
           </div>
         </div>
         <div class="col text-center cnt-ovrl">
@@ -1675,7 +1686,7 @@
     </div>
 
     </div>
-</div>
+</div> -->
 <!--leave requisition end-->
 <!--leave requisition form start-->
 <div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right">
@@ -1696,14 +1707,14 @@
         <div class="row px-3">
           <div class="col-md-8">
             <h1 class="head-title">Leave requistion form</h1>
-            <h4 class="head-date">22-03-2023</h4>
+            <h4 *ngIf="_newNotificationLeave[currentResIndex]" class="head-date">{{_newNotificationLeave[currentResIndex].Req_Date|date:'dd-MM-yyyy'}}</h4>
           </div>
           <div class="col-md-4">
             <div class="d-flex align-items-start">
               <div class="logo">
                 <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
               </div>
-              <div class="company-details">
+              <div class="company-details"> 
                 <p>Riyadh, Saudi Arabia - Head office:</p>
                 <p> P.O.Box 331799, Riyadh 11373</p>
                 <p>Kingdom of Saudi Arabia</p>
@@ -1714,25 +1725,25 @@
         <div class="main-card">
           <div class="row">
             <div class="col-md-5">
-              <div class="card h-100">
+              <div class="card h-100" *ngIf="_newNotificationLeave&&_newNotificationLeave.length>0">
                 <div class="card-header">
                   TEAM MEMBER INFORMATION
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
-                    <span class="label">Name</span><span class="data">Aquib Shahbaz</span>
+                    <span class="label">Name</span><span class="data">{{Current_user_Name}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">TM I.D No</span><span class="data"> 400120</span>
+                    <span class="label">TM I.D No</span><span class="data">{{Current_user_ID}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Position</span><span class="data"> Team Lead</span>
+                    <span class="label">Position</span><span class="data">{{_newNotificationLeave[0].Position}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Department</span><span class="data">Software</span>
+                    <span class="label">Department</span><span class="data">{{_newNotificationLeave[0].Department}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Company</span><span class="data">Devbox Software Pvt Ltd</span>
+                    <span class="label">Company</span><span class="data">{{_newNotificationLeave[0].Com_Name}}</span>
                   </div>
                 </div>
               </div>
