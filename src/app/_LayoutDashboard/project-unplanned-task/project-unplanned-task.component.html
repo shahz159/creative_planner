@@ -792,7 +792,7 @@
                                                         <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75" >
                                                             <div
                                                                 class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
-                                                                <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit(item.Assign_Id,item.Task_Name);"
+                                                                <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit(item.Assign_Id,item.Task_Name,item.Creation_Date);"
                                                                     id="spnLabel_{{item.Assign_Id}}">
                                                                     {{item.Task_Name}}</span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
@@ -2285,7 +2285,7 @@
           <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
           <span class="lbl-hdn">Close</span>
         </div>
-      <div class="foottext">Created today</div>
+      <div class="foottext">Created on {{selected_date  | date:'dd-MM-yyyy'}}</div>
       <div class="sub-act">
           <div class="footicon save" (click)="assignTasksub1()"  >
               <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
@@ -2335,15 +2335,15 @@
       <button class="btn btn-sm btn-outline-info posts" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code != null && ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status !='Pending'" (click)="newDetails(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code)">View Project</button>
       <button class="rejected posts" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status =='Rejected'" >{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status}}</button>
     <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
-        <div class="radioicon" >
-            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg>
+        <div class="" >
+            <!-- <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg> -->
         </div>
 
         <div class="radiotitle non-clickable" [ngClass]="{'error-vd': !task__name&&formFieldsRequired}" style="margin-top: 5px;">
             <!-- <input type="text"  [ngClass]="{'error-vd': !task__name&&formFieldsRequired}"  class="form-control " id="unassigneditInput" placeholder="Enter title"  [(ngModel)]="task__name"  readonly > -->
            <!-- <textarea (input)="initAutosize()"  class="runway-textarea " id="unassigneditInput" placeholder="Enter title"   [(ngModel)]="task__name" style="    height: 34px;" readonly></textarea> -->
-<p class="text-left w-100"  >{{task__name}}</p>
-            <span *ngIf="!task__name&&formFieldsRequired" class="text-danger">Please enter title</span>
+<p class="text-left w-100" style="margin-left: 10px;" >{{task__name}}</p>
+            <!-- <span *ngIf="!task__name&&formFieldsRequired" class="text-danger">Please enter title</span> -->
 
 
         </div>
@@ -2807,13 +2807,13 @@
   </div>
 
   <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
-    <div class="radioicon">
-      <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg>
+    <div class="">
+      <!-- <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg> -->
     </div>
     <div class="radiotitle non-clickable" style="margin-top: 6px;">
 
 
-      <p class="mb-0">{{ActionedSubtask_Json[bindvalue]?.Task_Name}}</p>
+      <p style="margin-left: 5px;"    >{{ActionedSubtask_Json[bindvalue]?.Task_Name}}</p>
     </div>
   </div>
 

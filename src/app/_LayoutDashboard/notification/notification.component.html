@@ -541,17 +541,19 @@
                         </td>
                         <!-- <td><span class="kt-widget__other text-nowrap">{{item.Rec_Date | date:'dd-MM-yyyy' }}</span></td> -->
                         <td>
-                          <span class="text-info font-weight-400"
+                          <span   [ngClass]="{'new_appraval': item.Req_Type=='New Project'|| item.Req_Type=='Request Access','cancellation' : item.Req_Type =='Project Cancel','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold', 'proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release','new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
                             *ngIf="item.Req_Type=='New Project' || item.Req_Type=='Request Access' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
                                                                || item.Req_Type=='ToDo Achieved'">
                                                                {{item.Req_Type=="Request Access"? "Access Approval":item.Req_Type=="New Project"?"New Approval":item.Req_Type}}</span>
-                          <span class="text-danger font-weight-400"
+
+                          <span  [ngClass]="{'cancellation' : item.Req_Type =='Project Cancel','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
                             *ngIf="item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
                                                                || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
                                                                || item.Req_Type=='New Action Rejected' || item.Req_Type=='Project Cancel'">
                             {{item.Req_Type=='Project Cancel'?'Cancellation Approval':item.Req_Type}}
                           </span>
-                          <span class="text-success font-weight-400"
+
+                          <span [ngClass]="{'new_appraval': item.Req_Type=='New Project Reject Release'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release', 'Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected','hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change'  }"
                             *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
                                   || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'||item.Req_Type=='New Project Reject Release' ">
                                   {{ item.Req_Type=='Project Complete'?'Completion Approval':
@@ -559,7 +561,7 @@
                                      item.Req_Type
                                   }}
                           </span>
-                          <span class="text-primary font-weight-400"
+                          <span class="font-weight-400" [ngClass]="{'new_appraval': item.Req_Type=='New Project'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release','Forward': item.Req_Type=='Project Forward','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
                             *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type=='Project Forward'?'Forward Approval':item.Req_Type}}</span>
                           <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line"
                             title="Forward to">{{item.ForwardTo}}</span>
@@ -891,7 +893,7 @@
     </div>
 
     <div class="d-flex gap-1 mb-3 mt-2 px-3">
-       
+
     <div class="card col-lg-6 pr-0 pl-0">
       <div class="card-header leave-title">Team member information</div>
       <div class="grid p-0 pt-3">
@@ -998,7 +1000,7 @@
 
 
     <div class="mb-3 px-3">
-     
+
       <div class="leave-title card card-header p-2">Remarks</div>
       <div class="card p-1">
         <div class="cnt-ovrl">
@@ -1044,7 +1046,7 @@
       <!-- <div class="">
        <div class="d-flex justify-content-end pr-3 mt-2">
           <div class="align-items-center justify-content-end d-flex">
-          
+
             <div class="kt-detail-link" [ngClass]="{'active':leaveDecision=='APPROVE'}" (click)="onDecisionChanged('APPROVE')">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon"style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #028507; ;overflow: hidden;">
                 <path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"></path>
@@ -1068,7 +1070,7 @@
             </div>
 
           </div>
-        </div> 
+        </div>
       </div> -->
 
       <div class="d-check px-3">
@@ -1121,11 +1123,11 @@
           </div>
           <span *ngIf="!lv_enddate&&notProvided" style="color:red">Please select end date</span>
         </div>
-      
+
     </div>
     <div *ngIf="leaveDecision=='APPROVEBUT'" class="px-3 text-info mb-2">Please confirm with Team Member before changing the dates of his vacation.</div>
 
- 
+
 
       <div class="px-3 mb-3">
         <label>Comments<span style="color:red">*</span></label>
@@ -1241,7 +1243,7 @@
                       <span class="mr-2 showv">|</span>
                       <div class="ml-1 mr-2 status-d">
                         <h6 [ngClass]="{
-                                                    'text-success mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete'
+                                                    'Done mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete'
                                                     || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project',
                                                     'text-primary mb-0':item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back',
                                                     'text-info mb-0':item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
@@ -1526,7 +1528,7 @@
             Position
           </div>
           <div class="kt-info-data-v">
-         
+
           </div>
         </div>
         <div class="col text-center cnt-ovrl">
@@ -1534,7 +1536,7 @@
             Department
           </div>
           <div class="kt-info-data-v">
-          
+
           </div>
         </div>
         <div class="col text-center cnt-ovrl">
@@ -1714,7 +1716,7 @@
               <div class="logo">
                 <img src="https://www.creative-sols.com/webassets/images/cs-images/logo-dark1.png">
               </div>
-              <div class="company-details"> 
+              <div class="company-details">
                 <p>Riyadh, Saudi Arabia - Head office:</p>
                 <p> P.O.Box 331799, Riyadh 11373</p>
                 <p>Kingdom of Saudi Arabia</p>

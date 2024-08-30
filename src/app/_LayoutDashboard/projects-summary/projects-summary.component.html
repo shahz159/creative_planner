@@ -206,9 +206,10 @@
 
 
                                                     <mat-option [value]="emp.Company_No"  *ngFor="let emp of (CompanyCountFilter|filter:company_searchtf.value).slice(0,1000)">
-                                                        <mat-checkbox  color="primary"  [checked]="comToselect?comToselect.indexOf(emp.Company_No)!==-1:false"></mat-checkbox>
-                                                            {{emp.Name}}
-                                                            - {{emp.Count}}
+                                                      <div style="display: flex; align-items: center;">
+                                                      <mat-checkbox  color="primary"  [checked]="comToselect?comToselect.indexOf(emp.Company_No)!==-1:false"></mat-checkbox>
+                                                      <span style="margin-left: 10px;" >      {{emp.Name}} </span>
+                                                           <span style="margin-left: auto;"  > {{emp.Count}} </span></div>
                                                     </mat-option>
 
                                                </mat-autocomplete>
@@ -327,9 +328,10 @@
 
 
                                                     <mat-option [value]="emp.Emp_No"  *ngFor="let emp of EmpCountInFilter?(EmpCountInFilter|filter:employee_searchtf.value).slice(0,1000):[]">
-                                                        <mat-checkbox  color="primary" [checked]="emplyToselect?emplyToselect.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
-                                                            {{emp.Name}}
-                                                            - {{emp.Count}}
+                                                      <div style="display: flex; align-items: center;">
+                                                      <mat-checkbox  color="primary" [checked]="emplyToselect?emplyToselect.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
+                                                     <span  style="margin-left: 10px;" >      {{emp.Name}} </span>
+                                                           <span style="margin-left: auto;"> {{emp.Count}}</span></div>
                                                     </mat-option>
 
                                                </mat-autocomplete>
@@ -419,9 +421,10 @@
 
 
                                                     <mat-option [value]="emp.Block_No"  *ngFor="let emp of TypeContInFilter?(TypeContInFilter|filter:project_searchtf.value).slice(0,1000):[]">
-                                                        <mat-checkbox  color="primary" [checked]="projtypeToselect?projtypeToselect.indexOf(emp.Block_No)!==-1:false"></mat-checkbox>
-                                                            {{emp.Name}}
-                                                            - {{emp.Count}}
+                                                      <div style="display: flex; align-items: center;">
+                                                      <mat-checkbox  color="primary" [checked]="projtypeToselect?projtypeToselect.indexOf(emp.Block_No)!==-1:false"></mat-checkbox>
+                                                       <span style="margin-left: 10px;">    {{emp.Name}}</span>
+                                                           <span  style="margin-left: auto;">{{emp.Count}} </span></div>
                                                     </mat-option>
 
                                                </mat-autocomplete>
@@ -533,9 +536,10 @@
 
 
                                                       <mat-option [value]="emp.Name"  *ngFor="let emp of StatusCountFilter?(StatusCountFilter|filter:status_searchtf.value).slice(0,1000):[]">
-                                                          <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Name)!==-1:false"></mat-checkbox>
-                                                              {{emp.Name}}
-                                                              - {{emp.Count}}
+                                                        <div style="display: flex; align-items: center;">
+                                                        <mat-checkbox  color="primary" [checked]="enterStatus?enterStatus.indexOf(emp.Name)!==-1:false"></mat-checkbox>
+                                                          <span style="margin-left: 10px;">   {{emp.Name =='Under Approval'?'New approval' :emp.Name=="Cancellation Under Approval"?"Cancellation approval": emp.Name=="Deadline Extend Under Approval" ? "Deadline extend approval" :emp.Name== "Completion Under Approval" ? "Completion approval" :emp.Name=='Forward Under Approval'? "Forward approval" :emp.Name=='InProcess'?'In-process':emp.Name}}
+                                                          </span><span style="margin-left: auto;">{{emp.Count}}</span></div>
                                                       </mat-option>
 
                                                  </mat-autocomplete>

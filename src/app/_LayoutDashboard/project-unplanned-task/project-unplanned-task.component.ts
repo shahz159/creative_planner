@@ -1369,12 +1369,13 @@ showassign(){
   document.getElementById('Completed').classList.add('d-none')
   document.getElementById('taskdd').classList.add('d-none')
 }
-
+selected_date:any
 selected_taskId:any;
 selected_taskName:any;
-unassign_edit(id:any,taskname:any){
+unassign_edit(id:any,taskname:any,date:any){
   this.selected_taskId=id;
   this.selected_taskName=taskname.trim();
+  this.selected_date = date
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");

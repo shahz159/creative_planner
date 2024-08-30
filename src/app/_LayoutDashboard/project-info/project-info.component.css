@@ -1607,3 +1607,18 @@ color: blue!important;
 .Status-done {
   color: #62B134;
 }
+.approve{
+  color:#9C27BD !important ;
+}
+.in_pro{
+color:#1E88E5 !important ;
+}
+.Completed{
+  color: #388E3C !important;
+}
+.Comp_appr{
+  background-color: #81C784 !important;
+}
+.proj_hold{
+  background-color: #795548 !important;
+}
