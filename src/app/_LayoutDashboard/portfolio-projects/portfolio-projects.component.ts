@@ -4428,7 +4428,7 @@ loadGanttChart(){
 
   let _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
   this.isGanttchartVisible=_ProjectsListBy_Pid1.length>0;
-  
+
   _ProjectsListBy_Pid1.sort((p1,p2)=>{
       let x=p1.Duration+(p1.Status=='Delay'?new Date(p1.DeadLine)>=new Date()?0:p1.Delaydays:0);
       let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
@@ -4610,7 +4610,7 @@ var options = {
                    tspan1.textContent=fullname.substring(0,20);
                    const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                    tspan2.setAttribute('x','-135');
-                   tspan2.setAttribute('dy','11');   // old 15.6 
+                   tspan2.setAttribute('dy','11');   // old 15.6
                    let fullname2=fullname.slice(20);
                    fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
                    tspan2.textContent=fullname2;
@@ -4634,7 +4634,7 @@ var options = {
               const ypos=te.getAttribute('y');
               te.setAttribute('y',ypos-12);
 
-              const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+              const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
               tspan3.setAttribute('x','-135');
               tspan3.setAttribute('dy','13');
               tspan3.style.fill='#543fff';
@@ -4661,7 +4661,7 @@ var options = {
               });
           });
         //add project code, project responsible info and hover effect to each yaxis label and open details on click
- 
+
 
        },
     }
@@ -4681,7 +4681,7 @@ var options = {
   dataLabels: {
     enabled:false,
     formatter: function(val, opts) {
-    
+
       // var label = opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].x;
       // let text;
       // if(label == 'Stream Planner work scheduling')
@@ -4867,7 +4867,7 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
 
 
 
-    
+
   },
 
 
@@ -5734,6 +5734,14 @@ bindCustomRecurrenceValues(){
     this.characterCount = textContent.length;
   }
 
+
+  getFormattedDelay(delayDays: any): string {
+    let delayText = '';
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+      else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+      else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+      else { delayText = `${delayDays} days`; } return `${delayText} `; }
 
   // new code of portfolio meeting side bar end
 }
