@@ -373,6 +373,7 @@ Prj_Code:any;
           }
 
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
+          console.log( this.ProjectStatesJson," this.ProjectStatesJson this.ProjectStatesJson this.ProjectStatesJson")
 
           // console.log(this.ProjectInfoList,"pt");
           // this.ifcategoryZero = this.ProjectInfoList['CompleteReportType'];
