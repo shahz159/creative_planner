@@ -15,7 +15,7 @@ export class CalenderService {
   }
   readonly rootUrl = this.commonUrl.apiurl;
   GetCalenderProjectandsubList(obj: CalenderDTO) {
-
+debugger
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;

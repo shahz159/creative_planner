@@ -247,6 +247,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
+    // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
@@ -3853,7 +3854,17 @@ check_allocation() {
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
 
-    this.GetProjectAndsubtashDrpforCalender();
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Project_Code = null;
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+    ((data) => {
+ 
+      this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+
+      console.log("Portfoliolist_1:",this.Portfoliolist_1);
+
+    });
+    // this.GetProjectAndsubtashDrpforCalender();
   }
 
 
@@ -5145,7 +5156,34 @@ Task_type(value:number){
       })
 
 
+  // valid starttimearr and endtimearr setting start.
+  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+  let _currentdate=moment();
+  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+  {
+      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+      const index:number=this.StartTimearr.findIndex((item:any)=>{
+          const t=moment(item,'h:mm A');
+          const result=t>=ct;
+          return result;
+      });
+      this.validStartTimearr=this.StartTimearr.slice(index);
+  }
+  else
+  this.validStartTimearr=[...this.StartTimearr];
 
+
+
+  this.timingarryend = [];
+  this.Time_End = [];
+  this.Time_End = [...this.StartTimearr];
+  let _index = this.Time_End.indexOf(this.Startts);
+  if (_index + 1 === this.Time_End.length) {
+    _index = -1;
+  }
+  this.timingarryend = this.Time_End.splice(_index + 1);
+  this.EndTimearr = this.timingarryend;
+  // valid starttimearr and endtimearr setting end.
     })
 
 
@@ -9139,6 +9177,8 @@ getObjOf(arr, id, idName) {
   return '';
 }
 
+
+validStartTimearr:any=[];
 changeScheduleType(val:number){
   if(val==1)
   {  // Task
@@ -9176,6 +9216,8 @@ changeScheduleType(val:number){
     document.getElementById("meeting-online-add").style.display = "flex";
     document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
 
+
+   
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
