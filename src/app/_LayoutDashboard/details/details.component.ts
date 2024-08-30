@@ -238,6 +238,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     // get all project details from the api.
     this.getapprovalStats();
+    this.getstandardapprovalStats();
     this.getusername();
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
@@ -2173,6 +2174,7 @@ currentStdAprView:number|undefined;
       this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
       this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
 
+      console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
       // if(this.standardjson.length>0){
       //     this.isApprovalSection=true;
       //     this.isTextAreaVisible=false;

@@ -2051,7 +2051,7 @@
           projectInfo.Status==='Not Started'||
           projectInfo.Status==='Project Hold'||
           ['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)||
-          ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)) ||
+          ((totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == standardjson[0].approvalEmpID)) ||
           ((multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId))||
           (projectInfo.Project_Block==='003'&&projectInfo.totaltaskcount>0)||
           (projectInfo.Status=='Completed'&&projectInfo.VersionCode)
@@ -2347,7 +2347,7 @@
         </ng-container>
 
 
-        <div *ngIf="(totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == approvalEmpId)" class="notification stdtask-underapproval-notification">
+        <div *ngIf="(totalStdTskApvs&&totalStdTskApvs>0)&&(Current_user_ID  == standardjson[0].approvalEmpID)" class="notification stdtask-underapproval-notification curser-pointer" (click)="ApprovalSideBar()">
             <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
                 enable-background="new 0 0 64 64" xml:space="preserve" style="
