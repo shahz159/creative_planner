@@ -4,7 +4,7 @@ export class CalenderDTO {
     location:String;
     loc_status:Boolean;
     Schedule_type:number;
-    Emp_no:number;
+    Emp_no:number ;
     Status_type:string;
     IsAdmin:boolean;
     Meeting_notes:any;

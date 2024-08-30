@@ -3854,17 +3854,26 @@ check_allocation() {
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
 
+
+   
+    this._calenderDto = new CalenderDTO();
+
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.Project_Code = null;
-    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
-    ((data) => {
+    this.GetProjectAndsubtashDrpforCalender();
+
+    // this._calenderDto.Emp_No = this.Current_user_ID;
+    // console.log("Portfoliolist_1:",this._calenderDto.Emp_No);
+    // this._calenderDto.Project_Code = this.URL_ProjectCode;
+    // this.CalenderService.GetCalenderProjectandsubList(this.URL_ProjectCode).subscribe
+    // ((data) => {
  
-      this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+    //   this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
 
-      console.log("Portfoliolist_1:",this.Portfoliolist_1);
+    //   console.log("Portfoliolist_1:",this.Portfoliolist_1);
 
-    });
-    // this.GetProjectAndsubtashDrpforCalender();
+    // });
+    
   }
 
 
@@ -3934,23 +3943,26 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-    if(this._SelectedPorts==' '||this._SelectedPorts==null){
+    if(this.Portfolio==' '||this.Portfolio==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
     }
-
-    this.selectedportID = JSON.stringify(this._SelectedPorts);
-    // console.log(this.selectedportID,"portids");
+     
+    this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
+    this.selectedportID = JSON.stringify(this.Portfolio);
     if (this.selectedportID != null) {
+     
       this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
       this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
       this.objPortfolioDto.Emp_No = this.Current_user_ID;
       this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
         subscribe((data) => {
+         
           this._Message = (data['message']);
-          if (this._Message == 'Updated successfully') {
+          debugger
+          if (this._Message == 'Updated Successfully') { 
             this.getPortfoliosDetails();
-            this._SelectedPorts=null;
+            this.Portfolio=[];
             this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
           } else {
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
@@ -5052,7 +5064,7 @@ Task_type(value:number){
   this._PopupConfirmedValue = 1;
   // this.MinLastNameLength = true;
   this._subname = false;
-  this._calenderDto = new CalenderDTO;
+  this._calenderDto = new CalenderDTO();
   this.BlockNameProject1 = [];
   this._lstMultipleFiales = [];
   this._labelName = "Schedule Date :";
