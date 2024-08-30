@@ -3797,7 +3797,31 @@
                     <ng-container *ngIf="Meetingstatuscom==Completed" >
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                         <div class="matchip-drp-dwn">
-                            <mat-form-field class="drp-dwn-field ">
+
+
+
+
+                            <!-- <div class="se-row" id="core_Dms" style="display:none"> -->
+                              
+                                <div class="se-col-11">
+                                    <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('S-Mail')">
+                                        <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S-Mail':'Add S-Mail')}}</div>
+                                        <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                    <ul class="schedule-select-list" *ngIf="loading==false"  >
+                                        <li *ngFor="let memoid of SelectDms">
+                                        <div class="schedule-select-list-item">
+                                            <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
+                                            <span (click)="discardChoosedItem('DMS',memoid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                        </div>
+                                        <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            <!-- </div> -->
+                            <!-- <mat-form-field class="drp-dwn-field ">
                                 <mat-label>Select S-Mail</mat-label>
                                 <mat-chip-list #selectedTeamMembers>
                                     <mat-chip *ngFor="let data of selectedEmploy_DMS" class="Data_chip_kt"
@@ -3821,15 +3845,14 @@
                                 </div>
                                 <mat-autocomplete aria-label="supportDrpDwnDMS" #TeamMemberDrpDwns="matAutocomplete"
                                     (optionSelected)="selectedChip_DMS($event); SupportTF.value=''; "
-                                    (opened)="isDMSDrpDwnOpen=true" (closed)="isDMSDrpDwnOpen=false;">
-                                    
+                                    (opened)="isDMSDrpDwnOpen=true" (closed)="isDMSDrpDwnOpen=false;">  
                                     <mat-option class="mat-font" *ngFor="let item of (Memos_List|filter:dms_Inputfield.value).slice(0,500)" [value]="item.MailId">
                                         <mat-checkbox color="primary" [checked]="selectedEmploy_DMS.indexOf(item)!==-1"
                                             (change)="selectedChip_DMS($event)"></mat-checkbox>
                                         {{item.Subject}}
                                     </mat-option>
                                 </mat-autocomplete>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                                 <ng-container *ngFor="let item of EventScheduledjson">
 
@@ -3837,14 +3860,14 @@
                                 <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"
                                 (click)="AddDMS_meetingreport()">Link</button>
                                 </ng-container>
-                                <ng-container *ngIf="selectedEmploy_DMS!=''">
+                                <ng-container *ngIf="SelectDms!=''">
                                 <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
                                 <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn mb-3"  data-target="#confirmpopup" data-toggle="modal"
                                 >Link</button>
                                 </ng-container>
                                 </ng-container>
-                                <ng-container *ngIf="(selectedEmploy_DMS=='' && item.Recurrence!=='Do not repeat')">
-                                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text     drp-dwn-submitbtn mb-3"
+                                <ng-container *ngIf="(SelectDms=='' && item.Recurrence!=='Do not repeat')">
+                                    <button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn mb-3"
                                     (click)="AddDMS_meetingreport()">Link</button>
                                 </ng-container>
                                 </ng-container>
@@ -3945,7 +3968,26 @@
                     </li>
                     <ng-container  *ngIf="Meetingstatuscom==Completed"> 
                     <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
-                        <mat-form-field class="drp-dwn-field w-100">
+
+                            <div class="se-col-11">
+                                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PORTFOLIO')">
+                                    <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
+                                    <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+                                    <li *ngFor="let prtfid of Portfolio">
+                                    <div class="schedule-select-list-item">
+                                        <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
+                                        <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                    </div>
+                                    <div class="schedule-select-list-user">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').DisplayName}}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        
+                        <!-- <mat-form-field class="drp-dwn-field w-100">
                             <mat-label>Select Portfolios</mat-label>
                             <mat-chip-list #selectedportfolioslist>
                                 <mat-chip *ngFor="let prt of ngDropdwonPort" class="Data_chip_kt"
@@ -3975,7 +4017,7 @@
                                     {{prt.Portfolio_Name}} - {{prt.DisplayName}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                     <ng-container *ngFor="let item of EventScheduledjson">
 
@@ -3983,13 +4025,13 @@
                     <button class="btn btn-label-primary btn-upper mb-4" (click)="Addportfolios_meetingreport()">Link</button>
                     </ng-container>
 
-                    <ng-container *ngIf="ngDropdwonPort!=''">
+                    <ng-container *ngIf="Portfolio!=''">
                     <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
                         <button class="btn btn-label-primary btn-upper mb-4" data-target="#confirmpopup" data-toggle="modal" >Link</button>
                     </ng-container>
                     </ng-container>
 
-                    <ng-container *ngIf="(ngDropdwonPort=='' && item.Recurrence!=='Do not repeat')">
+                    <ng-container *ngIf="(Portfolio=='' && item.Recurrence!=='Do not repeat')"> 
                         <button class="btn btn-label-primary btn-upper mb-4"  (click)="Addportfolios_meetingreport()">Link</button>
                     </ng-container>
 
@@ -4694,7 +4736,27 @@
                     <div *ngIf="Isadmin==true" class="d-flex align-items-end p-3" style="column-gap:10px">
 
 
-                        <mat-form-field class="drp-dwn-field ">
+
+                            <div class="se-col-11">
+                                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PROJECT')">
+                                    <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
+                                    <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+                                    <li *ngFor="let prj of projectsSelected">
+                                    <div class="schedule-select-list-item">
+                                        <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
+                                        <span (click)="discardChoosedItem('PROJECT',prj.Project_Code)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                    </div>
+                                    <div class="schedule-select-list-user">{{prj.TM_DisplayName}}</div>
+                                    </li>
+        
+                                </ul>
+                            </div>
+                        
+                        <!-- <mat-form-field class="drp-dwn-field ">
                             <mat-label>Selects Projects</mat-label>
                             <mat-chip-list #selectedTeamMember_projects>
                                 <mat-chip *ngFor="let data of selectedEmploy_Projects" class="Data_chip_kt"
@@ -4725,7 +4787,7 @@
                                     {{item.BlockNameProject}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
+                        </mat-form-field> -->
                         <!-- <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button> -->
 
                         <ng-container *ngFor="let item of EventScheduledjson">
@@ -4733,12 +4795,12 @@
                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                             <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>
                             </ng-container>
-                            <ng-container *ngIf="selectedEmploy_Projects!=''">
+                            <ng-container *ngIf="projectsSelected!=''">
                             <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
                             <button class="btn btn-label-primary mb-4" data-target="#confirmpopup" data-toggle="modal">Add Projects</button>
                         </ng-container>
                         </ng-container>
-                        <ng-container *ngIf="(selectedEmploy_Projects=='' && item.Recurrence!=='Do not repeat')">
+                        <ng-container *ngIf="(projectsSelected=='' && item.Recurrence!=='Do not repeat')">
                                 <button class="btn btn-label-primary mb-4" (click)="Addproject_meetingreport()">Add Projects</button>
                             </ng-container>
                             </ng-container>
@@ -4822,6 +4884,7 @@
             </div>
         </div>
         <!-- Projects  Template  End -->
+
 
         <!--  Previous Meeting Notes  sidebar  start -->
         <div id="Previous_sidebar" class="previous-sidebar sideInfobar animate-right">
@@ -8516,8 +8579,8 @@
                                 </div>
                             </div>
                             <div class="se-col-11">
-                                <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('DMS')">
-                                    <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add S-Mail')}}</div>
+                                <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('S-Mail')">
+                                    <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S-Mail':'Add S-Mail')}}</div>
                                     <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                         <span class="sr-only">Loading...</span>
                                     </div>
@@ -8972,7 +9035,7 @@
             <div class="modal-content">
                 <div class="modal-header  gap-1">
                 <ng-container *ngIf="projectmodaltype">
-                            <img *ngIf="projectmodaltype==='DMS'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                            <img *ngIf="projectmodaltype==='S-Mail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
                             <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                                 <path
                                     d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
@@ -9011,7 +9074,7 @@
                     <div id="project-filter" class="project-filter">
 
 
-                        <div *ngIf="projectmodaltype!=='DMS'" class="project-filter-item">
+                        <div *ngIf="projectmodaltype!=='S-Mail'" class="project-filter-item">
                             <div class="item-label">Company</div>
                             <div class="item-select">
                                 <div class="" >
@@ -9053,7 +9116,7 @@
                         <div class="project-filter-footer">
                             <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
                             <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
-                            <button *ngIf="projectmodaltype==='DMS'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();">Submit</button>
+                            <button *ngIf="projectmodaltype==='S-Mail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();">Submit</button>
                             <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();">Submit</button>
                             <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
                         </div>
@@ -9118,7 +9181,7 @@
                                 <span style="color:#757575" class="ml-2">No results found.</span>
                             </div>
                     </ul>
-                    <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='DMS'">
+                    <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='S-Mail'">
 
 
                             <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">

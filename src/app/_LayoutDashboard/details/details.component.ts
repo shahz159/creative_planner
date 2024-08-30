@@ -876,7 +876,9 @@ this.prjPIECHART.render();
 
   requestaccessList:any=[];
   deadlineExtendlist:any;
-  totaldeadlineExtend:any
+  totaldeadlineExtend:any;
+  // projectActionDelay:any;
+  // projectDelay:any;
 
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
@@ -936,6 +938,30 @@ this.prjPIECHART.render();
 
       }
 
+
+      // this.projectActionDelay = this.projectActionInfo.map((action) => {
+      //   let delayText = '';
+      
+      //   if (action.Delaydays >= 365) {
+      //     const years = Math.floor(action.Delaydays / 365);
+      //     delayText = years === 1 ? '1 year' : `${years} years`;
+      //   } else if (action.Delaydays >= 30) {
+      //     const months = Math.floor(action.Delaydays / 30);
+      //     delayText = months === 1 ? '1 month' : `${months} months`;
+      //   } else if (action.Delaydays >= 7) {
+      //     const weeks = Math.floor(action.Delaydays / 7);
+      //     delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+      //   } else {
+      //     delayText = `${action.Delaydays} days`;
+      //   }
+      
+      //   return {
+      //     ...action,
+      //     Delaydays: delayText
+      //   };
+      // });
+      
+  
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1020,10 +1046,56 @@ this.prjPIECHART.render();
     // only used in project completion report concept
 
     });
-
-
-
   }
+
+
+
+  getDelayText(action: any): string {
+    if (!action || action.Delaydays == null) return '';
+  
+    let delayText = '';
+  
+    if (action.Delaydays >= 365) {
+      const years = Math.floor(action.Delaydays / 365);
+      delayText = years === 1 ? '1 year' : `${years} years`;
+    } else if (action.Delaydays >= 30) {
+      const months = Math.floor(action.Delaydays / 30);
+      delayText = months === 1 ? '1 month' : `${months} months`;
+    } else if (action.Delaydays >= 7) {
+      const weeks = Math.floor(action.Delaydays / 7);
+      delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+    } else {
+      delayText = `${action.Delaydays} day(s)`;
+    }
+  
+    return delayText + ' Delay';
+  }
+  
+  
+  getStandardText(action: any): string {
+    if (!action?.Status) return '';
+  
+    const days = parseInt(action.Status);
+    if (isNaN(days)) return action.Status; // Return original status if it's not a number
+  
+    const periods = [
+      { unit: 'year', duration: 365 },
+      { unit: 'month', duration: 30 },
+      { unit: 'week', duration: 7 }
+    ];
+  
+    for (const { unit, duration } of periods) {
+      const count = Math.floor(days / duration);
+      if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
+    }
+  
+    return `${days} day${days === 1 ? '' : 's'}`;
+  }
+  
+  
+  
+  
+  
 
   prjRunFor:number=0;
   uniqueName:any
@@ -1831,14 +1903,14 @@ multipleback(){
   // ADD DMS STARTS HERE
   addDMSToTheProject() {
     try {
-
-      if (this.selectedMemos.length) {
+      this.SelectDms=this.SelectDms.map((item)=>({"MailId": item}))
+      if (this.SelectDms.length) {
         // when user has selected memo.  when selectedMemos.length>0
         let totalmemos = [];
         if (this.projectMemos)
           totalmemos = this.projectMemos.map((item: any) => ({ MailId: item.MailId })); // get current memos list.
 
-        let newmemos = this.selectedMemos.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
+        let newmemos = this.SelectDms.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
         newmemos.forEach((memo: { MailId: number }) => {
           totalmemos.push(memo);
         });   // adding selected memos to the totalmemos
@@ -1848,7 +1920,7 @@ multipleback(){
         let appId: number = 101;//this._ApplicationId;
         let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
         let userid: number = +this.Current_user_ID;
-        console.log("here we go", projectcode, appId, dmsMemo, userid);
+      
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated successfully") {
@@ -1856,8 +1928,6 @@ multipleback(){
           }
 
         });
-
-
       }
       else {
         // when user tries to click addlink btn without selecting memo.   when selectedMemos.length=0
@@ -1870,7 +1940,7 @@ multipleback(){
       this.notifyService.showInfo("Request Cancelled", "Error!");
     }
     this.GetMemosByEmployeeId();    // get new data.
-    this.selectedMemos = new Array();
+    this.SelectDms = new Array();
     // this.closeLinkSideBar();         //closes the sidebar.
   }
   // ADD DMS END HERE
@@ -3764,7 +3834,8 @@ check_allocation() {
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
       ((data) => {    
-        this._portfoliosList = data as [];    console.log('porfolios at details:',this._portfoliosList);
+        this._portfoliosList = data as [];   
+         console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
@@ -3781,6 +3852,8 @@ check_allocation() {
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
+
+    this.GetProjectAndsubtashDrpforCalender();
   }
 
 
@@ -3854,8 +3927,6 @@ check_allocation() {
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
     }
-
-
 
     this.selectedportID = JSON.stringify(this._SelectedPorts);
     // console.log(this.selectedportID,"portids");
@@ -5251,9 +5322,10 @@ debugger
 
   subtashDrpLoading:boolean = false
   GetProjectAndsubtashDrpforCalender() {
-
+   
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
+        
         this.subtashDrpLoading=false;
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
@@ -5264,8 +5336,7 @@ debugger
          });    // to change the order : first racis people and then rest
 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        console.log(this.Portfoliolist_1, "Project List Array");
-
+        
 
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
@@ -8776,6 +8847,7 @@ onProjectSearch(inputtext:any){
 }
 
   onInputSearch(inputText:any){
+    debugger
     let keyname;
     let arrtype;
     let selectedinto;
@@ -8844,6 +8916,7 @@ onProjectSearch(inputtext:any){
       this.isFilteredOn=false;
   }
   onPortfolioFilter(){
+    debugger
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
@@ -9022,7 +9095,7 @@ Meeting_method(event){
  }
 
  projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
-  debugger
+ 
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
