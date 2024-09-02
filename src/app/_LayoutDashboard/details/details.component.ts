@@ -1022,11 +1022,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
-                const temp=this.pendingActns4Aprvls.find(item=>item.approvalType==actn.Status);
-                if(temp)
-                temp.total+=1;
-                else
-                this.pendingActns4Aprvls.push({approvalType:actn.Status,total:1});
+                  
+                  const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
+                  if(temp)
+                  temp.totalApprovals+=1;
+                  else
+                  this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
 
@@ -1585,6 +1586,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("Approval_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+      // to bydefault open the index 0 approval.
+      setTimeout(()=>{
+        const aprv1:any=document.querySelector('#Approval_view #heading-AprvReq-0 a.accordion-button');
+        const isOpened=aprv1.getAttribute('aria-expanded');
+        if(isOpened=='false'){
+          aprv1.click();
+        }
+      },300)
   }
 
 
@@ -1592,6 +1601,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     document.getElementById("multiple_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    // to bydefault open the index 0 approval.
+    setTimeout(()=>{
+      const aprv1:any=document.querySelector('#multiple_view #heading-AprvReqm-0 a.accordion-button');
+      const isOpened=aprv1.getAttribute('aria-expanded');
+      if(isOpened=='false'){
+        aprv1.click();
+      }
+    },300)
+  
   }
 
 
@@ -1658,11 +1676,12 @@ multipleback(){
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
+    document.getElementById("multiple_view").classList.remove("kt-quick-active--on");
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
-
+ 
     // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
 
@@ -2192,21 +2211,22 @@ multipleback(){
 standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
-
-      console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
-      this.requestDetails = data as [];
-      console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
-      this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
-
-      console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
-      // if(this.standardjson.length>0){
-      //     this.isApprovalSection=true;
-      //     this.isTextAreaVisible=false;
-      //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
-      // }
-
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data:any) => {
+      if(data&&data.length>0){
+        console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
+        this.requestDetails = data as [];
+        console.log(this.requestDetails,"task approvals");
+        this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
+        this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
+  
+        console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
+        // if(this.standardjson.length>0){
+        //     this.isApprovalSection=true;
+        //     this.isTextAreaVisible=false;
+        //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
+        // }
+      }
+  
     });
   }
 
@@ -8210,12 +8230,13 @@ showSelfAssignedActns(userno){
   }
 }
 
-showPendingApprovalsActions(){
-    this.filteredPrjAction=this.projectActionInfo.filter((item)=>{
-       return ['Under Approval','Forward Under Approval'].includes(item.Status);
+showPendingAprvlActnsOfEmp(userno:string){
+  if(userno){
+    this.filteredPrjAction = this.projectActionInfo.filter((item) => {
+      return (['Under Approval','Forward Under Approval'].includes(item.Status)) && (item.Team_Res==userno);
     });
+  }
 }
-
 
 // start meeting feature start
 
