@@ -1889,6 +1889,7 @@ multipleback(){
            this.isLoadingData=true;
           this._LinkService._GetMemosSubject(data[0]['JsonData']).
             subscribe((data: any) => {
+              console.log(data,"dms data");
               this.isLoadingData=false;
               if (data.JsonData) {
                 this.projectMemos = JSON.parse(data.JsonData);
