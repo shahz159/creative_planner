@@ -1,3 +1,4 @@
+import { forEach } from '@angular-devkit/schematics';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, QueryList, ViewChildren,ViewChild } from '@angular/core';
 import { DropdownDTO } from 'src/app/_Models/dropdown-dto';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
@@ -76,7 +77,7 @@ Dateselectionrange: string = 'Date selection range';
     //   endDate: moment().endOf('day')
     // };
   }
-
+  userFound:boolean | undefined
   _subtaskDiv: boolean;
   keyword = 'Subject';
   countries: any;
@@ -135,6 +136,7 @@ $(document).ready(function(){
 
    // dropdowns data
     this.getDropdownsDataFromDB1();
+    // this.changingdaysinweek(this.index)
   }
 
 
@@ -429,6 +431,7 @@ $(document).ready(function(){
     // this.applyFilters();
     // alert(this.isChecked);
   }
+
     GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
@@ -480,9 +483,16 @@ $(document).ready(function(){
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
+
+
+
+
+
+
+
          console.log("Summary Data---->",this._ProjectDataList);
 
-
+        this.userFound = true
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
         this.cancelcount=this.ActualDataList[0]['cancelcount'];
@@ -505,12 +515,39 @@ $(document).ready(function(){
           this.emptyspace=true;
         }
       this.getDropdownsDataFromDB();
+      debugger
+
+      // this.changeDaysInWeek()
+
       });
     }
 
 
   }
 
+
+  getFormattedDelay(delayDays: any): string {
+    let delayText = '';
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+      else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+      else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+      else { delayText = `${delayDays} days`; } return `${delayText} Delay`; }
+
+
+
+      getStatusNumber(status: string): number {
+        const match = status.match(/\d+/); // Find digits in the string
+        return match ? parseInt(match[0], 10) : null; // Convert to number, or return null if no number found
+      }
+
+
+
+
+
+
+// index:any
+dates:any
   LastPage:number;
   lastPagerecords:number;
   duplicateofCompany:any[]=[]
@@ -545,6 +582,13 @@ $(document).ready(function(){
         else {
           this.EmpCountInFilter = this.selectedItem_Emp[0];
         }
+
+
+
+
+
+
+
         //Type
         if (this.selectedItem_Type.length == 0) {
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
@@ -713,6 +757,7 @@ $(document).ready(function(){
 
 
   getDropdownsDataFromDB1(){
+debugger
 
 
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
@@ -722,15 +767,18 @@ $(document).ready(function(){
       this._objDropdownDTO.SelectedEmp_No = this.selectedEmp_String;
       this._objDropdownDTO.Selected_SearchText = this.searchText;
       this._objDropdownDTO.ActiveStatus = "Active";
-      this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{
 
-
-
+      this.service[this.Type=='RACIS Projects'?'GetDropDownsOwnerData_ForSummary':this.Type=='ALL Projects'?'GetDropDownsData_ForSummary':''](this._objDropdownDTO).subscribe((data:any)=>{
           this.EmpCountInFilter=this.emplyToselect.length==0?JSON.parse(data[0]['Emp_Json']):this.EmpCountInFilter;
           this.TypeContInFilter=this.projtypeToselect.length==0?JSON.parse(data[0]['ProjectType_Json']):this.TypeContInFilter;
           this.CompanyCountFilter=this.comToselect.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
           this.StatusCountFilter=this.enterStatus.length==0?JSON.parse(data[0]['Status_Json']):this.StatusCountFilter;
 
+
+        console.log( JSON.parse(data[0]['Emp_Json']),'  this.EmpCountInFilter  this.EmpCountInFilter')
+        console.log(JSON.parse(data[0]['ProjectType_Json']),' this.TypeContInFilter this.TypeContInFilter')
+        console.log(JSON.parse(data[0]['CompanyType_Json']),' this.CompanyCountFilter this.CompanyCountFilter')
+        console.log(JSON.parse(data[0]['Status_Json']),'this.StatusCountFilterthis.StatusCountFilterthis.StatusCountFilter')
 
           this._totalProjectsCount = JSON.parse(data[0]['TotalProjectsCount_Json']);
           this.count_LinkedProjects = this._totalProjectsCount[0]['TotalLinked'];
@@ -949,17 +997,21 @@ $(document).ready(function(){
   SearchbyText() {
     if(this.searchText ==''){
       this.searchResult = false;
+
       this.CurrentPageNo = 1;
       this.applyFilters();
+      this.edited = false
     }
     else{
       this.searchResult = true;
       this.CurrentPageNo = 1;
       this.applyFilters();
+      this.edited = false
     }
   }
 
   applyFilters() {
+
 this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -1003,6 +1055,7 @@ this.edited = true
       .subscribe(data => {
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
+        console.log(this._ProjectDataList,"this._ProjectDataListthis._ProjectDataListthis._ProjectDataList")
         this._CurrentpageRecords = this._ProjectDataList.length;
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
@@ -1017,7 +1070,9 @@ this.edited = true
       });
 
     //Filtering Checkbox de
+    this.filterMegadropdownclose()
     this.getDropdownsDataFromDB();
+    this.filterMegadropdownclose();
     }
     else if(this.Type=='RACIS Projects'){
       moment.locale('en');
@@ -1046,7 +1101,7 @@ this.edited = true
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
           this._CurrentpageRecords = this._ProjectDataList.length;
-
+          console.log('this._ProjectDataList:tjhis,this',this._ProjectDataList);
     console.log('lastPagerecords:',this.lastPagerecords);
     console.log('CurrentPageNo:',this.CurrentPageNo);
     console.log('_CurrentpageRecords:',this._CurrentpageRecords);
@@ -1465,6 +1520,7 @@ this.edited = true
   }
 
   newDetails(pcode) {
+
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
@@ -1606,6 +1662,9 @@ onEmpSelected(selected:boolean,selectedItem:any){
    }
 }
 
+
+filterByResult:boolean=false
+
 getNewFilterResult(){
 
 this.edited = false
@@ -1613,9 +1672,17 @@ this.edited = false
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
   this.checkedItems_Cmp=this.CompanyCountFilter.filter(item=>this.comToselect.includes(item.Company_No));
   this.checkedItems_Type=this.TypeContInFilter.filter(item=>this.projtypeToselect.includes(item.Block_No));
-  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Count));
-  // this.edited=true
+  this.checkedItems_Status=this.StatusCountFilter.filter(item=>this.enterStatus.includes(item.Name));
 
+  if(this.emplyToselect.length>0 || this.comToselect.length>0  ||this.projtypeToselect.length>0  ||this.enterStatus.length>0 ){
+    this.filterByResult =true;
+  }else{
+    this.filterByResult =false;
+  }
+
+  // this.edited=true
+  console.log(this.checkedItems_Cmp,'ddddddddddddddddddddddddddddddddddddddddddddd')
+console.log(this.checkedItems_Emp,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
   this.selectedEmp_String = this.checkedItems_Emp.map(select => {
     return select.Emp_No;
   }).join(',');
@@ -1918,14 +1985,13 @@ getObjOfpro(arr, id, idName) {
 
 enterStatus:any=[];
 onstatusSelected(e:any){
-
-  const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Count===e.option.value);
+  const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Name===e.option.value);
 
   if(statusChoosed){
-       const index=this.enterStatus.indexOf(statusChoosed.Count);
+       const index=this.enterStatus.indexOf(statusChoosed.Name);
        if(index===-1){
           // if not present then add it
-          this.enterStatus.push(statusChoosed.Count);
+          this.enterStatus.push(statusChoosed.Name);
        }
        else{ //  if item choosed is already selected then remove it.
         this.enterStatus.splice(index,1);
@@ -1984,6 +2050,8 @@ isInvalidDate(date: moment.Moment) {
   // Example logic for invalid dates
   return date.weekday() === 0 || date.weekday() === 6; // Disable weekends
 }
+
+
 
 
 }

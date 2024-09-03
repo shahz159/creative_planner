@@ -24,6 +24,10 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
@@ -45,15 +49,16 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgMultiSelectDropDownModule,
     Ng2SearchPipeModule,
     MatCheckboxModule,
-    NgSelectModule
-    
+    NgSelectModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   exports:[
-    ProjectUnplannedTaskComponent, 
+    ProjectUnplannedTaskComponent,
   ],
-    providers: [ 
+    providers: [
       NotificationService, ToDoProjectsComponent, MoreDetailsComponent, DatePipe,
       MeetingDetailsComponent, ProjectsSummaryComponent,MeetingReportComponent, DetailsComponent,CreateProjectComponent
-  ] 
+  ]
 })
 export class ProjectUnplannedTaskModule { }

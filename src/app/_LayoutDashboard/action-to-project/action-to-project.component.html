@@ -24,7 +24,7 @@
         <!-- </ng-multiselect-dropdown> -->
         <ng-select required #action="ngModel" (change)="ProjectOnSelect(); _projcode=!selectedProjectCodelist; "  [ngClass]="{'error-vd': _projcode == true||(action.touched&&!selectedProjectCodelist)}"   [(ngModel)]="selectedProjectCodelist"    placeholder="Select project" >
             <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList">
-                {{item.Project_Name }}
+                {{item.Project_Name}}
             </ng-option>
         </ng-select>
         <span *ngIf ="_projcode == true||(action.touched&&!selectedProjectCodelist)"; style="color:red">Project required!</span>
@@ -41,12 +41,16 @@
     </div>
     <div class="form-group">
         <label>Description :<span class="text-danger">*</span></label>
-        <textarea #description="ngModel" required class="form-control" [ngClass]="{'error-border': _desbool == true&&(description&&!_Description)}" placeholder="Enter action description" [(ngModel)]="_Description" (ngModelChange)="_desbool=!_Description;onDescriptionChange($event);isPrjDesValid=isValidString(_Description.trim(),3)" style="height: 100px"></textarea>
+        <textarea #description="ngModel" required class="form-control"
+         [ngClass]="{'error-border': _desbool == true&&(description&&!_Description)}" placeholder="Enter action description"
+          [(ngModel)]="_Description"  (input)="updateCharacterCount()" (paste)="updateCharacterCount()"
+           (ngModelChange)="_desbool=!_Description;onDescriptionChange($event);isPrjDesValid=isValidString(_Description.trim(),3)" style="height: 100px"></textarea>
         <span style="color:rgb(217,48,37)" class=""  *ngIf="!_Description&&_desbool">Please enter description name </span>
 
         <!-- <span *ngIf ="_desbool&&!_Description" style="color:red">Please enter description Maximum 200 characters are allowed</span> -->
         <span *ngIf="_Description&&isPrjDesValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 500 characters are allowed</span>
-       <span *ngIf="_Description&&_Description.length>500" style="color:rgb(217,48,37)">Maximum 500 characters are allowed</span>
+        <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500</span>
+        <span *ngIf="characterCount>=500" style="color:rgb(217,48,37)"> Maximum 500 characters are allowed</span>
       </div>
     <!-- <div; class="form-group">
         <label> Assign; To <span class="text-danger">*</span> : <strong></strong></label>
@@ -216,13 +220,14 @@
             <label>End date :<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': (_edate && !_EndDate)}" >
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null" (input)="_edate=!_EndDate" />
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();" (input)="_edate=!_EndDate" />
 
              <div class="input-group-text p-0">
                     <mat-datepicker-toggle  matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
+            <span *ngIf="sameDateActions" style="color:orange">more than 3 actions ending on same date.</span>
             <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date</span>
             <!-- <div *ngIf="_actafter" style="color: red">Action cannot end after the project.</div> -->
         </div>

@@ -309,13 +309,13 @@
     0%, 33% { --pgPercentage: 0; }
     100% { --pgPercentage: var(--value); }
   }
-  
+
   @property --pgPercentage {
     syntax: '<number>';
     inherits: false;
     initial-value: 0;
   }
-  
+
   div[role="progressbar"] {
     --size: 4rem;
     --fg: #369;
@@ -327,13 +327,13 @@
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: radial-gradient(circle closest-side, white 80%, transparent 85%), 
+    background: radial-gradient(circle closest-side, white 80%, transparent 85%),
     conic-gradient(from 0deg, var(--fg) 0% calc(var(--pgPercentage)* 1%), var(--bg) calc(var(--pgPercentage)* 1%) 100%);
     font-family: Helvetica, Arial, sans-serif;
     font-size: calc(var(--size) / 5);
     color: var(--fg);
   }
-  
+
   div[role="progressbar"]::before {
     counter-reset: percentage var(--value);
     content: counter(percentage) '%';
@@ -887,15 +887,6 @@ tr.action-row:hover {
     color: white;
 }
 
-/* .timeline:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 44px;
-    width: 3px;
-    height: 26%;
-    background: #c9c9c9;
-  } */
 .timeline .timeline-container {
     position: relative;
     margin-bottom: 16px
@@ -1362,4 +1353,32 @@ span.dar-dot {
 
 .progress-bar.green-bar {
     background-color: #73de37;
+}
+.assign{
+  background-color:#2786fb !important ;
+    color: white !important;
+}
+.newappr{
+  background-color: #9c27b0 !important;
+  color: white !important;
+}
+.notstart{
+  background-color: #E0E0E0 !important;
+  color: black !important;
+}
+.delay{
+  background-color: #D32F2F !important;
+  color: white !important;
+}
+.rejected{
+background-color:#DFDFDF !important ;
+color: #000 !important;
+}
+.delayinone{
+  background-color: #FDDF35 !important;
+  color: black !important;
+}
+.asstask{
+  background-color: #60708B !important;
+  color: white !important;
 }

@@ -21,12 +21,47 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { eventNames } from 'process';
+import { Console } from 'console';
 // import { SignalRService } from 'src/app/_Services/signal-r.service';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { ApprovalDTO } from 'src/app/_Models/approval-dto';
+
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
+
 
 @Component({
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css'],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 
 })
 export class MeetingDetailsComponent implements OnInit {
@@ -37,9 +72,14 @@ export class MeetingDetailsComponent implements OnInit {
   URL_ProjectCode: any;
   currentAgendaView: any
   _MasterCode: string;
+  CurrentUser_fullname:any;
+
+  subtask_loading:boolean=false;
+  loading: boolean = false;
   Current_user_ID: string;
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
   _calenderDto: CalenderDTO;
+  approvalObj: ApprovalDTO;
 
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
   notesContent: any;
@@ -76,7 +116,6 @@ export class MeetingDetailsComponent implements OnInit {
         // 'textColor',
         // 'backgroundColor',
         'customClasses',
-        'link',
         'unlink',
         'insertImage',
         'insertVideo',
@@ -105,6 +144,7 @@ export class MeetingDetailsComponent implements OnInit {
   };
   private refreshSubscription: Subscription;
   constructor(
+    private projectMoreDetailsService: ProjectMoreDetailsService,
     private CalenderService: CalenderService,
     private route: ActivatedRoute,
     public service: ProjectTypeService,
@@ -113,7 +153,8 @@ export class MeetingDetailsComponent implements OnInit {
     public ProjectTypeService: ProjectTypeService,
     private dialog: MatDialog,
     public router: Router,
-    public BsService: BsServiceService
+    public BsService: BsServiceService,
+    public approvalservice: ApprovalsService,
     // public signalRService: SignalRService
   ) {
 
@@ -122,13 +163,17 @@ export class MeetingDetailsComponent implements OnInit {
     this._lstMultipleFiales = [];
     this._ObjAssigntaskDTO = new AssigntaskDTO();
     this._ObjCompletedProj = new CompletedProjectsDTO();
+    this.approvalObj = new ApprovalDTO();
   }
 
 
   activeAgendaIndex: number = 0
   _PopupConfirmedValue: number;
+  today: any = new Date().toISOString().substring(0, 10);
 
   ngOnInit(): void {
+
+    this.MinLastNameLength = true;
 
     this.route.paramMap.subscribe(params => {
       var scode = params.get('scheduleid');
@@ -142,10 +187,14 @@ export class MeetingDetailsComponent implements OnInit {
       this._MasterCode = pcode;
     });
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.CurrentUser_fullname = localStorage.getItem("UserfullName");
+
+
+    this.MinLastNameLength = true;
     // this.getAttendeeTime();
 
     this.meeting_details();
-
+    // this.GetDMSList();
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
@@ -155,6 +204,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetTimeslabfordate();
     this.GetcompletedMeeting_data();
     this.agendaside(0);
+    this.getMeetingApprovals();
 
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
@@ -218,7 +268,7 @@ export class MeetingDetailsComponent implements OnInit {
   //     const selection = window.getSelection();
   //     if (!selection || selection.rangeCount === 0) {
   //     alert('Nothing is selected');
-  //   } 
+  //   }
 
 
   //   // const range = selection.getRangeAt(0);
@@ -345,13 +395,12 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
-
+    //  this.meeting_details();
   }
   Close_Repeat_Meeting() {
     document.getElementById("repeatModal").classList.remove("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
-
   }
 
   close_privatenote_sideBar() {
@@ -398,6 +447,15 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("upload_div").style.display = "block";
     document.getElementById("upload_btn").style.display = "none";
   }
+
+  
+  View_Activity() {
+    document.getElementById("Activity_Log").classList.add("kt-quick-panel--on");
+    document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    this.GetMeetingActivity();
+  }
+
 
   attach_btn() {
     document.getElementById("attach_heading").style.display = "block";
@@ -470,25 +528,35 @@ export class MeetingDetailsComponent implements OnInit {
   totalCompletedAgenda: any;
   urlUserID_Password: any;
   Endtms: any;
+  EventAction_type:any;
 
   meeting_details_1() {
     document.getElementById("rightbar-overlay").style.display = "block";
   }
+
+
+
+
 
   delayMeeting: any;
   upcomingMeeting: any;
   meetingDuration: any;
   meetings_Recurrence: any;
   completionReports_Status:any=[];
-
+  totalUser_Scheduledjson:any;
+  completionReports:any;
+  CurrentNotesCount:any;
+  CurrentTaskCount:any;
+  
 
   meeting_details() {
-
+ 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
+
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      console.log("EventScheduledjson", this.EventScheduledjson[0].Recurrence);
+
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -498,7 +566,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-    
+      this.totalUser_Scheduledjson=this.User_Scheduledjson.length
+      console.log("User_Scheduledjson", this.User_Scheduledjson);
       this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
         const statusOrder = { "Accepted": 1, "Pending": 2, "May be": 3, "Rejected": 4 };
         return statusOrder[a.Status] - statusOrder[b.Status];
@@ -509,14 +578,16 @@ export class MeetingDetailsComponent implements OnInit {
         if (b.onlineStatus === "Start") return 1;
         return 0;
       });
-    
-      var getTotalCount= this.orderedItems.filter(item=> item.Status==='Accepted'|| item.onlineDuration );
-   
-      this.completionReports_Status=getTotalCount.length + 1 
+
+      var getTotalCount= this.orderedItems.filter(item=> item.Status==='Accepted' || item.onlineDuration );
+
+      this.completionReports_Status=getTotalCount.length + 1
 
       this.meetings_Recurrence = this.EventScheduledjson[0].Recurrence
 
+      var getTotalCounts= this.orderedItems.filter(item=> item.Status==='Accepted' || item.onlineStatus=='Start' );
 
+      this.completionReports=getTotalCounts.length + 1
 
 
       this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
@@ -530,7 +601,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
-     
+
       if (this.EmpNo == this.Current_user_ID) {
         this.meetingAdmin = true
       } else {
@@ -547,9 +618,10 @@ export class MeetingDetailsComponent implements OnInit {
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
 
+      this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
+      this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
-   
-
+      console.log(this.CurrentNotesCount,'CurrentNotesCount')
 
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
         this.hasStatusOne = true;
@@ -561,7 +633,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.completedAgendaList = this.Agendas_List.filter(item => item.Status == 1)
       this.totalCompletedAgenda = this.completedAgendaList.length;
 
-      //console.log(this.totalAgendaList,'sdfb') 
+    
 
       var x = this.Agendas_List.length;
 
@@ -601,8 +673,8 @@ export class MeetingDetailsComponent implements OnInit {
       });
 
       this.Guestcount = this.checkedusers.length;
-     
-    
+
+
       // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
 
 
@@ -614,11 +686,11 @@ export class MeetingDetailsComponent implements OnInit {
         element.isChecked = true;
       });
 
-    
+
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
-      //console.log('Attachments_ary',this.Attachments_ary);
+      console.log('Attachments_ary',this.Attachments_ary);
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -723,7 +795,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.status_Type = 'Start';
     this.startTime = new Date();
     let currentDate = new Date();
-
+    
     // Get the current time components
     let currentHours = currentDate.getHours();
     let currentMinutes = currentDate.getMinutes();
@@ -842,7 +914,7 @@ export class MeetingDetailsComponent implements OnInit {
   formatCompleteDuration(duration: number): string {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
-    return `${hours}h ${minutes}m 0s`;
+    return `${hours}h ${minutes}m`;
   }
 
 
@@ -877,7 +949,11 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  startMeetingOfAttendees() {
+  startMeetingOfAttendees() {   
+    if(this.Isadmin==false){
+      this.Event_acceptandReject(1);
+    }
+   
     this.meetingOfAttendees = false;
     this.play = true;
     this.status_Type = 'Start';
@@ -925,6 +1001,35 @@ export class MeetingDetailsComponent implements OnInit {
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
 
+
+
+
+
+  Event_acceptandReject(val) {
+    this.EventAction_type=val
+    if (this.EventAction_type == 1) {
+     
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.flagid = this.EventAction_type;
+      this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        });
+      this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+      this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+      this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+        ((data) => {
+        
+          this._Message = data['message'];
+        });
+
+    }
+  }
+
+
+
+
+
   endTimeAtd: any
 
   stopMeetingAttendees() {
@@ -969,15 +1074,15 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   addNewDMS() {
-
     document.getElementById("LinkSideBar").classList.add("kt-quick-panel--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
     this.GetDMSList();
-
   }
+
+
 
   loadingDMS: boolean;
 
@@ -991,7 +1096,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       }
       this.checkeddms=[];
-  
+
       this._MemosSubjectList.forEach(element => {
         this.checkeddms.push(element.MailId);
         element.isChecked = true;
@@ -1098,10 +1203,12 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   AddDMS_meetingreport() {
+
+
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Dms = this.selectedEmploy_DMS.map(item => item.MailId).toString()
+    this._calenderDto.Dms = this.SelectDms.toString()
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
 
     if (this._calenderDto.Dms) {
@@ -1110,7 +1217,7 @@ export class MeetingDetailsComponent implements OnInit {
 
           if (data.message == '1' || this._calenderDto.flagid == null || this._calenderDto.flagid != null) {
             this.notifyService.showSuccess("DMS added successfully", "Success");
-            this.selectedEmploy_DMS = [];
+            this.SelectDms = [];
             this.meeting_details();
             this.GetMemosByEmployeeId()
           }
@@ -1199,9 +1306,12 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   closeLinkSideBar() {
-    this.ngDropdwonPort = [];
-    this.selectedEmploy_Projects = [];
-    this.selectedEmploy_DMS = [];
+    // this.ngDropdwonPort = [];
+    this.Portfolio = [];
+    // this.selectedEmploy_Projects = [];
+    this.projectsSelected = [];
+    // this.selectedEmploy_DMS = [];
+    this.SelectDms = [];
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementById("LinkSideBar2").classList.remove("kt-quick-panel--on");
     if (this.fruitInputpro && this.fruitInputpro.nativeElement.value != undefined) {
@@ -1229,18 +1339,20 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetProjectAndsubtashDrpforCalender();
   }
 
-
+  subtashDrpLoading:boolean=false;
 
   GetProjectAndsubtashDrpforCalender() {
-    this._calenderDto.Project_Code = null
+    this.subtashDrpLoading=true;
+    this._calenderDto.Project_Code = null;
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
+        this.subtashDrpLoading=false;
         this.ProjectListArray = JSON.parse(data['Projectlist'])
         // 69 var recordProjects=this.Project_code.map(item=>item.stringval)
         // 69 this.ProjectListArray=this.ProjectListArray.filter(item=>!recordProjects.includes(item.Project_Code))
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        // console.log(this.ProjectListArray,'ProjectListArray');
-
+        console.log(this.ProjectListArray,'ProjectListArray');
+        this.companies_Arr=JSON.parse(data['Client_json']);
 
 
         this.originalProjectList = this.ProjectListArray
@@ -1382,13 +1494,17 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.currentEventId = this.selectedValue;
 
-    if (this.ngDropdwonPort != '') {
+
+    if (this.agendaInputs != '') {
+      this.addAgenda()
+    }
+    if (this.Portfolio != '') {
       this.Addportfolios_meetingreport()
     }
-    else if (this.selectedEmploy_DMS != '') {
+    else if (this.SelectDms != '') {
       this.AddDMS_meetingreport();
     }
-    else if (this.selectedEmploy_Projects != '') {
+    else if (this.projectsSelected != '') {
       this.Addproject_meetingreport();
 
     }
@@ -1446,6 +1562,28 @@ export class MeetingDetailsComponent implements OnInit {
         this.notifyService.showError("Action Cancelled ", '');
       }
     }
+
+
+    // else if (this.GetProjectEventValue != undefined && this.currentEventId != '') {
+    
+    //   this._calenderDto.Schedule_ID = this.Scheduleid;
+    //   this._calenderDto.Emp_No = this.Current_user_ID;
+    //   this._calenderDto.Project_Code = this.GetProjectEventValue.toString();
+    //   this._calenderDto.flagid = this.currentEventId == undefined ? 0 : this.currentEventId;
+
+    //   if (this._calenderDto.flagid == 1 || this._calenderDto.flagid == 2) {
+    //     this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
+    //       this.meeting_details()
+    //       this.notifyService.showSuccess("Deleted successfully ", '');
+    //       this.GetProjectEventValue = null
+    //     });
+    //   }
+    //   else {
+    //     this.notifyService.showError("Action Cancelled ", '');
+    //   }
+    // }
+
+
   }
 
 
@@ -1454,7 +1592,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Portfolio = this.ngDropdwonPort.map(item => item.portfolio_id).toString()
+    this._calenderDto.Portfolio = this.Portfolio.toString();
 
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
     if (this._calenderDto.Portfolio != '') {
@@ -1464,7 +1602,7 @@ export class MeetingDetailsComponent implements OnInit {
           this.GetProjectAndsubtashDrpforCalender()
           this.meeting_details();
           this.notifyService.showSuccess("Portfolio added successfully", "Success");
-          this.ngDropdwonPort = [];
+          this.Portfolio = [];
         });
     } else {
       this.notifyService.showInfo("Request Cancelled", "Please select Portfolio(s) to link");
@@ -1730,17 +1868,17 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   Addproject_meetingreport() {
-
+  
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Project_Code = this.selectedEmploy_Projects.map(item => item.Project_Code).join(',');
+    this._calenderDto.Project_Code = this.projectsSelected.map(item => item.Project_Code).join(',');
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
 
     if (this._calenderDto.Project_Code) {
       this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe
         (data => {
-          this.selectedEmploy_Projects = []
+          this.projectsSelected = [];
           this.meeting_details();
           this.notifyService.showSuccess("Project added successfully", "Success");
           this.GetProjectAndsubtashDrpforCalender()
@@ -1880,7 +2018,7 @@ export class MeetingDetailsComponent implements OnInit {
   resultFound: boolean;
   filterByAgenda: any;
 
-  GetPreviousdate_meetingdata() {
+    GetPreviousdate_meetingdata() {
 
     this.fiterDataOfEmployee = false
     this.Schedule_ID = this.Scheduleid;
@@ -1904,6 +2042,7 @@ export class MeetingDetailsComponent implements OnInit {
         }
 
         this.attendeesLists = JSON.parse(data['attendeesList'])
+        console.log(this.attendeesLists,'this.attendeesLists')
         this.Emp_Number = 0
       });
 
@@ -2144,7 +2283,7 @@ export class MeetingDetailsComponent implements OnInit {
   StatusType: boolean = true;
 
   leavemeet(event: any) {
-
+debugger
     this.StatusType = true;
     if (this.StatusType == true) {
       this.leave = true;
@@ -2180,39 +2319,86 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
   addBulletPointsOnEnter(event: any) {
-    debugger
-    event.preventDefault();
+
+    // event.preventDefault();
     if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
       // Replace newline characters with <br> tags
       if(event.type === 'paste'){
-        const pastedText = event.clipboardData?.getData('text/plain') || '';
-        this.Notes_Type= this.Notes_Type + pastedText ;
+
+        this.savePastedText(event);
+        // const pastedText = event.clipboardData?.getData('text/plain') || '';
+        // this.Notes_Type= this.Notes_Type + pastedText ;
       }
-     
+  
       this.Notes_Type.trim();
+
+      if (this.Notes_Type) {
+        this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
+      }else{
+        this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
+      }
+
+
+
+
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
-      this._calenderDto.Meeting_notes = this.Notes_Type;
+      this._calenderDto.Meeting_notes = this.Notes_Type=="<div><br></div><div></div>" || this.Notes_Type==" " || this.isNotesTypeEmpty(this.Notes_Type) ?"":this.Notes_Type;
       this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
 
-      console.log(this._calenderDto, 'Private notes');
       this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
         (data => {
           console.log(data, 'Private notes');
           this.GetNotedata();
           // this.GetAttendeesnotes();
-          // this.GetMeetingnotes_data(); 
+          // this.GetMeetingnotes_data();
           // window.close();
         });
-      // this.Notes_Type=' '
+
     }
 
   }
 
+
+  isNotesTypeEmpty(notes: string): boolean {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = notes;
+
+    // Remove all font tags and get the text content
+    const sanitizedText = tempDiv.innerText.replace(/\s+/g, '');
+    return sanitizedText.length === 0;
+  }
+
+
+  @ViewChild('ANGEDITOR') angulareditor:any;
+  savePastedText(event:any){
+   setTimeout(()=>{
+
+    this.Notes_Type= this.angulareditor.textArea.nativeElement.innerHTML;
+    this.Notes_Type.trim();
+    this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
+    this.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Schedule_ID = this.Schedule_ID;
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Meeting_notes = this.Notes_Type;
+    this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
+
+    this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
+      (data => {
+        console.log(data, 'Private notes');
+        this.GetNotedata();
+        // this.GetAttendeesnotes();
+        // this.GetMeetingnotes_data();
+        // window.close();
+      });
+   },1000);
+
+  }
+
+  private_User:any
 
 
   GetMeetingnotes_data() {
@@ -2230,9 +2416,25 @@ export class MeetingDetailsComponent implements OnInit {
           this.Notes_Type = ''
         } else {
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes'];
-          console.log('privet',this.Notes_Type)
+
         }
         this.GetAttendeesnotes();
+
+
+
+// debugger
+//          var Emp_No=this.EventScheduledjson[0].Emp_No.toString();
+//         if(Emp_No===this.Current_user_ID){
+//            this.private_User=this.EventScheduledjson[0].Created_by;
+
+//         }else{
+//           var x =this.User_Scheduledjson.filter(item=>item.stringval == this.Current_user_ID);
+//           this.private_User=x.TM_DisplayName
+//           console.log('privet',x)
+//         }
+
+
+
 
       });
 
@@ -2288,6 +2490,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   closedarBar() {
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
+    document.getElementById("Activity_Log").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -2354,7 +2557,7 @@ export class MeetingDetailsComponent implements OnInit {
   EventNumber: any;
   progress: number = 0;
 
-  OnSubmitSchedule() {
+  OnSubmitAttachment() {
 
     if (this.SelectedAttachmentFile != undefined) {
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
@@ -2411,10 +2614,416 @@ export class MeetingDetailsComponent implements OnInit {
     else {
       this.notifyService.showInfo("Request Cancelled", "Please select Attachment(s) to link");
     }
+  }
+
+
+
+
+  TImetable() {
+    let now = moment(new Date());
+    let _shr = now.hour();
+    let _s = now.minute();
+
+    if (_s >= 0 && _s < 15) {
+      this.Startts = this.formatTimes(_shr, 30);
+      this.Endtms = this.formatTimes(_shr, 45);
+    } else if (_s >= 15 && _s < 30) {
+      this.Startts = this.formatTimes(_shr, 45);
+      this.Endtms = this.formatTimes(_shr + 1, 0);
+    } else if (_s >= 30 && _s < 45) {
+      this.Startts = this.formatTimes(_shr + 1, 0);
+      this.Endtms = this.formatTimes(_shr + 1, 15);
+    } else if (_s >= 45 && _s < 59) {
+      this.Startts = this.formatTimes(_shr + 1, 15);
+      this.Endtms = this.formatTimes(_shr + 1, 30);
+    }
+  }
+
+
+  formatTimes(hour, minute) {
+    return moment({ hour, minute }).format("hh:mm A");
+  }
+
+
+
+
+  OnSubmitSchedule() {
+    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+      this._subname1 = true;
+      return false;
+    }
+    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+      this._subname = true;
+      return false;
+    }
+
+    var now = new Date();
+    if(this.eventRepeat===false){
+      let timestamp = "";
+      timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+        + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+      this.EventNumber = timestamp;
+    }
+
+    let finalarray = [];
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+    // else if (this.selectedrecuvalue === "4") {
+    //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
+    // }
+    // else if (this.selectedrecuvalue === "5") {
+    //   this.daysSelectedII = this.getLastDaysOfEachMonth();
+    // }
+
+    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
+    if (finalarray.length > 0) {
+      finalarray.forEach(element => {
+
+        const date1: Date = new Date(this._StartDate);
+        // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+        //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+        // }
+        // else {
+        //   this._SEndDate = this._StartDate;
+        // }
+        const date2: Date = new Date(this._SEndDate);
+
+        const diffInMs: number = date2.getTime() - date1.getTime();
+
+        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+          var date3 = moment(element.Date).add(1, 'days').format("YYYY-MM-DD").toString();
+        }
+        else {
+          var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        }
+        // var dd = moment(date3).add(diffInDays, 'days')
+        // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+        var dd = moment(date3).add(diffInDays, 'days')
+        console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
+        var SEndDates = "SEndDate";
+        element[SEndDates] = (dd.format(format2));
+
+        var vStartTime = "StartTime";
+        element[vStartTime] = this.Startts;
+
+        var vEndTime = "EndTime";
+        element[vEndTime] = this.Endtms;
+
+        var vEnd_date = "End_date";
+        element[vEnd_date] = this._EndDate;
+
+        var vIsDeleted = "IsDeleted";
+        element[vIsDeleted] = 0;
+
+        var vPending = "Pending_meeting";
+        element[vPending] = 0;
+
+        var vRecurrence = "Recurrence";
+        element[vRecurrence] = this.selectedrecuvalue;
+
+        var vRecurrence_value = "Recurrence_values";
+        element[vRecurrence_value] = _arraytext.toString();
+
+        var vEmp_No = "Emp_No";
+        element[vEmp_No] = this.Current_user_ID;
+
+        var vScheduleType = "ScheduleType";
+        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+
+        var vTitle_Name = "Title_Name";
+        element[vTitle_Name] = this.Title_Name;
+
+        var vMasterCode = "MasterCode";
+        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+
+        // var columnName = "Link_Type";
+        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+        var vUser_Name = "User_Name";
+        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
+
+
+        var vLocation_Type = "Location_Type";
+        element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
+
+        var vLocation_fulladd = "FullAddress_loc";
+        element[vLocation_fulladd] = (this._meetingroom==true)?(this.Locationfulladd == undefined ? "" : this.Locationfulladd):'';
+
+        var vLocation_url = "Addressurl";
+        element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
+
+        var vOnlinelink = "Onlinelink";
+        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+        var vLink_Details = "Link_Details";
+        let link_d=this.Link_Details;
+        if(this.Link_Details){
+          link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          link_d=this.anchoredIt(link_d);
+        }
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+
+
+        var vDescription = "Description";
+        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+        var vSubtask = "Subtask";
+        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+
+        var vEventNumber = "EventNumber";
+        element[vEventNumber] = this.EventNumber;
+
+        var vPortfolio_name = "Portfolio_name";
+        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.toString();
+
+        var vDMS_Name = "DMS_Name";
+        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.toString();
+
+
+        var vAgendas = "Meeting_Agendas";
+        const mtgAgendas = JSON.stringify(this.allAgendas.length > 0 ? this.allAgendas : []);
+        element[vAgendas] = mtgAgendas;
+
+
+
+// dont provide unnecessary values to api when task is creating.
+       if(this.ScheduleType=='Task'){
+        element[vUser_Name]='';
+        element[vLocation_Type]='';
+        element[vLocation_fulladd]='';
+        element[vLocation_url]='';
+        element[vOnlinelink]=false;
+         element[vLink_Details]='';
+         element[vDescription]='';
+         element[vPortfolio_name]='';
+         element[vDMS_Name]='';
+         element[vAgendas]='[]';
+       }
+// dont provide unnecessary values to api when task is creating.
+
+
+        //
+      });
+
+      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      if (this.Schedule_ID != 0) {
+        this._calenderDto.Schedule_ID = this.Schedule_ID;
+
+      }
+      else {
+        this._calenderDto.Schedule_ID = 0;
+      }
+
+      let _attachmentValue = 0;
+      const frmData = new FormData();
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+      }
+      if (this._lstMultipleFiales.length > 0)
+        _attachmentValue = 1;
+      else
+        _attachmentValue = 0;
+
+      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+      console.log(JSON.stringify(finalarray), "finalarray")
+      this._calenderDto.draftid = this.draftid;
+
+
+      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+
+      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+        (data => {
+
+          if (_attachmentValue == 1) {
+            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+              (event: HttpEvent<any>) => {
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! ${this.progress}%`);
+                    break;
+                  case HttpEventType.Response:
+                    console.log('User successfully created!', event.body);
+
+                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    this._lstMultipleFiales = [];
+                    // empty(this._lstMultipleFiales);
+                    // alert(this._lstMultipleFiales.length);
+                    setTimeout(() => {
+                      this.progress = 0;
+                    }, 1500);
+
+                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                }
+              }
+            )
+          }
+          //UploadCalendarAttachmenst
+          // console.log(data, "m");
+          this._Message = data['message'];
+          if (this._Message == "Updated Successfully") {
+            if (this.draftid != 0) {
+              // this.Getdraft_datalistmeeting();
+              this.draftid = 0
+            }
+            this.notifyService.showSuccess(this._Message, "Success");
+          }
+          else {
+            this.notifyService.showError(this._Message, "Failed");
+          }
+
+
+          // this.GetScheduledJson();
+          this.Title_Name = null;
+          this.ngEmployeeDropdown = null;
+          this.Description_Type = null;
+          this.MasterCode = null;
+          this.projectsSelected = [];
+          this.Subtask = null;
+          this.Startts = null;
+          this.Endtms = null;
+          this.St_date = null;
+          this.Ed_date = null;
+          this._SEndDate = null;
+          this._SEndDate = moment().format("YYYY-MM-DD").toString();
+          this.Locationfulladd = null;
+          this._status = null;
+          this.SelectDms = null;
+          this.Location_Type = null;
+          this.Link_Details = null;
+          this._onlinelink = false;
+          this.Allocated_subtask = null;
+          this.TM_DisplayName = null;
+          this.Projectstartdate = "";
+          this.projectEnddate = null;
+          this.Status_project = null;
+          this.AllocatedHours = null;
+          this.daysSelectedII = [];
+          this.Avaliabletime = [];
+          this.timeslotsavl = [];
+          this.singleselectarry = [];
+          this.daysSelected = [];
+          // this.Recurr_arr = [];
+          this.selected = null;
+          this.TImetable();
+          this.Portfolio = null;
+          this.minDate = moment().format("YYYY-MM-DD").toString();
+          this.maxDate = null;
+          // this.calendar.updateTodaysDate();
+          this.TImetable();
+
+        });
+      this.closeschd();
+    }
+    else {
+      alert('Please Select Valid Date and Time');
+    }
+
+  }
+
+
+
+
+
+
+
+
+     AttachmentName: string;
+
+     DeleteAttachment(attach_id: number) {
+
+    this.Attachments_ary.forEach(element => {
+      if (attach_id == element.file_id)
+        this.AttachmentName = element.File_Name
+
+    });
+
+    // let String_Text = 'Delete';
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: this.AttachmentName
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+
+      this.Schedule_ID = this.Scheduleid;
+      this._calenderDto.Schedule_ID = this.Schedule_ID;
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.fileid  = attach_id.toString();
+      console.log(this._calenderDto,'this._calenderDto')
+      this._calenderDto.flagid = 1
+      if (result === true) {
+        this.CalenderService.DeleteAttachmentOfMeeting(this._calenderDto).subscribe((data) => {
+          this.meeting_details()
+          this.notifyService.showSuccess("Deleted successfully ", '');
+        });
+      }
+      else {
+        this.notifyService.showError("Action Cancelled ", '');
+      }
+    });
+  }
+
 
     /////////////////////////////////////////// List of Attchment sidebar End /////////////////////////////////////////////////////////
 
-  }
+
 
 
 
@@ -2459,14 +3068,14 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
       (data => {
-           
+
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
         console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
           this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
-       
+
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S = this.CompletedMeeting_notes[0].Actual_Start;
           this.separateTime(this.actualTime_S);
@@ -2490,7 +3099,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-          // if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {  
+          // if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {
           //     this.interval = setInterval(() => {
           //       this.GetAttendeesnotes();
           //     }, 3000);
@@ -2540,7 +3149,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-  
+
 
   actualTime_dur: any;
   meetinghours: any;
@@ -2601,6 +3210,10 @@ export class MeetingDetailsComponent implements OnInit {
             // this.editorFocused=false;
             //this.GetAssignTask();
             this.notifyService.showSuccess("Successfully", "Added");
+
+          
+              this.CurrentTaskCount[this.currentAgendaView].TaskCount = 1;
+         
           });
       }
     } else {
@@ -2611,6 +3224,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   selectedAttendeesList = new Set<any>();
+  assignCount:any
 
   onCheckboxChange(event: any, employee: any) {
     if (event.checked) {
@@ -2618,6 +3232,7 @@ export class MeetingDetailsComponent implements OnInit {
     } else {
       this.selectedAttendeesList.delete(employee);
     }
+    this.assignCount = this.selectedAttendeesList.size;
     console.log('Selected Employees:', this.selectedAttendeesList);
   }
 
@@ -2738,7 +3353,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     document.getElementById("mysideInfobar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
     $("#mysideInfobar").scrollTop(0);
 
@@ -2762,6 +3377,12 @@ export class MeetingDetailsComponent implements OnInit {
 
   }
 
+  clearFilter(){
+    this.selectedAttendeesList.clear();
+    this.assignCount=0
+  }
+
+  filteredEmployees:any;
 
 
   GetAssigned_SubtaskProjects() {
@@ -2776,26 +3397,46 @@ export class MeetingDetailsComponent implements OnInit {
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
 
-        // this.CategoryList = JSON.parse(data[0]['CategoryList']);
-        this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
-        this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+                // this.CategoryList = JSON.parse(data[0]['CategoryList']);
+                this._TodoList = JSON.parse(data[0]['Jsonmeeting_Json']);
+                this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
 
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        this.Clientjson = JSON.parse(data[0]['Client_json'])
-        //console.log(this.ActionedAssigned_Josn,"ActionedAssigned_Josn");
+                this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+                this.Clientjson = JSON.parse(data[0]['Client_json'])
+          
 
-        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-
-
-        this.assigncount = this.ActionedAssigned_Josn.length;
-        this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+                this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
 
 
-        this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
-        this.FiterEmployee = this.EmployeeList;
+                this.assigncount = this.ActionedAssigned_Josn.length;
+                this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
+
+
+                this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
+                this.FiterEmployee = this.EmployeeList;
+     
+
+                 const orderedEmpNos = new Set(this.orderedItems.map(item => item.stringval));
+
+                  this.filteredEmployees = this.FiterEmployee.filter((employee) => {
+                    const isCreatedBy = employee.TM_DisplayName === this.Createdby;
+                    const isInOrderedEmpNos = orderedEmpNos.has(employee.Emp_No);
+
+                    // Return true for objects that match your conditions
+                    return isCreatedBy || isInOrderedEmpNos;
+                  });
+
+                  // Remove the filtered objects from the original array
+                  this.FiterEmployee = this.FiterEmployee.filter((employee) => {
+                    const isCreatedBy = employee.TM_DisplayName === this.Createdby;
+                    const isInOrderedEmpNos = orderedEmpNos.has(employee.Emp_No);
+
+                    // Return false to remove objects that match your conditions
+                    return !(isCreatedBy || isInOrderedEmpNos);
+                  });
 
       });
-
+  
   }
 
 
@@ -2824,6 +3465,7 @@ export class MeetingDetailsComponent implements OnInit {
             this._Demotext = "";
             this.notifyService.showInfo("Successfully", message);
             this.GetAssigned_SubtaskProjects();
+            this.CurrentTaskCount[this.currentAgendaView].TaskCount=0;
           });
       }
       else {
@@ -2925,7 +3567,7 @@ export class MeetingDetailsComponent implements OnInit {
           const i = this.notescount.findIndex(item1 => item1.agendaid == item.AgendaId);
           if (i > -1)
             this.notescount[i].count += 1;
-        });    // 2. update new notes count data. 
+        });    // 2. update new notes count data.
 
 
         this.TaskCount = JSON.parse(data['TaskCount']);
@@ -2933,15 +3575,16 @@ export class MeetingDetailsComponent implements OnInit {
           const i = this.taskcount.findIndex(item1 => item1.agendaid == item.Agenda_Id);
           if (i > -1)
             this.taskcount[i].count += 1;
-        });    // 2. update new task count data. 
+        });    // 2. update new task count data.
 
+       
         this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
         if (this.meetingStarted || this.meetingStarted != true) {
 
           if (data['Checkdatetimejson'] != '') {
-            debugger
+
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-            console.log(this.AllAttendees_notes,'this.AllAttendees_notes')
+            // console.log(this.AllAttendees_notes,'this.AllAttendees_notes')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -3119,28 +3762,262 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
+  // ReshudingTaskandEvent() {
+  //   document.getElementById("div_endDate").style.display = "none";
+  //   document.getElementById("Schenddate").style.display = "none";
+  //   document.getElementById("Descrip_Name12").style.display = "none";
+  //   this.editTask = true;
+  //   this.copyTask = false;
+  //   this.create = false;
+
+  //   this.Schedule_ID = this._calenderDto.Schedule_ID;
+  //   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+  //     ((data) => {
+
+  //       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+  //       // console.log(this.EventScheduledjson, "test11111")
+  //       this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
+  //       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
+  //       this.Startts = (this.EventScheduledjson[0]['St_Time']);
+  //       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
+  //       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+  //       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+  //       this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
+  //       this._PopupConfirmedValue = 1;
+  //       this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
+  //       this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+  //       this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
+  //       this.scstartdate = this._Oldstart_date;
+  //       // alert(this.scstartdate)
+  //       // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
+  //       this.Addressurl = this.EventScheduledjson[0]['Addressurl']
+  //       // alert( this.Addressurl);
+  //       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
+  //       this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
+  //       this.Link_Details = this.EventScheduledjson[0]['Link_Details']
+  //       this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
+
+  //       if (this._FutureEventTasksCount > 0) {
+  //         // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+  //         // radio1.disabled = false;
+  //         // radio1.checked = true;
+
+  //         // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+  //         // radio2.disabled = false;
+  //         // radio2.checked = false;
+
+  //         // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+  //         // radio3.disabled = false;
+  //         // radio3.checked = false;
+
+  //         // this._PopupConfirmedValue = 1;
+  //       }
+  //       else if (this._FutureEventTasksCount == 0) {
+  //         // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+  //         // radio1.disabled = false;
+  //         // radio1.checked = true;
+
+  //         // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+  //         // radio2.disabled = true;
+  //         // radio2.checked = false;
+
+  //         // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+  //         // radio3.disabled = true;
+  //         // radio3.checked = false;
+
+  //         // this._PopupConfirmedValue = 1;
+  //       }
+
+  //       document.getElementById("div_recurrence").style.display = "none";
+  //       document.getElementById("Monthly_121").style.display = "none";
+  //       document.getElementById("weekly_121").style.display = "none";
+  //       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
+  //       document.getElementById("rightbar-overlay").style.display = "block";
+  //       // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+
+  //       this.AllDatesSDandED = [];
+  //       var jsonData = {};
+  //       var columnName = "Date";
+  //       jsonData[columnName] = this.EventScheduledjson[0]['Schedule_date'];
+  //       var IsActive = "IsActive";
+  //       jsonData[IsActive] = 1;
+  //       var Day = "Day";
+  //       jsonData[Day] = "NA";
+  //       var DayNum = "DayNum";
+  //       jsonData[DayNum] = "NA";
+  //       this.AllDatesSDandED.push(jsonData);
+  //       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
+  //       this.minDate = this.EventScheduledjson[0]['Schedule_date'];
+  //       this._EndDate = this.EventScheduledjson[0]['End_date'];
+  //       this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
+  //       this.maxDate = this.EventScheduledjson[0]['End_date'];
+  //       this.EventNumber = this.EventScheduledjson[0]['EventNumber']
+  //       // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
+  //       if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
+  //         document.getElementById("Descrip_Name12").style.display = "block";
+  //       }
+  //       if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
+  //         this.selectedrecuvalue = '0';
+  //         this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+  //         this._labelName = "Schedule Date";
+  //         // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
+  //         // document.getElementById("div_endDate").style.display = "none";
+  //         document.getElementById("Recurrence_hide").style.display = "none";
+  //       }
+  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
+  //         document.getElementById("div_endDate").style.display = "block";
+  //         this.selectedrecuvalue = '1';
+  //         this._labelName = "Schedule Date";
+  //         // document.getElementById("div_endDate").style.display = "none";
+  //         document.getElementById("Recurrence_hide").style.display = "none";
+  //       }
+  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+  //         this._labelName = "Schedule Date";
+  //         // document.getElementById("div_endDate").style.display = "none";
+  //         document.getElementById("div_endDate").style.display = "block";
+  //         document.getElementById("Recurrence_hide").style.display = "block";
+  //         document.getElementById("weekly_121").style.display = "block";
+  //         this.selectedrecuvalue = '2';
+  //         let Recc = [];
+  //         var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+  //         Recc = ret1.split(",");
+
+  //         for (var i = 0; i < Recc.length; i++) {
+  //           this.dayArr.forEach(element => {
+  //             if (element.value == Recc[i]) {
+  //               element.checked = true;
+  //             }
+  //           });
+  //         }
+  //       }
+  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+  //         document.getElementById("Recurrence_hide").style.display = "block";
+  //         document.getElementById("div_endDate").style.display = "block";
+  //         // document.getElementById("div_endDate").style.display = "none";
+  //         document.getElementById("Monthly_121").style.display = "block";
+  //         this._labelName = "Schedule Date";
+  //         this.selectedrecuvalue = '3';
+  //         let Recc = [];
+  //         var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+  //         Recc = ret1.split(",");
+  //         for (var i = 0; i < Recc.length; i++) {
+  //           this.MonthArr.forEach(element => {
+  //             if (element.value == Recc[i]) {
+  //               element.checked = true;
+  //             }
+  //           });
+  //         }
+  //       }
+
+  //       if (this.ScheduleType == 'Task') {
+  //         this.EventScheduledjson[0]['Ed_Time']
+  //         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+  //         this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+  //         this.MasterCode = (this.MasterCode[0].stringval);
+
+  //         document.getElementById("subtaskid").style.display = "block";
+  //         // document.getElementById("Link_Name").style.display = "none";
+  //         document.getElementById("Guest_Name").style.display = "none";
+  //         document.getElementById("Location_Name").style.display = "none";
+  //         document.getElementById("Descrip_Name").style.display = "none";
+  //         document.getElementById("core_viw123").style.display = "block";
+  //         document.getElementById("core_viw121").style.display = "none";
+  //         document.getElementById("core_viw222").style.display = "none";
+  //         document.getElementById("core_Dms").style.display = "none";
+  //         // document.getElementById("Monthly_121").style.display = "none";
+  //         // document.getElementById("weekly_121").style.display = "none";
+
+  //       }
+
+  //       if (this.ScheduleType == 'Event') {
+  //         this.allAgendas = this.EventScheduledjson[0]['Agendas'].map(item => ({ index: item.AgendaId, name: item.Agenda_Name }));
+
+  //         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+  //         this.MasterCode = [];
+  //         this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+  //         this.arr.forEach(element => {
+  //           this.MasterCode.push(element.stringval);
+  //           this.projectsSelected.push({ Project_Code: element.stringval, Project_Name: element.Project_Name, BlockNameProject: element.BlockNameProject });
+  //         });
+  //         this.Portfolio = [];
+  //         this.Portfolio1 = [];
+  //         this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
+  //         this.arr1.forEach(element => {
+  //           this.Portfolio.push(element.numberval);
+  //         });
+
+  //         this.ngEmployeeDropdown = [];
+  //         this.ngEmployeeDropdown1 = [];
+  //         this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
+  //         this.arr2.forEach(element => {
+  //           this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+  //         });
+  //         this.SelectDms = [];
+  //         this.SelectDms1 = [];
+  //         let arr3 = [];
+  //         var str = (this.EventScheduledjson[0]['DMS_Name']);
+  //         arr3 = str.split(",");
+  //         for (var i = 0; i < arr3.length; i++) {
+  //           this.Memos_List.forEach(element => {
+  //             if (element.MailId == arr3[i]) {
+  //               this.SelectDms.push(element.MailId);
+  //             }
+  //           });
+  //         }
+  //         this.Location_Type = (this.EventScheduledjson[0]['Location']);
+  //         this.Description_Type = (this.EventScheduledjson[0]['Description']);
+  //         document.getElementById("subtaskid").style.display = "none";
+  //         document.getElementById("Guest_Name").style.display = "block";
+  //         document.getElementById("Location_Name").style.display = "block";
+  //         document.getElementById("Descrip_Name").style.display = "block";
+  //         document.getElementById("core_viw121").style.display = "block";
+  //         document.getElementById("core_viw123").style.display = "none";
+  //         document.getElementById("core_viw222").style.display = "block";
+  //         document.getElementById("core_Dms").style.display = "block";
+  //         // console.log(this.MasterCode,'decode')
+  //       }
+  //     });
+  //   // this.closeevearea();
+  // }
+
+  eventRepeat:boolean=false;
+  mtgOnDays:any=[];
+  _meetingroom:boolean=false;
+  timingarryend: any = [];
+  Time_End: any = [];
+
   ReshudingTaskandEvent() {
-    document.getElementById("div_endDate").style.display = "none";
+
     document.getElementById("Schenddate").style.display = "none";
     document.getElementById("Descrip_Name12").style.display = "none";
+
     this.editTask = true;
     this.copyTask = false;
     this.create = false;
+    this.eventRepeat=false;
+
 
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        // console.log(this.EventScheduledjson, "test11111")
+        console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
+        console.log(this.ScheduleType,'sdcsdcsd')
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
         this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
+        // alert(this._OldRecurranceId)
+        // if (this._OldRecurranceId == '0') {
         this._PopupConfirmedValue = 1;
+        // }
+        // else {
+        // this._PopupConfirmedValue = 2;
+        // }
         this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
@@ -3151,7 +4028,10 @@ export class MeetingDetailsComponent implements OnInit {
         // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
-        this.Link_Details = this.EventScheduledjson[0]['Link_Details']
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+
+
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
 
         if (this._FutureEventTasksCount > 0) {
@@ -3184,12 +4064,11 @@ export class MeetingDetailsComponent implements OnInit {
 
           // this._PopupConfirmedValue = 1;
         }
-
-        document.getElementById("div_recurrence").style.display = "none";
-        document.getElementById("Monthly_121").style.display = "none";
-        document.getElementById("weekly_121").style.display = "none";
-        document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
-        document.getElementById("rightbar-overlay").style.display = "block";
+        document.getElementById("div_recurrence").style.display = "block";
+        document.getElementById("Monthly_121_new").style.display = "none";
+        document.getElementById("weekly_121_new").style.display = "none";
+        document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+        // document.getElementById("rightbar-overlay").style.display = "block";
         // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
         this.AllDatesSDandED = [];
@@ -3208,10 +4087,10 @@ export class MeetingDetailsComponent implements OnInit {
         this._EndDate = this.EventScheduledjson[0]['End_date'];
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
-        this.EventNumber = this.EventScheduledjson[0]['EventNumber']
+        this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
-          document.getElementById("Descrip_Name12").style.display = "block";
+          document.getElementById("Descrip_Name12").style.display = "flex";
         }
         if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
           this.selectedrecuvalue = '0';
@@ -3222,18 +4101,26 @@ export class MeetingDetailsComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
-          document.getElementById("div_endDate").style.display = "block";
+          document.getElementById("div_endDate_new").style.display = "block";
           this.selectedrecuvalue = '1';
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Last day of the month') {
+          document.getElementById("div_endDate_new").style.display = "block";
+          this.selectedrecuvalue = '5';
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("div_endDate").style.display = "block";
+          document.getElementById("Recurrence_hide").style.display = "none";
+        }
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+
+          this._labelName = "Schedule Date";
+          // document.getElementById("div_endDate").style.display = "none";
+          document.getElementById("div_endDate_new").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
-          document.getElementById("weekly_121").style.display = "block";
+          document.getElementById("weekly_121_new").style.display = "block";
           this.selectedrecuvalue = '2';
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
@@ -3246,12 +4133,21 @@ export class MeetingDetailsComponent implements OnInit {
               }
             });
           }
+
+          this.dayArr.forEach((item:any)=>{
+            if(item.checked){
+                let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+               this.mtgOnDays.push(d_name);
+            }
+         });
+
+
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
           document.getElementById("Recurrence_hide").style.display = "block";
-          document.getElementById("div_endDate").style.display = "block";
+          document.getElementById("div_endDate_new").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
-          document.getElementById("Monthly_121").style.display = "block";
+          document.getElementById("Monthly_121_new").style.display = "block";
           this._labelName = "Schedule Date";
           this.selectedrecuvalue = '3';
           let Recc = [];
@@ -3264,37 +4160,52 @@ export class MeetingDetailsComponent implements OnInit {
               }
             });
           }
+
+          this.MonthArr.forEach((item:any)=>{
+            if(item.checked){
+               const d_no=Number.parseInt(item.value);
+               this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+            }
+          });
+
         }
 
+
         if (this.ScheduleType == 'Task') {
+
           this.EventScheduledjson[0]['Ed_Time']
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+
           this.MasterCode = (this.MasterCode[0].stringval);
 
-          document.getElementById("subtaskid").style.display = "block";
+          document.getElementById("subtaskid").style.display = "flex";
           // document.getElementById("Link_Name").style.display = "none";
           document.getElementById("Guest_Name").style.display = "none";
           document.getElementById("Location_Name").style.display = "none";
           document.getElementById("Descrip_Name").style.display = "none";
-          document.getElementById("core_viw123").style.display = "block";
+          document.getElementById("core_viw123").style.display = "flex";
           document.getElementById("core_viw121").style.display = "none";
           document.getElementById("core_viw222").style.display = "none";
+
           document.getElementById("core_Dms").style.display = "none";
           // document.getElementById("Monthly_121").style.display = "none";
           // document.getElementById("weekly_121").style.display = "none";
+          document.getElementById("meeting-online-add").style.display = "none";
 
         }
+        else if (this.ScheduleType == 'Event') {
 
-        if (this.ScheduleType == 'Event') {
+          this.GetProjectAndsubtashDrpforCalender();
+          // this.GetMemosByEmployeeId();
           this.allAgendas = this.EventScheduledjson[0]['Agendas'].map(item => ({ index: item.AgendaId, name: item.Agenda_Name }));
-
           this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
           this.MasterCode = [];
           this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.projectsSelected=[];
           this.arr.forEach(element => {
             this.MasterCode.push(element.stringval);
-            this.projectsSelected.push({ Project_Code: element.stringval, Project_Name: element.Project_Name, BlockNameProject: element.BlockNameProject });
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject,  TM_DisplayName:element.TM_DisplayName });
           });
           this.Portfolio = [];
           this.Portfolio1 = [];
@@ -3309,33 +4220,292 @@ export class MeetingDetailsComponent implements OnInit {
           this.arr2.forEach(element => {
             this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
           });
+
           this.SelectDms = [];
           this.SelectDms1 = [];
-          let arr3 = [];
-          var str = (this.EventScheduledjson[0]['DMS_Name']);
-          arr3 = str.split(",");
-          for (var i = 0; i < arr3.length; i++) {
-            this.Memos_List.forEach(element => {
-              if (element.MailId == arr3[i]) {
-                this.SelectDms.push(element.MailId);
-              }
-            });
-          }
+          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+            this.Memos_List = JSON.parse(data['JsonData']);
+            let arr3 = [];
+            var str = (this.EventScheduledjson[0]['DMS_Name']);
+            arr3 = str.split(",");
+            for (var i = 0; i < arr3.length; i++) {
+              this.Memos_List.forEach(element => {
+                if (element.MailId == arr3[i]) {
+                  this.SelectDms.push(element.MailId);
+                }
+              });
+            }
+          });
+
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
+          this._meetingroom = this.Location_Type?true:false;
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
-          document.getElementById("Guest_Name").style.display = "block";
-          document.getElementById("Location_Name").style.display = "block";
-          document.getElementById("Descrip_Name").style.display = "block";
-          document.getElementById("core_viw121").style.display = "block";
+          document.getElementById("Guest_Name").style.display = "flex";
+          document.getElementById("meeting-online-add").style.display = "flex";
+          document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
+          document.getElementById("Descrip_Name").style.display = "flex";
+          document.getElementById("core_viw121").style.display = "flex";
           document.getElementById("core_viw123").style.display = "none";
-          document.getElementById("core_viw222").style.display = "block";
-          document.getElementById("core_Dms").style.display = "block";
-          // console.log(this.MasterCode,'decode')
+          document.getElementById("core_viw222").style.display = "flex";
+          document.getElementById("core_Dms").style.display = "flex";
+
+
+
+
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+
         }
+
+
+
+          // valid starttimearr and endtimearr setting start.
+          let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+          let _currentdate=moment();
+          if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+          {
+              const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+              const index:number=this.StartTimearr.findIndex((item:any)=>{
+
+                  const t=moment(item,'h:mm A');
+                  const result=t>=ct;
+                  return result;
+              });
+              this.validStartTimearr=this.StartTimearr.slice(index);
+          }
+          else
+          this.validStartTimearr=[...this.StartTimearr];
+
+
+
+          this.timingarryend = [];
+          this.Time_End = [];
+          this.Time_End = [...this.StartTimearr];
+          let _index = this.Time_End.indexOf(this.Startts);
+          if (_index + 1 === this.Time_End.length) {
+            _index = -1;
+          }
+          this.timingarryend = this.Time_End.splice(_index + 1);
+          this.EndTimearr = this.timingarryend;
+          // valid starttimearr and endtimearr setting end.
+
       });
-    // this.closeevearea();
+    this.closeevearea();
   }
+
+
+
+
+  selectedrecuvalue1:string='0';
+  dayArr1:any=JSON.parse(JSON.stringify(this.dayArr));
+  MonthArr1:any=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
+_EndDate1:any;
+notProvided1:any;
+
+  customrecurrencemodal() {
+    // document.getElementById('drop-overlay').classList.add("show");
+    // document.getElementById('customrecurrence').classList.add("show");
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("customrecurrence").style.display = "block";
+
+    this.selectedrecuvalue1=this.selectedrecuvalue;
+    this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
+    this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
+
+    this._EndDate1=moment(this._EndDate);
+    console.log(this._EndDate1,'_EndDate1')
+    if(this.selectedrecuvalue1=='2')
+      document.getElementById("weekly_121_new").style.display = "block";
+    else if(this.selectedrecuvalue1=='3')
+      document.getElementById("Monthly_121_new").style.display = "block";
+
+    if(this.selectedrecuvalue1!='0')
+      document.getElementById("div_endDate_new").style.display = "block";
+
+  }
+
+
+
+  close_customrecurrencemodal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("customrecurrence").style.display = "none";
+    // document.getElementById('drop-overlay').classList.remove("show");
+    // document.getElementById('customrecurrence').classList.remove("show");
+
+    document.getElementById("div_endDate_new").style.display = "none";
+    document.getElementById("weekly_121_new").style.display = "none";
+    document.getElementById("Monthly_121_new").style.display = "none";
+
+    this.selectedrecuvalue1='0';
+    this.dayArr1=[];
+    this.MonthArr1=[];
+    this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
+  }
+
+
+  onRecurrenceTypeChange(val:any){
+
+    this.selectedrecuvalue1 = val.value.toString();
+    this._labelName = "Start Date";
+
+    for (let index = 0; index < this.dayArr1.length; index++) {
+          this.dayArr1[index].checked = false;
+    }
+    for (let index = 0; index < this.MonthArr1.length; index++) {
+          this.MonthArr1[index].checked = false;
+    }
+
+
+    document.getElementById("div_endDate_new").style.display = "block";
+    if (val.value == 0) {
+      this._labelName = "Schedule Date";
+      document.getElementById("div_endDate_new").style.display = "none";
+      document.getElementById("weekly_121_new").style.display = "none";
+      document.getElementById("Monthly_121_new").style.display = "none";
+    }
+    else if(val.value==1){
+      document.getElementById("weekly_121_new").style.display = "none";
+      document.getElementById("Monthly_121_new").style.display = "none";
+    }
+    else if(val.value==2){
+      document.getElementById("weekly_121_new").style.display = "block";
+      document.getElementById("Monthly_121_new").style.display = "none";
+    }
+    else if(val.value==3){
+      document.getElementById("weekly_121_new").style.display = "none";
+      document.getElementById("Monthly_121_new").style.display = "block";
+    }
+}
+
+selectedDay(days) {
+
+  //Checked the day
+  let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
+  this.dayArr1[objIndex].checked = days.target.checked;
+  // this.Recurr_arr.push(days.target.value);
+
+  if(days.target.checked&&this.notProvided1=='dayarr1')
+    this.notProvided1="";
+}
+
+selectmonthlydays(day) {
+  let objIndex = this.MonthArr1.findIndex((obj => obj.value == day.target.value));
+  this.MonthArr1[objIndex].checked = day.target.checked;
+  // this.calendar.updateTodaysDate();
+  if(day.target.checked&&this.notProvided1=='montharr1')
+    this.notProvided1="";
+}
+
+
+bindCustomRecurrenceValues(){
+
+  if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
+    this.notProvided1='dayarr1';
+    return;
+  }
+
+  if(this.selectedrecuvalue1=='3'&&!this.MonthArr1.some(item=>item.checked)){
+    this.notProvided1='montharr1';
+    return;
+  }
+
+  if(['1','2','3'].includes(this.selectedrecuvalue1)&&!this._EndDate1){
+    this.notProvided1='enddate1';
+    return;
+  }
+
+     //inserting values into these selectedrecuvalue, dayArr, MonthArr, _EndDate.
+  this.selectedrecuvalue=this.selectedrecuvalue1;
+  this.dayArr=[...this.dayArr1];
+  this.MonthArr=[...this.MonthArr1];
+  this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
+  this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
+
+  this.mtgOnDays=[];
+  if(this.selectedrecuvalue==='2'){
+    this.dayArr.forEach((item:any)=>{
+      if(item.checked){
+         let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+         this.mtgOnDays.push(d_name);
+      }
+  });
+  }
+  else if(this.selectedrecuvalue==='3'){
+     this.MonthArr.forEach((item:any)=>{
+       if(item.checked){
+          const d_no=Number.parseInt(item.value);
+          this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+       }
+     });
+  }
+
+
+
+  // if (this.selectedrecuvalue == '0') {
+  //   this._PopupConfirmedValue = 1;
+  // }
+  // else {
+  //   this._PopupConfirmedValue = 2;
+  // }
+
+  this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
+  var start = moment(this.minDate);
+  var end = moment(this.maxDate);
+  const format2 = "YYYY-MM-DD";
+  const d1 = new Date(moment(start).format(format2));
+  const d2 = new Date(moment(end).format(format2));
+  const date = new Date(d1.getTime());
+  this.daysSelectedII = [];
+  this.AllDatesSDandED = [];
+  const dates = [];
+
+  while (date <= d2) {
+    dates.push(moment(date).format(format2));
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = (moment(date).format(format2));
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    var Day = "Day";
+    jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+    var DayNum = "DayNum";
+    jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+    this.AllDatesSDandED.push(jsonData);
+    date.setDate(date.getDate() + 1);
+  }
+
+  if (this.selectedrecuvalue == '0') {
+    this.maxDate = moment(this.minDate).format("YYYY-MM-DD").toString();
+    this.daysSelectedII = [];
+    this.daysSelected = [];
+    this.singleselectarry = [];
+    const format2 = "YYYY-MM-DD";
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = (moment(this.minDate).format(format2));
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    var IsActive = "IsActive";
+    jsonData[IsActive] = 1;
+    this.daysSelectedII.push(jsonData);
+  }
+
+
+  this.close_customrecurrencemodal();
+  }
+
 
 
   notProvided: boolean = false;
@@ -3628,7 +4798,7 @@ export class MeetingDetailsComponent implements OnInit {
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
         });
-        
+
       });
   }
 
@@ -3636,7 +4806,7 @@ export class MeetingDetailsComponent implements OnInit {
   validStartTimearr:any=[];
 
 sortbyCurrent_Time(){
-  
+
 
   let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
   let _currentdate=moment();
@@ -3652,7 +4822,7 @@ sortbyCurrent_Time(){
   }
   else
   this.validStartTimearr=[...this.StartTimearr];
- 
+
 }
 
 
@@ -3777,7 +4947,7 @@ sortbyCurrent_Time(){
   Online_method(event) {
 
     if (event.target.checked) {
-      document.getElementById("Descrip_Name12").style.display = "block";
+      document.getElementById("Descrip_Name12").style.display = "flex";
       this._onlinelink = event.target.checked;
       // alert(this._onlinelink)
     }
@@ -3790,11 +4960,7 @@ sortbyCurrent_Time(){
   }
 
 
-
-
   Locationfulladd: string;
-
-
 
   public handleAddressChange(address: Address) {
 
@@ -3852,11 +5018,79 @@ sortbyCurrent_Time(){
 
 
 
+  // selectStartDate(event) {
+
+  //   event = moment(event);
+  //   this._StartDate = event;
+
+  //   let sd = event.format("YYYY-MM-DD").toString();
+  //   this._SEndDate = event.format("YYYY-MM-DD").toString();
+  //   this.minDate = sd;
+  //   this._calenderDto.Schedule_ID = this.Schedule_ID;
+  //   this._calenderDto.Scheduled_date = sd;
+  //   // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
+  //   //   if(data['message']=='1'){
+  //   //     this.pendingavailability==false;
+  //   //   }
+  //   //   else{
+  //   //     this.pendingavailability==true;
+  //   //   }
+  //   // });
+  //   var start = moment(this.minDate);
+  //   var end = moment(this.maxDate);
+  //   const format2 = "YYYY-MM-DD";
+  //   const d1 = new Date(moment(start).format(format2));
+  //   const d2 = new Date(moment(end).format(format2));
+  //   const date = new Date(d1.getTime());
+  //   this.daysSelectedII = [];
+  //   this.scstartdate = d1;
+  //   this.AllDatesSDandED = [];
+  //   var jsonData = {};
+  //   var columnName = "Date";
+  //   var columnNames = "StartTime";
+  //   var columnNamee = "EndTime";
+  //   var IsActive = "IsActive";
+  //   var Day = "Day";
+  //   var DayNum = "DayNum";
+
+  //   if (this.selectedrecuvalue == "0") {
+  //     // this._EndDate = event.value.format("YYYY-MM-DD").toString();
+  //     // this.maxDate = event.value.format("YYYY-MM-DD").toString();
+  //     jsonData[columnName] = (moment(date).format(format2));
+  //     jsonData[columnNames] = this.Startts;
+  //     jsonData[columnNamee] = this.Endtms;
+  //     jsonData[IsActive] = 1;
+  //     jsonData[Day] = event.format('dddd').substring(0, 3);
+  //     jsonData[DayNum] = event.format('DD').substring(0, 3);
+  //     this.AllDatesSDandED.push(jsonData);
+  //   }
+  //   else {
+  //     const dates = [];
+  //     while (date <= d2) {
+  //       dates.push(moment(date).format(format2));
+  //       var jsonData = {};
+  //       var columnName = "Date";
+  //       jsonData[columnName] = (moment(date).format(format2));
+  //       var columnNames = "StartTime";
+  //       jsonData[columnNames] = this.Startts;
+  //       var columnNamee = "EndTime";
+  //       jsonData[columnNamee] = this.Endtms;
+  //       var IsActive = "IsActive";
+  //       jsonData[IsActive] = 1;
+  //       var Day = "Day";
+  //       jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+  //       var DayNum = "DayNum";
+  //       jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+  //       this.AllDatesSDandED.push(jsonData);
+  //       date.setDate(date.getDate() + 1);
+  //     }
+  //   }
+
+
+  // }
   selectStartDate(event) {
-
-    event = moment(event);
+debugger
     this._StartDate = event;
-
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
@@ -3920,8 +5154,40 @@ sortbyCurrent_Time(){
       }
     }
 
-  }
 
+
+    // valid starttimearr setting start.
+    let _inputdate=event;
+    let _currentdate=moment();
+    if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+    {
+        const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+        const index:number=this.StartTimearr.findIndex((item:any)=>{
+            const t=moment(item,'h:mm A');
+            const result=t>=ct;
+            return result;
+        });
+        this.validStartTimearr=this.StartTimearr.slice(index);
+
+    // verify whether starttime and endtime are valid or not. start
+    _currentdate.format('h:mm A');
+
+    const inputtime1=moment(this.Startts,'h:mm A');
+    const inputtime2=moment(this.Endtms,'h:mm A');
+    if(inputtime1<ct)
+      this.Startts=this.validStartTimearr[0];
+    if(inputtime2<ct)
+      this.Endtms=this.validStartTimearr[1];
+
+   // verify whether starttime and endtime are valid or not. end
+
+    }
+    else
+    this.validStartTimearr=[...this.StartTimearr];
+    // valid starttimearr setting end.
+
+
+  }
 
   onfocus(val) {
     //  console.log(val, "ttt");
@@ -3931,21 +5197,131 @@ sortbyCurrent_Time(){
   Alltimes: any = [];
   AllEndtime: any = [];
 
-  addstarttime() {
+  // addstarttime() {
 
+  //   this.Alltimes = [];
+  //   this.EndTimearr = [];
+  //   this.AllEndtime = [];
+  //   this.StartTimearr = [];
+
+  //   this._arrayObj.forEach(element => {
+  //     this.EndTimearr.push(element.TSStart);
+  //     this.AllEndtime.push(element.TSStart);
+  //     this.StartTimearr.push(element.TSStart);
+  //     this.Alltimes.push(element.TSStart);
+  //     //  console.log( this.Alltimes,"times")
+
+  //   });
+  // }
+
+
+
+
+  timearr1: any = [];
+
+  addstarttime() {
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
     this.StartTimearr = [];
 
-    this._arrayObj.forEach(element => {
+      this._arrayObj.forEach(element => {
       this.EndTimearr.push(element.TSStart);
       this.AllEndtime.push(element.TSStart);
       this.StartTimearr.push(element.TSStart);
       this.Alltimes.push(element.TSStart);
       //  console.log( this.Alltimes,"times")
+    });
+
+    console.log("StartTimearr:", this.StartTimearr);
+    console.log("EndTimearr:", this.EndTimearr);
+
+
+    this.timingarryend = [];
+    this.Time_End = [];
+    this.Time_End = this.AllEndtime;
+    // this.Startts = TSStart;
+    let _index = this.Time_End.indexOf(this.Startts);
+    if (_index + 1 === this.Time_End.length) {
+      _index = -1;
+    }
+    this.timingarryend = this.Time_End.splice(_index + 1);
+
+    this.EndTimearr = this.timingarryend;
+    this.timearr1 = this.Startts.split(":");
+    let vahr = this.timearr1[0];
+    let mins = this.timearr1[1].toString();
+
+    if (vahr == 11 && mins.includes("AM")) {
+      mins = mins.replace("AM", "PM")
+    }
+    else if (vahr == 11 && mins.includes("PM")) {
+      mins = mins.replace("PM", "AM")
+    }
+
+    if (this.timearr1[0] == 11) {
+      this._arrayObj.forEach(element => {
+        this.EndTimearr.push(element.TSStart);
+
+      });
+      vahr = Number(vahr) + 1;
+      if (vahr == 13) {
+        vahr = '1'
+
+      }
+      this.Endtms = vahr.toString() + ':' + mins;
+
+      if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+        this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+
+      }
+      else {
+        this._SEndDate = this._StartDate;
+      }
+
+    }
+    else {
+      vahr = Number(vahr) + 1;
+      if (vahr == 13) {
+        vahr = '1'
+      }
+      if (vahr <= 9) {
+        this.Endtms = '0' + vahr.toString() + ':' + mins;
+      }
+      else {
+        this.Endtms = vahr.toString() + ':' + mins;
+      }
+    }
+
+    this.daysSelectedII = [];
+    var jsonData = {};
+    var columnName = "Date";
+    jsonData[columnName] = this.minDate;
+    var columnNames = "StartTime";
+    jsonData[columnNames] = this.Startts;
+    var columnNamee = "EndTime";
+    jsonData[columnNamee] = this.Endtms;
+    var columnNameess = "SEndDate";
+    jsonData[columnNameess] = moment(this._SEndDate).format("YYYY-MM-DD").toString();
+
+    if (this.ScheduleType == "Event") {
+      var IsActive = "IsActive";
+      jsonData[IsActive] = 0;
+    }
+    this.daysSelectedII.push(jsonData)
+
+    const selectedStartTimeObj = new Date(`2000-01-01T${this.Startts}:00`);
+    this.EndTimearr.forEach(element => {
+      // alert(element)
+      const _element = element;
+      const EndTimeObj = new Date(`2000-01-01T${_element}:00`);
+      const diffInMinutes = (EndTimeObj.getTime() - selectedStartTimeObj.getTime()) / 60000;
+      // alert(diffInMinutes)
+      element = _element.toString() + "-" + diffInMinutes.toString();
 
     });
+
+    console.log(this.EndTimearr, "End Time Updated")
   }
 
   singleselectarry: any[] = [];
@@ -4240,7 +5616,7 @@ sortbyCurrent_Time(){
     $('.bg-ovr1').removeClass('d-block');
 
     // $('.side_view').removeClass('position-fixed');
-    this.closefooter();
+    // this.closefooter();
   }
 
 
@@ -4256,7 +5632,7 @@ sortbyCurrent_Time(){
   closeschd() {
     this.repeatMeeting = false;
     // this.Insert_indraft();
-    document.getElementById("mysideInfobar_schd_new").classList.remove("open_sidebar");
+    document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -4272,17 +5648,23 @@ sortbyCurrent_Time(){
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.Subtask = null;
-    this.Startts = null;
-    this.Endtms = null;
+    // this.Startts = null;
+    // this.Endtms = null;
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
+    this._meetingroom = false;
+    // document.getElementById("Location_Name").style.display = "none";
+    this._onlinelink = false;
+    document.getElementById("Descrip_Name12").style.display = "none";
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = null;
+   
     this.Location_Type = null;
     this.Allocated_subtask = null;
     this.Projectstartdate = "";
@@ -4314,12 +5696,12 @@ sortbyCurrent_Time(){
     jsonData[DayNum] = moment().format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
     this.notProvided = false;
-
+    this.subtashDrpLoading=false;
   }
 
 
   closefooter() {
-    // $('.secfootr1').removeClass('opend');
+
     document.getElementById("ft_body1").classList.toggle("go-up");
     document.getElementById("secfootr1").classList.toggle("opend");
     document.getElementById("main-foot1").classList.toggle("overflow-hidden");
@@ -4332,6 +5714,15 @@ sortbyCurrent_Time(){
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
+
+    if (
+      this.Title_Name &&
+      this.Startts &&
+      this.Endtms &&
+      this.MinLastNameLength
+      && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0  : true)
+      && (this.Description_Type?(this.characterCount<500):true)
+    ) {
 
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
@@ -4525,7 +5916,16 @@ sortbyCurrent_Time(){
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
         var vLink_Details = "Link_Details";
-        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+        // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        // link_d=this.anchoredIt(link_d);
+
+        let link_d=this.Link_Details;
+        if(this.Link_Details){
+          link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          link_d=this.anchoredIt(link_d);
+        }
+
+        element[vLink_Details] = this.Link_Details == undefined ? "" : link_d;
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -4562,6 +5962,7 @@ sortbyCurrent_Time(){
             this._calenderDto.flagid = 2;
         }
       }
+      console.log(this._PopupConfirmedValue, "finalarray");
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -4675,12 +6076,12 @@ sortbyCurrent_Time(){
           this.Attachment12_ary = [];
           // this.Recurr_arr = [];
           this.selected = null;
-          // this.TImetable();
+          this.TImetable();
           this.Portfolio = null;
           this.minDate = moment().format("YYYY-MM-DD").toString();
           this.maxDate = null;
           //69 this.calendar.updateTodaysDate();
-          // this.TImetable();
+          this.TImetable();
 
         });
       this.closeschd();
@@ -4688,10 +6089,100 @@ sortbyCurrent_Time(){
     else {
       alert('Please Select Valid Date and Time');
     }
+  }else {
+    this.notProvided = true;
+  }
+
+}
+
+
+
+
+
+
+  agendaInputs: string | undefined;
+  // allAgendas: any = [];
+  // agendasAdded: number = 0;
+  addAgendas() {
+    if (this.agendaInputs && this.agendaInputs.trim().length > 0) {
+      this.agendasAdded += 1;
+      const agenda = {
+        index: this.agendasAdded,
+        name: this.agendaInputs
+      };
+      this.allAgendas.push(agenda);
+      this.agendaInputs = undefined;
+    }
+
+    console.log("allAgendas:", this.allAgendas);
+  }
+
+  deleteAgendas(index: number) {
+
+    if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
+      const agenda_toRemove=this.allAgendas[index].name;
+      this.allAgendas.splice(index, 1);
+      this.notifyService.showSuccess(agenda_toRemove,'Agenda removed.');
+    }
+    console.log("allAgendas:", this.allAgendas);
   }
 
 
+  editAgendas(index: number) {
+    $(`#agendas-label-${index}`).addClass('d-none');
+    $(`#agendas-text-field-${index}`).removeClass('d-none');
+    $(`#agendas-text-field-${index}`).focus();
 
+    $(`#edits-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
+    $(`#editings-save-${index}`).removeClass('d-none');   // save btn is visible.
+
+    $(`#edit-agendasname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
+    $(`#remove-agendas-btn-${index}`).addClass('d-none');   // delete btn is invisible.
+
+  }
+
+  cancelAgendasEdit(index: number) {
+    const tf: any = document.getElementById(`agendas-text-field-${index}`);
+    tf.value = this.allAgendas[index].name;
+
+    $(`#agendas-label-${index}`).removeClass('d-none');   // label is visible.
+    $(`#agendas-text-field-${index}`).addClass('d-none');   // textfield is invisible.
+    $(`#edits-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+    $(`#editings-save-${index}`).addClass('d-none');   // save btn is visible.
+    $(`#edit-agendasname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+    $(`#remove-agendas-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+  }
+
+
+  updateAgendas(index: number) {
+    const tf: any = document.getElementById(`agendas-text-field-${index}`);
+    this.allAgendas[index].name = tf.value;
+
+    $(`#agendas-label-${index}`).removeClass('d-none'); // label is visible.
+    $(`#agendas-text-field-${index}`).addClass('d-none');  // textfield is invisible.
+    $(`#edits-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+    $(`#editings-save-${index}`).addClass('d-none');   // save btn is visible.
+    $(`#edit-agendasname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+    $(`#remove-agendas-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+
+
+    console.log('all agendas after updating:', this.allAgendas);
+  }
+  // agenda in event creation end
+
+  isClassAdded: boolean = false;
+
+
+  onKeyPress() {
+    // Check if the input field is empty
+    if (this.agendaInputs===undefined||this.agendaInputs.trim() === '') {
+      // If input field is empty, remove the class
+      this.isClassAdded = false;
+    } else {
+      // If input field is not empty, add the class
+      this.isClassAdded = true;
+    }
+  }
 
 
   ////////////////////////////////////////// Meeting Edit Functionality End /////////////////////////////////////////////////////
@@ -4718,7 +6209,7 @@ sortbyCurrent_Time(){
       if (result.isConfirmed) {
         // If the user confirms, open the modal
         this.repeatMeeting = true;
-        document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
+        document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
         document.getElementById("rightbar-overlay").style.display = "block";
         // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
         this.ReshudingTaskandEvent();
@@ -4753,7 +6244,7 @@ sortbyCurrent_Time(){
       document.body.classList.remove('modal-open'); // Add class to body for modal-open
       const backdrop = document.createElement('div');
       document.getElementById("rightbar-overlay").style.display = "none";
-      document.body.appendChild(backdrop); // Add backdrop    
+      document.body.appendChild(backdrop); // Add backdrop
     }
   }
 
@@ -4766,7 +6257,7 @@ sortbyCurrent_Time(){
       this.Action_item.push(element.Assign_Id)
 
     });
-  
+
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Note = this.Notes_Type;
@@ -4775,7 +6266,7 @@ sortbyCurrent_Time(){
     this._calenderDto.Dms = this.checkeddms.join(',');
     this._calenderDto.Portfolio = this.checkedportfolio.join(',');
     this._calenderDto.Project = this.checkedproject.join(',');
-   
+
     this.CalenderService.NewGetMeeting_report(this._calenderDto).subscribe
       (data => {
         // this.notifyService.showSuccess("Successfully", "Completed");
@@ -4828,7 +6319,6 @@ sortbyCurrent_Time(){
 
 
   Select_flag(val) {
-
     this._PopupConfirmedValue = val;
 
   }
@@ -4836,31 +6326,53 @@ sortbyCurrent_Time(){
 
 
 
-
+  isFilteredOn:boolean=false;
   searchingResult: boolean = false;
-  onProjectSearch(inputtext: any) {
-    this.searchingResult = true;
-    this.CalenderService.NewGetProjectandsubtaskDrp(inputtext).subscribe((res: any) => {
-      // console.log(res);
-      if (res) {
-        this.ProjectListArray = JSON.parse(res['Projectlist']);
-        //  console.log("project name searched result:",this.ProjectListArray);
-        this.searchingResult = false;
-      }
+  inputTyped:string;
+  onProjectSearch(inputtext:any){
 
-    })
+     if(this.searchingResult==false){
+      const filterobj=this.basedOnFilter;
+
+      this.isFilteredOn=(this.basedOnFilter.byuser||this.basedOnFilter.bycompany);  //  on the filter dot if applied.
+
+      this.searchingResult=true;
+      this.CalenderService.NewGetProjectandsubtaskDrp(inputtext,filterobj).subscribe((res:any)=>{
+          console.log(res);
+          if(res){
+            this.ProjectListArray=JSON.parse(res['Projectlist']);
+             console.log("project name searched result:",this.ProjectListArray);
+            this.searchingResult=false;
+
+            if(this.inputTyped!=undefined){
+               const newsearch=this.inputTyped;
+               this.inputTyped=undefined;
+               this.onProjectSearch(newsearch);
+            }
+
+          }
+      });
+     }
+     else
+     this.inputTyped=inputtext;
+
   }
 
 
+  choosedItems:any=[];
+  basedOnFilter:any={};
 
   projectmodal() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
-    document.getElementById("projectmodal").style.display = "block";
+    document.getElementById("projectmodals").style.display = "block";
+
   }
-  close_projectmodal() {
+  close_projectmodals() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
-    document.getElementById("projectmodal").style.display = "none";
-    this.Assigntext = ''
+    document.getElementById("projectmodals").style.display = "none";
+    this.Assigntext = '';
+    this.selectedAttendeesList.clear();
+    this.assignCount=0
   }
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
@@ -4871,7 +6383,303 @@ sortbyCurrent_Time(){
     document.getElementById("filter-icon").classList.remove("active");
   }
 
+  project_filters() {
+    document.getElementById("project-filter1").classList.add("show");
+    document.getElementById("filter-icon").classList.add("active");
+  }
+  close_project_filters() {
+    document.getElementById("project-filter1").classList.remove("show");
+    document.getElementById("filter-icon").classList.remove("active");
+  }
 
+  companies_Arr:any;
+
+
+  projectmodaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'|undefined;
+
+  projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'){
+
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("projectmodal").style.display = "block";
+    this.projectmodaltype=modaltype;
+    const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
+    if(searchField)searchField.focus();
+
+    // if(modaltype==='PROJECT')
+    // this.onProjectSearch('');
+    if(modaltype==='PROJECT'){
+      this.onProjectSearch('');
+      this.choosedItems.getPcodes=()=>{
+          return this.choosedItems.map(item=>item.Project_Code);
+      }
+    }
+
+    if(modaltype!='PROJECT')
+      this.onInputSearch('');
+  }
+  close_projectmodal(){
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("projectmodal").style.display = "none";
+    this.Assigntext = ''
+    this.choosedItems=[];   // clear selections.
+    this.isFilteredOn=false;
+    this.basedOnFilter.byuser=null;
+    this.basedOnFilter.bycompany=null;    // clear filter applied.
+    this.FilteredResults=[];             // clear filtered result.
+    this.projectmodaltype=undefined; // no model open.
+  }
+  FilteredResults:any=[];
+
+  onInputSearch(inputText:any){
+    let keyname;
+    let arrtype;
+    let selectedinto;
+    let property_name;
+    if(this.projectmodaltype=='PARTICIPANT')
+     {
+       keyname='DisplayName';
+       arrtype=this._EmployeeListForDropdown;
+       selectedinto='ngEmployeeDropdown';
+       property_name='Emp_No';
+     }
+    else if(this.projectmodaltype=='PORTFOLIO')
+    {
+       keyname='Portfolio_Name';
+       arrtype=this.Portfoliolist_1;
+       selectedinto='Portfolio';
+       property_name='portfolio_id';
+    }
+    else if(this.projectmodaltype=='S-Mail')
+    {
+      keyname='Subject';
+      arrtype=this.Memos_List;
+      selectedinto='SelectDms';
+      property_name='MailId';
+    }
+
+    const result=arrtype.filter(item=>{
+     
+      const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+      let nameMatched:boolean=false;
+      if(unselected)
+      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
+
+      return nameMatched;
+    });
+    this.FilteredResults=result;
+  }
+
+
+
+
+
+  keepChoosedItems(){
+    switch(this.projectmodaltype)
+    {
+        case 'PROJECT':{
+          if(!this.MasterCode) // if MasterCode is null,undefined,'',0
+            this.MasterCode=[];
+
+          this.MasterCode=[...this.MasterCode, ...this.choosedItems.map(item=>item.Project_Code)]; // selected prj codes
+          this.projectsSelected=[...this.projectsSelected,...this.choosedItems.map(item=>({ Project_Code:item.Project_Code, Project_Name:item.Project_Name, BlockNameProject:item.BlockNameProject, TM_DisplayName:item.TM_DisplayName }))]; // selected prj objs
+          this.close_projectmodal();
+        };break;
+
+        case 'PORTFOLIO':{
+              if (!this.Portfolio)   // if Portfolio is null,undefined,''
+              this.Portfolio = [];
+
+             this.Portfolio=[...this.Portfolio,...this.choosedItems];  // array of portfolio ids.
+             this.close_projectmodal();
+        };break;
+
+       case 'S-Mail':{
+            if(!this.SelectDms)   // if SelectDms is null,undefined,''
+              this.SelectDms=[];
+
+            this.SelectDms=[...this.SelectDms,...this.choosedItems];   // array of all selected dms id.
+            this.close_projectmodal();
+       };break;
+
+       case 'PARTICIPANT':{
+        if(!this.ngEmployeeDropdown)
+           this.ngEmployeeDropdown=[];
+
+          this.ngEmployeeDropdown=[...this.ngEmployeeDropdown,...this.choosedItems];
+          this.close_projectmodal();
+       };break;
+
+    }
+
+  }
+
+
+
+
+
+
+
+
+  discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:string){
+    switch(listtype){
+       case 'PROJECT':{
+              const i=this.MasterCode.findIndex(pc=>pc==item);
+              this.MasterCode.splice(i,1);
+              this.projectsSelected.splice(i,1);
+       };break;
+       case 'PORTFOLIO':{
+            const i=this.Portfolio.findIndex(ptf=>ptf==item);
+            this.Portfolio.splice(i,1);
+
+       };break;
+       case 'DMS':{
+             const i=this.SelectDms.findIndex(m=>m==item);
+             this.SelectDms.splice(i,1);
+
+       };break;
+       case 'PARTICIPANT':{
+            const i=this.ngEmployeeDropdown.findIndex(em=>em==item);
+            this.ngEmployeeDropdown.splice(i,1);
+
+       };break;
+       default:{};
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  onItemChoosed(choosed:any,choosedItem:any){
+    
+    if(choosed){
+      this.choosedItems.push(choosedItem);
+    }
+    else{
+      const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='PROJECT')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
+      if(i>-1)
+      this.choosedItems.splice(i,1);
+
+      // when removing already selected items
+      // if(this.projectmodaltype==='PROJECT'){
+      //       const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
+      //       if(j>-1){
+      //         this.MasterCode.splice(j,1);
+      //         this.projectsSelected.splice(j,1);
+      //       }
+      // }
+      // else{
+       
+      //   const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+      //   const j=ary.findIndex(item=>item==choosedItem);
+      //   if(j>-1)
+      //   ary.splice(j,1);
+      // }
+         // when removing already selected items
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  clearAppliedFiltered(){
+    this.basedOnFilter.byuser=null;
+    this.basedOnFilter.bycompany=null;
+      switch(this.projectmodaltype){
+          case 'PROJECT':{
+            this.onProjectSearch('');
+          };break;
+          case 'PORTFOLIO':{
+            this.onPortfolioFilter();
+          };break;
+          case 'S-Mail':{
+            this.onDMSFilter();
+          };break;
+          case 'PARTICIPANT':{
+            this.onParticipantFilter();
+          };break;
+          default:{};
+      }
+      this.isFilteredOn=false;
+  }
+
+
+  onPortfolioFilter(){
+    const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
+         const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+         const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
+         const z=x&&y;
+         const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(prtf.portfolio_id);
+         return isSelected?false:z;
+    });
+    this.FilteredResults=fresult;
+    this.isFilteredOn=true;
+}
+
+onDMSFilter(){
+     const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
+      const fresult=this.Memos_List.filter((_memo:any)=>{
+
+       let hasMemo:boolean=false;
+       hasMemo=(!this.basedOnFilter.byuser)||(_memo.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+
+       let isSelected:boolean=false;
+       isSelected=this.SelectDms&&this.SelectDms.includes(_memo.MailId);
+
+       return isSelected?false:hasMemo;
+      });
+
+      this.FilteredResults=fresult;
+      this.isFilteredOn=true;
+}
+
+onParticipantFilter(){
+   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{
+      const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany;
+      let includeEmp:boolean=false;
+      if(isEmpIn)
+      includeEmp=!(this.ngEmployeeDropdown&&this.ngEmployeeDropdown.includes(_emp.Emp_No));
+      return includeEmp;
+   });
+   this.FilteredResults=fresult;
+   this.isFilteredOn=true;
+}
 
   agendaside(index: number) {
 
@@ -4890,13 +6698,24 @@ sortbyCurrent_Time(){
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("History_sidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
-    this.GetPreviousdate_meetingdata()
+
+
+    // this.NewGetRecurrenceMeetings(0);
+    this.GetPreviousdate_meetingdata();
   }
+
   closeHistoryInfo() {
+    $("#previousmeeting-tab").addClass("active");
+    $("#previousmeeting").addClass("show active");
+
+    $("#upcomingmeeting-tab").removeClass("active");
+    $("#upcomingmeeting").removeClass("show active");
+
     document.getElementById("History_sidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("meetingdetails").classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "none";
+
   }
   searchUser: any
 
@@ -4905,6 +6724,12 @@ sortbyCurrent_Time(){
   toggleDropdown() {
     this.activeAgendaIndex = 0
     this.showDropdown = !this.showDropdown;
+  }
+
+
+  toggleDropdowns() {
+    this.activeAgendaIndex = 0
+    this.showDropdown = false;
   }
 
   previous_filter() {
@@ -4995,12 +6820,34 @@ sortbyCurrent_Time(){
   }
 
   //////////////////////////////////////// Repeat Meeting section Start ///////////////////////////////////////////
+  
 
   date_menu(dialogId: string) {
     document.getElementById(dialogId).classList.add("show");
+    // document.getElementById('date-menu').classList.add("show");
+    // document.getElementById('drop-overlay').classList.add("show");
+    $('#date-menu').addClass('show');
+    $('#drop-overlay').addClass('show');
+
+   
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
+    $('#date-menu').removeClass('show');
+    $('#drop-overlay').removeClass('show');
+}
+
+
+  date_menu_modal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("datemenu").style.display = "block";
+   
+  }
+  date_menu_modal_close() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("datemenu").style.display = "none";
+   
+  
   }
   ////////////////////////////////////// Repeat Meeting  section End /////////////////////////////////////////////
   activeIndex: number | null = null;
@@ -5163,6 +7010,7 @@ sortbyCurrent_Time(){
           this.maxDate = null;
           // this.TImetable();
           this.closeevearea();
+          this.Close_Repeat_Meeting();
 
         });
     }
@@ -5171,6 +7019,208 @@ sortbyCurrent_Time(){
     }
   }
 
+
+  onCustomBtnClicked(){
+    $('#propse11').removeClass('show');
+    this.repeatEvent();
+
+  }
+
+
+  repeatEvent() {
+    document.getElementById("div_endDate_new").style.display = "none";
+    document.getElementById("Schenddate").style.display = "none";
+
+    this.editTask = false;
+    this.copyTask = false;
+    this.create = false;
+    this.eventRepeat=true;
+
+
+    this.Schedule_ID = this._calenderDto.Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this.Schedule_ID = 0;   // schedule id.
+        this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
+        this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
+
+        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
+        this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
+        this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
+        this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
+        this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
+
+        // if (this._FutureEventTasksCount > 0) {
+
+        // }
+        // else if (this._FutureEventTasksCount == 0) {
+
+        // }
+        this.Close_Repeat_Meeting();
+        document.getElementById("div_recurrence").style.display = "block";
+        document.getElementById("Monthly_121_new").style.display = "none";
+        document.getElementById("weekly_121_new").style.display = "none";
+        document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+
+
+        this.AllDatesSDandED = [];
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = (moment(this.minDate).format("YYYY-MM-DD"));//this.EventScheduledjson[0]['Schedule_date'];
+        var IsActive = "IsActive";
+        jsonData[IsActive] = 1;
+        var Day = "Day";
+        jsonData[Day] = "NA";
+        var DayNum = "DayNum";
+        jsonData[DayNum] = "NA";
+        this.AllDatesSDandED.push(jsonData);
+        this._StartDate = moment().format("YYYY-MM-DD").toString();
+        this.minDate = moment().format("YYYY-MM-DD").toString();
+        if (this.minDate > this._StartDate) {
+          this.minDate = this._StartDate;
+        }
+        this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+
+
+
+     // valid starttimearr and endtimearr setting start.
+          let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+          let _currentdate=moment();
+          if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+          {
+              const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+              const index:number=this.StartTimearr.findIndex((item:any)=>{
+
+                  const t=moment(item,'h:mm A');
+                  const result=t>=ct;
+                  return result;
+              });
+              this.validStartTimearr=this.StartTimearr.slice(index);
+          }
+          else
+          this.validStartTimearr=[...this.StartTimearr];
+
+
+
+          this.timingarryend = [];
+          this.Time_End = [];
+          this.Time_End = [...this.StartTimearr];
+          let _index = this.Time_End.indexOf(this.Startts);
+          if (_index + 1 === this.Time_End.length) {
+            _index = -1;
+          }
+          this.timingarryend = this.Time_End.splice(_index + 1);
+          this.EndTimearr = this.timingarryend;
+          // valid starttimearr and endtimearr setting end.
+
+
+
+
+
+
+
+
+         if (this.ScheduleType == 'Event') {
+          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
+          this.GetProjectAndsubtashDrpforCalender();
+          this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
+          this.MasterCode = [];
+          this.projectsSelected=[];
+          this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
+          this.arr.forEach(element => {
+            this.MasterCode.push(element.stringval);
+            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject, TM_DisplayName:element.TM_DisplayName });
+          });
+          this.Portfolio = [];
+          this.Portfolio1 = [];
+          this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
+          this.arr1.forEach(element => {
+            this.Portfolio.push(element.numberval);
+          });
+
+          this.ngEmployeeDropdown = [];
+          this.ngEmployeeDropdown1 = [];
+          this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
+          this.arr2.forEach(element => {
+            this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
+          });
+
+
+          this.SelectDms = [];
+          this.SelectDms1 = [];
+
+          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+                 this.Memos_List = JSON.parse(data['JsonData']);
+                 console.log(this.Memos_List, "test iiii");
+
+                 let arr3 = [];
+                 var str = (this.EventScheduledjson[0]['DMS_Name']);
+                 arr3 = str.split(",");
+                 for (var i = 0; i < arr3.length; i++) {
+                      this.Memos_List.forEach(element => {
+                        if (element.MailId == arr3[i]) {
+                          this.SelectDms.push(element.MailId);
+                        }
+                      });
+                 }
+
+          });
+
+
+          this.Location_Type = (this.EventScheduledjson[0]['Location']);
+          this.Description_Type = (this.EventScheduledjson[0]['Description']);
+          document.getElementById("subtaskid").style.display = "none";
+          document.getElementById("Guest_Name").style.display = "flex";
+          document.getElementById("Location_Name").style.display = "none";
+          document.getElementById("Descrip_Name").style.display = "flex";
+          document.getElementById("core_viw121").style.display = "flex";
+          document.getElementById("core_viw123").style.display = "none";
+          document.getElementById("core_viw222").style.display = "flex";
+          document.getElementById("core_Dms").style.display = "flex";
+
+          const TEsb = document.getElementById('TaskEvent-Sidebar')
+          TEsb.addEventListener('scroll', () => {
+            this.autocompletes.forEach((ac) => {
+              if (ac.panelOpen)
+                ac.updatePosition();
+            });
+          })
+
+         }
+
+      });
+    this.closeevearea();
+
+  }
+
+
+
+
+  onSubmitBtnClicked() {
+
+    if (
+      (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
+      (this.Description_Type?(this.characterCount<500):true)&&
+      this.Startts &&
+      this.Endtms &&
+      this.MinLastNameLength
+      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+    ) {
+      this.OnSubmitSchedule();
+      this.notProvided = false;
+    }
+    else {
+      if ((!this.Title_Name)||this.Title_Name.trim().length<3||this.Title_Name.trim().length>100)
+        document.getElementById('dsb-evt-titleName').focus();
+      else if (this.ScheduleType === 'Event' && this.allAgendas.length === 0) { const agf: any = document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+
+      this.notProvided = true;
+    }
+  }
 
 //////////////////////////////////////////////////// Meeting Sidebar sectoion Start////////////////////////////////////////////////////////////
 
@@ -5183,6 +7233,7 @@ totalpreviousmeetings:any;
 
 
 NewGetRecurrenceMeetings(meetings_HTR){
+
   this.previousWithUpcoming_loader=true;
   this.previousmeetings=null;
   this.upcomingmeetings=null;
@@ -5191,40 +7242,44 @@ NewGetRecurrenceMeetings(meetings_HTR){
   this._calenderDto.Status_type=meetings_HTR;
   this.CalenderService.GetRecurrenceMeetingsService(this._calenderDto).subscribe((data)=>{
     this.previousWithUpcoming_loader=false
-   
+
      if(data['previousmeetings']){
       this.previousmeetings = JSON.parse(data['previousmeetings']);
-  
+
       this.previousmeetings.map(meetings => {
-         meetings.Addguest=JSON.parse(meetings.Addguest)  
+         meetings.Addguest=JSON.parse(meetings.Addguest)
       })
-     
+
 
       this.previousmeetings.forEach(meeting => {
+
         if (meeting.Addguest.length > 3) {
-          const remainingGuestsCount = meeting.Addguest.length - 3;
+          const remainingGuests = meeting.Addguest.slice(3);
           meeting.Addguest = meeting.Addguest.slice(0, 3);
-          meeting['RemainingGuestsCount'] = remainingGuestsCount;
+          meeting['RemainingGuests'] = remainingGuests.map(data=>data.TM_DisplayName)
+          meeting['RemainingGuestsCount'] = remainingGuests.length;
+
         } else {
-          meeting['RemainingGuestsCount'] = 0;
+          meeting['RemainingGuests'] = [];
         }
       });
 
       this.totalpreviousmeetings=this.previousmeetings.length;
       console.log(this.previousmeetings,'previousmeetings2');
      }else if(data['upcomingmeetings']){
-    
+
       this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
       this.upcomingmeetings.map(upmeetings=>{
         upmeetings.Addguest=JSON.parse(upmeetings.Addguest)
       })
-    
+
 
       this.upcomingmeetings.forEach(meeting => {
         if (meeting.Addguest.length > 3) {
-          const remainingGuestsCount = meeting.Addguest.length - 3;
+          const remainingGuests = meeting.Addguest.slice(3);
           meeting.Addguest = meeting.Addguest.slice(0, 3);
-          meeting['RemainingGuestsCount'] = remainingGuestsCount;
+          meeting['RemainingGuests'] = remainingGuests.map(data=>data.TM_DisplayName)
+          meeting['RemainingGuestsCount'] = remainingGuests.length;
         } else {
           meeting['RemainingGuestsCount'] = 0;
         }
@@ -5232,11 +7287,323 @@ NewGetRecurrenceMeetings(meetings_HTR){
       this.upcomingmeetings.reverse()
       this.totalupcomingmeetings=this.upcomingmeetings.length;
       console.log(this.upcomingmeetings,'upcomingmeetings2');
-      
+
      }
   })
 }
 
+
+Meeting_method(event){
+  if (event.target.checked) {
+    document.getElementById("Location_Name").style.display = "flex";
+    this._meetingroom = event.target.checked;
+  }
+  else {
+    document.getElementById("Location_Name").style.display = "none";
+    this._meetingroom = false;
+  }
+ }
+
 //////////////////////////////////////////////////// Meeting Sidebar sectoion End ////////////////////////////////////////////////////////////
 
-} 
+
+
+
+
+
+
+
+//////////////////////////////////////////////////// Request access sectoion Start ////////////////////////////////////////////////////////////
+
+
+  Usercomment: string = '';
+  isRequestDialogOpen: boolean = false;
+  isRequestSent: boolean = false;
+  ishide:boolean=true;
+  formFieldsRequired:boolean=false;
+
+openRequestDialog() {
+  this.isRequestDialogOpen = true;
+  $('.hide-button').addClass('d-none');
+}
+
+closeRequestDialog() {
+  this.isRequestDialogOpen = false;
+  this.Usercomment = '';
+  $('.hide-button').removeClass('d-none');
+}
+
+
+sendRequest(): void {
+
+  if (!this.Usercomment){
+    this.formFieldsRequired=true;
+    return
+  }
+  else{
+    this.formFieldsRequired=false;
+    var Project_Code = null;
+    this.projectMoreDetailsService.NewInsertProjectRequestAccesss(Project_Code,this.Usercomment,this.Current_user_ID,this.Scheduleid).subscribe(res => {
+       console.log(res,'resrponse of the meeting details page');
+      this.closeRequestDialog();
+      Swal.fire('Request Sent Successfully');
+      this.isRequestSent = true;
+      this.ishide=false
+      $('.hide-content').addClass('d-none');
+
+       });
+
+  }
+}
+
+
+multiapproval_json:any;
+totalCountOfList:any;
+requestaccessList:any;
+
+
+getMeetingApprovals(){
+
+  this.approvalObj.Schedule_Id=this.Scheduleid;
+  this.approvalObj.Emp_no =this.Current_user_ID;
+
+ this.approvalservice.NewGetMeetingApprovals(this.approvalObj).subscribe((data) => {
+
+   var multiapproval_json=data[0].multiapproval_json;
+   this.multiapproval_json=JSON.parse(multiapproval_json);
+   console.log(this.multiapproval_json,'testing 1233')
+   this.totalCountOfList=this.multiapproval_json.length;
+   this.requestaccessList=JSON.parse(data[0]['requestaccessList']);
+
+   this.requestaccessList.forEach((res)=>{
+      if(res.Submitted_By_EmpNo==this.Current_user_ID){
+        this.isRequestSent = true;
+      }
+   })
+ })
+}
+
+
+UpdateMeetingRequestAccess(SNo,Type){
+
+  this.approvalObj.SNo=SNo;
+  this.approvalObj.Schedule_Id =this.Scheduleid;
+  this.approvalObj.Type = Type;
+
+ this.approvalservice.NewUpdateMeetingRequestAccess(this.approvalObj).subscribe((data) => {
+  if(data['Type']=='Accept'){
+    this.notifyService.showSuccess("Request access accept ", "Success");
+  }else if(data['Type']=='Reject'){
+    this.notifyService.showSuccess("Request access reject", "Success");
+  }
+    console.log(data,'appraval data in the dashboard');
+    this.getMeetingApprovals();
+ })
+}
+
+
+
+
+getShorterName(name:string|undefined){
+  if(name)
+   return name.split(' ').map(wrd=>wrd[0]).slice(0,2).join('')
+  return '';
+}
+
+
+
+
+
+anchoredIt(inputstr){
+  let inputdes=inputstr;
+  const urlregex=/\bhttps?:\/\/[^\s<]+[^\s<.,:;"')\]]\b/g;
+  const urlInAnchorRegex = /<a\s+[^>]*href=['"]([^'"]+)['"][^>]*>.*?<\/a>/gi;
+  let matches = inputdes.match(urlInAnchorRegex);
+  if(matches){
+       matches.forEach((achor) => {
+          inputdes=inputdes.replace(achor,achor.match(urlregex)[0]);
+       });
+  }
+  let alllinks=[];
+  let matches2=inputdes.match(urlregex);
+  if(matches2){
+          matches2.forEach((linkstr,index)=>{
+            const alink=`<a href="${linkstr}" target="_blank">${linkstr}</a>`;
+            alllinks.push(alink);
+            inputdes=inputdes.replace(linkstr,`@link@-${index}`);
+           });
+           inputdes.match(/@link@-\d+/g).forEach((place,index)=>{
+            inputdes=inputdes.replace(place,alllinks[index]);
+            });
+  }
+  return inputdes;
+}
+// let link_d=this.Link_Details.replace(/&#160;/g, ' ');
+//  link_d=this.anchoredIt(link_d);
+
+//////////////////////////////////////////////////// Request access sectoion end ////////////////////////////////////////////////////////////
+
+
+characterCount: number = 0;
+
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.Description_Type;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
+
+
+isExpanded_Report: boolean = false;
+toggleView() {
+  this.isExpanded_Report = !this.isExpanded_Report;
+}
+
+
+
+//////////////////////////////////////////////////// Activity sidebar start ////////////////////////////////////////////////////////////
+
+allActivityList:any=[];
+
+
+GetMeetingActivity(){
+  this.approvalObj.Schedule_Id=this.Scheduleid;
+
+  this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
+    console.log(data,'data321')
+    this.allActivityList=JSON.parse(data[0].ActivityList)
+    console.log(this.allActivityList,'allActivityList321')
+
+    this.allActivityList = this.allActivityList.map(item => ({
+      ...item,
+      Old_Value: this.isJson(item.Old_Value) ? JSON.parse(item.Old_Value) : [{ name: item.Old_Value }],
+      New_Value: this.isJson(item.New_Value) ? [JSON.parse(item.New_Value)] : [{ name: item.New_Value }]
+    }));
+
+
+  this.allActivityList.forEach(activity => {
+  ['Old_Value', 'New_Value'].forEach(key => {
+    if (typeof activity[key] === 'string') {
+      activity[key] = JSON.parse(activity[key]);
+    }
+    if (activity[key] && Array.isArray(activity[key])) {
+      activity[key].forEach(item => {
+        if (item.name && item.name.includes('<font')) {
+          const div = document.createElement('div');
+          div.innerHTML = item.name;
+          item.name = div.textContent || div.innerText || '';
+        }
+      });
+    }
+  });
+});
+
+
+this.allActivityList.forEach(item => {
+  if (Array.isArray(item.New_Value) && Array.isArray(item.New_Value[0])) {
+    item.New_Value = item.New_Value[0];
+  }
+});
+
+console.log(this.allActivityList,'allActivityList')
+  })
+}
+
+
+isJson(value: string): boolean {
+  try {
+    JSON.parse(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+//////////////////////////////////////////////////// Activity sidebar end ////////////////////////////////////////////////////////////
+
+viewconfirm() {
+
+  const _arraytext = [];
+  if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      if (this.dayArr[index].checked) {
+        const day = this.dayArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      if (this.MonthArr[index].checked == true) {
+        const day = this.MonthArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+  }
+  else {
+    _arraytext.push(this.maxDate);
+  }
+
+  // alert(this.maxDate)
+
+  // alert(this._OldRecurranceId+"-    Old Id" +this.selectedrecuvalue+ "-   New Id");
+  // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
+  // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
+
+debugger
+  if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
+
+    //   Swal.fire({
+    //     title: 'Caution!',
+    //     text: 'This meeting will be moved to new scheduled date and the saved data will be lost. Do you want to continue?',
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Yes',
+    //     cancelButtonText: 'No'
+    //   }).then((response: any) => {
+    //     if (response.value) {
+
+
+    //   // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    //   // radio3.disabled = false;
+    //   // radio3.checked = false;
+    //   // document.getElementById("div_thisevent").style.display = "none";
+
+    //   this._PopupConfirmedValue = 1;
+    //     } else if (response.dismiss === Swal.DismissReason.cancel) {
+    //       Swal.fire(
+    //         'Cancelled',
+    //         'Meeting not moved.',
+    //         'error'
+    //       )
+    //     }
+    //   });
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+
+  }
+  else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
+    document.getElementById("div_thisevent").style.display = "block";
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+
+    // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
+    // radio3.disabled = false;
+    // radio3.checked = false;
+    this._PopupConfirmedValue = 1;
+
+  }
+
+  // alert(this._PopupConfirmedValue)
+}
+
+
+}

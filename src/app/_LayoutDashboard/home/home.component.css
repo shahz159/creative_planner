@@ -1200,30 +1200,30 @@ label.page-num {
 
 
 .new-project-under {
-  background-color:#B2D732 !important;
-  color: #000;
+  background-color:#9C27B0 !important;
+  color: white;
 }
 
 .in-process{
-  background-color: #0089FB;
+  background-color: #64B5F6;
   color:white;
 }
 .completion-under-approval{
-  background-color: #B2D732;
-  color:black;
+  background-color: #81C784;
+  color:white;
 }
 .Delay{
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color:white;
   }
 
 .project-hold{
-  background-color: #E2D9BC;
-  color:#000
+  background-color: #795548;
+  color:white
 }
 .new-pro-rejected{
-  background-color: #DFDFDF !important;
-  color:#000 !important;
+  background-color: #BA68C8 !important;
+  color:white !important;
 }
 
 
@@ -1239,46 +1239,46 @@ label.page-num {
 }
 
 .Completed_color{
-  background-color: #62B134 !important;
+  background-color: #388E3C !important;
   color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
 
 }
 .Forward_Under_Approval_color{
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
 .new-projects{
-  background-color: #5789B8 !important;
-   color: Black !important;
+  background-color: #9C27B0 !important;
+   color: white !important;
    padding: 2px 10px;
    border-radius: 3px;
 }
 .Enactive_Under_Approval_color{
-  background-color: #C9C1E6 !important;
-  color: #000;
+  background-color: #F44336 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .Deadline_Extend_Under_Approval_color{
-  background-color: #F88282 !important;
+  background-color: #F9A825  !important;
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .Project_Hold_Under_Approval{
-  background-color: #c0b5dc;
-  color: #000;
+  background-color: #795548;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
 }
 .Cancellation-under{
-  background-color: #EE4137 !important;
+  background-color: #F44336 !important;
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1325,3 +1325,60 @@ label.page-num {
   padding: 2px 10px;
   border-radius: 3px;
 } */
+/*new details page loading circle start*/
+
+.smart-glass {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 288px;
+  height: 388px;
+}
+
+.logo {
+  width: 288px;
+  height: 288px;
+  position: relative;
+}
+
+.circle {
+  padding: 20px;
+  border: 6px solid transparent;
+  border-top-color: #6388e3;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: connect 2.5s linear infinite;
+}
+
+.loader-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@keyframes connect {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/*new details page loading circle end*/

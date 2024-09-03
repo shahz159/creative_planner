@@ -32,7 +32,11 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 // import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
-import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
+import {ShareModule} from '../../Shared/share/share.module';
+
+
+
+
 
 
 
@@ -45,8 +49,8 @@ FullCalendarModule.registerPlugins([
 
 @NgModule({
   declarations: [
-    DashboardComponent,DatePickerFormatDirective,
-    TimeDiffPipe
+    DashboardComponent,
+    DatePickerFormatDirective,
     // DefaultComponent,
     //SidebarComponent
     //SidebarComponent
@@ -70,6 +74,7 @@ FullCalendarModule.registerPlugins([
     ,NgxDocViewerModule,
     GuidedTourModule,
     Ng2SearchPipeModule,
+    ShareModule
 
   ],
   providers: [DatePipe

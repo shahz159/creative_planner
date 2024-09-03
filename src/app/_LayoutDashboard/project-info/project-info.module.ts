@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 // import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectInfoRoutingModule } from './project-info-routing.module';
@@ -22,6 +22,11 @@ import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.componen
 import { NotificationComponent } from '../notification/notification.component';
 import { TruncatePipe } from './truncate.pipe';
 import { CreateProjectComponent } from '../create-project/create-project.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -40,7 +45,13 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
     NgSelectModule,
     DatePipe,
     ReactiveFormsModule,
-    MatDatepickerModule, MatFormFieldModule
+    MatDatepickerModule, MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    Ng2SearchPipeModule
+  
 
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective, TruncatePipe],

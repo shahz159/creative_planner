@@ -28,4 +28,24 @@ export class ApprovalDTO {
     End_Date:any;
     PageNumber:number;
     RowsOfPage:number;
+
+    projecttype:string;
+    taskname:string;
+    assignto:string;
+    startdate:string;
+    enddate:string;
+    portfolioId:string;
+    SubmissionType:string;
+    Schedule_Id:string
+
+
+    LeaveType:number;
+    LeaveDays:number;
+    TripType:string;
+    Travel:string;
+    FromDate:any;
+    ToDate:any;
+    Country:string;
+    CountryId:string;
+
 }

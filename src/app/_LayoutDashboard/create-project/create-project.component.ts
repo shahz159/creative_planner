@@ -152,6 +152,7 @@ export class CreateProjectComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // this.deletingDraftactions()
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
 
     if (navigatingToCreateProject === 'true') {
@@ -193,6 +194,22 @@ export class CreateProjectComponent implements OnInit {
 
 
 
+  // actionCount:any
+  // getActionCount(prjcode){
+
+  //   this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
+  //    this.actionCount = JSON.parse(res[0].deadlineList)
+  //    console.log(this.actionCount,' this.actionCount this.actionCount this.actionCount')
+
+
+
+
+
+  //   })
+  // }
+
+
+
   Project_Type:any
 
   getProjectCreationDetails(){
@@ -205,6 +222,7 @@ export class CreateProjectComponent implements OnInit {
          this.Client_json=JSON.parse(res[0].Client_json);
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
+         console.log(this.Responsible_json,"Responsible_jsonResponsible_jsonResponsible_jsonResponsible_jsonResponsible_json")
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
@@ -308,6 +326,7 @@ export class CreateProjectComponent implements OnInit {
 
   //  this.Client=this.PrjClient;
    this.newProjectDetails(this.PrjCode);
+  //  this.getActionCount(this.PrjCode);
   }
 
 
@@ -383,7 +402,9 @@ export class CreateProjectComponent implements OnInit {
   this.service.GetRACISandNonRACISEmployeesforMoredetails(prjCode).subscribe(
     (data) => {
       this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
+      console.log(this.owner_dropdown,"this.owner_dropdownthis.owner_dropdownthis.owner_dropdownthis.owner_dropdown")
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
+      console.log(this.responsible_dropdown,'responsible_dropdownresponsible_dropdownresponsible_dropdownresponsible_dropdown')
     });
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
@@ -398,6 +419,7 @@ export class CreateProjectComponent implements OnInit {
 
           if (data != null && data != undefined) {
               this.PrjSupport=JSON.parse(data[0]['RacisList']);
+              console.log(this.PrjSupport,'this.PrjSupportthis.PrjSupportthis.PrjSupportthis.PrjSupport')
 
               console.log("draft support:",this.PrjSupport)
               this.PrjSupport=this.PrjSupport.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
@@ -411,6 +433,10 @@ export class CreateProjectComponent implements OnInit {
 
 
 }
+
+
+
+
 
   setMaxAllocation() {
 
@@ -765,6 +791,8 @@ onFileChanged(event: any) {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+
+    this.characterCount_Desc=0;
   }
 
   closeInfo() {
@@ -907,6 +935,22 @@ this.isPrjDesValid=this.isValidString(this.PrjDes,5);
   }
 
 
+gottoPrevious(){
+          $('.right-side-dv').removeClass('d-none');
+          $('.add_tema_tab').show();
+          $('.Project_details_tab').hide();
+          $('.Add_action_tab').hide();
+          $('.sbs--basic .active').addClass('finished');
+          $('.sbs--basic li').removeClass('active');
+          $('.sbs--basic li:nth-child(2)').addClass('active');
+          $('.sbs--basic li:nth-child(3)').removeClass('active');
+          $('.sbs--basic li:nth-child(3)').removeClass('finished');
+          $('.action-left-view').addClass('d-none');
+
+}
+
+
+
   Move_to_Add_action_tab(){
     $('.action-left-view').removeClass('d-none');
     $('.Add_action_tab').show();
@@ -1012,7 +1056,7 @@ onProjectOwnerChanged(){
   template_json:any;
   draft_json:any;
   daysDifference:any
-
+  userFound:boolean|undefined;
   GetAssignedTaskDetails(){
 
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
@@ -1029,6 +1073,7 @@ onProjectOwnerChanged(){
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
+this.userFound = true
 
       this.draft_json=JSON.parse(res[0].draft_json);
       this.draft_json=this.draft_json.map(dft=>{
@@ -1039,9 +1084,6 @@ onProjectOwnerChanged(){
          d===1?'Yesterday':
          [2,3].includes(d)?d+' days ago':
          this.datepipe.transform(dft.CreatedOn,'dd-MM-yyyy')
-
-
-
 
 
 
@@ -1057,6 +1099,8 @@ onProjectOwnerChanged(){
 
       console.log(this.conditional_List,'--conditional prjs------------->')
       console.log(this.assigntask_json,'--assigntask_json--');
+
+
  });
   }
 
@@ -1093,7 +1137,8 @@ onProjectOwnerChanged(){
 
   onButtonClick(value:any,id:number){
     debugger
-    this.bind_Project = [value]
+    this.bind_Project = [value];
+    console.log('bind project:',this.bind_Project);
     // this.duration=this.bind_Project[0].Duration;
 
     const cDate=new Date();
@@ -1111,6 +1156,7 @@ onProjectOwnerChanged(){
     this.Prjtype=this.bind_Project[0].Project_Type;
     this.duration=this.bind_Project[0].Duration+1;
     this.Allocated_Hours=this.bind_Project[0].Allocated;
+    this.prjsubmission=this.bind_Project[0].Submission_Type;
     this.fileAttachment = this.bind_Project[0].FileName;
     console.log(this.fileAttachment,"fileAttachmentfileAttachmentfileAttachmentfileAttachmentfileAttachment")
     const portfolios_ = this.bind_Project[0].Portfolio_Id;
@@ -1250,6 +1296,11 @@ getActionsDetails(){
 
 
 
+
+
+
+
+
 showActionDetails(index: number | undefined) {
   this.currentActionView = index;
 }
@@ -1308,7 +1359,7 @@ ProjeditDescription:any
 
 
 initializeSelectedValue() {
-
+   debugger
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -1339,6 +1390,16 @@ initializeSelectedValue() {
 projectEdit(val) {
 
 
+debugger
+if (this.Allocated <= this.maxAllocation){
+  this.notProvided = false
+}
+else{
+  this.notProvided = true
+  return
+}
+
+
 
 
   this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
@@ -1355,6 +1416,11 @@ this.notProvided=true;
 return;
 }
 
+//  if(constv = parseInt(this.Allocated) <=  this.projectInfo.Duration +1){
+//   this.notProvided = false
+//  }else{
+//   this.notProvided = true
+//  }
 //  this.setprojeditAllocation()
 //  if(this.Allocated <= this.maxAllocation){
 // this.notProvided=false
@@ -1598,6 +1664,17 @@ addreschange() {
 // RACIS CODE end
 // send prj to project owner for approval start
 sendApproval(){
+debugger
+
+// if (this.actionCount.DeadLine==this.End_Date&&this.actionCount.count>3){
+//   Swal.fire({
+//     title:'invalid Date',
+//     text:'you have 3 action on that date',
+//     showCloseButton:true
+//    });
+//    return;
+// }
+
 
   const _prjstrtd= new Date(this.projectInfo.StartDate);
   const _prjendd= new Date(this.projectInfo.EndDate);
@@ -1990,7 +2067,7 @@ if(['003','008'].includes(this.Prjtype)){
 // DRAFT PROJECT CODE START.
 
 deleteDraft(index:number){
-
+debugger
     Swal.fire({
 
       showCancelButton:true,
@@ -2015,6 +2092,51 @@ deleteDraft(index:number){
          }
     });
 }
+
+
+// deletingDraftactions(){
+//   this.projectMoreDetailsService.NewDeleteDraftAction(this.PrjCode).subscribe((res)=>{
+//     console.log(res,'deleteding draft action adeldsfsdfsd')
+//    });
+// }
+
+Action_Code:any
+
+deletingDraftactions(index:number){
+debugger
+  Swal.fire({
+
+    showCancelButton:true,
+    showConfirmButton:true,
+    title:'Are you sure?',
+    text:`'${this.PrjActionsInfo[index].Project_Name}' will permanently deleted`,
+  }).then(choice=>{
+       if(choice.isConfirmed){
+        this.Action_Code=this.PrjActionsInfo[index].Project_Code;
+
+          this.projectMoreDetailsService.NewDeleteDraftAction(this.Action_Code).subscribe((res)=>{
+
+                   if(res['message']=='1'){
+                     this.notifyService.showSuccess(`'${this.PrjActionsInfo[index].Project_Name}' action is deleted`,"Deleted successfully");
+                    //  this.GetAssignedTaskDetails();
+                    this.openDraft(index)
+                   }
+                   else{
+                      this.notifyService.showError(`Failed to delete ${this.PrjActionsInfo[index].Project_Name}`,"Failed");
+                   }
+         });
+
+       }
+  });
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -2046,6 +2168,8 @@ $('.sbs--basic li:nth-child(3)').addClass('active');
 //  opens the step-3 view
 
 this.newProjectDetails(this.draft_json[index].Project_Code);
+// this.getActionCount(this.draft_json[index].Project_Code);
+
 // this.getActionsDetails();
 
 this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
@@ -2226,6 +2350,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementById("rightbar-overlay").style.display = "none";
 
       this.notProvided=false;   // back to initial state.
+      this.characterCount_Action=0;
     }
     Sourcefile:any
     bindActionDetailsIntoForm() {
@@ -2261,10 +2386,19 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
 
   alterAction(){
+debugger
 
 
+if (this.Allocated <= this.maxAllocation){
+  this.notProvided = false
+}
+else{
+  this.notProvided = true
+  return
+}
 
-const dateone= new Date(this.projectInfo.EndDate)
+
+const dateone=new Date(this.projectInfo.EndDate)
 const datetwo= new Date(this.End_Date)
 
 if(dateone < datetwo){
@@ -2425,7 +2559,7 @@ this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
             this.closeAction_details_edit();
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Updated successfully"+"Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Updated successfully" + "Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
             this.getActionsDetails();
             this.closeAction_details_edit();
           }
@@ -2665,6 +2799,181 @@ LoadDocument(url: string){
   var myWindow = window.open(url);
   myWindow.focus();
 }
+
+
+
+
+characterCount: number = 0;
+
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.PrjDes;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
+
+characterCount_Desc: number = 0;
+
+
+updateCharacterCount_Desc(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ProjeditDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Desc = textContent.length;
+}
+
+
+characterCount_Action: number = 0;
+
+updateCharacterCount_Action(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ProjectDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Action = textContent.length;
+}
+
+
+
+
+check_Enddate(){
+  debugger
+  this.End_Date = moment(this.Start_Date)<=moment(this.End_Date)?this.End_Date:null;
+}
+
+
+
+
+newDetails(pcode: string, source: string) {
+  debugger;
+
+  // Determine the name based on the source
+  let name: string;
+  if (source === 'Meeting') {
+    name = 'Meeting-Details';
+    const url = document.baseURI + name;
+    const myurl = `${url}/${pcode}`;
+    const myWindow = window.open(myurl, pcode);
+    myWindow.focus();
+  } else if (source === 'Project') {
+    name = 'Details';
+    const url = document.baseURI + name;
+    const myurl = `${url}/${pcode}`;
+    const myWindow = window.open(myurl, pcode);
+    myWindow.focus();
+  }
+
+
+}
+
+updateDuration(){
+  const startDate = new Date(this.Start_Date);
+  const endDate = new Date(this.End_Date);
+
+  // Check if both dates are valid
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    alert('Invalid date(s)');
+    return;
+  }
+
+  // Calculate the difference in milliseconds
+  const differenceInMs = endDate.getTime() - startDate.getTime();
+
+  // Convert milliseconds to days
+  const millisecondsInDay = 1000 * 60 * 60 * 24;
+  const differenceInDays = Math.floor(differenceInMs / millisecondsInDay);
+
+  // Set the duration in days
+  this.projectInfo.Duration = differenceInDays;
+
+  // Alert the result
+  // alert(`${differenceInDays} days`);
+}
+
+ActionupdateDuration(){
+  const startDate = new Date(this.Start_Date);
+  const endDate = new Date(this.End_Date);
+
+  // Check if both dates are valid
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    alert('Invalid date(s)');
+    return;
+  }
+
+  // Calculate the difference in milliseconds
+  const differenceInMs = endDate.getTime() - startDate.getTime();
+
+  // Convert milliseconds to days
+  const millisecondsInDay = 1000 * 60 * 60 * 24;
+  const differenceInDays = Math.floor(differenceInMs / millisecondsInDay);
+
+  // Set the duration in days
+  this.ActionDuration = differenceInDays;
+
+  // Alert the result
+  // alert(`${differenceInDays} days`);
+}
+
+start_dt:any
+end_dt:any
+
+alertMaxAllocation() {
+  if (this.Start_Date == null || this.End_Date == null) {
+    this._message = "Start Date/End date missing!!"
+  }
+  else {
+    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+    this.start_dt=new Date(this.Start_Date);
+    this.end_dt=new Date(this.End_Date);
+
+    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+
+    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if(Difference_In_Days==0){
+      Difference_In_Days=-1;
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+    }
+    else{
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+    }
+    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+  }
+}
+
+maxAllocations: number;
+alertMaxAllocations() {
+  debugger
+  if (this.Start_Date == null || this.End_Date == null) {
+    this._message = "Start Date/End date missing!!"
+  }
+  else {
+    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+    this.start_dt=new Date(this.Start_Date);
+    this.end_dt=new Date(this.End_Date);
+
+    console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
+
+    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if(Difference_In_Days==0){
+      Difference_In_Days=-1;
+      this.maxAllocations = (-Difference_In_Days) * 10 / 1;
+    }
+    else{
+      this.maxAllocations = (-Difference_In_Days) * 10 / 1 +10;
+    }
+    console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
+  }
+}
+
 
 }
 

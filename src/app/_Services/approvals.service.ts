@@ -129,13 +129,13 @@ export class ApprovalsService {
 
 
   approveLeaveRequest(obj:ApprovalDTO){
-    this.obj_approvalDTO.Project_Code=obj.Project_Code;
+    this.obj_approvalDTO.Emp_no=obj.Emp_no;
+    this.obj_approvalDTO.Leave_Code=obj.Leave_Code;
     this.obj_approvalDTO.Type=obj.Type;
     this.obj_approvalDTO.SNo=obj.SNo;
+    this.obj_approvalDTO.FromDate=obj.FromDate;
+    this.obj_approvalDTO.ToDate=obj.ToDate;
     this.obj_approvalDTO.Remarks=obj.Remarks;
-    this.obj_approvalDTO.From_Date=obj.From_Date;
-    this.obj_approvalDTO.End_Date=obj.End_Date;
-    this.obj_approvalDTO.sendFrom=obj.sendFrom;
     return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateLeaveRequest", this.obj_approvalDTO)
   }
 
@@ -207,9 +207,15 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Request_type = obj.Request_type;
     this.obj_approvalDTO.Remarks = obj.Remarks;
-
+    
+    this.obj_approvalDTO.taskname=obj.taskname;
+    this.obj_approvalDTO.projecttype=obj.projecttype;
+    this.obj_approvalDTO.assignto=obj.assignto;
+    this.obj_approvalDTO.portfolioId=obj.portfolioId;
+    this.obj_approvalDTO.startdate=obj.startdate;
+    this.obj_approvalDTO.enddate=obj.enddate;
+    this.obj_approvalDTO.SubmissionType=obj.SubmissionType;
     return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertConditionalAcceptApprovalService", this.obj_approvalDTO);
-
   }
 
   InsertRejectApprovalService(obj: ApprovalDTO) {
@@ -245,6 +251,44 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
     this.obj_approvalDTO.isApproval = obj.isApproval;
 
     return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateNewProjectDetails", this.obj_approvalDTO);
-
   }
+
+  NewGetMeetingApprovals(obj: ApprovalDTO) {
+    this.obj_approvalDTO.Emp_no = obj.Emp_no;
+    this.obj_approvalDTO.Schedule_Id=obj.Schedule_Id;
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewGetMeetingApprovals", this.obj_approvalDTO);
+  }
+
+  NewUpdateMeetingRequestAccess(obj: ApprovalDTO) {
+    this.obj_approvalDTO.SNo = obj.SNo;
+    this.obj_approvalDTO.Schedule_Id=obj.Schedule_Id;
+    this.obj_approvalDTO.Type = obj.Type;
+    return this.http.post(this.rootUrl + "ApprovalAPI/NewUpdateMeetingRequestAccess", this.obj_approvalDTO);
+  }
+
+
+  NewGetLeaveComments(obj:ApprovalDTO){
+     this.obj_approvalDTO.Emp_no=obj.Emp_no;
+     this.obj_approvalDTO.Request_type=obj.Request_type;
+     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetLeaveComments",this.obj_approvalDTO);
+  }
+
+ 
+  NewGetMeetingActivity(obj: ApprovalDTO){
+    this.obj_approvalDTO.Schedule_Id=obj.Schedule_Id;
+    return this.http.post(this.rootUrl+"ApprovalAPI/NewGetMeetingActivity",this.obj_approvalDTO);
+  }
+  
+
+  NewGetEmployeeLeaveResponse(obj:ApprovalDTO){
+
+     this.obj_approvalDTO.Emp_no=obj.Emp_no;
+     this.obj_approvalDTO.Leave_Code=obj.Leave_Code;
+     this.obj_approvalDTO.Request_type=obj.Request_type;
+     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveResponse",this.obj_approvalDTO);
+  }
+
+
+
+
 }

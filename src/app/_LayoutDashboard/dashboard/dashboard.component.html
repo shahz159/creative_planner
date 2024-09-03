@@ -1,3 +1,6 @@
+
+<ng-container *ngIf="userFound!==undefined;else pleasewait">
+  <ng-container *ngIf="(userFound===true)">
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor pb-0 side_view" id="kt_content">
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
@@ -304,6 +307,13 @@
                     <div class="d-flex-cen">
                         <h5 class="kt-portlet__head-title mr-3">
                             <i class="far fa-calendar-alt"></i> My Calendar
+                            <span *ngIf="user_Type==0">- All meetings </span>
+                            <span *ngIf="user_Type==1">- My meetings </span>
+                            <span *ngIf="user_Type==2">- Confirm meetings </span>
+                            <span *ngIf="user_Type==3">- Pending meetings</span>
+                            <span *ngIf="user_Type==4">- Rejected meetings </span>
+                            <span *ngIf="user_Type==5">- Done Attended </span>
+                            <span *ngIf="user_Type==6">- Done Not Attended </span>
                         </h5>
                     </div>
 
@@ -336,18 +346,71 @@
                             </button>
                             <div class="dropdown-menu drop-cus">
                                 <a class="dropdown-item" (click)="Task_type(1)">Task</a>
-                                <a class="dropdown-item" (click)="Task_type(2)">Event</a>
+                                <a class="dropdown-item" (click)="Task_type(2);updateCharacterCount() ">Event</a>
                             </div>
                         </div>
 
                         <!-- <button class="btn btn-sm btn-info mb-2" (click)="openschd()">schedule</button> -->
-                        <div class="dropdown" style="margin-top: 11px;">
-                            <a class="h6 p-3 pb-4 dropdown-toggle" data-toggle="dropdown" role="button"
-                                aria-haspopup="true" aria-expanded="false">{{Project_Mode}}</a>
+                        <div class="dropdown filter-cal-dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span>
+                                    <span *ngIf="user_Type==0|| user_Type==1||user_Type==2||user_Type==3||user_Type==4||user_Type==5||user_Type==6" id="previous-dot" class="previous-dot active"></span>
+                                    <svg width="26px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 6H19M21 12H16M21 18H16M7 20V13.5612C7 13.3532 7 13.2492 6.97958 13.1497C6.96147 13.0615 6.93151 12.9761 6.89052 12.8958C6.84431 12.8054 6.77934 12.7242 6.64939 12.5617L3.35061 8.43826C3.22066 8.27583 3.15569 8.19461 3.10948 8.10417C3.06849 8.02393 3.03853 7.93852 3.02042 7.85026C3 7.75078 3 7.64677 3 7.43875V5.6C3 5.03995 3 4.75992 3.10899 4.54601C3.20487 4.35785 3.35785 4.20487 3.54601 4.10899C3.75992 4 4.03995 4 4.6 4H13.4C13.9601 4 14.2401 4 14.454 4.10899C14.6422 4.20487 14.7951 4.35785 14.891 4.54601C15 4.75992 15 5.03995 15 5.6V7.43875C15 7.64677 15 7.75078 14.9796 7.85026C14.9615 7.93852 14.9315 8.02393 14.8905 8.10417C14.8443 8.19461 14.7793 8.27583 14.6494 8.43826L11.3506 12.5617C11.2207 12.7242 11.1557 12.8054 11.1095 12.8958C11.0685 12.9761 11.0385 13.0615 11.0204 13.1497C11 13.2492 11 13.3532 11 13.5612V17L7 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </span>
+                            <!-- <span>
+                                {{Project_Mode}}
+                            </span> -->
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" (click)="userProjects()">My</a>
-                                <a class="dropdown-item" (click)="teamProjects()">My Team</a>
-                                <a class="dropdown-item" (click)="allProjects()">All</a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==0}"  (click)="sortMeetingCalender(0)"><span class="s-dot allm"></span><span class="di-t">All meetings </span>
+                                    <ng-container *ngIf="user_Type==0">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                       </ng-container>
+                                </a>
+                                
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==1}" (click)="sortMeetingCalender(1)"><span class="s-dot mym"></span><span class="di-t">My meetings </span>
+                                    <ng-container *ngIf="user_Type==1">
+                                    <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                   </ng-container>
+                                </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==2}"  (click)="sortMeetingCalender(2)"><span class="s-dot conm"></span><span class="di-t">Confirm meetings </span>
+                                    <ng-container *ngIf="user_Type==2">
+                                    <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                </ng-container>
+                                </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==3}" (click)="sortMeetingCalender(3)"><span class="s-dot penm"></span><span class="di-t">Pending meetings </span>
+                                    <ng-container *ngIf="user_Type==3">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                 </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==4}"  (click)="sortMeetingCalender(4)">
+                                    <span class="s-dot rejm"></span> <span class="di-t">Rejected meetings </span>
+                                    <ng-container *ngIf="user_Type==4">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                </a>
+                                
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==5}" (click)="sortMeetingCalender(5)"> <span class="s-dot comnotm"></span>
+                                     <span class="di-t"> <div style="line-height: 12px;">
+                                        <div>Done</div>
+                                        <small style="color: #a2a2a2">Attended</small>
+                                    </div>
+                                </span>                    
+                                    <ng-container *ngIf="user_Type==5">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                </a>
+                                <a class="dropdown-item" [ngClass]="{'active':user_Type==6}"  (click)="sortMeetingCalender(6)"> <span class="s-dot comnotm"></span>
+                                    <span class="di-t"> 
+                                        <div style="line-height: 12px;">
+                                        <div>Done</div>
+                                        <small style="color: #a2a2a2">Not Attended</small>
+                                    </div></span>  
+                                    <ng-container *ngIf="user_Type==6">
+                                        <svg _ngcontent-anp-c397="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2"><path _ngcontent-anp-c397="" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path></svg>
+                                    </ng-container>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -450,6 +513,11 @@
                                 <button type="button" (click)="penshow1()" class="draft-btn">draft</button>
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
+
+                            <div class="fc pend-bg" *ngIf="totalCountOfList" >
+                                <button type="button" (click)="requestAccess()" class="draft-btn">Request access</button>
+                                <span class="kt-dashboard-cnt">{{totalCountOfList}}</span>
+                            </div>
                             <!-- <div class="fc pend-bg">
                                 <button type="button" (click)="meetingDetails()" class="draft-btn">new meeting</button>
                             </div> -->
@@ -468,7 +536,6 @@
                 </div>
                 <!--end::Portlet-->
             </div>
-
 
 
             <div id="pendlist" class="pend-section col-lg-3">
@@ -590,6 +657,67 @@
                     </div>
                 </div>
             </div>
+
+
+            <div id="requestlist" class="pend-section col-lg-3">
+                <div class="d-flex hedr-title">
+                    <div class="">
+                        <h5 class="kt-portlet__head-title mr-3"><i class="far fa-list-alt"></i> Request List</h5>
+                    </div>
+                    <div class="">
+                        <span class="hide-btn pend-btn line-1" (click)="penhide3()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
+                                <path
+                                    d="M12.1714 10.9998L7.51451 6.34292L8.92872 4.92871L15.9998 11.9998L8.92872 19.0708L7.51451 17.6566L12.1713 12.9998L2.99953 12.9999L2.99951 10.9999L12.1714 10.9998ZM17.9996 18.9997L17.9996 4.99972H19.9996L19.9996 18.9997H17.9996Z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="result-card kt-portlet__body_scroll">
+                    <div class="list-1">
+
+                        <div class="position-relative m-1 w-95">
+                            <div class="prjact-search-field">
+                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
+                                <input [(ngModel)]="SearchOfRequestItem" type="search" autocomplete="off" name="search" placeholder="Search..." ng-reflect-name="search" class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched border-0">
+                            </div>
+                        </div>
+                        <ng-container *ngIf="multiapproval_json">
+                        <div class="request-access-item" *ngFor="let item of multiapproval_json | filter : SearchOfRequestItem">
+                                <a class="request-access-item-event"tabindex="0" >
+                                    <div class="request-access-item-d-t-c">
+                                        <div class="fc-daygrid-event-dot"></div>
+                                        <div class="request-access-item-event-t-c">
+                                            <div class="title">{{item.Task_Name}}</div>
+                                            <div class="company">{{item.Com_Name}}</div>
+                                            <div class="request-access-item-event-u-d">
+                                                <span class="username">{{item.TM_DisplayName}}  </span>
+                                                <span class="date">{{item.Req_DL|date :'dd-MM-YYYY'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>                                                                  
+                                </a>
+                                <div class="request-access-item-h-action" >
+                                    <a class="icon blue" (click)="UpdateMeetingRequestAccess(item.Sno,item.Schedule_ID,'Accept')"><i class="fas fa-check"></i></a>
+                                    <a class="icon red" (click)="UpdateMeetingRequestAccess(item.Sno,item.Schedule_ID,'Reject')"><i class="fas fa-times"></i></a>
+                                </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="multiapproval_json">
+                        <ng-container *ngIf="(multiapproval_json | filter : SearchOfRequestItem).length==0">
+                         <div _ngcontent-ecl-c397="" class="d-flex flex-column align-items-center justify-content-center" style="width: 50%; height: 50%; margin-left: 6em;">
+                            <svg _ngcontent-ecl-c397="" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-ecl-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-ecl-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-ecl-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-ecl-c397="" fill-rule="evenodd" clip-rule="evenodd" d="M5.5 11.493C5.50364 8.39226 7.69698 5.72579 10.7388 5.12416C13.7807 4.52253 16.8239 6.15327 18.0077 9.0192C19.1915 11.8851 18.186 15.1881 15.6063 16.9085C13.0265 18.6288 9.59077 18.2874 7.4 16.093C6.18148 14.8725 5.49799 13.2177 5.5 11.493Z" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ecl-c397="" d="M16.062 16.568L19.5 19.993" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ecl-c397="" d="M10.5303 8.96271C10.2374 8.66982 9.76256 8.66982 9.46967 8.96271C9.17678 9.25561 9.17678 9.73048 9.46967 10.0234L10.5303 8.96271ZM11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627L11.4697 12.0234ZM12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234L12.5303 10.9627ZM13.4697 14.0234C13.7626 14.3163 14.2374 14.3163 14.5303 14.0234C14.8232 13.7305 14.8232 13.2556 14.5303 12.9627L13.4697 14.0234ZM12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627L12.5303 12.0234ZM9.46967 12.9627C9.17678 13.2556 9.17678 13.7305 9.46967 14.0234C9.76256 14.3163 10.2374 14.3163 10.5303 14.0234L9.46967 12.9627ZM11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234L11.4697 10.9627ZM14.5303 10.0234C14.8232 9.73048 14.8232 9.25561 14.5303 8.96271C14.2374 8.66982 13.7626 8.66982 13.4697 8.96271L14.5303 10.0234ZM9.46967 10.0234L11.4697 12.0234L12.5303 10.9627L10.5303 8.96271L9.46967 10.0234ZM11.4697 12.0234L13.4697 14.0234L14.5303 12.9627L12.5303 10.9627L11.4697 12.0234ZM11.4697 10.9627L9.46967 12.9627L10.5303 14.0234L12.5303 12.0234L11.4697 10.9627ZM12.5303 12.0234L14.5303 10.0234L13.4697 8.96271L11.4697 10.9627L12.5303 12.0234Z" fill="#b2bcc4"></path></g>
+                            </svg>
+                            <a _ngcontent-ecl-c397="" class="kt-blank-msg text-gray-400">Search Result Not Found<br _ngcontent-ecl-c397="">
+                            </a>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                    </div>
+                </div>
+            </div>
+
             <div id="Delaylist" class="pend-section col-lg-3">
                 <div class="d-flex hedr-title">
                     <div class="">
@@ -625,17 +753,13 @@
                                         {{action.Delaydays}} days delay<br>
                                         <u>{{action.Master_Name}}</u>
                                     </div>
-
                                 </a>
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
             <!-- Calendar Ends -->
             <!-- Activities -->
             <div class="col-lg-7" style="display: none;">
@@ -1031,11 +1155,11 @@
                     </div> -->
                     <div class="met-done curser-pointer"
                     *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="newMeetingDetails()">
-                    <span></span><small>Completed</small>
+                    <span></span><small>Done</small>
                     </div>
 
 
-                    <div class="icons-right  curser-pointer" title="Start new meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && (delayMeeting==true && upcomingMeeting==false)" (click)="newMeetingDetails()">
+                    <div class="icons-right curser-pointer " [ngClass]="{'icon-active': AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'" (click)="newMeetingDetails()">
                             <span class="kt-meeting-status-icon">
                                 <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                     <g id="meeting">
@@ -1043,14 +1167,25 @@
                                     <path style="stroke:none;fill-rule:nonzero;fill: #5f6368;fill-opacity:1;" d="M 4.46875 6.625 C 4.507812 6.625 4.550781 6.625 4.59375 6.625 C 4.683594 6.621094 4.773438 6.621094 4.859375 6.625 C 4.996094 6.625 5.128906 6.621094 5.261719 6.621094 C 5.347656 6.621094 5.4375 6.621094 5.523438 6.621094 C 5.582031 6.621094 5.582031 6.621094 5.640625 6.621094 C 5.933594 6.621094 6.21875 6.664062 6.441406 6.867188 C 6.652344 7.09375 6.699219 7.3125 6.691406 7.617188 C 6.667969 7.851562 6.578125 7.992188 6.414062 8.15625 C 6.125 8.351562 5.875 8.378906 5.53125 8.375 C 5.492188 8.375 5.449219 8.375 5.40625 8.375 C 5.316406 8.378906 5.226562 8.378906 5.140625 8.375 C 5.003906 8.375 4.871094 8.378906 4.738281 8.378906 C 4.652344 8.378906 4.5625 8.378906 4.476562 8.378906 C 4.4375 8.378906 4.398438 8.378906 4.359375 8.378906 C 4.066406 8.378906 3.78125 8.335938 3.558594 8.132812 C 3.347656 7.90625 3.300781 7.6875 3.308594 7.382812 C 3.332031 7.148438 3.421875 7.007812 3.585938 6.84375 C 3.875 6.648438 4.125 6.621094 4.46875 6.625 Z M 4.46875 6.625 "></path>
                                     </g>
                                     </svg> -->
-                                    <img width="22px" height="22px" src="./assets/images/start.png">
+                                    <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Media / Play_Circle"> <g id="Vector"> <path d="M3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10 15V9L15 12L10 15Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g> </g></svg>
+                                    <!-- <img width="22px" height="22px" src="./assets/images/start.png"> -->
+                                    <ng-container *ngIf="AdminMeeting_Status==1">
+                                        <span  *ngIf="Isadmin==true" class="meet-blink">Live</span>
+                                        <span *ngIf="Isadmin==false" class="meet-blink">Join</span>
+                                       </ng-container>
                             </span>
+                            
                     </div>
+                   
+                            
 
-                    <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'&& (delayMeeting==false || upcomingMeeting==true)" (click)="newMeetingDetails()">
+
+
+                    <!-- <div class="icons-right  curser-pointer" title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'&& (delayMeeting==false || upcomingMeeting==true)" (click)="newMeetingDetails()">
                         <span class="kt-meeting-status-icon">
-                             <!-- <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" width="1em" height="1em" viewBox="0 0 24 24" class="iconify iconify--mdi"><path _ngcontent-frr-c390="" fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg> -->
-                             <svg xmlns="http://www.w3.org/2000/svg" width="128" height="132" viewBox="0 0 128 132" fill="none" style="
+                             69!-- <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="20" width="1em" height="1em" viewBox="0 0 24 24" class="iconify iconify--mdi"><path _ngcontent-frr-c390="" fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"></path></svg> --69
+                             <img width="22px" height="22px" src="./assets/images/start.png">
+                             69!-- <svg xmlns="http://www.w3.org/2000/svg" width="128" height="132" viewBox="0 0 128 132" fill="none" style="
                              width: 22px;
                              height: 22px;
                          ">
@@ -1059,9 +1194,9 @@
                          <path d="M47 45C53.0005 47.4002 58.5976 50.4043 64.2852 53.4497C66.2547 54.5025 68.2287 55.5463 70.2031 56.5898C71.4534 57.2573 72.7034 57.9252 73.9531 58.5938C75.0891 59.199 76.2251 59.8042 77.3955 60.4277C80 62 80 62 81 64C74.73 64 68.46 64 62 64C62.2063 65.6912 62.4125 67.3825 62.625 69.125C62.6445 72.1602 62.6445 72.1602 62 75C57.7955 79.0924 52.3693 80.8523 47 83C47 70.46 47 57.92 47 45Z" fill="#F6F6F6"></path>
                          <path fill-rule="evenodd" clip-rule="evenodd" d="M83 96.4744C83 93.4312 84.2089 90.5126 86.3608 88.3608C88.5126 86.2089 91.4312 85 94.4744 85C97.5176 85 100.436 86.2089 102.588 88.3608C104.74 90.5126 105.949 93.4312 105.949 96.4744C105.949 99.5175 104.74 102.436 102.588 104.588C100.436 106.74 97.5176 107.949 94.4744 107.949C91.4312 107.949 88.5126 106.74 86.3608 104.588C84.2089 102.436 83 99.5175 83 96.4744ZM94.4744 89.5897C92.6485 89.5897 90.8973 90.3151 89.6062 91.6062C88.3151 92.8973 87.5898 94.6484 87.5898 96.4744C87.5898 98.3003 88.3151 100.051 89.6062 101.342C90.8973 102.634 92.6485 103.359 94.4744 103.359C96.3003 103.359 98.0514 102.634 99.3425 101.342C100.634 100.051 101.359 98.3003 101.359 96.4744C101.359 94.6484 100.634 92.8973 99.3425 91.6062C98.0514 90.3151 96.3003 89.5897 94.4744 89.5897Z" fill="#5F6368"></path>
                          <path fill-rule="evenodd" clip-rule="evenodd" d="M70.343 91.5108C69.061 93.359 68.5897 94.8063 68.5897 95.6538C68.5897 96.5014 69.061 97.9487 70.343 99.7969C71.5853 101.581 73.4273 103.518 75.7589 105.308C80.4313 108.894 86.8355 111.718 93.8333 111.718C100.831 111.718 107.235 108.894 111.908 105.308C114.239 103.518 116.081 101.581 117.324 99.7969C118.606 97.9487 119.077 96.5014 119.077 95.6538C119.077 94.8063 118.606 93.359 117.324 91.5108C116.081 89.727 114.239 87.7901 111.908 86.0001C107.235 82.414 100.831 79.5897 93.8333 79.5897C86.8355 79.5897 80.4313 82.414 75.7589 86.0001C73.4273 87.7901 71.5853 89.727 70.343 91.5108ZM72.9622 82.3589C78.2588 78.2954 85.6208 75 93.8333 75C102.046 75 109.408 78.2954 114.701 82.3589C117.354 84.3937 119.545 86.6641 121.093 88.8947C122.599 91.0641 123.667 93.4416 123.667 95.6538C123.667 97.8661 122.596 100.244 121.093 102.413C119.545 104.644 117.354 106.911 114.704 108.949C109.411 113.012 102.046 116.308 93.8333 116.308C85.6208 116.308 78.2588 113.012 72.9653 108.949C70.3124 106.914 68.1216 104.644 66.5733 102.413C65.0709 100.244 64 97.8661 64 95.6538C64 93.4416 65.0709 91.0641 66.5733 88.8947C68.1216 86.6641 70.3124 84.3967 72.9622 82.3589Z" fill="#5F6368"></path>
-                         </svg>
+                         </svg> --69
                         </span>
-                </div>
+                </div> -->
 
 
                     <!-- <div class="met-done curser-pointer"
@@ -1156,7 +1291,7 @@
                             </svg> </span>
                     </div>
                     <div class="icons-right" id="hiddenedit" style="display:block;" data-toggle="tooltip" title="Edit">
-                        <span class="tool-span" (click)="ReshudingTaskandEvent()">
+                        <span class="tool-span" (click)="ReshudingTaskandEvent();updateCharacterCount()">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
                                     d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L3 16.82V21h4.18L20.41 7.77c.79-.78.79-2.05 0-2.83zm-14 14.12L5 19v-1.36l9.82-9.82 1.41 1.41-9.82 9.83z">
@@ -1183,9 +1318,6 @@
                         </span>
                     </div>
 
-
-
-
                     <div class="icons-right" data-toggle="tooltip" title="Close">
                         <span class="tool-span" (click)="closeevearea();">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
@@ -1203,6 +1335,29 @@
                    <span class="visually-hidden"></span>
                    </div>
                 </div>
+                <!-- <ng-container *ngIf="loading">
+                  <div class="smart-glass">
+                    <h1></h1>
+                    <div class="logo">
+                      <div class="circle">
+                        <div class="circle">
+                            <div class="circle">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hold-loader">
+                      <div class="loader-img">
+                        <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+                      </div>
+                     </div>
+                    </div>
+                  </div>
+                </ng-container> -->
+
+
+
+
+
                 <div class="" *ngFor="let item of EventScheduledjson">
                     <div id="NameDate" class="main-title">
                         <div class="boxcl-div">
@@ -1212,19 +1367,49 @@
                             <div class="box-cl" *ngIf="item.Schedule_Type!='Event' && Status1 !='Rejected' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
                             </div> -->
-                            <div class="box-cl"
+                            <!--old <div class="box-cl"
                                 *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==false"
                                 style="background-color: #3788d8;">
                             </div>
                             <div class="box-cl"
                                 *ngIf="Status1 !='Rejected' && Status1 !='Pending' && Status1 !='May be' && Meeting_status==true"
                                 style="background-color: #1dc9b7;">
+                            </div> -->
+                            <!-- <div class="box-cl"
+                            *ngIf="Meeting_status==true && RecurrenceValue=='Weekly'"
+                            style="background-color: #1dc9b7;">
+                            </div> -->
+
+                          
+                       <!-- 
+                         <ng-container  *ngIf="(!['Rejected','Pending','May be'].includes(Status1)); else colorstatus">
+                            <div class="box-cl" *ngIf="Meeting_status==false" style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 =='Pending' || Status1 =='May be'"
-                                style="border:4px solid #3788d8; ">
+                            <div class="box-cl" *ngIf="Meeting_status==true" style="background-color: #1dc9b7;">
                             </div>
+                         </ng-container>
+                         <ng-template #colorstatus>
+                          
+                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #3788d8;">
+                            </div>
+
+                           <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
+                           </div>
+
+                         </ng-template> -->
+                         <div class="box-cl" *ngIf="Meeting_status==true; else colordot" style="background-color: #1dc9b7;">
+                         </div>
+                         <ng-template #colordot>
                             <div class="box-cl" *ngIf="Status1 =='Rejected'" style="background-color: #f10505;">
                             </div>
+                            <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #9B30FF;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Isadmin==true" style="background-color: #3788d8;">
+                            </div>
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Isadmin==false" style="background-color: #9B30FF;">
+                            </div>
+                         </ng-template>
+
 
                         </div>
                         <div class="title-right" id="">
@@ -1233,14 +1418,24 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
+                                        {{item.Recurrence}}
+                                    </span>
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1 mr-2">
+                                        {{item.Schedule_Type}}
+                                    </span>
+                                    <span
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false"
+                                        style="height: 18px;"
+                                        class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
                                     <span *ngIf="Meeting_status==true" style="height: 18px;"
@@ -1263,7 +1458,7 @@
                                     </span>
                                 </div>
                                 <div class="d-flex">
-                                    <div class="title-day">{{item.Schedule_date| date:'EEEE, MMMM d'}}
+                                    <div class="title-day">{{item.Schedule_date| date:'d EEE, MMMM YYYY'}}
                                         <span>,</span>
                                         <span>{{item.NewSt_Time }}
 
@@ -1336,7 +1531,7 @@
                                 </div>
                             </div>
                         </div>
-             </div>
+                    </div>
 
 
 
@@ -1599,7 +1794,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">DMS</div>
+                                <div class="main-s pro-nm">S-Mail</div>
                             </div>
                         </div>
                     </div>
@@ -2007,7 +2202,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">DMS</div>
+                                <div class="main-s pro-nm">S-Mail</div>
                             </div>
                         </div>
                     </div>
@@ -2116,7 +2311,7 @@
                                 data-target="#responsemodal" [ngClass]="{'acceptmeeting':statusofMeeting=='Accepted'}">Yes</button>
                             <button *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"
                                 class="btn btn-sm btn-light-primary btn-pill footbtns" [ngClass]="{'acceptmeeting':statusofMeeting=='Accepted'}"
-                                (click)="Action_event(1);Event_acceptandReject()">Yes  
+                                (click)="Action_event(1);Event_acceptandReject()">Yes
                             </button>
                             <button *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"
                                 class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="modal"
@@ -2148,15 +2343,17 @@
                         </div>
                         <div class="mt-3 collapse" id="propse">
                             <div class="foot-calendar">
+                                <span class="d-flex">
+                                <mat-datepicker-toggle  matSuffix [for]="basicDatepicker">
+                                </mat-datepicker-toggle>
                                 <input [matDatepicker]="basicDatepicker" (click)="basicDatepicker.open()"
                                     (dateChange)="proposecahngedate($event)" class="form-control"
-                                    [min]="disablePreviousDate" [(ngModel)]="Proposedate">
-                                <mat-datepicker-toggle matSuffix [for]="basicDatepicker">
+                                    [min]="disablePreviousDate" [(ngModel)]="Proposedate"/>
 
-                                </mat-datepicker-toggle>
+                                </span>
+                            <span>
                                 <mat-datepicker #basicDatepicker></mat-datepicker>
-
-
+                            </span>
                                 <!-- <div class="form-group flex-1" id="div_endDate">
                                     <label>End Date :<span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -2275,7 +2472,7 @@
 
                             <label class="text-muted">Date</label>
                             <div class="form-group dt">
-                                <div class="schedule-dt" (click)="date_menu('date-menu-1');sortbyCurrent_Time()">
+                                <div class="schedule-dt" (click)="datemen('date-menu-1');sortbyCurrent_Time()">
                                     <div class="dt-tm-icon">
                                         <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 612 612" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M612,463.781c0-70.342-49.018-129.199-114.75-144.379c-10.763-2.482-21.951-3.84-33.469-3.84 c-3.218,0-6.397,0.139-9.562,0.34c-71.829,4.58-129.725,60.291-137.69,131.145c-0.617,5.494-0.966,11.073-0.966,16.734 c0,10.662,1.152,21.052,3.289,31.078C333.139,561.792,392.584,612,463.781,612C545.641,612,612,545.641,612,463.781z M463.781,561.797c-54.133,0-98.016-43.883-98.016-98.016s43.883-98.016,98.016-98.016s98.016,43.883,98.016,98.016 S517.914,561.797,463.781,561.797z"></path> <polygon points="482.906,396.844 449.438,396.844 449.438,449.438 396.844,449.438 396.844,482.906 482.906,482.906 482.906,449.438 482.906,449.438 "></polygon> <path d="M109.969,0c-9.228,0-16.734,7.507-16.734,16.734v38.25v40.641c0,9.228,7.506,16.734,16.734,16.734h14.344 c9.228,0,16.734-7.507,16.734-16.734V54.984v-38.25C141.047,7.507,133.541,0,124.312,0H109.969z"></path> <path d="M372.938,0c-9.228,0-16.734,7.507-16.734,16.734v38.25v40.641c0,9.228,7.507,16.734,16.734,16.734h14.344 c9.228,0,16.734-7.507,16.734-16.734V54.984v-38.25C404.016,7.507,396.509,0,387.281,0H372.938z"></path> <path d="M38.25,494.859h236.672c-2.333-11.6-3.572-23.586-3.572-35.859c0-4.021,0.177-7.999,0.435-11.953H71.719 c-15.845,0-28.688-12.843-28.688-28.688v-229.5h411.188v88.707c3.165-0.163,6.354-0.253,9.562-0.253 c11.437,0,22.61,1.109,33.469,3.141V93.234c0-21.124-17.126-38.25-38.25-38.25h-31.078v40.641c0,22.41-18.23,40.641-40.641,40.641 h-14.344c-22.41,0-40.641-18.231-40.641-40.641V54.984H164.953v40.641c0,22.41-18.231,40.641-40.641,40.641h-14.344 c-22.41,0-40.641-18.231-40.641-40.641V54.984H38.25C17.126,54.984,0,72.111,0,93.234v363.375 C0,477.733,17.126,494.859,38.25,494.859z"></path> <circle cx="134.774" cy="260.578" r="37.954"></circle> <circle cx="248.625" cy="260.578" r="37.954"></circle> <circle cx="362.477" cy="260.578" r="37.954"></circle> <circle cx="248.625" cy="375.328" r="37.953"></circle> <circle cx="134.774" cy="375.328" r="37.953"></circle> </g> </g> </g></svg>
                                     </div>
@@ -2290,7 +2487,9 @@
                                 </div>
                                 <div class="date-menu" id="date-menu-1"   style=" min-width: 33rem; top: -340px; left: -8px;">
                                     <div class="date-menu-item">
-                                        <div class="date-menu-close" (click)="date_menu_close('date-menu-1')">Close</div>
+                                        <div class="date-menu-action">
+                                            <div class="btn btn-close-secondary" (click)="date_menuclo('date-menu-1')">Close</div>
+                                        </div>
                                         <div class="date-menu-calender">
                                             <mat-card class="demo-inline-calendar-card">
                                                 <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
@@ -2853,7 +3052,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="editTask==false && copyTask==false && eventRepeat==false">
             <h4 class="m-0">Schedule {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -2865,7 +3064,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="editTask==true &&  copyTask==false && eventRepeat==false">
             <h4 class="m-0">Edit {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -2877,7 +3076,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="copyTask==true && eventRepeat==false">
             <h4 class="m-0">Copy {{ScheduleType}}</h4>
-            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+            <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
                     <path
@@ -2889,7 +3088,7 @@
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
         *ngIf="editTask==false && copyTask==false && eventRepeat==true">
         <h4 class="m-0">Repeat {{ScheduleType}}</h4>
-        <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
+        <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                 <path fill="none" d="M0 0h24v24H0z"></path>
                 <path
@@ -2939,8 +3138,12 @@
                     </div>
                     <div class="se-col-11">
                         <div class="form-group">
-                            <angular-editor [(ngModel)]="Description_Type" [config]="config"></angular-editor>
-                            <span *ngIf="Description_Type&&Description_Type.trim().length>500"  style="color:red">description should not exceed 500 characters.</span>
+                            <angular-editor [(ngModel)]="Description_Type"  (input)="updateCharacterCount()"
+                            (paste)="updateCharacterCount()" [config]="config"></angular-editor>
+                            <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
+                            <span *ngIf="characterCount>=500"  style="color:red">    description should not exceed 500 characters.</span>
+
+
                         </div>
                     </div>
                 </div>
@@ -2955,7 +3158,7 @@
                             <div class="row">
                                 <div class="col-md-6 schedule-br">
                                     <div class="form-group dt">
-                                        <div class="curser-pointer" (click)="date_menu('date-menu')">
+                                        <div class="curser-pointer" (click)="date_menu_modal()">
                                             <div class="schedule-dt-tm">
                                                 <div>
                                                     <span>{{_StartDate|date:'EEEE, MMMM d, y'}}</span>
@@ -2981,40 +3184,7 @@
                                         </ng-container>
 
                                         </div>
-                                        <div class="date-menu" id="date-menu">
-                                            <div class="date-menu-item">
-                                                <div class="date-menu-close" (click)="date_menu_close('date-menu')">Close</div>
-                                                <div class="date-menu-calender">
-                                                    <mat-card class="demo-inline-calendar-card">
-                                                        <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
-                                                      </mat-card>
-                                                </div>
-                                                <div class="date-menu-time">
-                                                    <div class="mb-2">
-                                                        <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
-                                                        <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
-                                                            placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
-                                                            <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
-                                                                {{item}}</ng-option>
-                                                        </ng-select>
-                                                        <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
-                                                    </div>
-                                                    <div class="">
-                                                        <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
-                                                        <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
-                                                            [(ngModel)]="Endtms">
-                                                            <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                                                {{item1}}
-                                                                ({{
-                                                                    Startts|timeDiff:item1
-                                                                }})
-                                                            </ng-option>
-                                                        </ng-select>
-                                                        <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
                                     </div>
 
                                 </div>
@@ -3052,7 +3222,87 @@
                                                         </ng-container>
                                                     </ng-container>
                                             </div>
-
+                                            <!-- <div class="drop-overlay" id="drop-overlay"></div>
+                                            <div class="customrecurrence" id="customrecurrence">
+                                                <div class="customrecurrence-heading">
+                                                    Recurrence
+                                                </div>
+                                                <div class="customrecurrence-item">
+                                                    <div class="form-group flex-1">
+                                                        <label>Repeat</label>
+                                                        <mat-select name="Select Type" placeholder="Do not repeat"
+                                                            [(value)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
+                                                            <mat-option value="0">Do not repeat</mat-option>
+                                                            <mat-option value="1">Daily</mat-option>
+                                                            <mat-option value="2">Weekly</mat-option>
+                                                            <mat-option value="3">Monthly</mat-option>
+                                                        
+                                                        </mat-select>
+                                                    </div>
+                                        
+                                        
+                                                    <div>
+                                                        <div class="ml-0 form-group" style="display: none;" id="weekly_121_new">
+                                                            <label class="">Days</label>
+                                                            <div class="pt-1">
+                                                                <div class="d-flex">
+                                                                    <ng-container *ngFor="let item of dayArr1">
+                                                                        <div
+                                                                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                                            <input (change)="selectedDay($event)" id="{{item.value}}"
+                                                                                type="checkbox" name="DaysChk" value="{{item.value}}"
+                                                                                class="rep-chk" />
+                                                                            {{item.Day}}
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                                <span *ngIf="notProvided1==='dayarr1'" class="fs-7" style="color:red">choose a day.</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ml-0 form-group" style="display: none;" id="Monthly_121_new">
+                                                            <label class="">Day</label>
+                                                            <div class="pt-1">
+                                                                <div class="d-flex flex-wrap">
+                                                                    <ng-container *ngFor="let item of MonthArr1">
+                                                                        <div
+                                                                            [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
+                                                                            <input (change)="selectmonthlydays($event)" id="{{item.value}}"
+                                                                                type="checkbox" name="monthChk" value="{{item.value}}"
+                                                                                class="rep-chk" />
+                                                                            {{item.Day}}
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                                <span *ngIf="notProvided1==='montharr1'" class="fs-7" style="color:red">choose a day.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                        
+                                                    <div class="mb-2" id="div_endDate_new">
+                                                            <label>End Date</label>
+                                                            <div class="endtill-date">
+                                                                <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"
+                                                                        [(ngModel)]="_EndDate1"  placeholder="End Date" [min]="today"
+                                                                        class="form-control" style="padding-left: 4rem !important;">
+                                                                    <span class="endtill-date-icon">
+                                                                        <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #div_endDatepicker></mat-datepicker>
+                                                                    </span>
+                                                               <span *ngIf="notProvided1==='enddate1'&&!_EndDate1" class="fs-7" style="color:red">end date required.</span>
+                                                            </div>
+                                                            <div *ngIf="_EndDate1" class="schedule-dt-text">
+                                                                <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                                                                <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
+                                                            </div>
+                                                    </div>
+                                        
+                                                </div>
+                                                <div class="customrecurrence-footer">
+                                                    <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
+                                                    <button type="button" class="btn btn-close-secondary" (click)="close_customrecurrencemodal()">Close</button>
+                                                </div>
+                                            </div> -->
 
                                 </div>
                             </div>
@@ -3190,7 +3440,7 @@
 
                     <div class="se-col-11">
                         <div class="form-group">
-                            <angular-editor placeholder="Meeting link" [(ngModel)]="Link_Details" [config]="config"></angular-editor>
+                            <angular-editor  [placeholder]="editorPlaceholder" [(ngModel)]="Link_Details" [config]="config" ></angular-editor>
                         </div>
                     </div>
 
@@ -3216,13 +3466,15 @@
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                         </div>
                     </div>
-                    <div class="se-col-11">
-                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+                    <div class="se-col-11" >
+                        <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+                        <!-- <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')"> -->
                             <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                 <span class="sr-only">Loading...</span>
-                            </div>
+                            </div>              
                         </div>
+                        <!-- <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span> -->
                         <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                             <li *ngFor="let empno of ngEmployeeDropdown">
                                <div class="schedule-select-user-list-item">
@@ -3236,10 +3488,12 @@
                                         <span (click)="discardChoosedItem('PARTICIPANT',empno)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                     </div>
                                </div>
+                                   
                             </li>
                         </ul>
                     </div>
                 </div>
+          
 
                 <div class="se-row">
                     <div class="se-col-1">
@@ -3319,6 +3573,11 @@
                         </ul>
                     </div>
                 </div>
+
+
+
+
+
                 <div class="se-row" id="core_viw222" style="display:none">
                     <div class="se-col-1">
                         <div class="label-icon">
@@ -4543,7 +4802,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body"> 
           <div class="modal-search">
             <div class="search-svg">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -4629,12 +4888,13 @@
                 <ng-container *ngFor="let prj of ProjectListArray">
                     <li *ngIf="!(MasterCode&&MasterCode.includes(prj.Project_Code))" class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)">
+                            <!-- MasterCode&&MasterCode.includes(prj.Project_Code) -->
+                            <mat-checkbox [checked]="choosedItems.getPcodes().includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj);">
                                 <span class="project-name">
                                     {{prj.BlockNameProject}}
                                 </span>
                             </mat-checkbox>
-                         </span>                     
+                         </span>
                     </li>
                 </ng-container>
                     <div *ngIf="ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
@@ -4655,7 +4915,8 @@
             <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
                     <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
+                            <!-- Portfolio&&Portfolio.includes(prtf.portfolio_id) -->
+                            <mat-checkbox [checked]="choosedItems.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
                                 <span class="project-name">
                                     {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
                                 </span>
@@ -4678,12 +4939,13 @@
 
                     <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)">
+                            <!-- SelectDms&&SelectDms.includes(memo.MailId) -->
+                            <mat-checkbox [checked]="choosedItems.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)">
                                 <span class="project-name">
                                     {{memo.Subject}}-{{memo.DisplayName}}
                                 </span>
                             </mat-checkbox>
-                        </span> 
+                        </span>
                     </li>
 
                     <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
@@ -4701,7 +4963,8 @@
             <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
                     <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
                         <span>
-                            <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
+                            <!-- ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No) -->
+                            <mat-checkbox [checked]="choosedItems.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
                                 <span style="display:flex; align-items: center; gap: 5px;">
                                     <span class="project-user-image">
                                         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
@@ -4712,7 +4975,7 @@
                                 </span>
                             </mat-checkbox>
                         </span>
-                     
+
                     </li>
                     <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
                         <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
@@ -4729,9 +4992,11 @@
         </div>
         <div class="modal-footer">
             <ng-container *ngIf="projectmodaltype">
-                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                    <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                    <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
+                <!--  *ngIf="projectmodaltype==='PROJECT'"    -->
+                    <button id="keep-items-btn1" [ngClass]="{'d-none':projectmodaltype!='PROJECT'}"  [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <!-- *ngIf="projectmodaltype!=='PROJECT'"   -->
+                    <button id="keep-items-btn2" [ngClass]="{'d-none':projectmodaltype=='PROJECT'}"   [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button  type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
             </ng-container>
         </div>
       </div>
@@ -4801,8 +5066,8 @@
             <div class="mb-2" id="div_endDate_new">
                     <label>End Date</label>
                     <div class="endtill-date">
-                        <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()" [min]="_StartDate"
-                                [(ngModel)]="_EndDate1"  placeholder="End Date"
+                        <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"
+                                [(ngModel)]="_EndDate1"  placeholder="End Date" [min]="today"
                                 class="form-control" style="padding-left: 4rem !important;">
                             <span class="endtill-date-icon">
                                 <mat-datepicker-toggle matSuffix [for]="div_endDatepicker"></mat-datepicker-toggle>
@@ -4815,89 +5080,6 @@
                         <span>Ends on {{_EndDate1|date:'EEEE, MMMM d y'}}</span>
                     </div>
             </div>
-
-
-            <!--new plan-->
-            <!-- <div class="d-flex align-items-center mb-5">
-                <div class="cr-label">Repeat Every</div>
-                <div class="cr-every">
-                    <div class="cr-every-number">
-                        <input type="number" class="form-control" value="1">
-                    </div>
-                    <div class="cr-every-select">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Yearly</option>
-                          </select>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center mb-5">
-                <div class="cr-label">Repeat On</div>
-                <div class="cr-on">
-                        <div class="d-flex">
-                            <ng-container *ngFor="let item of dayArr">
-                                <div
-                                    [ngClass]="item.checked==true ? 'repeat-day active' : 'repeat-day'">
-                                    <input (change)="selectedDay($event)" id="{{item.value}}"
-                                        type="checkbox" name="DaysChk" value="{{item.value}}"
-                                        class="rep-chk" />
-                                    {{item.Day}}
-                                </div>
-                            </ng-container>
-                        </div>
-                    <div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="skipholidaycheck">
-                            <label class="form-check-label" for="skipholidaycheck">
-                              Skip Holidays
-                            </label>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-start mb-5">
-                <div class="cr-label pt-3">Ends</div>
-                <div class="cr-end-main">
-                    <div class="cr-end-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
-                            <label class="form-check-label" for="exampleRadios1">
-                              Never
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                            <label class="form-check-label" for="exampleRadios2">
-                              On
-                            </label>
-                          </div>
-                          <div>
-                            <input class="form-control" type="text" placeholder="Readonly input here..." value="August 19, 2024" readonly>
-                          </div>
-                    </div>
-                    <div class="cr-end-2">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
-                            <label class="form-check-label" for="exampleRadios3">
-                              After
-                            </label>
-                          </div>
-                          <div class="occurences-div">
-                            <div><input type="number" class="form-control" value="13"></div>
-                            <div class="occ-title">Occurences</div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center mb-2">
-                <div class="cr-label">Summary</div>
-                <div class="cr-summary">
-                    Montly on the second Tuesday, until Jan 25,2025
-                </div>
-            </div> -->
-              <!--new plan-->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-add-primary" (click)="bindCustomRecurrenceValues()">Done</button>
@@ -4907,3 +5089,78 @@
     </div>
   </div>
   <!-- customrecurrence Modal End -->
+   <!-- datemenu Modal Start -->
+<div class="datemenu modal fade show" id="datemenu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="datemenuLabel" aria-hidden="true"  style="display: none">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="datemenuLabel">Select Date & Time</h5>
+        </div>
+        <div class="modal-body">
+
+                <div class="date-menu-item">
+                   
+
+                    <div class="date-menu-calender">
+                        <mat-card class="demo-inline-calendar-card">
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                          </mat-card>
+                    </div>
+                    <div class="date-menu-time">
+                        <div class="mb-2">
+                            <label class="cus-lbl">Start Time <span class="text-danger">*</span> </label>
+                            <ng-select  class="kt-input" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                <ng-option  *ngFor="let item of validStartTimearr; let i=index" [value]="item">
+                                    {{item}}</ng-option>
+                            </ng-select>
+                            <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                        </div>
+                        <div class="">
+                            <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
+                            <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
+                                [(ngModel)]="Endtms">
+                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                    {{item1}}
+                                    ({{
+                                        Startts|timeDiff:item1
+                                    }})
+                                </ng-option>
+                            </ng-select>
+                            <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-add-primary" (click)="date_menu_modal_close()">Done</button>
+            <button type="button" class="btn btn-close-secondary" (click)="date_menu_modal_close()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- datemenu Modal End -->
+</ng-container></ng-container>
+
+<ng-template #pleasewait>
+
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>

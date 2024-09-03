@@ -79,11 +79,37 @@ export const MY_FORMATS = {
   }
 };
 moment.locale('en');
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
 
 @Component({
   selector: 'app-portfolio-projects',
   templateUrl: './portfolio-projects.component.html',
-  styleUrls: ['./portfolio-projects.component.css']
+  styleUrls: ['./portfolio-projects.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
 
 export class PortfolioProjectsComponent implements OnInit {
@@ -327,7 +353,7 @@ export class PortfolioProjectsComponent implements OnInit {
   //   this.Task_type(2)
   // }
 
-
+  userFound:boolean|undefined;
   _PortfolioDetailsById: any;
   _MessageIfNotOwner: string;
   createdBy:any;
@@ -370,6 +396,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
         console.log( this.Employeshare,'employeeeeeeeeeeee')
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
+        this.userFound = true
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
@@ -514,7 +541,6 @@ export class PortfolioProjectsComponent implements OnInit {
           this._btnShareDetails = false;
         }
         this.PreferenceTpye = data[0]["PreferenceType"];
-        debugger
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
         this.Share_preferences = false;
         this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
@@ -694,7 +720,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+  debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -845,7 +871,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
-    debugger
     if (this.shareToEmplys == undefined) {
       return this._ErrorMessage_User = "* Please Select User Name";
 
@@ -1178,7 +1203,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   countFav: number;
 
   deleteSharedUsers(p_id, empid, Sharedby) {
-    debugger
     var deleteProject = window.confirm('Are you sure you want to Remove ?');
     if (deleteProject) {
       //console.log(p_id, empid, Sharedby);
@@ -1248,7 +1272,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labelDelay() {
-    debugger
     this._PortProjStatus = "Delay";
     this.showDeletedPrjOnly=false;
   }
@@ -1260,7 +1283,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   labelCompleted() {
-    debugger
     this._PortProjStatus = 'Completed';
     this.showDeletedPrjOnly=false;
     console.log('_PortProjStatus:',this._PortProjStatus);
@@ -1268,7 +1290,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelNewProject() {
-    debugger
     this._PortProjStatus = "New Project";
     this.showDeletedPrjOnly=false;
     if (this._PortProjStatus.includes('New Project')) {
@@ -1277,7 +1298,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelRejecteds() {
-    debugger
     this._PortProjStatus = "New Project Rejected";
     this._PortProjStatus.includes('Rejected');
     this.showDeletedPrjOnly=false;
@@ -1297,7 +1317,6 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   labelUA() {
-debugger
     this._PortProjStatus = "Under Approval";
     // this._PortProjStatus.includes('Under Approval')
     this.showDeletedPrjOnly=false;
@@ -2092,7 +2111,6 @@ Insert_indraft() {
   }
 
   GetmeetingDetails() {
-debugger
     // first initialize all meetings variables to empty . and to avoid any miscalculation .  this is mandatory before calculating.
     this.meetingList = [];
     this.meeting_arry = [];
@@ -2121,7 +2139,6 @@ debugger
 
     this.service._GetMeetingListportfolio(this.ObjSubTaskDTO)
       .subscribe(data => {
-        debugger
         if (data && Array.isArray(data) && data.length > 0 && data[0]?.['MeetingFor_projects']?.length > 0) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
           this.Addguest= this.meetingList[0].Addguest
@@ -2200,6 +2217,7 @@ debugger
     // empty all variables
     this.meetingList = [];
     this.meeting_arry = [];
+    this.characterCount=0;
     this.meetinglength = 0;
     this.allAgendas = [];
     this.upcomingMeetings = [];
@@ -2683,11 +2701,10 @@ Task_type(value:number){
   }
 
   GetScheduledJson() {
-debugger
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => {
 
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         console.log(this.Scheduledjson, "Testingssd");
@@ -3545,7 +3562,7 @@ getChangeSubtaskDetais(Project_Code) {
     return moment({ hour, minute }).format("hh:mm A");
   }
   eventRepeat:boolean = false
-  OnSubmitSchedule() { debugger
+  OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -3619,7 +3636,7 @@ getChangeSubtaskDetais(Project_Code) {
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-        debugger
+
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -4194,7 +4211,6 @@ onMtgForLinkSelected(e:any){
 // }
 
 linkMtgsToPortfolio(){
-debugger
   const mtgsSelected=this.selectedMtgs2Link.join(',');
   let empno=this.Current_user_ID;
   let pid=this.Url_portfolioId;
@@ -4234,7 +4250,6 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-debugger
   if (this.agendaInput && this.agendaInput.trim().length > 0) {
     this.agendasAdded += 1;
     const agenda = {
@@ -4317,7 +4332,7 @@ updateAgenda(index: number) {
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  let name: string = 'Meeting-Report';
+  let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
   var myWindow = window.open(myurl);
@@ -4388,29 +4403,32 @@ closedarBar() {
 }
 // shared and shared details side bar end
 
-
 all_status={
-  'Under Approval': '#B2D732',
-  'InProcess':'#0089FB',
-  'Completed':'#62B134',
-  'Delay':'#EE4137',
-  'Completion Under Approval':'#B2D732',
-  'Forward Under Approval':'#B2D732',
-  'Project Hold':'#E2D9BC',
+  'Completed':'#388E3C',
+  'InProcess':'#64B5F6',
+  'Completion Under Approval':'#81C784',
+  'Forward Under Approval':'#64B5F6',
+  'Under Approval': '#9C27B0',
+  'Delay':'#D32F2F',
+  'Project Hold':'#A1887F',
+  'New Project Rejected':'#BA68C8',
+  'Deadline Extend Under Approval':'#F9A825',
+  'Cancellation Under Approval':'#EF5350',
+
   'Cancelled':'#EE4137',
-  'New Project Rejected':'#DFDFDF',
-  'Deadline Extend Under Approval':'#F88282',
   'ToDo Achieved':'#62B134',
   'ToDo Completed':'#62B134',
-  'Cancellation Under Approval':'#EE4137',
   'other':'#d0d0d0'
 };
 prj_statuses:any=[];
+isGanttchartVisible:boolean=false;
 loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
-  
+
 
   let _ProjectsListBy_Pid1=this._ProjectsListBy_Pid.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
+  this.isGanttchartVisible=_ProjectsListBy_Pid1.length>0;
+
   _ProjectsListBy_Pid1.sort((p1,p2)=>{
       let x=p1.Duration+(p1.Status=='Delay'?new Date(p1.DeadLine)>=new Date()?0:p1.Delaydays:0);
       let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
@@ -4418,17 +4436,17 @@ loadGanttChart(){
   });
   this.prj_statuses=_ProjectsListBy_Pid1.map(item=>item.Status);
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
-  const todays_date=new Date().getTime(); 
+  const todays_date=new Date().getTime();
 
   const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
       const color=this.all_status[prj.Status]||this.all_status['other'];
-     
+
       let data_ar=[];
       const prj_startd=new Date(prj.DPG);
       const prj_endd=new Date(prj.DeadLine);
       const curdate=new Date();
 
-    if(prj_startd<curdate&&prj_endd>curdate){ 
+    if(prj_startd<curdate&&prj_endd>curdate){
 
 
        if(prj.Status=='InProcess')
@@ -4443,7 +4461,7 @@ loadGanttChart(){
                {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date().getTime(),new Date(prj.DeadLine).getTime()],
-                fillColor:'#dcdcdc',
+                fillColor:'#bebebe42',
                 index:_index
                }
             ];
@@ -4454,24 +4472,24 @@ loadGanttChart(){
               {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date(prj.DPG).getTime(),new Date(prj.maxDeadline).getTime()],
-                fillColor:'#0089FB',
+                fillColor:this.all_status['InProcess'],
                 index:_index
               },
               {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date(prj.maxDeadline).getTime(),new Date().getTime()],
-                fillColor:'#EE4137',
+                fillColor:this.all_status['Delay'],
                 index:_index
               },
               {
                 x:`${prj.Project_Name} (${prj.Project_Code})`,
                 y:[new Date().getTime(),new Date(prj.DeadLine).getTime()],
-                fillColor:'#f1f1f1',
+                fillColor:'#bebebe42',
                 index:_index
               }
             ];
        }
-       else 
+       else
        {
           data_ar=[{
             x:`${prj.Project_Name} (${prj.Project_Code})`,
@@ -4485,12 +4503,12 @@ loadGanttChart(){
     }
     else{
           const colorvalue=prj_startd>=curdate&&prj.Status=='InProcess'?'#dcdcdc':color;
-          
+
            data_ar=prj.Status=='Delay'?
             [{
               x:`${prj.Project_Name} (${prj.Project_Code})`,
               y:[new Date(prj.DPG).getTime(),new Date(prj.maxDeadline).getTime()],
-              fillColor:'#0089FB',
+              fillColor:this.all_status['InProcess'],
               index:_index
               },
               {
@@ -4509,6 +4527,13 @@ loadGanttChart(){
 
     }
 
+// when project start date and end date are same.
+      if(data_ar.length==1){
+        if(data_ar[0].y[0]==data_ar[0].y[1]){
+                  data_ar[0].y[1]=data_ar[0].y[1]+86400000;
+        }
+      }
+// when project start date and end date are same.
 
       const obj={
           name:prj.Status,
@@ -4521,23 +4546,130 @@ loadGanttChart(){
 
 
 
-// Desired height per row in pixels
-const rowHeight = 40;
-const dataPoints = _series.reduce((sum, series) => sum + series.data.length, 0);
-let chartHeight = rowHeight * dataPoints*(_series.length<10?2:1);
-chartHeight=chartHeight<200?200:chartHeight;
-
+const rowHeight=55;   // old 45
+let chartHeight=rowHeight*_ProjectsListBy_Pid1.length+125;
+let max_Xvalue=new Date();
+max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
 var options = {
   series: _series,
   chart: {
-    height: chartHeight,
-    type: 'rangeBar'
+    height: chartHeight+'px',
+    type: 'rangeBar',
+    events: {
+      updated: ()=>{
+
+        const chartContainer = document.querySelector("#chartdiv3");
+        const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
+        let textElements = xAxisLabels.querySelectorAll('text');
+        const hrline:any=document.querySelector('#chartdiv3 .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
+        const linewth=hrline.getAttribute('x2');
+        const dateGcHl:any = document.querySelector('.prjs-gantt-dates .dates-label');
+        dateGcHl.style.width=linewth+'px';
+        const dateGcHv:any=dateGcHl.querySelector('#this-is-head');
+        dateGcHv.innerHTML='';
+        textElements.forEach(te => {
+          const clonedTe = te.cloneNode(true);
+          clonedTe.setAttribute('y', '65%');
+          clonedTe.setAttribute('fill', '#000');
+          dateGcHv.appendChild(clonedTe);
+        });
+
+
+        const gcharttable:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
+        const trsnfvalue=gcharttable.getAttribute('transform');
+        console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
+        gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
+        console.log('gcharttable:',gcharttable);
+
+
+          const ctrlbtns:any=document.querySelector('#chartdiv3 .apexcharts-toolbar');
+          ctrlbtns.style.backgroundColor='rgb(255 255 255 / 65%)';
+          ctrlbtns.style.padding='4px 6px 7px 5px';
+          ctrlbtns.style.border='2px solid #b3b3b3';
+          const ganttCtrls:any=document.querySelector('.prjs-Ganttchart .gantt-ctrls-btns');
+          ganttCtrls.innerHTML='';
+          ganttCtrls.append(ctrlbtns);
+
+
+          const yaxis:any=document.querySelector('#chartdiv3 .apexcharts-svg .apexcharts-yaxis-texts-g');
+          const textelms:any=yaxis.querySelectorAll('text');
+          const shouldwrap:boolean=Array.from(textelms).some((te:any)=>te.querySelector('title').textContent.length>20);
+          if(shouldwrap){
+            textelms.forEach((te:any)=>{
+              te.setAttribute('x','-135');
+              te.setAttribute('text-anchor','start');
+
+              const fullname=te.querySelector('title').textContent;
+              const maxl=20;
+              const strl=fullname.length;
+              if(strl>maxl){
+                   te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
+
+                   const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                   tspan1.textContent=fullname.substring(0,20);
+                   const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                   tspan2.setAttribute('x','-135');
+                   tspan2.setAttribute('dy','11');   // old 15.6
+                   let fullname2=fullname.slice(20);
+                   fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
+                   tspan2.textContent=fullname2;
+
+                   te.appendChild(tspan1);
+                   te.appendChild(tspan2);
+              }
+
+          });
+          }
+
+          // add project code, project responsible info and hover effect to each yaxis label and open details on click
+          Array.from(textelms).forEach((te:any,index)=>{
+              const _p_code:any=_ProjectsListBy_Pid1[index].Project_Code;
+              const _p_res:any=_ProjectsListBy_Pid1[index].Team_Res;
+              te.style.cursor='pointer';
+              te.setAttribute('data-projectcode',_p_code);
+              te.setAttribute('data-projectres',_p_res);
+
+
+              const ypos=te.getAttribute('y');
+              te.setAttribute('y',ypos-12);
+
+              const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+              tspan3.setAttribute('x','-135');
+              tspan3.setAttribute('dy','13');
+              tspan3.style.fill='#543fff';
+              tspan3.style.fontSize='0.7em';
+              tspan3.style.fontWeight='bold';
+              tspan3.style.fontFamily='Lucida Sans Unicode';
+              tspan3.style.textTransform='capitalize';
+              tspan3.textContent=_p_res;
+              te.appendChild(tspan3);
+
+          });
+
+          Array.from(textelms).forEach((te:any)=>{
+              te.addEventListener('click',()=>{
+                     const _prj_code=te.dataset.projectcode;
+                     this.newDetails(_prj_code);
+              });
+              te.addEventListener('mouseover',()=>{
+                   te.style.fill='#527ce2';
+              });
+
+              te.addEventListener('mouseout',()=>{
+                   te.style.fill='unset';
+              });
+          });
+        //add project code, project responsible info and hover effect to each yaxis label and open details on click
+
+
+       },
+    }
   },
   plotOptions: {
     bar: {
       horizontal: true,
-      barHeight: '58%', // Adjust to fill the available space
+      barHeight: '33%', // Adjust to fill the available space
       rangeBarGroupRows: true
     }
   },
@@ -4546,11 +4678,10 @@ var options = {
     type: 'solid'
   },
 
-
-
   dataLabels: {
     enabled:false,
     formatter: function(val, opts) {
+
       // var label = opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].x;
       // let text;
       // if(label == 'Stream Planner work scheduling')
@@ -4560,6 +4691,9 @@ var options = {
       // else if(label == 'Water colors project')
       //   text = '5 days delay.';
       // return text;
+
+
+      // return opts.w.config.series[opts.seriesIndex].name;
       return '';
     },
     style: {
@@ -4567,27 +4701,48 @@ var options = {
     }
   },
 
-
-
   xaxis: {
     type: 'datetime',
-    position: 'top', // This moves the x-axis to the top
+    position: 'bottom', // This moves the x-axis to the top
     labels: {
-      show: true
+      show: true,
+      style: {
+        offsetY: 10, // Adjust this value to add space below the labels
+        colors:'#000'
+      }
     },
     axisBorder: {
       show: true
     },
     axisTicks: {
       show: true
+    },
+    max:max_Xvalue.getTime()
+  },
+  yaxis: {
+    labels: {
+      style: {
+        fontSize: '11px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#333',
+        textAnchor: 'start'
+      },
+      formatter: function(value) {
+        if (isNaN(value)) {
+            let str=value.substring(0,value.lastIndexOf('('));
+            str=str.trim();
+            return str;
+        } else
+          return value;
+
+      }
     }
   },
-
 
   grid: {
     yaxis: {
       lines: {
-        show: true
+        show: true,
       }
     },
     xaxis: {
@@ -4600,7 +4755,8 @@ var options = {
       right: 10,
       bottom: 20, // Add padding to the bottom to create space below the controller buttons
       left: 0
-    }
+    },
+
   },
   legend: { show:false },
   tooltip: {
@@ -4621,8 +4777,8 @@ var options = {
  const prj_alhrs=_ProjectsListBy_Pid1[index].AllocatedHours;
  const used_hrs=_ProjectsListBy_Pid1[index].UsedHours;
 
-const _cd=new Date();   
-const d1=new Date(_ProjectsListBy_Pid1[index].DPG);  
+const _cd=new Date();
+const d1=new Date(_ProjectsListBy_Pid1[index].DPG);
 const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
 
 
@@ -4634,11 +4790,11 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
                            <span style="flex-grow: 1;">
                               <span style="font-size: 10px;font-family: Lucida Sans Unicode;display: inline-block;max-width: 250px;text-wrap: nowrap;overflow: hidden hidden;text-overflow: ellipsis;">${prj_name}</span>
                              <span style="font-size: 9px;font-family: Lucida Sans Unicode;display: flex;align-items: center;justify-content: start;color: #afaeae;position: relative;top: -4px;">${prj_res}</span>
-                           </span> 
+                           </span>
                          <span style="padding: 0.3em 0.6em 0.2em 0.6em;border-radius: 2px;background-color:${statusColor}; color: white;font-family: 'Lucida Sans Unicode';font-size: 11px;align-self: flex-start;">${prj_status} ${prj_status=='Delay'?(delaydays_+(delaydays_>1?' days':' day')):''}</span>
                     </div>
-                
-                    
+
+
                     <div style="display: flex;align-items: center;margin-bottom: 0px;column-gap: 10px;">
                                 <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
                                           <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
@@ -4646,31 +4802,31 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
                                             ${completed_actions}<span style="color: #b4b4b4db;">/</span>${prj_totalactions}
                                           </fieldset>
                                 </span>
-                               
+
                                <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
                                           <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
                                             <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;  ">Allocated hours</legend>
                                            ${prj_alhrs} hrs
                                           </fieldset>
-                                </span>      
+                                </span>
 
                                  <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
                                           <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
                                             <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;  ">Utilized hr</legend>
                                             ${used_hrs} hrs
                                           </fieldset>
-                                </span>      
+                                </span>
                     </div>
                     <div style="font-size: 12px; display: flex; column-gap: 3px;">
                                   <fieldset style=" flex-grow:1;   border: 1px solid #4e49491f; padding: 0.3em; border-radius: 3px; font-family: 'Lucida Sans Unicode'; font-weight: bold; color: #4e49499c; min-width: 50px; display: flex; justify-content: center; font-size: 10px;">
                                     <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width:fit-content;  margin-bottom:0; ">${d1<_cd?'Started on':'Starting from'}</legend>
                                    ${prj_start}
                                   </fieldset>
-                                  
+
                                     <span style="flex-grow: 1;display: flex;flex-direction: column;justify-content: end;"> <span style="border: 1px dashed lightgray;"></span>
                                       <span style="text-align: center;color: #4e49499c;font-family: Lucida Sans Unicode;font-weight: bold;font-size: 9px;">${daydiff} ${daydiff>1?'days':'day'}</span>
                                     </span>
-                                   
+
                                   <fieldset style="flex-grow:1;border: 1px solid #4e49491f;padding: 0.3em;border-radius: 6px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e49499c;min-width: 50px;display: flex;justify-content: center;font-size: 10px;text-align: left;">
                                     <legend style="font-size: 8px;font-family: 'Lucida Sans Unicode';font-weight: 700;color: #5a57578f;width: fit-content;margin-left: 5px; margin-bottom:0; ">${d2<_cd?'Ended on':'Ending on'}</legend>
                                     ${prj_end}
@@ -4681,54 +4837,75 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
     }
   },
 
-
   annotations: {
-    xaxis: [
-      {
-        x: todays_date,
-        borderColor: '#5867dd',
-        borderWidth: 2, // Increase line width
-        label: {
-          style: {
-            color: '#fff',
-            background: '#5867dd',
-            fontFamily: 'Lucida Sans Unicode', // Attractive font family
-            fontWeight: 'normal', // Bold text
-            fontSize: '9px', // Increase font size for better visibility
-            padding: {
-              left: 6,
-              right: 6,
-              top: 3,
-              bottom: 3
-            },
-            borderRadius: '5px', // Rounded corners
-            // textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)', // Add shadow to make text stand out
+    xaxis: [{
+      x: todays_date,
+      borderColor: '#5867dd',
+      borderWidth: 2,
+      label: {
+        style: {
+          color: '#fff',
+          background: '#5867dda5',
+          fontFamily: 'Lucida Sans Unicode',
+          fontWeight: 'normal',
+          fontSize: '9px',
+          padding: {
+            left: 4,
+            right: 4,
+            top: 2,
+            bottom: 2
           },
-          text: 'Today',
-          textAnchor: 'start', // Align text to the start (left) of the label
-          offsetX: 9, // Horizontal offset to position it to the right of the line
-          offsetY: 0 // Slight vertical offset to fine-tune position
-        }
+          borderRadius: '5px',
+        },
+        text: 'Today',
+        textAnchor: 'start',
+        offsetX: -13,
+        offsetY: -20
       }
-    ]
-  }
-  
-  
-  
+    }],
+
+
+
+
+
+  },
+
+
+  title: {
+    text: 'Portfolio - '+this._PortFolio_Namecardheader,
+    align: 'left',
+    margin: 10,
+    offsetX: 0,
+    offsetY: 0,
+    floating: false,
+    style: {
+      fontSize: '14px',
+      fontWeight: 'bold',
+      fontFamily: undefined,
+      color: '#263238'
+    },
+  },
+
+
+
 
 };
 
 var chart = new ApexCharts(document.querySelector("#chartdiv3"), options);
 chart.render();
 
+
+
 }
+
+
+
 
 
 
 
  shareToEmplys:any=[];
 onEmployeeSelected(e:any){
-debugger
   const employeeChoosed=this.Employeshare.find((p:any)=>p.Emp_No===e.option.value);
 
   if(employeeChoosed){
@@ -4919,7 +5096,6 @@ _EndDate1:any;
 mtgOnDays:any=[];  // list of day name on which mtg is present.
 notProvided:any;
 customrecurrencemodal() {
-  debugger
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("customrecurrence").style.display = "block";
 
@@ -5139,7 +5315,6 @@ onPortfolioFilter(){
   this.isFilteredOn=true;
 }
 keepChoosedItems(){
-  debugger
   switch(this.projectmodaltype)
   {
       case 'PROJECT':{
@@ -5391,11 +5566,11 @@ bindCustomRecurrenceValues(){
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.Description_Type.trim().length<=200):true)&&
+      (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+      && (this.ScheduleType === 'Event' ?( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -5548,7 +5723,25 @@ bindCustomRecurrenceValues(){
 
 
 
+  characterCount: number = 0;
 
+  updateCharacterCount(): void {
+
+    // Create a temporary div element to strip out HTML tags
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = this.Description_Type;
+    const textContent = tempElement.textContent || tempElement.innerText || '';
+    this.characterCount = textContent.length;
+  }
+
+
+  getFormattedDelay(delayDays: any): string {
+    let delayText = '';
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+      else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+      else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+      else { delayText = `${delayDays} days`; } return `${delayText} `; }
 
   // new code of portfolio meeting side bar end
 }

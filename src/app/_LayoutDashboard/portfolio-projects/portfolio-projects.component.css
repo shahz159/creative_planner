@@ -1352,8 +1352,8 @@ span.count2 {
 }
 
 .new-project {
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1409,7 +1409,7 @@ span.count2 {
 
 
 .Delay_color {
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1418,7 +1418,7 @@ span.count2 {
 }
 
 .Completed_color {
-  background-color: #62B134 !important;
+  background-color: #388E3C  !important;
   color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1427,7 +1427,7 @@ span.count2 {
 }
 
 .InProcess_color {
-  background-color: #1B272D !important;
+  background-color: #64B5F6 !important;
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1445,16 +1445,16 @@ span.count2 {
 }
 
 .Hold_color {
-  background-color: #E2D9BC !important;
-  color: black !important;
+  background-color: #795548 !important;
+  color: white !important;
   width: max-content;
   display: inline-block;
 
 }
 
 .Under_Approval_color {
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1480,14 +1480,14 @@ span.count2 {
 }
 
 .Cancelled_color {
-  color: #DFDFDF !important;
+  color: #F44336 !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
 
 .Forward_Under_Approval_color {
-  background-color: #B2D732 !important;
-  color: #000;
+  background-color: #9C27B0 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1495,8 +1495,8 @@ span.count2 {
 }
 
 .New_Project_Rejected_color {
-  background-color: #DFDFDF !important;
-  color: #000;
+  background-color: #BA68C8  !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1504,8 +1504,8 @@ span.count2 {
 }
 
 .Deadline_Extend_Under_Approval_color {
-  background-color: #F88282 !important;
-  color: #000;
+  background-color: #F9A825 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1513,8 +1513,8 @@ span.count2 {
 }
 
 .Enactive_Under_Approval_color {
-  background-color: #C9C1E6 !important;
-  color: #000;
+  background-color: #F44336 !important;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1541,24 +1541,24 @@ span.count2 {
 
 
 .Delay-head {
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color: #fff;
 
 }
 
 .Delete-head {
-  background-color: #EE4137 !important;
+  background-color: #D32F2F !important;
   color: #fff;
 }
 
 .complteed_color {
-  background-color: #62B134 !important;
+  background-color: #388E3C !important;
   color: #fff;
 
 }
 
 .in-process {
-  background-color: #0089FB !important;
+  background-color: #64B5F6 !important;
   color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
@@ -1568,8 +1568,8 @@ span.count2 {
 
 
 .Hold {
-  background-color: #E2D9BC;
-  color: #000 !important;
+  background-color: #795548;
+  color: white !important;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1604,8 +1604,8 @@ a.info-btn svg {
 }
 
 .completion-under-approval {
-  background-color: #B2D732;
-  color: black;
+  background-color: #81C784;
+  color: white;
   padding: 2px 10px;
   border-radius: 3px;
   width: max-content;
@@ -1628,8 +1628,8 @@ a.info-btn svg {
 }
 
 .Not-started-head {
-  background-color: #888888 !important;
-  color: white;
+  background-color: #E0E0E0 !important;
+  color: black;
 }
 
 /* .in-processs, .total-project, .Delay-head, .complteed_color, .new-project-head,.Hold_color,.todo-achieved,.rejected,.todo-completed-head,.Not-started-head{
@@ -1908,8 +1908,8 @@ left: 38%;
 
 
 .Not-Started {
-  background-color: #888888 !important;
-  color: white !important;
+  background-color: #E0E0E0 !important;
+  color: black !important;
   padding: 2px 10px;
   border-radius: 3px;
 }
@@ -2203,15 +2203,15 @@ td:nth-child(4) {
   }
 }
 .Completion{
-  background-color: #b2d732;
-  color: #000;
+  background-color: #81C784;
+  color: white;
 }
 .Cancel-app{
-  background-color: #EE4137;
+  background-color: #F44336;
   color: white;
 }
 .Count-deadline{
-  background-color: #EE4137;
+  background-color: #F44336;
   color: white;
 }
 .foward-color{
@@ -2366,38 +2366,38 @@ background-color: #CCC;
   background-color: #35A79C !important;
   }
 .in-pro{
-  background-color:#0089FB  !important
+  background-color:#64B5F6  !important
 }
 .del{
-  background-color: #EE4137  !important;
+  background-color: #D32F2F  !important;
 }
 .draf{
-  background-color:  #888888 !important;
+  background-color:  #E0E0E0 !important;
 }
 .com{
-  background-color: #62B134 !important;
+  background-color: #388E3C !important;
 }
 .new-pro{
-  background-color: #B2D732 !important ;
-  color: #000 !important;
+  background-color: #9C27B0 !important ;
+  color: white !important;
 }
 .com-appr{
-  background-color:#B2D732 !important ;
-  color: #000 !important;
+  background-color:#81C784 !important ;
+  color: white !important;
 }
 .can-app{
-  background-color: #EE4137  !important;
+  background-color: #D32F2F  !important;
 }
 .for-app{
-  background-color: #B2D732 !important ;
-  color: #000 !important;
+  background-color: #9C27B0 !important ;
+  color: white !important;
 }
 .dead-ext{
-  background-color: #F88282 !important;
+  background-color: #F9A825 !important;
 }
 .pro-hold{
-  background-color:  #E2D9BC !important;
-  color: #000 !important;
+  background-color:  #795548 !important;
+  color: white !important;
 }
 .rej{
   background-color: #DFDFDF !important;
@@ -4776,4 +4776,123 @@ input.search-input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
+}
+
+
+.prjs-Ganttchart .prjs-gantt-dates{
+  background-color:#fff;
+  position: relative;
+  top: 28px;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+.prjs-Ganttchart .gantt-ctrls-btns{
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.apexcharts-yaxis-label {
+  white-space: pre-wrap; /* Allow text to wrap */
+  overflow: visible; /* Prevent text from being clipped */
+}
+.kt-widget__details {
+  min-width: 90px;
+}
+.kt-media-group .kt-media.kt-media--sm img {
+  max-width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.kt-media-group .kt-media.kt-media--sm span {
+  width: 25px;
+  height: 25px;
+  background: #deecf8;
+  color: #2786fb;
+}
+.btn-dull {
+  background-color: #6C757D;
+  border-color: #6C757D;
+  color: #FFFFFF !important;
+}
+.w-110 {
+  width: 100px;
+}
+
+.nav-share{
+margin: 0;
+padding: 0;
+font-size: 19px;
+font-weight: 500;
+color: #121212;
+}
+/*new details page loading circle start*/
+
+.smart-glass {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 288px;
+  height: 388px;
+}
+
+.logo {
+  width: 288px;
+  height: 288px;
+  position: relative;
+}
+
+.circle {
+  padding: 20px;
+  border: 6px solid transparent;
+  border-top-color: #6388e3;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: connect 2.5s linear infinite;
+}
+
+.loader-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.New_Approval_Project{
+  display: flex;
+  width: max-content;
+  color: #979797;
+}
+
+
+@keyframes connect {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/*new details page loading circle end*/
+.vi{
+  color:#D32F2F !important ;
 }

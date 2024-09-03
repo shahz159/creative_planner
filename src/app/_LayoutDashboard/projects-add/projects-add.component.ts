@@ -131,6 +131,7 @@ export class ProjectsAddComponent implements OnInit {
     this.GetProjectsByUserName();
     this.getDropdownsDataFromDB();
   }
+  userFound:boolean | undefined
   GetProjectsByUserName() {
     //this.LoadingBar_state.start();
     this.ObjUserDetails.PageNumber = this.CurrentPageNo;
@@ -147,6 +148,7 @@ export class ProjectsAddComponent implements OnInit {
         // this._totalProjectsCount = this._ProjectDataList.length;
         console.log("ProjectList----------->", this._ProjectDataList.length);
         console.log("ProjectListssssssssss----------->", this._ProjectDataList);
+        this.userFound = true
       }
     });
     this.getDropdownsDataFromDB();
@@ -965,9 +967,9 @@ allSelectedProjects:any=[];  // overall selection
 isAllPrjSelected:boolean=false;
 
 selectUnSelectProject(e,item){ debugger
-      if(e.checked){ 
+      if(e.checked){
           this.allSelectedProjects.push(item);
-      
+
           const allsel=this._ProjectDataList.every(item=>{
             return this.allSelectedProjects.map(p=>p.Project_Code).includes(item.Project_Code)
           })
@@ -1007,7 +1009,7 @@ addPrjsToPortflio() {
           if(this._portfolioId!==''){
             this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
           }
-        
+
 
            this._ProjectDataList.map(PRJ=>{
 
@@ -1045,9 +1047,9 @@ removePrjFromPortfolio(element:any){
      const index=this._ProjectDataList.findIndex(p=>p.Project_Code==pCode);
      if(index!=-1){
            delete this._ProjectDataList[index].addedIntoPortfolio;
-     } 
+     }
 
-  
+
 
   });
 
@@ -1083,8 +1085,51 @@ selectUnselectPagePrjs(evt){ debugger
     console.log("allSelectedProjects:",this.allSelectedProjects);
 }
 
+Team_Res:any;
+Project_Code:any;
+Team_Autho:any
 
 // portfolio new end
+LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
+  if (iscloud == false) {
+    if (this.Team_Autho == this.Team_Res) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+
+    }
+    else if (this.Team_Autho !=  this.Team_Res) {
+      FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
 
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiurlService } from './apiurl.service';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
+import { CalenderDTO } from '../_Models/calender-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,21 @@ export class ProjectMoreDetailsService {
       return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
   }
 
+
+  NewDeleteDraftAction(projectcode:string){
+    this.ObjSubTaskDTO.Project_Code = projectcode
+    this.ObjSubTaskDTO.Emp_No = localStorage.getItem('EmpNo')
+    return this.http.post(this.rootUrl+'Projects/NewDeleteDraftAction',this.ObjSubTaskDTO);
+  }
+
+
+  GetActionDeadlineList(projectcode:string){
+    this.ObjSubTaskDTO.Project_Code=projectcode;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetActionDeadlineList',this.ObjSubTaskDTO);
+  }
+
+
+
   getRequestAccessDetails(projectcode:string){
     this.ObjSubTaskDTO.Project_Code=projectcode;
       return this.http.post(this.rootUrl+'TestAPI/NewGetRequestAccessDetails',this.ObjSubTaskDTO);
@@ -31,10 +47,11 @@ export class ProjectMoreDetailsService {
      return this.http.post(this.rootUrl+'TestAPI/NewGetProjectTimelineList',this.ObjSubTaskDTO)
   }
 
-  NewInsertProjectRequestAccesss(Project_Code:string,Remarks:string,Emp_No:string){
+  NewInsertProjectRequestAccesss(Project_Code:string,Remarks:string,Emp_No:string,Scheduleid:string ){
     this.ObjSubTaskDTO.Project_Code=Project_Code;
     this.ObjSubTaskDTO.Remarks=Remarks;
     this.ObjSubTaskDTO.Emp_No=Emp_No;
+    this.ObjSubTaskDTO.Schedule_id=Scheduleid;
      return this.http.post(this.rootUrl+'Projects/NewInsertProjectRequestAccesss',this.ObjSubTaskDTO)
   }
 
@@ -67,7 +84,7 @@ NewUpdateProjectAuditor(project_code:string,empno:string,empToasAudit:string){
     this.ObjSubTaskDTO.Project_Code=project_code;
     this.ObjSubTaskDTO.Emp_No=empno;
     this.ObjSubTaskDTO.Remarks='';
-    this.ObjSubTaskDTO.auditor=empToasAudit; 
+    this.ObjSubTaskDTO.auditor=empToasAudit;
     return this.http.post(this.rootUrl+'Category/NewUpdateProjectAuditor',this.ObjSubTaskDTO);
 }
 
@@ -77,8 +94,8 @@ NewDeleteProjectRACIS(project_code:string,empno:string,auditor:any,teamsupport:a
   this.ObjSubTaskDTO.Emp_No=empno;
   this.ObjSubTaskDTO.Remarks=remarks;
   this.ObjSubTaskDTO.Team_Support=teamsupport;
-  this.ObjSubTaskDTO.auditor=auditor; 
-   
+  this.ObjSubTaskDTO.auditor=auditor;
+
   return this.http.post(this.rootUrl+'Category/NewDeleteProjectRACIS',this.ObjSubTaskDTO);
 }
 

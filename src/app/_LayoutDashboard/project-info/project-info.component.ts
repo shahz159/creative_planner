@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
@@ -27,6 +27,9 @@ import { ProjectsAddComponent } from '../projects-add/projects-add.component';
 import { ToDoProjectsComponent } from '../to-do-projects/to-do-projects.component';
 import Swal from 'sweetalert2';
 import { NotificationComponent } from '../notification/notification.component';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
 
 @Component({
   selector: 'app-project-info',
@@ -51,7 +54,9 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private ShareParameter_Service: ParameterService,
     private route: ActivatedRoute,
-    private elementRef: ElementRef) {
+    private elementRef: ElementRef,
+    private projectMoreDetailsService: ProjectMoreDetailsService,
+    ) {
     this.objPortfolioDto = new PortfolioDTO();
     this.objProjectDto = new ProjectDetailsDTO();
     this.BsService.bs_SummaryType.subscribe(t => {
@@ -137,6 +142,17 @@ Prj_Code:any;
       // this.getdeadlinecount();
       // this.getProjectHoldDate();
       // this.getapproval_actiondetails();
+
+      // to make mat dropdown fixed at position
+      const PIsb = document.getElementById('Project_info_slider_bar')
+      PIsb.addEventListener('scroll', () => {
+        this.autocompletes.forEach((ac) => {
+          if (ac.panelOpen)
+            ac.updatePosition();
+        });
+      });
+      // to make mat dropdown fixed at position
+
     });
 
     this.EndDate1.setDate(this.EndDate1.getDate() + 1);
@@ -295,7 +311,8 @@ Prj_Code:any;
   Approver_Name: any;
   Approver_No: any;
   isRequest: any;
-
+  actionList:any
+  projectActionInfo:any
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
@@ -304,10 +321,15 @@ Prj_Code:any;
           this.ProjectNameJson = JSON.parse(data[0]['ProjectName_Json']);
           this.Project_type = this.ProjectNameJson[0]['Project_Type'];
           this.ProjectInfoJson = JSON.parse(data[0]['ProjectInfo_Json']);
-
+          console.log(this.ProjectInfoJson,"this.ProjectInfoJsonthis.ProjectInfoJsonthis.ProjectInfoJson")
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
           this.Approver_No = this.ProjectStatesJson[0]['ApproverEmpNo'];
-          this.isRequest = this.ProjectStatesJson[0]['request_type'];
+          this.isRequest = this.ProjectStatesJson[0]['request_type'];   console.log('this.isRequest:',this.isRequest);
+          this.ProjectType_json=JSON.parse(data[0]['ProjectBlock']);
+          this.Submission=JSON.parse(data[0]['submission_json']);
+          // this.actionList=JSON.parse(data[0]['Action_List']);
+          // console.log( this.actionList," this.actionList this.actionList")
+
           if(this.Approver_No && this.Approver_No==this.Current_user_ID){
             this.getapprovalStats();
           }
@@ -317,6 +339,7 @@ Prj_Code:any;
 
           if (this.Project_type != 'Routine Tasks' && this.Project_type != 'Standard Tasks' && this.Project_type != 'To do List' && this.ProjectStatesJson[0]['action_json'] != undefined) {
             this.Action_countJson = JSON.parse(this.ProjectStatesJson[0]['action_json']);
+            console.log( this.Action_countJson," this.Action_countJson this.Action_countJson")
             this.total = this.Action_countJson.reduce((sum, item) => sum + item.count, 0);
             this.Action_countJson.forEach((item) => {
 
@@ -350,6 +373,7 @@ Prj_Code:any;
           }
 
           this.ProjectStatesJson = JSON.parse(data[0]['ProjectStates_Json']);
+          console.log( this.ProjectStatesJson," this.ProjectStatesJson this.ProjectStatesJson this.ProjectStatesJson")
 
           // console.log(this.ProjectInfoList,"pt");
           // this.ifcategoryZero = this.ProjectInfoList['CompleteReportType'];
@@ -383,9 +407,13 @@ Prj_Code:any;
           this.EmpNo_Own = this.ProjectInfoJson[0]['OwnerEmpNo'];
           this.EmpNo_Res = this.ProjectInfoJson[0]['ResponsibleEmpNo'];
           this.EmpNo_Autho = this.ProjectNameJson[0]['Authority'];
+
+          this.projectActionInfo =JSON.parse(this.ProjectStatesJson[0]['Action_List'])
+          console.log(this.projectActionInfo,'this.projectActionInfo')
           // alert(this.EmpNo_Own);
           //console.log("Date In ----->", this.date1, this.date2)
           this.Project_Responsible = this.ProjectNameJson[0]['Team_Res'];
+
           // Date Diff In Days...
           this.date1 = moment(this.date1);
           this.date2 = moment(this.date2);
@@ -393,6 +421,12 @@ Prj_Code:any;
           this.Difference_In_Days = Math.abs(this.date1.diff(this.date2, 'days'));
           this.subtaskNotFoundMsg = "";
           this._subtaskDiv = false;
+
+          if(this.ProjectStatesJson[0].Status=='Completion Under Approval'){
+            this.get_Dropdowns_data();
+          }
+
+
         }
       });
 
@@ -1072,17 +1106,33 @@ Prj_Code:any;
   Accept_active: boolean = false;
   Conditional_Active: boolean = false;
   Reject_active: boolean = false;
+  Audit_active:boolean=false;
+  Transfer_active:boolean=false;
+  emp_Auditor:string|undefined;
+  empAuditor_remarks:string|undefined;
+
+
 
   removeCommit() {
     this.isTextAreaVisible = false;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
+
+
+    this.Accept_active=false;
+    this.Reject_active=false;
+    this.Audit_active=false;
+    this.Transfer_active=false;
+    this.Conditional_Active=false;
   }
 
   approvalClick(actionType) {
     // $("#ProjectInfoNew").scrollTop(0);
-    this.comments=""
+    this.comments="";
+    this.empAuditor_remarks='';
+    this.emp_Auditor=undefined;
+
    switch (actionType) {
       case 'ACCEPT': {
         this.isRejectOptionsVisible = false
@@ -1092,6 +1142,8 @@ Prj_Code:any;
         $(".Btn_Accpet").addClass('active');
         this.Conditional_Active = false;
         this.Reject_active = false;
+        this.Audit_active=false;
+        this.Transfer_active=false;
       }; break;
       case 'CONDITIONAL': {
         this.isRejectOptionsVisible = false;
@@ -1101,6 +1153,8 @@ Prj_Code:any;
         this.Conditional_Active = true;
         $(".Btn_Conditional_Accept").addClass('active');
         this.Reject_active = false;
+        this.Audit_active=false;
+        this.Transfer_active=false;
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
@@ -1110,8 +1164,31 @@ Prj_Code:any;
         this.Conditional_Active = false;
         this.Reject_active = true;
         $(".Btn_Reject").addClass('active');
-      };
-        break;
+        this.Audit_active=false;
+        this.Transfer_active=false;
+
+      };break;
+      case 'AUDIT':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = '5';
+        this.rejectType = null;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.Audit_active=true;
+        this.Transfer_active=false;
+      };break;
+      case 'TRANSFER':{
+        this.isRejectOptionsVisible = false;
+        this.selectedType = '6';
+        this.rejectType = null;
+        this.Accept_active = false;
+        this.Conditional_Active = false;
+        this.Reject_active = false;
+        this.Audit_active=false;
+        this.Transfer_active=true;
+      };break;
+
       default: { }
     }
     this.isTextAreaVisible = true;
@@ -1174,11 +1251,20 @@ Prj_Code:any;
       console.log(this.singleapporval_json, "accept")
 
     }
-
     else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.projectCode;
       this.approvalObj.Request_type = this.requestType;
+
+      this.approvalObj.taskname=this.sel_prjname;
+      this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
+      this.approvalObj.assignto=this.sel_user;
+      this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
+      this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
+      this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
+      this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
+
+
       if (this.comments == '' || this.comments == null) {
         this.approvalObj.Remarks = 'Accepted';
       }
@@ -1372,7 +1458,7 @@ Prj_Code:any;
           this.new_cost = (this.requestDetails[0]['new_cost']);
           this.new_duration = (this.requestDetails[0]['new_duration']);
           this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
-          this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+          this.Submitted_By = (this.requestDetails[0]['Submitted_By']);   console.log('Submitted_By:',this.Submitted_By);
           const fullName = this.Submitted_By && this.Submitted_By.split(' ');
           this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials1 = this.initials1.toUpperCase();
@@ -2133,8 +2219,8 @@ thirdRecord:any
 
 GetRacisPeople(){
   this.service.NewProjectService(this.projectCode).subscribe(
-    (data)=>{
-      this.Project_List=JSON.parse(data[0]['RacisList'])
+    (data)=>{ debugger
+      this.Project_List=JSON.parse(data[0]['RacisList']);   console.log('Project_List variable :',this.Project_List);
       this.uniqueName_List=new Set(this.Project_List.map(record=>record.RACIS))
       this.uniqueName_array=[...this.uniqueName_List]
       this.newArray=this.uniqueName_array.slice(3).map(item=>" "+item+" ")
@@ -2144,6 +2230,14 @@ GetRacisPeople(){
       this.secondRecord=this.three_Records[1][0]
       this.thirdRecord=this.three_Records[2][0]
       console.log(this.thirdRecord,'==============>')
+
+
+      // If project has project auditor
+      const prj_auditor=this.Project_List.find((item)=>item.Role==='Auditor');
+      if(prj_auditor){
+        this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
+      }
+      // If project has project auditor
     }
   )
 }
@@ -2158,5 +2252,148 @@ GetRacisPeople(){
 
 ///////////////////////////////////// RACIS end /////////////////////////
 
+
+allUsers1:any;
+racisNonRacis:any;
+sel_prjname:string|undefined;  // proj name provided.
+sel_user:any;       // selected emp
+sel_ptype:any;     // selected prj type
+sel_sdate:any;    // selected start date.
+sel_edate:any;   // selected end date.
+sel_submtype:any;  // selected submission type.
+ProjectType_json:any;
+Submission:any;
+todayDate=new Date();   // current date.
+_portfoliosList2:any=[];  // all portfolios list.
+ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
+iscaPortDrpDwnOpen:boolean=false;
+projectAuditor:any;  // project auditor.
+notProvided:boolean=false;
+
+@ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
+openAutocompleteDrpDwn(Acomp:string){
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+}
+
+ closeAutocompleteDrpDwn(Acomp:string){
+  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+  requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+}
+
+
+
+get_Dropdowns_data(){
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectCode).subscribe(
+    (data) => {
+      this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
+      this.allUsers1=(JSON.parse(data[0]['alluserlist']));
+  });
+
+  this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
+    this._portfoliosList2 = data as [];
+    console.log('porfolios found:',this._portfoliosList2);
+
+    // include current portfolio
+    if(this._Urlid=='2'){
+      this.BsService.bs_SelectedPortId.subscribe(prfid => {
+        this.ngDropdwonPort2=[prfid];
+       });
+    }
+    // include current portfolio
+
+
+  });
+
+}
+
+
+
+onca_PortfolioDeSelected(prtid:string){
+  const index=this.ngDropdwonPort2.indexOf(prtid);
+  if(index!==-1){
+   this.ngDropdwonPort2.splice(index,1);
+  }
+}
+
+onca_PortfolioSelected(e){
+  const prtfChoosed = this._portfoliosList2.find((p:any) => p.Portfolio_ID === e.option.value)
+  if (prtfChoosed) {
+    const index = this.ngDropdwonPort2.indexOf(prtfChoosed.Portfolio_ID);
+    if (index === -1) {
+         this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
+    }
+    else{
+         this.ngDropdwonPort2.splice(index,1);
+    }
+
+ }
+//  requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
+
+
+
+getObjOf(arr, id, idName) {
+  if(arr){
+    const obj = arr.find(item => item[idName] == id);
+    return obj?obj:'';
+  }
+  return '';
+}
+
+
+
+
+
+
+onPrjAuditSubmitClicked(){
+        if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
+          this.notProvided=true;
+          return;
+         }
+         else
+         this.notProvided=false;
+
+      const project_code:string=this.projectCode;
+      const empno:string=this.Current_user_ID;
+      const auditor:string=this.emp_Auditor;
+      const remarks:string=this.empAuditor_remarks;
+      this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
+          console.log(res);
+          if(res&&res.message){
+              this.notifyService.showSuccess(res.message,'Success');
+              this.LoadProjectDetails();
+              this.getapprovalStats();
+
+          }
+          else
+            this.notifyService.showError('something went wrong.','Failed');
+
+      })
+}
+
+onTransferBtnClicked(){
+          if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
+              this.notProvided=true;
+              return;
+          }
+          else
+            this.notProvided=false;
+
+          const project_code:string=this.projectCode;
+          const empno:string=this.Current_user_ID;
+          const remarks:string=this.empAuditor_remarks;
+          const newowner:string=this.emp_Auditor;
+          this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
+                  if(res&&res.message){
+                      this.notifyService.showSuccess(res.message,'Success');
+                      this.LoadProjectDetails();
+                      this.getapprovalStats();
+                  }
+                  else{
+                      this.notifyService.showError('something went wrong.','Failed');
+                  }
+          });
+}
 
 }

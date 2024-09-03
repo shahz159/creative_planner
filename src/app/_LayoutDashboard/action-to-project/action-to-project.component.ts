@@ -29,6 +29,7 @@ import {
 } from '@angular/material-moment-adapter';
 import {  MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
+import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -141,7 +142,8 @@ export class ActionToProjectComponent implements OnInit {
     public _Todoproject: ToDoProjectsComponent,
     public _MoreDetails: MoreDetailsComponent,
     private route: ActivatedRoute,
-    public _meetingDetails:MeetingDetailsComponent
+    public _meetingDetails:MeetingDetailsComponent,
+    private projectMoreDetailsService: ProjectMoreDetailsService
   ) {
 
     // super(notifyService,ProjectTypeService,router,dialog,dateAdapter,BsService);
@@ -166,7 +168,6 @@ export class ActionToProjectComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this._projcode = false;
     this._desbool = false;
     this._subname = false;
@@ -226,6 +227,8 @@ export class ActionToProjectComponent implements OnInit {
           placement:'left'
         });
 
+     this.getActionCount(this.pcode);
+
   }
   allocatedHour:any
 
@@ -255,7 +258,9 @@ export class ActionToProjectComponent implements OnInit {
           this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
-          this.allocatedHour= this.createproject.projectInfo.AllocatedHours
+          if(this.createproject.projectInfo){
+            this.allocatedHour= this.createproject.projectInfo.AllocatedHours;
+          }
           const dateOne = new Date(this.disablePreviousDate);
           const dateTwo = new Date(this.ProjectStartDate);
           if(dateTwo > dateOne){
@@ -266,6 +271,7 @@ export class ActionToProjectComponent implements OnInit {
       }
 
     });
+
 
     this.service._GetCompletedProjects(obj).subscribe(
       (data) => {
@@ -287,6 +293,12 @@ export class ActionToProjectComponent implements OnInit {
 
 
 
+
+
+
+
+
+
   getRACISandNonRACIS(){
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
@@ -296,7 +308,7 @@ export class ActionToProjectComponent implements OnInit {
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
         console.log(this.allUsers,"groupby");
-        console.log()
+
 
       });
   }
@@ -710,7 +722,14 @@ debugger
 
 
       });
-    });
+
+
+
+
+
+      });
+
+
    }
 
 
@@ -769,7 +788,19 @@ debugger
     });
   }
   sweetAlert() {
-    debugger
+  
+   const processContinue=()=>{
+
+    
+//     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
+//   Swal.fire({
+//     title:'invalid Date',
+//     text:'you have 3 action on that date',
+//     showCloseButton:true
+//    });
+//    return;
+// }
+
     var datestrEnd = (new Date(this._EndDate)).toUTCString();
     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
     const dateOne = new Date(this._EndDate);
@@ -808,10 +839,30 @@ debugger
     else {
       this.OnSubmit();
     }
+   }
+
+   if(this.owner==this.selectedEmpNo){
+    Swal.fire({
+      title: 'Action owner and responsible are same.',
+      text: 'Do you want to continue?',
+      // icon: 'warning',
+      // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+         processContinue();
+      } 
+    });  
+   }
+   else 
+   processContinue();
+
   }
 
   closeInfo() {
-
+     this.characterCount=0;
     // alert(this._Urlid);
     if(this._Urlid==2){
       debugger
@@ -857,7 +908,7 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
-  Clear_Feilds() {
+  Clear_Feilds() {   debugger
     this.selectedProjectCodelist = [];
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;
@@ -1013,6 +1064,59 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
  return 'TOOSHORT'
 
  }
+
+ characterCount: number = 0;
+
+ updateCharacterCount(): void {
+
+   // Create a temporary div element to strip out HTML tags
+   const tempElement = document.createElement('div');
+   tempElement.innerHTML = this._Description;
+   const textContent = tempElement.textContent || tempElement.innerText || '';
+   this.characterCount = textContent.length;
+ }
+
+
+
+ actionCount:any
+ getActionCount(prjcode){
+
+   this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
+    this.actionCount = JSON.parse(res[0].deadlineList)
+    console.log(this.actionCount,' this.actionCount this.actionCount this.actionCount')
+
+   })
+ }
+
+
+// if (this.actionCount.DeadLine==this.End_Date&&this.actionCount.count>3){
+//   Swal.fire({
+//     title:'invalid Date',
+//     text:'you have 3 action on that date',
+//     showCloseButton:true
+//    });
+//    return;
+// }
+
+
+sameDateActions:boolean=false;
+hasSameDateActions(){
+debugger
+  const result:boolean=this.actionCount.some((item:any)=>{
+    debugger
+             const d1=moment(item.DeadLine).format("MM/DD/YYYY");
+             const d2=moment(this._EndDate).format("MM/DD/YYYY");
+             return (d1==d2&&item.count>3);
+  });
+  this.sameDateActions=result;
+}
+
+
+
+
+
+
+
 
 
 

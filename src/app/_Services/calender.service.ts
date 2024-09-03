@@ -15,7 +15,6 @@ export class CalenderService {
   }
   readonly rootUrl = this.commonUrl.apiurl;
   GetCalenderProjectandsubList(obj: CalenderDTO) {
-
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
@@ -37,6 +36,7 @@ export class CalenderService {
 
   NewGetScheduledtimejson(obj:CalenderDTO){
     this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    this.obj_CalenderDTO.User_Type=obj.User_Type
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
   }
   NewGetPending_request(obj:CalenderDTO){
@@ -208,7 +208,8 @@ export class CalenderService {
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.EventNumber = obj.EventNumber;
     this.obj_CalenderDTO.flagid = obj.flagid;
-    this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    this.obj_CalenderDTO.EmpNo =  localStorage.getItem('EmpNo');
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetAcceptedRequeste", this.obj_CalenderDTO);
   }
   NewGetproposenewtime(obj:CalenderDTO){
@@ -404,6 +405,15 @@ DeletePortfoliosOfMeeting(obj: CalenderDTO) {
   return this.http.post(this.rootUrl + "CalenderAPI/NewUnLinkInMeetingDetails", this.obj_CalenderDTO)
 }
 
+
+DeleteAttachmentOfMeeting(obj: CalenderDTO) {
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No;
+  this.obj_CalenderDTO.fileid=obj.fileid;
+  this.obj_CalenderDTO.flagid=obj.flagid;
+  return this.http.post(this.rootUrl + "CalenderAPI/NewDeleteMeetingAttachments", this.obj_CalenderDTO)
+}
+
 DeleteDMSOfMeeting(obj: CalenderDTO) {
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
@@ -460,7 +470,6 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
 
   return this.http.post(this.rootUrl+'CalenderAPI/NewGetRecurrenceMeetingsService',this.obj_CalenderDTO)
 }
-
 
 
 }

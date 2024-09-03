@@ -71,6 +71,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     public _LinkService: LinkService,
     private notifyService: NotificationService,
+    private route: ActivatedRoute,
     private router: Router, private activatedRoute: ActivatedRoute,
     public createproject: CreateProjectComponent
 
@@ -93,25 +94,51 @@ export class ViewDashboardProjectsComponent implements OnInit {
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
     this.Z2A = false;
-    this._subtaskDiv = true;
-    this.Mode = this.activatedRoute.snapshot.params.Mode;
-    if(this.Mode=='DelayProjects'){
-      this.delayType=this.delayType1;
-      this.getDelayProjects(this.delayType1);
-    }
-    else if(this.Mode=='AssignedActions'){
-      this.getAssignedActions('TOME');
-    }
-    else{
-      this.GetCompletedProjects();
-    }
-    this.getAssignedProjects(this.type1);
-    this.router.navigate(["../ViewProjects/" + this.Mode]);
+    this._subtaskDiv = true;   debugger
+    this.activatedRoute.queryParams.subscribe(params => {
+      const section = params['section'];
+
+      if (section) {
+        // Handle the case when you are coming from the dashboard
+        if (section === 'Projects') {
+          this.getDelayProjects(this.delayType1);
+        } else if (section === 'Actions') {
+          this.getDelayProjects(this.delayType2);
+        } else if (section === 'Assigned Project') {
+          this.Mode = this.activatedRoute.snapshot.params['Mode'];
+          this.getAssignedProjects(this.type1);
+          this.router.navigate(["../ViewProjects/" + this.Mode]);
+        }
+      } else {
+        // Handle the case when you are on this page or coming from another page
+        this.Mode = this.activatedRoute.snapshot.params['Mode'];
+        if (this.Mode === 'DelayProjects') {
+          this.getDelayProjects(this.delayType1);
+        } else if (this.Mode === 'AssignedActions') {
+          this.getAssignedActions('TOME');
+        } else {
+          this.GetCompletedProjects();
+        }
+        this.getAssignedProjects(this.type1);
+        this.router.navigate(["../ViewProjects/" + this.Mode]);
+      }
+    });
+
+
+    // this.route.queryParams.subscribe(params => {
+    //   const section=params.section;
+    //   this.getDelayProjects(section=='Projects'?this.delayType1:section=='Actions'?this.delayType2:this.delayType1);
+    // });
+
+
     // this.notFoundData=true;
     //this.AssignedTask = true;
     //this.projectsDataTable = false;
     //this.portfolioName = localStorage.getItem('_PortfolioName');
   }
+
+
+
   initials: string;
   SubmissionType: string;
   SubmissionType1: string; StandardDuration: string;
@@ -128,8 +155,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
   MoreDetailsList: any;
 
   openInfo(prjCode:string,actCode:string) {
-    debugger
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
+    debugger
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     if(prjCode&&actCode)
       this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
@@ -213,7 +240,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe((data) => {
-        
+
           if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;
             this.notSelectedAnything_msg2 = "Please select from dashboard, the data you're looking for";
@@ -221,12 +248,12 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this._CurrentpageRecords = 0;
           }
           else {
-            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']); 
-           
+            this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+console.log(this._ProjectDataList,'_ProjectDataList')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-          
+
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
           }
@@ -239,6 +266,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
 
   getDelayProjects(type) {
+    debugger
     this.projectsDataTable = false;
     this.AssignedTask = true;
     this.delayType=type;
@@ -281,14 +309,15 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+            console.log(  this._ProjectDataList,'_ProjectDataList')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-         
+
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
             // this.portfolio_List=JSON.parse(this._ProjectDataList['availableports'])
-            
+
              console.log(this._ProjectDataList,"portfolio_List")
           }
         });
@@ -299,7 +328,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   Type: String;
 
   getAssignedProjects(type) {
-
+debugger
     let EmpNo = this.Current_user_ID;
     if (this.Mode == "AssignedTask") {
       this.AssignedTask = false;
@@ -327,9 +356,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
             this._CurrentpageRecords = 0;
           }
           else {
-            debugger
             this._AssignedProjectsList = JSON.parse(data[0]['JsonData_Json']);
-          
+          console.log(this._AssignedProjectsList,'Task Assigned list')
             this._CurrentpageRecords = this._AssignedProjectsList.length;
             if (type == 'Assigned by me')
               this._totalProjectsCount = (data[0]['AssignTOcount']);
@@ -337,14 +365,14 @@ export class ViewDashboardProjectsComponent implements OnInit {
               this._totalProjectsCount = (data[0]['AssignBYcount']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-           
+
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             console.log(this.TypeContInFilter, "TypeContInFilter");
-            
+
             console.log(this.StatusCountFilter, "StatusCountFilter");
 
             console.log(this.EmpCountInFilter, "EmpCountInFilter");
-           
+
           }
         });
     }
@@ -504,7 +532,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe(data => {
-        
+
           this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
@@ -532,7 +560,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           //Status
           if (this.selectedItem_Status.length == 0) {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-            
+
           }
           else {
             this.StatusCountFilter = this.selectedItem_Status[0];
@@ -587,7 +615,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           //Status
           if (this.selectedItem_Status.length == 0) {
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-           
+
           }
           else {
             this.StatusCountFilter = this.selectedItem_Status[0];
@@ -665,7 +693,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this._LinkService._GetMemosSubject(this._JsonString).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-             
+
             });
         }
         else {
@@ -855,7 +883,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this._LinkService._GetMemosSubject(this._JsonString).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-           
+
             });
         }
         else {
@@ -888,7 +916,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
             subscribe((data) => {
               // console.log("------------>", data);
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-             
+
               console.log("Subject Name ------------>", this._MemosSubjectList);
             });
         }
@@ -905,12 +933,12 @@ export class ViewDashboardProjectsComponent implements OnInit {
       document.getElementById("portfloSideBar").style.width = "0";
       this.notifyService.showInfo("",'No dms link in this project')
     }
-    
+
   }
 
   _displayPrtName:any
   _OpenfortfolioInfo(index:number,Project_Name) {
-   
+
      this._displayPrtName=Project_Name
     this.portfolio_List=JSON.parse(this._ProjectDataList[index]['availableports']);
     if(this.portfolio_List!=null){
@@ -923,8 +951,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
     }
    }
 
-   
- 
+
+
    OnCardClick(P_id: any) {
     sessionStorage.setItem('portfolioId', P_id);
     let name: string = 'portfolioprojects';
@@ -946,7 +974,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   }
 
   newDetails(pcode,acode:string|undefined) {
-
+debugger
     let qparams='';
     if(acode!==undefined){
       qparams=`?actionCode=${acode}`;
@@ -1019,7 +1047,7 @@ getAssignedActions(type:'BYME'|'TOME'){
           this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
           this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
-        
+
           this._CurrentpageRecords = this._ProjectDataList.length;
           this._totalProjectsCount = data[0]['delaycount'];
           // console.log(this._ProjectDataList,"delay actions")
@@ -1067,6 +1095,15 @@ openAssignedProject(assignId:string) {
 //   myWindow.focus();
 }
 
+
+
+getFormattedDelay(delayDays: any): string {
+  let delayText = '';
+  if (delayDays >= 365) {
+    const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+    else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+    else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+    else { delayText = `${delayDays} days`; } return `${delayText} Delay`; }
 
 
 

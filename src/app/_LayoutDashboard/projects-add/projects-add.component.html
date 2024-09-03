@@ -1,3 +1,5 @@
+<ng-container *ngIf="userFound!==undefined;else pleasewait">
+  <ng-container *ngIf="(userFound===true)">
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3">
     <!--Begin::Row    DIV ONE -->
     <div class="row">
@@ -124,7 +126,7 @@
 
                                                                 <input type="checkbox" (change)="isStatusChecked(item)"
                                                                     [(ngModel)]="item.checked" [checked]="item">
-                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Enactive Under Approval"?"Enactive approval"  :item.Name=="Project Hold Under Approval"?"Hold approval" :item.Name=="Deadline Extend Under Approval"?"Deadline extend approval":item.Name=="Cancellation Under Approval"?"Cancellation approval"   :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name =="Not Started"?"Draft":item.Name}}
+                                                                    {{item.Name=='Under Approval'?'New Approval' :item.Name=="Enactive Under Approval"?"Enactive approval"  :item.Name=="Project Hold Under Approval"?"Hold approval" :item.Name=="Deadline Extend Under Approval"?"Deadline extend approval":item.Name=="Cancellation Under Approval"?"Cancellation approval"   :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :item.Name=='InProcess'?'In-process':item.Name }}
                                                                 <span></span>
                                                             </label>
                                                             <span class="count-btn">{{item.Count}}</span>
@@ -471,10 +473,20 @@
                                                         <div *ngIf="item.Status=='Completion Under Approval'">
                                                             <span class="Completion-Under-Approval font-weight-400">Completion approval
                                                             </span>
+                                                            <span class="attach-tippy ">
+                                                                <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.iscloud,item.Filename,item.FileUrl,item.contentType,item.Team_Res)"></b>
+                                                             <span class="st-line curser-pointer" (click)="LoadDocument(item.iscloud,item.Filename,item.FileUrl,item.contentType,item.Team_Res)">
+                                                               <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                                                                <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                            </span>
+                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                             <span class="Cancellation-Under-Approval font-weight-400">Cancellation approval
                                                             </span>
+                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancelled'">
                                                             <span class="Cancelled font-weight-400">Cancelled
@@ -483,13 +495,17 @@
                                                         <div *ngIf="item.Status=='Under Approval'">
                                                             <span class="under-approval font-weight-400">New approval
                                                             </span>
+                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                                             <span class="Forward-Under-Approval font-weight-400">Forward approval
                                                             </span>
+                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Not Started'">
-                                                          <span class="Not-Started font-weight-400">Draft
+                                                          <span class="Not-Started font-weight-400">Not Started
                                                           </span>
                                                       </div>
                                                       <div *ngIf="item.Status=='ToDo Achieved'">
@@ -557,7 +573,29 @@
         </div>
     </div>
 </div>
+  </ng-container></ng-container>
 <!-- Link memos Template -->
+<ng-template #pleasewait>
+
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template>
 
 
 <div id="Project_info_slider_bar" class="project-info-side-bar animate-right">

@@ -7,16 +7,47 @@ import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS,} from '@angular/material-moment-adapter';
+import * as moment from 'moment';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+  providers:[]
+};
 
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css']
+  styleUrls: ['./notification.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
 export class NotificationComponent implements OnInit {
   autocompleteOptions: string[] = ['One', 'Two', 'Three'];
   Current_user_ID: any;
+  Current_user_Name:any;
   _NotificationActivityList: NotificationActivityDTO[];
   _RequestActivity: [];
   _DarActivityList: [];
@@ -62,6 +93,7 @@ export class NotificationComponent implements OnInit {
   ngOnInit(){
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.Current_user_Name=localStorage.getItem('UserfullName');
     this.viewAll(this.sendtype);
     this.showPrjAprv();
     this.newNotificationLeave()
@@ -92,7 +124,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = type;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
-      (data) => { debugger
+      (data) => { 
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
@@ -370,39 +402,60 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     this.router.navigate(["Notifications"]);
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
+    
     document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
+    this.clear_requisitionForm_Info();
+
     document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
+
   }
 
   LeaveDetail: any;
-  myLeaveDetails:any;
-  currentReqIndex: number = 0;
+  // myLeaveDetails:any;
+  empInformation:any;
+  empLeaveDetails:any;
+  managerApproval:any;
+  hrApproval:any;
+
+  currentReqIndex: number = -1;
   currentResIndex:number=0;
+  notProvided:boolean=false;
   open_leave_requisition(index, submitby, leavecode) {
     this.currentReqIndex = index;
-    this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
-      this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json'])
+    this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => { 
+      this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json']);
+      this.lv_startdate=moment(this.LeaveDetail[0].VacFrom);
+      this.lv_enddate=moment(this.LeaveDetail[0].VacTo);
       console.log(this.LeaveDetail, "leavedetailss")
     });
-
-
     $('#leave_requisition_slider_bar').addClass('open_requisition_sidebar_info');
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
-
   }
 
 
 
   close_requisition_Info() {
+    this.clear_requisitionForm_Info();
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
   }
+  
+
+  clear_requisitionForm_Info(){
+    this.currentReqIndex=-1;
+    this.LeaveDetail=null;
+    this.lv_startdate=null;
+    this.lv_enddate=null;
+    this.aprv_cmts=null;
+    this.notProvided=false;
+    this.leaveDecision='APPROVE';
+  }
+
 
   showPrjAprv(){
     document.getElementById('prj-aprv-list').classList.remove('d-none');
@@ -410,25 +463,65 @@ export class NotificationComponent implements OnInit {
   }
 
 
-  leaveform(index,currentuser,leavecode){
+  // leaveform(index,currentuser,leavecode){
+  
+  //   this.currentResIndex=index;
 
+
+
+  //   this.approvalservice.GetEmployeeLeaveDetail(currentuser, leavecode).subscribe((data) => {
+  //       console.log("responssesse:",data);
+  //       // this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
+  //       // console.log("leave deatils asdf:",this.myLeaveDetails);
+       
+  //     });
+
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  //   document.getElementById("leave_requisition_form_slider_bar").classList.add("kt-quick-panel--on");
+  //   $('#leave_requisition_form_slider_bar').addClass('open_requisition_sidebar_info');
+  // }
+
+
+
+  viewLeaveResponseDetails(index:number,leaveCode:string,requestType:string){
     this.currentResIndex=index;
-    this.approvalservice.GetEmployeeLeaveDetail(currentuser, leavecode).subscribe((data) => {
-        console.log("responssesse:",data);
-        this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
-        console.log("leave deatils asdf:",this.myLeaveDetails);
-        // this.myLeaveDetails=JSON.parse(data[0]['LeaveResponsedetails']);
-        // console.log('asdf:',this.myLeaveDetails);
-      });
+    this.approvalObj.Emp_no=this.Current_user_ID;
+    this.approvalObj.Leave_Code=leaveCode;
+    this.approvalObj.Request_type=requestType;
 
+    this.approvalservice.NewGetEmployeeLeaveResponse(this.approvalObj).subscribe((res:any)=>{
+            console.log('NewGetEmployeeLeaveResponse  data: ',res);
+             if(res){
+              this.empInformation=JSON.parse(res[0].EmpInformation);
+              this.empLeaveDetails=JSON.parse(res[0].EmpLeaveDetails);
+              
+              const mngAprv=JSON.parse(res[0].ManagerApproval);
+              if(mngAprv&&mngAprv.length>0){
+                 this.managerApproval=mngAprv[0];
+                 this.managerApproval.duration=Math.abs(moment(mngAprv[0].Start_Date).diff(moment(mngAprv[0].End_Date),'days'))+1;
+              }
+              
+              const hrAprvl=JSON.parse(res[0].HRApproval);
+              if(hrAprvl&&hrAprvl.length>0){
+                  this.managerApproval=hrAprvl[0];
+                  this.hrApproval=hrAprvl[1];
+                  this.managerApproval.duration=Math.abs(moment(this.managerApproval.Start_Date).diff(moment(this.managerApproval.End_Date),'days'))+1;
+                  this.hrApproval.duration=Math.abs(moment(this.hrApproval.Start_Date).diff(moment(this.hrApproval.End_Date),'days'))+1;
+              }
+              else 
+              this.hrApproval=null;
 
-
+             }   
+    });
 
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("leave_requisition_form_slider_bar").classList.add("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').addClass('open_requisition_sidebar_info');
   }
+
+
   close_requisition_form() {
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -533,7 +626,7 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  isTypeChecked(item) {  debugger
+  isTypeChecked(item) {  
     let arr = [];
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
@@ -603,8 +696,8 @@ export class NotificationComponent implements OnInit {
 
 
   applyFilters() {
+
     
-    debugger
 
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -630,10 +723,10 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
-      .subscribe(data => {   debugger
+      .subscribe(data => {   
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
 
-        
+
 
 
         //Emp
@@ -642,18 +735,18 @@ export class NotificationComponent implements OnInit {
         }
         else {
           let _empjsonnew=JSON.parse(data[0]['Employee_json']);
-          
+
 // new
           let _updateddata=_empjsonnew.filter(item=>item.Emp_No==this.selectedItem_Emp[0][0].Emp_No);
           if(_updateddata.length>0){
               _updateddata[0].checked=true;
               this.EmpCountInFilter = _updateddata;
-          } 
+          }
           else if(_updateddata.length==0){
              this.EmpCountInFilter=_empjsonnew;
              this.selectedItem_Emp.length=0;
           }
-// new            
+// new
 
         }
          //Request
@@ -752,7 +845,7 @@ export class NotificationComponent implements OnInit {
 
       });
 
-      
+
   }
 
   search_Type: any[];
@@ -954,9 +1047,9 @@ acceptSelectedValues() {
         else {
           this.edited = true;
         }
-        
+
     });
-    
+
   }
   else{
     this.notifyService.showInfo("Please select atleast one project to approve",'');
@@ -1165,48 +1258,117 @@ acceptSelectedValues() {
   // }
 
 //  leave requests approval start
-leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined;
-onSubmitLRbtn(){
+leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined='APPROVE';
+aprv_cmts:string|undefined;
+lv_startdate:any;
+lv_enddate:any;
+previousCmts:any=[];
+cmts_Loading:boolean=false;
+today:Date=new Date();
 
+onSubmitLRbtn(){debugger
 
-
+  if(  (this.aprv_cmts&&this.aprv_cmts.trim())&&
+       (this.leaveDecision=='APPROVEBUT'?(this.lv_startdate&&this.lv_enddate):true)
+    ){
+  this.notProvided=false; 
+  
   let type:any;
-  if(this.leaveDecision==='REJECTED'){
-        // leave request rejected
-        type="Leave Rejected";
+  let fr_date:string|undefined;
+  let to_date:string|undefined;
+
+  if(this.leaveDecision=='APPROVE'||this.leaveDecision=='APPROVEBUT')
+  type='Approve';
+  else if(this.leaveDecision=='REJECTED')
+  type='Reject';
+  
+ 
+  if(this.leaveDecision=='APPROVE'||this.leaveDecision=='REJECTED'){
+     fr_date=moment(this.LeaveDetail[0].VacFrom).format('YYYY-MM-DD');
+     to_date=moment(this.LeaveDetail[0].VacTo).format('YYYY-MM-DD');
   }
-  else{
-      // leave request approve
-      if (this.leave_Requests[this.currentReqIndex].Req_Type.trim() == "New Leave")
-        type = "Approved Leave";
-      else if (this.leave_Requests[this.currentReqIndex].Req_Type.trim() == "Modified Leave")
-        type = "Approved Leave";
-      else if (this.leave_Requests[this.currentReqIndex].Req_Type.trim() == "Approved Leave")
-        type = "Leave Sanction";
+  else if(this.leaveDecision=='APPROVEBUT'){
+    fr_date=this.lv_startdate.format('YYYY-MM-DD');
+    to_date=this.lv_enddate.format('YYYY-MM-DD');
   }
 
-  this.approvalObj.Project_Code=this.leave_Requests[this.currentReqIndex].Leave_Code.trim();
+
+  this.approvalObj.Emp_no=this.Current_user_ID;
+  this.approvalObj.Leave_Code=this.leave_Requests[this.currentReqIndex].Leave_Code.trim();
   this.approvalObj.Type=type;
   this.approvalObj.SNo=this.leave_Requests[this.currentReqIndex].Sno;
-  this.approvalObj.Remarks=this.LeaveDetail[0].Remarks;
-  this.approvalObj.From_Date=this.LeaveDetail[0].Start_Date;
-  this.approvalObj.End_Date=this.LeaveDetail[0].End_Date;
-  this.approvalObj.sendFrom=this.leave_Requests[this.currentReqIndex].SubmittedBy.trim();
+  this.approvalObj.FromDate=fr_date;
+  this.approvalObj.ToDate=to_date;  
+  this.approvalObj.Remarks=this.aprv_cmts;
+  try{
   this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
-         console.log("approveleaveRequest:",res);
+      console.log("approveleaveRequest:",res);
+      if(res&&res.message){
+           if(res.message=='Not Updated')
+           this.notifyService.showError(res.message,'Failed');
+           else{
+               this.notifyService.showSuccess(res.message,'Success');
+               this.close_requisition_Info();
+               this.newNotificationLeaveRequests();
+           }
+          
+      }
+      else 
+      this.notifyService.showError('Something went wrong.','');
+  });
+   }catch(e){
+        console.log('error after leave response submitted:',e);
+        this.notifyService.showError('Something went wrong.','');
+   }
 
-  })
-
-
+  } 
+  else
+  this.notProvided=true;
+  
 }
 
 onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
-  this.leaveDecision=decision
+  this.leaveDecision=decision;
+  this.lrprev_comments();
+}
+
+
+lrprev_comments()
+{
+    let aprvDto=new ApprovalDTO();
+    aprvDto.Emp_no=this.Current_user_ID;
+    aprvDto.Request_type=(this.leaveDecision=='APPROVE'||this.leaveDecision=='APPROVEBUT')?'Approved Leave':'Leave Rejected';
+    this.cmts_Loading=true;
+    this.approvalservice.NewGetLeaveComments(aprvDto).subscribe((res:any)=>{
+     this.cmts_Loading=false;
+     if(res)
+     {
+      this.previousCmts=JSON.parse(res.previousComments_JSON);           
+     }
+    }); 
+}
+
+putCmts(cmt:string)
+{
+   if(!this.aprv_cmts)
+      this.aprv_cmts='';
+   this.aprv_cmts=this.aprv_cmts+cmt;
 }
 
 
 // leave requests approval end
+onButtonClick(buttonId: string) {
+  const elements = document.getElementsByClassName('btn-filtr');
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].classList.remove('active');
+  }
 
+
+  if(buttonId=='tot')
+    document.getElementById('tot').classList.add('active');
+  else if(buttonId=='inn')
+    document.getElementById('inn').classList.add('active');
+}
 
 
 }

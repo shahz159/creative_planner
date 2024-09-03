@@ -20,7 +20,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -28,7 +28,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { MatCalendar} from '@angular/material/datepicker';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Observable, Subscription } from 'rxjs';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -41,7 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
-import { ThisReceiver } from '@angular/compiler';
+
 declare var FusionCharts: any;
 
 declare const ApexCharts:any;
@@ -110,7 +110,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   myDelayPrjActions:any=[];
   delayActionsOfEmps:any=[];
   actionsWith0hrs:any=[];
+  selfAssignedActns:any=[];
+  pendingActns4Aprvls:any=[];
   totalActionsWith0hrs:number=0;
+  totalSelfAssignedActns:number=0;
+  totalPActns4Aprvls:number=0;
 
 
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -238,6 +242,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
     // get all project details from the api.
     this.getapprovalStats();
+    this.getstandardapprovalStats();
     this.getusername();
     this.gethierarchy();
     this.showActionDetails(undefined);     // initially show the Project details
@@ -247,6 +252,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
+    // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     $(document).on('change', '.custom-file-input', function (event) {
@@ -321,175 +327,175 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   prjBARCHART:any;
   prjPIECHART:any;
 
-  drawStatistics() {
-//standard graph cal start
-let x=0;
-let AL=0;
-if(['003','008'].includes(this.projectInfo.Project_Block)){
+//   drawStatistics() {
+// //standard graph cal start
+// let x=0;
+// let AL=0;
+// if(['003','008'].includes(this.projectInfo.Project_Block)){
 
-  let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
-  let d2=new Date();                           // TODAY DATE.
-  x=0;
-  switch(this.projectInfo.SubmissionId){
-        case 1:{ x=moment(d1).diff(d2,'days');    };break;
-        case 2:{ x=moment(d1).diff(d2,'weeks');    };break;
-        case 3:{ x=moment(d1).diff(d2,'months');    };break;
-        case 4:{ x=moment(d1).diff(d2,'quarters');   };break;
-        case 5:{      };break;
-        case 6:{ x=moment(d1).diff(d2,'years');     };break;
-  }
-
-
-  let timestr=this.projectInfo.StandardAllocatedHours;
-  let t=timestr.split(':');
-  let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
-  AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
-
-}
-//standard graph cal end
-
-if(this.tlTotalHours){
-
-// 1. bar chart.
-var options = {
-  series: [{
-    data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
-      : [AL, this.tlTotalHours, (AL - this.tlTotalHours).toFixed(2)]
-  }],
-  chart: {
-    type: 'bar',
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      distributed: true,
-      horizontal: false,
-      columnWidth: '62%',
-    }
-  },
-  dataLabels: {
-    enabled: true,
-    style:{
-       colors:['#3a81c9','#3e6be0','#303031'],
-       fontFamily:'Lucida Sans Unicode'
-    },
-    formatter: function (v) {
-      return v + ' hrs';
-    }
-  },
-  yaxis: {
-    title: {
-      text: ''
-    },
-    labels: {}
-  },
-  xaxis: {
-    categories: ['Allocated', 'Used', 'Remaining'],
-    labels: {
-      rotate: -90
-    }
-  },
-  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
-         ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-         ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
-
-};
-
-if (this.prjBARCHART)
-  this.prjBARCHART.destroy();
-
-this.prjBARCHART = new ApexCharts(document.querySelector("#Bar-chart"), options);
-this.prjBARCHART.render();
-
-// 2. pie chart.
-let usedhr=this.tlTotalHours;
-let remaininghr=['003','008'].includes(this.projectInfo.Project_Block)?(AL-this.tlTotalHours):(Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours);
-
-if(remaininghr<0){
-  remaininghr=0;
-  usedhr=this.projectInfo.AllocatedHours;
-}
-
-var options1 = {
-  series: [usedhr,remaininghr],
-  chart: {
-    width: 480,
-    type: 'donut',
-    dropShadow: {
-      enabled: true,
-      color: '#b1b1b1',
-      top: 0,
-      left: 0,
-      blur: 1,
-      opacity: 0.5
-    }
-  },
-  stroke: {
-    width: 0,
-  },
-  plotOptions: {
-    pie: {
-      donut: {
-        labels: {
-          show: true,
-          total: {
-            showAlways: true,
-            show: true
-          }
-        }
-      }
-    }
-  },
-  labels: ["Used Hours", "Remaining Hours"],
-  dataLabels: {
-   style:{
-     colors:['#2b4790','#616262'],
-     fontWeight:'normal',
-   },
-
-  },
-  states: {
-    hover: {
-      filter: 'none'
-    }
-  },
-  theme: {
-    palette: 'palette2'
-  },
-  colors: ['#8faeff', '#dbe1e4'],
-  title: {
-    text: "Hours used",
-    style: {
-      fontSize: '10px',
-      color: '#6b6b6b',
-      fontFamily: 'Lucida Sans Unicode',
-      fontWeight: 'bold'
-
-    }
-  },
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 200
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }]
-};
-if(this.prjPIECHART)
-this.prjPIECHART.destroy();
-this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1);
-this.prjPIECHART.render();
+//   let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
+//   let d2=new Date();                           // TODAY DATE.
+//   x=0;
+//   switch(this.projectInfo.SubmissionId){
+//         case 1:{ x=moment(d1).diff(d2,'days');    };break;
+//         case 2:{ x=moment(d1).diff(d2,'weeks');    };break;
+//         case 3:{ x=moment(d1).diff(d2,'months');    };break;
+//         case 4:{ x=moment(d1).diff(d2,'quarters');   };break;
+//         case 5:{      };break;
+//         case 6:{ x=moment(d1).diff(d2,'years');     };break;
+//   }
 
 
-}else{
-    setTimeout(()=>this.drawStatistics(),2000);   // if tlTotalHours is undefined then run drawStatistics when tlTotalHours is defined.
-}
+//   let timestr=this.projectInfo.StandardAllocatedHours;
+//   let t=timestr.split(':');
+//   let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
+//   AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
 
-  }
+// }
+// //standard graph cal end
+
+// if(this.tlTotalHours){
+
+// // 1. bar chart.
+// var options = {
+//   series: [{
+//     data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
+//       : [AL, this.tlTotalHours, (AL - this.tlTotalHours).toFixed(2)]
+//   }],
+//   chart: {
+//     type: 'bar',
+//     height: 350
+//   },
+//   plotOptions: {
+//     bar: {
+//       distributed: true,
+//       horizontal: false,
+//       columnWidth: '62%',
+//     }
+//   },
+//   dataLabels: {
+//     enabled: true,
+//     style:{
+//        colors:['#3a81c9','#3e6be0','#303031'],
+//        fontFamily:'Lucida Sans Unicode'
+//     },
+//     formatter: function (v) {
+//       return v + ' hrs';
+//     }
+//   },
+//   yaxis: {
+//     title: {
+//       text: ''
+//     },
+//     labels: {}
+//   },
+//   xaxis: {
+//     categories: ['Allocated', 'Used', 'Remaining'],
+//     labels: {
+//       rotate: -90
+//     }
+//   },
+//   colors:['003', '008'].includes(this.projectInfo.Project_Block)?
+//          ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
+//          ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
+
+// };
+
+// if (this.prjBARCHART)
+//   this.prjBARCHART.destroy();
+
+// this.prjBARCHART = new ApexCharts(document.querySelector("#Bar-chart"), options);
+// this.prjBARCHART.render();
+
+// // 2. pie chart.
+// let usedhr=this.tlTotalHours;
+// let remaininghr=['003','008'].includes(this.projectInfo.Project_Block)?(AL-this.tlTotalHours):(Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours);
+
+// if(remaininghr<0){
+//   remaininghr=0;
+//   usedhr=this.projectInfo.AllocatedHours;
+// }
+
+// var options1 = {
+//   series: [usedhr,remaininghr],
+//   chart: {
+//     width: 480,
+//     type: 'donut',
+//     dropShadow: {
+//       enabled: true,
+//       color: '#b1b1b1',
+//       top: 0,
+//       left: 0,
+//       blur: 1,
+//       opacity: 0.5
+//     }
+//   },
+//   stroke: {
+//     width: 0,
+//   },
+//   plotOptions: {
+//     pie: {
+//       donut: {
+//         labels: {
+//           show: true,
+//           total: {
+//             showAlways: true,
+//             show: true
+//           }
+//         }
+//       }
+//     }
+//   },
+//   labels: ["Used Hours", "Remaining Hours"],
+//   dataLabels: {
+//    style:{
+//      colors:['#2b4790','#616262'],
+//      fontWeight:'normal',
+//    },
+
+//   },
+//   states: {
+//     hover: {
+//       filter: 'none'
+//     }
+//   },
+//   theme: {
+//     palette: 'palette2'
+//   },
+//   colors: ['#8faeff', '#dbe1e4'],
+//   title: {
+//     text: "Hours used",
+//     style: {
+//       fontSize: '10px',
+//       color: '#6b6b6b',
+//       fontFamily: 'Lucida Sans Unicode',
+//       fontWeight: 'bold'
+
+//     }
+//   },
+//   responsive: [{
+//     breakpoint: 480,
+//     options: {
+//       chart: {
+//         width: 200
+//       },
+//       legend: {
+//         position: 'bottom'
+//       }
+//     }
+//   }]
+// };
+// if(this.prjPIECHART)
+// this.prjPIECHART.destroy();
+// this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1);
+// this.prjPIECHART.render();
+
+
+// }else{
+//     setTimeout(()=>this.drawStatistics(),2000);   // if tlTotalHours is undefined then run drawStatistics when tlTotalHours is defined.
+// }
+
+//   }
 
   drawStatisticsNew(){
     if(this.currentActionView===undefined){
@@ -697,8 +703,6 @@ this.prjPIECHART.render();
 
 
 
-
-
   private loadData() {
     this.subscription = this.service.DARGraphCalculations_Json(this.URL_ProjectCode)
       .subscribe(data => {
@@ -823,7 +827,7 @@ this.prjPIECHART.render();
   requestlist: any;
   approverequestlist: any=[];
   noapproverequestlist: any=[];
-  
+
   // getRequestAcessdetails(){
   //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
   //     this.requestlist=JSON.parse(res[0]['requestlist']);
@@ -876,13 +880,15 @@ this.prjPIECHART.render();
 
   requestaccessList:any=[];
   deadlineExtendlist:any;
-  totaldeadlineExtend:any
+  totaldeadlineExtend:any;
+  // projectActionDelay:any;
+  // projectDelay:any;
 
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);
+      this.Submission = JSON.parse(res[0].submission_json);  
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
@@ -936,6 +942,30 @@ this.prjPIECHART.render();
 
       }
 
+
+      // this.projectActionDelay = this.projectActionInfo.map((action) => {
+      //   let delayText = '';
+      
+      //   if (action.Delaydays >= 365) {
+      //     const years = Math.floor(action.Delaydays / 365);
+      //     delayText = years === 1 ? '1 year' : `${years} years`;
+      //   } else if (action.Delaydays >= 30) {
+      //     const months = Math.floor(action.Delaydays / 30);
+      //     delayText = months === 1 ? '1 month' : `${months} months`;
+      //   } else if (action.Delaydays >= 7) {
+      //     const weeks = Math.floor(action.Delaydays / 7);
+      //     delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+      //   } else {
+      //     delayText = `${action.Delaydays} days`;
+      //   }
+      
+      //   return {
+      //     ...action,
+      //     Delaydays: delayText
+      //   };
+      // });
+      
+  
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -971,6 +1001,8 @@ this.prjPIECHART.render();
 
      if(this.projectActionInfo){
       this.actionsWith0hrs=[];   // must be empty before calculation.
+      this.selfAssignedActns=[];  // must be empty before calculation.
+      this.pendingActns4Aprvls=[];   // must be empty before calculation.
      this.projectActionInfo.forEach((actn)=>{
             if(Number.parseInt(actn.AllocatedHours)===0){
               const temp=this.actionsWith0hrs.find(item=>item.name===actn.Responsible);
@@ -979,9 +1011,31 @@ this.prjPIECHART.render();
               else
               this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });
             }
+         
+            if(actn.Project_Owner==actn.Team_Res){     
+              const temp=this.selfAssignedActns.find(item=>item.name===actn.Responsible);
+              if(temp)
+              temp.selfactns+=1;
+              else  
+              this.selfAssignedActns.push({name:actn.Responsible, selfactns:1,empno:actn.Team_Res});
+            }
+
+
+            if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
+                  
+                  const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
+                  if(temp)
+                  temp.totalApprovals+=1;
+                  else
+                  this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
+            }
+
+
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
-    }
+     this.totalSelfAssignedActns=this.projectActionInfo.filter(item=>item.Project_Owner==item.Team_Res).length;
+     this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
+     }
 
 
 
@@ -1008,13 +1062,73 @@ this.prjPIECHART.render();
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex);
     }
-    this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
+    // this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
     // setTimeout(() => this.drawStatistics(), 5000);
     setTimeout(()=>this.drawStatisticsNew(),3000);
+
+
+  
+    if(this.projectInfo&&this.projectInfo.Status=='Completed'){
+         this.prjRunFor=Math.abs(moment(this.projectInfo.StartDate).diff(moment(this.projectInfo.CD),'days'))+1;
+         this.completionOffset=moment(this.projectInfo.CD).diff(moment(this.projectInfo.EndDate),'days');
+         console.log('completionOffset value:',this.completionOffset);
+    }
+   
+
     });
   }
 
+  completionOffset:number=0;
 
+
+  getDelayText(action: any): string {
+    if (!action || action.Delaydays == null) return '';
+  
+    let delayText = '';
+  
+    if (action.Delaydays >= 365) {
+      const years = Math.floor(action.Delaydays / 365);
+      delayText = years === 1 ? '1 year' : `${years} years`;
+    } else if (action.Delaydays >= 30) {
+      const months = Math.floor(action.Delaydays / 30);
+      delayText = months === 1 ? '1 month' : `${months} months`;
+    } else if (action.Delaydays >= 7) {
+      const weeks = Math.floor(action.Delaydays / 7);
+      delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+    } else {
+      delayText = `${action.Delaydays} day(s)`;
+    }
+  
+    return delayText + ' Delay';
+  }
+  
+  
+  getStandardText(action: any): string {
+    if (!action?.Status) return '';
+  
+    const days = parseInt(action.Status);
+    if (isNaN(days)) return action.Status; // Return original status if it's not a number
+  
+    const periods = [
+      { unit: 'year', duration: 365 },
+      { unit: 'month', duration: 30 },
+      { unit: 'week', duration: 7 }
+    ];
+  
+    for (const { unit, duration } of periods) {
+      const count = Math.floor(days / duration);
+      if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
+    }
+  
+    return `${days} day${days === 1 ? '' : 's'}`;
+  }
+  
+  
+  
+  
+  
+
+  prjRunFor:number=0;
   uniqueName:any
   uniqueNamesArray:any
   firstthreeRecords:any
@@ -1054,48 +1168,60 @@ this.prjPIECHART.render();
           if(prj_auditor){
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
-// If project has project auditor        
+// If project has project auditor
 
-          
-          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{ 
+
+          this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
             console.log(this.PeopleOnProject,"sssssssss")
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
-              if(p)
-               obj.contribution=p.RespDuration;
+              if(p){
+                  obj.contribution=p.RespDuration;
+                  obj.totalActionsCreated=p.SubtaskCount;
+              }
+             
             }
 
+
             if(this.filteremployee){
-              const hasActions:boolean=this.filteremployee.map(item=>item.Team_Res).includes(emp); 
+              const hasActions:boolean=this.filteremployee.map(item=>item.Team_Res).includes(emp);
               obj.isRemovable=(obj.Role.includes('Support')&&hasActions==false);
             }
-            
+            else {
+              // prj type is core,secondary and has 0 actions.
+              // prj type is std,routine,todo
+               obj.isRemovable=obj.Role.includes('Support');
+            }
+
             return obj;
           });
-  
+
 
         }
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+
       (data) => {
 
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
-        this.filteredEmployees = this.nonRacisList;    
+        this.filteredEmployees = this.nonRacisList;
 
         let RACISList = (JSON.parse(data[0]['RacisList']));
 
         if (RACISList && RACISList.length > 0) {
+
           const racisUserIds = RACISList.map((user: any) => user.Emp_No);
           this.userFound = racisUserIds.includes(this.Current_user_ID);
         }
 
 
         this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
-        
+        this.allUsers1=(JSON.parse(data[0]['alluserlist']));
+
       });
 
 
@@ -1126,23 +1252,48 @@ this.prjPIECHART.render();
         if (data !== null && data !== undefined) {
 
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
+          // adding _type property
+          this.Activity_List.forEach((_actvy)=>{
+                 let result='others';
+                 if(_actvy.Value){
+                 const _Value=_actvy.Value.trim();
+                       result=/New Action- ".*"/.test(_Value)?'New Action':
+                              (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
+                              /Action Complete- ".*"/.test(_Value)?'Action Complete':
+                              /Action -".*" Hold/.test(_Value)?'Action Hold':
+                              /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
+                              /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
+                              ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
+                              [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
+                              ['Project Complete','Project Complete Rejected'].includes(_Value)?'Project Complete':
+                              _Value;
+                 }
+                 _actvy._type=result.trim();
+           });
+          // adding _type property
+         console.log('after foreach:',this.Activity_List);
 
-    // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
-          let count:number=0;
-          this.Activity_List.map((actv:any)=>{
+          // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+                let count:number=0;
+                this.Activity_List.map((actv:any)=>{
 
-            if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
-               {   // actv.count : 2,3,4....
-                   let updatecount=(actv.count-count);
-                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=`Project Deadline changed ${updatecount+x} Time`;
-                   count+=1;
-               }
-              return actv;
-          });
-   // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+                  if(actv.count>1&&actv.Value=='Project Deadline changed'&&count+1!=actv.count)
+                    {   // actv.count : 2,3,4....
+                        let updatecount=(actv.count-count);
+                        let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                        actv.Value=`Project Deadline changed ${updatecount+x} Time`;
+                        count+=1;
+                    }
+                    return actv;
+                });
+         // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
+   this.arrangeActivitiesBy('all','all');
+   this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
+   this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
+   
 
+   console.log('actvs_types:',this.actvs_types);
 
           this.firstFiveRecords = this.Activity_List.slice(0, 5);
           console.log(this.firstFiveRecords,"ffffive ffffffffffffffff")
@@ -1156,7 +1307,7 @@ this.prjPIECHART.render();
                   [2,3].includes(d)?d+' days ago':
                   this.datepipe.transform(item.ModifiedDate,'dd-MM-yyyy')
                 };
-          })
+          });
 
         }
         this.activitiesLoading=false;  // end the loading.
@@ -1283,8 +1434,8 @@ this.prjPIECHART.render();
     }
     else{
       this.formFieldsRequired=false;
-
-      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID).subscribe(res => {
+      var Scheduleid = '0'
+      this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
         console.log(res,'openRequestDialog')
         this.closeRequestDialog();
         Swal.fire('Request Sent Successfully');
@@ -1435,6 +1586,14 @@ this.prjPIECHART.render();
     document.getElementById("Approval_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+      // to bydefault open the index 0 approval.
+      setTimeout(()=>{
+        const aprv1:any=document.querySelector('#Approval_view #heading-AprvReq-0 a.accordion-button');
+        const isOpened=aprv1.getAttribute('aria-expanded');
+        if(isOpened=='false'){
+          aprv1.click();
+        }
+      },300)
   }
 
 
@@ -1442,6 +1601,15 @@ this.prjPIECHART.render();
     document.getElementById("multiple_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
+    // to bydefault open the index 0 approval.
+    setTimeout(()=>{
+      const aprv1:any=document.querySelector('#multiple_view #heading-AprvReqm-0 a.accordion-button');
+      const isOpened=aprv1.getAttribute('aria-expanded');
+      if(isOpened=='false'){
+        aprv1.click();
+      }
+    },300)
+  
   }
 
 
@@ -1484,8 +1652,10 @@ multipleback(){
 }
 
 
-  closeInfo() {
+  closeInfo() {   debugger
     this._remarks = ''
+    this.characterCount=0;
+    this.characterCount_Action=0;
     this.selectedFile=null;
     this._inputAttachments='';
     this.formFieldsRequired=false;
@@ -1506,11 +1676,12 @@ multipleback(){
     document.getElementById("prj-cancel-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("new-prj-release-sidebar").classList.remove("kt-quick-active--on");
     document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
+    document.getElementById("multiple_view").classList.remove("kt-quick-active--on");
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
-
+ 
     // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
 
@@ -1712,12 +1883,14 @@ multipleback(){
     this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data: any) => {
-
+        this.isLoadingData=false;
         console.log("inside GetDMS_Memos:", data);
         if (data && data.length > 0) { // if data is not [] means there will be atleast one memo present in the project.
+           this.isLoadingData=true;
           this._LinkService._GetMemosSubject(data[0]['JsonData']).
             subscribe((data: any) => {
-
+              console.log(data,"dms data");
+              this.isLoadingData=false;
               if (data.JsonData) {
                 this.projectMemos = JSON.parse(data.JsonData);
                 this._linkedMemos = this.projectMemos.length;
@@ -1736,9 +1909,7 @@ multipleback(){
                 console.log("this memosOptions:", this.memosOptions)
 
               }
-
               console.log("get memo subject:", this.projectMemos);
-              this.isLoadingData=false;
             });
         }
         else {   // if data is [] and length is 0.   means if there is not even one memo present in the project.
@@ -1784,14 +1955,14 @@ multipleback(){
   // ADD DMS STARTS HERE
   addDMSToTheProject() {
     try {
-
-      if (this.selectedMemos.length) {
+      this.SelectDms=this.SelectDms.map((item)=>({"MailId": item}))
+      if (this.SelectDms.length) {
         // when user has selected memo.  when selectedMemos.length>0
         let totalmemos = [];
         if (this.projectMemos)
           totalmemos = this.projectMemos.map((item: any) => ({ MailId: item.MailId })); // get current memos list.
 
-        let newmemos = this.selectedMemos.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
+        let newmemos = this.SelectDms.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
         newmemos.forEach((memo: { MailId: number }) => {
           totalmemos.push(memo);
         });   // adding selected memos to the totalmemos
@@ -1801,7 +1972,7 @@ multipleback(){
         let appId: number = 101;//this._ApplicationId;
         let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
         let userid: number = +this.Current_user_ID;
-        console.log("here we go", projectcode, appId, dmsMemo, userid);
+      
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated successfully") {
@@ -1809,8 +1980,6 @@ multipleback(){
           }
 
         });
-
-
       }
       else {
         // when user tries to click addlink btn without selecting memo.   when selectedMemos.length=0
@@ -1823,7 +1992,7 @@ multipleback(){
       this.notifyService.showInfo("Request Cancelled", "Error!");
     }
     this.GetMemosByEmployeeId();    // get new data.
-    this.selectedMemos = new Array();
+    this.SelectDms = new Array();
     // this.closeLinkSideBar();         //closes the sidebar.
   }
   // ADD DMS END HERE
@@ -1985,7 +2154,7 @@ multipleback(){
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);
+            this.completedoc = (this.complete_List[0]['Sourcefile']);   
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
@@ -2010,11 +2179,7 @@ multipleback(){
          this.getstandardapprovalStats();
 
         }
-        // prj request access aprvals
-       if(this.requestType=='Request Access'&&this.multiapproval_list.length>0){
-        this.isApprovalSection=false;
-       }
-// prj request access aprvals
+  
 
 // prj request access aprvals
        if(this.requestType=='Request Access'&&this.multiapproval_list.length>0){
@@ -2047,25 +2212,27 @@ multipleback(){
 standardjson:any;
 currentStdAprView:number|undefined;
   getstandardapprovalStats(){
-    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data) => {
-
-      console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
-      this.requestDetails = data as [];
-      console.log(this.requestDetails,"task approvals");
-      this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
-      this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
-
-      // if(this.standardjson.length>0){
-      //     this.isApprovalSection=true;
-      //     this.isTextAreaVisible=false;
-      //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
-      // }
-
+    this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data:any) => {
+      if(data&&data.length>0){
+        console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
+        this.requestDetails = data as [];
+        console.log(this.requestDetails,"task approvals");
+        this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
+        this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
+  
+        console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
+        // if(this.standardjson.length>0){
+        //     this.isApprovalSection=true;
+        //     this.isTextAreaVisible=false;
+        //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
+        // }
+      }
+  
     });
   }
 
   approvalClick(actionType) {
-    
+
   // clearing entered data if any.
     this.comments = "";
     this.empAuditor_remarks='';
@@ -2095,6 +2262,7 @@ currentStdAprView:number|undefined;
         this.Reject_active = false;
         this.Audit_active=false;
         this.Transfer_active=false;
+        this.sel_prjname=this.projectInfo.Project_Name+'- V2';
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
@@ -2150,6 +2318,11 @@ currentStdAprView:number|undefined;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
+    this.Accept_active=false;
+    this.Reject_active=false;
+    this.Audit_active=false;
+    this.Transfer_active=false;
+    this.Conditional_Active=false;
   }
 
 
@@ -2332,16 +2505,28 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {
+    else if (this.selectedType == '2') {    debugger
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
+
+      this.approvalObj.taskname=this.sel_prjname;
+      this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
+      this.approvalObj.assignto=this.sel_user;
+      this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
+
+
+      this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
+      this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
+      this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
+
       if (this.comments == '' || this.comments == null) {
         this.approvalObj.Remarks = 'Accepted';
       }
       else {
         this.approvalObj.Remarks = this.comments;
       }
+
       this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
         subscribe((data) => {
           this._Message = (data['message']);
@@ -2825,7 +3010,7 @@ currentStdAprView:number|undefined;
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
-        console.log('Subtask_Res_List:',this.Subtask_Res_List);  
+        console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.Category_List);
@@ -2960,7 +3145,8 @@ currentStdAprView:number|undefined;
 // check all mandatory fields are provided or not
    if(!(
         (this.ProjectName&&this.ProjectName.trim()!='')&&
-        (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+        // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+        (this.ProjectDescription?(this.characterCount<500):true)
       ))
    {
       this.formFieldsRequired=true;
@@ -3181,7 +3367,7 @@ currentStdAprView:number|undefined;
   onAction_update() {
     this.updatingAction = true;
 // check all mandatory field are provided.
-    if(!(this.ActionName&&this.ActionDescription&&
+    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<500):true)&&
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
          this.ActionstartDate&&this.ActionendDate&&
@@ -3647,7 +3833,7 @@ check_allocation() {
 
   // timeline code end here
 
-
+ 
   AddPortfolio() {
     this.getPortfoliosDetails()
   }
@@ -3698,8 +3884,9 @@ check_allocation() {
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {
-        this._portfoliosList = data as [];
+      ((data) => {    
+        this._portfoliosList = data as [];   
+         console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
         this.dropdownSettings_Portfolio = {
@@ -3716,6 +3903,27 @@ check_allocation() {
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
+
+
+   
+    this._calenderDto = new CalenderDTO();
+
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Project_Code = null;
+    this.GetProjectAndsubtashDrpforCalender();
+
+    // this._calenderDto.Emp_No = this.Current_user_ID;
+    // console.log("Portfoliolist_1:",this._calenderDto.Emp_No);
+    // this._calenderDto.Project_Code = this.URL_ProjectCode;
+    // this.CalenderService.GetCalenderProjectandsubList(this.URL_ProjectCode).subscribe
+    // ((data) => {
+ 
+    //   this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+
+    //   console.log("Portfoliolist_1:",this.Portfoliolist_1);
+
+    // });
+    
   }
 
 
@@ -3785,25 +3993,26 @@ check_allocation() {
   }
 
   addProjectToPortfolio() {
-    if(this._SelectedPorts==' '||this._SelectedPorts==null){
+    if(this.Portfolio==' '||this.Portfolio==null){
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
     }
-
-
-
-    this.selectedportID = JSON.stringify(this._SelectedPorts);
-    // console.log(this.selectedportID,"portids");
+     
+    this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
+    this.selectedportID = JSON.stringify(this.Portfolio);
     if (this.selectedportID != null) {
+     
       this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
       this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
       this.objPortfolioDto.Emp_No = this.Current_user_ID;
       this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
         subscribe((data) => {
+         
           this._Message = (data['message']);
-          if (this._Message == 'Updated successfully') {
+          debugger
+          if (this._Message == 'Updated Successfully') { 
             this.getPortfoliosDetails();
-            this._SelectedPorts=null;
+            this.Portfolio=[];
             this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
           } else {
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
@@ -3967,26 +4176,26 @@ check_allocation() {
 
 
 
-  updateMainProject() {
+  updateMainProject() {   
 // for checking whether mandatory fields are provided or not.
-   if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && ( !this._remarks || !this.selectedFile)){
-      this.formFieldsRequired=true;
-      return;
-   }
 
 
-  if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!this._remarks)){
+  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && 
+  (!(this.selectedFile&&this._remarks&&this._remarks.trim()))){
+    this.formFieldsRequired=true;
+    return;
+ }
+
+
+  if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!(this._remarks&&this._remarks.trim()))){
      this.formFieldsRequired=true;
      return;
   }
 // for checking whether mandatory fields are provided or not.
 
-
-
-
-    if (this.projectInfo.Project_Type == 'To do List') {
-      this.selectedFile = null;
-    }
+    // if (this.projectInfo.Project_Type == 'To do List') {
+    //   this.selectedFile = null;
+    // }
 
     if (this.isAction == false) {
       const fd = new FormData();
@@ -4556,6 +4765,8 @@ debugger
     this.meetingList = [];
     this.meeting_arry = [];
     this.meetinglength = 0;
+    this.characterCount_Meeting=0;
+    this.Description_Type=null;
 
     this.upcomingMeetings = [];
     this.todaymeetings = [];
@@ -4891,11 +5102,13 @@ config: AngularEditorConfig = {
 
 
 
-
+ onfocus(val) {
+    console.log(val, "ttt");
+  }
 
 
 Task_type(value:number){
-
+  
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
@@ -4903,7 +5116,7 @@ Task_type(value:number){
   this._PopupConfirmedValue = 1;
   // this.MinLastNameLength = true;
   this._subname = false;
-  this._calenderDto = new CalenderDTO;
+  this._calenderDto = new CalenderDTO();
   this.BlockNameProject1 = [];
   this._lstMultipleFiales = [];
   this._labelName = "Schedule Date :";
@@ -5007,7 +5220,35 @@ Task_type(value:number){
       })
 
 
+                  // valid starttimearr and endtimearr setting start.
+                  let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+                  let _currentdate=moment();
+                  if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                  {
+                      const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                      const index:number=this.StartTimearr.findIndex((item:any)=>{
+                          const t=moment(item,'h:mm A');
+                          const result=t>=ct;
+                          return result;
+                      });
+                      this.validStartTimearr=this.StartTimearr.slice(index);
+                  }
+                  else
+                  this.validStartTimearr=[...this.StartTimearr];
 
+
+
+                  this.timingarryend = [];
+                  this.Time_End = [];
+                  this.Time_End = [...this.StartTimearr];
+                  debugger
+                  let _index = this.Time_End.indexOf(this.Startts);
+                  if (_index + 1 === this.Time_End.length) {
+                    _index = -1;
+                  }
+                  this.timingarryend = this.Time_End.splice(_index + 1);
+                  this.EndTimearr = this.timingarryend;
+                  // valid starttimearr and endtimearr setting end.
     })
 
 
@@ -5184,9 +5425,10 @@ debugger
 
   subtashDrpLoading:boolean = false
   GetProjectAndsubtashDrpforCalender() {
-
+   
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
+        
         this.subtashDrpLoading=false;
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
@@ -5197,8 +5439,7 @@ debugger
          });    // to change the order : first racis people and then rest
 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        console.log(this.Portfoliolist_1, "Project List Array");
-
+        
 
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
@@ -5406,6 +5647,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
+    debugger
     this._StartDate = event.value;
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -5860,6 +6102,8 @@ getChangeSubtaskDetais(Project_Code) {
     this.SelectDms = [];
     this.MasterCode = null;
     this.Subtask = null;
+    this.characterCount_Meeting=0;
+    this.Description_Type=null;
     this.Startts = null;
     this.Endtms = null;
     this.SelectStartdate = null;
@@ -5975,10 +6219,6 @@ getChangeSubtaskDetais(Project_Code) {
       this._subname1 = true;
       return false;
     }
-
-
-
-
 
     if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
       this._subname = true;
@@ -6509,8 +6749,8 @@ holdcontinue(Pcode:any){
   minPrjDeadline:Date;
   HprocessDone:number=0;
 
-  onHoldDateChanged(){  
-    
+  onHoldDateChanged(){
+
     const d1=new Date(this.Holddate);
     const d2=new Date(this.projectInfo.EndDate);
     this.isEHsectionVisible=d1>d2;
@@ -6581,7 +6821,7 @@ holdcontinue(Pcode:any){
                   }).then((choice1:any)=>{
                       if(choice1.value===true)
                         this.holdcontinue(Pcode);
-                      else 
+                      else
                         this.HprocessDone=0;
                   });
             }
@@ -7177,7 +7417,7 @@ filterConfig:{filterby:string,sortby:string}={
          filterby:'All',
          sortby:'All'
 };
-onFilterConfigChanged({filterBy,sortBy}){ 
+onFilterConfigChanged({filterBy,sortBy}){
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
@@ -7193,10 +7433,10 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
-getFilteredPrjActions(filterby:string='All',sortby:string='All'){   debugger
+getFilteredPrjActions(filterby:string='All',sortby:string='All'){
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
-  let arr=this.projectActionInfo;
+  let arr=this.projectActionInfo?this.projectActionInfo:[];
   if(!(filterby==='All'&&sortby==='All'))
   {
     if(sortby!=='All'){
@@ -7428,7 +7668,7 @@ closeNewPrjReleaseSideBar() {
 
 getRejectType() {
   this.approvalObj.Project_Code = this.URL_ProjectCode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {  
     this.activity = data[0]["activity"];
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
@@ -7461,6 +7701,7 @@ isReleasingAction:boolean=false;
 newPrjreleasing:boolean=false;
 releasenewProject(){
 
+
   this.isReleasingAction=!(this.currentActionView===undefined||this.currentActionView===null);
 
   if(!this.hold_remarks||this.hold_remarks.trim()==''){
@@ -7470,7 +7711,7 @@ releasenewProject(){
 
   if(
     [this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(this.Current_user_ID)||
-    this.isReleasingAction?([this.projectActionInfo[this.currentActionView].Project_Owner,this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID)):true
+    (this.isReleasingAction?([this.projectActionInfo[this.currentActionView].Project_Owner,this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID)):true)
     ){
 
       this.approvalObj.Project_Code = this.isReleasingAction?this.projectActionInfo[this.currentActionView].Project_Code:this.URL_ProjectCode;
@@ -7800,11 +8041,11 @@ onGraphOptionChanged(option:string){
 }
 
 loadActivitiesByDate(d){
-
+  console.log(d);
   this.activitiesOnthat=this.getActivitiesOf(d);
   const currentDt=new Date();
   const dateClicked=new Date(d);
-  this.selectedactvy=(dateClicked.getDate()==currentDt.getDate())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
+  this.selectedactvy=(dateClicked.toDateString()==currentDt.toDateString())?'TODAY':this.lastActivityOn==d?`Last Activities on ${d}`:d;
 }
 
 
@@ -7982,7 +8223,21 @@ showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
 
+showSelfAssignedActns(userno){
+  if(userno){
+    this.filteredPrjAction = this.projectActionInfo.filter((item) => {
+      return (item.Project_Owner == item.Team_Res) && (item.Team_Res == userno);
+    });
+  }
+}
 
+showPendingAprvlActnsOfEmp(userno:string){
+  if(userno){
+    this.filteredPrjAction = this.projectActionInfo.filter((item) => {
+      return (['Under Approval','Forward Under Approval'].includes(item.Status)) && (item.Team_Res==userno);
+    });
+  }
+}
 
 // start meeting feature start
 
@@ -8706,6 +8961,7 @@ onProjectSearch(inputtext:any){
 }
 
   onInputSearch(inputText:any){
+    debugger
     let keyname;
     let arrtype;
     let selectedinto;
@@ -8774,6 +9030,7 @@ onProjectSearch(inputtext:any){
       this.isFilteredOn=false;
   }
   onPortfolioFilter(){
+    debugger
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
@@ -8952,7 +9209,7 @@ Meeting_method(event){
  }
 
  projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
-  debugger
+ 
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -8970,11 +9227,11 @@ onSubmitBtnClicked() {
 debugger
   if (
     (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-    (this.Description_Type?(this.Description_Type.trim().length<=200):true)&&
+    (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
     this.Startts &&
     this.Endtms &&
     this.MinLastNameLength
-    && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
+    && (this.ScheduleType === 'Event' ?  ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
   ) {
     this.OnSubmitSchedule1();
     this.notProvided = false;
@@ -8996,6 +9253,8 @@ getObjOf(arr, id, idName) {
   return '';
 }
 
+
+validStartTimearr:any=[];
 changeScheduleType(val:number){
   if(val==1)
   {  // Task
@@ -9033,6 +9292,8 @@ changeScheduleType(val:number){
     document.getElementById("meeting-online-add").style.display = "flex";
     document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
 
+
+   
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
@@ -9387,11 +9648,11 @@ OnSubmitSchedule1() { debugger
 // PROJECT auditor, Transfer functionality start.
 
 isAuditorDrpDwnOpen:boolean=false;
-selectedAuditor:any;   
+selectedAuditor:any;
 racisNonRacis:any=[]; // all emp list.
 sprtaudtr_remarks:string|undefined;   // remarks provided during removing of auditor or support member.
 p_index:number=-1;                // selection info.
-processingRemove:boolean=false;  
+processingRemove:boolean=false;
 typeUserRemove:'AUDITOR'|'SUPPORT'|undefined;
 
 
@@ -9400,7 +9661,7 @@ emp_Auditor:string|undefined;
 empAuditor_remarks:string|undefined;
 
 
- 
+
 onAuditorSelected(e){ debugger
   if(e.option.value){
     const selected_emp=e.option.value;
@@ -9410,10 +9671,10 @@ onAuditorSelected(e){ debugger
 }
 
 
-onAuditorSubmitClicked(){ 
+onAuditorSubmitClicked(){
   const selected_emp=this.selectedAuditor.empNo;
   this.projectMoreDetailsService.NewUpdateProjectAuditor(this.projectInfo.Project_Code,this.Current_user_ID,selected_emp).subscribe((res:any)=>{
-      
+
           if(res.message==1){
              this.notifyService.showSuccess(`${this.selectedAuditor.empName} set as Auditor`,'Success');
              this.selectedAuditor=undefined;
@@ -9421,9 +9682,9 @@ onAuditorSubmitClicked(){
           }else if(res.message==2){
              this.notifyService.showError(`Unable to set ${this.selectedAuditor.empName} as Auditor.`,'Failed.');
           }
-          else 
+          else
             this.notifyService.showError('Something went wrong.','');
-      
+
   });
 }
 
@@ -9438,7 +9699,7 @@ onChangeAuditorBtnClicked(){
     setTimeout(()=>{
       const auditorInput:any=document.querySelector('input#auditor-inputfield');
       auditorInput.click();
-    },300)  
+    },300)
 }
 
 
@@ -9446,9 +9707,9 @@ openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   if(this.p_index>-1){
     this.closeRemoveSADialog(this.p_index);
   }   // closing opened dialog if present.
-  
-  this.p_index=index; 
-  this.typeUserRemove=removalType;  
+
+  this.p_index=index;
+  this.typeUserRemove=removalType;
   document.getElementById(`mark-admin-drop${this.p_index}`).classList.add("show");
   let remarks_input:any=document.querySelector(`#mark-admin-drop${this.p_index} textarea.remarks-input`); remarks_input.focus();
   document.getElementById(`pOnPrj-user-row-${index}`).classList.add('pOnPrj-row-selection');
@@ -9464,7 +9725,7 @@ closeRemoveSADialog(index:number){ debugger
 }
 
 
-onSARemoveSubmit(){ 
+onSARemoveSubmit(){
 
    if(this.sprtaudtr_remarks&&this.sprtaudtr_remarks.trim()){
         const project_code=this.projectInfo.Project_Code;
@@ -9475,7 +9736,7 @@ onSARemoveSubmit(){
 
         this.processingRemove=true;
         this.projectMoreDetailsService.NewDeleteProjectRACIS(project_code,current_userid,auditor_empno,support_empno,remarks_).subscribe((res:any)=>{
-              console.log(res); 
+              console.log(res);
               this.processingRemove=false;
               if(res.message==1)
               {
@@ -9484,9 +9745,9 @@ onSARemoveSubmit(){
                 else if(this.typeUserRemove=='AUDITOR')
                   this.notifyService.showSuccess(`Removed ${this.PeopleOnProject[this.p_index].Emp_Name} as Auditor.`,'Success');
 
-                this.closeRemoveSADialog(this.p_index); 
+                this.closeRemoveSADialog(this.p_index);
                 this.GetPeopleDatils();
-               
+
               }
               else if(res.message==2){
 
@@ -9495,12 +9756,12 @@ onSARemoveSubmit(){
                 else if(this.typeUserRemove=='AUDITOR')
                   this.notifyService.showError(`unable to remove ${this.PeopleOnProject[this.p_index].Emp_Name} as Auditor of the project.`,'Failed');
               }
-              else 
+              else
               this.notifyService.showError('Something went wrong.','Failed');
-              
+
         });
    }
-   else 
+   else
    this.notProvided=true;
 
 }
@@ -9513,7 +9774,7 @@ onPrjAuditSubmitClicked(){
           this.notProvided=true;
           return;
       }
-      else 
+      else
         this.notProvided=false;
 
      const project_code:string=this.projectInfo.Project_Code;
@@ -9524,11 +9785,11 @@ onPrjAuditSubmitClicked(){
           console.log(res);
           if(res&&res.message){
               this.notifyService.showSuccess(res.message,'Success');
-             
+
               this.getProjectDetails(this.URL_ProjectCode);
               this.getapprovalStats();
           }
-          else 
+          else
             this.notifyService.showError('something went wrong.','Failed');
 
      })
@@ -9540,7 +9801,7 @@ onTransferBtnClicked(){
             this.notProvided=true;
             return;
         }
-        else 
+        else
           this.notProvided=false;
 
       const project_code:string=this.projectInfo.Project_Code;
@@ -9561,61 +9822,58 @@ onTransferBtnClicked(){
 }
 
 
- 
+
 
 
 
 
 
 total_userActns:number|undefined;
-loadActionsGrantt(){
-  const all_status = {
-    'Under Approval': '#B2D732',
-    'InProcess': '#0089FB',
-    'Completed': '#62B134',
-    'Delay': '#EE4137',
-    'Completion Under Approval': '#B2D732',
-    'Forward Under Approval': '#B2D732',
-    'Project Hold': '#E2D9BC',
-    'Cancelled': '#EE4137',
-    'New Project Rejected': '#DFDFDF',
-    'Deadline Extend Under Approval': '#F88282',
-    'ToDo Achieved': '#62B134',
-    'ToDo Completed': '#62B134',
-    'Cancellation Under Approval': '#EE4137',
-    'other': '#d0d0d0'
-  }; 
+
+loadActionsGantt(){
+  const all_status={
+    'Completed':'#388E3C',
+    'InProcess':'#64B5F6',
+    'Completion Under Approval':'#81C784',
+    'Forward Under Approval':'#64B5F6',
+    'Under Approval': '#9C27B0',
+    'Delay':'#D32F2F',
+    'Project Hold':'#A1887F',
+    'New Project Rejected':'#BA68C8',
+    'Deadline Extend Under Approval':'#F9A825',
+    'Cancellation Under Approval':'#EF5350',
+
+    'Cancelled':'#EE4137',
+    'ToDo Achieved':'#62B134',
+    'ToDo Completed':'#62B134',
+    'other':'#d0d0d0'
+  };
+
 
   const todays_date = new Date().getTime();
   const curdate = new Date();
   let actions_list:any=this.projectActionInfo.filter((actn)=>{
          return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
   });
-  // actions_list.sort((a1,a2)=>{
-  //     const x=a1.Duration+(a1.Status=='Delay'?a1.Delaydays:0);
-  //     const y=a2.Duration+(a2.Status=='Delay'?a2.Delaydays:0);
-  //     return y-x;
-  // });
   this.total_userActns=actions_list.length;
-
   const _series = actions_list.map((actn, _index) => {
     const color = all_status[actn.Status] || all_status['other'];
     let data_ar = [];
     const actn_startd = new Date(actn.StartDate);
     const actn_endd = new Date(actn.EndDate);
-    
+
 
     if (actn_startd < curdate && actn_endd > curdate) {
       if (actn.Status === 'InProcess') {
         data_ar = [
           {
-            x: `${actn.Project_Name}-${actn.Project_Code}`,
+            x: `${actn.Project_Name}(${actn.Project_Code})`,
             y: [new Date(actn.StartDate).getTime(), new Date().getTime()],
             fillColor: color,
             index: _index
           },
           {
-            x: `${actn.Project_Name}-${actn.Project_Code}`,
+            x: `${actn.Project_Name}(${actn.Project_Code})`,
             y: [new Date().getTime(), new Date(actn.EndDate).getTime()],
             fillColor: '#dcdcdc',
             index: _index
@@ -9623,7 +9881,7 @@ loadActionsGrantt(){
         ];
       }else {
         data_ar = [{
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
           fillColor: color,
           index: _index
@@ -9631,98 +9889,161 @@ loadActionsGrantt(){
       }
     } else {
       const colorvalue = actn_startd >= curdate && actn.Status === 'InProcess' ? '#dcdcdc' : color;
+
       data_ar = actn.Status === 'Delay' ? [
         {
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
-          fillColor: '#0089FB',
+          fillColor: all_status['InProcess'],
           index: _index
         },
         {
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.EndDate).getTime(), new Date().getTime()],
           fillColor: colorvalue,
           index: _index
         }] : [{
-          x: `${actn.Project_Name}-${actn.Project_Code}`,
+          x: `${actn.Project_Name}(${actn.Project_Code})`,
           y: [new Date(actn.StartDate).getTime(), new Date(actn.EndDate).getTime()],
           fillColor: colorvalue,
           index: _index
         }];
     }
+// when action startdate and enddate are same.
+      if(data_ar.length==1){
+        if(data_ar[0].y[0]==data_ar[0].y[1]){
+                  data_ar[0].y[1]=data_ar[0].y[1]+86400000;
+        }
+      }
+// when action startdate and enddate are same.
 
     return {
       name: actn.Status,
       data: data_ar
     };
   });
+  const rowHeight=55;
+  let chartHeight=rowHeight*actions_list.length+125;   console.log('chartHeight value is:',chartHeight);
+  let max_Xvalue=curdate;
+  max_Xvalue.setMonth(max_Xvalue.getMonth()+2);
 
- 
-  const rowHeight=50;
-  let chartHeight=rowHeight*actions_list.length+100;
-
-
-
- if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateOptions({
-      chart: {
-        height: chartHeight + 'px'
-      },
-      series: _series
-    });
- }
- else{
 
   const options = {
     series: _series,
     chart: {
+
       height: chartHeight+'px',
       type: 'rangeBar',
       animations: {
         enabled: false // Disable animations to improve performance
       },
+
       events: {
-        updated: ()=>{ 
+        updated: ()=>{
 
-          const chartContainer = document.querySelector("#actnsfull-graph");
-          const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
-          let textElements = xAxisLabels.querySelectorAll('text');
-          const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-grid .apexcharts-gridlines-horizontal line');
-          const linewth=hrline.getAttribute('x2');
-          const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
-          dateGcHl.style.width=linewth+'px';  
-          const dateGcHv:any=dateGcHl.querySelector('#this-is-head');      
-          dateGcHv.innerHTML=''; 
-          textElements.forEach(te => {
-            const clonedTe = te.cloneNode(true);
-            clonedTe.setAttribute('y', '65%');
-            clonedTe.setAttribute('fill', '#000');
-            dateGcHv.appendChild(clonedTe);
-          });
+        try{
 
-          // const ctrlbtns:any=document.querySelector('#actns-graphmodal .apexcharts-toolbar');
-          //  const ctrlsection:any=document.querySelector('.gantt-ctrls-btns');
-          //  ctrlsection.innerHTML='';
-          //  ctrlsection.append(ctrlbtns);
+                const chartContainer = document.querySelector("#actnsfull-graph");
 
-        
-          const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
-          const trsnfvalue=gcharttable.getAttribute('transform');
-          console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
-          gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
-          console.log('gcharttable:',gcharttable);
-              
+                const xAxisLabels:any = chartContainer.querySelector('.apexcharts-xaxis');
+                let textElements = xAxisLabels.querySelectorAll('text');
+                const hrline:any=document.querySelector('#actnsfull-graph .apexcharts-canvas svg.apexcharts-svg g.apexcharts-inner.apexcharts-graphical g.apexcharts-grid>line');
+                console.log('hrline is:',hrline);
+                const linewth=hrline.getAttribute('x2');
+                const dateGcHl:any = document.querySelector('.actns-gantt-dates .dates-label');
 
-         },
+                dateGcHl.style.width=linewth+'px';
+                const dateGcHv:any=dateGcHl.querySelector('#this-is-head');
+                dateGcHv.innerHTML='';
+                textElements.forEach(te => {
+                  const clonedTe = te.cloneNode(true);
+                  clonedTe.setAttribute('y', '65%');
+                  clonedTe.setAttribute('fill', '#000');
+                  dateGcHv.appendChild(clonedTe);
+                });
 
-        
+                const ctrlbtns:any=document.querySelector('#actnsfull-graph .apexcharts-toolbar');
+
+                ctrlbtns.style.backgroundColor='rgb(255 255 255 / 65%)';
+                ctrlbtns.style.padding='4px 6px 7px 5px';
+                ctrlbtns.style.border='2px solid #b3b3b3';
+
+                const ganttCtrls:any=document.querySelector('#actns-graphmodal .gantt-ctrls-btns');
+                ganttCtrls.innerHTML='';
+                ganttCtrls.append(ctrlbtns);
+
+// yaxis label adjustments
+              const yaxis:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-yaxis-texts-g');
+              const textelms:any=yaxis.querySelectorAll('text');
+              const shouldwrap:boolean=Array.from(textelms).some((te:any)=>te.querySelector('title').textContent.length>20);
+              if(shouldwrap){
+                    textelms.forEach((te:any)=>{
+                        te.setAttribute('x','-135');
+                        te.setAttribute('text-anchor','start');
+
+                        const fullname=te.querySelector('title').textContent;
+                        const maxl=20;
+                        const strl=fullname.length;
+                        if(strl>maxl){
+                             te.querySelectorAll('tspan').forEach(tspn=>tspn.remove());
+
+                             const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                             tspan1.textContent=fullname.substring(0,20);
+                             const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                             tspan2.setAttribute('x','-135');
+                             tspan2.setAttribute('dy','11.8');
+                             let fullname2=fullname.slice(20);
+                             fullname2=fullname2.length>15?fullname2.substring(0,15)+'...':fullname2
+                             tspan2.textContent=fullname2;
+
+                             te.appendChild(tspan1);
+                             te.appendChild(tspan2);
+                        }
+
+                    });
+              }
+
+// yaxis label adjustments
+
+            Array.from(textelms).forEach((te:any,index)=>{ 
+                        const _a_res:any=actions_list[index].Responsible;
+                        const ypos=te.getAttribute('y');
+                        te.setAttribute('y',ypos-12);
+                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                        tspan3.setAttribute('x','-135');
+                        tspan3.setAttribute('dy','13');
+                        tspan3.style.fill='#543fff';
+                        tspan3.style.fontSize='0.7em';
+                        tspan3.style.fontWeight='bold';
+                        tspan3.style.fontFamily='Lucida Sans Unicode';
+                        tspan3.style.textTransform='capitalize';
+                        tspan3.textContent=_a_res;
+                        te.appendChild(tspan3);
+               });
+
+                const gcharttable:any=document.querySelector('#actnsfull-graph .apexcharts-svg .apexcharts-inner.apexcharts-graphical');
+                const trsnfvalue=gcharttable.getAttribute('transform');
+                console.log('valuasde:is :',trsnfvalue.split(',')[0]+',40)');
+                gcharttable.setAttribute('transform',trsnfvalue.split(',')[0]+',40)');
+                console.log('gcharttable:',gcharttable);
+
+
+            }catch(e){
+              console.log('error while rending actns gantt chart:',e);
+            }
+
+
+
+        },
+
+
       }
-    
+
     },
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: '35%',
+        barHeight: '32%',
         rangeBarGroupRows: true
       }
     },
@@ -9734,19 +10055,43 @@ loadActionsGrantt(){
     },
     xaxis: {
       type: 'datetime',
-      position: 'top',
+      position: 'bottom',
       labels: {
         show: true,
         style: {
           offsetY: 10, // Adjust this value to add space below the labels
           colors:'#000'
-        }
+        },
+
       },
       axisBorder: {
         show: true
       },
       axisTicks: {
         show: true
+      },
+      max:max_Xvalue.getTime()
+
+    },
+    yaxis: {
+      labels: {
+        style: {
+          fontSize: '11px',       
+          fontFamily: 'Arial, sans-serif', 
+          color: '#333',          
+          textAnchor: 'start'    
+        },
+
+        formatter:function(value) {
+          if (isNaN(value)) {
+              let str=value.substring(0,value.lastIndexOf('('));
+              str=str.trim();
+              return str;
+          } else
+            return value;
+        }
+
+ 
       }
     },
     grid: {
@@ -9763,13 +10108,14 @@ loadActionsGrantt(){
       padding: {
         top: 35,
         right: 10,
-        bottom: 20,
+        bottom: 15,
         left: 0
       }
     },
     legend: {
       show: false
     },
+
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
@@ -9783,11 +10129,11 @@ loadActionsGrantt(){
         const delaydays_ = Math.abs(actions_list[index].Delaydays);
         const actn_res = actions_list[index].Responsible;
         const actn_alhrs = actions_list[index].AllocatedHours;
-  
+
         const _cd = new Date();
         const d1 = new Date(actions_list[index].StartDate);
         const d2 = new Date(actions_list[index].EndDate);
-  
+
         return `<div style="width: fit-content; min-width: 300px; padding: 0.5em; border-radius: 4px; box-shadow: 0 0 35px #6e6e6e33; background-color:#ffffff;">
           <div style="display: flex;margin-bottom: 4px;column-gap: 10px;">
             <span style="flex-grow: 1;">
@@ -9820,6 +10166,7 @@ loadActionsGrantt(){
         </div>`;
       }
     },
+
     annotations: {
       xaxis: [{
         x: todays_date,
@@ -9845,38 +10192,58 @@ loadActionsGrantt(){
           offsetX: -13,
           offsetY: -20
         }
-      }]
+      }],
+     
+    },
+
+
+    title:{
+      text: this.projectInfo.Project_Name,
+      align: 'left',
+      margin: 10,
+      offsetX: 0,
+      offsetY: 0,
+      floating: false,
+      style:{
+        fontSize: '15px',
+        fontWeight: 'bold',
+        fontFamily: 'Lucida Sans Unicode',
+        color: '#263238'
+      }
+      
     }
+
+
+    
     
   };
+
+
+ if(this.ActnsGanttChart){
+    this.ActnsGanttChart.updateOptions(options);
+ }
+ else{
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
   this.ActnsGanttChart.render();
-  
-
-
-  
-
-
-
-   
-
  }
 
 
 }
 
 
+
+
 ActnsGanttChart:any;
 ganttActnsConfig:{byuser:string}={byuser:'All'};
 filterActionsOnGantt(option:string){
      this.ganttActnsConfig.byuser=option;
-     this.loadActionsGrantt();
+     this.loadActionsGantt();
 }
 
 
 
 onActnsGanttClosed(){
-    this.ActnsGanttChart=null;
+    this.ActnsGanttChart=null; 
     this.ganttActnsConfig={byuser:'All'};
     this.total_userActns=undefined;
 }
@@ -9885,15 +10252,129 @@ onActnsGanttClosed(){
 
 // PROJECT auditor, Transfer functionality end.
 
+emps_of_actvs:any=[];
+actvs_types:any=[];
+actvsFltrBy:{ activityType:string, empType:string }={ activityType:'all',empType:'all' };
+FilteredPrjActivities:any=[];
+
+arrangeActivitiesBy(acttype:string,emptype:string){
+  this.actvsFltrBy.activityType=acttype;
+  this.actvsFltrBy.empType=emptype;
+  this.FilteredPrjActivities=this.Activity_List.filter((actv)=>{
+    const x=(this.actvsFltrBy.empType=='all'||actv.Modifiedby==this.actvsFltrBy.empType);
+    const y=(this.actvsFltrBy.activityType=='all'||(actv._type==this.actvsFltrBy.activityType));
+    return x&&y; 
+  });
+}
+
+
+ 
+
+characterCount: number = 0;
+
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ProjectDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
+
+
+characterCount_Action: number = 0;
+
+updateCharacterCount_Action(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.ActionDescription;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Action = textContent.length;
+}
 
 
 
+characterCount_Meeting: number = 0;
+
+updateCharacterCount_Meeting(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.Description_Type;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount_Meeting = textContent.length;
+}
+
+
+// conditional accept functionality start
+
+_portfoliosList2:any=[];  // all portfolios list.
+ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
+iscaPortDrpDwnOpen:boolean=false;
+ProjectType_json:any;   // prj types
+allUsers1:any=[];       // all emps
+
+sel_prjname:string|undefined;
+sel_user:any;       // selected emp
+sel_ptype:any;     // selected prj type
+sel_sdate:any;    // selected start date.
+sel_edate:any;   // selected end date.
+sel_submtype:any;  // selected submission type.
+
+onca_PortfolioSelected(e){
+  const prtfChoosed = this._portfoliosList2.find((p:any) => p.Portfolio_ID === e.option.value)
+  if (prtfChoosed) {
+    const index = this.ngDropdwonPort2.indexOf(prtfChoosed.Portfolio_ID)
+    if (index === -1) {
+         this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
+    }
+    else{
+         this.ngDropdwonPort2.splice(index,1);
+    }
+ }
+//  requestAnimationFrame(()=>this.customTrigger.openPanel());
+}
+
+onca_PortfolioDeSelected(prtid:string){
+  const index=this.ngDropdwonPort2.indexOf(prtid);
+  if(index!==-1){
+   this.ngDropdwonPort2.splice(index,1);
+  }
+}
 
 
 
+getca_Dropdowns(){
+    // prj types    
+    this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
+    
+    //all portfolios list
+    this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
+      this._portfoliosList2 = data as [];  
+    });
+}
 
 
+goToProject(pcode) {
+  let name: string = 'Details';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${pcode}`;
+  var myWindow = window.open(myurl,pcode);
+  myWindow.focus();
+}
 
+expandRemarks(id:string){
+     const remark_sec=document.getElementById(id);
+     if(remark_sec.classList.contains('compl-remarks-span'))
+        remark_sec.classList.remove('compl-remarks-span');
+     else 
+        remark_sec.classList.add('compl-remarks-span');
+}
+
+// conditional accept functionality end
+
+///
 
 }
 

@@ -2,7 +2,7 @@
 // import { number } from '@amcharts/amcharts4/core';
 // import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 // import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, OnInit,Renderer2 } from '@angular/core';
+import { ViewChild, Component, OnInit,Renderer2,ViewChildren,QueryList } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { AssigntaskDTO } from 'src/app/_Models/assigntask-dto';
@@ -13,34 +13,48 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { DateAdapter } from '@angular/material/core';
 import { CategoryDTO } from 'src/app/_Models/category-dto';
+import { CreateProjectComponent } from '../create-project/create-project.component';
+import Swal from 'sweetalert2';
+
+import {  HttpEventType } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { string } from '@amcharts/amcharts4/core';
 import { pluginService } from 'chart.js';
 import { add } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { Router } from '@angular/router';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete'
+
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 // import { ac } from 'src/app/_LayoutDashboard/action-to-project/action-to-project.component';
 import tippy from 'node_modules/tippy.js';
 import {  ElementRef } from '@angular/core';
 import * as moment from 'moment';
+import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.component';
-
+declare var $: any;
 @Component({
   selector: 'app-project-unplanned-task',
   templateUrl: './project-unplanned-task.component.html',
   styleUrls: ['./project-unplanned-task.component.css']
 })
 
-export class ProjectUnplannedTaskComponent implements OnInit {
-  // selectedOption: string = '';
-  selectedOption: string = 'option1';
+export class ProjectUnplannedTaskComponent implements OnInit{
+    // selectedOption: string = '';
+    @ViewChild('fileInput') fileInput: any;
+    fileAttachment: any;
+    file: File | null = null;
+    selectedOption: string = 'option1';
+    selectedFileName: string | null = null;
+
   _ObjAssigntaskDTO: AssigntaskDTO;
   _ObjCompletedProj: CompletedProjectsDTO;
   CurrentUser_ID: string;
   panelOpenState: boolean = false;
   public _selectedcatname: string;
   public _selectedcatid: string;
+  public task_id: number;
+
   // private _bar: boolean = false;
   get selectedcatname(): string {
     return this._selectedcatname;
@@ -51,12 +65,24 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   disablePreviousDate = new Date();
   disableAfterStartDate = new Date();
 
+  isTodoProjectsLoaded:boolean=false;
+  isDropdownDataLoaded:boolean=false;
+  isCountsDataLoaded:boolean=false;
+
+  public PortfolioList: any;
+
+
   constructor(public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
     private renderer: Renderer2,
     public router: Router,
+    // public _projectunplanned: ProjectUnplannedTaskComponent,
+    // public BsService: BsServiceService,
+    // public service:GetRACISandNonRACISEmployeesforMoredetails,
     public dialog: MatDialog, public dateAdapter: DateAdapter<Date>,
     public BsService: BsServiceService,
+    public service: ProjectTypeService,
+    public createproject: CreateProjectComponent,
     private el: ElementRef
 
     // ,_Id
@@ -65,6 +91,19 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     // this._Id='0';
     // this._Name='NA';
     this._ObjAssigntaskDTO = new AssigntaskDTO();
+    this._ObjAssigntaskDTO = new AssigntaskDTO();
+    this._ObjCompletedProj = new CompletedProjectsDTO();
+    this.BsService.bs_AssignId.subscribe(i => this.task_id = i);
+    this.BsService.bs_TaskName.subscribe(t => {
+      this._taskName = t
+      if (this._taskName == null) {
+
+        this._taskName = null;
+      }
+
+    });
+
+
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.ObjUserDetails = new UserDetailsDTO();
     this.ObjSubTaskDTO = new SubTaskDTO();
@@ -72,6 +111,9 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     this.disableAfterStartDate.setDate(this.disableAfterStartDate.getDate());
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+    this.isTodoProjectsLoaded=false;
+    this.isDropdownDataLoaded=false;
+    this.isCountsDataLoaded=false;
   }
 
   IfNoCategoryFound: string;
@@ -90,13 +132,26 @@ export class ProjectUnplannedTaskComponent implements OnInit {
 
   // }
 
+
+
+
   ngOnInit(): void {
-    this.totalproject()
+
+    this.getRACISandNonRACIS();
+    this.GetProjectsByUserName();
+    // this.totalproject()
+    this.getProjectTypeList();
     this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.getCatid();
     this.GetAssignFormEmployeeDropdownList();
     this.getrunwayCount();
+    this.Current_user_ID = localStorage.getItem('EmpNo');
 
+    this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
+      (data) => {
+        this.PortfolioList = data as PortfolioDTO;
+        console.log(this.PortfolioList,"portfoliosubn;");
+      });
 
       tippy('#tippy1', {
         content: "Runway tasks",
@@ -159,16 +214,28 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     //     // delay: [1000, 200]
     //   });
     // }
+    this.totalproject();
+    // this.initAutosize();
   }
 
+
+
+  // ngAfterViewInit(): void {
+
+  // }
+
   newCatid:any;
+
   getCatid(){
+
+
     this.ProjectTypeService._GetRunwayCatId(this.CurrentUser_ID).subscribe(
       (data) => {
         this.newCatid=(data[0]['CategoryId']);
         this.GetTodoProjects();
       });
       this.router.navigate(["UnplannedTask/"]);
+
   }
 
   _Demotext: string = "";
@@ -212,7 +279,18 @@ export class ProjectUnplannedTaskComponent implements OnInit {
     document.getElementById("projectmodal").style.display = "none";
     this.Assigntext=''
   }
+  before_edit(){
+    document.getElementById("before-edit").style.display = "none";
+    document.getElementById("cancelid").style.display = "flex";
+    document.getElementById("after-edit").style.display = "flex";
+  }
 
+  showedit(){
+    document.getElementById("before-edit").style.display = "flex";
+    document.getElementById("after-edit").style.display = "none";
+    document.getElementById("cancelid").style.display = "none";
+  }
+  // previousdate :Date= new Date(this._EndDate.getFullYear(),this._EndDate.getMonth(),this._EndDate.getDate(),0,0,0,0)
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
@@ -220,7 +298,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   Clientjson:any;
   EmployeeLists:any;
   loading: boolean = false;
-
+  userFound:boolean | undefined
 
   GetAssigned_SubtaskProjects() {
     this.loading = true;
@@ -243,6 +321,8 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.EmployeeLists = JSON.parse(data[0]['EmployeeList']);
 
         this.FiterEmployee=this.EmployeeList;
+        this.userFound = true
+
         console.log("Data---->", this.FiterEmployee);
       });
   }
@@ -260,14 +340,17 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   pendingCount:any;
   rejectCount:any;
 
+
   getrunwayCount(){
+    this.isCountsDataLoaded=false;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this.ProjectTypeService._GetCategoryCountforRunway(this._ObjCompletedProj).subscribe(
       (data) => {
+        this.isCountsDataLoaded=true;
         this.procount = JSON.parse(data[0]['Procount']);
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
- 
+
         this.status_list.forEach(element => {
           if(element.Status=='Accepted'){
             this.acceptCount = element.SCount;
@@ -280,6 +363,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           }
         });
       console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,"count");
+
       });
   }
 
@@ -288,28 +372,35 @@ export class ProjectUnplannedTaskComponent implements OnInit {
   }
 
   GetTodoProjects() {
+
+    this.isTodoProjectsLoaded=false;
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
-
+        this.isTodoProjectsLoaded=true;
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
+        console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        // console.log(this.ActionedAssigned_Josn)
-        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+
+        console.log("ActionedAssigned_JosnActionedAssigned_JosnActionedAssigned_JosnActionedAssigned_Josn",this.ActionedAssigned_Josn)
+      console.log(this._TodoList,"this._TodoListthis._TodoListthis._TodoListthis._TodoListthis._TodoList")
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        console.log(this.ActionedSubtask_Json,"this.ActionedSubtask_Json")
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
 
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
+
           this.IfNoTaskFound = "";
           this._Categoryid = data[0]["CategoryId"];
           this._CategoryName = data[0]["CategoryName"];
@@ -317,6 +408,7 @@ export class ProjectUnplannedTaskComponent implements OnInit {
           this.Label_TaskName = false;
           this.Textbox_EditTaskName = true;
           this._taskName = "";
+
           /// Get Tasks On Category Click  /////
           this._ObjCompletedProj.PageNumber = 1;
           this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -342,11 +434,16 @@ export class ProjectUnplannedTaskComponent implements OnInit {
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
+
+
+
+
       });
+
   }
 
   OnRadioClick(id) {
-debugger
+
     this._ObjAssigntaskDTO.TypeOfTask = "Update";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = id;
@@ -374,11 +471,11 @@ debugger
   //  }
 
       });
-
+      this.unassign_closeInfo()
   }
 
   On_Uncheck(id) {
-    debugger
+
     this._ObjAssigntaskDTO.TypeOfTask = "UnCheck";
     this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
     this._ObjAssigntaskDTO.AssignId = id;
@@ -464,15 +561,24 @@ debugger
     this.GetProjectsByUserName();
   }
 
+
+
+
+
   //Fetching Employee For Assigning Projects
   GetAssignFormEmployeeDropdownList() {
+
+    this.isDropdownDataLoaded=false;
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
+        this.isDropdownDataLoaded=true;
         this.EmployeeList = JSON.parse(data[0]&&data[0]['EmployeeList']);
-        //console.log(this.EmployeeList);
+
+console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeList')
+
         this.dropdownSettings_Employee = {
           singleSelection: true,
           idField: 'Emp_No',
@@ -484,6 +590,7 @@ debugger
       });
   }
 
+  todayDate: Date = (new Date);
   _EndDate: Date = null;
   _StartDate: Date = null;
   _Description: string;
@@ -501,6 +608,26 @@ debugger
     this.selectedEmployee = this._SelectedEmpNo;
   }
 
+
+
+  // EmployeeOnSelected(obj) {
+  //   debugger
+  //   // this.selectedEmpNo = obj['Emp_No'];
+  //   if(obj['Emp_No'] == this.Owner_Empno){
+  //     this.selectedEmpNo="";
+  //     this.formFieldsRequired = true;
+  //     this.notifyService.showInfo("Action cannot be assigned to project owner","");
+  //   }
+  //   else{
+  //     this.formFieldsRequired = false;
+  //     this.selectedEmpNo = obj['Emp_No'];
+  //   }
+  // }
+
+
+
+
+
   // onEmpChange(selectedEmpNo) {
   //   this._SelectedEmpNo = selectedEmpNo;
   // }
@@ -511,7 +638,7 @@ debugger
     this._StartDate = null;
     this._EndDate = null;
     this._SelectedEmpNo = "";
-    this.selectedProjectType = null;
+    this.selectedProjecttype = null;
     this.selectedProjectCode = "";
     this.SelectedEmplList = [];
     this.selectedProjectCodelist = [];
@@ -569,7 +696,7 @@ debugger
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-    debugger
+
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -592,6 +719,7 @@ debugger
     // alert(this._Categoryid);
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
+
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
 
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
@@ -616,15 +744,17 @@ debugger
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
-        // alert(this.CountsAccepted);
+
         // console.log(this.CountsAccepted);
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
       this.totalproject()
+      document.getElementById('addtsk').classList.remove('d-none');
+      document.getElementById("accordionRunway").classList.remove("acc-runway-no-button");
   }
 
 
-
+  assignvalue:any
   ProjectTypelist: any;
   _taskName: string = "";
   _description: string;
@@ -632,11 +762,11 @@ debugger
   _fileName: string;
   SelectedSubmissionType: any;
   selectedEmployee: string = "";
-  selectedProjectType: string;
-  public task_id: number;
+  // selectedProjectType: string;
+
 
   GetProjectTypeList() {
-    // debugger
+
     this._taskName =this.Task_name;
     this.task_id = this.AssignID;
     this.router.navigate(["UnplannedTask/ActionToAssign/1"]);
@@ -670,7 +800,7 @@ debugger
 
 
 
-
+ typeoftask: any = "IFRT";
 
 
 
@@ -794,7 +924,7 @@ selectedAttendeesList = new Set<any>();
   _AssignId: number;
 
   ActionToProject_Click(taskName, Assignid) {
-    // debugger
+
     this._taskName = taskName;
     this._AssignId = Assignid;
     this.router.navigate(["UnplannedTask/ActionToProject/2"]);
@@ -835,7 +965,7 @@ selectedAttendeesList = new Set<any>();
         allowRemoteDataSearch: true,
         noDataAvailablePlaceholderText: 'Please wait..'
       };
-      // console.log("Project List for Dropdown...",this._ProjectDataList);
+      console.log("Project List for Dropdown...",this._ProjectDataList);
     });
   }
 
@@ -845,12 +975,15 @@ selectedAttendeesList = new Set<any>();
   RACI_Coor: any;
   RACI_Informer: any;
   RACI_Owner: any;
+  _subname:boolean=false
+  Sub_ProjectName:any
 
-  ProjectOnSelect(obj) {
-    this.selectedProjectCode = obj['Project_Code'];
+  ProjectOnSelect() {
+    // this.selectedProjectCode = obj['Project_Code'];
     this.BsService.setSelectedProjectCodeFromRunwayTask(this.selectedProjectCode);
     this.ProjectTypeService.SubTaskDetailsService(this.selectedProjectCode).subscribe(
       (data) => {
+        console.log(data,'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
         let ProjectInfo_List: any;
         ProjectInfo_List = JSON.parse(data[0]['ProjectInfo']);
         this.RACI_Autho = ProjectInfo_List[0]['Authority'];
@@ -863,6 +996,19 @@ selectedAttendeesList = new Set<any>();
         this.ProjectType_DB = ProjectInfo_List[0]['Project_Block'];
         this.BsService.setProjectAuthoity(this.RACI_Autho);
       });
+      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
+        (data) => {
+
+          this.ownerArr=(JSON.parse(data[0]['RacisList']));
+          // this.nonRacis=(JSON.parse(data[0]['OtherList']));
+          // this.allUsers=(JSON.parse(data[0]['alluserlist']));
+          console.log(this.ownerArr,"groupby");
+
+        });
+
+        this.getPrj_Info();
+
+
   }
 
   ProjectOnDeselect(obj) {
@@ -938,7 +1084,27 @@ selectedAttendeesList = new Set<any>();
     (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "none";
   }
 
+renameTask(task_id:any,new_name:any){
+  this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+  this._ObjAssigntaskDTO.TaskName = new_name;
+  this._ObjAssigntaskDTO.AssignId = task_id;
+  this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
+  this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+    (data) => {
+      let message: string = data['Message'];
+      this.notifyService.showInfo("Rename successfully", message);
+    });
+}
+
+
+
+
+
+
+
+
   OnTask_Rename() {
+    debugger
     if (this._taskName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "Rename";
       this._ObjAssigntaskDTO.TaskName = this._taskName;
@@ -960,10 +1126,56 @@ selectedAttendeesList = new Set<any>();
     }
   }
 
+
+  OnTask_Renameofnew() {
+    debugger
+    if (this.selected_taskName != "") {
+      this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+      this._ObjAssigntaskDTO.TaskName = this.selected_taskName;
+      this._ObjAssigntaskDTO.AssignId = this.selected_taskId;
+      this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          this.OnCategoryClick(this._Categoryid, this._CategoryName)
+          let message: string = data['Message'];
+          this.notifyService.showInfo("Rename successfully", message);
+          // (<HTMLInputElement>document.getElementById("spanTextbox_" + this._AssignId)).style.display = "none";
+          // (<HTMLInputElement>document.getElementById("spnLabel_" + this._AssignId)).style.display = "block";
+          // (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";
+          this.showedit()
+          // this._taskName = this.selected_taskName
+        });
+    }
+    else {
+      this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+    }
+  }
+
+  Emp_No:any
+  OnTask_Renameofpending() {
+    debugger
+    if (this.task__name != "") {
+      this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+      this._ObjAssigntaskDTO.TaskName = this.task__name;
+      this._ObjAssigntaskDTO.AssignId = this.Emp_No;
+      this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
+      this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+        (data) => {
+          this.OnCategoryClick(this._Categoryid, this._CategoryName)
+          let message: string = data['Message'];
+          this.notifyService.showInfo("Rename successfully", message);
+         });
+    }
+    else {
+      this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+    }
+  }
+
+
   onCancel(id) {
     (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "block";
     (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
-    (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "flex";
   }
 
   Cat_Name: string;
@@ -1052,9 +1264,13 @@ selectedAttendeesList = new Set<any>();
   closeInfo() {
     this.clearFeilds();
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
+    document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
+    document.getElementById('ProjectAssignpending').classList.remove('kt-action-panel--on');
+    document.getElementById('openactionassign').classList.remove('kt-action-panel--on');
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this.formFieldsRequired = false
     document.getElementById("rightbar-overlay").style.display = "none";
     this.router.navigate(["UnplannedTask/"]);
   }
@@ -1122,7 +1338,7 @@ totalproject(){
 
 
 taskside(){
-  debugger
+
   document.getElementById('taskdd').classList.remove('d-none')
   document.getElementById('Completed').classList.add('d-none')
   document.getElementById('ActionToProjects').classList.add('d-none')
@@ -1131,7 +1347,7 @@ taskside(){
 }
 
 completed(){
-  debugger
+
   document.getElementById('Completed').classList.remove('d-none')
   document.getElementById('taskdd').classList.add('d-none')
   document.getElementById('ActionToProjects').classList.add('d-none')
@@ -1153,24 +1369,119 @@ showassign(){
   document.getElementById('Completed').classList.add('d-none')
   document.getElementById('taskdd').classList.add('d-none')
 }
-
-unassign_edit(){
+selected_date:any
+selected_taskId:any;
+selected_taskName:any;
+unassign_edit(id:any,taskname:any,date:any){
+  this.selected_taskId=id;
+  this.selected_taskName=taskname.trim();
+  this.selected_date = date
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // this.initAutosize('unassigneditside1')
+  this.port_id = []
+  this.employeSelect = null
+  this.selectedProjecttype = null
+
+
+  // this.toggleProjectoptions('option1')
 }
+
 unassign_closeInfo(){
   document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  this.resetAssign()
+  this.formFieldsRequired = false
 }
+
+assign_to:any=[];
+Proj_type:any
+Start__Date:any
+End__Date:any
+__remarks:any
+task__name:any
+Portfolio_Id:any
+assign_Id:any
+editTaskat:number|undefined= undefined;
+
+editassignPending(i:any){
+  debugger
+  this.editTaskat=i;
+  this.task__name = this.ActionedAssigned_Josn[i].Task_Name.trim();
+  this.employeSelect=(this.ActionedAssigned_Josn[i].Emp_No)?this.ActionedAssigned_Josn[i].Emp_No.split(','):[];
+  // Portfolio_Id
+  this.Start__Date  =this.ActionedAssigned_Josn[i].Start_Date;
+  this.End__Date =this.ActionedAssigned_Josn[i].End_Date
+  this.__remarks= this.ActionedAssigned_Josn[i].Remarks || '';
+  this.port_id=(this.ActionedAssigned_Josn[i].Portfolio_Id)?this.ActionedAssigned_Josn[i].Portfolio_Id.split(','):[];
+  this.assign_Id = this.ActionedAssigned_Josn[i].Assign_Id
+  this.fileAttachment = this.ActionedAssigned_Josn[this.editTaskat]&&this.ActionedAssigned_Josn[this.editTaskat].FileName;
+  if(this.ActionedAssigned_Josn[i].Project_type){
+    const prjTypeObj=this.ProjectTypelist.find(obj=>obj.Exec_BlockName==this.ActionedAssigned_Josn[i].Project_type.trim());
+    this.Proj_type=prjTypeObj.Exec_BlockNo;
+  }
+  else
+  this.Proj_type=null;
+
+   // this.Prjstartdate =this.bind_Project[0].Start_Date
+   // this.Prjenddate = this.bind_Project[0].End_Date
+
+
+  document.getElementById('ProjectAssignpending').classList.add('kt-action-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // this.initAutosize('unassigneditside2')
+}
+
+
+closeditassignPending(){
+  document.getElementById('ProjectAssignpending').classList.remove('kt-action-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+}
+
+bindvalue :number | undefined = undefined
+openActionassign(i:any){
+  this.bindvalue = i;
+  document.getElementById('openactionassign').classList.add('kt-action-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+}
+
+
+closedActionassign(){
+  document.getElementById('openactionassign').classList.remove('kt-action-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+}
+
+
 toggleProjectoptions(option: string) {
   this.selectedOption = option;
+  this.formFieldsRequired = false;
+  this._StartDate = null
+  this._EndDate = null
 }
+
+// unassign_edit(){
+//   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
+//   document.getElementById("rightbar-overlay").style.display = "block";
+//   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+// }
+// unassign_closeInfo(){
+//   document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
+//   document.getElementById("rightbar-overlay").style.display = "none";
+//   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+// }
+// toggleProjectoptions(option: string) {
+//   this.selectedOption = option;
+// }
 activeButton: string = 'totalProjects';
 
 setActiveButton(buttonName: string) {
-  debugger
+
   this.activeButton = buttonName;
 }
 
@@ -1183,9 +1494,925 @@ items = [
 currentStatus: string = 'Accepted'; // Default to 'Accepted'
 
 setStatus(status: string) {
-  debugger
+
   this.currentStatus = status;
 }
+
+hideAddTask(){
+  document.getElementById('addtsk').classList.add('d-none');
+  document.getElementById('accordionRunway').classList.add('acc-runway-no-button');
 }
 
+getVisibleHeaderCount(): number {
+  let count = 0;
+  if (this._TodoList.length > 0) count++;
+  if (this._CompletedList && this._CompletedList.length > 0) count++;
+  if (this.ActionedSubtask_Json.length > 0) count++;
+  if (this.ActionedAssigned_Josn.length > 0) count++;
+  return count;
+}
+
+getAccordionClass(): string {
+  const count = this.getVisibleHeaderCount();
+  return count > 0 ? `runway-${count}` : '';
+}
+
+getProjectTypeList() {
+
+  this._ObjCompletedProj.PageNumber = 1;
+  this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+  this._ObjCompletedProj.Mode = 'AssignedTask';
+  this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
+    (data) => {
+      this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
+      console.log('gggggggggggggggggggggggg',this.ProjectTypelist);
+    });
+}
+
+isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
+isPrjDesValid:'TOOSHORT'|'VALID'='VALID';
+
+
+isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
+ if(inputString){
+
+ let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+ const x=rg.test(inputString);
+
+return x ? 'VALID' : 'TOOSHORT';
+ }
+return 'TOOSHORT'
+}
+
+
+
+selectFile() {
+  this.fileInput.nativeElement.click();
+}
+
+onFileChanged(event: any) {
+  debugger
+  const files: File[] = event.target.files;
+
+  if (files && files.length > 0) {
+    this.file = files[0];
+    this.fileAttachment = this.file;
+    this.selectedFileName = this.file.name;
+
+  } else {
+    this.file = null;
+    this.fileAttachment = null;
+    this.selectedFileName = null;
+    this.FileName = null
+  }
+  // Reset file input value to allow selecting the same file again
+  this.fileInput.nativeElement.value = '';
+}
+FileName:any
+removeFile() {
+  debugger
+  this.file = null;
+  this.fileAttachment = null;
+  this.selectedFileName = null;
+  this.FileName = null
+}
+owner:any
+onInputChange(value: string) {
+  this.Sub_ProjectName = value.trim();
+
+}
+
+pcode:any;
+ownerArr:any
+getRACISandNonRACIS(){
+
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
+    (data) => {
+
+      this.ownerArr=(JSON.parse(data[0]['RacisList']));
+      // this.nonRacis=(JSON.parse(data[0]['OtherList']));
+      // this.allUsers=(JSON.parse(data[0]['alluserlist']));
+      console.log(this.ownerArr,"groupby");
+
+
+    });
+}
+_allocated:any
+maxlimit: boolean = true;
+_message: string;
+_Message: string;
+start_dt:any =new Date();
+end_dt:any =new Date();
+maxAllocation: number;
+_alchr:boolean = false
+
+alertMaxAllocation() {
+  if (this._StartDate == null || this._EndDate == null) {
+    this._message = "Start Date/End date missing!!"
+  }
+  else {
+    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+    this.start_dt=new Date(this._StartDate);
+    this.end_dt=new Date(this._EndDate);
+
+    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+
+    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if(Difference_In_Days==0){
+      Difference_In_Days=-1;
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+    }
+    else{
+      this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+    }
+    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+  }
+}
+
+formFieldsRequired: boolean = false;
+Selec:any
+// typeoftask: any = "";
+_Urlid:any;
+selectedProjecttype: string = "";
+noEndDate:boolean = false
+noStartDate : boolean = false
+
+assignTasksub(){
+
+  // if(this.SelectedEmplList ==null || this.SelectedEmplList == undefined || this._taskName == null || this._taskName == undefined || this._taskName == ""){
+  //   this.formFieldsRequired = true
+
+  // }
+  // else{
+
+  // if(!((this._taskName)&&this.SelectedEmplList)){
+  //   this.formFieldsRequired=true;
+  //   return;
+  // }
+  // else this.formFieldsRequired=false;
+  // check whether all mandatory fields provided
+
+
+
+  // debugger
+  if (this._StartDate == null && this._EndDate != null) {
+    this.noStartDate = true;
+    this.noEndDate = false;
+  }
+  else if (this._StartDate != null && this._EndDate == null) {
+    this.noEndDate = true;
+    this.noStartDate = false;
+  }
+  else {
+    this._ObjAssigntaskDTO.TaskName = this._taskName;
+    this._ObjAssigntaskDTO.TaskDescription = this._description;
+
+
+    var datestrStart;
+    var datestrEnd;
+
+    if (this._StartDate != null && this._EndDate != null) {
+      datestrStart = moment(this._StartDate).format();
+      datestrEnd = moment(this._EndDate).format();
+      this._ObjAssigntaskDTO.StartDate = datestrStart;
+      this._ObjAssigntaskDTO.EndDate = datestrEnd;
+    }
+    else {
+      datestrStart = moment(new Date()).format();
+      datestrEnd = moment(new Date()).format();
+      this._ObjAssigntaskDTO.StartDate = datestrStart;
+      this._ObjAssigntaskDTO.EndDate = datestrEnd;
+    }
+
+
+    if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
+      // Check if both _StartDate and _EndDate are valid Date objects
+      const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+      this._ObjAssigntaskDTO.ProjectDays = -differenceInDays;
+    }
+    else {
+      this._ObjAssigntaskDTO.ProjectDays = 0;
+    }
+
+
+    this.BsService.bs_TypeofTask.subscribe(t => {
+
+      this.typeoftask = t;
+    });
+    // this.BsService.SetNewAssignId(this.task_id);
+
+    this._ObjAssigntaskDTO.TypeOfTask = this.typeoftask;
+    this._ObjAssigntaskDTO.AssignTo = this.Selec;
+    this._ObjAssigntaskDTO.Assigned_By = this.CurrentUser_ID;
+    this._ObjAssigntaskDTO.AssignId = this.task_id;
+    this._ObjAssigntaskDTO.ProjectType = this.selectedProjecttype;
+    this._ObjAssigntaskDTO.Remarks = this._remarks;
+    this._ObjAssigntaskDTO.Attachment = this.fileAttachment;
+
+    // console.log(this.selectedProjectType);
+    if (this.fileAttachment != null) {
+      if (this.fileAttachment.length > 0) {
+        this._ObjAssigntaskDTO.Reference = this.fileAttachment[0].Files;
+      }
+    }
+    console.log("Sending Obj..",this._ObjAssigntaskDTO)
+    const fd = new FormData();
+    fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
+    if (this.fileAttachment != null) {
+      if (this.fileAttachment.length > 0) {
+        fd.append("Attachment", "true");
+        fd.append('file', this.fileAttachment[0].Files);
+        console.log(this.fileAttachment, 'files')
+      }
+    }
+    else {
+      fd.append("Attachment", "false");
+      fd.append('file', "");
+    }
+    fd.append("TaskName", this._taskName);
+    fd.append("Desc", this._description);
+    fd.append("StartDate", datestrStart);
+    fd.append("EndDate", datestrEnd);
+    fd.append("attachment",this.fileAttachment);
+    fd.append("ProjectDays", this._ObjAssigntaskDTO.ProjectDays.toString());
+    fd.append("TypeofTask", this.typeoftask);
+    fd.append("Remarks", this._remarks);
+    fd.append("ProjectType", this.selectedProjecttype);
+    if (this.task_id != null) {
+      fd.append("AssignId", this.task_id.toString());
+    }
+    fd.append("AssignedBy", this.CurrentUser_ID);
+
+    if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
+      this.port_id =  this.port_id
+    }
+    else{
+      this.port_id=0;
+    }
+    fd.append("Portfolio_Id", this.port_id);
+
+    this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      (data) => {
+        console.log(data,'atattachmeatattachmeatattachmeatattachme')
+
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects", message);
+
+          this.clearFeilds();
+          this.closeInfo();
+          this.fileAttachment = [];
+        }
+
+       )
+
+
+
+      }
+      }
+
+
+maxDate:any
+setMaxDate(dateField){
+      const d=new Date(dateField);
+       d.setDate(d.getDate()+2);
+      this.maxDate=d;
+
+      }
+
+
+
+assignTasksub1(){
+
+debugger
+
+
+  if(this.employeSelect ==null || this.employeSelect == undefined &&this.selected_taskName==null|| this.selected_taskName == undefined || this.selected_taskName.trim() ==""){
+    this.formFieldsRequired = true
+return
+  }
+else{
+  this.formFieldsRequired = false
+}
+
+
+
+
+
+    var datestrStart;
+    var datestrEnd;
+    if (this._StartDate != null && this._EndDate != null) {
+      datestrStart = moment(this._StartDate).format();
+      datestrEnd = moment(this._EndDate).format();
+    }
+    else {
+      datestrStart = moment(new Date()).format();
+      datestrEnd = moment(new Date()).format();
+    }
+
+
+    var ProjectDays;
+    if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
+      const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+      ProjectDays = -differenceInDays;
+    }
+    else {
+      ProjectDays = 0;
+    }
+
+
+    if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
+      this.port_id =  this.port_id
+    }
+    else{
+      this.port_id=0;
+    }
+
+
+  const fd = new FormData();
+  fd.append("TaskName", this.selected_taskName.trim());
+  fd.append("Desc", '');
+  fd.append("ProjectType", this.selectedProjecttype);
+  fd.append("AssignTo", this.employeSelect);
+  fd.append("Portfolio_Id", this.port_id);
+  fd.append("StartDate", datestrStart);
+  fd.append("EndDate", datestrEnd);
+
+  fd.append("ProjectDays", ProjectDays.toString());
+  fd.append("Remarks", this._remarks);
+  fd.append("attachment",this.fileAttachment);
+  fd.append("AssignedBy", this.CurrentUser_ID);
+  fd.append("AssignId", this.selected_taskId.toString());
+  fd.append("TypeofTask", this.typeoftask);
+  if (this.fileAttachment != null) {
+    if (this.fileAttachment.length > 0) {
+      fd.append("Attachment", "true");
+      fd.append('file', this.fileAttachment[0].Files);
+    }
+  }
+  else {
+    fd.append("Attachment", "false");
+    fd.append('file', "");
+  }
+
+
+
+
+
+
+  this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+    (data) => {
+      console.log(data,'atattachmeatattachmeatattachmeatattachme')
+        let message: string = data['Message'];
+        this.notifyService.showSuccess("Task sent to assign projects", message);
+        this.GetTodoProjects();
+
+      });
+
+      this.resetAssign()
+      this.unassign_closeInfo()
+
+
+
+}
+
+
+
+resetAssign(){
+  this.selectedProjecttype = null
+  this.employeSelect  = null
+  this.port_id  = null
+  this._remarks  = null
+  this.file=null
+
+  this._StartDate = null
+  this._EndDate = null
+
+}
+
+
+
+
+
+
+
+
+
+
+
+selectedAssign:any
+Sub_ProjectCode: any;
+EmpNo_Autho: any;
+ProjectBlock: string = null;
+selectedEmpNo: string = null;
+completionattachment:boolean=true
+
+actionSubmit(){
+
+
+
+
+  this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
+  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+
+    this.Sub_ProjectCode = data['SubTask_ProjectCode'];
+    this.EmpNo_Autho = data['Team_Autho'];
+    this.ProjectBlock = data['ProjectBlock'];
+
+    if (this.task_id != null) {
+      this.ObjSubTaskDTO.AssignId = this.task_id;
+    }
+    else {
+      this.task_id = 0;
+    }
+
+
+    this.ObjSubTaskDTO.SubProject_Name = this.selected_taskName
+    this.ObjSubTaskDTO.SubtaskDescription = "";
+    this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
+    this.ObjSubTaskDTO.StartDate = this._StartDate;
+    this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
+
+    this.maxAllocation = this.maxAllocation * 8 / 1;
+    this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
+    this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
+    this.ObjSubTaskDTO.Remarks = this._remarks;
+    this.ObjSubTaskDTO.Duration = this._allocated;
+    // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
+    console.log( this.fileAttachment)
+   if (this.fileAttachment&& this.fileAttachment.length > 0) {
+      this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+    }
+
+    var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
+    var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
+    // alert(datestrStart)
+    // alert(datestrEnd)
+    console.log(datestrStart,this._StartDate,"startdate")
+    console.log(datestrEnd,this._EndDate,"enddate")
+    const fd = new FormData();
+    fd.append("Project_Code", this.Sub_ProjectCode);
+    fd.append("Team_Autho", this.EmpNo_Autho);
+    // fd.append('file', this._inputAttachments[0].Files);
+    if ( this.fileAttachment) {
+      fd.append("Attachment", "true");
+      fd.append('file',  this.fileAttachment);
+    }
+    else {
+      fd.append("Attachment", "false");
+      fd.append('file', "");
+    }
+    fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
+    fd.append("SubtaskName", this.selected_taskName.trim());
+    fd.append("Desc", "");
+    fd.append("Projectblock", this.ProjectBlock);
+    fd.append("StartDate", datestrStart);
+    fd.append("EndDate", datestrEnd);
+    // fd.append("Allocated", this.maxAllocation.toString());
+    fd.append("Emp_No", this.CurrentUser_ID);
+    fd.append("AssignTo", this.selectedEmpNo);
+    fd.append("Remarks", this._remarks);
+    fd.append("EmployeeName", localStorage.getItem('UserfullName'));
+    fd.append("AssignId", this.task_id.toString());
+    fd.append("Owner", this.owner);
+    fd.append("isattachment",this.completionattachment.toString());
+
+    if (this.ObjSubTaskDTO.Duration != null) {
+      fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
+    }
+    else {
+      this.ObjSubTaskDTO.Duration = 0;
+    }
+
+    this.service._InsertNewSubtask(fd).subscribe(event => {
+
+      if (event.type === HttpEventType.Response){
+        var myJSON = JSON.stringify(event);
+        this._Message = (JSON.parse(myJSON).body).Message;
+        // console.log(event,myJSON,this._Message,"action data");
+        if(this._Message=='1'){
+          this.notifyService.showSuccess("Action created successfully", "Success");
+        }
+        else if(this._Message=='2'){
+          this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
+        }
+        else if(this._Message=='3'){
+          this.notifyService.showError("Something went wrong", "Action not created");
+        }
+        else if(this._Message=='7'){
+          this.notifyService.showError("Something went wrong", "Action not created");
+        }
+        else{
+          this.notifyService.showError("Something went wrong", "Action not created");
+        }
+      }
+      // this.GetTodoProjects();
+    });
+
+
+
+  this.resetActionvalue()
+  this.unassign_closeInfo();
+
+    });
+
+}
+
+
+
+
+
+ // mat-autocomplete dropdowns code start.
+ @ViewChildren(MatAutocompleteTrigger) autocompletes: QueryList<MatAutocompleteTrigger>;
+ openAutocompleteDrpDwn(Acomp: string) {
+   const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+   requestAnimationFrame(() => autoCompleteDrpDwn.openPanel());
+ }
+
+ closeAutocompleteDrpDwn(Acomp: string) {
+   const autoCompleteDrpDwn = this.autocompletes.find((item) => item.autocomplete.ariaLabel === Acomp);
+   requestAnimationFrame(() => autoCompleteDrpDwn.closePanel());
+ }
+
+
+  // Portfolio: any = [];
+  isPortfolioDrpDwnOpen: boolean = false;
+  port_id_string:any
+  port_id:any;
+  onPortfolioSelected(e: any) {
+
+    const portfolioChoosed: any = this.PortfolioList.find((p: any) => p.Portfolio_ID === e.option.value);
+    console.log(portfolioChoosed);
+    if (portfolioChoosed) {
+      if (!this.port_id)   // if Portfolio is null,undefined,''
+        this.port_id = [];
+      const index = this.port_id.indexOf(portfolioChoosed.Portfolio_ID);
+      if (index === -1) {
+        // if not present then add it
+         this.port_id.push(portfolioChoosed.Portfolio_ID);
+
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.port_id.splice(index, 1);
+      }
+
+    }
+    this.openAutocompleteDrpDwn('PortfolioDrpDwn');
+  }
+
+
+  removeSelectedPortfolio(item) {
+    const index = this.port_id.indexOf(item);
+    if (index !== -1) {
+      this.port_id.splice(index, 1);
+    }
+  }
+
+
+  getObjOf(arr, id, idName) {
+    const obj = arr.find(item => item[idName] == id);
+    return obj;
+  }
+
+
+
+  isemployeeDrpDwnOpen : boolean = false
+  employeSelect:any
+  onEmployeeselected(e: any) {
+debugger
+    const employeeChoosed: any = this.EmployeeList.find((p: any) => p.Emp_No === e.option.value);
+    console.log(employeeChoosed);
+    if (employeeChoosed) {
+      if (!this.employeSelect)   // if Portfolio is null,undefined,''
+        this.employeSelect = [];
+      const index = this.employeSelect.indexOf(employeeChoosed.Emp_No);
+      if (index === -1) {
+        // if not present then add it
+         this.employeSelect.push(employeeChoosed.Emp_No);
+
+      }
+      else { //  if item choosed is already selected then remove it.
+        this.employeSelect.splice(index, 1);
+      }
+
+    }
+    this.openAutocompleteDrpDwn('employeeDrpDwn');
+  }
+
+
+  removeSelectedemployee(item) {
+    const index = this.employeSelect.indexOf(item);
+    if (index !== -1) {
+      this.employeSelect.splice(index, 1);
+    }
+  }
+
+
+
+
+
+
+
+
+
+  // EmployeeOnSelect(obj) {
+  //   // this.selectedEmpNo = obj['Emp_No'];
+  //   if(obj['Emp_No'] == this.Owner_Empno){
+  //     this.selectedEmpNo="";
+  //     this._selectemp = true;
+  //     this.notifyService.showInfo("Action cannot be assigned to project owner","");
+  //   }
+  //   else{
+  //     this._selectemp = false;
+  //     this.selectedEmpNo = obj['Emp_No'];
+  //   }
+  // }
+
+
+  EmployeeOnSelecting(obj) {
+    this._SelectedEmpNo = obj;
+    this.selectedEmployee = this._SelectedEmpNo;
+
+  }
+
+
+  sweetAlert() {
+debugger
+if(this._allocated &&this.selectedProjectCode&&this.selectedEmpNo&&this._StartDate &&this._EndDate&&this.selected_taskName&&this._allocated <= this.maxAllocation){
+  this.formFieldsRequired = false
+}
+else{
+  this.formFieldsRequired = true
+  return
+}
+
+
+
+
+
+
+        const dateOne = new Date(this._EndDate);
+        const dateTwo = new Date(this.ProjectDeadLineDate);
+        if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
+          Swal.fire({
+            title: 'Action deadine is greater than main project deadline ?',
+            text: 'Do you want to continue for selection of date after main project deadline!!',
+
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+          }).then((response: any) => {
+            if (response.value) {
+              this.actionSubmit();
+            } else if (response.dismiss === Swal.DismissReason.cancel) {
+              Swal.fire(
+                'Cancelled',
+                'Action not created',
+                'error'
+              )
+            }
+          });
+        }
+        else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno && this.isHierarchy==false)) {
+          Swal.fire({
+            title: 'Unable to create this action.',
+            text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+            // showCancelButton: true
+          });
+
+        }
+        else {
+          this.actionSubmit();
+        }
+      }
+
+ProjectDeadLineDate:any
+ProjectStartDate:any
+Owner_Empno:any
+Resp_empno:any
+Autho_empno:any
+allocatedHour:any
+
+getPrj_Info(){
+      this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+
+        this.ProjectDeadLineDate = data["DeadLine"];
+        this.ProjectStartDate = data["StartDate"];
+        this.owner=data["Owner_empno"];
+        this.Owner_Empno = data['Owner_empno'];
+        this.Resp_empno = data['Resp_empno'];
+        this.Autho_empno = data['Autho_empno'];
+
+        // const dateOne = new Date(this.disablePreviousDate);
+        // const dateTwo = new Date(this.ProjectStartDate);
+        // if(dateTwo > dateOne){
+        //   this.disablePreviousDate = this.ProjectStartDate;
+        // }
+
+      });
+
+      this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID,this.selectedProjectCode).subscribe((data) => {
+        if(data['message']=='1'){
+          this.isHierarchy=true;
+        }
+        else{
+          this.isHierarchy=false;
+        }
+      });
+
+    }
+
+
+Current_user_ID: string;
+isHierarchy:boolean = false;
+
+
+
+
+resetActionvalue(){
+  this.selectedEmpNo = null
+  this.selectedProjectCode  = null
+  this._allocated  = null
+  this._remarks  = null
+  this.file=null
+  this._StartDate = null
+  this._EndDate = null
+}
+datesCheck() {
+  this.noEndDate = false;
+}
+startdatechecker(){
+  this.noStartDate=false;
+  this.noEndDate=true;
+  this._EndDate=null;
+}
+myFilter:any;
+enddateChecker(){
+  this.noStartDate=true;
+  this.myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    // Prevent Saturday and Sunday from being selected.
+    return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
+  };
+}
+
+vart:any = null
+todo(type,datefields) {
+  debugger
+  if (type === '011') {
+const  d = new Date(datefields)
+this.vart = d
+  }
+}
+
+isReadOnly: boolean = true;
+pendingUpdatesection(){
+
+
+  debugger
+
+
+
+  if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
+    this.formFieldsRequired = true
+return
+  }
+else{
+  this.formFieldsRequired = false
+}
+
+
+
+      var datestrStart;
+      var datestrEnd;
+      if (this.Start__Date != null && this.End__Date != null) {
+        datestrStart = moment(this.Start__Date).format();
+        datestrEnd = moment(this.End__Date).format();
+      }
+      else {
+        datestrStart = moment(new Date()).format();
+        datestrEnd = moment(new Date()).format();
+      }
+
+      // var datestrStart;
+      // var datestrEnd;
+      // if (this._StartDate != null && this._EndDate != null) {
+      //   datestrStart = moment(this._StartDate).format();
+      //   datestrEnd = moment(this._EndDate).format();
+      // }
+      // else {
+      //   datestrStart = moment(new Date()).format();
+      //   datestrEnd = moment(new Date()).format();
+      // }
+
+
+
+
+
+      var ProjectDays;
+      if (this.Start__Date instanceof Date && this.End__Date instanceof Date) {
+        const differenceInTime = this.End__Date.getTime() - this.Start__Date.getTime();
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        ProjectDays = differenceInDays;
+      }
+      else {
+        ProjectDays = 0;
+      }
+
+
+      if(this.employeSelect!=null && this.employeSelect!=undefined && this.employeSelect!=''){
+        this.employeSelect =  this.employeSelect
+      }
+      else{
+        this.employeSelect=0;
+      }
+
+
+      if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
+        this.port_id =  this.port_id
+      }
+      else{
+        this.port_id=0;
+      }
+
+
+    const fd = new FormData();
+    fd.append("TaskName", this.task__name.trim());
+    fd.append("Desc", '');
+    fd.append("ProjectType", this.Proj_type);
+    // fd.append("AssignTo", this.assign_to);
+    fd.append("AssignTo", this.employeSelect);
+    fd.append("StartDate", datestrStart);
+    fd.append("EndDate", datestrEnd);
+    fd.append("assignid",this.assign_Id)
+    fd.append("Portfolio_Id", this.port_id);
+    fd.append("ProjectDays", ProjectDays.toString());
+    fd.append("Remarks", this.__remarks);
+    fd.append("attachment",this.fileAttachment);
+    fd.append("AssignedBy", this.CurrentUser_ID);
+    // fd.append("AssignId", this.selected_taskId.toString());
+    fd.append("TypeofTask", this.typeoftask);
+    if (this.fileAttachment != null) {
+      if (this.fileAttachment.length > 0) {
+        fd.append("Attachment", "true");
+        fd.append('file', this.fileAttachment[0].Files);
+      }
+    }
+    else {
+      fd.append("Attachment", "false");
+      fd.append('file', "");
+    }
+
+
+
+
+
+
+    this.ProjectTypeService.updatePendingtask(fd).subscribe(
+      (data) => {
+        console.log(data,'atattachmeatattachmeatattachmeatattachme')
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.GetTodoProjects();
+
+        });
+
+        this.closeditassignPending()
+
+
+
+  }
+
+
+
+ initAutosize(area:string): void {
+    function autosize() {
+      debugger
+      var $text = $(`#${area}`);
+
+      $text.each(function () {
+        $(this).attr('rows', 1);
+        resize($(this));
+      });
+
+      $text.on('input', function () {
+        resize($(this));
+      });
+
+      function resize($element) {
+        $element.css({
+          'height': 'auto',
+          'min-height': '34px'
+        });
+        $element.css('height', $element[0].scrollHeight + 'px');
+      }
+    }
+    autosize();
+  }
+}
+
+// new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)
 
