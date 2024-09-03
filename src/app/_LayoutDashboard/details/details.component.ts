@@ -10083,7 +10083,7 @@ loadActionsGantt(){
         },
 
         formatter:function(value) {
-          if (isNaN(value)) {
+          if (value&&isNaN(value)) {
               let str=value.substring(0,value.lastIndexOf('('));
               str=str.trim();
               return str;
