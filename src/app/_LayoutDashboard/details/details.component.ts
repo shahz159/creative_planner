@@ -1925,7 +1925,7 @@ multipleback(){
       
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
-          if (res.Message === "Updated successfully") {
+          if (res.Message === "Updated Successfully") {
             this.notifyService.showSuccess("", "DMS successfully added.");
           }
 
@@ -1974,7 +1974,7 @@ multipleback(){
             totalmemos.splice(index, 1);
             let memosAfterDeletion: string = JSON.stringify(totalmemos.map((item: any) => ({ MailId: item.MailId }))) // [{MailId:123,Subject:'asd'},{MailId:234,Subject:'hdf'}]->[{MailId:123},{MailId:234}]->'[{MailId:123},{MailId:234}]'
             this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, memosAfterDeletion, userid).subscribe((res: any) => {
-              if (res.Message === 'Updated successfully') {
+              if (res.Message === 'Updated Successfully') {
                 this.notifyService.showInfo("", "Memo removed.");
                 this._linkedMemos--;
                 this.GetDMS_Memos();
@@ -2174,7 +2174,7 @@ currentStdAprView:number|undefined;
       this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
       this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
 
-      console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
+      // console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
       // if(this.standardjson.length>0){
       //     this.isApprovalSection=true;
       //     this.isTextAreaVisible=false;
@@ -5171,7 +5171,7 @@ Task_type(value:number){
             });
       })
 
-
+            
                   // valid starttimearr and endtimearr setting start.
                   let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
                   let _currentdate=moment();
@@ -5188,12 +5188,12 @@ Task_type(value:number){
                   else
                   this.validStartTimearr=[...this.StartTimearr];
 
-
+                  console.log(this.validStartTimearr,'this.validStartTimearr')
 
                   this.timingarryend = [];
                   this.Time_End = [];
                   this.Time_End = [...this.StartTimearr];
-                  debugger
+                
                   let _index = this.Time_End.indexOf(this.Startts);
                   if (_index + 1 === this.Time_End.length) {
                     _index = -1;
@@ -6158,6 +6158,30 @@ getChangeSubtaskDetais(Project_Code) {
 
         // console.log(this.EndTimearr[0]);
         // console.log("Array" + this.EndTimearr);
+
+
+
+           // provide valid starttiming and endtimearr.    start
+              let _currentdate=moment();
+              const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+              const index:number=this.StartTimearr.findIndex((item:any)=>{
+                const t=moment(item,'h:mm A');
+                const result=t>=ct;
+                return result;
+              });
+              this.validStartTimearr=this.StartTimearr.slice(index);
+
+
+              this.timingarryend = [];
+              this.Time_End = [];
+              this.Time_End = this.AllEndtime;
+              let _index = this.Time_End.indexOf(this.Startts);
+              if (_index + 1 === this.Time_End.length) {
+                _index = -1;
+              }
+              this.timingarryend = this.Time_End.splice(_index + 1);
+              this.EndTimearr = this.timingarryend;
+              // provide valid starttiming and endtimearr.    end
       });
   }
 
@@ -8918,7 +8942,7 @@ onProjectSearch(inputtext:any){
        selectedinto='Portfolio';
        property_name='portfolio_id';
     }
-    else if(this.projectmodaltype=='DMS')
+    else if(this.projectmodaltype=='SMail')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
@@ -8957,7 +8981,7 @@ onProjectSearch(inputtext:any){
           case 'PORTFOLIO':{
             this.onPortfolioFilter();
           };break;
-          case 'DMS':{
+          case 'SMail':{
             this.onDMSFilter();
           };break;
           case 'PARTICIPANT':{
@@ -9028,7 +9052,7 @@ onItemChoosed(choosed:any,choosedItem:any){
           }
     }
     else{
-      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
       const j=ary.findIndex(item=>item==choosedItem);
       if(j>-1)
       ary.splice(j,1);
@@ -9038,7 +9062,7 @@ onItemChoosed(choosed:any,choosedItem:any){
 }
 companies_Arr:any;
 basedOnFilter:any={};
-projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
+projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
 choosedItems:any=[];
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
@@ -9091,7 +9115,7 @@ keepChoosedItems(){
            this.close_projectmodal();
       };break;
 
-     case 'DMS':{
+     case 'SMail':{
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
 
@@ -9146,7 +9170,7 @@ Meeting_method(event){
   }
  }
 
- projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
+ projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
  
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
@@ -10021,7 +10045,7 @@ loadActionsGantt(){
         },
 
         formatter:function(value) {
-          if (isNaN(value)) {
+          if (value&&isNaN(value)) {
               let str=value.substring(0,value.lastIndexOf('('));
               str=str.trim();
               return str;
@@ -10313,6 +10337,17 @@ expandRemarks(id:string){
 // conditional accept functionality end
 
 ///
+date_menu_modal() {
+  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+  document.getElementById("datemenu").style.display = "block";
+ 
+}
+date_menu_modal_close() {
+  document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+  document.getElementById("datemenu").style.display = "none";
+ 
+
+}
 
 }
 

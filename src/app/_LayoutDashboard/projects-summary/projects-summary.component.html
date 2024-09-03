@@ -1233,13 +1233,14 @@
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status=='InProcess'">
                                                             <div>
                                                                 <span class="InProcess_color font-weight-400" *ngIf=" item.Status=='InProcess'">In-process</span>
+                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}</span>
                                                             </div>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
                                                             <ng-container [ngSwitch]="item.Status">
 
                                                                     <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
-                                                                    <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
+                                                                    <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval   </span>
                                                                     <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
                                                                     <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
                                                                     <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
@@ -1247,7 +1248,8 @@
                                                                     <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
                                                                     <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
                                                                     <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
-                                                                     <ng-container *ngSwitchDefault>
+                                                                    <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}</span>
+                                                                    <ng-container *ngSwitchDefault>
                                                                         <span class="Delay_color font-weight-400" *ngIf="item.Status.toLowerCase().includes('delay')"><strong>{{item.Status}}</strong></span>
                                                                        <div class="attach-tippy" *ngIf="item.Status !== 'Not yet achieved'" >
                                                                         <span class="vi font-weight-400 st-line"> {{item.Status}} Delay</span>

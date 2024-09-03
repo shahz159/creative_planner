@@ -1389,6 +1389,14 @@ td:nth-child(4) {
   color: #979797;
 }
 
+.Delay_color {
+  background-color: #D32F2F !important;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
 @keyframes connect {
   0% {
       transform: rotate(0deg);

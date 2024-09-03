@@ -4182,7 +4182,7 @@ li.modal-project-list-item {
     z-index: 9999;
 }
 
-.date-menu {
+/* .date-menu {
     border: 0 !important;
     margin: 0;
     min-width: 40rem;
@@ -4210,7 +4210,7 @@ li.modal-project-list-item {
 
 .date-menu.show {
     display: block;
-}
+} */
 
 .date-menu-item {
     display: flex;

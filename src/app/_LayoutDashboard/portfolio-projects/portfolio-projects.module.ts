@@ -16,6 +16,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { angularEditorConfig } from '@kolkov/angular-editor/lib/config';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { ShareModule } from 'src/app/Shared/share/share.module';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -33,10 +35,12 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
     AngularEditorModule,
     MatDatepickerModule,
     NgSelectModule,
+    MatCardModule,
     ToastrModule,
     MaterialModule,
     Ng2SearchPipeModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ShareModule
   ],
   providers: [ DatePipe,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS},  ],
 })

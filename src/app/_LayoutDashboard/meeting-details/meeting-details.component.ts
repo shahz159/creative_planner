@@ -1093,7 +1093,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
-
+        console.log( this._MemosSubjectList ,' this._MemosSubjectList ')
       }
       this.checkeddms=[];
 
@@ -1919,7 +1919,8 @@ export class MeetingDetailsComponent implements OnInit {
       this._calenderDto.flagid = 1;
       if (result === true) {
         this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
-          this.meeting_details()
+          this.meeting_details();
+          this.GetProjectAndsubtashDrpforCalender();
           this.notifyService.showSuccess("Deleted successfully ", '');
         });
       }
@@ -3415,7 +3416,6 @@ debugger
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
                 this.FiterEmployee = this.EmployeeList;
      
-
                  const orderedEmpNos = new Set(this.orderedItems.map(item => item.stringval));
 
                   this.filteredEmployees = this.FiterEmployee.filter((employee) => {
@@ -6395,9 +6395,9 @@ debugger
   companies_Arr:any;
 
 
-  projectmodaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'|undefined;
+  projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
 
-  projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'){
+  projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
 
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
@@ -6449,7 +6449,7 @@ debugger
        selectedinto='Portfolio';
        property_name='portfolio_id';
     }
-    else if(this.projectmodaltype=='S-Mail')
+    else if(this.projectmodaltype=='SMail')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
@@ -6493,7 +6493,7 @@ debugger
              this.close_projectmodal();
         };break;
 
-       case 'S-Mail':{
+       case 'SMail':{
             if(!this.SelectDms)   // if SelectDms is null,undefined,''
               this.SelectDms=[];
 
@@ -6628,7 +6628,7 @@ debugger
           case 'PORTFOLIO':{
             this.onPortfolioFilter();
           };break;
-          case 'S-Mail':{
+          case 'SMail':{
             this.onDMSFilter();
           };break;
           case 'PARTICIPANT':{
