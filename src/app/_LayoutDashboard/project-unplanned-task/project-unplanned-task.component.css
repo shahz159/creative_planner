@@ -3326,3 +3326,117 @@ span.task-count {
     border-radius: 2px;
     margin-left: 5px;
 }
+div#unassign-editsidebar.kt-action-panel--on {
+    width: 34% !important;
+}
+.unassign-editsidebar-body{
+    padding: 1.5rem;
+    height: calc(100vh - 58px);
+    color: #686868;
+}
+.unassign-editsidebar-head {
+    display: flex;
+    align-items: center;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    padding: 0.2rem 0.1rem;
+    margin-bottom: 1.5rem;
+}
+.unassign-editsidebar-radio{
+    padding: 1rem 0.95rem;
+    color: #686868;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+.unassign-editsidebar-radio .form-check {
+    padding-left: 1.5rem;
+}
+.unassign-editsidebar-radio .form-check .form-check-input {
+    width: 18px;
+    height: 18px;
+}
+.unassign-editsidebar-radio .form-check-label {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+.radioicon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5867dd;
+}
+.radioicon svg {
+    width: 28px;
+    height: 28px;
+}
+.radiotitle .form-control {
+    border: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    padding-left: 4px;
+    height: auto;
+}
+.unassign-editsidebar-footer{
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #e8e8e8;
+}
+.footicon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #676767;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+.footicon:hover{
+    background-color: #eeeeee;
+}
+.footicon.delete{
+    color: #cf2626;
+    border: 1px solid #ffd4d4;
+}
+.footicon.save{
+    color: #1534e3;
+    border: 1px solid #b1bdff;
+}
+.footicon svg {
+    width: 24px;
+    height: 24px;
+}
+.foottext {
+    color: #676767;
+    font-size: 14px;
+}
+.sub-act{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+::ng-deep .mat-icon-button {
+  width: 38px;
+  height: 36px;
+  line-height: 30px !important;
+}
+.details-date .form-control {
+  border-radius: 4px 0px 0px 4px;
+}
+.details-date .input-group-text {
+  border-radius: 0px 4px 4px 0px;
+  height: calc(1.5em + 1.3rem + 2px);
+  margin-left: -1px;
+}

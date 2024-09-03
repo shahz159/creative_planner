@@ -6724,8 +6724,64 @@ span.s-time {
     padding-left: 1rem;
 }
 
-
-
-.notif-AutoComplete{
+.notif-AutoComplete {
     background-color: #fdbc4a38 !important;
+}
+
+ul#myTabMeetingAttendees {
+    margin-bottom: 0px;
+    border-bottom: 0px solid #dee2e6;
+}
+
+ul#myTabMeetingAttendees .nav-item .nav-link {
+    display: flex;
+    align-items: center;
+    border: 0px;
+}
+
+ul#myTabMeetingAttendees .nav-item {
+    margin-bottom: -6px;
+}
+
+ul#myTabMeetingAttendees .nav-item .nav-link.active {
+    border-bottom: 2px solid #5867dd !important;
+}
+
+.user-requset-item {
+    background-color: #5867dd0d;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.user-requset-item:hover {
+    transform: scale(1.01);
+}
+
+.user-request-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #3c3c3c;
+}
+
+.user-request-info-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.info-item {
+    color: #7c8094;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.info-item svg {
+    width: 20px;
+    height: 20px;
 }

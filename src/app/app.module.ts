@@ -35,7 +35,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meeting-details.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StreamDashboardComponent } from './_LayoutDashboard/stream-dashboard/stream-dashboard.component';
-import { StreamCalendarComponent } from './_LayoutDashboard/stream-calendar/stream-calendar.component';
+// import { StreamCalendarComponent } from './_LayoutDashboard/stream-calendar/stream-calendar.component';
 
 
 
@@ -57,7 +57,7 @@ import { StreamCalendarComponent } from './_LayoutDashboard/stream-calendar/stre
     ConfirmDialogComponent,
     TimelineComponent,
     StreamDashboardComponent,
-    StreamCalendarComponent,
+    // StreamCalendarComponent,
     
     // MeetingReportComponent
    

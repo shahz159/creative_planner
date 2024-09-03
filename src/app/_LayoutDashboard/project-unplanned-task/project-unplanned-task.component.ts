@@ -33,6 +33,8 @@ import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.co
 })
 
 export class ProjectUnplannedTaskComponent implements OnInit {
+  // selectedOption: string = '';
+  selectedOption: string = 'option1';
   _ObjAssigntaskDTO: AssigntaskDTO;
   _ObjCompletedProj: CompletedProjectsDTO;
   CurrentUser_ID: string;
@@ -1152,6 +1154,19 @@ showassign(){
   document.getElementById('taskdd').classList.add('d-none')
 }
 
+unassign_edit(){
+  document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+}
+unassign_closeInfo(){
+  document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+}
+toggleProjectoptions(option: string) {
+  this.selectedOption = option;
+}
 activeButton: string = 'totalProjects';
 
 setActiveButton(buttonName: string) {

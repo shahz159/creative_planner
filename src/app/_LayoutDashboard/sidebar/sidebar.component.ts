@@ -43,7 +43,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#scheduleevent', {
-      content: "Schedule Event",
+      content: "Stream Calendar",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',
