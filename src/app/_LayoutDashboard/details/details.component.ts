@@ -1081,26 +1081,70 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   completionOffset:number=0;
 
 
+  // getDelayText(action: any): string {
+  //   if (!action || action.Delaydays == null) return '';
+  
+  //   let delayText = '';
+  
+  //   if (action.Delaydays >= 365) {
+  //     const years = Math.floor(action.Delaydays / 365);
+  //     delayText = years === 1 ? '1 year' : `${years} years`;
+  //   } else if (action.Delaydays >= 30) {
+  //     const months = Math.floor(action.Delaydays / 30);
+  //     delayText = months === 1 ? '1 month' : `${months} months`;
+  //   } else if (action.Delaydays >= 7) {
+  //     const weeks = Math.floor(action.Delaydays / 7);
+  //     delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+  //   } else {
+  //     delayText = `${action.Delaydays} day(s)`;
+  //   }
+  
+  //   return delayText + ' Delay';
+  // }
+  
+
   getDelayText(action: any): string {
+  
     if (!action || action.Delaydays == null) return '';
   
     let delayText = '';
   
     if (action.Delaydays >= 365) {
       const years = Math.floor(action.Delaydays / 365);
-      delayText = years === 1 ? '1 year' : `${years} years`;
+      delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
     } else if (action.Delaydays >= 30) {
       const months = Math.floor(action.Delaydays / 30);
-      delayText = months === 1 ? '1 month' : `${months} months`;
+      delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
     } else if (action.Delaydays >= 7) {
       const weeks = Math.floor(action.Delaydays / 7);
-      delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
+      delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
     } else {
-      delayText = `${action.Delaydays} day(s)`;
+      delayText = action.Delaydays < 10 ? `0${action.Delaydays} day(s)` : `${action.Delaydays} day(s)`;
     }
   
     return delayText + ' Delay';
   }
+  
+  
+  // getStandardText(action: any): string {
+  //   if (!action?.Status) return '';
+  
+  //   const days = parseInt(action.Status);
+  //   if (isNaN(days)) return action.Status; // Return original status if it's not a number
+  
+  //   const periods = [
+  //     { unit: 'year', duration: 365 },
+  //     { unit: 'month', duration: 30 },
+  //     { unit: 'week', duration: 7 }
+  //   ];
+  
+  //   for (const { unit, duration } of periods) {
+  //     const count = Math.floor(days / duration);
+  //     if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
+  //   }
+  
+  //   return `${days} day${days === 1 ? '' : 's'}`;
+  // }
   
   
   getStandardText(action: any): string {
@@ -1117,13 +1161,29 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   
     for (const { unit, duration } of periods) {
       const count = Math.floor(days / duration);
-      if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
+      if (count > 0) {
+        const formattedCount = count < 10 ? `0${count}` : `${count}`;
+        return count === 1 ? `01 ${unit}` : `${formattedCount} ${unit}s`;
+      }
     }
   
-    return `${days} day${days === 1 ? '' : 's'}`;
+    const formattedDays = days < 10 ? `0${days}` : `${days}`;
+    return `${formattedDays} day${days === 1 ? '' : 's'}`;
   }
   
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
   
@@ -4660,7 +4720,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
 
-
           this.Addguest= this.meetingList[0].Addguest
           this.MeetingParticipants= JSON.parse(this.Addguest);
           console.log('meeting we have:', this.meetingList);
@@ -4790,7 +4849,10 @@ debugger
 
 
   getUpcomingMeeting() {
+ 
     const cd = new Date();   // takes the current date.
+    debugger
+
     const upcoming = this.meeting_arry.filter((meeting) => {
       const sd = new Date(meeting.Schedule_date);
       return sd > cd;
@@ -8266,6 +8328,7 @@ showPendingAprvlActnsOfEmp(userno:string){
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
+  debugger
   let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
