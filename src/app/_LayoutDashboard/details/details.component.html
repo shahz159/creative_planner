@@ -680,7 +680,7 @@
                                                      <!-- <span class="completed-with-delay" style="position: unset;">Delayed {{completionOffset}} {{completionOffset>1?' days':' day'}}</span>  -->
 
                                                       <div [title]="'Delayed '+completionOffset+(completionOffset>1?' days':' day')" *ngIf="projectInfo.Status==='Completed'&&(completionOffset>0)"  class="Kt-Pd-Status Delay" style="width:fit-content">Delayed</div>
-                                                      <div *ngIf="projectInfo" class="Kt-Pd-Status" style="width:fit-content" [ngClass]="{
+                                                      <div *ngIf="projectInfo" class="Kt-Pd-Status attach-tippy" style="width:fit-content" [ngClass]="{
                                                                   'new-project-under':projectInfo.Status==='Under Approval',
                                                                   'Not_Started': projectInfo.Status==='Not Started',
                                                                   'Delay':projectInfo.Status==='Delay',
@@ -697,23 +697,25 @@
                                                                   'Hold':projectInfo.Status==='Project Hold',
                                                                   'DeadlineExtend':projectInfo.Status==='Deadline Extend Under Approval',
                                                                   'Delay':projectInfo.Project_Block=='003'&&projectInfo.Status.includes('Delay')
-                                                                  }"   [attr.title]="(projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' day(s)' + ' Delay ': '') ||
-                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status : '')"
+                                                                  }" 
                                                                   
-                                                              
+                                                
                                                                   >
+                                                                  <span class="vi font-weight-400 st-line" *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
+                                                                     {{(projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' day(s)' + ' Delay ': '') ||
+                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status : '')}}</span>
                                                           {{
-                                                          projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
-                                                          projectInfo.Status==='Delay'? getDelayText(projectInfo):
-                                                          projectInfo.Status==='Under Approval' ? 'New approval':
-                                                          projectInfo.Status==='InProcess'?'In-process':
-                                                          projectInfo.Status=='Under Approval'?'New approval':
-                                                          projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval":
-                                                          projectInfo.Status== "Completion Under Approval"?"Completion approval":
-                                                          projectInfo.Status=='Forward Under Approval'? "Forward approval":
-                                                          projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
-                                                          projectInfo.Status=='InProcess'?'In-process': getStandardText(projectInfo)
-                                                          }}
+                                                                projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
+                                                                projectInfo.Status==='Delay'? getDelayText(projectInfo):
+                                                                projectInfo.Status==='Under Approval' ? 'New approval':
+                                                                projectInfo.Status==='InProcess'?'In-process':
+                                                                projectInfo.Status=='Under Approval'?'New approval':
+                                                                projectInfo.Status=="Cancellation Under Approval"?"Cancellation approval":
+                                                                projectInfo.Status== "Completion Under Approval"?"Completion approval":
+                                                                projectInfo.Status=='Forward Under Approval'? "Forward approval":
+                                                                projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
+                                                                projectInfo.Status=='InProcess'?'In-process': getStandardText(projectInfo)
+                                                                }}
 
                                                       </div>
 
@@ -2677,8 +2679,9 @@
 
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
-                                            <div class="kt-project-type " *ngSwitchCase="'Delay'">
-                                                  <div class="Kt-Pd-Status Delay"  [attr.title]="projectInfo.Delaydays? projectInfo.Delaydays + ' day(s)' + ' Delay ': '' ">
+                                            <div class="kt-project-type attach-tippy" *ngSwitchCase="'Delay'">
+                                                <span class="vi font-weight-400 st-line"> {{projectInfo.Delaydays? projectInfo.Delaydays + ' day(s)' + ' Delay ': '' }}</span>
+                                                  <div class="Kt-Pd-Status Delay"  >
                                                     {{getDelayText(projectInfo&&projectInfo)}}</div>
                                             </div>
 
@@ -2749,7 +2752,8 @@
                                               </div> -->
 
                                           <ng-container *ngSwitchDefault>
-                                            <div  *ngIf="projectInfo&&projectInfo.Project_Block=='003'"  class="kt-project-type" title="{{projectInfo.Status}}">
+                                            <div  *ngIf="projectInfo&&projectInfo.Project_Block=='003'"  class="kt-project-type attach-tippy" >
+                                                <span class="vi font-weight-400 st-line"> {{projectInfo.Status}}</span>
                                                 <div class="Kt-Pd-Status Delay">{{getStandardText(projectInfo)}}</div>
                                              </div>
                                           </ng-container>
@@ -4427,8 +4431,10 @@
                                               <div [ngSwitch]="projectActionInfo[currentActionView].Status"
                                                   *ngIf="!requestType && Current_user_ID  != approval_Emp">
 
-                                                  <div *ngSwitchCase="'Delay'" class="kt-project-type" [attr.title]="projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' day(s)' + ' Delay ' :''">
-                                                      <div class="Kt-Pd-Status Delay">
+                                                  <div *ngSwitchCase="'Delay'" class="attach-tippy kt-project-type" >
+                                                      <span class="vi font-weight-400 st-line"> {{projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' day(s)' + ' Delay ' :''}}</span>
+
+                                                    <div class="Kt-Pd-Status Delay">
                                                         {{ getDelayText(projectActionInfo[currentActionView]) }}
                                                       </div>
                                                   </div>

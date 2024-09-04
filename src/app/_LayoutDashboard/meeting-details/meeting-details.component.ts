@@ -6515,11 +6515,6 @@ debugger
 
 
 
-
-
-
-
-
   discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:string){
     switch(listtype){
        case 'PROJECT':{
@@ -6546,19 +6541,6 @@ debugger
     }
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -6597,19 +6579,6 @@ debugger
          // when removing already selected items
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

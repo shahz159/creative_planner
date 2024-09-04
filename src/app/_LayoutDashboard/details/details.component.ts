@@ -1126,26 +1126,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
   
   
-  // getStandardText(action: any): string {
-  //   if (!action?.Status) return '';
-  
-  //   const days = parseInt(action.Status);
-  //   if (isNaN(days)) return action.Status; // Return original status if it's not a number
-  
-  //   const periods = [
-  //     { unit: 'year', duration: 365 },
-  //     { unit: 'month', duration: 30 },
-  //     { unit: 'week', duration: 7 }
-  //   ];
-  
-  //   for (const { unit, duration } of periods) {
-  //     const count = Math.floor(days / duration);
-  //     if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
-  //   }
-  
-  //   return `${days} day${days === 1 ? '' : 's'}`;
-  // }
-  
+
   
   getStandardText(action: any): string {
     if (!action?.Status) return '';
@@ -4392,6 +4373,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {
+    debugger
     repDate = new Date(repDate);
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -4491,7 +4473,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+    alert(0)
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -4851,7 +4833,6 @@ debugger
   getUpcomingMeeting() {
  
     const cd = new Date();   // takes the current date.
-    debugger
 
     const upcoming = this.meeting_arry.filter((meeting) => {
       const sd = new Date(meeting.Schedule_date);
@@ -7582,7 +7563,7 @@ GetprojectComments() {
 
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+alert(1)
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";

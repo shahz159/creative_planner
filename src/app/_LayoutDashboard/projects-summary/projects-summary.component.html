@@ -1250,10 +1250,13 @@
                                                                     <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
                                                                     <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}</span>
                                                                     <ng-container *ngSwitchDefault>
-                                                                        <span class="Delay_color font-weight-400" *ngIf="item.Status.toLowerCase().includes('delay')"><strong>{{item.Status}}</strong></span>
+                                                                        <span class="Delay_color font-weight-400 attach-tippy"  *ngIf="item.Status.toLowerCase().includes('delay')" >
+                                                                            <span class="vi font-weight-400 st-line"> {{item.Status}}</span>
+                                                                            <strong>{{getFormattedDelay(getStatusNumber(item.Status))}}</strong>
+                                                                        </span>
                                                                        <div class="attach-tippy" *ngIf="item.Status !== 'Not yet achieved'" >
                                                                         <span class="vi font-weight-400 st-line"> {{item.Status}} Delay</span>
-                                                                        <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{getFormattedDelay(getStatusNumber(item.Status)) }}</span>
+                                                                        <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{getFormattedDelay(getStatusNumber(item.Status))}}</span>
                                                                       </div>
                                                                       <div  *ngIf="item.Status === 'Not yet achieved'" >
                                                                         <!-- <span class="vi font-weight-400 "> {{item.Status}} </span> -->
