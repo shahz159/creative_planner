@@ -886,7 +886,7 @@ this.prjPIECHART.render();
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);  
+      this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
@@ -943,7 +943,7 @@ this.prjPIECHART.render();
 
       // this.projectActionDelay = this.projectActionInfo.map((action) => {
       //   let delayText = '';
-      
+
       //   if (action.Delaydays >= 365) {
       //     const years = Math.floor(action.Delaydays / 365);
       //     delayText = years === 1 ? '1 year' : `${years} years`;
@@ -956,14 +956,14 @@ this.prjPIECHART.render();
       //   } else {
       //     delayText = `${action.Delaydays} days`;
       //   }
-      
+
       //   return {
       //     ...action,
       //     Delaydays: delayText
       //   };
       // });
-      
-  
+
+
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1054,9 +1054,9 @@ this.prjPIECHART.render();
 
   getDelayText(action: any): string {
     if (!action || action.Delaydays == null) return '';
-  
+
     let delayText = '';
-  
+
     if (action.Delaydays >= 365) {
       const years = Math.floor(action.Delaydays / 365);
       delayText = years === 1 ? '1 year' : `${years} years`;
@@ -1069,35 +1069,35 @@ this.prjPIECHART.render();
     } else {
       delayText = `${action.Delaydays} day(s)`;
     }
-  
+
     return delayText + ' Delay';
   }
-  
-  
+
+
   getStandardText(action: any): string {
     if (!action?.Status) return '';
-  
+
     const days = parseInt(action.Status);
     if (isNaN(days)) return action.Status; // Return original status if it's not a number
-  
+
     const periods = [
       { unit: 'year', duration: 365 },
       { unit: 'month', duration: 30 },
       { unit: 'week', duration: 7 }
     ];
-  
+
     for (const { unit, duration } of periods) {
       const count = Math.floor(days / duration);
       if (count > 0) return count === 1 ? `1 ${unit}` : `${count} ${unit}s`;
     }
-  
+
     return `${days} day${days === 1 ? '' : 's'}`;
   }
-  
-  
-  
-  
-  
+
+
+
+
+
 
   prjRunFor:number=0;
   uniqueName:any
@@ -1152,7 +1152,7 @@ this.prjPIECHART.render();
                   obj.contribution=p.RespDuration;
                   obj.totalActionsCreated=p.SubtaskCount;
               }
-             
+
             }
 
 
@@ -1922,7 +1922,7 @@ multipleback(){
         let appId: number = 101;//this._ApplicationId;
         let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
         let userid: number = +this.Current_user_ID;
-      
+
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated successfully") {
@@ -2104,7 +2104,7 @@ multipleback(){
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);   
+            this.completedoc = (this.complete_List[0]['Sourcefile']);
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
@@ -3785,7 +3785,7 @@ check_allocation() {
 
   // timeline code end here
 
- 
+
   AddPortfolio() {
     this.getPortfoliosDetails()
   }
@@ -3836,8 +3836,8 @@ check_allocation() {
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {    
-        this._portfoliosList = data as [];   
+      ((data) => {
+        this._portfoliosList = data as [];
          console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
@@ -3857,7 +3857,7 @@ check_allocation() {
     document.getElementById("rightbar-overlay").style.display = "block";
 
 
-   
+
     this._calenderDto = new CalenderDTO();
 
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -3869,13 +3869,13 @@ check_allocation() {
     // this._calenderDto.Project_Code = this.URL_ProjectCode;
     // this.CalenderService.GetCalenderProjectandsubList(this.URL_ProjectCode).subscribe
     // ((data) => {
- 
+
     //   this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
 
     //   console.log("Portfoliolist_1:",this.Portfoliolist_1);
 
     // });
-    
+
   }
 
 
@@ -3949,20 +3949,20 @@ check_allocation() {
       this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
       return;
     }
-     
+
     this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
     this.selectedportID = JSON.stringify(this.Portfolio);
     if (this.selectedportID != null) {
-     
+
       this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
       this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
       this.objPortfolioDto.Emp_No = this.Current_user_ID;
       this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
         subscribe((data) => {
-         
+
           this._Message = (data['message']);
           debugger
-          if (this._Message == 'Updated Successfully') { 
+          if (this._Message == 'Updated Successfully') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
             this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
@@ -4128,11 +4128,11 @@ check_allocation() {
 
 
 
-  updateMainProject() {   
+  updateMainProject() {
 // for checking whether mandatory fields are provided or not.
 
 
-  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && 
+  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) &&
   (!(this.selectedFile&&this._remarks&&this._remarks.trim()))){
     this.formFieldsRequired=true;
     return;
@@ -4284,6 +4284,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {
+    debugger
     repDate = new Date(repDate);
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -4383,7 +4384,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+debugger
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -5374,10 +5375,10 @@ debugger
 
   subtashDrpLoading:boolean = false
   GetProjectAndsubtashDrpforCalender() {
-   
+
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
-        
+
         this.subtashDrpLoading=false;
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
@@ -5388,7 +5389,7 @@ debugger
          });    // to change the order : first racis people and then rest
 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        
+
 
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
@@ -7620,7 +7621,7 @@ closeNewPrjReleaseSideBar() {
 
 getRejectType() {
   this.approvalObj.Project_Code = this.URL_ProjectCode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {  
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
     this.activity = data[0]["activity"];
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
@@ -9147,7 +9148,7 @@ Meeting_method(event){
  }
 
  projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
- 
+
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -9231,7 +9232,7 @@ changeScheduleType(val:number){
     document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
 
 
-   
+
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
@@ -9943,11 +9944,11 @@ loadActionsGantt(){
 
 // yaxis label adjustments
 
-            Array.from(textelms).forEach((te:any,index)=>{ 
+            Array.from(textelms).forEach((te:any,index)=>{
                         const _a_res:any=actions_list[index].Responsible;
                         const ypos=te.getAttribute('y');
                         te.setAttribute('y',ypos-12);
-                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                         tspan3.setAttribute('x','-135');
                         tspan3.setAttribute('dy','13');
                         tspan3.style.fill='#543fff';
@@ -10014,10 +10015,10 @@ loadActionsGantt(){
     yaxis: {
       labels: {
         style: {
-          fontSize: '11px',       
-          fontFamily: 'Arial, sans-serif', 
-          color: '#333',          
-          textAnchor: 'start'    
+          fontSize: '11px',
+          fontFamily: 'Arial, sans-serif',
+          color: '#333',
+          textAnchor: 'start'
         },
 
         formatter:function(value) {
@@ -10029,7 +10030,7 @@ loadActionsGantt(){
             return value;
         }
 
- 
+
       }
     },
     grid: {
@@ -10131,7 +10132,7 @@ loadActionsGantt(){
           offsetY: -20
         }
       }],
-     
+
     },
 
 
@@ -10148,12 +10149,12 @@ loadActionsGantt(){
         fontFamily: 'Lucida Sans Unicode',
         color: '#263238'
       }
-      
+
     }
 
 
-    
-    
+
+
   };
 
 
@@ -10181,7 +10182,7 @@ filterActionsOnGantt(option:string){
 
 
 onActnsGanttClosed(){
-    this.ActnsGanttChart=null; 
+    this.ActnsGanttChart=null;
     this.ganttActnsConfig={byuser:'All'};
     this.total_userActns=undefined;
 }
@@ -10201,12 +10202,12 @@ arrangeActivitiesBy(acttype:string,emptype:string){
   this.FilteredPrjActivities=this.Activity_List.filter((actv)=>{
     const x=(this.actvsFltrBy.empType=='all'||actv.Modifiedby==this.actvsFltrBy.empType);
     const y=(this.actvsFltrBy.activityType=='all'||(actv._type==this.actvsFltrBy.activityType));
-    return x&&y; 
+    return x&&y;
   });
 }
 
 
- 
+
 
 characterCount: number = 0;
 
@@ -10284,12 +10285,12 @@ onca_PortfolioDeSelected(prtid:string){
 
 
 getca_Dropdowns(){
-    // prj types    
-    this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
-    
+    // prj types
+    this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];
+
     //all portfolios list
     this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
-      this._portfoliosList2 = data as [];  
+      this._portfoliosList2 = data as [];
     });
 }
 
@@ -10306,7 +10307,7 @@ expandRemarks(id:string){
      const remark_sec=document.getElementById(id);
      if(remark_sec.classList.contains('compl-remarks-span'))
         remark_sec.classList.remove('compl-remarks-span');
-     else 
+     else
         remark_sec.classList.add('compl-remarks-span');
 }
 

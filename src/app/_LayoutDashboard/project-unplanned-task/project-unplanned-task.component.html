@@ -789,7 +789,7 @@
                                                         </div>
 
                                                         <!-- Working Now -->
-                                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75" >
+                                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75"  [ngStyle]="{ 'cursor': 'pointer' }" >
                                                             <div
                                                                 class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
                                                                 <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit(item.Assign_Id,item.Task_Name,item.Creation_Date);"
@@ -1083,7 +1083,7 @@
                                                              </svg>
                                                                </a> -->
                                                             </div>
-                                                            <div class="action-right" (click)="openActionassign(i)">
+                                                            <div class="action-right" (click)="openActionassign(i)" [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
                                                                     <div class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}</div>
                                                                     <div class="desc">{{item.Task_Description}}</div>
@@ -1420,7 +1420,7 @@
                                                                     </a>
                                                                 </div> -->
 
-                                                            <div class="action-right" (click)="editassignPending(i)">
+                                                            <div class="action-right" (click)="editassignPending(i)" [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
                                                                     <div class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}</div>
                                                                     <div class="desc">{{item.Task_Description}}</div>

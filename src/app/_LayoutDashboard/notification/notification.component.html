@@ -388,7 +388,8 @@
 
                         </td>
                         <td align="center">
-                          <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button"
+                          <div class="d-flex align-items-center">
+                            <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button"
                             *ngIf="item.Req_Type!='Task Complete'" placement="right" data-trigger="focus"
                             data-toggle="tooltip" title="Project Info!"
                             (click)="openInfo(item.Project_Code1);info_active_btn(item)">
@@ -503,6 +504,7 @@
 
                          </svg>
                           </a>
+                          </div>
                         </td>
                         <td>
                           <p class="kt-widget__title mb-0">
@@ -561,8 +563,29 @@
                                      item.Req_Type
                                   }}
                           </span>
-                          <span class="font-weight-400" [ngClass]="{'new_appraval': item.Req_Type=='New Project'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release','Forward': item.Req_Type=='Project Forward','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
-                            *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back'">{{item.Req_Type=='Project Forward'?'Forward Approval':item.Req_Type}}</span>
+
+
+                          <span class="attach-tippy" *ngIf="item.Req_Type=='Project Complete' " >
+                            <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                        <span class="st-line curser-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                           <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                            <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
+                        </span>
+
+                        <span class="attach-tippy" *ngIf="item.Req_Type=='Task Complete'" >
+                          <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="openPDF_Standards(item.Project_Code,item.Emp_No,item.Iscloud,item.Rec_Date,item.FileUrl,item.contentType,item.SubmittedBy,item.Project_Code1)"></b>
+                          <!-- projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible -->
+                      <span class="st-line curser-pointer" (click)="openPDF_Standards(item.Project_Code,item.Emp_No,item.Iscloud,item.Rec_Date,item.FileUrl,item.contentType,item.SubmittedBy,item.Project_Code1)">
+                         <div style="width: max-content;">Submit by: <h6>{{item.SubmittedBy}} </h6></div>
+                          <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
+                      </span>
+
+
+
+
+
+                          <span class="font-weight-400" [ngClass]="{'new_appraval': item.Req_Type=='New Project'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete' ||item.Req_Type=='Action Complete'||item.Req_Type=='Project Release','Forward': item.Req_Type=='Project Forward','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
+                            *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Action Complete' || item.Req_Type=='Revert Back'">{{item.Req_Type=='Project Forward'?'Forward Approval':item.Req_Type}}</span>
                           <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line"
                             title="Forward to">{{item.ForwardTo}}</span>
                         </td>

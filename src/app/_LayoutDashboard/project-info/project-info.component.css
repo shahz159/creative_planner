@@ -1617,8 +1617,11 @@ color:#1E88E5 !important ;
   color: #388E3C !important;
 }
 .Comp_appr{
-  background-color: #81C784 !important;
+  color: #81C784 !important;
 }
 .proj_hold{
-  background-color: #795548 !important;
+  color: #795548 !important;
+}
+.new_pro_rej{
+  color: #ba68c8 !important;
 }
