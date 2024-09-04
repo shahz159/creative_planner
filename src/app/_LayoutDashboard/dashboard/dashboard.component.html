@@ -1794,7 +1794,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">S-Mail</div>
+                                <div class="main-s pro-nm">SMail</div>
                             </div>
                         </div>
                     </div>
@@ -2202,7 +2202,7 @@
                         </div>
                         <div class="rgt-des">
                             <div class="">
-                                <div class="main-s pro-nm">S-Mail</div>
+                                <div class="main-s pro-nm">SMail</div>
                             </div>
                         </div>
                     </div>
@@ -3188,7 +3188,7 @@
                                     </div>
 
                                 </div>
-                                <div class="schedule-br curser-pointer col-md-6 " id="div_recurrence">
+                                <div class="curser-pointer col-md-6 " id="div_recurrence">
                                             <div class="repeat" (click)="customrecurrencemodal()">
                                                 <div *ngIf="selectedrecuvalue">
                                                     <span *ngIf="selectedrecuvalue=='0'">Do not repeat</span>
@@ -3609,8 +3609,8 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('DMS')">
-                            <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more dms':'Add dms')}}</div>
+                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail')">
+                            <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
                             <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -4786,7 +4786,7 @@
       <div class="modal-content">
         <div class="modal-header  gap-1">
            <ng-container *ngIf="projectmodaltype">
-                    <img *ngIf="projectmodaltype==='DMS'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                    <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
                     <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                         <path
                             d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
@@ -4825,7 +4825,7 @@
             <div id="project-filter" class="project-filter">
 
 
-                <div *ngIf="projectmodaltype!=='DMS'" class="project-filter-item">
+                <div *ngIf="projectmodaltype!=='SMail'" class="project-filter-item">
                     <div class="item-label">Company</div>
                     <div class="item-select">
                         <div class="" >
@@ -4867,7 +4867,7 @@
                 <div class="project-filter-footer">
                     <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
                     <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
-                    <button *ngIf="projectmodaltype==='DMS'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();  ">Submit</button>
+                    <button *ngIf="projectmodaltype==='SMail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();  ">Submit</button>
                     <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();  ">Submit</button>
                     <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
                 </div>
@@ -4934,7 +4934,7 @@
                         <span style="color:#757575" class="ml-2">No results found.</span>
                     </div>
             </ul>
-            <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='DMS'">
+            <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='SMail'">
 
 
                     <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
@@ -5097,7 +5097,7 @@
           <h5 class="modal-title" id="datemenuLabel">Select Date & Time</h5>
         </div>
         <div class="modal-body">
-
+            <div class="date-menu">
                 <div class="date-menu-item">
                    
 
@@ -5131,7 +5131,7 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-add-primary" (click)="date_menu_modal_close()">Done</button>

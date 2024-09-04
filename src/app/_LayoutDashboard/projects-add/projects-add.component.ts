@@ -139,7 +139,6 @@ export class ProjectsAddComponent implements OnInit {
     this.ObjUserDetails.PortfolioId = parseInt(this.Url_portfolioId, 10);
     // console.log(this.ObjUserDetails.PortfolioId);
     this.service.GetProjectsByUserName_Service(this.ObjUserDetails).subscribe(data => {
-
       this._ProjectDataList = data;
       this.ActualDataList = data;
       this.un_FilteredProjects = this.ActualDataList;

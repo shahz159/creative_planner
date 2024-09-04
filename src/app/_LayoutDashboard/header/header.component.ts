@@ -15,6 +15,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS,} from '@angular/material-moment-adapter';
+import { isString } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -613,43 +614,82 @@ leaveEndsOn:any;
 leaveDuration:number=0;
 leave_remark:string|undefined;
 
-
 // validateInputDates(){
-//   if(this.leaveStartsOn&&this.leaveEndsOn&&this.selectedLeaveType){
-//     debugger
-//     const invalid_sd=this.leaveStartsOn<this.min_date||this.leaveEndsOn>this.max_date;
-//     this.invalidStartDate=invalid_sd;
+//   debugger
+//    if(this.leaveStartsOn&&this.leaveEndsOn){   
+//        this.invalidStartDate=this.leaveStartsOn.toDate()>this.leaveEndsOn.toDate();
+//        this.invalidEndDate=this.leaveEndsOn.toDate()<this.leaveStartsOn.toDate();
 
-
-//     const invalid_ed=this.leaveEndsOn<this.leaveStartsOn;
-//     this.invalidEndDate=invalid_ed;
-
-
-//     // const sd_invalid=this.leaveStartsOn<this.min_date;
-//     // this.invalidStartDate=sd_invalid;
-
-//     // const ed_invalid=this.leaveEndsOn>this.max_date;
-
-//     // this.invalidStartDate=true;
-//     // this.invalidEndDate=true;
-//   }
+//        if(this.selectedLeaveType){
+//         this.invalidStartDate=this.leaveStartsOn.toDate()<this.min_date||([1,3].includes(this.selectedLeaveType)&&(this.leaveStartsOn.toDate()>this.max_date));
+        
+//         if(this.selectedLeaveType==1)
+//         this.invalidEndDate=this.leaveEndsOn.toDate()>this.max_date2;
+        
+//        }
+//    }
 // }
 
-validateInputDates(){
-   if(this.leaveStartsOn&&this.leaveEndsOn){
-       this.invalidStartDate=this.leaveStartsOn.toDate()>this.leaveEndsOn.toDate();
-       this.invalidEndDate=this.leaveEndsOn.toDate()<this.leaveStartsOn.toDate();
 
-       if(this.selectedLeaveType){
-        this.invalidStartDate=this.leaveStartsOn.toDate()<this.min_date||this.leaveStartsOn.toDate()>this.max_date;
-       }
-   }
+validateInputDates(){ 
+
+  this.invalidEndDate=false;  // initially false.
+  if([1,2,3,5].includes(this.selectedLeaveType)){
+    //for annual, emergency, casual and hajj 
+      if(this.leaveStartsOn&&this.leaveEndsOn){  
+        const D1=this.leaveStartsOn.toDate();
+        const D2=this.leaveEndsOn.toDate();
+        this.invalidStartDate=(D1>D2)||
+                              (this.selectedLeaveType?(
+                              D1<this.min_date ||([1,3].includes(this.selectedLeaveType)&&D1>this.max_date)
+                              ):false);
+                
+        if([1,2,3,5].includes(this.selectedLeaveType)){
+          this.invalidEndDate=this.leaveEndsOn.toDate()>this.max_date2;
+        }  
+
+     }
+
+  }
+  else if(this.selectedLeaveType==4){
+    //for umrah
+    // umrah leave allowed on saturday only.
+    const notSat=(this.leaveStartsOn.toDate().getDay()!=6);
+    this.invalidStartDate=notSat;
+  }
+
 }
 
 
+onDatesChanged(){
 
+  // set max enddate. 
+     if(this.selectedLeaveType==1){
+        const d=new Date(this.leaveStartsOn.toDate());
+        d.setDate(d.getDate()+29);
+        this.max_date2=d;
+     }
+     else if(this.selectedLeaveType==2){
+      const d=new Date(this.leaveStartsOn.toDate());
+      d.setDate(d.getDate()+9);
+      this.max_date2=d;
+     }
+     else if(this.selectedLeaveType==3){
+      const d=new Date(this.leaveStartsOn.toDate());
+      d.setDate(d.getDate()+2);
+      this.max_date2=d;
+     }
+     else if(this.selectedLeaveType==4){
+      const d=new Date(this.leaveStartsOn.toDate());
+      this.max_date2=d;
+     }
+     else if(this.selectedLeaveType==5){
+      const d=new Date(this.leaveStartsOn.toDate());
+      d.setDate(d.getDate()+9);
+      this.max_date2=d;
+     }
 
-onDatesChanged(e:any){
+  //
 
    this.validateInputDates();
    let duration=0;
@@ -675,12 +715,22 @@ onLeaveTypeChanged(lvtype:any){
           d2.setHours(0,0,0,0);
           this.max_date=d2;
 
+          const d3=new Date(d);
+          d3.setDate(d3.getDate()+29);
+          this.max_date2=d3;
+         
          };break; // annual leave
          case 2:{
             const d=new Date();
             d.setDate(d.getDate()+7);
             d.setHours(0,0,0,0);
-            this.min_date=d;
+            this.min_date=d;  
+            this.max_date=null;
+
+
+            const d3=new Date(d);
+            d3.setDate(d3.getDate()+9);
+            this.max_date2=d3;
          };break; // Emergency leave
          case 3:{
            const d=new Date();
@@ -694,25 +744,42 @@ onLeaveTypeChanged(lvtype:any){
            this.max_date=d2;
 
 
+
+           const d3=new Date(d);
+           d3.setDate(d3.getDate()+2);
+           this.max_date2=d3;
          };break; // casual leave
          case 4:{
           const d=new Date();
           d.setDate(d.getDate()+7);
           d.setHours(0,0,0,0);
           this.min_date=d;
-
+          this.max_date=null;
+          this.max_date2=null;
          };break; // umrah leave
          case 5:{
           const d=new Date();
           d.setDate(d.getDate()+7);
           d.setHours(0,0,0,0);
           this.min_date=d;
+          this.max_date=null;
 
+          const d3=new Date(d);
+          d3.setDate(d3.getDate()+9);
+          this.max_date2=d3;
          };break; // hajj leave
-         default:{ };break;
+         default:{
+          this.min_date=null;
+          this.max_date=null;
+          this.max_date2=null;
+        };break;
      }
-     this.validateInputDates();
-
+    
+     this.validateInputDates(); 
+     if(this.invalidStartDate==false){
+       this.onDatesChanged();
+     }
+     
 }
 
 

@@ -279,4 +279,16 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetMeetingActivity",this.obj_approvalDTO);
   }
   
+
+  NewGetEmployeeLeaveResponse(obj:ApprovalDTO){
+
+     this.obj_approvalDTO.Emp_no=obj.Emp_no;
+     this.obj_approvalDTO.Leave_Code=obj.Leave_Code;
+     this.obj_approvalDTO.Request_type=obj.Request_type;
+     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveResponse",this.obj_approvalDTO);
+  }
+
+
+
+
 }

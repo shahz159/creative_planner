@@ -788,13 +788,10 @@ debugger
     });
   }
   sweetAlert() {
+  
+   const processContinue=()=>{
 
-
-
-
-
-
-
+    
 //     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
 //   Swal.fire({
 //     title:'invalid Date',
@@ -842,6 +839,26 @@ debugger
     else {
       this.OnSubmit();
     }
+   }
+
+   if(this.owner==this.selectedEmpNo){
+    Swal.fire({
+      title: 'Action owner and responsible are same.',
+      text: 'Do you want to continue?',
+      // icon: 'warning',
+      // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((response: any) => {
+      if (response.value) {
+         processContinue();
+      } 
+    });  
+   }
+   else 
+   processContinue();
+
   }
 
   closeInfo() {

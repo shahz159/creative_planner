@@ -1465,6 +1465,19 @@ toggleProjectoptions(option: string) {
   this._EndDate = null
 }
 
+// unassign_edit(){
+//   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
+//   document.getElementById("rightbar-overlay").style.display = "block";
+//   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+// }
+// unassign_closeInfo(){
+//   document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
+//   document.getElementById("rightbar-overlay").style.display = "none";
+//   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+// }
+// toggleProjectoptions(option: string) {
+//   this.selectedOption = option;
+// }
 activeButton: string = 'totalProjects';
 
 setActiveButton(buttonName: string) {

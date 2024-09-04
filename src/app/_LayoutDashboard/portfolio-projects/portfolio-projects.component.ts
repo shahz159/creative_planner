@@ -258,6 +258,7 @@ export class PortfolioProjectsComponent implements OnInit {
   objProjectDto: ProjectDetailsDTO;
   portfolioid: any;
   fruitInput: any;
+  disablePreviousDate = new Date();
 
 
   constructor(
@@ -334,6 +335,14 @@ export class PortfolioProjectsComponent implements OnInit {
     // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
+
+
+
+
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    $(document).on('change', '.custom-file-input', function (event) {
+      $(this).next('.custom-file-label').html(event.target.files[0].name);
+    });
   }
 
   updateListbyDetailsPage(){
@@ -2563,139 +2572,166 @@ config: AngularEditorConfig = {
   meetingsViewOn: boolean = true;
 
 
+  validStartTimearr:any=[];
   isLoading=true
 
 Task_type(value:number){
 
 
-  this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
-  // this.MasterCode=(value===1)?this.projectInfo.portfolio_id:[this.projectInfo.portfolio_id];    // by default only the project opened is included in the select project field.
-  this.Portfolio=[];                                  // by default no portfolio is selected
-  this.selectedrecuvalue = "0";
-  this._PopupConfirmedValue = 1;
-  this.MinLastNameLength = true;
-  this._subname = false;
-  this._calenderDto = new CalenderDTO;
-  this.BlockNameProject1 = [];
-  this._lstMultipleFiales = [];
-  this._labelName = "Schedule Date :";
-  this._StartDate = moment().format("YYYY-MM-DD").toString();
-  this._subname1 = false;
+            this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
+            // this.MasterCode=(value===1)?this.projectInfo.portfolio_id:[this.projectInfo.portfolio_id];    // by default only the project opened is included in the select project field.
+            this.Portfolio=[];                                  // by default no portfolio is selected
+            this.selectedrecuvalue = "0";
+            this._PopupConfirmedValue = 1;
+            this.MinLastNameLength = true;
+            this._subname = false;
+            this._calenderDto = new CalenderDTO;
+            this.BlockNameProject1 = [];
+            this._lstMultipleFiales = [];
+            this._labelName = "Schedule Date :";
+            this._StartDate = moment().format("YYYY-MM-DD").toString();
+            this._subname1 = false;
 
-  this.AllDatesSDandED = [];
-  var jsonData = {};
-  var columnName = "Date";
-  jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
-  var IsActive = "IsActive";
-  jsonData[IsActive] = 1;
-  var Day = "Day";
-  jsonData[Day] = moment().format('dddd').substring(0, 3);
-  var DayNum1 = "DayNum";
-  jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
-  this.AllDatesSDandED.push(jsonData);
-  this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-
-
-
-
-    // initialization
-
-    this.GetProjectAndsubtashDrpforCalender();   // GET PROJECT LIST,PORTFOLIOS LIST and PAERTICIPANTS
-    this.GetMemosByEmployeeId();                 // GET THE DMS MEMOS LIST.
-    this.GetTimeslabfordate();                   // GET timing
-    this.TImetable();                            // GET start time and end time.
-    this.GetScheduledJson();                     // GET Scheduledjson
-    this.Getdraft_datalistmeeting();
-
-    // opens the sidebar
-    // document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    // document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementById("newdetails").classList.add("position-fixed");
-
-    //
-    $(document).ready(function () {
-      $("#div_recurrence").css("display", "block");
-      $("#weekly_121_new").css("display", "none");
-      $("#div_endDate_new").css("display", "none");
-      $("#Monthly_121_new").css("display", "none");
-      $("#Recurrence_hide").css("display", "none");
-      $("#Schenddate").css("display", "none");
-      $("#Descrip_Name12").css("display", "none");
-    });
-
-    // this.clearallfields();
-    this.daysSelected = [];
-    this.singleselectarry = [];
-    this.daysSelectedII = [];
-    this.daysSelected.push(this._StartDate);
-    this.singleselectarry.push(this._StartDate);
-    this.Schedule_ID = 0;
-    this._subname = false;
-    this.Note_deadlineexpire = false;
-    this.editTask = false;
-    this.copyTask = false;
-    this.create = true;
-
-  if (value===1) {
-    this.ScheduleType = "Task";
-    $(document).ready(()=>{
-      $('#subtaskid').css('display','flex');
-      $('#Guest_Name').css('display','none');
-      $('#Location_Name').css('display','none');
-      $('#Descrip_Name').css('display','none');
-      $('#core_viw123').css('display','flex');
-      $('#core_viw121').css('display','none');
-
-      $('#core_viw222').css('display','none');
-      $('#core_Dms').css('display','none');
-      $('#online-add').css('display','none');
-    });
-    // this.GetSubtasklistfromProject(this.MasterCode);
-  }
-  else{
-    this.ScheduleType = "Event";
-
-   $(document).ready(()=>{
-     $('#subtaskid').css('display','none');
-        $('#Guest_Name').css('display','flex');
-        $('#Location_Name').css('display','none');
-        $('#Descrip_Name').css('display','flex');
-        $('#core_viw121').css('display','flex');
-
-        $('#core_viw123').css('display','none');
-        $('#core_viw222').css('display','flex');
-        $('#core_Dms').css('display','flex');
-       $('#online-add').css('display','flex');
-
-
-      const es=document.getElementById('event-Sidebar');
-      es.addEventListener('scroll',()=>{
-            this.autocompletes.forEach((ac)=>{
-              if(ac.panelOpen)
-              ac.updatePosition();
-            });
-      })
+            this.AllDatesSDandED = [];
+            var jsonData = {};
+            var columnName = "Date";
+            jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
+            var IsActive = "IsActive";
+            jsonData[IsActive] = 1;
+            var Day = "Day";
+            jsonData[Day] = moment().format('dddd').substring(0, 3);
+            var DayNum1 = "DayNum";
+            jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
+            this.AllDatesSDandED.push(jsonData);
+            this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
 
 
 
-    })
+
+              // initialization
+
+              this.GetProjectAndsubtashDrpforCalender();   // GET PROJECT LIST,PORTFOLIOS LIST and PAERTICIPANTS
+              this.GetMemosByEmployeeId();                 // GET THE DMS MEMOS LIST.
+              this.GetTimeslabfordate();                   // GET timing
+              this.TImetable();                            // GET start time and end time.
+              this.GetScheduledJson();                     // GET Scheduledjson
+              this.Getdraft_datalistmeeting();
+
+              // opens the sidebar
+              // document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+              // document.getElementById("rightbar-overlay").style.display = "block";
+              // document.getElementById("newdetails").classList.add("position-fixed");
+
+              //
+              $(document).ready(function () {
+                $("#div_recurrence").css("display", "block");
+                $("#weekly_121_new").css("display", "none");
+                $("#div_endDate_new").css("display", "none");
+                $("#Monthly_121_new").css("display", "none");
+                $("#Recurrence_hide").css("display", "none");
+                $("#Schenddate").css("display", "none");
+                $("#Descrip_Name12").css("display", "none");
+              });
+
+              // this.clearallfields();
+              this.daysSelected = [];
+              this.singleselectarry = [];
+              this.daysSelectedII = [];
+              this.daysSelected.push(this._StartDate);
+              this.singleselectarry.push(this._StartDate);
+              this.Schedule_ID = 0;
+              this._subname = false;
+              this.Note_deadlineexpire = false;
+              this.editTask = false;
+              this.copyTask = false;
+              this.create = true;
+
+            if (value===1) {
+              this.ScheduleType = "Task";
+              $(document).ready(()=>{
+                $('#subtaskid').css('display','flex');
+                $('#Guest_Name').css('display','none');
+                $('#Location_Name').css('display','none');
+                $('#Descrip_Name').css('display','none');
+                $('#core_viw123').css('display','flex');
+                $('#core_viw121').css('display','none');
+
+                $('#core_viw222').css('display','none');
+                $('#core_Dms').css('display','none');
+                $('#online-add').css('display','none');
+              });
+              // this.GetSubtasklistfromProject(this.MasterCode);
+            }
+            else{
+              this.ScheduleType = "Event";
+
+            $(document).ready(()=>{
+              $('#subtaskid').css('display','none');
+                  $('#Guest_Name').css('display','flex');
+                  $('#Location_Name').css('display','none');
+                  $('#Descrip_Name').css('display','flex');
+                  $('#core_viw121').css('display','flex');
+
+                  $('#core_viw123').css('display','none');
+                  $('#core_viw222').css('display','flex');
+                  $('#core_Dms').css('display','flex');
+                $('#online-add').css('display','flex');
 
 
-  }
+                const es=document.getElementById('event-Sidebar');
+                es.addEventListener('scroll',()=>{
+                      this.autocompletes.forEach((ac)=>{
+                        if(ac.panelOpen)
+                        ac.updatePosition();
+                      });
+                })
 
-    const format2 = "YYYY-MM-DD";
-    var jsonData = {};
-    var columnName = "Date";
-    jsonData[columnName] = (moment(this.minDate).format(format2));
-    var columnNames = "StartTime";
-    jsonData[columnNames] = this.Startts;
-    var columnNamee = "EndTime";
-    jsonData[columnNamee] = this.Endtms;
-    if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
-      var IsActive = "IsActive";
-      jsonData[IsActive] = 1;
-    }
-    this.daysSelectedII.push(jsonData);
+              // valid starttimearr and endtimearr setting start.
+              let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
+              let _currentdate=moment();
+              if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+              {
+                  const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                  const index:number=this.StartTimearr.findIndex((item:any)=>{
+                      const t=moment(item,'h:mm A');
+                      const result=t>=ct;
+                      return result;
+                  });
+                  this.validStartTimearr=this.StartTimearr.slice(index);
+              }
+              else
+              this.validStartTimearr=[...this.StartTimearr];
+
+              console.log(this.validStartTimearr,'this.validStartTimearr')
+
+              this.timingarryend = [];
+              this.Time_End = [];
+              this.Time_End = [...this.StartTimearr];
+            
+              let _index = this.Time_End.indexOf(this.Startts);
+              if (_index + 1 === this.Time_End.length) {
+                _index = -1;
+              }
+              this.timingarryend = this.Time_End.splice(_index + 1);
+              this.EndTimearr = this.timingarryend;
+              // valid starttimearr and endtimearr setting end.
+
+            })
+          }
+
+            const format2 = "YYYY-MM-DD";
+            var jsonData = {};
+            var columnName = "Date";
+            jsonData[columnName] = (moment(this.minDate).format(format2));
+            var columnNames = "StartTime";
+            jsonData[columnNames] = this.Startts;
+            var columnNamee = "EndTime";
+            jsonData[columnNamee] = this.Endtms;
+            if (this.ScheduleType == "Event" || this.ScheduleType == "Task") {
+              var IsActive = "IsActive";
+              jsonData[IsActive] = 1;
+            }
+            this.daysSelectedII.push(jsonData);
 
 
   }
@@ -3555,6 +3591,28 @@ getChangeSubtaskDetais(Project_Code) {
 
         // console.log(this.EndTimearr[0]);
         // console.log("Array" + this.EndTimearr);
+
+          // provide valid starttiming and endtimearr.    start
+          let _currentdate=moment();
+          const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+          const index:number=this.StartTimearr.findIndex((item:any)=>{
+            const t=moment(item,'h:mm A');
+            const result=t>=ct;
+            return result;
+          });
+          this.validStartTimearr=this.StartTimearr.slice(index);
+
+
+          this.timingarryend = [];
+          this.Time_End = [];
+          this.Time_End = this.AllEndtime;
+          let _index = this.Time_End.indexOf(this.Startts);
+          if (_index + 1 === this.Time_End.length) {
+            _index = -1;
+          }
+          this.timingarryend = this.Time_End.splice(_index + 1);
+          this.EndTimearr = this.timingarryend;
+          // provide valid starttiming and endtimearr.    end
       });
   }
 
@@ -5159,11 +5217,11 @@ Meeting_method(event){
 }
 companies_Arr:any;
 basedOnFilter:any={};
-projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
+projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
 choosedItems:any=[];
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
-projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
+projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -5225,7 +5283,7 @@ onInputSearch(inputText:any){
      selectedinto='Portfolio';
      property_name='portfolio_id';
   }
-  else if(this.projectmodaltype=='DMS')
+  else if(this.projectmodaltype=='SMail')
   {
     keyname='Subject';
     arrtype=this.Memos_List;
@@ -5264,7 +5322,7 @@ clearAppliedFiltered(){
         case 'PORTFOLIO':{
           this.onPortfolioFilter();
         };break;
-        case 'DMS':{
+        case 'SMail':{
           this.onDMSFilter();
         };break;
         case 'PARTICIPANT':{
@@ -5335,7 +5393,7 @@ keepChoosedItems(){
            this.close_projectmodal();
       };break;
 
-     case 'DMS':{
+     case 'SMail':{
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
 
@@ -5383,7 +5441,7 @@ onItemChoosed(choosed:any,choosedItem:any){
           }
     }
     else{
-      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='DMS'?this.SelectDms:this.ngEmployeeDropdown;
+      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
       const j=ary.findIndex(item=>item==choosedItem);
       if(j>-1)
       ary.splice(j,1);
@@ -5721,7 +5779,17 @@ bindCustomRecurrenceValues(){
 
   }
 
-
+  date_menu_modal() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+    document.getElementById("datemenu").style.display = "block";
+   
+  }
+  date_menu_modal_close() {
+    document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+    document.getElementById("datemenu").style.display = "none";
+   
+  
+  }
 
   characterCount: number = 0;
 
@@ -5735,13 +5803,28 @@ bindCustomRecurrenceValues(){
   }
 
 
-  getFormattedDelay(delayDays: any): string {
-    let delayText = '';
-    if (delayDays >= 365) {
-      const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
-      else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
-      else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
-      else { delayText = `${delayDays} days`; } return `${delayText} `; }
 
+
+
+
+      getFormattedDelay(delayDays: any): string {
+        let delayText = '';
+      
+        if (delayDays >= 365) {
+          const years = Math.floor(delayDays / 365);
+          delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+        } else if (delayDays >= 30) {
+          const months = Math.floor(delayDays / 30);
+          delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+        } else if (delayDays >= 7) {
+          const weeks = Math.floor(delayDays / 7);
+          delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+        } else {
+          delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+        }
+      
+        return `${delayText.toLowerCase()}`;
+      }
   // new code of portfolio meeting side bar end
+
 }

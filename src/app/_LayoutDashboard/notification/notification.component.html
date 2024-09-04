@@ -86,7 +86,7 @@
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
 
-             <div class="kt-portlet__head-label">
+             <!-- <div class="kt-portlet__head-label">
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -105,7 +105,7 @@
                   Leave Responses
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
 
 
@@ -748,9 +748,9 @@
                         <tr role="row" class="" *ngFor="let item of _newNotificationLeave; let i=index;"
                           [class.active]="item.isActive">
 
-
+                          <!-- leaveform(i,Current_user_ID,item.Leave_Code.trim()) -->
                           <td class="kt-widget__title mb-0 levress"
-                            (click)="leaveform(i,Current_user_ID,item.Leave_Code.trim())">leave</td>
+                            (click)="viewLeaveResponseDetails(i,item.Leave_Code,item.Req_Type)">leave</td>
 
                           <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
                           <td class="kt-widget__title mb-0">{{item.Start_Date | date: 'dd-MM-yyyy'}}</td>
@@ -1750,60 +1750,59 @@
         <div class="main-card">
           <div class="row">
             <div class="col-md-5">
-              <div class="card h-100" *ngIf="_newNotificationLeave&&_newNotificationLeave.length>0">
+              <div class="card h-100" *ngIf="empInformation">
                 <div class="card-header">
                   TEAM MEMBER INFORMATION
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
-                    <span class="label">Name</span><span class="data">{{Current_user_Name}}</span>
+                    <span class="label">Name</span><span class="data">{{empInformation[0].TM_DisplayName}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">TM I.D No</span><span class="data">{{Current_user_ID}}</span>
+                    <span class="label">TM I.D No</span><span class="data">{{empInformation[0].Emp_No}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Position</span><span class="data">{{_newNotificationLeave[0].Position}}</span>
+                    <span class="label">Position</span><span class="data">{{empInformation[0].Position}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Department</span><span class="data">{{_newNotificationLeave[0].Department}}</span>
+                    <span class="label">Department</span><span class="data">{{empInformation[0].Department}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Company</span><span class="data">{{_newNotificationLeave[0].Com_Name}}</span>
+                    <span class="label">Company</span><span class="data">{{empInformation[0].Company}}</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-7">
-              <div class="card h-100">
+              <div class="card h-100" *ngIf="empLeaveDetails">
                 <div class="card-header">
                   LEAVE DETAILS
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
                     <span class="label">Leave Type</span><span
-                      class="data">{{myLeaveDetails&&myLeaveDetails[0].LeaveType}}</span>
+                      class="data">{{empLeaveDetails[0].LeaveType}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Trip</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Trip}}</span>
+                    <span class="label">Trip</span><span class="data">{{empLeaveDetails[0].Trip}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Type</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Type}}
+                    <span class="label">Type</span><span class="data"> {{empLeaveDetails[0].Type}}
                     </span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Travel</span><span class="data"> {{myLeaveDetails&&myLeaveDetails[0].Travel}}
+                    <span class="label">Travel</span><span class="data"> {{empLeaveDetails[0].Travel}}
                     </span>
                   </div>
                   <div class="mb-2">
                     <span class="label">Applied Dates</span>
-                    {{myLeaveDetails&&myLeaveDetails[0].Start_Date |
-                    date:'dd-MM-yyyy'}} - {{myLeaveDetails&&myLeaveDetails[0].End_Date | date:'dd-MM-yyyy'}}
+                    {{empLeaveDetails[0].VacFrom |date:'dd-MM-yyyy'}} - {{empLeaveDetails[0].VacTo | date:'dd-MM-yyyy'}}
                   </div>
                   <div class="mb-2">
-                    <span class="label">Applied Days</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Days_Count}} </span>
+                    <span class="label">Applied Days</span><span class="data">{{empLeaveDetails[0].Days_Count}}</span>
                   </div>
                   <div class="mb-2 d-flex">
-                    <span class="label">Remarks</span><span class="data">{{myLeaveDetails&&myLeaveDetails[0].Remarks}}
+                    <span class="label">Remarks</span><span class="data">{{empLeaveDetails[0].Remarks}}
                     </span>
                   </div>
                 </div>
@@ -1812,28 +1811,28 @@
           </div>
           <div class="row" style="padding: 20px 0px;">
             <div class="col-md-12">
-              <div class="card h-100">
+              <div class="card h-100"  *ngIf="managerApproval">
                 <div class="card-header">
                   DEPARTMENT HEAD APPROVAL
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
                     <span class="label"> Leave status</span><span
-                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
+                      class="data">{{managerApproval.LeaveStatus}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">Accepted dates</span><span class="data">05-04-2018 - 05-04-2018</span>
+                    <span class="label">Accepted dates</span><span class="data">{{managerApproval.Start_Date|date:'dd-MM-yyyy'}} - {{managerApproval.End_Date|date:'dd-MM-yyyy'}}</span>
                   </div>
                   <div class="mb-2">
-                    <span class="label">No of days</span><span class="data">1</span>
+                    <span class="label">No of days</span><span class="data">{{managerApproval.duration}}</span>
                   </div>
                   <div class="mb-2">
                     <span class="label">Approved by</span><span
-                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
+                      class="data">{{managerApproval.DisplayName}}</span>
                   </div>
                   <div class="mb-2 d-flex">
                     <span class="label">Remarks</span><span
-                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
+                      class="data">{{managerApproval.Remarks}}</span>
                   </div>
                 </div>
               </div>
@@ -1841,31 +1840,30 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <div class="card h-100">
+              <div class="card h-100"  *ngIf="hrApproval">
                 <div class="card-header">
                   HR DEPARTMENT
                 </div>
                 <div class="card-body">
                   <div class="mb-2">
                     <span class="label">Leave status</span><span
-                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Type}}</span>
+                      class="data">{{hrApproval.LeaveStatus}}</span>
                   </div>
 
                   <div class="mb-2">
                     <span class="label">Accepted dates</span>
-                    {{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Start_Date | date:'dd-MM-yyyy'}}-{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].End_Date |
-                    date:'dd-MM-yyyy'}}
+                    {{ hrApproval.Start_Date|date:'dd-MM-yyyy'}}-{{hrApproval.End_Date|date:'dd-MM-yyyy'}}
                   </div>
                   <div class="mb-2">
-                    <span class="label">No of days</span><span class="data">1</span>
+                    <span class="label">No of days</span><span class="data">{{hrApproval.duration}}</span>
                   </div>
                   <div class="mb-2">
                     <span class="label">Approved by</span><span
-                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Emp_Name}}</span>
+                      class="data">{{hrApproval.DisplayName}}</span>
                   </div>
                   <div class="mb-2 d-flex">
                     <span class="label">Remarks</span><span
-                      class="data">{{_newNotificationLeave[currentResIndex]&&_newNotificationLeave[currentResIndex].Req_Comments}}</span>
+                      class="data">{{hrApproval.Remarks}}</span>
                   </div>
                 </div>
               </div>
