@@ -2342,7 +2342,7 @@
             <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
                 enable-background="new 0 0 64 64" xml:space="preserve" style="
-                fill: #00a2eb;">
+                fill: #00eba5;">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -2361,7 +2361,7 @@
                     </g>
                 </g>
             </svg>
-            <span class="notif-msg fs-6" style="color:#00a2eb">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
+            <span class="notif-msg fs-6" style="color:#00eba5">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
 
             <button title="view all task approvals" class="stdtaskaprv-open-btn  curser-pointer " (click)="ApprovalSideBar()">
                 <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2388,7 +2388,7 @@
 
         </div>
 
-        <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification">
+        <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification curser-pointer"  (click)="MultipleApprovalSideBar()">
             <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
                 enable-background="new 0 0 64 64" xml:space="preserve" style="
@@ -14406,7 +14406,7 @@
                               <div class="row mt-3 px-3 fwd-v" *ngIf="aprv.Type=='Project Forward'">
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v">Forward from</div>
-                                      <div class="kt-info-data-v p-1 bg-light-shade">{{forwardfrom}}
+                                      <div class="kt-info-data-v p-1 bg-light-shade">{{aprv.Forwardedfrom}}
                                       </div>
                                   </div>
                                   <div class="col position-relative">
@@ -14444,7 +14444,7 @@
                                   </div>
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v">Forward to</div>
-                                      <div class="kt-info-data-v p-1 bg-light-shade">{{forwardto}}
+                                      <div class="kt-info-data-v p-1 bg-light-shade">{{aprv.Forwardedto}}
                                       </div>
                                   </div>
                               </div>
