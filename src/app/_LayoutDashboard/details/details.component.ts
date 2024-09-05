@@ -41,10 +41,11 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
+import * as ApexCharts from 'apexcharts';
 
 declare var FusionCharts: any;
 
-declare const ApexCharts:any;
+// declare const ApexCharts:any;
 
 
 
@@ -2097,13 +2098,14 @@ multipleback(){
   contenttype: any;
   submitby:any;
   multiapproval_list:any=[];
+  pendingAprvls:any=[];
 
   getapprovalStats() {
     // this.approvalEmpId = null;
 
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -2112,7 +2114,16 @@ multipleback(){
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
-        console.log('multiapproval_list',this.multiapproval_list)
+        console.log('multiapproval_list',this.multiapproval_list);
+        this.pendingAprvls=[];  // must be empty before calculation.
+        this.multiapproval_list.forEach((item)=>{
+             const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
+             if(temp)
+             temp.totalRequests+=1;
+             else
+             this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
+        });
+
 
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -2204,6 +2215,7 @@ multipleback(){
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
+
     });
 
     // console.log(this.requestDetails, 'transfer');
@@ -2220,7 +2232,7 @@ currentStdAprView:number|undefined;
         this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
         this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
   
-        console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
+        // console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
         // if(this.standardjson.length>0){
         //     this.isApprovalSection=true;
         //     this.isTextAreaVisible=false;
@@ -2309,8 +2321,6 @@ currentStdAprView:number|undefined;
     }
     if(actionType!=='NOTSELECTED')
     this.isTextAreaVisible = true;
-
-
   }
 
   removeCommit() {
@@ -2480,11 +2490,13 @@ currentStdAprView:number|undefined;
     $(".Btn_Reject").removeClass('active');
   }
 
-
-
-
+ 
   submitApproval() {
+    console.log('passing single approvaljson:',this.singleapporval_json);
+
+
     if (this.selectedType == '1') {
+      console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
           element.Remarks = 'Accepted';
@@ -2505,7 +2517,7 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {    debugger
+    else if (this.selectedType == '2') {    
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -2573,9 +2585,6 @@ currentStdAprView:number|undefined;
 
   close_info_Slide() {
   }
-
-
-
 
 
   clickonselect(com) {
@@ -4656,7 +4665,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.ObjSubTaskDTO.enddate = null;
     this.isLoadingData=true;
     this.service._GetMeetingList(this.ObjSubTaskDTO)
-      .subscribe(data => {debugger
+      .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
 
@@ -4730,6 +4739,14 @@ debugger
 
         this.isLoadingData=false;
 
+
+
+      // by default today section is opened, below line set the first meeting to open if present.
+      setTimeout(()=>{
+        this.expandMtgbx('#today_meetings_tabpanel div#today-mtg-0-btn');
+      },1000);
+      // by default today section is opened, below line set the first meeting to open if present.
+
       });
 
 
@@ -4752,6 +4769,7 @@ debugger
     this.currentSidebarOpened='MEETINGS';
     // sidebar is open
     this.GetmeetingDetails(); // get all meeting details.
+
   }
 
   closeMeetingSidebar() {
@@ -4878,6 +4896,13 @@ debugger
   }
 
 
+  expandMtgbx(bx:string){
+    debugger
+     const btn:any=document.querySelector(bx);
+     if(btn&&btn.getAttribute('aria-expanded')=='false'){
+      btn.click();  
+     } 
+  }
 
 
 
@@ -8529,7 +8554,7 @@ acceptAllMulApprReq(){
       this.closeMultipleSideBar();
 
      this.notifyService.showSuccess("approved.",'Success');
-this.getProjectDetails(this.URL_ProjectCode);
+     this.getProjectDetails(this.URL_ProjectCode);
      this.getapprovalStats();
      this.selectedmulAprvs=[];
      this.allMUlAprSelected=false;
@@ -8621,6 +8646,24 @@ rejectAllmultipleAprvs(){
     }
   }
 }
+
+
+onPendingAprvlClicked(aprvIndex:number){
+    const resultobj=this.multiapproval_list[aprvIndex];
+     const aprObj={
+      SNo:resultobj.SNo,   
+      Type:resultobj.Type,   
+      ReportType:resultobj.ReportType,  
+      RejectType:resultobj.RejectType,  
+      sendFrom:resultobj.sendFrom,   
+      Project_Code:resultobj.Project_Code,   
+      Remarks: resultobj.Remarks,   
+      Rec_Date: resultobj.Rec_Date  
+  };
+  this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
+}
+
+
 
 // pagination inside the std task aprvls start
 totalStdTskApvs:number=0;
@@ -9937,6 +9980,10 @@ loadActionsGantt(){
       animations: {
         enabled: false // Disable animations to improve performance
       },
+      // zoom: {
+      //   enabled: false, // Enable zoom if needed
+      //   type: 'x', // Specify zoom type
+      // },
 
       events: {
         updated: ()=>{
@@ -10036,7 +10083,7 @@ loadActionsGantt(){
 
         },
 
-
+      
       }
 
     },
@@ -10083,7 +10130,7 @@ loadActionsGantt(){
         },
 
         formatter:function(value) {
-          if (isNaN(value)) {
+          if (value&&isNaN(value)) {
               let str=value.substring(0,value.lastIndexOf('('));
               str=str.trim();
               return str;
@@ -10224,7 +10271,16 @@ loadActionsGantt(){
  }
  else{
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
+  
   this.ActnsGanttChart.render();
+
+
+console.log('apexchart gantt:',this.ActnsGanttChart);
+
+
+
+
+
  }
 
 
@@ -10311,7 +10367,8 @@ updateCharacterCount_Meeting(): void {
 
 _portfoliosList2:any=[];  // all portfolios list.
 ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
-iscaPortDrpDwnOpen:boolean=false;
+iscaPortDrpDwnOpen:boolean=false;  
+ispncaPortDrpDwnOpen:boolean=false;    // this is for mat drpdwn present at pending approval sidebar.
 ProjectType_json:any;   // prj types
 allUsers1:any=[];       // all emps
 
