@@ -1,5 +1,6 @@
 <app-autosearch [options]="autocompleteOptions">
 </app-autosearch>
+<!-- <ng-container *ngIf="userFound!==undefined;else pleasewait"> -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3"
   id="notifi">
 
@@ -555,23 +556,20 @@
                             {{item.Req_Type=='Project Cancel'?'Cancellation Approval':item.Req_Type}}
                           </span>
 
-                          <span [ngClass]="{'new_appraval': item.Req_Type=='New Project Reject Release'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release', 'Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected','hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change'  }"
-                            *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
+                          <span [ngClass]="{'new_appraval': item.Req_Type=='New Project Reject Release'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Release', 'Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected','hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change'  }"
+                            *ngIf="  item.Req_Type=='Project Release'
                                   || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'||item.Req_Type=='New Project Reject Release' ">
-                                  {{ item.Req_Type=='Project Complete'?'Completion Approval':
+                                  {{
                                      item.Req_Type=='New Project Reject Release' ?'New Approval':
                                      item.Req_Type
                                   }}
                           </span>
 
+                          <div class="d-flex align-items-center">
+                            <span [ngClass]="{ 'Done': item.Req_Type=='Task Complete' }"
+                          *ngIf="  item.Req_Type=='Task Complete' ">{{item.Req_Type}}
 
-                          <span class="attach-tippy" *ngIf="item.Req_Type=='Project Complete' " >
-                            <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
-                        <span class="st-line curser-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                           <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
-                            <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
                         </span>
-
                         <span class="attach-tippy" *ngIf="item.Req_Type=='Task Complete'" >
                           <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="openPDF_Standards(item.Project_Code,item.Emp_No,item.Iscloud,item.Rec_Date,item.FileUrl,item.contentType,item.SubmittedBy,item.Project_Code1)"></b>
                           <!-- projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible -->
@@ -579,6 +577,26 @@
                          <div style="width: max-content;">Submit by: <h6>{{item.SubmittedBy}} </h6></div>
                           <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
                       </span>
+
+                          </div>
+
+
+
+
+
+                          <div class="d-flex align-items-center">
+                            <span [ngClass]="{'completion': item.Req_Type=='Project Complete' }"
+                          *ngIf="item.Req_Type=='Project Complete'  ">
+                                {{ item.Req_Type=='Project Complete'?'Completion Approval': item.Req_Type}}
+                        </span>
+                          <span class="attach-tippy" *ngIf="item.Req_Type=='Project Complete' " >
+                            <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                        <span class="st-line curser-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                           <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                            <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
+                        </span>
+                          </div>
+
 
 
 
@@ -1949,3 +1967,26 @@
 <!--leave requistion form start-->
 
 <!--leave requistion form end-->
+<!-- </ng-container> -->
+
+<!-- <ng-template #pleasewait>
+
+  <div class="smart-glass">
+      <h1></h1>
+      <div class="logo">
+        <div class="circle">
+          <div class="circle">
+              <div class="circle">
+              </div>
+          </div>
+      </div>
+      <div class="hold-loader">
+        <div class="loader-img">
+          <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+        </div>
+       </div>
+      </div>
+    </div>
+
+
+</ng-template> -->
