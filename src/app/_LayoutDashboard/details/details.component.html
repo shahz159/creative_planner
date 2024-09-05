@@ -2190,7 +2190,7 @@
               </g>
           </svg>
           <span class="notif-msg" style="color:#c57a05">
-              The project exceeds planned capacity, with total utilization at {{ProjectPercentage}}% and overutilization
+              This project exceeds planned capacity, with total utilization at {{ProjectPercentage}}% and overutilization
               specifically at {{(+ProjectPercentage-100)}}%.
           </span>
       </div>
@@ -2411,7 +2411,12 @@
                     </g>
                 </g>
             </svg>
-            <span class="notif-msg fs-6" style="color:#00a2eb">You have {{multiapproval_list.length}}  item pending approval.</span>
+            <span class="notif-msg fs-6" style="color:#00a2eb">
+                You have {{multiapproval_list.length}} pending approval(s).
+                <ng-container *ngFor="let aprvl of pendingAprvls; let i=index;">
+                    <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'':', '}}
+                </ng-container><b>.</b>
+            </span>
             <button class="reqaccess-open-btn  curser-pointer " (click)="MultipleApprovalSideBar()">
                 <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2998,7 +3003,7 @@
 
                                       <!-- Request type start  -->
                                       <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails&&requestDetails.length>2 ">
-                                          <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled')">
+                                          <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
                                               <div class="d-flex justify-content-between align-items-center">
 
                                                   <div class="kt-info-box-tittle">
@@ -4646,23 +4651,23 @@
                                                       </div>
                                                       <div class="kt-info-box border-0 w-100">
                                                           <div
-                                                              class="d-flex align-items-center justify-content-end g-10">
-                                                              <div>
-                                                                  <button
-                                                                      [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active ':'Kt-Approval-btns Btn_Accpet'"
-                                                                      (click)="approvalClick('ACCEPT')">Accept</button>
+                                                              class="d-flex align-items-center justify-content-end">
+                                                              
+                                                               <div [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'" (click)="approvalClick('ACCEPT')">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
+                                                                  <span class="kt-detail-iconname">Accept</span>
                                                               </div>
-                                                              <div *ngIf="requestType=='Project Complete'">
-                                                                  <button
-                                                                      [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                                                      (click)="approvalClick('CONDITIONAL')">Conditional
-                                                                      accept</button>
-                                                              </div>
-                                                              <div>
-                                                                  <button
-                                                                      [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
-                                                                      (click)="approvalClick('REJECT')">Reject</button>
-                                                              </div>
+                                                              <div [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'" (click)="approvalClick('REJECT')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #e81000;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"/></svg>
+                                                                <span class="kt-detail-iconname">Reject</span>
+                                                             </div>
+
+
+                                                             
+                                                             <div *ngIf="requestType=='Project Complete'"  [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'" (click)="approvalClick('CONDITIONAL'); ">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em; height: 1.2em;vertical-align: middle;fill: #007c05;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"/><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"/><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"/><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"/></svg>
+                                                                <span class="kt-detail-iconname">Next version</span>
+                                                             </div>
 
                                                           </div>
                                                           <div class="clearfix"></div>
@@ -4745,7 +4750,7 @@
                                                           <div class="kt-info-pg-footer">
                                                               <div class="row mt-3">
                                                                   <div class="col-lg-12 p-0">
-                                                                      <div class="kt-info-pg-btns">
+                                                                      <div class="kt-info-pg-btns d-flex justify-content-end ">
 
                                                                           <span>
                                                                               <button (click)="submitApproval()"
@@ -8944,23 +8949,23 @@
               <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
                   <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
+                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" (click)="expandMtgbx('#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn')"
                               href="#upcoming_meetings_tabpanel"><span class="lbl-hdn">upcoming </span><span
                                   class="total-meeting-count" *ngIf="upcMtgCnt">{{upcMtgCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn active" data-toggle="tab"
+                          <a class="btn icon-btn icn-hvr fav-btn active" data-toggle="tab" (click)="expandMtgbx('#today_meetings_tabpanel div#today-mtg-0-btn')"
                               href="#today_meetings_tabpanel"><span class="lbl-hdn"> Today
                               </span><span class="total-meeting-count" *ngIf="tdMtgCnt">{{tdMtgCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
+                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" (click)="expandMtgbx('#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn')"
                               href="#last_7_days_meetings_tabpanel"><span class="lbl-hdn"> last
                                   7 days </span><span class="total-meeting-count"
                                   *ngIf="lst7dCnt">{{lst7dCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
+                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab" (click)="expandMtgbx('#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn')"
                               href="#last_month_meetings_tabpanel"><span class="lbl-hdn"> last
                                   month </span><span class="total-meeting-count"
                                   *ngIf="lstMthCnt">{{lstMthCnt}}</span></a>
@@ -9092,7 +9097,7 @@
                                 *ngIf="upcomingMeetings&&upcomingMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let meetings of upcomingMeetings;let i=index">
 
-                                    <div data-toggle="collapse" aria-expanded="false"
+                                    <div [id]="'upcoming-mtg-'+i+'-btn'" data-toggle="collapse" aria-expanded="false"
                                         class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
                                         [attr.data-target]="'#upcoming-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{meetings.date|date:'MMM d y'}}</span>
@@ -9285,7 +9290,7 @@
                             <ng-container *ngIf="todaymeetings&&todaymeetings.length>0;else no_meetings_Present">
                                 <ng-container *ngFor="let tmeetings of todaymeetings;let i=index">
 
-                                        <div data-toggle="collapse" aria-expanded="false"
+                                        <div [id]="'today-mtg-'+i+'-btn'" data-toggle="collapse" aria-expanded="false"
                                             class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
                                             [attr.data-target]="'#today-mtg-'+i">
                                             <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{tmeetings.date|date:'MMM d y'}}</span>
@@ -9502,7 +9507,7 @@
 
 
 
-                                <div data-toggle="collapse" aria-expanded="false"
+                                <div [id]="'last7d-mtg-'+i+'-Btn'"  data-toggle="collapse" aria-expanded="false"
                                     class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
                                     [attr.data-target]="'#last7d-mtg-'+i">
                                     <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmeetings.date|date:'MMM d y'}}</span>
@@ -9718,7 +9723,7 @@
                             <ng-container *ngIf="lastMonthMeetings&&lastMonthMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let lmmeetings of lastMonthMeetings;let i=index">
 
-                                    <div data-toggle="collapse" aria-expanded="false"
+                                    <div [id]="'lastmonth-mtg-'+i+'-Btn'" data-toggle="collapse" aria-expanded="false"
                                         class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
                                         [attr.data-target]="'#lastmonth-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmmeetings.date|date:'MMM d y'}}</span>
@@ -13440,7 +13445,7 @@
 
             <div class="sidebar-content-loading" *ngIf="isLoadingData" >
                 <div role="status" class="spinner-border text-secondary" style="width: 40px; height: 40px;">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Loading...</span> 
                 </div>
             </div>
 
@@ -13507,12 +13512,12 @@
                                                   (click)="approvalClick('ACCEPT')">Accept</button>
                                           </div> -->
 
-                                          <div *ngIf="requestType=='Project Complete'">
+                                          <!-- <div *ngIf="requestType=='Project Complete'">
                                               <button
                                                   [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
                                                   (click)="approvalClick('CONDITIONAL')">Conditional
                                                   accept</button>
-                                          </div>
+                                          </div> -->
                                           <!-- <div>
                                               <button
                                                   [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
@@ -13982,7 +13987,7 @@
                   <div class="heading-AprvReq" [id]="'heading-AprvReqm-'+i">
                       <input type="checkbox" class="ml-1" style="accent-color: #527ce2;"  (change)="onMultipleAprvSel($event,[aprv])" [checked]="selectedmulAprvs.includes(aprv.SNo)" />
                       <h2 class="accordion-header mb-0 flex-grow-1">
-                      <a (click)="approvalClick('NOTSELECTED');" class="accordion-button" type="button" data-toggle="collapse" [attr.data-target]="'#collapse-AprvReqm-'+i" aria-expanded="false" [attr.aria-controls]="'collapse-AprvReqm-'+i">
+                      <a (click)="approvalClick('NOTSELECTED'); onPendingAprvlClicked(i); " class="accordion-button" type="button" data-toggle="collapse" [attr.data-target]="'#collapse-AprvReqm-'+i" aria-expanded="false" [attr.aria-controls]="'collapse-AprvReqm-'+i">
 
                          <div class="head-content flex-grow-1 d-flex  justify-content-between">
                             <span>{{aprv.Type == 'New Project' ? "New":aprv.Type}} approval</span>
@@ -14020,15 +14025,42 @@
 
                                       <div class=" d-flex align-items-center justify-content-end">
 
-                                        <div [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'" (click)="approvalClick('ACCEPT')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
-                                        <span class="kt-detail-iconname">Accept</span>
+
+
+                                        <div *ngIf="!projectAuditor&&aprv.Type=='Project Complete'" title="Assign project auditor"   (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
+                                          <span class="kt-detail-iconname">Audit</span>
                                         </div>
 
-                                      <div [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'" (click)="approvalClick('REJECT')">
+
+                                        <div *ngIf="aprv.Type=='Project Complete'"  title="Transfer ownership"  (click)="approvalClick('TRANSFER')" class="kt-detail-link " [ngClass]="Transfer_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
+                                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="18px" viewBox="0 0 412.879 412.879" xml:space="preserve" style="fill: #0086f170; stroke: #0086f147;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g>
+                                                <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673 C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
+                                                <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
+                                                <path d="M383.687,329.941c-2.064-4.936-7.03-8.098-11.771-10.043l-32.05-14.756l-15.396-12.984l-24.692,24.562l10.348,69.186 c0.036,0.238-0.023,0.484-0.167,0.682l-10.92,14.943c-0.174,0.238-0.45,0.379-0.746,0.379c-0.295,0-0.571-0.141-0.745-0.379 l-10.918-14.943c-0.145-0.195-0.204-0.441-0.168-0.682l10.348-69.186l-24.692-24.562l-15.397,12.984l-32.048,14.756 c-4.743,1.945-10.207,6.34-11.772,10.043c0,0-34.834,82.938-15.94,82.938h202.674 C418.521,412.877,383.687,329.941,383.687,329.941z"></path>
+                                                <path d="M240.498,209.939c0.557,51.213,25.015,81.752,57.792,81.752s57.236-30.539,57.795-81.752 c0.355-35.539-16.57-56.807-57.795-56.807C257.064,153.133,240.135,174.401,240.498,209.939z"></path>
+                                                <path d="M201.348,31.93c41.489,0,78.794,23.886,96.431,60.586l-9.229,1.771c-2.341,0.449-4.266,2.112-5.046,4.365 c-0.781,2.252-0.303,4.75,1.258,6.554l27.264,31.512c1.279,1.48,3.129,2.307,5.045,2.307c0.418,0,0.839-0.038,1.258-0.119 c2.342-0.449,4.266-2.114,5.049-4.366l13.662-39.366c0.781-2.253,0.302-4.751-1.259-6.554c-1.56-1.804-3.966-2.639-6.304-2.188 l-11.475,2.203c-19.918-46.272-65.622-76.724-116.655-76.724c-5.529,0-10.011,4.48-10.011,10.01 C191.337,27.449,195.819,31.93,201.348,31.93z" style="stroke-width: 15px;"></path>
+                                             </g></g></g>
+                                            </svg>
+                                            <span class="kt-detail-iconname">Transfer</span>
+                                        </div>
+
+                                        <div *ngIf="aprv.Type=='Project Complete'" [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'"(click)="approvalClick('CONDITIONAL');  getca_Dropdowns(); ">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em; height: 1.2em;vertical-align: middle;fill: #007c05;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"/><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"/><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"/><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"/></svg>
+                                          <span class="kt-detail-iconname">Next version</span>
+                                        </div>
+
+                                        <div [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'" (click)="approvalClick('ACCEPT')">
+                                           <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
+                                           <span class="kt-detail-iconname">Accept</span>
+                                        </div>
+
+                                        <div [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'" (click)="approvalClick('REJECT')">
                                           <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #e81000;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"/></svg>
                                           <span class="kt-detail-iconname">Reject</span>
-                                      </div>
+                                        </div>
+
+
 
                                           <!-- <div>
                                               <button
@@ -14036,12 +14068,12 @@
                                                   (click)="approvalClick('ACCEPT')">Accept</button>
                                           </div> -->
 
-                                          <div *ngIf="requestType=='Project Complete'">
+                                          <!-- <div *ngIf="requestType=='Project Complete'">
                                               <button
                                                   [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
                                                   (click)="approvalClick('CONDITIONAL')">Conditional
                                                   accept</button>
-                                          </div>
+                                          </div> -->
                                           <!-- <div>
                                               <button
                                                   [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
@@ -14054,7 +14086,174 @@
                                   </div>
                               </div>
                               <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
+
                                   <div class="kt-pdv mt-2">
+
+                                    
+                                        <!-- Project Audit and Transfer ownership-->
+                                        <div  *ngIf="selectedType=='5'||selectedType=='6'" class="mt-2 ">
+                                            <div class="mb-2">
+                                                <label  *ngIf="selectedType=='5'">Project auditor<span class="text-danger">*</span></label>
+                                                <label *ngIf="selectedType=='6'">Transfer ownership to<span class="text-danger">*</span></label>
+                                            <ng-container  *ngIf="selectedType=='5'">
+                                                <ng-select
+                                                [ngClass]="{'error-border':!emp_Auditor&&notProvided}"
+                                                [items]="allUsers1" bindLabel="RACIS"
+                                                bindValue="Emp_No" groupBy="usergroup"
+                                                placeholder="Select project auditor"
+                                                id="prj_audit_ngsel"
+                                                [searchable]="true" name="prj_audit_ngsel"
+                                                [(ngModel)]="emp_Auditor"
+                                                required></ng-select>
+                                            </ng-container>    
+                                            <ng-container  *ngIf="selectedType=='6'">
+                                                <ng-select [ngClass]="{'error-border':!emp_Auditor&&notProvided}" required #action="ngModel" name="prj_audit_ngsel"
+                                                    placeholder="Select new owner" id="prj_audit_ngsel"
+                                                    [(ngModel)]="emp_Auditor">
+                                                    <ng-option [value]="item.Emp_No"
+                                                        *ngFor="let item of racisNonRacis">
+                                                        {{item.RACIS}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </ng-container>   
+                                            <span *ngIf="selectedType=='5'&&!emp_Auditor&&notProvided" style="color:red">Project auditor required.</span>
+                                            <span *ngIf="selectedType=='6'&&!emp_Auditor&&notProvided" style="color:red">New owner required.</span>
+                                            </div>
+                                            <div>
+                                                <label>Enter Comments<span class="text-danger">*</span></label>
+                                                <textarea [ngClass]="{'error-border':(!empAuditor_remarks||!empAuditor_remarks.trim())&&notProvided }"  [(ngModel)]="empAuditor_remarks" class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
+                                                <span *ngIf="(!empAuditor_remarks||!empAuditor_remarks.trim())&&notProvided" style="color:red">please enter your comments.</span>
+                                            </div>
+                                        </div>
+                                        <!-- Project Audit and Transfer ownership-->
+
+
+                                    
+                                        <!-- Conditional Assign-->
+                                        <div *ngIf="selectedType == '2'"  class="mt-3">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="mb-2">
+                                                    <label>Project Name<span class="text-danger">*</span></label>
+                                                    <input type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label>Assign to<span class="text-danger">*</span></label>
+                                                            <ng-select [items]="allUsers1" bindLabel="RACIS"
+                                                            bindValue="Emp_No" groupBy="usergroup"
+                                                            placeholder="Select employee"
+                                                            [searchable]="true" name="RACIS"
+                                                            [(ngModel)]="sel_user"
+                                                            required></ng-select>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                           <label>Select Project Type</label>
+                                                            <ng-select placeholder="Select Project Type" id="ca_project_type" [(ngModel)]="sel_ptype">
+                                                                <ng-option [value]="item.Typeid" *ngFor="let item of ProjectType_json">{{item.ProjectType}}</ng-option>
+                                                            </ng-select>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+
+                                          <div *ngIf="['003','008'].includes(sel_ptype)" class="row mb-2">
+                                            <div class="col-md-12 mt-3">
+                                                <label class="input-icon Sub_In_ed">Submission type</label>
+                                                  <ng-select class="kt-form-vd curser-pointer" placeholder="Select submission type"  [(ngModel)]="sel_submtype">
+                                                    <ng-option [value]="item.SubmissionId" *ngFor="let item of Submission">{{item.SubmissionName}}</ng-option>
+                                                  </ng-select>
+                                              </div>
+                                          </div>
+
+
+                                            <div *ngIf="['001','002','011'].includes(sel_ptype)" class="row mb-2">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                        <label>Start date</label>
+                                                        <div class="d-flex date-border">
+                                                          <input class="form-control ng-pristine curser-pointer" [(ngModel)]="sel_sdate"
+                                                            id="pnca_date1" placeholder="Select start date" [matDatepicker]="pnca_datepicker1"
+                                                            (click)="pnca_datepicker1.open()" [min]="todayDate"/>
+                                                          <div class="input-group-text p-0">
+                                                            <mat-datepicker-toggle matSuffix [for]="pnca_datepicker1"></mat-datepicker-toggle>
+                                                            <mat-datepicker #pnca_datepicker1></mat-datepicker>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
+                                                        <label>End date</label>
+                                                        <div class="d-flex date-border">
+                                                          <input class="form-control ng-pristine curser-pointer" [(ngModel)]="sel_edate"  
+                                                          id="ca_date2" placeholder="Select end date" [matDatepicker]="pnca_datepicker2" 
+                                                          (click)="pnca_datepicker2.open();" [min]="sel_sdate"/>
+                                                          <div class="input-group-text p-0">
+                                                            <mat-datepicker-toggle matSuffix [for]="pnca_datepicker2"></mat-datepicker-toggle>
+                                                            <mat-datepicker #pnca_datepicker2></mat-datepicker>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-md-12 mt-3">
+
+                                                    <mat-form-field class="drp-dwn-field w-100">
+                                                      <mat-label>Select portfolios</mat-label>
+                                                      <mat-chip-list #pnca_selectedPortfolioDrpDwn>
+                                                        <mat-chip *ngFor="let ptfid of ngDropdwonPort2" class="Data_chip_kt"
+                                                          (removed)="onca_PortfolioDeSelected(ptfid)">
+                                                          {{getObjOf(_portfoliosList2,ptfid,'Portfolio_ID').Portfolio_Name}}
+                                                          <button matChipRemove>
+                                                            <mat-icon>cancel</mat-icon>
+                                                          </button>
+                                                        </mat-chip>
+                                                      </mat-chip-list>
+                                                      <div class="d-flex">
+                                                        <input class="flex-1" [matChipInputFor]="pnca_selectedPortfolioDrpDwn"
+                                                          [matAutocomplete]="pnca_PortfolioDrpDwn" #pnca_portfolioTF />
+                                                                <button *ngIf="ispncaPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                                                    class="close-icon save-mat-selection "
+                                                                    (click)="ispncaPortDrpDwnOpen=false;  pnca_portfolioTF.value='';  closeAutocompleteDrpDwn('pnca_PortfolioDrpDwn');">done</mat-icon>
+                                                                </button>
+                                                                <button *ngIf="!ispncaPortDrpDwnOpen" class="bg-transparent border-0  curser-pointer "><mat-icon
+                                                                    class="add-icon"
+                                                                    (click)="ispncaPortDrpDwnOpen=true; openAutocompleteDrpDwn('pnca_PortfolioDrpDwn');">add</mat-icon>
+                                                                </button>
+                                                
+                                                      </div>
+                                                      <mat-autocomplete aria-label="pnca_PortfolioDrpDwn" #pnca_PortfolioDrpDwn="matAutocomplete"
+                                                        (optionSelected)="onca_PortfolioSelected($event); pnca_portfolioTF.value=''; "
+                                                        (opened)="ispncaPortDrpDwnOpen=true" (closed)="ispncaPortDrpDwnOpen=false; ">
+
+                                                        <mat-option *ngFor="let pfl of _portfoliosList2|filter:pnca_portfolioTF.value"
+                                                          [value]="pfl.Portfolio_ID">
+                                                          <mat-checkbox color="primary"
+                                                            [checked]="ngDropdwonPort2.includes(pfl.Portfolio_ID)">{{pfl.Portfolio_Name}}</mat-checkbox>
+                                                        </mat-option>
+
+                                                      </mat-autocomplete>
+                                                    </mat-form-field>
+                                                  </div>
+                                            </div>
+                                            <!-- <div>
+                                                <label>Enter Comments<span class="text-danger">*</span></label>
+                                                <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
+                                            </div> -->
+                                        </div>
+                                        <!-- Conditional Assign-->
+
+
+
                                       <div *ngIf="isRejectOptionsVisible">
                                           <label>Reject type<span class="text-danger">*</span></label>
                                           <ng-select required #action="ngModel" name="rej_type"
@@ -14071,7 +14270,7 @@
                                           <div class="appr-comts"
                                               *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
                                               <div class="exs-cmts card">
-                                                  <div class="card-header" *ngIf="rejectlength>0">
+                                                  <div class="card-header p-2" *ngIf="rejectlength>0">
                                                       <h6 class="mb-0">Existing comments</h6>
                                                   </div>
                                                   <div class="crd-bdy scroll-y">
@@ -14156,16 +14355,17 @@
                                           </div>
 
                                       </div>
+
                                   </div>
                               </div>
                               <div class="row mt-3 px-3" id="kt_open_scroll">
                                   <div class="col-lg-12 mb-3">
                                       <div class="kt-info-lable-v">Remarks</div>
                                       <div class="kt-info-data-v p-2" data-toggle="tooltip"
-                                          title="{{requestComments}}">{{aprv.Remarks}}</div>
+                                          title="{{aprv.Remarks}}">{{aprv.Remarks}}</div>
                                   </div>
 
-                                  <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
+                                  <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Complete'&&completedoc">
                                       <div class="kt-info-lable-v">Attachment</div>
 
                                       <div class="">
@@ -14181,47 +14381,13 @@
                                                   </svg>
                                               </span>
 
-
-
                                               <span
                                                   (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
                                                   data-toggle="tooltip" title="{{completedoc}}">
                                                   {{completedoc}}</span>
                                           </div>
                                       </div>
-                                      <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
                                   </div>
-
-
-
-
-
-                                  <div class="col-lg-12 mb-2"
-                                      *ngIf="requestType=='Task Complete' && completedoc">
-                                      <div class="kt-info-lable-v">Task attachment</div>
-
-                                      <div class="curser-pointer">
-                                          <div class="attachment-view">
-                                              <span>
-                                                  <svg _ngcontent-ldk-c393=""
-                                                      xmlns="http://www.w3.org/2000/svg" width="16"
-                                                      height="16" fill="currentColor"
-                                                      viewBox="0 0 16 16" class="bi bi-paperclip">
-                                                      <path _ngcontent-ldk-c393=""
-                                                          d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
-                                                      </path>
-                                                  </svg>
-                                              </span>
-                                              <span
-                                                  (click)="openPDF_task_att(sidno,emp,iscloud,repdate,completedoc,contenttype,submitby)"
-                                                  data-toggle="tooltip"
-                                                  title="{{completedoc}}">{{completedoc}}</span>
-                                          </div>
-                                      </div>
-                                      <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
-                                  </div>
-
-
 
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v text-center">Request type</div>
@@ -14233,12 +14399,11 @@
                                   </div>
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v text-center">Request date</div>
-                                      <div class="kt-info-data-v text-center">
-                                          {{aprv.Rec_Date|date:'dd-MM-yyyy'}}</div>
+                                      <div class="kt-info-data-v text-center">{{aprv.Rec_Date|date:'dd-MM-yyyy'}}</div>
                                   </div>
 
                               </div>
-                              <div class="row mt-3 px-3 fwd-v" *ngIf="requestType=='Project Forward'">
+                              <div class="row mt-3 px-3 fwd-v" *ngIf="aprv.Type=='Project Forward'">
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v">Forward from</div>
                                       <div class="kt-info-data-v p-1 bg-light-shade">{{forwardfrom}}
