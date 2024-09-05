@@ -498,6 +498,10 @@
                                                             <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                             </span> 
                                                         </div>
+                                                        <div *ngIf="item.Status=='Not yet achieved'">
+                                                            <span class="Delay_color font-weight-400">Not yet achieved
+                                                            </span>                        
+                                                        </div>
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                                             <span class="Forward-Under-Approval font-weight-400">Forward approval
                                                             </span>

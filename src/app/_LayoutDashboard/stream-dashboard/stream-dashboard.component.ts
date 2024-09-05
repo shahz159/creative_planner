@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { CalenderService } from 'src/app/_Services/calender.service';
+import { CalenderDTO } from 'src/app/_Models/calender-dto';
+
+
+
+
 
 @Component({
   selector: 'app-stream-dashboard',
@@ -23,15 +29,19 @@ export class StreamDashboardComponent implements OnInit {
   ProjectsNotStarted: any = sessionStorage.getItem('ProjectsNotStarted');
   ProjectsNotWorking: any = sessionStorage.getItem('ProjectsNotWorking');
   NotificationCount: any = sessionStorage.getItem('NotificationCount');
+  _calenderDto: CalenderDTO;
 
 
 
-  constructor(public service: ProjectTypeService) { }
+  constructor(public service: ProjectTypeService,
+    private CalenderService: CalenderService
+  ) {  this._calenderDto = new CalenderDTO;}
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName")
     this.todayDate = new Date()
+    this.meetingDetails()
   }
 
 
@@ -181,9 +191,44 @@ myWindow.focus();
 
   }
 
+  scheduleItems:any
+  event : any
+  // meetingDetails(){
+  //   this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data)=>{
+  //   this.scheduleItems = JSON.parse(data['Scheduledtime'])
+  //   console.log(this.scheduleItems,"this.meetingoftheuserthis.meetingoftheuser")
+  //   })
+
+  //   }
+  meetingDetails(): void {
+    this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
+      const items = JSON.parse(data['Scheduledtime']);
+
+      // Convert date strings to Date objects and filter out past dates
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Normalize to start of the day for comparison
+
+      this.scheduleItems = items
+        .map((item: any) => ({
+          ...item,
+          Schedule_date: new Date(item.Schedule_date)
+        }))
+        .filter((item: any) => item.Schedule_date >= today); // Filter for future dates including today
+
+      console.log(this.scheduleItems, "this.meetingoftheuserthis.meetingoftheuser");
+    });
+  }
+    isToday(date: Date): boolean {
+      const today = new Date();
+      return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      );
+    }
+  }
 
 
 
 
 
-}

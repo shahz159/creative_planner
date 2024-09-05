@@ -2515,9 +2515,18 @@ span.user-ft-ltr {
       margin-left: 20px;
 
 }
+.org-name-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 130px;
+}
 .org-name-email p {
   margin-bottom: 0px;
-  line-height: 6px;
+  line-height: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .org-name-email span {
   font-size: 11px;
@@ -3738,7 +3747,7 @@ span.schedule-dt-muted {
   font-size: 10px;
   gap: 2px;
 }
-.date-menu {
+/* .date-menu {
   border: 0 !important;
   margin: 0;
   min-width: 40rem;
@@ -3766,7 +3775,7 @@ span.schedule-dt-muted {
 
 .date-menu.show {
   display: block;
-}
+} */
 
 .date-menu-item {
   display: flex;
@@ -4858,6 +4867,23 @@ color: #121212;
   width: 100%;
   height: 100%;
   animation: connect 2.5s linear infinite;
+}
+
+
+
+.schedule-date-time {
+  background: #f4f4f4;
+  border-radius: 4px;
+  padding: 0.65rem 1rem;
+}
+.datemenu.modal .modal-header {
+  background-color: #ebeff6;
+  align-items: center;
+}
+::ng-deep ng-select {
+  border-bottom: none !important;
+  padding: 0 !important;
+  cursor: pointer !important;
 }
 
 .loader-img {

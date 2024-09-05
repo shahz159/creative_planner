@@ -6,7 +6,11 @@
 .kt-portlet__body_scroll1{
     height: calc(100vh - 140px);
 } */
+@font-face {
+    font-family: 'AvenirNextCyr-Bold';
+    src: url('./AvenirNextCyr-Bold.ttf') format('truetype');
 
+}
 th {
     white-space: nowrap;
 }

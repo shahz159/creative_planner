@@ -6199,7 +6199,7 @@ onProjectSearch(inputtext:any){
        selectedinto='Portfolio';
        property_name='portfolio_id';
     }
-    else if(this.projectmodaltype=='DMS')
+    else if(this.projectmodaltype=='SMail')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
@@ -6308,7 +6308,7 @@ updateTippyItems(){
       case 'PROJECT':{
          names=this.choosedItems.map((obj)=>obj.BlockNameProject);
       };break;
-      case 'DMS':{
+      case 'SMail':{
          names=this.Memos_List.filter(item=>this.choosedItems.includes(item.MailId)).map(obj=>obj.Subject);
       };break;
       case 'PARTICIPANT':{
@@ -6332,7 +6332,7 @@ updateTippyItems(){
   this.selectedItemsTippy[0].setContent(newstr);
 }
 
-projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'){
+projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
  
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
@@ -6392,7 +6392,7 @@ updateCharacterCount(): void {
 // }
 companies_Arr:any;
 basedOnFilter:any={};
-projectmodaltype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT'|undefined;
+projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
 choosedItems:any=new Array();
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
@@ -6443,7 +6443,7 @@ keepChoosedItems(){
            this.close_projectmodal();
       };break;
 
-     case 'DMS':{
+     case 'SMail':{
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
 
@@ -6544,7 +6544,7 @@ clearAppliedFiltered(){
         case 'PORTFOLIO':{
           this.onPortfolioFilter();
         };break;
-        case 'DMS':{
+        case 'SMail':{
           this.onDMSFilter();
         };break;
         case 'PARTICIPANT':{
