@@ -2,9 +2,9 @@ export const environment = {
   production: true,
   //baseUrl: 'http://217.145.247.43/EPNewAPI/api/'
   //----Test Server----
-//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
+ baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
 // --------Azure API-------- 
-baseUrl:'https://creativeplannerapi.azurewebsites.net/api/'
+// baseUrl:'https://creativeplannerapi.azurewebsites.net/api/'
  
 //  baseUrl:'https://creativeplannerapi.azurewebsites.net/'
   //-----Live Server----
