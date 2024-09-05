@@ -67,7 +67,8 @@ export class NotificationComponent implements OnInit {
   sendtype:any='Req';
   type1:any='Req';
   type2:any='Res';
-
+  // userFound : boolean | undefined;
+  // pleasewait:boolean = false
   ////////////////------------------------------- Filters ------------------------------///////////////
   EmpCountInFilter = [];
   TypeContInFilter = [];
@@ -128,6 +129,7 @@ export class NotificationComponent implements OnInit {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
+        // this.userFound = true
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
@@ -727,7 +729,7 @@ export class NotificationComponent implements OnInit {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
 console.log( this._NotificationActivity," this._NotificationActivity")
 
-
+// this.userFound = true
 
         //Emp
         if (this.selectedItem_Emp.length == 0) {
