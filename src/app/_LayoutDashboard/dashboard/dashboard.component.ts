@@ -479,7 +479,7 @@ export class DashboardComponent implements OnInit {
     this._subname1 = false;
     this._lstMultipleFiales = [];
     this.approvalObj = new ApprovalDTO();
-    
+
   }
   onKeyPress() {
     // Check if the input field is empty
@@ -492,7 +492,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   ngOnInit() {
-   
+
     // moment(this.scstartdate, "DD-MM-YYYY")
     this._PopupConfirmedValue = 1;
     this.flagevent = 1;
@@ -594,7 +594,7 @@ export class DashboardComponent implements OnInit {
     // this.calendar.updateTodaysDate();
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     // this.Event_requests();
-   
+
 
     $(document).on('scroll', function () {
       var y = $(this).scrollTop();
@@ -625,7 +625,7 @@ export class DashboardComponent implements OnInit {
       }
 
 
-   
+
       // hide search
       // if (!searcharea.is(e.target) && searcharea.has(e.target).length === 0) {
       //   if ($('.drop-search.show').hasClass('show')) {
@@ -742,7 +742,7 @@ export class DashboardComponent implements OnInit {
     uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
 
   }
-  
+
 
 
 
@@ -780,7 +780,7 @@ export class DashboardComponent implements OnInit {
     this.Proposedate = event.value.format("YYYY-MM-DD").toString()
   }
   proposenewtime() {
-   
+
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.propose_date = this.Proposedate;
     this._calenderDto.propose_stt = this.PropStart;
@@ -1788,7 +1788,7 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked() {
-
+debugger
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
       (this.Description_Type?(this.characterCount<500):true)&&
@@ -1835,6 +1835,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitSchedule() {
+    debugger
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -2352,10 +2353,10 @@ export class DashboardComponent implements OnInit {
           element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
           // var columnName = "Link_Type";
           // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-         
+
           var vUser_Name = "User_Name";
           element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
-           
+
           var vLocation_Type = "Location_Type";
           element[vLocation_Type] = this._meetingroom==true?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2443,7 +2444,7 @@ export class DashboardComponent implements OnInit {
         frmData.append("flag_id", this._calenderDto.flagid.toString());
         this._calenderDto.attachment = this.RemovedAttach.toString();
 
-         
+
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
@@ -3382,7 +3383,7 @@ export class DashboardComponent implements OnInit {
     });
     // this.Startts = this.Startts;
     let _index = this.StartTimearr.indexOf(this.PropStart);
-    
+
     this.EndTimearr = this.Alltimes.splice(_index + 1);
     // this.Startts = TSStart;
     let x=12;
@@ -3888,7 +3889,7 @@ currentTime:any;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-       
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -3907,7 +3908,7 @@ currentTime:any;
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this.creation_date = this.EventScheduledjson[0].Created_date;
-      
+
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
@@ -3919,7 +3920,7 @@ currentTime:any;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 debugger
 
-       
+
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
@@ -3935,10 +3936,10 @@ debugger
         debugger
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
-        
+
             document.getElementById("main-foot").style.display = "flex";
-          
-         
+
+
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
           // document.getElementById("copy_data2").style.display = "none";
@@ -3968,7 +3969,7 @@ debugger
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
-       
+
         var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
          this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
 
@@ -4005,7 +4006,7 @@ debugger
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-                  
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Testing");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
@@ -4390,7 +4391,7 @@ debugger
   dataBindTime: number;
   userFound : boolean | undefined;
   GetScheduledJson() {
- 
+
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
@@ -4629,7 +4630,7 @@ debugger
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
 
-  closeInfo() {  
+  closeInfo() {
     // document.getElementById("mysideInfobar").style.width = "0";
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
@@ -5226,7 +5227,7 @@ debugger
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-   
+
   }
 
   actyside() {
@@ -5803,14 +5804,14 @@ debugger
     document.getElementById("Delaylist").classList.remove("show");
     document.getElementById("cal-main").classList.add("col-lg-9");
     document.getElementById("cal-main").classList.remove("col-lg-12");
-   
+
     this.Getdraft_datalistmeeting()
 
     // document.getElementById("act-btn").style.display = "none";
   }
 
   requestAccess(){
-    
+
     document.getElementById("requestlist").classList.add("show");
     document.getElementById("pendlist").classList.remove("show");
     document.getElementById("pendlist1").classList.remove("show");
@@ -5818,7 +5819,7 @@ debugger
     document.getElementById("cal-main").classList.add("col-lg-9");
     document.getElementById("cal-main").classList.remove("col-lg-12");
     this.getMeetingApprovals()
-    
+
   }
 
 
@@ -5840,13 +5841,13 @@ debugger
     document.getElementById("cal-main").classList.add("col-lg-12");
   }
   penhide1() {
-    
+
     // document.getElementById("pendlist1").classList.remove("show");
     // document.getElementById("cal-main").classList.remove("col-lg-9");
     // document.getElementById("cal-main").classList.add("col-lg-12");
     const pendlist1 = document.getElementById("pendlist1");
     const calMain = document.getElementById("cal-main");
-  
+
     if (pendlist1 && calMain) {
       pendlist1.classList.remove("show");
       calMain.classList.remove("col-lg-9");
@@ -6271,7 +6272,7 @@ onProjectSearch(inputtext:any){
     document.getElementById('date-menu').classList.add("show");
     document.getElementById('drop-overlay').classList.add("show");
 
-   
+
   }
   date_menu_close(dialogId:string){
     $(`#${dialogId}`).removeClass('show');
@@ -6282,18 +6283,18 @@ onProjectSearch(inputtext:any){
   date_menu_modal() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("datemenu").style.display = "block";
-   
+
   }
   date_menu_modal_close() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("datemenu").style.display = "none";
-   
-  
+
+
   }
 
 datemen(dialogId:string){
   document.getElementById(dialogId).classList.add("show");
- 
+
 }
 date_menuclo(dialogId:string){
   $(`#${dialogId}`).removeClass('show');
@@ -6325,7 +6326,7 @@ updateTippyItems(){
         <div class='fs-6 mb-3 text-info'>(${names.length}) selected</div>
         <ul type='i' class='pl-3'>
           ${names.map(item=>`<li class='fs-7 mb-1'>${item}</li>`).join('')}
-        </ul> 
+        </ul>
       </div>
       `;
   }
@@ -6333,7 +6334,7 @@ updateTippyItems(){
 }
 
 projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
- 
+
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
@@ -6350,7 +6351,7 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
   if(modaltype!='project'){
     this.onInputSearch('');
   }
-   
+
   setTimeout(()=>{
     this.selectedItemsTippy=tippy((this.projectmodaltype=='project')?'#keep-items-btn1':'#keep-items-btn2', {
       content: '',
@@ -6361,7 +6362,7 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
       allowHTML: true
     });
   },1000)
-  
+
 }
 close_projectmodal(){
   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -7077,7 +7078,7 @@ getMeetingApprovals(){
    this.approvalObj.Emp_no =this.Current_user_ID;
 
   this.approvalservice.NewGetMeetingApprovals(this.approvalObj).subscribe((data) => {
- 
+
     var multiapproval_json=data[0].multiapproval_json;
     this.multiapproval_json=JSON.parse(multiapproval_json);
     this.totalCountOfList=this.multiapproval_json.length;

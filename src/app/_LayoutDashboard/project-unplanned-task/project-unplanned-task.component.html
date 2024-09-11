@@ -1660,12 +1660,9 @@
 
 
 
+ <!-- unassign edit side bar start -->
 
-
-
-
-
-    <!-- New Task Assigning Form -->
+ <!-- New Task Assigning Form -->
     <!-- <div id="mysideInfobar_AssignTask" class="sideInfobar animate-right">
         <router-outlet></router-outlet>
     </div> -->
@@ -1848,8 +1845,8 @@
  <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
   <div class="unassign-editsidebar-body">
       <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
-          <div class="radioicon" (click)="OnRadioClick(selected_taskId)">
-              <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg>
+          <div  >
+
           </div>
           <div class="radiotitle"  [ngClass]="{'error-vd': !selected_taskName&&formFieldsRequired}" style="margin-top: 5px;">
               <!-- <input type="text"   class="form-control" id="unassigneditInput" placeholder="Enter title"  (keydown.enter)="OnTask_Renameofnew()"   [(ngModel)]="this.selected_taskName"> -->
@@ -2112,8 +2109,11 @@
 </div>
 </div>
   </div>
-  <div *ngIf="selectedOption === 'option2'">
-    <!-- <div class="project-options-item-div" *ngIf="selectedOption === 'option2'">Content for Option 2</div> -->
+
+
+  <div *ngIf="selectedOption === 'option2'" >
+
+
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"  id="AssignedToEmp" >
       <label> Assign to :<span class="text-danger">*</span> </label>
 

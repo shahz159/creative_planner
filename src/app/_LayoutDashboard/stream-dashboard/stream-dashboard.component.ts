@@ -42,6 +42,7 @@ export class StreamDashboardComponent implements OnInit {
     this.UserfullName = localStorage.getItem("UserfullName")
     this.todayDate = new Date()
     this.meetingDetails()
+    this.portfolioSerivce()
   }
 
 
@@ -226,9 +227,21 @@ myWindow.focus();
         date.getFullYear() === today.getFullYear()
       );
     }
+
+
+
+  portfoiloData : any
+   portfolioSerivce(): void {
+    this.Emp_No = localStorage.getItem('EmpNo');
+      this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
+        this.portfoiloData   = JSON.parse(data[0]['PortfolioJson']);
+        console.log(this.portfoiloData,"this.portfoiloDatathis.portfoiloData")
+
+        })
+
   }
 
-
+}
 
 
 
