@@ -1382,3 +1382,19 @@ color: #000 !important;
   background-color: #60708B !important;
   color: white !important;
 }
+.date-badge{
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #a8a8a9;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+
+}
+.date-badge.active{
+  background-color: #2786fb;
+}

@@ -67,7 +67,8 @@ export class NotificationComponent implements OnInit {
   sendtype:any='Req';
   type1:any='Req';
   type2:any='Res';
-
+  // userFound : boolean | undefined;
+  // pleasewait:boolean = false
   ////////////////------------------------------- Filters ------------------------------///////////////
   EmpCountInFilter = [];
   TypeContInFilter = [];
@@ -124,10 +125,11 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = type;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
-      (data) => { 
+      (data) => {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
+        // this.userFound = true
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
@@ -402,7 +404,7 @@ export class NotificationComponent implements OnInit {
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     this.router.navigate(["Notifications"]);
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
-    
+
     document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
     this.clear_requisitionForm_Info();
@@ -424,7 +426,7 @@ export class NotificationComponent implements OnInit {
   notProvided:boolean=false;
   open_leave_requisition(index, submitby, leavecode) {
     this.currentReqIndex = index;
-    this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => { 
+    this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
       this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json']);
       this.lv_startdate=moment(this.LeaveDetail[0].VacFrom);
       this.lv_enddate=moment(this.LeaveDetail[0].VacTo);
@@ -444,7 +446,7 @@ export class NotificationComponent implements OnInit {
     document.getElementById("leave_requisition_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_slider_bar').removeClass('open_requisition_sidebar_info');
   }
-  
+
 
   clear_requisitionForm_Info(){
     this.currentReqIndex=-1;
@@ -464,7 +466,7 @@ export class NotificationComponent implements OnInit {
 
 
   // leaveform(index,currentuser,leavecode){
-  
+
   //   this.currentResIndex=index;
 
 
@@ -473,7 +475,7 @@ export class NotificationComponent implements OnInit {
   //       console.log("responssesse:",data);
   //       // this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
   //       // console.log("leave deatils asdf:",this.myLeaveDetails);
-       
+
   //     });
 
   //   document.getElementById("rightbar-overlay").style.display = "block";
@@ -495,13 +497,13 @@ export class NotificationComponent implements OnInit {
              if(res){
               this.empInformation=JSON.parse(res[0].EmpInformation);
               this.empLeaveDetails=JSON.parse(res[0].EmpLeaveDetails);
-              
+
               const mngAprv=JSON.parse(res[0].ManagerApproval);
               if(mngAprv&&mngAprv.length>0){
                  this.managerApproval=mngAprv[0];
                  this.managerApproval.duration=Math.abs(moment(mngAprv[0].Start_Date).diff(moment(mngAprv[0].End_Date),'days'))+1;
               }
-              
+
               const hrAprvl=JSON.parse(res[0].HRApproval);
               if(hrAprvl&&hrAprvl.length>0){
                   this.managerApproval=hrAprvl[0];
@@ -509,10 +511,10 @@ export class NotificationComponent implements OnInit {
                   this.managerApproval.duration=Math.abs(moment(this.managerApproval.Start_Date).diff(moment(this.managerApproval.End_Date),'days'))+1;
                   this.hrApproval.duration=Math.abs(moment(this.hrApproval.Start_Date).diff(moment(this.hrApproval.End_Date),'days'))+1;
               }
-              else 
+              else
               this.hrApproval=null;
 
-             }   
+             }
     });
 
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -626,7 +628,7 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  isTypeChecked(item) {  
+  isTypeChecked(item) {
     let arr = [];
     this.TypeContInFilter.forEach(element => {
       if (element.checked == true) {
@@ -697,7 +699,7 @@ export class NotificationComponent implements OnInit {
 
   applyFilters() {
 
-    
+
 
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -723,11 +725,11 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
-      .subscribe(data => {   
+      .subscribe(data => {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+console.log( this._NotificationActivity," this._NotificationActivity")
 
-
-
+// this.userFound = true
 
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -1271,8 +1273,8 @@ onSubmitLRbtn(){debugger
   if(  (this.aprv_cmts&&this.aprv_cmts.trim())&&
        (this.leaveDecision=='APPROVEBUT'?(this.lv_startdate&&this.lv_enddate):true)
     ){
-  this.notProvided=false; 
-  
+  this.notProvided=false;
+
   let type:any;
   let fr_date:string|undefined;
   let to_date:string|undefined;
@@ -1281,8 +1283,8 @@ onSubmitLRbtn(){debugger
   type='Approve';
   else if(this.leaveDecision=='REJECTED')
   type='Reject';
-  
- 
+
+
   if(this.leaveDecision=='APPROVE'||this.leaveDecision=='REJECTED'){
      fr_date=moment(this.LeaveDetail[0].VacFrom).format('YYYY-MM-DD');
      to_date=moment(this.LeaveDetail[0].VacTo).format('YYYY-MM-DD');
@@ -1298,7 +1300,7 @@ onSubmitLRbtn(){debugger
   this.approvalObj.Type=type;
   this.approvalObj.SNo=this.leave_Requests[this.currentReqIndex].Sno;
   this.approvalObj.FromDate=fr_date;
-  this.approvalObj.ToDate=to_date;  
+  this.approvalObj.ToDate=to_date;
   this.approvalObj.Remarks=this.aprv_cmts;
   try{
   this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
@@ -1311,9 +1313,9 @@ onSubmitLRbtn(){debugger
                this.close_requisition_Info();
                this.newNotificationLeaveRequests();
            }
-          
+
       }
-      else 
+      else
       this.notifyService.showError('Something went wrong.','');
   });
    }catch(e){
@@ -1321,10 +1323,10 @@ onSubmitLRbtn(){debugger
         this.notifyService.showError('Something went wrong.','');
    }
 
-  } 
+  }
   else
   this.notProvided=true;
-  
+
 }
 
 onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
@@ -1343,9 +1345,9 @@ lrprev_comments()
      this.cmts_Loading=false;
      if(res)
      {
-      this.previousCmts=JSON.parse(res.previousComments_JSON);           
+      this.previousCmts=JSON.parse(res.previousComments_JSON);
      }
-    }); 
+    });
 }
 
 putCmts(cmt:string)
@@ -1369,6 +1371,156 @@ onButtonClick(buttonId: string) {
   else if(buttonId=='inn')
     document.getElementById('inn').classList.add('active');
 }
+
+Team_Autho:any
+Emp_No:any
+Project_Code:any
+LoadDocument1(Iscloud: boolean, FileName: string, url1: string, type: string, Submitby: string,Pcode:string,tauth:string,tresp:string) {
+  debugger
+  this.Project_Code=Pcode;
+  this.Team_Autho=tauth;
+  this.Emp_No=tresp;
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+  if (Iscloud == false) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+    if (this.Team_Autho == this.Emp_No) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.Emp_No + "/" + this.Project_Code + "/" + url1);
+
+    }
+    else if (this.Team_Autho !=  this.Emp_No) {
+      FileUrl = (FileUrl + this.Emp_No + "/" + this.Project_Code + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.Project_Code.trim();
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    FileName = FileName.replace(/#/g, "%23");
+    FileName = FileName.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&"+  "type=" + type;
+
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+
+
+  }
+
+  else if (Iscloud == true) {
+    let name = "ArchiveView/" + this.Project_Code;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    FileName = FileName.replace(/#/g, "%23");
+    FileName = FileName.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
+
+
+URL_ProjectCode:any
+projectInfo:any
+projectCode:any
+AuthorityEmpNo
+Project_Code1:any
+_day: any;
+_month: any;
+openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby, pro_code) {
+  debugger
+  repDate = new Date(repDate);
+  this.Project_Code1=pro_code
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+
+
+  let Day = repDate.getDate();
+  let Month = repDate.getMonth() + 1;
+  let Year = repDate.getFullYear();
+  if (Month < 10) {
+    this._month = '0' + Month;
+  }
+  else {
+    this._month = Month;
+  }
+  if (Day < 10) {
+    this._day = '0' + Day;
+  }
+  else {
+    this._day = Day;
+  }
+  var date = this._month + "_" + this._day + "_" + repDate.getFullYear();
+
+  if (cloud == false) {
+
+    FileUrl = (FileUrl + emp_no + "/" + this.Project_Code1 + "/" + date + "/" + proofDoc);
+
+    let name = "ArchiveView/" + standardid;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&" + "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+
+  }
+  else if (cloud == true) {
+
+    let FileUrl: string;
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+    if (proofDoc.includes(FileUrl)) {
+      FileUrl = proofDoc
+    }
+    else {
+      let Day = repDate.getDate();
+      let Month = repDate.getMonth() + 1;
+      let Year = repDate.getFullYear();
+      if (Month < 10) {
+        this._month = '0' + Month;
+      }
+      else {
+        this._month = Month;
+      }
+      if (Day < 10) {
+        this._day = Day;
+      }
+      else {
+        this._day = Day;
+      }
+      var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
+
+
+      FileUrl = (FileUrl + emp_no + "/" + this.Project_Code1 + "/" + date + "/" + proofDoc + "." + type);
+    }
+
+    let name = "ArchiveView/" + standardid;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    proofDoc = proofDoc.replace(/#/g, "%23");
+    proofDoc = proofDoc.replace(/&/g, "%26");
+    // var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&type=1" + "&" + "MailDocId=" + MailDocId + "&" + "MailId=" + this._MemoId + "&" + "LoginUserId=" + this._LoginUserId + "&" + "IsConfidential=" + this.IsConfidential + "&" + "AnnouncementDocId=" + 0;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "submitby=" + submitby + "&" + "filename=" + proofDoc + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+
+}
+
 
 
 }

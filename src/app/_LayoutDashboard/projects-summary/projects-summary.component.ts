@@ -536,7 +536,7 @@ $(document).ready(function(){
   //    }
   getFormattedDelay(delayDays: any): string {
     let delayText = '';
-  
+
     if (delayDays >= 365) {
       const years = Math.floor(delayDays / 365);
       delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
@@ -549,10 +549,10 @@ $(document).ready(function(){
     } else {
       delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
     }
-  
+
     return `${delayText} Delay`;
   }
-  
+
 
 
       getStatusNumber(status: string): number {
@@ -564,11 +564,11 @@ $(document).ready(function(){
 
 
       getDelayText(action: any): string {
-  
+
         if (!action || action.Delaydays == null) return '';
-      
+
         let delayText = '';
-      
+
         if (action.Delaydays >= 365) {
           const years = Math.floor(action.Delaydays / 365);
           delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
@@ -581,7 +581,7 @@ $(document).ready(function(){
         } else {
           delayText = action.Delaydays < 10 ? `0${action.Delaydays} day(s)` : `${action.Delaydays} day(s)`;
         }
-      
+
         return delayText + ' Delay';
       }
 

@@ -41,10 +41,11 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
+import * as ApexCharts from 'apexcharts';
 
 declare var FusionCharts: any;
 
-declare const ApexCharts:any;
+// declare const ApexCharts:any;
 
 
 
@@ -888,7 +889,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);  
+      this.Submission = JSON.parse(res[0].submission_json);
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
@@ -945,7 +946,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
       // this.projectActionDelay = this.projectActionInfo.map((action) => {
       //   let delayText = '';
-      
+
       //   if (action.Delaydays >= 365) {
       //     const years = Math.floor(action.Delaydays / 365);
       //     delayText = years === 1 ? '1 year' : `${years} years`;
@@ -958,14 +959,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       //   } else {
       //     delayText = `${action.Delaydays} days`;
       //   }
-      
+
       //   return {
       //     ...action,
       //     Delaydays: delayText
       //   };
       // });
-      
-  
+
+
       console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
@@ -1011,18 +1012,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               else
               this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });
             }
-         
-            if(actn.Project_Owner==actn.Team_Res){     
+
+            if(actn.Project_Owner==actn.Team_Res){
               const temp=this.selfAssignedActns.find(item=>item.name===actn.Responsible);
               if(temp)
               temp.selfactns+=1;
-              else  
+              else
               this.selfAssignedActns.push({name:actn.Responsible, selfactns:1,empno:actn.Team_Res});
             }
 
 
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
-                  
+
                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
                   if(temp)
                   temp.totalApprovals+=1;
@@ -1067,13 +1068,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     setTimeout(()=>this.drawStatisticsNew(),3000);
 
 
-  
+
     if(this.projectInfo&&this.projectInfo.Status=='Completed'){
          this.prjRunFor=Math.abs(moment(this.projectInfo.StartDate).diff(moment(this.projectInfo.CD),'days'))+1;
          this.completionOffset=moment(this.projectInfo.CD).diff(moment(this.projectInfo.EndDate),'days');
          console.log('completionOffset value:',this.completionOffset);
     }
-   
+
 
     });
   }
@@ -1083,9 +1084,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   // getDelayText(action: any): string {
   //   if (!action || action.Delaydays == null) return '';
-  
+
   //   let delayText = '';
-  
+
   //   if (action.Delaydays >= 365) {
   //     const years = Math.floor(action.Delaydays / 365);
   //     delayText = years === 1 ? '1 year' : `${years} years`;
@@ -1098,17 +1099,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   //   } else {
   //     delayText = `${action.Delaydays} day(s)`;
   //   }
-  
+
   //   return delayText + ' Delay';
   // }
-  
+
 
   getDelayText(action: any): string {
-  
+
     if (!action || action.Delaydays == null) return '';
-  
+
     let delayText = '';
-  
+
     if (action.Delaydays >= 365) {
       const years = Math.floor(action.Delaydays / 365);
       delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
@@ -1124,22 +1125,22 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   
     return delayText + ' delay';
   }
-  
-  
 
-  
+
+
+
   getStandardText(action: any): string {
     if (!action?.Status) return '';
-  
+
     const days = parseInt(action.Status);
     if (isNaN(days)) return action.Status; // Return original status if it's not a number
-  
+
     const periods = [
       { unit: 'year', duration: 365 },
       { unit: 'month', duration: 30 },
       { unit: 'week', duration: 7 }
     ];
-  
+
     for (const { unit, duration } of periods) {
       const count = Math.floor(days / duration);
       if (count > 0) {
@@ -1147,27 +1148,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         return count === 1 ? `01 ${unit}` : `${formattedCount} ${unit}s`;
       }
     }
-  
+
     const formattedDays = days < 10 ? `0${days}` : `${days}`;
     return `${formattedDays} day${days === 1 ? '' : 's'}`;
   }
-  
 
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
 
   prjRunFor:number=0;
   uniqueName:any
@@ -1222,7 +1208,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   obj.contribution=p.RespDuration;
                   obj.totalActionsCreated=p.SubtaskCount;
               }
-             
+
             }
 
 
@@ -1332,7 +1318,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
    this.arrangeActivitiesBy('all','all');
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
-   
+
 
    console.log('actvs_types:',this.actvs_types);
 
@@ -1650,7 +1636,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         aprv1.click();
       }
     },300)
-  
+
   }
 
 
@@ -1722,7 +1708,7 @@ multipleback(){
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
- 
+
     // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
 
@@ -2039,7 +2025,7 @@ multipleback(){
         let appId: number = 101;//this._ApplicationId;
         let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
         let userid: number = +this.Current_user_ID;
-      
+
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated Successfully") {
@@ -2166,13 +2152,14 @@ multipleback(){
   contenttype: any;
   submitby:any;
   multiapproval_list:any=[];
+  pendingAprvls:any=[];
 
   getapprovalStats() {
     // this.approvalEmpId = null;
 
     this.approvalObj.Project_Code = this.URL_ProjectCode;
 
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
@@ -2181,7 +2168,16 @@ multipleback(){
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
-        console.log('multiapproval_list',this.multiapproval_list)
+        console.log('multiapproval_list',this.multiapproval_list);
+        this.pendingAprvls=[];  // must be empty before calculation.
+        this.multiapproval_list.forEach((item)=>{
+             const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
+             if(temp)
+             temp.totalRequests+=1;
+             else
+             this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
+        });
+
 
         this.forwardType = (this.requestDetails[0]['ForwardType']);
         this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -2223,7 +2219,7 @@ multipleback(){
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
-            this.completedoc = (this.complete_List[0]['Sourcefile']);   
+            this.completedoc = (this.complete_List[0]['Sourcefile']);
             this.iscloud = (this.complete_List[0]['IsCloud']);
             this.url = (this.complete_List[0]['CompleteProofDoc']);
           }
@@ -2248,7 +2244,7 @@ multipleback(){
          this.getstandardapprovalStats();
 
         }
-  
+
 
 // prj request access aprvals
        if(this.requestType=='Request Access'&&this.multiapproval_list.length>0){
@@ -2273,6 +2269,7 @@ multipleback(){
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
+
     });
 
     // console.log(this.requestDetails, 'transfer');
@@ -2289,15 +2286,15 @@ currentStdAprView:number|undefined;
         this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
         this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
   
-        console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
+        // console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
         // if(this.standardjson.length>0){
         //     this.isApprovalSection=true;
         //     this.isTextAreaVisible=false;
         //     this.currentStdAprView=(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true)?0:undefined;
         // }
       }
-  
-    });
+
+    }); 
   }
 
   approvalClick(actionType) {
@@ -2378,8 +2375,6 @@ currentStdAprView:number|undefined;
     }
     if(actionType!=='NOTSELECTED')
     this.isTextAreaVisible = true;
-
-
   }
 
   removeCommit() {
@@ -2549,11 +2544,13 @@ currentStdAprView:number|undefined;
     $(".Btn_Reject").removeClass('active');
   }
 
-
-
-
+ 
   submitApproval() {
+    console.log('passing single approvaljson:',this.singleapporval_json);
+
+
     if (this.selectedType == '1') {
+      console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
           element.Remarks = 'Accepted';
@@ -2574,7 +2571,7 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {    debugger
+    else if (this.selectedType == '2') {    
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -2642,9 +2639,6 @@ currentStdAprView:number|undefined;
 
   close_info_Slide() {
   }
-
-
-
 
 
   clickonselect(com) {
@@ -3902,7 +3896,7 @@ check_allocation() {
 
   // timeline code end here
 
- 
+
   AddPortfolio() {
     this.getPortfoliosDetails()
   }
@@ -3953,8 +3947,8 @@ check_allocation() {
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {    
-        this._portfoliosList = data as [];   
+      ((data) => {
+        this._portfoliosList = data as [];
          console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
        console.log(this._portfoliolist,'_portfoliolist')
@@ -3974,7 +3968,7 @@ check_allocation() {
     document.getElementById("rightbar-overlay").style.display = "block";
     this.linkPort=true;
 
-   
+
     this._calenderDto = new CalenderDTO();
 
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -3986,13 +3980,13 @@ check_allocation() {
     // this._calenderDto.Project_Code = this.URL_ProjectCode;
     // this.CalenderService.GetCalenderProjectandsubList(this.URL_ProjectCode).subscribe
     // ((data) => {
- 
+
     //   this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
 
     //   console.log("Portfoliolist_1:",this.Portfoliolist_1);
 
     // });
-    
+
   }
 
 
@@ -4066,20 +4060,20 @@ check_allocation() {
       this.notifyService.showInfo("Please select porfolio(s) to link",'Request cancelled');
       return;
     }
-     
+
     this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
     this.selectedportID = JSON.stringify(this.Portfolio);
     if (this.selectedportID != null) {
-     
+
       this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
       this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
       this.objPortfolioDto.Emp_No = this.Current_user_ID;
       this.service.InsertPortfolioIdsByProjectCode(this.objPortfolioDto).
         subscribe((data) => {
-         
+
           this._Message = (data['message']);
           debugger
-          if (this._Message == 'Updated Successfully') { 
+          if (this._Message == 'Updated Successfully') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
             this.notifyService.showSuccess("Project successfully added to selected portfolio(s)", this._Message);
@@ -4246,11 +4240,11 @@ check_allocation() {
 
 
 
-  updateMainProject() {   
+  updateMainProject() {
 // for checking whether mandatory fields are provided or not.
 
 
-  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) && 
+  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) &&
   (!(this.selectedFile&&this._remarks&&this._remarks.trim()))){
     this.formFieldsRequired=true;
     return;
@@ -4503,11 +4497,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
  
-    let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
-    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
-
-    if (iscloud == false) {
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
@@ -4727,7 +4717,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.ObjSubTaskDTO.enddate = null;
     this.isLoadingData=true;
     this.service._GetMeetingList(this.ObjSubTaskDTO)
-      .subscribe(data => {debugger
+      .subscribe(data => {
         if ((data[0]['MeetingFor_projects'].length > 0) && data != null) {
           this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
 
@@ -4800,6 +4790,14 @@ debugger
 
         this.isLoadingData=false;
 
+
+
+      // by default today section is opened, below line set the first meeting to open if present.
+      setTimeout(()=>{
+        this.expandMtgbx('#today_meetings_tabpanel div#today-mtg-0-btn');
+      },1000);
+      // by default today section is opened, below line set the first meeting to open if present.
+
       });
 
 
@@ -4822,6 +4820,7 @@ debugger
     this.currentSidebarOpened='MEETINGS';
     // sidebar is open
     this.GetmeetingDetails(); // get all meeting details.
+
   }
 
   closeMeetingSidebar() {
@@ -4860,7 +4859,7 @@ debugger
 
 
   getUpcomingMeeting() {
- 
+
     const cd = new Date();   // takes the current date.
 
     const upcoming = this.meeting_arry.filter((meeting) => {
@@ -4950,6 +4949,13 @@ debugger
   }
 
 
+  expandMtgbx(bx:string){
+    debugger
+     const btn:any=document.querySelector(bx);
+     if(btn&&btn.getAttribute('aria-expanded')=='false'){
+      btn.click();  
+     } 
+  }
 
 
 
@@ -5180,7 +5186,7 @@ config: AngularEditorConfig = {
 
 
 Task_type(value:number){
-  
+
   this.meetingsViewOn=false;      // opens the meeting event task section and closes the meeting view section.
   this.MasterCode=(value===1)?this.projectInfo.Project_Code:[this.projectInfo.Project_Code];    // by default only the project opened is included in the select project field.
   this.Portfolio=[];                                  // by default no portfolio is selected
@@ -5291,7 +5297,7 @@ Task_type(value:number){
             });
       })
 
-            
+
                   // valid starttimearr and endtimearr setting start.
                   let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
                   let _currentdate=moment();
@@ -5313,7 +5319,7 @@ Task_type(value:number){
                   this.timingarryend = [];
                   this.Time_End = [];
                   this.Time_End = [...this.StartTimearr];
-                
+
                   let _index = this.Time_End.indexOf(this.Startts);
                   if (_index + 1 === this.Time_End.length) {
                     _index = -1;
@@ -5497,10 +5503,10 @@ debugger
 
   subtashDrpLoading:boolean = false
   GetProjectAndsubtashDrpforCalender() {
- 
+
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
-   
+
         this.subtashDrpLoading=false;
         this.ProjectListArray = JSON.parse(data['Projectlist']);
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
@@ -5511,7 +5517,7 @@ debugger
          });    // to change the order : first racis people and then rest
 
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
-        
+
 
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
@@ -7764,7 +7770,7 @@ closeNewPrjReleaseSideBar() {
 
 getRejectType() {
   this.approvalObj.Project_Code = this.URL_ProjectCode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {  
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
     this.activity = data[0]["activity"];
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
@@ -8626,7 +8632,7 @@ acceptAllMulApprReq(){
       this.closeMultipleSideBar();
 
      this.notifyService.showSuccess("approved.",'Success');
-this.getProjectDetails(this.URL_ProjectCode);
+     this.getProjectDetails(this.URL_ProjectCode);
      this.getapprovalStats();
      this.selectedmulAprvs=[];
      this.allMUlAprSelected=false;
@@ -8718,6 +8724,24 @@ rejectAllmultipleAprvs(){
     }
   }
 }
+
+
+onPendingAprvlClicked(aprvIndex:number){
+    const resultobj=this.multiapproval_list[aprvIndex];
+     const aprObj={
+      SNo:resultobj.SNo,   
+      Type:resultobj.Type,   
+      ReportType:resultobj.ReportType,  
+      RejectType:resultobj.RejectType,  
+      sendFrom:resultobj.sendFrom,   
+      Project_Code:resultobj.Project_Code,   
+      Remarks: resultobj.Remarks,   
+      Rec_Date: resultobj.Rec_Date  
+  };
+  this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
+}
+
+
 
 // pagination inside the std task aprvls start
 totalStdTskApvs:number=0;
@@ -9430,7 +9454,7 @@ changeScheduleType(val:number){
     document.getElementById('Descrip_Name12').style.display=this._onlinelink?'flex':'none';
 
 
-   
+
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
@@ -10074,6 +10098,10 @@ loadActionsGantt(){
       animations: {
         enabled: false // Disable animations to improve performance
       },
+      // zoom: {
+      //   enabled: false, // Enable zoom if needed
+      //   type: 'x', // Specify zoom type
+      // },
 
       events: {
         updated: ()=>{
@@ -10142,11 +10170,11 @@ loadActionsGantt(){
 
 // yaxis label adjustments
 
-            Array.from(textelms).forEach((te:any,index)=>{ 
+            Array.from(textelms).forEach((te:any,index)=>{
                         const _a_res:any=actions_list[index].Responsible;
                         const ypos=te.getAttribute('y');
                         te.setAttribute('y',ypos-12);
-                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); 
+                        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
                         tspan3.setAttribute('x','-135');
                         tspan3.setAttribute('dy','13');
                         tspan3.style.fill='#543fff';
@@ -10173,7 +10201,7 @@ loadActionsGantt(){
 
         },
 
-
+      
       }
 
     },
@@ -10213,10 +10241,10 @@ loadActionsGantt(){
     yaxis: {
       labels: {
         style: {
-          fontSize: '11px',       
-          fontFamily: 'Arial, sans-serif', 
-          color: '#333',          
-          textAnchor: 'start'    
+          fontSize: '11px',
+          fontFamily: 'Arial, sans-serif',
+          color: '#333',
+          textAnchor: 'start'
         },
 
         formatter:function(value) {
@@ -10228,7 +10256,7 @@ loadActionsGantt(){
             return value;
         }
 
- 
+
       }
     },
     grid: {
@@ -10330,7 +10358,7 @@ loadActionsGantt(){
           offsetY: -20
         }
       }],
-     
+
     },
 
 
@@ -10347,12 +10375,12 @@ loadActionsGantt(){
         fontFamily: 'Lucida Sans Unicode',
         color: '#263238'
       }
-      
+
     }
 
 
-    
-    
+
+
   };
 
 
@@ -10361,7 +10389,16 @@ loadActionsGantt(){
  }
  else{
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
+  
   this.ActnsGanttChart.render();
+
+
+console.log('apexchart gantt:',this.ActnsGanttChart);
+
+
+
+
+
  }
 
 
@@ -10380,7 +10417,7 @@ filterActionsOnGantt(option:string){
 
 
 onActnsGanttClosed(){
-    this.ActnsGanttChart=null; 
+    this.ActnsGanttChart=null;
     this.ganttActnsConfig={byuser:'All'};
     this.total_userActns=undefined;
 }
@@ -10400,12 +10437,12 @@ arrangeActivitiesBy(acttype:string,emptype:string){
   this.FilteredPrjActivities=this.Activity_List.filter((actv)=>{
     const x=(this.actvsFltrBy.empType=='all'||actv.Modifiedby==this.actvsFltrBy.empType);
     const y=(this.actvsFltrBy.activityType=='all'||(actv._type==this.actvsFltrBy.activityType));
-    return x&&y; 
+    return x&&y;
   });
 }
 
 
- 
+
 
 characterCount: number = 0;
 
@@ -10448,7 +10485,8 @@ updateCharacterCount_Meeting(): void {
 
 _portfoliosList2:any=[];  // all portfolios list.
 ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
-iscaPortDrpDwnOpen:boolean=false;
+iscaPortDrpDwnOpen:boolean=false;  
+ispncaPortDrpDwnOpen:boolean=false;    // this is for mat drpdwn present at pending approval sidebar.
 ProjectType_json:any;   // prj types
 allUsers1:any=[];       // all emps
 
@@ -10483,12 +10521,12 @@ onca_PortfolioDeSelected(prtid:string){
 
 
 getca_Dropdowns(){
-    // prj types    
-    this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];   
-    
+    // prj types
+    this.ProjectType_json=this.projectInfo.ProjectType_json?JSON.parse(this.projectInfo.ProjectType_json):[];
+
     //all portfolios list
     this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
-      this._portfoliosList2 = data as [];  
+      this._portfoliosList2 = data as [];
     });
 }
 
@@ -10505,7 +10543,7 @@ expandRemarks(id:string){
      const remark_sec=document.getElementById(id);
      if(remark_sec.classList.contains('compl-remarks-span'))
         remark_sec.classList.remove('compl-remarks-span');
-     else 
+     else
         remark_sec.classList.add('compl-remarks-span');
 }
 
@@ -10515,12 +10553,12 @@ expandRemarks(id:string){
 date_menu_modal() {
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("datemenu").style.display = "block";
- 
+
 }
 date_menu_modal_close() {
   document.getElementById("schedule-event-modal-backdrop").style.display = "none";
   document.getElementById("datemenu").style.display = "none";
- 
+
 
 }
 

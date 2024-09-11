@@ -2049,7 +2049,7 @@
               <div class="kt-p-action-No" > Action {{i+1}}</div>
               <div class="kt-p-action-Status">
                 <span>
-                  <span [ngClass]="{'approve': item.Status =='Under Approval'||item.Status =='Forward Under Approval', 'in_pro':item.Status=='InProcess','Completed' :item.Status=='Completed','Comp_appr' :item.Status=='Completion Under Approval','proj_hold' :item.Status=='Project Hold'}">
+                  <span [ngClass]="{'approve': item.Status =='Under Approval'||item.Status =='Forward Under Approval', 'in_pro':item.Status=='InProcess','Completed' :item.Status=='Completed','Comp_appr' :item.Status=='Completion Under Approval','proj_hold' :item.Status=='Project Hold','new_pro_rej':item.Status=='New Project Rejected'}">
                     {{item.Status =='Under Approval'?'New Approval':item.Status=='InProcess'?'In-Process':item.Status=='Completion Under Approval'?'Completion Approval':item.Status=='Project Hold'?'Hold':item.Status =='Forward Under Approval'?'Forward Approval':item.Status}}</span>
                 </span>
               </div>
