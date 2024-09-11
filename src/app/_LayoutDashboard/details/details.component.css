@@ -4417,7 +4417,7 @@ span.Rq_date_V {
 
 
 .stdtask-underapproval-notification {
-  background-color: #d8efff;
+  background-color: #0af6b024;
 }
 
 .stdtask-underapproval-notification .notif-img,
@@ -6209,13 +6209,13 @@ li.deadline-timeline-item:first-child:after {
 
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn svg {
-  stroke: #00a2eb;
+  stroke: #00eba5;
   transform: rotate(90deg);
 }
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg {
-  fill: #00a2eb;
-  stroke: #00a2eb;
+  fill: #00eba5;
+  stroke: #00eba5;
 }
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg path.arrow {
@@ -6796,6 +6796,14 @@ div#User_list_View.kt-quick-active--on {
   color: #000000;
   text-transform: capitalize;
 }
+
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
 
 .schedule-event.modal .modal-header .close {
   color: #493c3c;

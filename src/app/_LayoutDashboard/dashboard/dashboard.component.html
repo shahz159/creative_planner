@@ -3051,7 +3051,7 @@
     <div class="kt-portlet mb-0">
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="editTask==false && copyTask==false && eventRepeat==false">
-            <h4 class="m-0">Schedule {{ScheduleType}}</h4>
+            <h4 class="m-0">Schedule {{ScheduleType.toLowerCase() }}</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -3063,7 +3063,7 @@
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="editTask==true &&  copyTask==false && eventRepeat==false">
-            <h4 class="m-0">Edit {{ScheduleType}}</h4>
+            <h4 class="m-0">Edit {{ScheduleType.toLowerCase()}}</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -3075,7 +3075,7 @@
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
             *ngIf="copyTask==true && eventRepeat==false">
-            <h4 class="m-0">Copy {{ScheduleType}}</h4>
+            <h4 class="m-0">Copy {{ScheduleType.toLowerCase()}}</h4>
             <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -3087,7 +3087,7 @@
         </div>
         <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
         *ngIf="editTask==false && copyTask==false && eventRepeat==true">
-        <h4 class="m-0">Repeat {{ScheduleType}}</h4>
+        <h4 class="m-0">Repeat {{ScheduleType.toLowerCase()}}</h4>
         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                 <path fill="none" d="M0 0h24v24H0z"></path>
@@ -3115,12 +3115,12 @@
                                     'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                     ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
                                     }"
-                                    placeholder="Add Title" type="text" [(ngModel)]="Title_Name"
+                                    placeholder="Add title" type="text" [(ngModel)]="Title_Name"
                                     minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                 <div class="d-flex flex-column ">
-                                <span style="color:red" [hidden]="MinLastNameLength">min length 3</span>
-                                <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">please enter title name</span>
-                                <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">title should not exceed 100 characters.</span>
+                                <span style="color:red" [hidden]="MinLastNameLength">Please enter min length 3.</span>
+                                <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name.</span>
+                                <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters.</span>
                                </div>
                             </div>
                             <div *ngIf="create==true" class="d-flex align-items-center">
@@ -3141,7 +3141,7 @@
                             <angular-editor [(ngModel)]="Description_Type"  (input)="updateCharacterCount()"
                             (paste)="updateCharacterCount()" [config]="config"></angular-editor>
                             <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
-                            <span *ngIf="characterCount>=500"  style="color:red">    description should not exceed 500 characters.</span>
+                            <span *ngIf="characterCount>=500"  style="color:red">    Description should not exceed 500 characters.</span>
 
 
                         </div>
@@ -3178,8 +3178,8 @@
                                         <ng-container *ngIf="notProvided">
                                             <span *ngIf="!(Startts||Endtms); else strtendrq" style="color:red">please select start time and end time.</span>
                                             <ng-template #strtendrq>
-                                            <span *ngIf="!Startts" style="color:red">please select start time.</span>
-                                            <span *ngIf="!Endtms" style="color:red" >please select end time.</span>
+                                            <span *ngIf="!Startts" style="color:red">Please select start time.</span>
+                                            <span *ngIf="!Endtms" style="color:red" >Please select end time.</span>
                                             </ng-template>
                                         </ng-container>
 
@@ -3467,9 +3467,9 @@
                         </div>
                     </div>
                     <div class="se-col-11" >
-                        <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
+                        <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
                         <!-- <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')"> -->
-                            <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
+                            <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participant')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                 <span class="sr-only">Loading...</span>
                             </div>              
@@ -3555,7 +3555,7 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PROJECT')">
+                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('project')">
                             <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                 <span class="sr-only">Loading...</span>
@@ -3585,7 +3585,7 @@
                         </div>
                     </div>
                     <div class="se-col-11">
-                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PORTFOLIO')">
+                        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('portfolio')">
                             <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
                             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                 <span class="sr-only">Loading...</span>
@@ -4787,16 +4787,16 @@
         <div class="modal-header  gap-1">
            <ng-container *ngIf="projectmodaltype">
                     <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
-                    <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
+                    <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                         <path
                             d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
                         </path>
                     </svg>
-                    <i  *ngIf="projectmodaltype==='PROJECT'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
+                    <i  *ngIf="projectmodaltype==='project'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
 
-                    <i *ngIf="projectmodaltype==='PORTFOLIO'" class="fas-icn fas fa-list mt-2 mb-2"></i>
+                    <i *ngIf="projectmodaltype==='portfolio'" class="fas-icn fas fa-list mt-2 mb-2"></i>
 
-                    <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype.toLowerCase()}}</h5>
+                    <h5 class="modal-titles  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype}}</h5>
           </ng-container>
           <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -4808,9 +4808,9 @@
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
 
-            <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='PROJECT'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
+            <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='project'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
 
-            <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
+            <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='project'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
 
 
 
@@ -4835,7 +4835,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="projectmodaltype!=='PARTICIPANT'" class="project-filter-item">
+                <div *ngIf="projectmodaltype!=='participant'" class="project-filter-item">
                     <div class="item-label">Users</div>
                     <div class="item-select">
                         <div class="">
@@ -4865,17 +4865,17 @@
 
 
                 <div class="project-filter-footer">
-                    <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
-                    <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
+                    <button *ngIf="projectmodaltype==='project'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
+                    <button *ngIf="projectmodaltype==='portfolio'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
                     <button *ngIf="projectmodaltype==='SMail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();  ">Submit</button>
-                    <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();  ">Submit</button>
+                    <button *ngIf="projectmodaltype==='participant'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();  ">Submit</button>
                     <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
                 </div>
             </div>
 
 
 
-            <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='PROJECT'">
+            <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='project'">
                 <ng-container *ngIf="searchingResult;else gotresult">
                         <div class="w-100 h-100 d-flex align-items-center justify-content-center">
                             <div class="spinner-border" style="color: #6388e3; width:40px; height:40px " role="status">
@@ -4912,7 +4912,7 @@
 
             </ul>
 
-            <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
+            <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='portfolio'">
                     <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
                         <span>
                             <!-- Portfolio&&Portfolio.includes(prtf.portfolio_id) -->
@@ -4960,7 +4960,7 @@
                     </div>
 
             </ul>
-            <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
+            <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='participant'">
                     <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
                         <span>
                             <!-- ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No) -->
@@ -4993,9 +4993,9 @@
         <div class="modal-footer">
             <ng-container *ngIf="projectmodaltype">
                 <!--  *ngIf="projectmodaltype==='PROJECT'"    -->
-                    <button id="keep-items-btn1" [ngClass]="{'d-none':projectmodaltype!='PROJECT'}"  [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button id="keep-items-btn1" [ngClass]="{'d-none':projectmodaltype!='project'}"  [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
                     <!-- *ngIf="projectmodaltype!=='PROJECT'"   -->
-                    <button id="keep-items-btn2" [ngClass]="{'d-none':projectmodaltype=='PROJECT'}"   [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                    <button id="keep-items-btn2" [ngClass]="{'d-none':projectmodaltype=='project'}"   [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
                     <button  type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
             </ng-container>
         </div>

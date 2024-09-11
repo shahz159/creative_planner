@@ -1122,8 +1122,8 @@ projecttypes : any
     } else {
       delayText = action.Delaydays < 10 ? `0${action.Delaydays} day(s)` : `${action.Delaydays} day(s)`;
     }
-
-    return delayText + ' Delay';
+  
+    return delayText + ' delay';
   }
 
 
@@ -1861,6 +1861,11 @@ multipleback(){
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.currentSidebarOpened='LINK_DMS';
+    this._calenderDto = new CalenderDTO();
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Project_Code = null;
+    this.GetProjectAndsubtashDrpforCalender();
+    this.linkSMail=true;
     //
   }
 
@@ -1873,7 +1878,9 @@ multipleback(){
     document.getElementById("rightbar-overlay").style.display = "none";
     this.currentSidebarOpened='NOT_OPENED';
     this.isLoadingData=undefined;
-
+    this.linkPort=false;
+    this.linkSMail=false;
+    
   }
 
   //
@@ -1906,6 +1913,7 @@ multipleback(){
   }
 
 
+
   GetDMS_Memos() {
     this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
@@ -1934,9 +1942,11 @@ multipleback(){
                 // now only unselected memos will be visible.
 
                 console.log("this memosOptions:", this.memosOptions)
-
+                
               }
               console.log("get memo subject:", this.projectMemos);
+
+            
             });
         }
         else {   // if data is [] and length is 0.   means if there is not even one memo present in the project.
@@ -1973,7 +1983,23 @@ multipleback(){
 
 
 
+  linkSMail:boolean=false;
+  linkPort:boolean=false;
+  
 
+  selectToLinkSMail(){
+    this.linkSMail=true; 
+    if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
+    this.FilteredResults=this.FilteredResults.filter((res)=>{
+      return !this.projectMemos.some(att => att.MailId === res.MailId);
+    });
+    }
+  }
+
+
+  selectToLinkPort(){
+    this.linkPort=true
+  }
 
 
 
@@ -2003,7 +2029,8 @@ multipleback(){
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated Successfully") {
-            this.notifyService.showSuccess("", "DMS successfully added.");
+            this.notifyService.showSuccess("", "SMail successfully added.");
+            this.GetDMS_Memos();
           }
 
         });
@@ -2020,6 +2047,7 @@ multipleback(){
     }
     this.GetMemosByEmployeeId();    // get new data.
     this.SelectDms = new Array();
+    this.linkSMail=false;
     // this.closeLinkSideBar();         //closes the sidebar.
   }
   // ADD DMS END HERE
@@ -3938,7 +3966,7 @@ check_allocation() {
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
-
+    this.linkPort=true;
 
 
     this._calenderDto = new CalenderDTO();
@@ -4029,7 +4057,7 @@ check_allocation() {
 
   addProjectToPortfolio() {
     if(this.Portfolio==' '||this.Portfolio==null){
-      this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
+      this.notifyService.showInfo("Please select porfolio(s) to link",'Request cancelled');
       return;
     }
 
@@ -4048,7 +4076,7 @@ check_allocation() {
           if (this._Message == 'Updated Successfully') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
-            this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
+            this.notifyService.showSuccess("Project successfully added to selected portfolio(s)", this._Message);
           } else {
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
           }
@@ -4060,6 +4088,7 @@ check_allocation() {
     this.ngDropdwonPort = [];
     //this.closeLinkSideBar();
     this.getPortfoliosDetails();
+    this.linkPort=false
     // this._openInfoSideBar = false;
   }
 
@@ -4469,11 +4498,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
-
     if (iscloud == false) {
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
@@ -4483,7 +4510,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
         FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
       }
-
       let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
@@ -4495,7 +4521,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
-
     else if (iscloud == true) {
       let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
@@ -9059,20 +9084,28 @@ onProjectSearch(inputtext:any){
 
 }
 
+
+
+
+FilteredAttendees:any;
+
+
+
   onInputSearch(inputText:any){
-    debugger
+   
     let keyname;
     let arrtype;
     let selectedinto;
     let property_name;
-    if(this.projectmodaltype=='PARTICIPANT')
+    if(this.projectmodaltype=='participant')
      {
+      debugger
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
        selectedinto='ngEmployeeDropdown';
        property_name='Emp_No';
      }
-    else if(this.projectmodaltype=='PORTFOLIO')
+    else if(this.projectmodaltype=='portfolio')
     {
        keyname='Portfolio_Name';
        arrtype=this.Portfoliolist_1;
@@ -9096,8 +9129,37 @@ onProjectSearch(inputtext:any){
 
       return nameMatched;
     });
-    this.FilteredResults=result;
+
+   if(this.projectmodaltype!='participant' && this.linkSMail==false  && this.linkPort==false){
+      this.FilteredResults=result;
+    }
+    else if(this.projectmodaltype=='participant'){
+      this.FilteredResults=result;
+      this.FilteredAttendees = this.FilteredResults.filter((res) => 
+        this.PeopleOnProject.some(person => person.Emp_No === res.Emp_No)
+       );
+      this.FilteredResults=this.FilteredResults.filter((res)=>{
+        return !this.FilteredAttendees.some(att => att.Emp_No === res.Emp_No);
+      });
+    }
+    else if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
+      this.FilteredResults=result;
+  
+    this.FilteredResults=this.FilteredResults.filter((res)=>{
+      return !this.projectMemos.some(att => att.MailId === res.MailId);
+    });
+    }
+    else if(this.projectmodaltype=='portfolio' && this.linkPort==true ){
+      this.FilteredResults=result;
+      this.FilteredResults=this.FilteredResults.filter((res)=>{
+        return !this._portfoliolist.some(att => att.Portfolio_ID === res.portfolio_id);
+      });
+    }
+
+ 
+    console.log(this.FilteredResults,'FilteredAttendees')
   }
+  
 
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
@@ -9112,16 +9174,16 @@ onProjectSearch(inputtext:any){
     this.basedOnFilter.byuser=null;
     this.basedOnFilter.bycompany=null;
       switch(this.projectmodaltype){
-          case 'PROJECT':{
+          case 'project':{
             this.onProjectSearch('');
           };break;
-          case 'PORTFOLIO':{
+          case 'portfolio':{
             this.onPortfolioFilter();
           };break;
           case 'SMail':{
             this.onDMSFilter();
           };break;
-          case 'PARTICIPANT':{
+          case 'participant':{
             this.onParticipantFilter();
           };break;
           default:{};
@@ -9176,12 +9238,12 @@ onItemChoosed(choosed:any,choosedItem:any){
     this.choosedItems.push(choosedItem);
   }
   else{
-    const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='PROJECT')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
+    const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='project')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
     if(i>-1)
     this.choosedItems.splice(i,1);
 
     // when removing already selected items
-    if(this.projectmodaltype==='PROJECT'){
+    if(this.projectmodaltype==='project'){
           const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
           if(j>-1){
             this.MasterCode.splice(j,1);
@@ -9189,7 +9251,7 @@ onItemChoosed(choosed:any,choosedItem:any){
           }
     }
     else{
-      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
+      const ary=this.projectmodaltype=='portfolio'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
       const j=ary.findIndex(item=>item==choosedItem);
       if(j>-1)
       ary.splice(j,1);
@@ -9199,7 +9261,7 @@ onItemChoosed(choosed:any,choosedItem:any){
 }
 companies_Arr:any;
 basedOnFilter:any={};
-projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
+projectmodaltype:'project'|'portfolio'|'SMail'|'participant'|undefined;
 choosedItems:any=[];
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
@@ -9235,7 +9297,7 @@ keepChoosedItems(){
   debugger
   switch(this.projectmodaltype)
   {
-      case 'PROJECT':{
+      case 'project':{
         if(!this.MasterCode) // if MasterCode is null,undefined,'',0
           this.MasterCode=[];
 
@@ -9244,7 +9306,7 @@ keepChoosedItems(){
         this.close_projectmodal();
       };break;
 
-      case 'PORTFOLIO':{
+      case 'portfolio':{
             if (!this.Portfolio)   // if Portfolio is null,undefined,''
             this.Portfolio = [];
 
@@ -9260,7 +9322,7 @@ keepChoosedItems(){
           this.close_projectmodal();
      };break;
 
-     case 'PARTICIPANT':{
+     case 'participant':{
       if(!this.ngEmployeeDropdown)
          this.ngEmployeeDropdown=[];
 
@@ -9307,18 +9369,21 @@ Meeting_method(event){
   }
  }
 
- projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
-
+ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
+ 
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
-  const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
+  const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='project'?'PrjInputSearch':'InputSearch'}`);
   if(searchField)searchField.focus();
 
-  if(modaltype==='PROJECT')
+  if(modaltype==='project')
   this.onProjectSearch('');
+        this.choosedItems.getPcodes=()=>{
+        return this.choosedItems.map(item=>item.Project_Code);
+    }
 
-  if(modaltype!='PROJECT')
+  if(modaltype!='project')
     this.onInputSearch('');
 }
 

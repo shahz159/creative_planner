@@ -2190,7 +2190,7 @@
               </g>
           </svg>
           <span class="notif-msg" style="color:#c57a05">
-              This project exceeds planned capacity, with total utilization at {{ProjectPercentage}}% and overutilization
+              Project exceeds planned capacity, with total utilization at {{ProjectPercentage}}% and overutilization
               specifically at {{(+ProjectPercentage-100)}}%.
           </span>
       </div>
@@ -2342,7 +2342,7 @@
             <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
                 enable-background="new 0 0 64 64" xml:space="preserve" style="
-                fill: #00a2eb;">
+                fill: #00eba5;">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -2361,7 +2361,7 @@
                     </g>
                 </g>
             </svg>
-            <span class="notif-msg fs-6" style="color:#00a2eb">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
+            <span class="notif-msg fs-6" style="color:#00eba5">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
 
             <button title="view all task approvals" class="stdtaskaprv-open-btn  curser-pointer " (click)="ApprovalSideBar()">
                 <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2388,7 +2388,7 @@
 
         </div>
 
-        <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification">
+        <div *ngIf="(multiapproval_list&&multiapproval_list.length>0)&&(Current_user_ID  == approvalEmpId)"  class="notification reqaccess-approval-notification curser-pointer"  (click)="MultipleApprovalSideBar()">
             <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
                 enable-background="new 0 0 64 64" xml:space="preserve" style="
@@ -2499,7 +2499,7 @@
         <div *ngIf="selfAssignedActns&&selfAssignedActns.length>0"  class="notification newversion-notification">
             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg>
             <span class="notif-msg fs-6" style="color:#00a2eb">
-                Project has {{totalSelfAssignedActns}} {{totalSelfAssignedActns>1?'Actions':'Action'}} with the same owner and responsible, managed by
+                {{totalSelfAssignedActns}} {{totalSelfAssignedActns>1?'Actions':'Action'}} with the same owner and responsible, managed by
                 <ng-container *ngFor="let act of selfAssignedActns; let i=index;">
                     <span class="delayaction-of-emp" (click)="showSelfAssignedActns(act.empno)">{{act.name}}({{act.selfactns}})</span>{{i+1===selfAssignedActns.length-1?' and':(i+1===selfAssignedActns.length)?'':', '}}
                 </ng-container><b>.</b>
@@ -5476,16 +5476,16 @@
 
                 <div class="se-col-11" style="max-width: 100%">
                    <div class="d-flex" >
-                    <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail')">
+                    <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail');selectToLinkSMail();">
                         <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
                         <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <button class="btn btn-label-primary btn-upper"
-                  (click)="addDMSToTheProject()">Link</button>
+                    <!-- <button class="btn btn-label-primary btn-upper"
+                  (click)="addDMSToTheProject()">Link</button> -->
                    </div>
-                    <ul class="schedule-select-list" *ngIf="loading==false"  >
+                    <!-- <ul class="schedule-select-list" *ngIf="loading==false"  >
                         <li *ngFor="let memoid of SelectDms">
                            <div class="schedule-select-list-item">
                             <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
@@ -5493,7 +5493,7 @@
                            </div>
                            <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
 
 
@@ -5593,7 +5593,7 @@
                                         <div class="kt-inbox__labels">
                                             <span
                                                 class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                <div>Owner: {{memo.DisplayName}}</div>
+                                                <div>{{memo.DisplayName}}</div>
                                             </span>
 
                                         </div>
@@ -5668,22 +5668,18 @@
         </li>
         <li class="kt-nav__item px-4">
 
-
-
-
-
                     <div class="se-col-11" style="max-width: 100%">
                         <div class="d-flex">
-                            <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PORTFOLIO');">
+                            <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('portfolio');selectToLinkPort();">
                                 <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
                                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </div>
-                            <button class="btn btn-label-primary btn-upper"
-                  (click)="addProjectToPortfolio()">Link</button>
+                            <!-- <button class="btn btn-label-primary btn-upper"
+                             (click)="addProjectToPortfolio()">Link</button> -->
                         </div>
-                        <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+                        <!-- <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                             <li *ngFor="let prtfid of Portfolio">
                                 <div class="schedule-select-list-item">
                                 <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
@@ -5691,13 +5687,8 @@
                                 </div>
                                 <div class="schedule-select-list-user">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').DisplayName}}</div>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
-
-
-
-
-
 
 
 
@@ -10990,8 +10981,8 @@
             </div>
         </div>
         <div class="se-col-11">
-            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PARTICIPANT')">
-                <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
+            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
+                <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participant')}}</div>
                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -11077,7 +11068,7 @@
         </div>
     </div>
     <div class="se-col-11">
-        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PROJECT')">
+        <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('project')">
             <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
             <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                 <span class="sr-only">Loading...</span>
@@ -11160,7 +11151,7 @@
       </div>
   </div>
   <div class="se-col-11">
-      <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('PORTFOLIO')">
+      <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('portfolio')">
           <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
           <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
               <span class="sr-only">Loading...</span>
@@ -14438,7 +14429,7 @@
                               <div class="row mt-3 px-3 fwd-v" *ngIf="aprv.Type=='Project Forward'">
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v">Forward from</div>
-                                      <div class="kt-info-data-v p-1 bg-light-shade">{{forwardfrom}}
+                                      <div class="kt-info-data-v p-1 bg-light-shade">{{aprv.Forwardedfrom}}
                                       </div>
                                   </div>
                                   <div class="col position-relative">
@@ -14476,7 +14467,7 @@
                                   </div>
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v">Forward to</div>
-                                      <div class="kt-info-data-v p-1 bg-light-shade">{{forwardto}}
+                                      <div class="kt-info-data-v p-1 bg-light-shade">{{aprv.Forwardedto}}
                                       </div>
                                   </div>
                               </div>
@@ -14853,16 +14844,16 @@
       <div class="modal-header  gap-1">
          <ng-container *ngIf="projectmodaltype">
                   <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
-                  <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
+                  <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                       <path
                           d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
                       </path>
                   </svg>
-                  <i  *ngIf="projectmodaltype==='PROJECT'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
+                  <i  *ngIf="projectmodaltype==='project'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
 
-                  <i *ngIf="projectmodaltype==='PORTFOLIO'" class="fas-icn fas fa-list mt-2 mb-2"></i>
+                  <i *ngIf="projectmodaltype==='portfolio'" class="fas-icn fas fa-list mt-2 mb-2"></i>
 
-                  <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype.toLowerCase()}}</h5>
+                  <h5 class="modal-titles  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype}}</h5>
         </ng-container>
         <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -14874,9 +14865,9 @@
               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
           </div>
 
-          <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='PROJECT'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
+          <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='project'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
 
-          <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
+          <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='project'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
 
 
 
@@ -14901,7 +14892,7 @@
                       </div>
                   </div>
               </div>
-              <div *ngIf="projectmodaltype!=='PARTICIPANT'" class="project-filter-item">
+              <div *ngIf="projectmodaltype!=='participant'" class="project-filter-item">
                   <div class="item-label">Users</div>
                   <div class="item-select">
                       <div class="">
@@ -14919,17 +14910,17 @@
 
 
               <div class="project-filter-footer">
-                  <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
-                  <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
+                  <button *ngIf="projectmodaltype==='project'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
+                  <button *ngIf="projectmodaltype==='portfolio'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
                   <button *ngIf="projectmodaltype==='SMail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();  ">Submit</button>
-                  <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();  ">Submit</button>
+                  <button *ngIf="projectmodaltype==='participant'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();  ">Submit</button>
                   <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
               </div>
           </div>
 
 
 
-          <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='PROJECT'">
+          <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='project'">
               <ng-container *ngIf="searchingResult;else gotresult">
                       <div class="w-100 h-100 d-flex align-items-center justify-content-center">
                           <div class="spinner-border" style="color: #6388e3; width:40px; height:40px " role="status">
@@ -14942,7 +14933,7 @@
               <ng-container *ngFor="let prj of ProjectListArray">
                   <li *ngIf="!(MasterCode&&MasterCode.includes(prj.Project_Code))" class="modal-project-list-item">
                       <span>
-                          <mat-checkbox [checked]="MasterCode&&MasterCode.includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)"></mat-checkbox>
+                          <mat-checkbox [checked]="choosedItems.getPcodes().includes(prj.Project_Code)"   color="primary" (change)="onItemChoosed($event.checked,prj)"></mat-checkbox>
                       </span>
                       <span class="project-name">
                             {{prj.BlockNameProject}}
@@ -14964,10 +14955,10 @@
 
           </ul>
 
-          <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
+          <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='portfolio'">
                   <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
                       <span>
-                          <mat-checkbox [checked]="Portfolio&&Portfolio.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)"></mat-checkbox>
+                          <mat-checkbox [checked]="choosedItems&&choosedItems.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)"></mat-checkbox>
                       </span>
                       <span class="project-name">
                           {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
@@ -14988,12 +14979,14 @@
 
 
                   <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
+
                       <span>
-                          <mat-checkbox [checked]="SelectDms&&SelectDms.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)"></mat-checkbox>
+                          <mat-checkbox [checked]="choosedItems&&choosedItems.includes(memo.MailId)" color="primary" (change)="onItemChoosed($event.checked,memo.MailId)"></mat-checkbox>
                       </span>
                       <label class="project-name">
                          {{memo.Subject}}-{{memo.DisplayName}}
                       </label>
+
                   </li>
 
                   <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
@@ -15008,21 +15001,40 @@
                   </div>
 
           </ul>
-          <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
-                  <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
-                      <span>
-                          <mat-checkbox [checked]="ngEmployeeDropdown&&ngEmployeeDropdown.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
+          <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='participant'">
+
+            <div class="list-sep-name"   *ngIf="FilteredAttendees&&FilteredAttendees.length>0" >RACIS Users</div>
+            <li *ngFor="let emp of FilteredAttendees" class="modal-project-list-item">
+                <span>
+                    <mat-checkbox [checked]="choosedItems.includes(emp.Emp_No)"    color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
+                </span>
+                <span style="display:flex; align-items: center; gap: 5px;">
+                    <span class="project-user-image">
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                    </span>
+                    <span class="project-name">
+                        {{emp.DisplayName}}
+                    </span>
+                </span>
+            </li>
+
+              <div class="list-sep-name"  *ngIf="FilteredResults&&FilteredResults.length>0">Other Users</div>
+              <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
+                  <span>
+                      <mat-checkbox  [checked]="choosedItems.includes(emp.Emp_No)"    color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)"></mat-checkbox>
+                  </span>
+                  <span style="display:flex; align-items: center; gap: 5px;">
+                      <span class="project-user-image">
+                          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
                       </span>
-                      <span style="display:flex; align-items: center; gap: 5px;">
-                          <span class="project-user-image">
-                              <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
-                          </span>
-                          <span class="project-name">
-                              {{emp.DisplayName}}
-                          </span>
+                      <span class="project-name">
+                          {{emp.DisplayName}}
                       </span>
-                  </li>
-                  <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                  </span>
+              </li>
+
+
+                  <div *ngIf="(FilteredResults.length==0 && FilteredAttendees.length==0)" class="w-100 h-100 d-flex align-items-center justify-content-center">
                       <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -15037,8 +15049,15 @@
       </div>
       <div class="modal-footer">
           <ng-container *ngIf="projectmodaltype">
-                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='project'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+
+
+                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='project' && linkSMail == false && linkPort==false " (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+
+                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='project' && linkSMail == true" (click)="keepChoosedItems();addDMSToTheProject(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+
+                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='project' && linkPort == true" (click)="keepChoosedItems();addProjectToPortfolio(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+
                   <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
           </ng-container>
       </div>
