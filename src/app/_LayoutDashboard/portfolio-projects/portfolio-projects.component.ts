@@ -2707,7 +2707,7 @@ Task_type(value:number){
               this.timingarryend = [];
               this.Time_End = [];
               this.Time_End = [...this.StartTimearr];
-            
+
               let _index = this.Time_End.indexOf(this.Startts);
               if (_index + 1 === this.Time_End.length) {
                 _index = -1;
@@ -5782,13 +5782,13 @@ bindCustomRecurrenceValues(){
   date_menu_modal() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("datemenu").style.display = "block";
-   
+
   }
   date_menu_modal_close() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("datemenu").style.display = "none";
-   
-  
+
+
   }
 
   characterCount: number = 0;
@@ -5809,7 +5809,7 @@ bindCustomRecurrenceValues(){
 
       getFormattedDelay(delayDays: any): string {
         let delayText = '';
-      
+
         if (delayDays >= 365) {
           const years = Math.floor(delayDays / 365);
           delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
@@ -5822,7 +5822,7 @@ bindCustomRecurrenceValues(){
         } else {
           delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
         }
-      
+
         return `${delayText.toLowerCase()}`;
       }
   // new code of portfolio meeting side bar end

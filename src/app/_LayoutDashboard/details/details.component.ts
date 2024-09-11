@@ -884,7 +884,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totaldeadlineExtend:any;
   // projectActionDelay:any;
   // projectDelay:any;
-
+projecttypes : any
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
@@ -909,7 +909,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
-
+      this.projecttypes = this.projectInfo.Project_Type;
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
@@ -2257,7 +2257,7 @@ currentStdAprView:number|undefined;
         console.log(this.requestDetails,"task approvals");
         this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
         this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
-  
+
         // console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
         // if(this.standardjson.length>0){
         //     this.isApprovalSection=true;
@@ -2266,7 +2266,7 @@ currentStdAprView:number|undefined;
         // }
       }
 
-    }); 
+    });
   }
 
   approvalClick(actionType) {
@@ -2516,7 +2516,7 @@ currentStdAprView:number|undefined;
     $(".Btn_Reject").removeClass('active');
   }
 
- 
+
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
 
@@ -2543,7 +2543,7 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {    
+    else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -4325,8 +4325,10 @@ check_allocation() {
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
+            console.log(this.AttachmentList,'fileuploading fileupdloading')
             console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+            console.log(this._TotalDocs,"this._TotalDocsthis._TotalDocs")
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
           console.log(this.AttachmentList,'AttachmentList')
@@ -4928,8 +4930,8 @@ debugger
     debugger
      const btn:any=document.querySelector(bx);
      if(btn&&btn.getAttribute('aria-expanded')=='false'){
-      btn.click();  
-     } 
+      btn.click();
+     }
   }
 
 
@@ -5702,8 +5704,9 @@ getChangeSubtaskDetais(Project_Code) {
   selectStartDate(event) {
     debugger
     this._StartDate = event.value;
-    let sd = event.value.format("YYYY-MM-DD").toString();
-    this._SEndDate = event.value.format("YYYY-MM-DD").toString();
+    // let sd = event.value.format("YYYY-MM-DD").toString();
+    let sd = event.format("YYYY-MM-DD").toString();
+    this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
@@ -5732,8 +5735,8 @@ getChangeSubtaskDetais(Project_Code) {
       jsonData[columnNames] = this.Startts;
       jsonData[columnNamee] = this.Endtms;
       jsonData[IsActive] = 1;
-      jsonData[Day] = event.value.format('dddd').substring(0, 3);
-      jsonData[DayNum] = event.value.format('DD').substring(0, 3);
+      jsonData[Day] = event.format('dddd').substring(0, 3);
+      jsonData[DayNum] = event.format('DD').substring(0, 3);
       this.AllDatesSDandED.push(jsonData);
     }
     else {
@@ -8704,14 +8707,14 @@ rejectAllmultipleAprvs(){
 onPendingAprvlClicked(aprvIndex:number){
     const resultobj=this.multiapproval_list[aprvIndex];
      const aprObj={
-      SNo:resultobj.SNo,   
-      Type:resultobj.Type,   
-      ReportType:resultobj.ReportType,  
-      RejectType:resultobj.RejectType,  
-      sendFrom:resultobj.sendFrom,   
-      Project_Code:resultobj.Project_Code,   
-      Remarks: resultobj.Remarks,   
-      Rec_Date: resultobj.Rec_Date  
+      SNo:resultobj.SNo,
+      Type:resultobj.Type,
+      ReportType:resultobj.ReportType,
+      RejectType:resultobj.RejectType,
+      sendFrom:resultobj.sendFrom,
+      Project_Code:resultobj.Project_Code,
+      Remarks: resultobj.Remarks,
+      Rec_Date: resultobj.Rec_Date
   };
   this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
 }
@@ -10136,7 +10139,7 @@ loadActionsGantt(){
 
         },
 
-      
+
       }
 
     },
@@ -10324,7 +10327,7 @@ loadActionsGantt(){
  }
  else{
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
-  
+
   this.ActnsGanttChart.render();
 
 
@@ -10420,7 +10423,7 @@ updateCharacterCount_Meeting(): void {
 
 _portfoliosList2:any=[];  // all portfolios list.
 ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
-iscaPortDrpDwnOpen:boolean=false;  
+iscaPortDrpDwnOpen:boolean=false;
 ispncaPortDrpDwnOpen:boolean=false;    // this is for mat drpdwn present at pending approval sidebar.
 ProjectType_json:any;   // prj types
 allUsers1:any=[];       // all emps

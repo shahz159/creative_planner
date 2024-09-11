@@ -385,16 +385,9 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
-
-        // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-        // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-
-        console.log("ActionedAssigned_JosnActionedAssigned_JosnActionedAssigned_JosnActionedAssigned_Josn",this.ActionedAssigned_Josn)
-      console.log(this._TodoList,"this._TodoListthis._TodoListthis._TodoListthis._TodoListthis._TodoList")
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        console.log(this.ActionedSubtask_Json,"this.ActionedSubtask_Json")
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
 
@@ -434,10 +427,6 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
-
-
-
-
       });
 
   }

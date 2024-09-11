@@ -550,7 +550,7 @@ $(document).ready(function(){
       delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
     }
 
-    return `${delayText} Delay`;
+    return `${delayText} delay`;
   }
 
 

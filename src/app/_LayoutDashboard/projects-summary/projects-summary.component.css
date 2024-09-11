@@ -2992,6 +2992,11 @@ tr.odd.project-list_AC.active {
 
 
 }
+.pending_appr{
+ color: #9C27B0 !important;
+
+}
+
 
 .Under_Approval_color {
   background-color: #9C27B0 !important;
