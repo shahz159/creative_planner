@@ -1120,7 +1120,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       const weeks = Math.floor(action.Delaydays / 7);
       delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
     } else {
-      delayText = action.Delaydays < 10 ? `0${action.Delaydays} day(s)` : `${action.Delaydays} day(s)`;
+      delayText = action.Delaydays < 10 ? `0${action.Delaydays} days` : `${action.Delaydays} days`;
     }
   
     return delayText + ' delay';
