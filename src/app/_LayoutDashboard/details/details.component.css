@@ -6797,6 +6797,14 @@ div#User_list_View.kt-quick-active--on {
   text-transform: capitalize;
 }
 
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
+
 .schedule-event.modal .modal-header .close {
   color: #493c3c;
   opacity: 1;

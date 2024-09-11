@@ -368,7 +368,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 92%;
     margin-left: 6px;
     /* position: relative; */
 }
@@ -4561,6 +4561,15 @@ span.kt-dt-cnt-view {
     font-weight: 500;
     font-size: 1.2rem;
     color: #000000;
+    text-transform: capitalize;
+}
+
+
+
+.schedule-event.modal .modal-header .modal-titles {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #000000;
     /* text-transform: capitalize; */
 }
 
@@ -8453,4 +8462,9 @@ button.btn.btn-secondary.Custom-button {
 #projectmodals li.modal-project-list-item {
     margin-top: 0px;
     margin-bottom: 1.5em;
+}
+
+.View_link_SMail{
+    margin-left: -2em;
+    margin-top: 1rem;
 }

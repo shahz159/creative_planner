@@ -5217,21 +5217,21 @@ Meeting_method(event){
 }
 companies_Arr:any;
 basedOnFilter:any={};
-projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
+projectmodaltype:'project'|'portfolio'|'SMail'|'participant'|undefined;
 choosedItems:any=[];
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
-projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
+projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
-  const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
+  const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='project'?'PrjInputSearch':'InputSearch'}`);
   if(searchField)searchField.focus();
 
-  if(modaltype==='PROJECT')
+  if(modaltype==='project')
   this.onProjectSearch('');
 
-  if(modaltype!='PROJECT')
+  if(modaltype!='project')
     this.onInputSearch('');
 }
 searchingResult: boolean = false;
@@ -5269,14 +5269,14 @@ onInputSearch(inputText:any){
   let arrtype;
   let selectedinto;
   let property_name;
-  if(this.projectmodaltype=='PARTICIPANT')
+  if(this.projectmodaltype=='participant')
    {
      keyname='DisplayName';
      arrtype=this._EmployeeListForDropdown;
      selectedinto='ngEmployeeDropdown';
      property_name='Emp_No';
    }
-  else if(this.projectmodaltype=='PORTFOLIO')
+  else if(this.projectmodaltype=='portfolio')
   {
      keyname='Portfolio_Name';
      arrtype=this.Portfoliolist_1;
@@ -5316,16 +5316,16 @@ clearAppliedFiltered(){
   this.basedOnFilter.byuser=null;
   this.basedOnFilter.bycompany=null;
     switch(this.projectmodaltype){
-        case 'PROJECT':{
+        case 'project':{
           this.onProjectSearch('');
         };break;
-        case 'PORTFOLIO':{
+        case 'portfolio':{
           this.onPortfolioFilter();
         };break;
         case 'SMail':{
           this.onDMSFilter();
         };break;
-        case 'PARTICIPANT':{
+        case 'participant':{
           this.onParticipantFilter();
         };break;
         default:{};
@@ -5375,7 +5375,7 @@ onPortfolioFilter(){
 keepChoosedItems(){
   switch(this.projectmodaltype)
   {
-      case 'PROJECT':{
+      case 'project':{
         if(!this.MasterCode) // if MasterCode is null,undefined,'',0
           this.MasterCode=[];
 
@@ -5384,7 +5384,7 @@ keepChoosedItems(){
         this.close_projectmodal();
       };break;
 
-      case 'PORTFOLIO':{
+      case 'portfolio':{
             if (!this.Portfolio)   // if Portfolio is null,undefined,''
             this.Portfolio = [];
 
@@ -5401,7 +5401,7 @@ keepChoosedItems(){
           this.close_projectmodal();
      };break;
 
-     case 'PARTICIPANT':{
+     case 'participant':{
       if(!this.ngEmployeeDropdown)
          this.ngEmployeeDropdown=[];
 
@@ -5428,12 +5428,12 @@ onItemChoosed(choosed:any,choosedItem:any){
     this.choosedItems.push(choosedItem);
   }
   else{
-    const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='PROJECT')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
+    const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='project')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
     if(i>-1)
     this.choosedItems.splice(i,1);
 
     // when removing already selected items
-    if(this.projectmodaltype==='PROJECT'){
+    if(this.projectmodaltype==='project'){
           const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
           if(j>-1){
             this.MasterCode.splice(j,1);
@@ -5441,7 +5441,7 @@ onItemChoosed(choosed:any,choosedItem:any){
           }
     }
     else{
-      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
+      const ary=this.projectmodaltype=='portfolio'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
       const j=ary.findIndex(item=>item==choosedItem);
       if(j>-1)
       ary.splice(j,1);
