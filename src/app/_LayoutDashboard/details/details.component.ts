@@ -4496,8 +4496,10 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
- 
+    let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+    if (iscloud == false) {
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
         // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
@@ -4506,7 +4508,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
         FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
       }
-
       let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
@@ -4518,7 +4519,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
-
     else if (iscloud == true) {
       let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
