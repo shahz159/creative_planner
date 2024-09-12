@@ -5436,7 +5436,7 @@
                   title="Not Linked">
 
                </ng-container>
-              </a> View or link SMail
+              </a> Link SMail
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar() ">
@@ -5450,9 +5450,9 @@
       </div>
   </div>
   <ul class="kt-nav">
-      <li class="kt-nav__head d-block">
+      <!-- <li class="kt-nav__head d-block">
 
-          <!-- <div class="M_fsize">
+          <div class="M_fsize">
               Total
               <div class="badge badge-pill badge-outline-info">
                   {{_totalMemos}}
@@ -5461,7 +5461,7 @@
               <div class="badge badge-pill badge-outline-success">
                   {{_linkedMemos}}
               </div>
-          </div> -->
+          </div>
           <div>
               Linked
               <div class="badge badge-pill badge-outline-success">
@@ -5470,7 +5470,7 @@
           </div>
 
           <div class="kt-nav__separator"></div>
-      </li>
+      </li> -->
       <li class="kt-nav__item px-4">
           <div class="">
 
@@ -5637,7 +5637,7 @@
           <h4 class="font-weight-bold m-0 d-flex">
               <a class="kt-inbox__icon  pb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 998 998"  width="16" height="16" class="iconify iconify--mdi" version="1.1"><path d="M554.666667 896V469.333333h341.333333v426.666667h-341.333333zM128 554.666667V128h341.333333v426.666667H128z m256-85.333334V213.333333H213.333333v256h170.666667zM128 896v-256h341.333333v256H128z m85.333333-85.333333h170.666667v-85.333334H213.333333v85.333334z m426.666667 0h170.666667v-256h-170.666667v256zM554.666667 128h341.333333v256h-341.333333V128z m85.333333 85.333333v85.333334h170.666667V213.333333h-170.666667z"/></svg>
-              </a>View or link portfolio
+              </a>Link portfolio
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar()">
@@ -5651,21 +5651,21 @@
       </div>
     </div>
     <ul class="kt-nav">
-        <li class="kt-nav__head d-block">
-            <!-- <p class="text-primary">
-                Portfolios</p> -->
+        <!-- <li class="kt-nav__head d-block">
+            <p class="text-primary">
+                Portfolios</p>
             <div class="M_fsize">
-                <!-- Total
+                Total
                 <div class="badge badge-pill badge-outline-info">
                     {{totalPortfolios}}
-                </div> -->
+                </div>
                 Linked
                 <div class="badge badge-pill badge-outline-success">
                     {{_portfolioLength}}
                 </div>
             </div>
             <div class="kt-nav__separator"></div>
-        </li>
+        </li> -->
         <li class="kt-nav__item px-4">
 
                     <div class="se-col-11" style="max-width: 100%">
@@ -8901,7 +8901,7 @@
                       d="M10.7324 3.72534C10.7324 2.92969 10.4164 2.16663 9.85374 1.60402C9.29113 1.04141 8.52807 0.725342 7.73242 0.725342V0.725342C6.93677 0.725342 6.17371 1.04141 5.6111 1.60402C5.04849 2.16663 4.73242 2.92969 4.73242 3.72534"
                       stroke="#a3a3a3" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <h4 class="m-0 ml-2">View or link meetings</h4>
+              <h4 class="m-0 ml-2">Meetings</h4>
               <a href="javascript:void(0)" class="abs-btn closebtn btn btn-xs btn-icon btn-hover-info"
                   (click)="closeMeetingSidebar()">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
@@ -10519,7 +10519,7 @@
                           </g>
                       </svg>
                   </button>
-                  <h4 class="m-0 ml-2">Schedule {{ScheduleType}}</h4>
+                  <h4 class="m-0 ml-2">Schedule {{ScheduleType.toLowerCase()}}</h4>
               </div>
 
               <div class="kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y" id="event-Sidebar">
@@ -10561,7 +10561,7 @@
                                           'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                           ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
                                           }"
-                                          placeholder="Add Title" type="text" [(ngModel)]="Title_Name"
+                                          placeholder="Add title" type="text" [(ngModel)]="Title_Name"
                                           minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                       <div class="d-flex flex-column ">
                                       <span style="color:red" [hidden]="MinLastNameLength">min length 3</span>

@@ -3763,7 +3763,7 @@
                                     <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
                                     <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Link DMS" class="black-white ng-star-inserted">
                                 </ng-container>
-                            </a> View or link SMail
+                            </a> Link SMail
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeLinkSideBar()">
@@ -3777,7 +3777,7 @@
                     </div>
                 </div>
                 <ul class="kt-nav">
-                    <li class="kt-nav__head d-block">
+                    <!-- <li class="kt-nav__head d-block">
 
                         <div class="M_fsize">
                             Linked
@@ -3793,7 +3793,7 @@
                             </ng-container>
                         </div>
                         <div class="kt-nav__separator"></div>
-                    </li>
+                    </li> -->
                     <ng-container *ngIf="Meetingstatuscom==Completed" >
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                         <div class="">
@@ -4013,9 +4013,9 @@
                     </div>
                 </div>
                 <ul class="kt-nav">
-                    <li class="kt-nav__head d-block">
-                        <!-- <p class="text-primary">
-                            Portfolios</p> -->
+                    <!-- <li class="kt-nav__head d-block">
+                        <p class="text-primary">
+                            Portfolios</p>
                         <div class="M_fsize">
                             Linked
                             <div class="badge badge-pill badge-outline-success">
@@ -4023,7 +4023,7 @@
                             </div>
                         </div>
                         <div class="kt-nav__separator"></div>
-                    </li>
+                    </li> -->
                     <ng-container  *ngIf="Meetingstatuscom==Completed"> 
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4" >
 
@@ -4782,9 +4782,9 @@
                     </div>
                 </div>
                 <ul class="kt-nav">
-                    <li class="kt-nav__head d-block">
-                        <!-- <p class="text-primary">
-                            Projects</p> -->
+                    <!-- <li class="kt-nav__head d-block">
+                        <p class="text-primary">
+                            Projects</p>
                         <div class="M_fsize">
                             Linked
                             <div class="badge badge-pill badge-outline-success">
@@ -4792,7 +4792,7 @@
                             </div>
                         </div>
                         <div class="kt-nav__separator"></div>
-                    </li>
+                    </li> -->
                     <ng-container *ngIf="Meetingstatuscom==Completed" > 
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
 
@@ -8087,7 +8087,7 @@
             
                 <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
                     *ngIf="editTask==true &&  copyTask==false && eventRepeat==false">
-                    <h4 class="m-0">Edit {{ScheduleType}}</h4>
+                    <h4 class="m-0">Edit {{ScheduleType.toLowerCase()}}</h4>
                     <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                             <path fill="none" d="M0 0h24v24H0z"></path>
@@ -8099,7 +8099,7 @@
                 </div>
                 <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
                 *ngIf="editTask==false && copyTask==false && eventRepeat==true">
-                <h4 class="m-0">Repeat {{ScheduleType}}</h4>
+                <h4 class="m-0">Repeat {{ScheduleType.toLowerCase()}}</h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                         <path fill="none" d="M0 0h24v24H0z"></path>
@@ -8125,7 +8125,7 @@
                                             'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                             ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
                                             }"
-                                            placeholder="Add Title" type="text" [(ngModel)]="Title_Name"
+                                            placeholder="Add title" type="text" [(ngModel)]="Title_Name"
                                             minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                         <div class="d-flex flex-column ">
                                         <!-- <span style="color:red" [hidden]="MinLastNameLength">min length 3</span> -->
