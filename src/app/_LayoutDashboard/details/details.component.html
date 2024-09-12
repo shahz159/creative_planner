@@ -2808,7 +2808,7 @@
                                                               </div>
                                                               <div class="d-flex gap-4">
                                                                   <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span>
-                                                                  <span [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0"> 
+                                                                  <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0"> 
                                                                       <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
                                                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
