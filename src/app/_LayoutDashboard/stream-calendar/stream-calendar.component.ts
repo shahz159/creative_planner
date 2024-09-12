@@ -381,6 +381,8 @@ MinLastNameLength: boolean;
 characterCount: number = 0;
 allAgendas: any = [];
 agendasAdded: number = 0;
+_lstMultipleFiales: any;
+myFiles: string[] = [];
 
 
 LastLengthValidation11() {
@@ -472,6 +474,57 @@ updateAgenda(index: number) {
 
   console.log('all agendas after updating:', this.allAgendas);
 }
+
+
+
+
+
+
+onFileChange(event) {
+
+  if (event.target.files.length > 0) {
+    var length = event.target.files.length;
+    for (let index = 0; index < length; index++) {
+      const file = event.target.files[index];
+      var contentType = file.type;
+      if (contentType === "application/pdf") {
+        contentType = ".pdf";
+      }
+      else if (contentType === "image/png") {
+        contentType = ".png";
+      }
+      else if (contentType === "image/jpeg") {
+        contentType = ".jpeg";
+      }
+      else if (contentType === "image/jpg") {
+        contentType = ".jpg";
+      }
+      this.myFiles.push(event.target.files[index].name);
+      // alert(this.myFiles.length);
+      console.log(this.myFiles, "attach")
+      //_lstMultipleFiales
+      var d = new Date().valueOf();
+      this._lstMultipleFiales = [...this._lstMultipleFiales, {
+        UniqueId: d,
+        FileName: event.target.files[index].name,
+        Size: event.target.files[index].size,
+        Files: event.target.files[index]
+      }];
+    }
+  }
+
+  const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
+  uploadFileInput.value = null;
+  uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+}
+
+
+
+
+
+
+
+
 ///////////////////////////////////////////  Create Event and Create Task sidebar End /////////////////////////////////////////////////////////
 
 
