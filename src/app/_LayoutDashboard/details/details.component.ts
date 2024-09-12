@@ -222,6 +222,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   private subscription: Subscription;
 
   ngOnInit(): void {
+    this.ProjectTypes = "Standard task"
     this.MinLastNameLength = true;
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('ProjectCode');
@@ -321,7 +322,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   IsData: string;
   RemainingHours: any;
   UsedInDAR: any;
-
+  ProjectTypes:any
 
 
 
@@ -1122,7 +1123,7 @@ projecttypes : any
     } else {
       delayText = action.Delaydays < 10 ? `0${action.Delaydays} days` : `${action.Delaydays} days`;
     }
-  
+
     return delayText + ' delay';
   }
 
@@ -1880,7 +1881,7 @@ multipleback(){
     this.isLoadingData=undefined;
     this.linkPort=false;
     this.linkSMail=false;
-    
+
   }
 
   //
@@ -1942,11 +1943,11 @@ multipleback(){
                 // now only unselected memos will be visible.
 
                 console.log("this memosOptions:", this.memosOptions)
-                
+
               }
               console.log("get memo subject:", this.projectMemos);
 
-            
+
             });
         }
         else {   // if data is [] and length is 0.   means if there is not even one memo present in the project.
@@ -1985,10 +1986,10 @@ multipleback(){
 
   linkSMail:boolean=false;
   linkPort:boolean=false;
-  
+
 
   selectToLinkSMail(){
-    this.linkSMail=true; 
+    this.linkSMail=true;
     if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
     this.FilteredResults=this.FilteredResults.filter((res)=>{
       return !this.projectMemos.some(att => att.MailId === res.MailId);
@@ -9092,7 +9093,7 @@ FilteredAttendees:any;
 
 
   onInputSearch(inputText:any){
-   
+
     let keyname;
     let arrtype;
     let selectedinto;
@@ -9135,7 +9136,7 @@ FilteredAttendees:any;
     }
     else if(this.projectmodaltype=='participant'){
       this.FilteredResults=result;
-      this.FilteredAttendees = this.FilteredResults.filter((res) => 
+      this.FilteredAttendees = this.FilteredResults.filter((res) =>
         this.PeopleOnProject.some(person => person.Emp_No === res.Emp_No)
        );
       this.FilteredResults=this.FilteredResults.filter((res)=>{
@@ -9144,7 +9145,7 @@ FilteredAttendees:any;
     }
     else if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
       this.FilteredResults=result;
-  
+
     this.FilteredResults=this.FilteredResults.filter((res)=>{
       return !this.projectMemos.some(att => att.MailId === res.MailId);
     });
@@ -9156,10 +9157,10 @@ FilteredAttendees:any;
       });
     }
 
- 
+
     console.log(this.FilteredResults,'FilteredAttendees')
   }
-  
+
 
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
@@ -9370,7 +9371,7 @@ Meeting_method(event){
  }
 
  projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
- 
+
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;

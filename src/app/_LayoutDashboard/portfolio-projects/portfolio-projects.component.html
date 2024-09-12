@@ -821,12 +821,12 @@
                                             <ng-container *ngIf="!showDeletedPrjOnly">
                                                 <td>
                                                   <div *ngIf="item1.Status=='Delay'"  class="attach-tippy">
-                                                    <span class="vi  st-line"> {{item1.Delaydays}} days delay</span>
-                                                    <span *ngIf="item1.Delaydays>=0" class=" Delay_color font-weight-400 ">
+                                                    <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Delaydays}} days delay</span>
+                                                    <span *ngIf="item1.Delaydays>=0" class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
                                                       {{getFormattedDelay(item1.Delaydays)}}
 
 
-                                                      <span class="">{{item1.Status}}
+                                                      <span class="" style="text-transform: lowercase;">{{item1.Status==='Delay' ? 'delay' : item1.Status}}
 
                                                       </span>
                                                     </span>
@@ -1055,7 +1055,7 @@
                                              <td>
 
                                               <div *ngIf="item1.Status=='Delay'">
-                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{item1.Delaydays}} day(s)
+                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{item1.Delaydays}} days
                                                 <span class="">{{item1.Status}}</span>
                                                 </span>
                                              </div>

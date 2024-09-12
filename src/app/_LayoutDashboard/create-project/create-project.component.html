@@ -2800,8 +2800,8 @@
                       </ng-template> -->
                       <ng-container>
                       <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                          <ng-option [value]="item.EmpNo" *ngFor="let item of owner_json">
-                              {{item.EmpName}}
+                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                              {{item.RACIS}}
                           </ng-option>
                       </ng-select>
                   </ng-container>
@@ -2829,7 +2829,7 @@
                                    >
 
                                     <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}"   [(ngModel)]="selectedOwnResp"    placeholder="Select new responsible">
-                                        <ng-option [value]="item.Emp_No"       *ngFor="let item of responsible_dropdown"
+                                        <ng-option [value]="item.Emp_No"       *ngFor="let item of owner_dropdown"
                                             [disabled]="item.Emp_No==selectedOwner">
 
                                             {{item.RACIS}}
@@ -3196,7 +3196,7 @@
                     </div>
                     <div class="" *ngIf="PrjActionsInfo">
                             <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}" [(ngModel)]="selectedOwnResp" placeholder="Select new responsible" (change)="OGresponsible=selectedOwnResp">
-                                  <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
+                                  <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
                                           [disabled]="item.Emp_No==selectedOwner">
                                      {{item.RACIS}}
                                   </ng-option>
