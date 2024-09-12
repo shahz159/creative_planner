@@ -2798,12 +2798,10 @@
                           <input type="text" (click)="displaymessagemain()" class="form-control readonly"
                               [(ngModel)]="Owner_Name" readonly />
                       </ng-template> -->
-                      <ng-container
-                    >
+                      <ng-container>
                       <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                          <ng-option [value]="item.EmpNo" *ngFor="let item of owner_json"
-                             >
-                              {{item.EmpName}}
+                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                              {{item.RACIS}}
                           </ng-option>
                       </ng-select>
                   </ng-container>
@@ -2831,7 +2829,7 @@
                                    >
 
                                     <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}"   [(ngModel)]="selectedOwnResp"    placeholder="Select new responsible">
-                                        <ng-option [value]="item.Emp_No"       *ngFor="let item of responsible_dropdown"
+                                        <ng-option [value]="item.Emp_No"       *ngFor="let item of owner_dropdown"
                                             [disabled]="item.Emp_No==selectedOwner">
 
                                             {{item.RACIS}}
@@ -3162,11 +3160,26 @@
                         </span>
                          Owner
                     </div>
-                    <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
+                    <!-- <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
                          <input type="text"  class="form-control " [(ngModel)]="selectedOwner"   />
-                    </div>
-                </div>
-            </div>
+                    </div> -->
+
+                    <!-- owner_dropdown -->
+
+
+
+                    <div class="input-icon Sub_In_ed"  >
+           <ng-container >
+                  <ng-select [(ngModel)]="selectedOwner" (change)="OGowner=selectedOwner" placeholder=" Select new owner">
+                      <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" >
+                          {{item.RACIS}}
+                      </ng-option>
+                  </ng-select>
+              </ng-container>
+  </div>
+ </div></div>
+
+
             <div class="col-lg-4 text-left mb-3">
                 <div class="form-group mb-0">
                     <div class="kt-info-lable-v">
@@ -3183,7 +3196,7 @@
                     </div>
                     <div class="" *ngIf="PrjActionsInfo">
                             <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}" [(ngModel)]="selectedOwnResp" placeholder="Select new responsible" (change)="OGresponsible=selectedOwnResp">
-                                  <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
+                                  <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
                                           [disabled]="item.Emp_No==selectedOwner">
                                      {{item.RACIS}}
                                   </ng-option>
@@ -3374,7 +3387,7 @@
                 <div class="col-lg-12 mt-3">
                     <div class="form-group text-end">
 
-                      <button type="submit"  (click)="alterAction()" class="btn btn-info w-110 ml-2" >Update</button>
+                      <button type="submit"  (click)="alterAction();alertMaxAllocation()" class="btn btn-info w-110 ml-2" >Update</button>
                       <button (click)="closeAction_details_edit()" class="btn w-110 btn-secondary ml-2" >Cancel</button>
 
                     </div>

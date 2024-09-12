@@ -3508,7 +3508,7 @@ span.total-meeting-count {
 }
 
 .Project_type_DW {
-  min-width: 160px;
+  min-width: 200px;
 }
 
 #calender {
@@ -4417,13 +4417,13 @@ span.Rq_date_V {
 
 
 .stdtask-underapproval-notification {
-  background-color: #d8efff;
+  background-color: #0af6b024;
 }
 
 .stdtask-underapproval-notification .notif-img,
 .reqaccess-approval-notification .notif-img {
   align-self: center;
-  min-width: 20px;
+  min-width: 20px; 
   max-width: 20px;
   min-height: 20px;
   max-height: 20px;
@@ -6209,13 +6209,13 @@ li.deadline-timeline-item:first-child:after {
 
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn svg {
-  stroke: #00a2eb;
+  stroke: #00eba5;
   transform: rotate(90deg);
 }
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg {
-  fill: #00a2eb;
-  stroke: #00a2eb;
+  fill: #00eba5;
+  stroke: #00eba5;
 }
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg path.arrow {
@@ -6796,6 +6796,14 @@ div#User_list_View.kt-quick-active--on {
   color: #000000;
   text-transform: capitalize;
 }
+
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
 
 .schedule-event.modal .modal-header .close {
   color: #493c3c;
@@ -8474,11 +8482,11 @@ span.time-value {
 .compl-remarks-span{
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; 
+  -webkit-line-clamp: 2;
   overflow: hidden !important;
   text-overflow: ellipsis;
   max-height: 3em;
-  line-height: 1.5em; 
+  line-height: 1.5em;
   cursor:default;
 
 }
@@ -8580,7 +8588,7 @@ span.time-value {
 
 .timeline .timeline-container .timeline-body .timeline-content {
   color: #999;
-} 
+}
 .schedule-date-time {
   background: #f4f4f4;
   border-radius: 4px;

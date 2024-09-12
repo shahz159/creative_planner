@@ -67,7 +67,8 @@ export class NotificationComponent implements OnInit {
   sendtype:any='Req';
   type1:any='Req';
   type2:any='Res';
-
+  notificationsLoading : boolean=false;
+  // pleasewait:boolean = false
   ////////////////------------------------------- Filters ------------------------------///////////////
   EmpCountInFilter = [];
   TypeContInFilter = [];
@@ -114,6 +115,7 @@ export class NotificationComponent implements OnInit {
       this.selectedItems=[];
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
       checkbox.checked = false;
+
     this.notificationDTO.Emp_No=this.Current_user_ID;
     this.notificationDTO.PageNumber=1;
     this.notificationDTO.PageSize=20;
@@ -122,12 +124,13 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SelectedType = null;
     this.notificationDTO.SearchText = null;
     this.notificationDTO.sendtype = type;
-
+    this.notificationsLoading = true;
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
       (data) => {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
+
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
@@ -186,6 +189,7 @@ export class NotificationComponent implements OnInit {
         if(this.CurrentPageNo == this.LastPage){
           this.lastPagerecords=20;
         }
+        this.notificationsLoading = false;
     }
     else if(type=='Res'){
       this.selectedItems=[];
@@ -199,13 +203,14 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SelectedType = null;
     this.notificationDTO.SearchText = null;
     this.notificationDTO.sendtype = type;
-
+    this.notificationsLoading = true;
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
       (data) => {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
         this._totalProjectsCount = (data[0]['notificationcount']);
+        this.notificationsLoading = false;
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
@@ -531,10 +536,12 @@ export class NotificationComponent implements OnInit {
 
   leave_Requests: any = []
   newNotificationLeaveRequests() {
+    this.notificationsLoading = true;
     this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
-      this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json'])
-      console.log(this.leave_Requests, "_newNotificationLeaveRequest")
-    })
+      this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
+      this.notificationsLoading = false;
+      console.log(this.leave_Requests, "_newNotificationLeaveRequest");
+    });
 
   }
 
@@ -543,7 +550,9 @@ export class NotificationComponent implements OnInit {
   Leave_code: any = []
   _newNotificationLeave: any = []
   newNotificationLeave() {
+    this.notificationsLoading=true;
     this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data) => {
+      this.notificationsLoading=false;
       this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json'])
       console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ')
     })

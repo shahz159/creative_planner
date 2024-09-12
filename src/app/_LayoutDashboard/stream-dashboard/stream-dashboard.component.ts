@@ -35,29 +35,30 @@ export class StreamDashboardComponent implements OnInit {
 
   constructor(public service: ProjectTypeService,
     private CalenderService: CalenderService
-  ) {  this._calenderDto = new CalenderDTO;}
+  ) { this._calenderDto = new CalenderDTO; }
 
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName")
     this.todayDate = new Date()
     this.meetingDetails()
+    this.portfolioSerivce()
   }
 
 
 
 
-  view_graph_div(){
+  view_graph_div() {
     document.getElementById("graph-div").style.display = "block";
   }
-  close_graph_div(){
+  close_graph_div() {
     document.getElementById("graph-div").style.display = "none";
   }
 
   page_Name: string = "ViewProjects";
   Current_user_ID: any;
   UserfullName: any
-  todayDate:any
+  todayDate: any
 
   GetDashboardSummary() {
     this.Emp_No = localStorage.getItem('EmpNo');
@@ -116,24 +117,25 @@ export class StreamDashboardComponent implements OnInit {
 
 
   Delay_Click(type) {
-debugger
+    debugger
 
-if (type === 'Assigned Project'){
-let Mode : string = 'AssignedTask'
-var url = document.baseURI + this.page_Name;
-var myurl = `${url}/${Mode}?section=${type}`;
-// console.log(myurl)
-var myWindow = window.open(myurl);
-myWindow.focus();
-}else {
-    let Mode: string = "DelayProjects";
-    var url = document.baseURI + this.page_Name;
-    var myurl = `${url}/${Mode}?section=${type}`;
-    // console.log(myurl)
-    var myWindow = window.open(myurl);
-    myWindow.focus();
+    if (type === 'Assigned Project') {
+      let Mode: string = 'AssignedTask'
+      var url = document.baseURI + this.page_Name;
+      var myurl = `${url}/${Mode}?section=${type}`;
+      // console.log(myurl)
+      var myWindow = window.open(myurl);
+      myWindow.focus();
+    } else {
+      let Mode: string = "DelayProjects";
+      var url = document.baseURI + this.page_Name;
+      var myurl = `${url}/${Mode}?section=${type}`;
+      // console.log(myurl)
+      var myWindow = window.open(myurl);
+      myWindow.focus();
 
-  }  }
+    }
+  }
 
   AssignedActions_Click() {
     let Mode: string = "AssignedActions"
@@ -143,8 +145,8 @@ myWindow.focus();
     myWindow.focus()
   }
 
-  notification(){
-    let name :string = "Notifications"
+  notification() {
+    let name: string = "Notifications"
     let url = document.baseURI + name
     let myurl = `${url} `
     var myWindow = window.open(myurl)
@@ -191,8 +193,8 @@ myWindow.focus();
 
   }
 
-  scheduleItems:any
-  event : any
+  scheduleItems: any
+  event: any
   // meetingDetails(){
   //   this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data)=>{
   //   this.scheduleItems = JSON.parse(data['Scheduledtime'])
@@ -218,17 +220,44 @@ myWindow.focus();
       console.log(this.scheduleItems, "this.meetingoftheuserthis.meetingoftheuser");
     });
   }
-    isToday(date: Date): boolean {
-      const today = new Date();
-      return (
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
-      );
-    }
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
   }
 
 
+
+  portfoiloData: any
+  portfolioSerivce(): void {
+    this.Emp_No = localStorage.getItem('EmpNo');
+    this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
+      this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
+      console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
+
+    })
+
+  }
+
+  openCard(P_id: any, P_Name: any, CreatedName: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    sessionStorage.setItem('portfolioname', P_Name);
+    sessionStorage.setItem('PortfolioOwner', CreatedName);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
+
+
+
+
+
+}
 
 
 

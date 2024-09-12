@@ -787,10 +787,10 @@ debugger
     });
   }
   sweetAlert() {
-  
+  debugger
    const processContinue=()=>{
 
-    
+
 //     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
 //   Swal.fire({
 //     title:'invalid Date',
@@ -852,10 +852,10 @@ debugger
     }).then((response: any) => {
       if (response.value) {
          processContinue();
-      } 
-    });  
+      }
+    });
    }
-   else 
+   else
    processContinue();
 
   }

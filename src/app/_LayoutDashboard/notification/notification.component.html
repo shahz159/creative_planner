@@ -1,5 +1,6 @@
 <app-autosearch [options]="autocompleteOptions">
 </app-autosearch>
+
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3"
   id="notifi">
 
@@ -293,7 +294,8 @@
 
         <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
 
-          <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+          <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"  [ngClass]="{'d-none':notificationsLoading}">
             <div class="">
               <div class="">
 
@@ -526,7 +528,13 @@
                           <!-- <span class="kt-widget__other" *ngIf="item.Category">{{item.Category}}</span> -->
                           <!-- <span class="kt-widget__other" *ngIf="!item.Category">No Category</span> -->
                         </td>
-                        <td><span class="kt-widget__other">{{item.SubmittedBy}}</span></td>
+
+                        <td><span class="kt-widget__other ">{{item.SubmittedBy}}</span>
+                          <div class="d-flex align-items-center" *ngIf="item.Req_Type=='Project Forward'">
+                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                          <div  class="st-line">{{item.ForwardTo}}</div>
+                       </div> </td>
+
                         <td>
                           <div
                             *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
@@ -555,23 +563,20 @@
                             {{item.Req_Type=='Project Cancel'?'Cancellation Approval':item.Req_Type}}
                           </span>
 
-                          <span [ngClass]="{'new_appraval': item.Req_Type=='New Project Reject Release'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release', 'Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected','hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change'  }"
-                            *ngIf="item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete' || item.Req_Type=='Project Release'
+                          <span [ngClass]="{'new_appraval': item.Req_Type=='New Project Reject Release'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Release', 'Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected','hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change'  }"
+                            *ngIf="  item.Req_Type=='Project Release'
                                   || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project' || item.Req_Type=='Approved Action'||item.Req_Type=='New Project Reject Release' ">
-                                  {{ item.Req_Type=='Project Complete'?'Completion Approval':
+                                  {{
                                      item.Req_Type=='New Project Reject Release' ?'New Approval':
                                      item.Req_Type
                                   }}
                           </span>
 
+                          <div class="d-flex align-items-center">
+                            <span [ngClass]="{ 'Done': item.Req_Type=='Task Complete' }"
+                          *ngIf="  item.Req_Type=='Task Complete' ">{{item.Req_Type}}
 
-                          <span class="attach-tippy" *ngIf="item.Req_Type=='Project Complete' " >
-                            <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
-                        <span class="st-line curser-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                           <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
-                            <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
                         </span>
-
                         <span class="attach-tippy" *ngIf="item.Req_Type=='Task Complete'" >
                           <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="openPDF_Standards(item.Project_Code,item.Emp_No,item.Iscloud,item.Rec_Date,item.FileUrl,item.contentType,item.SubmittedBy,item.Project_Code1)"></b>
                           <!-- projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible -->
@@ -580,14 +585,34 @@
                           <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
                       </span>
 
+                          </div>
+
+
+
+
+
+                          <div class="d-flex align-items-center">
+                            <span [ngClass]="{'completion': item.Req_Type=='Project Complete' }"
+                          *ngIf="item.Req_Type=='Project Complete'  ">
+                                {{ item.Req_Type=='Project Complete'?'Completion Approval': item.Req_Type}}
+                        </span>
+                          <span class="attach-tippy" *ngIf="item.Req_Type=='Project Complete' " >
+                            <b *ngIf="item.FileUrl"  class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                        <span class="st-line curser-pointer" (click)="LoadDocument1(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.Submitby,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                           <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                            <div>on: {{item.Rec_Date | date: 'dd-MM-yyyy'}}</div></span>
+                        </span>
+                          </div>
+
+
 
 
 
 
                           <span class="font-weight-400" [ngClass]="{'new_appraval': item.Req_Type=='New Project'||item.Req_Type=='Approved Project','completion': item.Req_Type=='Project Complete' ||item.Req_Type=='Action Complete'||item.Req_Type=='Project Release','Forward': item.Req_Type=='Project Forward','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
                             *ngIf="item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Action Complete' || item.Req_Type=='Revert Back'">{{item.Req_Type=='Project Forward'?'Forward Approval':item.Req_Type}}</span>
-                          <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line"
-                            title="Forward to">{{item.ForwardTo}}</span>
+                          <!-- <span *ngIf="item.Req_Type=='Project Forward'" class="kt-widget__other d-block st-line"
+                            title="Forward to">{{item.ForwardTo}}</span> -->
                         </td>
 
                         <td>
@@ -684,7 +709,6 @@
                 <!--Project aprv list end-->
 
                 <!--Leave aprv list start-->
-
                 <div id="leave-aprv-list" class="table-responsive">
                   <ng-container *ngIf="leavePanel==='REQUESTS'">
                     <!-- <h2>leave Request</h2> -->
@@ -774,6 +798,23 @@
             </div>
           </div>
 
+          <div class="smart-glass" [ngClass]="{'d-none':!notificationsLoading}">
+              <h1></h1>
+              <div class="logo">
+                <div class="circle">
+                  <div class="circle">
+                      <div class="circle">
+                      </div>
+                  </div>
+              </div>
+              <div class="hold-loader">
+                <div class="loader-img">
+                  <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
+                </div>
+              </div>
+              </div>
+            </div>
+
         </div>
         <div class="text-center py-4" style="color: lightgrey" *ngIf="(emptyspace==false)">
           <h4>{{_filtersMessage}}</h4>
@@ -853,6 +894,14 @@
   </div>
 
 </div>
+
+
+
+
+
+
+
+
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 <!--leave requisition start-->
@@ -1949,3 +1998,5 @@
 <!--leave requistion form start-->
 
 <!--leave requistion form end-->
+
+

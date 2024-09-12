@@ -1406,6 +1406,8 @@ ul.card-task-item-project-ul li:hover::before {
     align-items: center;
     justify-content: end;
     gap: 6px;
+    padding: 1rem 1rem 0.75rem;
+    border-top: 1px solid #dadce0;
 }
 
 .modal-time-item {
@@ -3754,4 +3756,25 @@ span.part-count {
 
 .modal.show .modal-dialog {
     transform: none;
+}
+
+
+.error-borderbottom {
+    border-bottom: 2px solid #ff6256 !important;
+}
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
+}
+
+.task-name-editfield {
+    outline: 0;
+    border: 0;
+    flex-grow: 1;
+    font-size: 13px;
+    margin: 0;
+    align-self: stretch;
 }

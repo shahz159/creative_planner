@@ -1185,8 +1185,8 @@
                                                                                 </span>
                                                                                     <span  class="agenda-details-item-count">{{taskcount[i].count}}</span>
                                                                                 </div>
-                                                                                <!-- <div class="a-v-line"></div> -->
-                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount > 0}">
+                                                                                <!-- <div class="a-v-line" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount > 0}"></div> -->
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': notescount[i].count > 0}">
                                                                                     <span class="a-icon">
                                                                                         <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                                                 
@@ -1226,7 +1226,7 @@
                                                                         </button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="agenda-title-input">
+                                                                        <div class="agenda-title-input"  title="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}" >
                                                                             <label [id]="'agenda-label-'+i"
                                                                             class="task-name">{{item.Agenda_Name}}</label>
                                                                             <input [id]="'agenda-text-field-'+i" type="text"
@@ -1297,9 +1297,9 @@
                                                                             </div>
 
                                                                         </div>
-                                                                        <div class="agenda-title-input">
+                                                                        <div class="agenda-title-input"  title="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}">
                                                                             <label [id]="'agenda-label-'+i"
-                                                                            class="task-name">{{item.Agenda_Name}}</label>
+                                                                            class="task-name" >{{item.Agenda_Name}}</label>
                                                                         </div>
                                                                             <div  class="d-flex align-items-center justify-content-between">
                                                                                 <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
@@ -1440,7 +1440,7 @@
 
                                             <!-- <div class="br-line"></div> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalportfolios}" (click)="AddPortfolio()" title="View or link Portfolio">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalportfolios}" (click)="AddPortfolio()" title="View or link portfolio">
                                                 <svg xmlns="http://www.w3.org/2000/svg"   width="16"
                                                 height="16" class="iconify iconify--mdi" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                     <defs></defs>
@@ -2718,7 +2718,7 @@
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                         <ng-container *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
                                         <angular-editor #ANGEDITOR [config]="config" [(ngModel)]="Notes_Type"
-                                        (keyup)="addBulletPointsOnEnter($event)" (paste)="addBulletPointsOnEnter($event)"></angular-editor>
+                                        (keyup)="addBulletPointsOnEnter($event)" (input)="addBulletPointsOnEnter($event)" (paste)="addBulletPointsOnEnter($event)"></angular-editor>
                                         </ng-container>
                                 
                                     </ng-container>
@@ -3752,7 +3752,7 @@
         <div id="LinkSideBar" class="sideInfobar animate-right ">
             <div class="kt-portlet">
                 <div class="kt-portlet__head">
-                    <div class="offcanvas-header d-flex align-items-center justify-content-between p-0">
+                    <div class="offcanvas-header d-flex align-items-center justify-content-between p-0 View_link_SMail">
                         <h4 class="font-weight-600 m-0 d-flex">
                             <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">
                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
@@ -3777,7 +3777,7 @@
                     </div>
                 </div>
                 <ul class="kt-nav">
-                    <li class="kt-nav__head d-block">
+                    <!-- <li class="kt-nav__head d-block">
 
                         <div class="M_fsize">
                             Linked
@@ -3793,7 +3793,7 @@
                             </ng-container>
                         </div>
                         <div class="kt-nav__separator"></div>
-                    </li>
+                    </li> -->
                     <ng-container *ngIf="Meetingstatuscom==Completed" >
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
                         <div class="">
@@ -3801,13 +3801,13 @@
                               
                                 <div class="se-col-11" style="max-width: 100%">
                                     <div class="d-flex" >
-                                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('SMail')">
+                                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:selectToLinkSMail();projectmodals('SMail');">
                                             <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
                                             <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                                 <span class="sr-only">Loading...</span>
                                             </div>
                                         </div>
-                                        <ng-container *ngFor="let item of EventScheduledjson">
+                                        <!-- <ng-container *ngFor="let item of EventScheduledjson">
     
                                             <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                                             <button class="btn btn-label-primary btn-upper "
@@ -3823,9 +3823,9 @@
                                                 <button class="btn btn-label-primary btn-upper"
                                                 (click)="AddDMS_meetingreport()">Link</button>
                                             </ng-container>
-                                            </ng-container>
+                                            </ng-container> -->
                                     </div>
-                                    <ul class="schedule-select-list" *ngIf="loading==false"  >
+                                    <!-- <ul class="schedule-select-list" *ngIf="loading==false"  >
                                         <li *ngFor="let memoid of SelectDms">
                                         <div class="schedule-select-list-item">
                                             <span class="schedule-select-list-title">{{getObjOf(Memos_List,memoid,'MailId').Subject}}</span>
@@ -3833,7 +3833,7 @@
                                         </div>
                                         <div class="schedule-select-list-user">{{getObjOf(Memos_List,memoid,'MailId').DisplayName}}</div>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             <!-- </div> -->
                             <!-- <mat-form-field class="drp-dwn-field ">
@@ -3890,7 +3890,7 @@
                                                         <span
                                                             class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge.kt-badge-light-bold kt-badge--inline">
                                                             <div>
-                                                                Owner: {{memo.DisplayName}}
+                                                                 {{memo.DisplayName}}
                                                             </div>
                                                         </span>
                                                         <!-- <span
@@ -3999,7 +3999,7 @@
                             </g>
                         </svg>
                         <h4 class="m-0">
-                            Link Portfolio
+                            Link portfolio
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeLinkSideBar()">
@@ -4013,7 +4013,7 @@
                     </div>
                 </div>
                 <ul class="kt-nav">
-                    <li class="kt-nav__head d-block">
+                    <!-- <li class="kt-nav__head d-block">
                         <p class="text-primary">
                             Portfolios</p>
                         <div class="M_fsize">
@@ -4023,19 +4023,19 @@
                             </div>
                         </div>
                         <div class="kt-nav__separator"></div>
-                    </li>
+                    </li> -->
                     <ng-container  *ngIf="Meetingstatuscom==Completed"> 
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4" >
 
                             <div class="se-col-11" style="max-width: 100%">
                                 <div class="d-flex">
-                                    <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PORTFOLIO')">
+                                    <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:selectToLinkPortf();projectmodals('portfolio');">
                                         <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
                                         <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                             <span class="sr-only">Loading...</span>
                                         </div>
                                     </div>
-                                    <ng-container *ngFor="let item of EventScheduledjson">
+                                    <!-- <ng-container *ngFor="let item of EventScheduledjson">
     
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                                         <button class="btn btn-label-primary btn-upper" (click)="Addportfolios_meetingreport()">Link</button>
@@ -4051,9 +4051,9 @@
                                             <button class="btn btn-label-primary btn-upper"  (click)="Addportfolios_meetingreport()">Link</button>
                                         </ng-container>
                     
-                                        </ng-container>
+                                        </ng-container> -->
                                 </div>
-                                <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+                                <!-- <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                                     <li *ngFor="let prtfid of Portfolio">
                                     <div class="schedule-select-list-item">
                                         <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
@@ -4061,7 +4061,7 @@
                                     </div>
                                     <div class="schedule-select-list-user">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').DisplayName}}</div>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </div>
                         
                         <!-- <mat-form-field class="drp-dwn-field w-100">
@@ -4767,7 +4767,7 @@
                         <h4 class="mb-0 project_icon"  [ngClass]="{'active':totalproject}" >
                             <i _ngcontent-pre-c394="" class="fab fa-wpforms mr-2 "
                             style="font-size: 1.4em;"></i>
-                                <span class="kt-chat__title"> Projects </span>
+                                <span class="kt-chat__title">Link projects </span>
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeLinkSideBar()">
@@ -4782,7 +4782,7 @@
                     </div>
                 </div>
                 <ul class="kt-nav">
-                    <li class="kt-nav__head d-block">
+                    <!-- <li class="kt-nav__head d-block">
                         <p class="text-primary">
                             Projects</p>
                         <div class="M_fsize">
@@ -4792,7 +4792,7 @@
                             </div>
                         </div>
                         <div class="kt-nav__separator"></div>
-                    </li>
+                    </li> -->
                     <ng-container *ngIf="Meetingstatuscom==Completed" > 
                     <li *ngIf="Isadmin==true" class="kt-nav__item px-4">
 
@@ -4800,13 +4800,13 @@
 
                             <div class="se-col-11" style="max-width: 100%">
                                 <div class="d-flex">
-                                    <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PROJECT')">
+                                    <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:selectToLinkProject();projectmodals('project');">
                                         <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
                                         <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                             <span class="sr-only">Loading...</span>
                                         </div>
                                     </div>
-                                    <ng-container *ngFor="let item of EventScheduledjson">
+                                    <!-- <ng-container *ngFor="let item of EventScheduledjson">
     
                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
                                         <button class="btn btn-label-primary" style="text-wrap: nowrap;" (click)="Addproject_meetingreport()">Add Projects</button>
@@ -4819,9 +4819,9 @@
                                     <ng-container *ngIf="(projectsSelected=='' && item.Recurrence!=='Do not repeat')">
                                             <button class="btn btn-label-primary" style="text-wrap: nowrap;" (click)="Addproject_meetingreport()">Add Projects</button>
                                         </ng-container>
-                                        </ng-container>
+                                        </ng-container> -->
                                 </div>
-                                <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
+                                <!-- <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                                     <li *ngFor="let prj of projectsSelected">
                                     <div class="schedule-select-list-item">
                                         <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
@@ -4830,7 +4830,7 @@
                                     <div class="schedule-select-list-user">{{prj.TM_DisplayName}}</div>
                                     </li>
         
-                                </ul>
+                                </ul> -->
                             </div>
                         
                         <!-- <mat-form-field class="drp-dwn-field ">
@@ -8087,7 +8087,7 @@
             
                 <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
                     *ngIf="editTask==true &&  copyTask==false && eventRepeat==false">
-                    <h4 class="m-0">Edit {{ScheduleType}}</h4>
+                    <h4 class="m-0">Edit {{ScheduleType.toLowerCase()}}</h4>
                     <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                             <path fill="none" d="M0 0h24v24H0z"></path>
@@ -8099,7 +8099,7 @@
                 </div>
                 <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head"
                 *ngIf="editTask==false && copyTask==false && eventRepeat==true">
-                <h4 class="m-0">Repeat {{ScheduleType}}</h4>
+                <h4 class="m-0">Repeat {{ScheduleType.toLowerCase()}}</h4>
                 <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeschd();">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                         <path fill="none" d="M0 0h24v24H0z"></path>
@@ -8125,7 +8125,7 @@
                                             'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                             ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
                                             }"
-                                            placeholder="Add Title" type="text" [(ngModel)]="Title_Name"
+                                            placeholder="Add title" type="text" [(ngModel)]="Title_Name"
                                             minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                         <div class="d-flex flex-column ">
                                         <!-- <span style="color:red" [hidden]="MinLastNameLength">min length 3</span> -->
@@ -8509,8 +8509,8 @@
                                 </div>
                             </div>
                             <div class="se-col-11">
-                                <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PARTICIPANT')">
-                                    <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participants')}}</div>
+                                <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('participant')">
+                                    <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participant')}}</div>
                                     <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                         <span class="sr-only">Loading...</span>
                                     </div>
@@ -8594,7 +8594,7 @@
                                 </div>
                             </div>
                             <div class="se-col-11">
-                                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PROJECT')">
+                                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('project')">
                                     <div class="title">{{subtashDrpLoading?'Loading...': (projectsSelected&&projectsSelected.length>0?'Add more projects':'Add project')}}</div>
                                     <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                         <span class="sr-only">Loading...</span>
@@ -8619,7 +8619,7 @@
                                 </div>
                             </div>
                             <div class="se-col-11">
-                                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('PORTFOLIO')">
+                                <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodals('portfolio')">
                                     <div class="title">{{subtashDrpLoading?'Loading':(Portfolio&&Portfolio.length>0?'Add more portfolios':'Add portfolio')}}</div>
                                     <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                                         <span class="sr-only">Loading...</span>
@@ -9100,16 +9100,16 @@
                 <div class="modal-header  gap-1">
                 <ng-container *ngIf="projectmodaltype">
                             <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
-                            <svg *ngIf="projectmodaltype==='PARTICIPANT'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
+                            <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                                 <path
                                     d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
                                 </path>
                             </svg>
-                            <i  *ngIf="projectmodaltype==='PROJECT'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
+                            <i  *ngIf="projectmodaltype==='project'" class="fab-icn fab fa-wpforms mt-2 mb-2"></i>
 
-                            <i *ngIf="projectmodaltype==='PORTFOLIO'" class="fas-icn fas fa-list mt-2 mb-2"></i>
+                            <i *ngIf="projectmodaltype==='portfolio'" class="fas-icn fas fa-list mt-2 mb-2"></i>
 
-                            <h5 class="modal-title  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype.toLowerCase()}}</h5>
+                            <h5 class="modal-titles  flex-grow-1" id="projectmodalLabel" >Select {{projectmodaltype}}</h5>
                 </ng-container>
                 <button type="button" class="close d-none" (click)="close_projectmodal()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -9121,9 +9121,9 @@
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     </div>
 
-                    <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='PROJECT'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
+                    <input id="PrjInputSearch" [ngClass]="{'d-none':projectmodaltype!=='project'}" #PrjInputSearch (input)="onProjectSearch(PrjInputSearch.value)" class="search-input" type="search" placeholder="Search" />
 
-                    <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='PROJECT'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
+                    <input id="InputSearch" [ngClass]="{'d-none':projectmodaltype==='project'}" #InputSearchRef  (input)="onInputSearch(InputSearchRef.value)" class="search-input" type="search" placeholder="Search" />
 
 
 
@@ -9148,7 +9148,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="projectmodaltype!=='PARTICIPANT'" class="project-filter-item">
+                        <div *ngIf="projectmodaltype!=='participant'" class="project-filter-item">
                             <div class="item-label">Users</div>
                             <div class="item-select">
                                 <div class="">
@@ -9178,17 +9178,17 @@
 
 
                         <div class="project-filter-footer">
-                            <button *ngIf="projectmodaltype==='PROJECT'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
-                            <button *ngIf="projectmodaltype==='PORTFOLIO'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
+                            <button *ngIf="projectmodaltype==='project'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
+                            <button *ngIf="projectmodaltype==='portfolio'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
                             <button *ngIf="projectmodaltype==='SMail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();">Submit</button>
-                            <button *ngIf="projectmodaltype==='PARTICIPANT'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();">Submit</button>
+                            <button *ngIf="projectmodaltype==='participant'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();">Submit</button>
                             <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
                         </div>
                     </div>
 
 
 
-                    <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='PROJECT'">
+                    <ul class="modal-project-list" id="project-list" *ngIf="projectmodaltype==='project'">
                         <ng-container *ngIf="searchingResult;else gotresult">
                                 <div class="w-100 h-100 d-flex align-items-center justify-content-center">
                                     <div class="spinner-border" style="color: #6388e3; width:40px; height:40px " role="status">
@@ -9224,7 +9224,7 @@
 
                     </ul>
 
-                    <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='PORTFOLIO'">
+                    <ul class="modal-project-list" id="portfolio-list" *ngIf="projectmodaltype==='portfolio'">
                             <li *ngFor="let prtf of FilteredResults" class="modal-project-list-item">
                                 <span>
                                     <mat-checkbox [checked]="choosedItems.includes(prtf.portfolio_id)" color="primary" (change)="onItemChoosed($event.checked,prtf.portfolio_id)">
@@ -9270,7 +9270,7 @@
                             </div>
 
                     </ul>
-                    <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='PARTICIPANT'">
+                    <ul class="modal-project-list" id="participant-list" *ngIf="projectmodaltype==='participant'">
                             <li *ngFor="let emp of FilteredResults" class="modal-project-list-item">
                                 <span>
                                     <mat-checkbox [checked]="choosedItems.includes(emp.Emp_No)"   color="primary" (change)="onItemChoosed($event.checked,emp.Emp_No)">
@@ -9301,8 +9301,74 @@
                 </div>
                 <div class="modal-footer">
                     <ng-container *ngIf="projectmodaltype">
-                            <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='PROJECT'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                            <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='PROJECT'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+
+                        <ng-container *ngIf="projectmodaltype==='project' && linkProject==true"> 
+                        <ng-container *ngFor="let item of EventScheduledjson">
+    
+                            <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                            <button [disabled]="choosedItems.length===0" (click)="keepChoosedItems();Addproject_meetingreport(); 
+                            PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                          </ng-container>
+                           
+                            <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                          
+                            <button [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  data-target="#confirmpopup"
+                             data-toggle="modal" type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                          </ng-container>
+                          <!-- <ng-container *ngIf="(projectsSelected=='' && item.Recurrence!=='Do not repeat')">
+                                <button class="btn btn-label-primary" style="text-wrap: nowrap;" (click)="Addproject_meetingreport()">Add Projects</button>
+                            </ng-container> -->
+                        </ng-container>
+                    </ng-container>
+                           
+                     <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='project' && linkProject==false" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                           
+                           
+
+
+
+
+
+
+                            <ng-container *ngIf="projectmodaltype!=='project'  && linkSMail==true">
+                            <ng-container *ngFor="let item of EventScheduledjson">
+                                <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                <button [disabled]="choosedItems.length===0"  (click)="keepChoosedItems();AddDMS_meetingreport(); InputSearchRef.value=''; " 
+                                 type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                                </ng-container>
+                             
+                                <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                                    <button [disabled]="choosedItems.length===0"  (click)="keepChoosedItems();InputSearchRef.value='';"  data-target="#confirmpopup" data-toggle="modal"
+                                    type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                                </ng-container>
+                              
+                                <!-- <ng-container *ngIf="(SelectDms=='' && item.Recurrence!=='Do not repeat')">
+                                    <button [disabled]="choosedItems.length===0"  (click)="keepChoosedItems();AddDMS_meetingreport(); InputSearchRef.value=''; " 
+                                    type="button" class="btn btn-add-primary">Add c {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                                </ng-container> -->
+                                </ng-container> 
+                            </ng-container>
+
+
+                            <ng-container *ngIf="projectmodaltype!=='project' && linkPortf==true">
+                            <ng-container *ngFor="let item of EventScheduledjson">
+                                <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                <button [disabled]="choosedItems.length===0" (click)="keepChoosedItems();Addportfolios_meetingreport(); InputSearchRef.value=''; " 
+                                 type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                                </ng-container>
+                                <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                                    <button [disabled]="choosedItems.length===0" (click)="keepChoosedItems(); InputSearchRef.value=''; " data-target="#confirmpopup" data-toggle="modal" 
+                                    type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>                              
+                                </ng-container>
+                              
+                                <!-- <ng-container *ngIf="(Portfolio=='' && item.Recurrence!=='Do not repeat')"> 
+                                    <button class="btn btn-label-primary btn-upper"  (click)="Addportfolios_meetingreport()">Link</button>
+                                </ng-container> -->
+                                </ng-container>
+                            </ng-container>
+
+                           
+                            <button [disabled]="choosedItems.length===0" *ngIf="(projectmodaltype!=='project' && linkSMail==false && linkPortf==false)" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
                             <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
                     </ng-container>
                 </div>
@@ -10173,7 +10239,7 @@
 
              <ul class="modal-project-list" id="participant-list" >
                 <ng-container *ngIf="filteredEmployees">
-                <div class="list-sep-name" *ngIf="(filteredEmployees | filter : Assigntext).length>0">Meeting attendees</div>
+                <div class="list-sep-name" *ngIf="(filteredEmployees | filter : Assigntext).length>0">Meeting Attendees</div>
                  <li class="modal-project-list-item" *ngFor="let data of filteredEmployees | filter : Assigntext;let i =index">
                      <span>
                          <mat-checkbox [checked]="selectedAttendeesList.has(data)"  (change)="onCheckboxChange($event, data)"  color="primary"></mat-checkbox>
@@ -10190,7 +10256,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="filteredEmployees">
-                 <div class="list-sep-name" *ngIf="(FiterEmployee|filter:Assigntext).length>0">Other users</div>
+                 <div class="list-sep-name" *ngIf="(FiterEmployee|filter:Assigntext).length>0">Other Users</div>
                  
                  <li class="modal-project-list-item" *ngFor="let data of FiterEmployee | filter : Assigntext;let i =index">
                      <span>

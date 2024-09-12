@@ -3631,6 +3631,14 @@ small.tlv-df {
   text-transform: capitalize;
 }
 
+
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
 .schedule-event.modal .modal-header .close {
   color: #493c3c;
   opacity: 1;
@@ -4922,3 +4930,7 @@ color: #121212;
 .vi{
   color:#D32F2F !important ;
 }
+.pending_appr{
+  color: #9C27B0 !important;
+
+ }

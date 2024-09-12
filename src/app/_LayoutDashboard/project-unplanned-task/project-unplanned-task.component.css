@@ -3745,6 +3745,7 @@ font-size: inherit;
   width: 100%;
   outline: none;
   border: 0;
+  margin-left : 10px
 }
 /* .runway-textarea1{
   resize: none;

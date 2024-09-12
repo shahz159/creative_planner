@@ -222,6 +222,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   private subscription: Subscription;
 
   ngOnInit(): void {
+    this.ProjectTypes = "Standard task"
     this.MinLastNameLength = true;
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('ProjectCode');
@@ -321,7 +322,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   IsData: string;
   RemainingHours: any;
   UsedInDAR: any;
-
+  ProjectTypes:any
 
 
 
@@ -885,6 +886,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   // projectActionDelay:any;
   // projectDelay:any;
   errorFetchingProjectInfo:boolean=false;
+projecttypes : any
+
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.errorFetchingProjectInfo=false;
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {    
@@ -913,7 +916,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
       this._MasterCode = this.projectInfo.Project_Code;
       this.ProjectType = this.projectInfo.Project_Type;
-
+      this.projecttypes = this.projectInfo.Project_Type;
       this.isrespactive =  this.projectInfo.isRespActive;
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
@@ -1124,10 +1127,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       const weeks = Math.floor(action.Delaydays / 7);
       delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
     } else {
-      delayText = action.Delaydays < 10 ? `0${action.Delaydays} day(s)` : `${action.Delaydays} day(s)`;
+      delayText = action.Delaydays < 10 ? `0${action.Delaydays} days` : `${action.Delaydays} days`;
     }
 
-    return delayText + ' Delay';
+    return delayText + ' delay';
   }
 
 
@@ -1865,6 +1868,11 @@ multipleback(){
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.currentSidebarOpened='LINK_DMS';
+    this._calenderDto = new CalenderDTO();
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.Project_Code = null;
+    this.GetProjectAndsubtashDrpforCalender();
+    this.linkSMail=true;
     //
   }
 
@@ -1877,6 +1885,8 @@ multipleback(){
     document.getElementById("rightbar-overlay").style.display = "none";
     this.currentSidebarOpened='NOT_OPENED';
     this.isLoadingData=undefined;
+    this.linkPort=false;
+    this.linkSMail=false;
 
   }
 
@@ -1910,6 +1920,7 @@ multipleback(){
   }
 
 
+
   GetDMS_Memos() {
     this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
@@ -1941,6 +1952,8 @@ multipleback(){
 
               }
               console.log("get memo subject:", this.projectMemos);
+
+
             });
         }
         else {   // if data is [] and length is 0.   means if there is not even one memo present in the project.
@@ -1977,7 +1990,23 @@ multipleback(){
 
 
 
+  linkSMail:boolean=false;
+  linkPort:boolean=false;
 
+
+  selectToLinkSMail(){
+    this.linkSMail=true;
+    if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
+    this.FilteredResults=this.FilteredResults.filter((res)=>{
+      return !this.projectMemos.some(att => att.MailId === res.MailId);
+    });
+    }
+  }
+
+
+  selectToLinkPort(){
+    this.linkPort=true
+  }
 
 
 
@@ -2007,7 +2036,8 @@ multipleback(){
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated Successfully") {
-            this.notifyService.showSuccess("", "DMS successfully added.");
+            this.notifyService.showSuccess("", "SMail successfully added.");
+            this.GetDMS_Memos();
           }
 
         });
@@ -2024,6 +2054,7 @@ multipleback(){
     }
     this.GetMemosByEmployeeId();    // get new data.
     this.SelectDms = new Array();
+    this.linkSMail=false;
     // this.closeLinkSideBar();         //closes the sidebar.
   }
   // ADD DMS END HERE
@@ -2261,7 +2292,7 @@ currentStdAprView:number|undefined;
         console.log(this.requestDetails,"task approvals");
         this.standardjson = JSON.parse(this.requestDetails[0]['standardJson']); console.log('standardjson:',this.standardjson);
         this.totalStdTskApvs=JSON.parse(this.requestDetails[0]['totalcount']); console.log('standardjson:',this.totalStdTskApvs);
-  
+
         // console.log('approvalEmpID::',this.standardjson[0].approvalEmpID);
         // if(this.standardjson.length>0){
         //     this.isApprovalSection=true;
@@ -2270,7 +2301,7 @@ currentStdAprView:number|undefined;
         // }
       }
 
-    }); 
+    });
   }
 
   approvalClick(actionType) {
@@ -2520,7 +2551,7 @@ currentStdAprView:number|undefined;
     $(".Btn_Reject").removeClass('active');
   }
 
- 
+
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
 
@@ -2547,7 +2578,7 @@ currentStdAprView:number|undefined;
         });
       console.log(this.singleapporval_json, "accept")
     }
-    else if (this.selectedType == '2') {    
+    else if (this.selectedType == '2') {
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -3942,7 +3973,7 @@ check_allocation() {
     document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
-
+    this.linkPort=true;
 
 
     this._calenderDto = new CalenderDTO();
@@ -4033,7 +4064,7 @@ check_allocation() {
 
   addProjectToPortfolio() {
     if(this.Portfolio==' '||this.Portfolio==null){
-      this.notifyService.showInfo("Please select Porfolio(s) to link",'Request cancelled');
+      this.notifyService.showInfo("Please select porfolio(s) to link",'Request cancelled');
       return;
     }
 
@@ -4052,7 +4083,7 @@ check_allocation() {
           if (this._Message == 'Updated Successfully') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
-            this.notifyService.showSuccess("Project successfully added to selected Portfolio(s)", this._Message);
+            this.notifyService.showSuccess("Project successfully added to selected portfolio(s)", this._Message);
           } else {
             this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
           }
@@ -4064,6 +4095,7 @@ check_allocation() {
     this.ngDropdwonPort = [];
     //this.closeLinkSideBar();
     this.getPortfoliosDetails();
+    this.linkPort=false
     // this._openInfoSideBar = false;
   }
 
@@ -4329,8 +4361,10 @@ check_allocation() {
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
+            console.log(this.AttachmentList,'fileuploading fileupdloading')
             console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
+            console.log(this._TotalDocs,"this._TotalDocsthis._TotalDocs")
            if (this.AttachmentList && this.AttachmentList.length) {
           this.AttachmentList = this.AttachmentList.map((Attachment: any) => ({ ...Attachment, JsonData: JSON.parse(Attachment.JsonData) }));
           console.log(this.AttachmentList,'AttachmentList')
@@ -4471,11 +4505,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
     FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
-
     if (iscloud == false) {
       FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
       if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
@@ -4485,7 +4517,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
         FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
       }
-
       let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
       var encoder = new TextEncoder();
@@ -4497,7 +4528,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
-
     else if (iscloud == true) {
       let name = "ArchiveView/" + pcode;
       var rurl = document.baseURI + name;
@@ -5709,8 +5739,9 @@ getChangeSubtaskDetais(Project_Code) {
   selectStartDate(event) {
     debugger
     this._StartDate = event.value;
-    let sd = event.value.format("YYYY-MM-DD").toString();
-    this._SEndDate = event.value.format("YYYY-MM-DD").toString();
+    // let sd = event.value.format("YYYY-MM-DD").toString();
+    let sd = event.format("YYYY-MM-DD").toString();
+    this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
@@ -5739,8 +5770,8 @@ getChangeSubtaskDetais(Project_Code) {
       jsonData[columnNames] = this.Startts;
       jsonData[columnNamee] = this.Endtms;
       jsonData[IsActive] = 1;
-      jsonData[Day] = event.value.format('dddd').substring(0, 3);
-      jsonData[DayNum] = event.value.format('DD').substring(0, 3);
+      jsonData[Day] = event.format('dddd').substring(0, 3);
+      jsonData[DayNum] = event.format('DD').substring(0, 3);
       this.AllDatesSDandED.push(jsonData);
     }
     else {
@@ -8711,14 +8742,14 @@ rejectAllmultipleAprvs(){
 onPendingAprvlClicked(aprvIndex:number){
     const resultobj=this.multiapproval_list[aprvIndex];
      const aprObj={
-      SNo:resultobj.SNo,   
-      Type:resultobj.Type,   
-      ReportType:resultobj.ReportType,  
-      RejectType:resultobj.RejectType,  
-      sendFrom:resultobj.sendFrom,   
-      Project_Code:resultobj.Project_Code,   
-      Remarks: resultobj.Remarks,   
-      Rec_Date: resultobj.Rec_Date  
+      SNo:resultobj.SNo,
+      Type:resultobj.Type,
+      ReportType:resultobj.ReportType,
+      RejectType:resultobj.RejectType,
+      sendFrom:resultobj.sendFrom,
+      Project_Code:resultobj.Project_Code,
+      Remarks: resultobj.Remarks,
+      Rec_Date: resultobj.Rec_Date
   };
   this.singleapporval_json=[aprObj];      // set singleapproval_json for submit approval.
 }
@@ -9063,20 +9094,28 @@ onProjectSearch(inputtext:any){
 
 }
 
+
+
+
+FilteredAttendees:any;
+
+
+
   onInputSearch(inputText:any){
-    debugger
+
     let keyname;
     let arrtype;
     let selectedinto;
     let property_name;
-    if(this.projectmodaltype=='PARTICIPANT')
+    if(this.projectmodaltype=='participant')
      {
+      debugger
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
        selectedinto='ngEmployeeDropdown';
        property_name='Emp_No';
      }
-    else if(this.projectmodaltype=='PORTFOLIO')
+    else if(this.projectmodaltype=='portfolio')
     {
        keyname='Portfolio_Name';
        arrtype=this.Portfoliolist_1;
@@ -9100,8 +9139,37 @@ onProjectSearch(inputtext:any){
 
       return nameMatched;
     });
-    this.FilteredResults=result;
+
+   if(this.projectmodaltype!='participant' && this.linkSMail==false  && this.linkPort==false){
+      this.FilteredResults=result;
+    }
+    else if(this.projectmodaltype=='participant'){
+      this.FilteredResults=result;
+      this.FilteredAttendees = this.FilteredResults.filter((res) =>
+        this.PeopleOnProject.some(person => person.Emp_No === res.Emp_No)
+       );
+      this.FilteredResults=this.FilteredResults.filter((res)=>{
+        return !this.FilteredAttendees.some(att => att.Emp_No === res.Emp_No);
+      });
+    }
+    else if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
+      this.FilteredResults=result;
+
+    this.FilteredResults=this.FilteredResults.filter((res)=>{
+      return !this.projectMemos.some(att => att.MailId === res.MailId);
+    });
+    }
+    else if(this.projectmodaltype=='portfolio' && this.linkPort==true ){
+      this.FilteredResults=result;
+      this.FilteredResults=this.FilteredResults.filter((res)=>{
+        return !this._portfoliolist.some(att => att.Portfolio_ID === res.portfolio_id);
+      });
+    }
+
+
+    console.log(this.FilteredResults,'FilteredAttendees')
   }
+
 
   project_filter() {
     document.getElementById("project-filter").classList.add("show");
@@ -9116,16 +9184,16 @@ onProjectSearch(inputtext:any){
     this.basedOnFilter.byuser=null;
     this.basedOnFilter.bycompany=null;
       switch(this.projectmodaltype){
-          case 'PROJECT':{
+          case 'project':{
             this.onProjectSearch('');
           };break;
-          case 'PORTFOLIO':{
+          case 'portfolio':{
             this.onPortfolioFilter();
           };break;
           case 'SMail':{
             this.onDMSFilter();
           };break;
-          case 'PARTICIPANT':{
+          case 'participant':{
             this.onParticipantFilter();
           };break;
           default:{};
@@ -9180,12 +9248,12 @@ onItemChoosed(choosed:any,choosedItem:any){
     this.choosedItems.push(choosedItem);
   }
   else{
-    const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='PROJECT')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
+    const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='project')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
     if(i>-1)
     this.choosedItems.splice(i,1);
 
     // when removing already selected items
-    if(this.projectmodaltype==='PROJECT'){
+    if(this.projectmodaltype==='project'){
           const j=this.MasterCode.findIndex(item=>item==choosedItem.Project_Code);
           if(j>-1){
             this.MasterCode.splice(j,1);
@@ -9193,7 +9261,7 @@ onItemChoosed(choosed:any,choosedItem:any){
           }
     }
     else{
-      const ary=this.projectmodaltype=='PORTFOLIO'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
+      const ary=this.projectmodaltype=='portfolio'?this.Portfolio:this.projectmodaltype=='SMail'?this.SelectDms:this.ngEmployeeDropdown;
       const j=ary.findIndex(item=>item==choosedItem);
       if(j>-1)
       ary.splice(j,1);
@@ -9203,7 +9271,7 @@ onItemChoosed(choosed:any,choosedItem:any){
 }
 companies_Arr:any;
 basedOnFilter:any={};
-projectmodaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'|undefined;
+projectmodaltype:'project'|'portfolio'|'SMail'|'participant'|undefined;
 choosedItems:any=[];
 FilteredResults:any=[];     // it is used to store the filtered result.
 isFilteredOn:boolean=false;
@@ -9239,7 +9307,7 @@ keepChoosedItems(){
   debugger
   switch(this.projectmodaltype)
   {
-      case 'PROJECT':{
+      case 'project':{
         if(!this.MasterCode) // if MasterCode is null,undefined,'',0
           this.MasterCode=[];
 
@@ -9248,7 +9316,7 @@ keepChoosedItems(){
         this.close_projectmodal();
       };break;
 
-      case 'PORTFOLIO':{
+      case 'portfolio':{
             if (!this.Portfolio)   // if Portfolio is null,undefined,''
             this.Portfolio = [];
 
@@ -9264,7 +9332,7 @@ keepChoosedItems(){
           this.close_projectmodal();
      };break;
 
-     case 'PARTICIPANT':{
+     case 'participant':{
       if(!this.ngEmployeeDropdown)
          this.ngEmployeeDropdown=[];
 
@@ -9311,18 +9379,21 @@ Meeting_method(event){
   }
  }
 
- projectmodal(modaltype:'PROJECT'|'PORTFOLIO'|'SMail'|'PARTICIPANT'){
+ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
 
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
   document.getElementById("projectmodal").style.display = "block";
   this.projectmodaltype=modaltype;
-  const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
+  const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='project'?'PrjInputSearch':'InputSearch'}`);
   if(searchField)searchField.focus();
 
-  if(modaltype==='PROJECT')
+  if(modaltype==='project')
   this.onProjectSearch('');
+        this.choosedItems.getPcodes=()=>{
+        return this.choosedItems.map(item=>item.Project_Code);
+    }
 
-  if(modaltype!='PROJECT')
+  if(modaltype!='project')
     this.onInputSearch('');
 }
 
@@ -10138,7 +10209,7 @@ loadActionsGantt(){
 
         },
 
-      
+
       }
 
     },
@@ -10331,7 +10402,7 @@ loadActionsGantt(){
  }
  else{
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
-  
+
   this.ActnsGanttChart.render();
 
 
@@ -10427,7 +10498,7 @@ updateCharacterCount_Meeting(): void {
 
 _portfoliosList2:any=[];  // all portfolios list.
 ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
-iscaPortDrpDwnOpen:boolean=false;  
+iscaPortDrpDwnOpen:boolean=false;
 ispncaPortDrpDwnOpen:boolean=false;    // this is for mat drpdwn present at pending approval sidebar.
 ProjectType_json:any;   // prj types
 allUsers1:any=[];       // all emps

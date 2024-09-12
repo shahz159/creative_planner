@@ -1210,7 +1210,15 @@
                                                         </div>
                                                     </td>
 
-                                                    <td><span class="kt-widget__other">{{item.Team_Res}}</span>
+                                                    <td><div class="kt-widget__other">{{item.Team_Res}}</div>
+                                                   <span *ngIf="item.Status=='Forward Under Approval'">
+                                                      <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
+                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                        <div  class="New_Approval_Project font-weight-400" style="line-height: 1;">{{item.ForwardTo}}</div>
+                                                    </div>
+                                                      </span>
+
+
                                                     </td>
                                                     <td>
                                                         <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
@@ -1252,7 +1260,7 @@
                                                                     <ng-container *ngSwitchDefault>
                                                                         <span class="Delay_color font-weight-400 attach-tippy"  *ngIf="item.Status.toLowerCase().includes('delay')" >
                                                                             <span class="vi font-weight-400 st-line"> {{item.Status}}</span>
-                                                                            <strong>{{getFormattedDelay(getStatusNumber(item.Status))}}</strong>
+                                                                            {{getFormattedDelay(getStatusNumber(item.Status))}}
                                                                         </span>
                                                                        <div class="attach-tippy" *ngIf="item.Status !== 'Not yet achieved'" >
                                                                         <span class="vi font-weight-400 st-line"> {{item.Status}} Delay</span>
@@ -1267,16 +1275,17 @@
                                                             </ng-container>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
-                                                            <div *ngIf="item.Status=='Under Approval'">
+                                                            <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
+                                                              <span class="pending_appr st-line">Pending approval</span>
                                                                 <span class="Under_Approval_color font-weight-400">New approval</span>
                                                                 <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
-                                                                <span class="vi font-weight-400 st-line"> {{item.Delaydays}} Days Delay</span>
+                                                                <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
                                                                 <span
                                                                     class="Delay_color " >
-                                                                    <strong>{{getFormattedDelay(item.Delaydays)}}</strong>
+                                                                   {{getFormattedDelay(item.Delaydays)}}
                                                                 </span>
 
                                                             </div>
@@ -1358,7 +1367,8 @@
                                                                 </span>
 
                                                             </div>
-                                                            <div *ngIf="item.Status=='Forward Under Approval'">
+                                                            <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
+                                                              <span class=" pending_appr st-line">Pending approval</span>
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
                                                                 <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}

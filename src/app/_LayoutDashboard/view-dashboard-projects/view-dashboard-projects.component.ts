@@ -1102,7 +1102,7 @@ openAssignedProject(assignId:string) {
 
     getFormattedDelay(delayDays: any): string {
       let delayText = '';
-    
+
       if (delayDays >= 365) {
         const years = Math.floor(delayDays / 365);
         delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
@@ -1115,8 +1115,8 @@ openAssignedProject(assignId:string) {
       } else {
         delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
       }
-    
-      return `${delayText.toLowerCase()} Delay`;
+
+      return `${delayText.toLowerCase()} delay`;
     }
 
 }
