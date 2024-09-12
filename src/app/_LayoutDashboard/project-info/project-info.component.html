@@ -119,8 +119,9 @@
                             <div class="d-flex align-items-center">
                                 <div class="kt-project-type">
 
-                                    <div class="Kt-Pd-Status Delay black-text" *ngIf="item.Status=='Delay'">
-                                         {{item.Delaydays}} days delay
+                                    <div class="Kt-Pd-Status Delay black-text attach-tippy" *ngIf="item.Status=='Delay'">
+                                      <span class="vi st-line" style="text-transform: lowercase;"> {{item.Delaydays}} days delay</span>
+                                         {{getFormattedDelay(item.Delaydays)}} delay
                                     </div>
 
 
@@ -189,8 +190,8 @@
                                  </span>
                            </div> -->
                         <div class="kt-project-type  ">
-                            <div class="Kt-Pd-Status Delay" *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
-                                <ng-container *ngIf="item.Status=='Delay'">Delay {{item.Delaydays}} day(s)</ng-container>
+                            <div class="Kt-Pd-Status Delay " *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
+                                <ng-container *ngIf="item.Status=='Delay'"> {{getFormattedDelay(item.Delaydays)}} delay</ng-container>
                                 <ng-container *ngIf="item.Status!='Delay'">{{item.Status}}</ng-container>
                             </div>
                             <ng-template #notdelay_status>
@@ -2049,8 +2050,9 @@
               <div class="kt-p-action-No" > Action {{i+1}}</div>
               <div class="kt-p-action-Status">
                 <span>
-                  <span [ngClass]="{'approve': item.Status =='Under Approval'||item.Status =='Forward Under Approval', 'in_pro':item.Status=='InProcess','Completed' :item.Status=='Completed','Comp_appr' :item.Status=='Completion Under Approval','proj_hold' :item.Status=='Project Hold','new_pro_rej':item.Status=='New Project Rejected'}">
-                    {{item.Status =='Under Approval'?'New Approval':item.Status=='InProcess'?'In-Process':item.Status=='Completion Under Approval'?'Completion Approval':item.Status=='Project Hold'?'Hold':item.Status =='Forward Under Approval'?'Forward Approval':item.Status}}</span>
+                  <span *ngIf="item.Status=='Delay'" class="Status-Delay">{{getFormattedDelay(item.Delaydays)}} delay</span>
+                  <span *ngIf="item.Status!='Delay'" [ngClass]="{'approve': item.Status =='Under Approval'||item.Status =='Forward Under Approval', 'in_pro':item.Status=='InProcess','Completed' :item.Status=='Completed','Comp_appr' :item.Status=='Completion Under Approval','proj_hold' :item.Status=='Project Hold','new_pro_rej':item.Status=='New Project Rejected'}">
+                    {{item.Status =='Under Approval'?'New action approval':item.Status=='InProcess'?'In-process':item.Status=='Completion Under Approval'?'Completion approval':item.Status=='Project Hold'?'Hold':item.Status =='Forward Under Approval'?'Forward approval':item.Status}}</span>
                 </span>
               </div>
             </div>
