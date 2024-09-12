@@ -3508,7 +3508,7 @@ span.total-meeting-count {
 }
 
 .Project_type_DW {
-  min-width: 160px;
+  min-width: 200px;
 }
 
 #calender {
@@ -8472,11 +8472,11 @@ span.time-value {
 .compl-remarks-span{
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; 
+  -webkit-line-clamp: 2;
   overflow: hidden !important;
   text-overflow: ellipsis;
   max-height: 3em;
-  line-height: 1.5em; 
+  line-height: 1.5em;
   cursor:default;
 
 }
@@ -8578,7 +8578,7 @@ span.time-value {
 
 .timeline .timeline-container .timeline-body .timeline-content {
   color: #999;
-} 
+}
 .schedule-date-time {
   background: #f4f4f4;
   border-radius: 4px;

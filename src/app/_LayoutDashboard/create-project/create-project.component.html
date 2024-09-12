@@ -2800,8 +2800,8 @@
                       </ng-template> -->
                       <ng-container>
                       <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                          <ng-option [value]="item.EmpNo" *ngFor="let item of owner_json">
-                              {{item.EmpName}}
+                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                              {{item.RACIS}}
                           </ng-option>
                       </ng-select>
                   </ng-container>
