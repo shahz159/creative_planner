@@ -1788,7 +1788,7 @@ export class DashboardComponent implements OnInit {
 
 
   onSubmitBtnClicked() {
-debugger
+
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
       (this.Description_Type?(this.characterCount<500):true)&&
