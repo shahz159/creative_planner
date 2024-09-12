@@ -190,8 +190,8 @@
                                  </span>
                            </div> -->
                         <div class="kt-project-type  ">
-                            <div class="Kt-Pd-Status Delay" *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
-                                <ng-container *ngIf="item.Status=='Delay'">Delay {{item.Delaydays}} day(s)</ng-container>
+                            <div class="Kt-Pd-Status Delay " *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
+                                <ng-container *ngIf="item.Status=='Delay'"> {{getFormattedDelay(item.Delaydays)}} delay</ng-container>
                                 <ng-container *ngIf="item.Status!='Delay'">{{item.Status}}</ng-container>
                             </div>
                             <ng-template #notdelay_status>

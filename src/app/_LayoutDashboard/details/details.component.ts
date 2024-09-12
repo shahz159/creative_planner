@@ -222,7 +222,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   private subscription: Subscription;
 
   ngOnInit(): void {
-    this.ProjectTypes = "Standard task"
+    // this.ProjectTypes = "Standard task"
     this.MinLastNameLength = true;
     this.route.paramMap.subscribe(params => {
       var pcode = params.get('ProjectCode');
