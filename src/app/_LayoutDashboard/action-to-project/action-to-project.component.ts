@@ -240,7 +240,6 @@ export class ActionToProjectComponent implements OnInit {
     }
 
     this.BsService.bs_projectCode.subscribe(p => {
-
       if (p == null) {
         this.ProjectsDropdownBoolean = false;
         this.GetProjectsByUserName();
@@ -251,11 +250,11 @@ export class ActionToProjectComponent implements OnInit {
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
-          debugger
+          
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
           this.owner=data["Owner_empno"];
-          this.Owner_Empno = data['Owner_empno'];
+          this.Owner_Empno = data['Owner_empno'];     
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
           if(this.createproject.projectInfo){
@@ -387,7 +386,7 @@ debugger
     this.ObjUserDetails.SearchText = this.filterText;
     this.service.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
-      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];
+      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];   
       this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
@@ -481,7 +480,7 @@ debugger
 
 
   OnSubmit() {
-debugger
+
 
     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
       this._projcode = true;
@@ -554,7 +553,7 @@ return
 
 
    const continueNext=()=>{
-
+debugger
     if(this.owner==null || this.owner==undefined || this.owner==''){
       this.owner=this.Owner_Empno;
     }
@@ -647,7 +646,7 @@ return
       }
 
       this.service._InsertNewSubtask(fd).subscribe(event => {
-debugger
+
         if (event.type === HttpEventType.Response){
           var myJSON = JSON.stringify(event);
           this._Message = (JSON.parse(myJSON).body).Message;

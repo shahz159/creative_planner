@@ -4480,6 +4480,7 @@ all_status={
 };
 prj_statuses:any=[];
 isGanttchartVisible:boolean=false;
+// npm i apexcharts@3.52.0    works only on this version.
 loadGanttChart(){
   console.log(">pr>",this._ProjectsListBy_Pid);
 
