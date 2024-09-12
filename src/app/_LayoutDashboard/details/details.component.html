@@ -702,7 +702,7 @@
 
                                                                   >
                                                                   <span class="vi font-weight-400 st-line" *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
-                                                                     {{(projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' day(s)' + ' Delay ': '') ||
+                                                                     {{(projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                   (projectInfo.Project_Block=='003' ?  projectInfo.Status : '')}}</span>
                                                           {{
                                                                 projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
@@ -2685,7 +2685,7 @@
                                           <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" >
 
                                             <div class="kt-project-type attach-tippy" *ngSwitchCase="'Delay'">
-                                                <span class="vi font-weight-400 st-line"> {{projectInfo.Delaydays? projectInfo.Delaydays + ' day(s)' + ' Delay ': '' }}</span>
+                                                <span class="vi font-weight-400 st-line"> {{projectInfo.Delaydays? projectInfo.Delaydays + ' days' + ' delay ': '' }}</span>
                                                   <div class="Kt-Pd-Status Delay"  >
                                                     {{getDelayText(projectInfo&&projectInfo)}}</div>
                                             </div>
@@ -4437,7 +4437,7 @@
                                                   *ngIf="!requestType && Current_user_ID  != approval_Emp">
 
                                                   <div *ngSwitchCase="'Delay'" class="attach-tippy kt-project-type" >
-                                                      <span class="vi font-weight-400 st-line"> {{projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' day(s)' + ' Delay ' :''}}</span>
+                                                      <span class="vi font-weight-400 st-line"> {{projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' days' + ' delay ' :''}}</span>
 
                                                     <div class="Kt-Pd-Status Delay">
                                                         {{ getDelayText(projectActionInfo[currentActionView]) }}
