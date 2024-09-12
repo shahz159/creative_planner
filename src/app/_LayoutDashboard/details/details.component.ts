@@ -885,13 +885,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totaldeadlineExtend:any;
   // projectActionDelay:any;
   // projectDelay:any;
+  errorFetchingProjectInfo:boolean=false;
 projecttypes : any
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
-
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
-      this.Submission = JSON.parse(res[0].submission_json);
+    this.errorFetchingProjectInfo=false;
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {    
+      try{
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
+      }catch(er){
+        console.log('project Info fetching failure:',er);
+        this.errorFetchingProjectInfo=true;
+      }
+      this.Submission = JSON.parse(res[0].submission_json);  
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -1278,7 +1284,7 @@ projecttypes : any
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data !== null && data !== undefined) {
-
+debugger
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
           // adding _type property
           this.Activity_List.forEach((_actvy)=>{
@@ -4686,7 +4692,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   oldMtgCnt: number = 0;  // Older Meetings Count
   Addguest:any
   MeetingParticipants:any
-
+  mtg_section:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'='TODAY';
 
   GetmeetingDetails() {
 
@@ -4751,7 +4757,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-debugger
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
         this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
@@ -4797,7 +4802,7 @@ debugger
 
       // by default today section is opened, below line set the first meeting to open if present.
       setTimeout(()=>{
-        this.expandMtgbx('#today_meetings_tabpanel div#today-mtg-0-btn');
+         this.toggleMtgsSection('TODAY');
       },1000);
       // by default today section is opened, below line set the first meeting to open if present.
 
@@ -4814,9 +4819,6 @@ debugger
 
 
   openMeetingSidebar() {
-
-
-
     document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
@@ -4859,6 +4861,8 @@ debugger
 
     this.backMainMeetings();
   }
+
+
 
 
   getUpcomingMeeting() {
@@ -4951,15 +4955,20 @@ debugger
 
   }
 
-
-  expandMtgbx(bx:string){
-    debugger
-     const btn:any=document.querySelector(bx);
-     if(btn&&btn.getAttribute('aria-expanded')=='false'){
-      btn.click();
-     }
+  toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    this.mtg_section=sec;
+    const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
+             this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
+             this.mtg_section=='LAST7DAYS'?'#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn':
+             this.mtg_section=='LASTMONTH'?'#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn':
+             null;
+    if(bx){
+        const btn:any=document.querySelector(bx);
+        if(btn&&btn.getAttribute('aria-expanded')=='false'){
+          btn.click();  
+        } 
+    }         
   }
-
 
 
 
@@ -8329,7 +8338,7 @@ showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
 
-showSelfAssignedActns(userno){
+showSelfAssignedActns(userno){  
   if(userno){
     this.filteredPrjAction = this.projectActionInfo.filter((item) => {
       return (item.Project_Owner == item.Team_Res) && (item.Team_Res == userno);
@@ -9941,11 +9950,10 @@ onPrjAuditSubmitClicked(){
       }
       else
         this.notProvided=false;
-
      const project_code:string=this.projectInfo.Project_Code;
      const empno:string=this.Current_user_ID;
      const auditor:string=this.emp_Auditor;
-     const remarks:string=this.empAuditor_remarks;
+     const remarks:string=this.empAuditor_remarks;   
      this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
           console.log(res);
           if(res&&res.message){
@@ -9968,11 +9976,10 @@ onTransferBtnClicked(){
         }
         else
           this.notProvided=false;
-
       const project_code:string=this.projectInfo.Project_Code;
       const empno:string=this.Current_user_ID;
       const remarks:string=this.empAuditor_remarks;
-      const newowner:string=this.emp_Auditor;
+      const newowner:string=this.emp_Auditor;   
       this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
                  if(res&&res.message){
                     this.notifyService.showSuccess(res.message,'Success');
@@ -9990,11 +9997,8 @@ onTransferBtnClicked(){
 
 
 
-
-
-
 total_userActns:number|undefined;
-
+// npm i apexcharts@3.52.0    works only on this version.
 loadActionsGantt(){
   const all_status={
     'Completed':'#388E3C',
@@ -10290,6 +10294,7 @@ loadActionsGantt(){
         const data = w.config.series[seriesIndex].data[dataPointIndex];
         const index = data.index;
         const actn_name = actions_list[index].Project_Name;
+        const actn_descrp=actions_list[index].Project_Description;
         const actn_start = this.datepipe.transform(new Date(actions_list[index].StartDate), 'MMM d, y');
         const actn_end = this.datepipe.transform(new Date(actions_list[index].EndDate), 'MMM d, y');
         const daydiff = Math.abs(moment(actions_list[index].StartDate, 'YYYY-MM-DD').diff(moment(actions_list[index].EndDate, 'YYYY-MM-DD'), 'days')) + 1;
@@ -10307,11 +10312,15 @@ loadActionsGantt(){
           <div style="display: flex;margin-bottom: 4px;column-gap: 10px;">
             <span style="flex-grow: 1;">
               <span style="font-size: 10px;font-family: Lucida Sans Unicode;display: inline-block;max-width: 250px;text-wrap: nowrap;overflow: hidden;text-overflow: ellipsis;">${actn_name}</span>
-              <span style="font-size: 9px;font-family: Lucida Sans Unicode;display: flex;align-items: center;justify-content: start;color: #afaeae;position: relative;top: -4px;">${actn_res}</span>
+              <span style="font-size: 9px;font-family: Lucida Sans Unicode;display: flex;align-items: center;justify-content: start;color: #afaeae;position: relative;top: -4px; text-decoration:underline;   ">${actn_res}</span>
             </span>
             <span style="padding: 0.3em 0.6em 0.2em 0.6em;border-radius: 2px;background-color:${statusColor}; color: white;font-family: 'Lucida Sans Unicode';font-size: 11px;align-self: flex-start;">${actn_status} </span>
           </div>
-          <div style="display: flex;align-items: center;margin-bottom: 0px;column-gap: 10px;">
+          <div style="display: flex;align-items: center;margin-bottom: 0px;column-gap: 10px; justify-content: space-between; ">
+           <span style="font-size: 9px; font-family: 'Lucida Sans Unicode'; color: #afaeae; position: relative; top: -7px; max-width: 250px; text-wrap:wrap;overflow: hidden;text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; /* Limit to 4 lines */ -webkit-box-orient: vertical;">
+            ${actn_descrp}
+           </span>
+
             <span style="font-size: 10px;color: #0d0d0dd6;display: flex;align-items: flex-end;column-gap: 3px;">
               <fieldset style="border: 1px solid #55525226;padding: 0.5em;border-radius: 3px;font-family: 'Lucida Sans Unicode';font-weight: bold;color: #4e4949d9;min-width: 55px;display: flex;justify-content: center;">
                 <legend style="font-size: 8.6px;font-family: 'Lucida Sans Unicode';color: #5a57578f;width:fit-content; margin-bottom:0;">Allocated hours</legend>
@@ -10565,6 +10574,57 @@ date_menu_modal_close() {
 
 
 }
+
+
+//get notifications list.    start
+// isNotificationsExpanded:boolean=false;
+getNotificationsAnnouncements():string[]{
+
+  let allnotif:string[]=[];
+
+  if(this.myUnderApprvActions.length>0)
+  allnotif=[...allnotif,'myUnderApprvActions'];
+  if(this.myDelayPrjActions.length>0) 
+  allnotif=[...allnotif,'myDelayPrjActions'];   
+  if(+this.ProjectPercentage>100)
+  allnotif=[...allnotif,'ProjectPercentage']; 
+  if(([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&this.delayActionsOfEmps.length>0) 
+  allnotif=[...allnotif,'delayActionsOfEmps']; 
+  if(this.MeetingCount>0) 
+  allnotif=[...allnotif,'MeetingCount'];
+  if(this.actionsWith0hrs&&this.actionsWith0hrs.length>0)
+  allnotif=[...allnotif,'actionsWith0hrs'];
+  if(['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(this.activity)) 
+  allnotif=[...allnotif,'Rejected'];
+  if(this.projectInfo&&this.projectInfo.Status==='Project Hold')
+  allnotif=[...allnotif,'ProjectHold'];  
+  if(this.projectInfo&&this.projectInfo.Status=='Not Started')
+  allnotif=[...allnotif,'NotStarted'];  
+  if((this.totalStdTskApvs&&this.totalStdTskApvs>0)&&(this.Current_user_ID  == this.standardjson[0].approvalEmpID))
+  allnotif=[...allnotif,'totalStdTskApvs'];
+  if((this.multiapproval_list&&this.multiapproval_list.length>0)&&(this.Current_user_ID  == this.approvalEmpId))
+  allnotif=[...allnotif,'multiapproval_list'];
+  if(this.projectInfo.Project_Block==='003')
+  allnotif=[...allnotif,'stdTaskDelay'];
+  if(this.projectInfo.Status=='Completed'&&this.projectInfo.VersionCode)
+  allnotif=[...allnotif,'VersionCode'];  
+  if(this.selfAssignedActns&&this.selfAssignedActns.length>0)
+  allnotif=[...allnotif,'selfAssignedActns'];
+  if(this.totalPActns4Aprvls>0) 
+  allnotif=[...allnotif,'totalPActns4Aprvls'];   
+
+   return allnotif;
+}  
+
+//get notifications list.    end
+
+
+
+
+
+
+
+
 
 }
 
