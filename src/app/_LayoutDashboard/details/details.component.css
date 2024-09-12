@@ -8736,5 +8736,26 @@ span.time-value {
   {
    font-size: 12px;
   }
-  
+}
+
+.Status-done {
+  color: #62B134;
+}
+.approve{
+  color:#9C27BD !important ;
+}
+.in_pro{
+color:#1E88E5 !important ;
+}
+.Completed{
+  color: #388E3C !important;
+}
+.Comp_appr{
+  color: #81C784 !important;
+}
+.proj_hold{
+  color: #795548 !important;
+}
+.new_pro_rej{
+  color: #ba68c8 !important;
 }
