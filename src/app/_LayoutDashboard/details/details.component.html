@@ -12193,12 +12193,23 @@
                               <input type="text" class="form-control kt-info-box-tit " [(ngModel)]="ProjectType" readonly />
                           </div>
 
-
-                          <div class="input-icon Sub_In_ed  " style="max-width: 140px;"
+                       <div class="input-icon Sub_In_ed  " style="max-width: 140px;"
                         *ngIf="(projectInfo&&(projectInfo.Project_Type =='Standard Tasks' || projectInfo.Project_Type =='Routine Tasks'))">
-                          <input type="text" class="form-control kt-info-box-tit "   [(ngModel)]="ProjectType" readonly />
+                          <input type="text" class="form-control kt-info-box-tit "   [value]="ProjectTypes" readonly />
                       </div>
 
+
+
+                      <!-- <div class="Project_type_DW curser-pointer ">
+                        <ng-container *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
+                            <ng-select [clearable]="false" class="curser-pointer" [(ngModel)]="ProjectType" placeholder="Change task type" >
+                                <ng-option  [value]="item.typeid" *ngFor="let item of type_list"  >
+
+                                    <a>{{item.typename}}</a>
+                                </ng-option>
+                            </ng-select>
+                        </ng-container>
+                        </div> -->
 
 
 
@@ -12521,20 +12532,40 @@
 
 
 
-
-    <div class="col-lg-4 text-left"  *ngIf="(ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks')" >
+<ng-container *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'" >
+    <div class="col-lg-4 text-left"  >
    <div class="form-group mb-2 Ic_ed">
     <div class="kt-info-lable-v">Project type</div>
     <div class="input-icon Sub_In_ed">
-        <ng-select class="curser-pointer" [(ngModel)]="projecttypes"
-            placeholder="Select project type">
+        <ng-select [clearable]="false" class="curser-pointer" [(ngModel)]="ProjectType"
+            placeholder="Change task type">
             <ng-option [value]="item.typeid" *ngFor="let item of type_list">
-                {{item.typename}}
+              <a>{{item.typename}}</a>
             </ng-option>
         </ng-select>
     </div>
 </div>
-</div>
+</div></ng-container>
+
+
+
+ <!-- <div class="Project_type_DW curser-pointer ">
+  <ng-container *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
+      <ng-select [clearable]="false" class="curser-pointer" [(ngModel)]="ProjectType" placeholder="Change task type" >
+          <ng-option  [value]="item.typeid" *ngFor="let item of type_list"  >
+
+              <a>{{item.typename}}</a>
+          </ng-option>
+      </ng-select>
+  </ng-container>
+  </div>  -->
+
+
+
+
+
+
+
 
 
 
