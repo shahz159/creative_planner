@@ -2396,4 +2396,27 @@ onTransferBtnClicked(){
           });
 }
 
+getFormattedDelay(delayDays: any): string {
+  let delayText = '';
+
+  if (delayDays >= 365) {
+    const years = Math.floor(delayDays / 365);
+    delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+  } else if (delayDays >= 30) {
+    const months = Math.floor(delayDays / 30);
+    delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+  } else if (delayDays >= 7) {
+    const weeks = Math.floor(delayDays / 7);
+    delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+  } else {
+    delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+  }
+
+  return `${delayText.toLowerCase()}`;
+}
+
+
+
+
+
 }

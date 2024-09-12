@@ -1501,14 +1501,21 @@
                                                                       <div class="kt-p-action-Status">
 
 
-                                                                          <span [ngSwitch]="action.Status">
-                                                                              <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
+
+
+
+
+
+
+                                                                          <span [ngSwitch]="action.Status"  >
+                                                                              <span *ngSwitchCase="'Completed'" class="Status-done ">Completed</span>
                                                                               <span *ngSwitchCase="'Delay'" class="Status-Delay">{{getDelayText(action)}}</span>
-                                                                              <span *ngSwitchCase="'InProcess'" class="Status-In-progress">In-process</span>
+                                                                              <span *ngSwitchCase="'InProcess'" class=" in_pro">In-process</span>
                                                                               <span *ngSwitchCase="'New Project Rejected'" class="bg-rejected" style="background-color: transparent;">Rejected</span>
-                                                                              <span *ngSwitchCase="'Under Approval'">New action approval</span>
-                                                                              <span *ngSwitchCase="'Project Hold'" class="hold-act-text">Hold until {{action.Holddate}}</span>
-                                                                              <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Not Started</span>
+                                                                              <span *ngSwitchCase="'Under Approval'"  class="approve">New action approval</span>
+                                                                              <span *ngSwitchCase="'Project Hold'" class="proj_hold">Hold until {{action.Holddate}}</span>
+                                                                              <span *ngSwitchCase="'Not Started'" class="">Not Started</span>
+                                                                              <span *ngSwitchCase="'Forward Under Approval'" class="approve">Forward approval</span>
                                                                               <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                           </span>
                                                                           <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
