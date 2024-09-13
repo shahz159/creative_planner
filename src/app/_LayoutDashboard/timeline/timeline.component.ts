@@ -20,7 +20,7 @@ import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-detail
 import { ActivatedRoute } from '@angular/router';
 import { debug } from 'console';
 import { sort } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
-
+declare var $: any;
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD-MM-YYYY',
@@ -65,7 +65,7 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
    }
-
+   selectedOption: string = 'option1'; // Set default option here
   ObjSubTaskDTO: SubTaskDTO;
   Current_user_ID: any;
   timelineList:any;
@@ -136,7 +136,9 @@ export class TimelineComponent implements OnInit {
     this.currentminutes = this.date.getMinutes();
     // this.french();
   }
-
+  toggleTimeline(option: string) {
+    this.selectedOption = option;
+  }
 
   french() {
     this._locale = 'fr';

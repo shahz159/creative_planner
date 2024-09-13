@@ -819,3 +819,83 @@ border-radius:5px;
 
 
 /*timeline submit end css*/
+
+.timeline-radios{
+  padding: 1rem 0.95rem;
+  color: #686868;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+.timeline-radios .form-check {
+  padding-left: 1.5rem;
+}
+.timeline-radios .form-check .form-check-input {
+  width: 18px;
+  height: 18px;
+}
+.timeline-radios .form-check-label {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+.timeline-radios .form-check-input:checked[type=radio] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%235867dd'/%3e%3c/svg%3e");
+}
+.timeline-radios .form-check-input:checked {
+  background-color: #dde1ff;
+  border-color: #5867dd;
+}
+.timeline-item-div {
+  padding: 0.65rem 1rem;
+  color: #686868;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.timeline-item-heading{
+  position: absolute;
+  background-color: #f5f5f5;
+  border: 1px solid #dcdcdc;
+  color: #747070;
+  font-weight: 500;
+  padding: 2px 4px;
+  top: -12px;
+  left: 10px;
+  font-size: 11px;
+  border-radius: 2px;
+}
+#darsidebar.kt-quick-panel--on {
+  width: 64% !important;
+}
+.timeline-item-div .timeline-header.sticky-header {
+  background-color: transparent;
+}
+.mb-2rem{
+  margin-bottom: 2rem !important;
+}
+.timeline-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.timeline-note p {
+  margin-bottom: 0px;
+  flex: 1;
+  background-color: #ff000012;
+  border-left: 4px solid #ff0000;
+  color: #d40e0e;
+  padding: 6.3px;
+  border-radius: 4px;
+}
+.timeline-note.success p {
+  background-color: #04880912;
+  border-left: 4px solid #0d7c12;
+  color: #09850e;
+}
+.timeline-add{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
