@@ -2,7 +2,7 @@
   <ng-container *ngIf="(userFound===true)">
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height">
     <div class="row" [hidden]="PortfolioList">
-        <div class="col-lg-12 project-description d-none">
+        <div class="col-lg-12 project-description">
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
 
                 <div class="kt-portlet__head">
@@ -385,7 +385,7 @@
 
             </div>
         </div>
-        <div class="col-lg-12 project-description">
+        <div class="col-lg-12 project-description d-none">
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
 
                 <div class="kt-portlet__head">
@@ -768,7 +768,7 @@
                         </button>
                         <div
                             class="kt-grid__item kt-grid__item--fluid kt-inbox__list kt-inbox__list--shown mb-1 flex-grow-1">
-                            <div class="n-portfolio-container">
+                            <div class="n-portfolio-container d-none">
                                 <div class="n-portfolio-ul" >
                                     <div class="n-portfolio-li" *ngFor="let item of _ListProjStat ;let i=index">
                                         <div class="n-portfolio-head">
@@ -949,7 +949,7 @@
                                 </div>
                             </div>
                             <!-- <div> -->
-                            <div class="p-0 flex-grow-1 d-none">
+                            <div class="p-0 flex-grow-1">
                                 <div data-type="inbox" class="kt-inbox__items">
                                     <div class="mb_1" *ngFor="let item of _ListProjStat ;let i=index">
                                         <div *ngIf="item.Status=='Delay'">
