@@ -63,10 +63,10 @@ export class StreamDashboardComponent implements OnInit {
         ],
 
         responsive: {
-          992: { items: 3 }
+          992: { items: 4 }
         }
       });
-    }, 0); 
+    }, 500); 
   }
 
   view_graph_div() {
