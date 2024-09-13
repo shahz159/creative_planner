@@ -2515,9 +2515,18 @@ span.user-ft-ltr {
       margin-left: 20px;
 
 }
+.org-name-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 130px;
+}
 .org-name-email p {
   margin-bottom: 0px;
-  line-height: 6px;
+  line-height: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .org-name-email span {
   font-size: 11px;
@@ -3622,6 +3631,14 @@ small.tlv-df {
   text-transform: capitalize;
 }
 
+
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
 .schedule-event.modal .modal-header .close {
   color: #493c3c;
   opacity: 1;
@@ -3738,7 +3755,7 @@ span.schedule-dt-muted {
   font-size: 10px;
   gap: 2px;
 }
-.date-menu {
+/* .date-menu {
   border: 0 !important;
   margin: 0;
   min-width: 40rem;
@@ -3766,7 +3783,7 @@ span.schedule-dt-muted {
 
 .date-menu.show {
   display: block;
-}
+} */
 
 .date-menu-item {
   display: flex;
@@ -4860,6 +4877,23 @@ color: #121212;
   animation: connect 2.5s linear infinite;
 }
 
+
+
+.schedule-date-time {
+  background: #f4f4f4;
+  border-radius: 4px;
+  padding: 0.65rem 1rem;
+}
+.datemenu.modal .modal-header {
+  background-color: #ebeff6;
+  align-items: center;
+}
+::ng-deep ng-select {
+  border-bottom: none !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+}
+
 .loader-img {
   width: 80px;
   height: 80px;
@@ -4896,3 +4930,7 @@ color: #121212;
 .vi{
   color:#D32F2F !important ;
 }
+.pending_appr{
+  color: #9C27B0 !important;
+
+ }

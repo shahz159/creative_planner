@@ -3240,10 +3240,18 @@ span.user-ft-ltr {
   margin-left: 20px;
 
 }
-
+.org-name-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 130px;
+}
 .org-name-email p {
   margin-bottom: 0px;
-  line-height: 6px;
+  line-height: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .org-name-email span {
@@ -3500,7 +3508,7 @@ span.total-meeting-count {
 }
 
 .Project_type_DW {
-  min-width: 160px;
+  min-width: 200px;
 }
 
 #calender {
@@ -4409,13 +4417,13 @@ span.Rq_date_V {
 
 
 .stdtask-underapproval-notification {
-  background-color: #d8efff;
+  background-color: #0af6b024;
 }
 
 .stdtask-underapproval-notification .notif-img,
 .reqaccess-approval-notification .notif-img {
   align-self: center;
-  min-width: 20px;
+  min-width: 20px; 
   max-width: 20px;
   min-height: 20px;
   max-height: 20px;
@@ -4446,7 +4454,7 @@ span.Rq_date_V {
 
 
 .newversion-notification{
-  column-gap: 6px;
+  column-gap: 10px;
   background-color: #d8efff;
 }
 
@@ -6201,13 +6209,13 @@ li.deadline-timeline-item:first-child:after {
 
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn svg {
-  stroke: #00a2eb;
+  stroke: #00eba5;
   transform: rotate(90deg);
 }
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg {
-  fill: #00a2eb;
-  stroke: #00a2eb;
+  fill: #00eba5;
+  stroke: #00eba5;
 }
 
 .stdtask-underapproval-notification .stdtaskaprv-open-btn:hover svg path.arrow {
@@ -6789,6 +6797,14 @@ div#User_list_View.kt-quick-active--on {
   text-transform: capitalize;
 }
 
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
+
 .schedule-event.modal .modal-header .close {
   color: #493c3c;
   opacity: 1;
@@ -6905,7 +6921,7 @@ span.schedule-dt-muted {
   font-size: 10px;
   gap: 2px;
 }
-.date-menu {
+/* .date-menu {
   border: 0 !important;
   margin: 0;
   min-width: 40rem;
@@ -6933,7 +6949,7 @@ span.schedule-dt-muted {
 
 .date-menu.show {
   display: block;
-}
+} */
 
 .date-menu-item {
   display: flex;
@@ -8336,6 +8352,8 @@ input.search-input {
   border-radius: 4px;
   padding: 0.65rem 1rem;
   position: relative;
+  background-color: white;
+  box-shadow: 0 0 9px #dcdcdd;
 }
 
 .meeting-attendance {
@@ -8356,11 +8374,17 @@ input.search-input {
 
 .meeting-attendance-count {
   color: #242424;
-  font-size: 23px;
+  font-size: 18px;
   font-weight: 600;
   display: flex;
   gap: 6px;
 }
+
+.meeting-attendance-count .strt-d,.meeting-attendance-count .ed-d
+{
+ font-size: 14px;
+}
+
 
 .meeting-attendance-title {
   color: #5b5b5b;
@@ -8374,6 +8398,8 @@ input.search-input {
 .meeting-attendance-accordion-div .meeting-attendance-count {
   font-size: 16px;
 }
+
+
 
 .meeting-attendance-accordion-div .meeting-attendance-item {
   padding: 0 0.65rem;
@@ -8456,11 +8482,11 @@ span.time-value {
 .compl-remarks-span{
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; 
+  -webkit-line-clamp: 2;
   overflow: hidden !important;
   text-overflow: ellipsis;
   max-height: 3em;
-  line-height: 1.5em; 
+  line-height: 1.5em;
   cursor:default;
 
 }
@@ -8562,9 +8588,22 @@ span.time-value {
 
 .timeline .timeline-container .timeline-body .timeline-content {
   color: #999;
-} 
+}
+.schedule-date-time {
+  background: #f4f4f4;
+  border-radius: 4px;
+  padding: 0.65rem 1rem;
+}
+.datemenu.modal .modal-header {
+  background-color: #ebeff6;
+  align-items: center;
+}
+::ng-deep ng-select {
+  border-bottom: none !important;
+  padding: 0 !important;
+  cursor: pointer !important;
 
-
+}
 .completed-with-delay{
     background-color: #d32f2f33;
     color: #dc3545;
@@ -8578,4 +8617,145 @@ span.time-value {
     min-height: 24px;
     position: absolute;
     right: 14px;
+}
+
+
+.attach-tippy{
+  position: relative;
+}
+.attach-tippy .st-line{
+  min-width: 13rem;
+  padding: 1rem 1rem;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 22px;
+  transform: translate3d(-110px, 23px, 0px);
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+  border-radius: .25rem;
+  transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: none;
+  z-index: 1;
+}
+.attach-tippy-div:hover .st-line{
+  display: block;
+}
+.attach-tippy:hover .st-line{
+  display: block;
+}
+.st-line {
+  font-size: 12px;
+  font-weight: 400;
+  color: #979797;
+}
+
+.vi {
+  color: #D32F2F !important;
+}
+
+
+/* @keyframes showanim
+{
+   from{
+        transform:scale(1);
+   }
+   to{
+       transform:scale(1.02);
+   }
+  
+} */
+
+
+.pin-message{
+  margin:0 0 10px 10px;
+}
+
+
+.pin-message .pin-msg-btn{
+    width: 100%;
+    padding: 6px 18px;
+    background-color: #edf3ff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid #efefef;
+}
+
+.pin-msg-btn-icon{
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(6deg, #6388e3 0%, #6388e3 0%, #6388e3 69%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+}
+
+.pin-msg-btn-text {
+  font-size: 14px;
+  color: #3e3c3c;
+  padding-left: 6px;
+}
+
+.pin-message .notification{
+  margin:0;
+  margin-top:10px;
+}
+
+.pin-msg-btn  .pin-msg-btn-caret svg{
+  transform: rotate(180deg);
+  transition-duration: 0.3s;
+}
+.pin-msg-btn.collapsed  .pin-msg-btn-caret svg{
+  transform:rotate(0deg);
+  transition-duration: 0.3s;
+}
+
+
+.completion-ending-statement{
+  background-color: #ffeded;
+  color: #d32f2f;
+  padding: 6px;
+  border-left: 2px solid #d32f2f;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+@media only screen and (min-width:1024px) and (max-width:1400px){
+  .meeting-attendance-count{
+          font-size: 13px !important;
+  }
+  .meeting-attendance-count .strt-d,.meeting-attendance-count .ed-d
+  {
+   font-size: 12px;
+  }
+}
+
+.Status-done {
+  color: #62B134;
+}
+.approve{
+  color:#9C27BD !important ;
+}
+.in_pro{
+color:#1E88E5 !important ;
+}
+.Completed{
+  color: #388E3C !important;
+}
+.Comp_appr{
+  color: #81C784 !important;
+}
+.proj_hold{
+  color: #795548 !important;
+}
+.new_pro_rej{
+  color: #ba68c8 !important;
 }

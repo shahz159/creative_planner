@@ -35,7 +35,7 @@ export class ProjectDetailsDTO {
     Project_Duration: number;
 
     Remarks: string;
-
+    file:any
     Com_Image: string;
     UserName: string;
     TM_DisplayName: string;

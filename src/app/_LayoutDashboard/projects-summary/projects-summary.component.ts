@@ -526,13 +526,32 @@ $(document).ready(function(){
   }
 
 
+  // getFormattedDelay(delayDays: any): string {
+  //   let delayText = '';
+  //   if (delayDays >= 365) {
+  //     const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
+  //     else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
+  //     else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
+  //     else { delayText = `${delayDays} days`; } return `${delayText} Delay`;
+  //    }
   getFormattedDelay(delayDays: any): string {
     let delayText = '';
+
     if (delayDays >= 365) {
-      const years = Math.floor(delayDays / 365); delayText = years === 1 ? '1 year' : `${years} years`; }
-      else if (delayDays >= 30) { const months = Math.floor(delayDays / 30); delayText = months === 1 ? '1 month' : `${months} months`; }
-      else if (delayDays >= 7) { const weeks = Math.floor(delayDays / 7); delayText = weeks === 1 ? '1 week' : `${weeks} weeks`; }
-      else { delayText = `${delayDays} days`; } return `${delayText} Delay`; }
+      const years = Math.floor(delayDays / 365);
+      delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+    } else if (delayDays >= 30) {
+      const months = Math.floor(delayDays / 30);
+      delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+    } else if (delayDays >= 7) {
+      const weeks = Math.floor(delayDays / 7);
+      delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+    } else {
+      delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+    }
+
+    return `${delayText} delay`;
+  }
 
 
 
@@ -544,6 +563,27 @@ $(document).ready(function(){
 
 
 
+      getDelayText(action: any): string {
+
+        if (!action || action.Delaydays == null) return '';
+
+        let delayText = '';
+
+        if (action.Delaydays >= 365) {
+          const years = Math.floor(action.Delaydays / 365);
+          delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+        } else if (action.Delaydays >= 30) {
+          const months = Math.floor(action.Delaydays / 30);
+          delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+        } else if (action.Delaydays >= 7) {
+          const weeks = Math.floor(action.Delaydays / 7);
+          delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+        } else {
+          delayText = action.Delaydays < 10 ? `0${action.Delaydays} day(s)` : `${action.Delaydays} day(s)`;
+        }
+
+        return delayText + ' Delay';
+      }
 
 
 // index:any

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import * as moment from 'moment'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { NotificationService } from 'src/app/_Services/notification.service';
 declare var $: any;
 @Component({
   selector: 'app-stream-calendar',
@@ -9,8 +11,13 @@ declare var $: any;
 })
 export class StreamCalendarComponent implements OnInit {
   disablePreviousDate = new Date();
-  // constructor() { }
   selectDay: any;
+  _StartDate: any;
+  Startts: any;
+  validStartTimearr:any=[];
+  ScheduleType: any;
+  Endtms: any;
+  Description_Type: any;
   content: string = '';
   selectedOption: string = 'option1'; 
   agendaInput: string | undefined;
@@ -74,6 +81,16 @@ export class StreamCalendarComponent implements OnInit {
       },
     ],
   };
+
+
+
+  constructor(
+    private notifyService: NotificationService,
+  ) { }
+
+
+
+
   onKeyPress() {
     // Check if the input field is empty
     if (this.agendaInput===undefined||this.agendaInput.trim() === '') {
@@ -87,9 +104,22 @@ export class StreamCalendarComponent implements OnInit {
   togglemeetingtypeOption(option: string) {
     this.selectedOption = option;
   }
+
+
+
+
+
+
+
+
+
+
+
   ngOnInit(): void {
     this.initAutosize();
     this.initFirstclass();
+    this.MinLastNameLength = true;
+    this._StartDate = moment().format("YYYY-MM-DD").toString();
   }
   
   private initAutosize() {
@@ -340,5 +370,182 @@ export class StreamCalendarComponent implements OnInit {
   close_month_more_view() {
     document.getElementById("month-day-events-more").classList.remove("show");
   }
+
+
+
+
+/////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
+Title_Name: any;
+notProvided: boolean = false;
+MinLastNameLength: boolean;
+characterCount: number = 0;
+allAgendas: any = [];
+agendasAdded: number = 0;
+_lstMultipleFiales: any;
+myFiles: string[] = [];
+
+
+LastLengthValidation11() {
+  if (this.Title_Name&&(this.Title_Name.trim().length < 3)) {
+    this.MinLastNameLength = false;
+  }
+  else {
+    this.MinLastNameLength = true;
+  }
+}
+
+
+updateCharacterCount(): void {
+
+  // Create a temporary div element to strip out HTML tags
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.Description_Type;
+  const textContent = tempElement.textContent || tempElement.innerText || '';
+  this.characterCount = textContent.length;
+}
+
+
+addAgenda() {
+  if (this.agendaInput && this.agendaInput.trim().length > 0) {
+    this.agendasAdded += 1;
+    const agenda = {
+      index: this.agendasAdded,
+      name: this.agendaInput
+    };
+    this.allAgendas.push(agenda);
+    this.agendaInput = undefined;
+  }
+
+  console.log("allAgendas:", this.allAgendas);
+}
+
+
+
+editAgenda(index: number) {
+  $(`#agenda-label-${index}`).addClass('d-none');
+  $(`#agenda-text-field-${index}`).removeClass('d-none');
+  $(`#agenda-text-field-${index}`).focus();
+
+  $(`#edit-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).removeClass('d-none');   // save btn is visible.
+
+  $(`#edit-agendaname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
+  $(`#remove-agenda-btn-${index}`).addClass('d-none');   // delete btn is invisible.
+
+}
+
+
+
+deleteAgenda(index: number) {
+
+  if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
+    const agenda_toRemove=this.allAgendas[index].name;
+    this.allAgendas.splice(index, 1);
+    this.notifyService.showSuccess(agenda_toRemove,'Agenda removed.');
+  }
+  console.log("allAgendas:", this.allAgendas);
+}
+
+
+cancelAgendaEdit(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  tf.value = this.allAgendas[index].name;
+
+  $(`#agenda-label-${index}`).removeClass('d-none');   // label is visible.
+  $(`#agenda-text-field-${index}`).addClass('d-none');   // textfield is invisible.
+  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+}
+
+
+updateAgenda(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  this.allAgendas[index].name = tf.value;
+
+  $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
+  $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
+  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+
+
+  console.log('all agendas after updating:', this.allAgendas);
+}
+
+
+
+
+
+
+onFileChange(event) {
+
+  if (event.target.files.length > 0) {
+    var length = event.target.files.length;
+    for (let index = 0; index < length; index++) {
+      const file = event.target.files[index];
+      var contentType = file.type;
+      if (contentType === "application/pdf") {
+        contentType = ".pdf";
+      }
+      else if (contentType === "image/png") {
+        contentType = ".png";
+      }
+      else if (contentType === "image/jpeg") {
+        contentType = ".jpeg";
+      }
+      else if (contentType === "image/jpg") {
+        contentType = ".jpg";
+      }
+      this.myFiles.push(event.target.files[index].name);
+      // alert(this.myFiles.length);
+      console.log(this.myFiles, "attach")
+      //_lstMultipleFiales
+      var d = new Date().valueOf();
+      this._lstMultipleFiales = [...this._lstMultipleFiales, {
+        UniqueId: d,
+        FileName: event.target.files[index].name,
+        Size: event.target.files[index].size,
+        Files: event.target.files[index]
+      }];
+    }
+  }
+
+  const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
+  uploadFileInput.value = null;
+  uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////  Create Event and Create Task sidebar End /////////////////////////////////////////////////////////
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 }

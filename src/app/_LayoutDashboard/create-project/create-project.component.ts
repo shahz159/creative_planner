@@ -399,13 +399,15 @@ export class CreateProjectComponent implements OnInit {
       console.log(this.projectInfo, "projectInfo");
   })
 
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(prjCode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
     (data) => {
-      this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
-      console.log(this.owner_dropdown,"this.owner_dropdownthis.owner_dropdownthis.owner_dropdownthis.owner_dropdown")
+      debugger
+      this.owner_dropdown = (JSON.parse(data[0]['RacisList']));
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
-      console.log(this.responsible_dropdown,'responsible_dropdownresponsible_dropdownresponsible_dropdownresponsible_dropdown')
+
     });
+
+
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
       (data) => {
@@ -548,7 +550,7 @@ createSRTProject(){
 
 
  createProject(){
-
+debugger
   this.Client_json.forEach(element => {
     if(element.ClientName==this.PrjClient){
       this.PrjClient=element.ClientId;
@@ -580,6 +582,7 @@ createSRTProject(){
            Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours ?this.Allocated_Hours:'0'):'0',
            DurationTime:['003','008'].includes(this.Prjtype)?this.Allocated_Hours:'0',
            Recurrence:['001','002','011'].includes(this.Prjtype)?'0':(this.prjsubmission==6?this.Annual_date:'-1'),
+           file:this.fileAttachment,
            Remarks:this._remarks,
            Project_Cost:['003','008','011'].includes(this.Prjtype)?this.PrjCost:0,
            Conditional_Project:this.conditionalList?this.conditionalList[0].Project_Code:'0'
@@ -1073,7 +1076,7 @@ onProjectOwnerChanged(){
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
-this.userFound = true
+       this.userFound = true
 
       this.draft_json=JSON.parse(res[0].draft_json);
       this.draft_json=this.draft_json.map(dft=>{
@@ -1761,6 +1764,7 @@ debugger
               this.ProjectDto.Emp_No=this.Current_user_ID;
               this.ProjectDto.isTemplate=this.saveAsTemplate;
               this.ProjectDto.Project_Code=this.PrjCode;
+              this.ProjectDto.file = this.fileAttachment
               this.ProjectDto.Remarks=this._remarks;
               this.ProjectDto.Project_Cost=this.PrjCost;
               this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{

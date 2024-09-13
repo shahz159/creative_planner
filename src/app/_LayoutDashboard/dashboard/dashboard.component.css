@@ -4008,6 +4008,14 @@ span.meeting-icon {
     text-transform: capitalize;
 }
 
+
+.schedule-event.modal .modal-header .modal-titles {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #000000;
+    /* text-transform: capitalize; */
+}
+
 .schedule-event.modal .modal-header .close {
     color: #493c3c;
     opacity: 1;
@@ -4182,7 +4190,7 @@ li.modal-project-list-item {
     z-index: 9999;
 }
 
-.date-menu {
+/* .date-menu {
     border: 0 !important;
     margin: 0;
     min-width: 40rem;
@@ -4210,7 +4218,7 @@ li.modal-project-list-item {
 
 .date-menu.show {
     display: block;
-}
+} */
 
 .date-menu-item {
     display: flex;

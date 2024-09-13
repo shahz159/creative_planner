@@ -2796,3 +2796,9 @@ color: #2786fb;
 .pro-link{
   color: #5867dd !important;
 }
+.source-badge{
+  display: inline-flex;
+  background-color: #5867dd29;
+  padding: 0px 4px;
+  border-radius: 4px;
+}

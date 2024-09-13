@@ -455,6 +455,9 @@ export class ProjectTypeService {
 
 
 
+
+
+
    NewActivityService(prjCode){
     this.ObjSubTaskDTO.Project_Code=prjCode
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetProjectActivity",this.ObjSubTaskDTO);
@@ -566,6 +569,17 @@ export class ProjectTypeService {
     this.ObjNotificationDto.Emp_No = Emp_No;
     return this.http.post(this.rootUrl + "Notification/NewGetDashboardSummaryCount", this.ObjNotificationDto);
   }
+
+
+  NewDashboardPortfolio(Emp_No: string){
+    this.ObjSubTaskDTO.Emp_No = Emp_No
+    return this.http.post(this.rootUrl + "TestAPI/NewGetDashboardPortfolios", this.ObjSubTaskDTO);
+  }
+
+
+
+
+
 
   _GetCompletedProjects(objDTO: CompletedProjectsDTO) {
 
@@ -1045,12 +1059,12 @@ export class ProjectTypeService {
      this.aprvDtoObj.TripType=obj.TripType;
      this.aprvDtoObj.Type=obj.Type;
      this.aprvDtoObj.Travel=obj.Travel;
-     this.aprvDtoObj.FromDate=obj.FromDate;  
-     this.aprvDtoObj.ToDate=obj.ToDate;      
+     this.aprvDtoObj.FromDate=obj.FromDate;
+     this.aprvDtoObj.ToDate=obj.ToDate;
      this.aprvDtoObj.LeaveDays=obj.LeaveDays;
      this.aprvDtoObj.Remarks=obj.Remarks;
      this.aprvDtoObj.Country=obj.Country;
-     this.aprvDtoObj.CountryId=obj.CountryId;    
+     this.aprvDtoObj.CountryId=obj.CountryId;
      return this.http.post(this.rootUrl+'ApprovalAPI/NewNewInsertEmployeeLeave',this.aprvDtoObj);
   }
 

@@ -1080,6 +1080,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
     this.GetDMSList();
+    this.linkSMail=true;
   }
 
 
@@ -1093,7 +1094,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
-
+        console.log( this._MemosSubjectList ,' this._MemosSubjectList ')
       }
       this.checkeddms=[];
 
@@ -1200,15 +1201,31 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
+  linkSMail:boolean=false;
+  linkPortf:boolean=false;
+  linkProject:boolean=false;
+
+  selectToLinkSMail(){
+    this.linkSMail=true; 
+  }
+
+  selectToLinkPortf(){
+    this.linkPortf=true;
+  }
+
+  selectToLinkProject(){
+    this.linkProject=true;
+  }
 
 
   AddDMS_meetingreport() {
-
-
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Dms = this.SelectDms.toString()
+    if(this.SelectDms!=undefined){
+      this._calenderDto.Dms = this.SelectDms.toString()
+    }
+    
     this._calenderDto.flagid = this.currentEventId == undefined ? 1 : this.currentEventId;
 
     if (this._calenderDto.Dms) {
@@ -1216,7 +1233,7 @@ export class MeetingDetailsComponent implements OnInit {
         ((data: any) => {
 
           if (data.message == '1' || this._calenderDto.flagid == null || this._calenderDto.flagid != null) {
-            this.notifyService.showSuccess("DMS added successfully", "Success");
+            this.notifyService.showSuccess("SMail added successfully", "Success");
             this.SelectDms = [];
             this.meeting_details();
             this.GetMemosByEmployeeId()
@@ -1303,6 +1320,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetProjectAndsubtashDrpforCalender();
+    this.linkPortf=true;
   }
 
   closeLinkSideBar() {
@@ -1310,6 +1328,9 @@ export class MeetingDetailsComponent implements OnInit {
     this.Portfolio = [];
     // this.selectedEmploy_Projects = [];
     this.projectsSelected = [];
+    this.linkSMail=false;
+    this.linkPortf=false;
+    this.linkProject==false;
     // this.selectedEmploy_DMS = [];
     this.SelectDms = [];
     document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
@@ -1337,6 +1358,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetProjectAndsubtashDrpforCalender();
+    this.linkProject==true
   }
 
   subtashDrpLoading:boolean=false;
@@ -1494,22 +1516,22 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.currentEventId = this.selectedValue;
 
-
+debugger
     if (this.agendaInputs != '') {
       this.addAgenda()
     }
+  
     if (this.Portfolio != '') {
       this.Addportfolios_meetingreport()
     }
-    else if (this.SelectDms != '') {
+    else if (this.SelectDms != undefined && this.SelectDms != '') {
       this.AddDMS_meetingreport();
     }
-    else if (this.projectsSelected != '') {
+    else if (this.MasterCode != '') {
       this.Addproject_meetingreport();
-
     }
     else if (this.GetDMSEventValue != undefined && this.currentEventId != '') {
-      alert('DMS Condition')
+    
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1526,7 +1548,7 @@ export class MeetingDetailsComponent implements OnInit {
       }
     }
     else if (this.GetportfolioEventValue != undefined && this.currentEventId != '') {
-      alert('PortFolio Condition')
+    
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1544,8 +1566,9 @@ export class MeetingDetailsComponent implements OnInit {
         this.notifyService.showError("Action Cancelled ", '');
       }
     }
+    
     else if (this.GetProjectEventValue != undefined && this.currentEventId != '') {
-      alert('Project condition')
+    
       this._calenderDto.Schedule_ID = this.Scheduleid;
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Project_Code = this.GetProjectEventValue.toString();
@@ -1553,7 +1576,8 @@ export class MeetingDetailsComponent implements OnInit {
 
       if (this._calenderDto.flagid == 1 || this._calenderDto.flagid == 2) {
         this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
-          this.meeting_details()
+          this.meeting_details();
+          this.GetProjectAndsubtashDrpforCalender();
           this.notifyService.showSuccess("Deleted successfully ", '');
           this.GetProjectEventValue = null
         });
@@ -1868,7 +1892,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   Addproject_meetingreport() {
-  
+
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1879,6 +1903,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.CalenderService.Newinsertproject_meetingreport(this._calenderDto).subscribe
         (data => {
           this.projectsSelected = [];
+          this.MasterCode = [];        
           this.meeting_details();
           this.notifyService.showSuccess("Project added successfully", "Success");
           this.GetProjectAndsubtashDrpforCalender()
@@ -1919,7 +1944,8 @@ export class MeetingDetailsComponent implements OnInit {
       this._calenderDto.flagid = 1;
       if (result === true) {
         this.CalenderService.DeleteProjectsOfMeeting(this._calenderDto).subscribe((data) => {
-          this.meeting_details()
+          this.meeting_details();
+          this.GetProjectAndsubtashDrpforCalender();
           this.notifyService.showSuccess("Deleted successfully ", '');
         });
       }
@@ -2320,9 +2346,10 @@ debugger
 
 
   addBulletPointsOnEnter(event: any) {
-
+   
     // event.preventDefault();
-    if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
+    // if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
+    //   debugger
       // Replace newline characters with <br> tags
       if(event.type === 'paste'){
 
@@ -2358,7 +2385,7 @@ debugger
           // window.close();
         });
 
-    }
+    // }
 
   }
 
@@ -3415,7 +3442,6 @@ debugger
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
                 this.FiterEmployee = this.EmployeeList;
      
-
                  const orderedEmpNos = new Set(this.orderedItems.map(item => item.stringval));
 
                   this.filteredEmployees = this.FiterEmployee.filter((employee) => {
@@ -6350,6 +6376,12 @@ debugger
                this.onProjectSearch(newsearch);
             }
 
+            if(this.projectmodaltype=='project' && this.linkProject==true ){
+              this.ProjectListArray=this.ProjectListArray.filter((res)=>{
+                return !this.Project_code.some(att => att.stringval === res.Project_Code);
+              });
+            }
+
           }
       });
      }
@@ -6395,26 +6427,26 @@ debugger
   companies_Arr:any;
 
 
-  projectmodaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'|undefined;
+  projectmodaltype:'project'|'portfolio'|'SMail'|'participant'|undefined;
 
-  projectmodals(modaltype:'PROJECT'|'PORTFOLIO'|'S-Mail'|'PARTICIPANT'){
+  projectmodals(modaltype:'project'|'portfolio'|'SMail'|'participant'){
 
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
     this.projectmodaltype=modaltype;
-    const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='PROJECT'?'PrjInputSearch':'InputSearch'}`);
+    const searchField:any=document.querySelector(`#projectmodal input#${modaltype=='project'?'PrjInputSearch':'InputSearch'}`);
     if(searchField)searchField.focus();
 
     // if(modaltype==='PROJECT')
     // this.onProjectSearch('');
-    if(modaltype==='PROJECT'){
+    if(modaltype==='project'){
       this.onProjectSearch('');
       this.choosedItems.getPcodes=()=>{
           return this.choosedItems.map(item=>item.Project_Code);
       }
     }
 
-    if(modaltype!='PROJECT')
+    if(modaltype!='project')
       this.onInputSearch('');
   }
   close_projectmodal(){
@@ -6427,6 +6459,12 @@ debugger
     this.basedOnFilter.bycompany=null;    // clear filter applied.
     this.FilteredResults=[];             // clear filtered result.
     this.projectmodaltype=undefined; // no model open.
+
+
+    this.linkSMail=false;
+    this.linkPortf=false;
+    this.linkProject=false;
+    
   }
   FilteredResults:any=[];
 
@@ -6435,21 +6473,21 @@ debugger
     let arrtype;
     let selectedinto;
     let property_name;
-    if(this.projectmodaltype=='PARTICIPANT')
+    if(this.projectmodaltype=='participant')
      {
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
        selectedinto='ngEmployeeDropdown';
        property_name='Emp_No';
      }
-    else if(this.projectmodaltype=='PORTFOLIO')
+    else if(this.projectmodaltype=='portfolio')
     {
        keyname='Portfolio_Name';
        arrtype=this.Portfoliolist_1;
        selectedinto='Portfolio';
        property_name='portfolio_id';
     }
-    else if(this.projectmodaltype=='S-Mail')
+    else if(this.projectmodaltype=='SMail')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
@@ -6467,6 +6505,23 @@ debugger
       return nameMatched;
     });
     this.FilteredResults=result;
+
+
+    if(this.linkSMail==false  && this.linkPortf==false && this.linkProject==false){
+      this.FilteredResults=result;
+    }
+    else if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
+      this.FilteredResults=result;
+      this.FilteredResults=this.FilteredResults.filter((res)=>{
+      return !this._MemosSubjectList.some(att => att.MailId === res.MailId);
+    });
+    }
+    else if(this.projectmodaltype=='portfolio' && this.linkPortf==true ){
+      this.FilteredResults=result;
+      this.FilteredResults=this.FilteredResults.filter((res)=>{
+        return !this.portfolio_Scheduledjson.some(att => att.numberval === res.portfolio_id);
+      });
+    }
   }
 
 
@@ -6476,7 +6531,7 @@ debugger
   keepChoosedItems(){
     switch(this.projectmodaltype)
     {
-        case 'PROJECT':{
+        case 'project':{
           if(!this.MasterCode) // if MasterCode is null,undefined,'',0
             this.MasterCode=[];
 
@@ -6485,7 +6540,7 @@ debugger
           this.close_projectmodal();
         };break;
 
-        case 'PORTFOLIO':{
+        case 'portfolio':{
               if (!this.Portfolio)   // if Portfolio is null,undefined,''
               this.Portfolio = [];
 
@@ -6493,7 +6548,7 @@ debugger
              this.close_projectmodal();
         };break;
 
-       case 'S-Mail':{
+       case 'SMail':{
             if(!this.SelectDms)   // if SelectDms is null,undefined,''
               this.SelectDms=[];
 
@@ -6501,7 +6556,7 @@ debugger
             this.close_projectmodal();
        };break;
 
-       case 'PARTICIPANT':{
+       case 'participant':{
         if(!this.ngEmployeeDropdown)
            this.ngEmployeeDropdown=[];
 
@@ -6510,13 +6565,8 @@ debugger
        };break;
 
     }
-
+    
   }
-
-
-
-
-
 
 
 
@@ -6556,26 +6606,13 @@ debugger
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   onItemChoosed(choosed:any,choosedItem:any){
     
     if(choosed){
       this.choosedItems.push(choosedItem);
     }
     else{
-      const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='PROJECT')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
+      const i=this.choosedItems.findIndex(item=>(this.projectmodaltype==='project')?(item.Project_Code==choosedItem.Project_Code):(item===choosedItem));
       if(i>-1)
       this.choosedItems.splice(i,1);
 
@@ -6605,33 +6642,20 @@ debugger
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   clearAppliedFiltered(){
     this.basedOnFilter.byuser=null;
     this.basedOnFilter.bycompany=null;
       switch(this.projectmodaltype){
-          case 'PROJECT':{
+          case 'project':{
             this.onProjectSearch('');
           };break;
-          case 'PORTFOLIO':{
+          case 'portfolio':{
             this.onPortfolioFilter();
           };break;
-          case 'S-Mail':{
+          case 'SMail':{
             this.onDMSFilter();
           };break;
-          case 'PARTICIPANT':{
+          case 'participant':{
             this.onParticipantFilter();
           };break;
           default:{};

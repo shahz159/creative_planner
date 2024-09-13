@@ -41,8 +41,25 @@ export class CalenderService {
   }
   NewGetPending_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
+
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_requests1", this.obj_CalenderDTO);
   }
+
+
+
+
+
+  NewDashboardScheduled(obj:CalenderDTO){
+    this.obj_CalenderDTO.EmpNo = localStorage.getItem('EmpNo');
+    return this.http.post(this.rootUrl + "CalenderAPI/NewDashboardScheduledjson", this.obj_CalenderDTO);
+  }
+
+
+
+
+
+
   NewGetDelay_actions(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetDelay_actions", this.obj_CalenderDTO);
@@ -84,6 +101,10 @@ export class CalenderService {
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_prevmeetingbinddata", this.obj_CalenderDTO);
   }
 
+
+
+
+
   NewGet_previousMeetingNotes(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
@@ -105,7 +126,7 @@ export class CalenderService {
    this.obj_CalenderDTO.Dms=obj.Dms;
    this.obj_CalenderDTO.Portfolio=obj.Portfolio;
    this.obj_CalenderDTO.Project=obj.Project;
-  
+
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertmeeting_reports1", this.obj_CalenderDTO);
   }
   NewTaskUncomplete(sc_id){
