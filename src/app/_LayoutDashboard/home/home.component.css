@@ -628,7 +628,7 @@ body{
 }
 .icons-filter .kt-todo__icon{
   position: relative;
-  margin-right: 15px !important;
+  /* margin-right: 15px !important; */
   z-index: 2;
 }
 .icons-filter .kt-todo__icon span{
