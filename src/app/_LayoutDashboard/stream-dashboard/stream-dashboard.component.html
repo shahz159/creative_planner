@@ -696,8 +696,9 @@
                                     Portfolios
                                 </div>
                             </div>
-                            <div class="portfolio-item-list">
-                                <div class="portfolio-item" *ngFor="let item of portfoiloData"  (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
+                         
+                            <div class="portfolio-item-list owl-carousel owl-theme">
+                                <div class="portfolio-item" *ngFor="let item of portfoiloData" (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
                                     <div class="portfolio-heading">{{item.Portfolio_Name}}</div>
                                     <div class="portfolio-percentage">{{item.AchievementPercentage  | number:'1.0-2' }}%</div>
                                     <div class="portfolio-sub-percentage">{{100 - item.AchievementPercentage  | number:'1.0-2'}}%</div>

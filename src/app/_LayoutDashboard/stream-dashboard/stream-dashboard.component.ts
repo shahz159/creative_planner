@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+declare var $: any;
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
 
@@ -38,6 +39,7 @@ export class StreamDashboardComponent implements OnInit {
   ) { this._calenderDto = new CalenderDTO; }
 
   ngOnInit(): void {
+    this.initializeOwlCarousels();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName")
     this.todayDate = new Date()
@@ -46,7 +48,26 @@ export class StreamDashboardComponent implements OnInit {
   }
 
 
+  private initializeOwlCarousels() {
+    setTimeout(() => {
+      $('.portfolio-item-list').owlCarousel({
+        loop: false,
+        margin: 10,
+        autoplay: false,
+        autoplayHoverPause: false,
+        nav: true,
+        dots: false,
+        navText: [
+         '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+            '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
+        ],
 
+        responsive: {
+          992: { items: 4 }
+        }
+      });
+    }, 500); 
+  }
 
   view_graph_div() {
     document.getElementById("graph-div").style.display = "block";

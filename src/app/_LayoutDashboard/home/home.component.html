@@ -385,6 +385,366 @@
 
             </div>
         </div>
+        <div class="col-lg-12 project-description d-none">
+            <div class="kt-portlet kt-portlet--bordered-semi mb-2">
+
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            <strong *ngIf="activeClassAll==true">All portfolio list <span class="head-title-count">{{countAll}}</span></strong>
+                            <strong *ngIf="activeClassFav==true">Favorite portfolio list<span class="head-title-count">{{countFav}}</span></strong>
+                            <strong *ngIf="activeClassOwners==true">Owner portfolio list<span class="head-title-count">{{countOwners}}</span></strong>
+                            <strong *ngIf="activeClassShare==true">Shared portfolio list<span class="head-title-count">{{countShare}}</span></strong>
+                            <!-- <strong> Portfolio List</strong> -->
+                        </h3>
+                        <!-- <span *ngIf="searchResult == true" style="color:gray"> About (<b>{{_CurrentpageRecords}}</b>) results
+                            found of page {{Portfolio_CurrentPage}}. </span> -->
+                    </div>
+                    <!--begin: Search -->
+                    <div class="kt-portfolio-search" >
+                        <div class="portfolio-search-field">
+                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z"
+                                        fill="#000000"></path>
+                                </g>
+                            </svg>
+                            <input type="text" autocomplete="off" name="PortfolioSearch" placeholder="Search portfolio" [(ngModel)]="PortfolioSearch"
+                                class="form-control right-flter-b border-0" (keyup.enter)="ServerSide_Search(PortfolioSearch)"/>
+                        </div>
+                        </div>
+                    
+                    <div class="kt-portlet__head-label kt-todo__details icons-filter align-items-center">
+                       
+                        <div class="kt-portlet__head-toolbar">
+
+                           
+                            
+
+                            
+                            <!-- Pagenation start -->
+                            <label class="mx-1" *ngIf="activeClassAll==true">{{Portfolio_CurrentPage}} of {{NoOfPages}} pages</label>
+                            <label class="mx-1" *ngIf="activeClassFav==true">{{Portfolio_FavoritePage}} of {{NoOfPages}} pages</label>
+                            <label class="mx-1" *ngIf="activeClassOwners==true">{{Portfolio_OwnerPage}} of {{NoOfPages}} pages</label>
+                            <label class="mx-1" *ngIf="activeClassShare==true">{{Portfolio_SharedPage}} of {{NoOfPages}} pages</label>
+
+                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassAll==true"
+                                (click)="Portfolio_CurrentPage = Portfolio_CurrentPage - 1;getPortfolio_List()"
+                                [disabled]="Portfolio_CurrentPage==1">
+                                <i class="fas fa-angle-left mr-0"></i>
+                            </button>
+                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassFav==true"
+                                (click)="Portfolio_FavoritePage = Portfolio_FavoritePage - 1;Favourite_Portfolios()"
+                                [disabled]="Portfolio_FavoritePage==1">
+                                <i class="fas fa-angle-left mr-0"></i>
+                            </button>
+                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassOwners==true"
+                                (click)="Portfolio_OwnerPage = Portfolio_OwnerPage - 1;Owners_Portfolios()"
+                                [disabled]="Portfolio_OwnerPage==1">
+                                <i class="fas fa-angle-left mr-0"></i>
+                            </button>
+                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassShare==true"
+                                (click)="Portfolio_SharedPage = Portfolio_SharedPage - 1;Shared_Portfolios()"
+                                [disabled]="Portfolio_SharedPage==1">
+                                <i class="fas fa-angle-left mr-0"></i>
+                            </button>
+                            <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Previous"
+                            (click)="Portfolio_CurrentPage = Portfolio_CurrentPage - 1;getPortfolio_List()" [disabled]="Portfolio_CurrentPage==1">
+                            <i class="fas fa-angle-left mr-0"></i>
+                        </button> -->
+                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassAll==true"
+                                (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()"
+                                [disabled]="NoOfRecordsPerPage < 30">
+                                <i class="fas fa-angle-right mr-0"></i>
+                            </button>
+                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassFav==true"
+                                (click)="Portfolio_FavoritePage = Portfolio_FavoritePage + 1;Favourite_Portfolios()"
+                                [disabled]="NoOfRecordsPerPage < 30">
+                                <i class="fas fa-angle-right mr-0"></i>
+                            </button>
+                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassOwners==true"
+                                (click)="Portfolio_OwnerPage = Portfolio_OwnerPage + 1;Owners_Portfolios()"
+                                [disabled]="NoOfRecordsPerPage < 30">
+                                <i class="fas fa-angle-right mr-0"></i>
+                            </button>
+                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassShare==true"
+                                (click)="Portfolio_SharedPage = Portfolio_SharedPage + 1;Shared_Portfolios()"
+                                [disabled]="NoOfRecordsPerPage < 30">
+                                <i class="fas fa-angle-right mr-0"></i>
+                            </button>
+                            <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Next"
+                            (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()" >
+                            <i class="fas fa-angle-right mr-0"></i>
+                        </button> -->
+
+                            <!-- Pagenation End -->
+                            <a (click)="All_Portfolio()" class="kt-todo__icon" data-toggle="kt-tooltip" title="All"
+                            [ngClass]="{'active': activeClassAll}">
+                            <i class="flaticon2-indent-dots"></i>
+                            
+                        </a>
+                        <a (click)="Owners_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
+                            title="Owner" [ngClass]="{'active': activeClassOwners}">
+                            <!-- <i class="la la-user"></i> -->
+                            <i class="flaticon2-user"></i>
+                            
+                        </a>
+                        <a (click)="Shared_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
+                            title="Shared" [ngClass]="{'active': activeClassShare}">
+                            <!-- <i class="la la-share-alt"></i> -->
+                            <i class="fas fa-share-alt"></i>
+                            
+                        </a>
+                        <a (click)="Favourite_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
+                            title="Favourite" [ngClass]="{'active': activeClassFav}">
+                            <!-- <i class="la la-star-o"></i> -->
+                            <i class="fas fa-star"></i>
+                            
+                        </a>
+
+                        <a [hidden]="Z2A" (click)="_SortPortfoliolist()" class="kt-todo__icon"
+                            data-toggle="kt-tooltip" title="Click to sort Asc">
+                            <i class="fa fa-sort-alpha-down-alt"></i>
+                        </a>
+                        <a [hidden]="A2Z" (click)="_SortPortfoliolist()" class="kt-todo__icon"
+                            data-toggle="kt-tooltip" title="Click to sort Desc">
+                            <i class="fas fa-sort-alpha-up"></i>
+                        </a>
+                        <!-- Filters -->
+
+                        <div class="stores-sec">
+                            <ul class="nav navbar-nav filters">
+                                <li class="dropdown mega-dropdown" id="filtermenu">
+                                    <a [ngClass]="edited ? 'kt-todo__icon  filter-dot' : 'kt-todo__icon '"
+                                        data-toggle="dropdown" aria-expanded="false" id="test2">
+                                        <i class="fas fa-ellipsis-v mr-0"></i>
+                                    </a>
+                                    <div class="dropdown-menu mega-dropdown-menu" aria-labelledby="test2">
+                                        <div (click)="$event.stopPropagation();">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <h5><strong>Total portfolios - </strong>
+                                                        <span class="d-inline-block">
+                                                            <strong *ngIf="countAll>=1000">{{countAll.toLocaleString()}}</strong>
+                                                            <strong *ngIf="countAll<1000">{{countAll}}</strong>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-md-2">
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input type="text"
+                                                        class="form-control kt-quick-search__input pl-3"
+                                                        placeholder="Search Filters" [(ngModel)]="txtSearch"
+                                                        style="width: 100%;">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Company</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of Companylist_Json |filter:txtSearch;let i=index">
+                                                            <label class="kt-checkbox">
+                                                                <!-- (change)="isCompanychecked(item)" -->
+                                                                <input type="checkbox"
+
+                                                                    [checked]="selectedCompanies.includes(item.Name)"   (change)="onCompanySelected($event.target.checked,item.Name)" >
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div    class="selected-options">
+                                                      <ng-container *ngFor="let item of Companylist_Json">
+                                                        <div  class="selected-options-item" *ngIf="selectedCompanies.includes(item.Name)">
+                                                          {{ item.Name}}
+                                                            <span class="selected-options-item-remove" (click)="onCompanySelected(false,item.Name)">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                      </ng-container>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="count-height">
+                                                        <p><strong>Employees</strong></p>
+                                                        <div class="d-flex justify-content-between"
+                                                            *ngFor="let item of Employeelist_Json |filter:txtSearch;let i=index">
+                                                            <label class="kt-checkbox">
+                                                                <input type="checkbox"
+                                                               [checked]="selectedEmployees.includes(item.Name)"      (change)="onEmployeesSelected($event.target.checked,item.Name)"                        >
+                                                                {{item.Name}}
+                                                                <span></span>
+                                                            </label>
+                                                            <span class="count-btn">{{item.Count}}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div    class="selected-options">
+                                                      <ng-container *ngFor="let item of Employeelist_Json">
+                                                        <div  class="selected-options-item" *ngIf="selectedEmployees.includes(item.Name)">
+                                                          {{ item.Name}}
+                                                            <span class="selected-options-item-remove"    (click)="onEmployeesSelected(false,item.Name)"  >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                    <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                      </ng-container>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+
+
+                                                <div class="col-md-4">
+                                                  <div class="count-height">
+                                                      <p><strong>Status</strong></p>
+                                                      <p class="text-danger"></p>
+                                                      <div class="d-flex justify-content-between"
+                                                          *ngFor="let item of Statuslist_Json |filter:txtSearch;let i=index">
+                                                          <label class="kt-checkbox">
+                                                              <input type="checkbox"
+                                                                  (change)="onStatusSelected($event.target.checked,item.Name)"
+                                                           [checked]="selectedStatus.includes(item.Name)"                            >
+                                                              {{item.Name=='Under Approval'?'New approval' :item.Name=="Cancellation Under Approval"?"Cancellation approval"   :item.Name== "Completion Under Approval" ? "Completion approval" :item.Name=='Forward Under Approval'? "Forward approval" :(item.Name=='InProcess'?'In-process':item.Name)}}
+                                                              <span></span>
+                                                          </label>
+                                                          <span class="count-btn">{{item.Count}}</span>
+                                                      </div>
+                                                  </div>
+
+                                                  <div    class="selected-options">
+                                                    <ng-container *ngFor="let item of Statuslist_Json">
+                                                      <div  class="selected-options-item"     *ngIf="selectedStatus.includes(item.Name)" >
+                                                        {{ item.Name}}
+                                                          <span class="selected-options-item-remove"  (click)="onStatusSelected(false,item.Name)"    >
+                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                              </svg>
+                                                          </span>
+                                                      </div>
+                                                    </ng-container>
+
+                                                  </div>
+
+
+
+
+
+
+
+
+
+                                              </div>
+
+                                            </div>
+                                            <br>
+                                            <hr>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <button
+                                                    class="btn btn-info btn-upper btn-sm btn-bold mr-2"
+                                                    data-toggle="dropdown" (click)="getNewFilterResult()"   >Submit
+                                                </button>
+                                                <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2"
+                                                    (click)="resetAll()">Reset
+                                                </button>
+                                                <!-- <button
+                                                class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2" (click)="resetFilters()">Reset
+                                            </button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Filters End -->
+                            <!--Create new portfolio-->
+                            <div>
+                                <a class="kt-todo__icon" data-toggle="dropdown" id="test1" title="New Portfolio"
+                                    [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen()">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md bg-ground"
+                                    aria-labelledby="test1">
+
+                                    <!--begin::Nav-->
+                                    <div>
+                                        <ul class="kt-nav">
+
+                                            <!-- <li class="kt-nav__head">
+
+                                        </li> -->
+                                            <!-- <li class="kt-nav__separator"></li> -->
+
+                                            <li class="kt-nav__item px-3">
+
+                                                <strong>Create new portfolio</strong>
+
+                                                <div class="kt-nav__separator"></div>
+                                                <p>Enter the portfolio name you wish to create,it can be editable
+                                                    anytime
+                                                    later.</p>
+                                                <!-- <p>Enter the Portfolio Name you wish to create, it can be editable
+                                                    anytime.</p> -->
+                                                <input type="text" class="form-control"
+                                                    placeholder="Enter Portfolio Name" [(ngModel)]="_portfolioName"
+                                                    (keydown.enter)="Displayprojectlist()" (keypress)="omit_number($event)" type="text"
+                                                    [ngStyle]="{'border-color':_portfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)','background-color':_portfolioName=='' ? 'rgb(253 135 135 / 10%)':'#f5f6fc' }">
+
+                                                <!-- <p class="text-primary mb-0 py-1" [hidden]="_portfolioName!=''"> * Portfolio Name is
+                                        required</p>-->
+                                                <span>
+                                                    <p class="text-danger mb-0 py-1">{{alreadyExists}}</p>
+                                                </span>
+                                                <span>
+                                                    <p class="text-danger mb-0 py-1" *ngIf="special==true">
+                                                        {{specialnote}}
+                                                    </p>
+                                                </span>
+                                            </li>
+                                            <!-- <li class="kt-nav__separator"></li> -->
+                                            <li class="kt-nav__foot d-inline-block">
+                                                <button
+                                                    class="btn btn-secondary theme-btn btn-upper btn-sm btn-bold mr-2"
+                                                    id="nextbttn" (click)="Displayprojectlist()"
+                                                    [disabled]="_portfolioName==''">Next</button>
+                                                <button
+                                                    class="btn btn-label-secondary btn-outline-secondary btn-upper btn-sm btn-bold"
+                                                    (click)="resetInputText()">Close</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!--end:: Nav-->
+                                </div>
+                            </div>
+                            <!--Create new portfolio-->
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <div class="col-lg-12">
 
@@ -408,6 +768,186 @@
                         </button>
                         <div
                             class="kt-grid__item kt-grid__item--fluid kt-inbox__list kt-inbox__list--shown mb-1 flex-grow-1">
+                            <div class="n-portfolio-container d-none">
+                                <div class="n-portfolio-ul" >
+                                    <div class="n-portfolio-li" *ngFor="let item of _ListProjStat ;let i=index">
+                                        <div class="n-portfolio-head">
+                                            <div class="n-portfolio-title"   (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
+                                                {{item.Portfolio_Name}}
+                                            </div>
+                                            <div class="n-portfolio-fav" data-toggle="kt-tooltip" data-skin="dark"
+                                            data-placement="right" title="Favorite">
+                                            <a *ngIf="item.Created_By == Current_user_ID"
+                                            (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
+                                            <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
+                                                [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"></i>
+                                        </a>
+                                        <a *ngIf="item.Created_By != Current_user_ID"
+                                        (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                        <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                            [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                        </a>
+                                            </div>
+                                        </div>
+                                        <div class="n-portfolio-body">
+                                            <div class="n-portfolio-item">
+                                                <div class="n-portfolio-item-icon">
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                </div>
+                                                <div class="n-portfolio-item-title">
+                                                    <span *ngIf="item.CreatedName!=''; else SharedName">
+                                                        {{item.CreatedName}}
+                                                    </span>
+                                                    <ng-template #SharedName>
+                                                        {{item.SharedName}}
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                            <div class="n-portfolio-item">
+                                                <div class="n-portfolio-item-icon">
+                                                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
+                                                </div>
+                                                <div class="n-portfolio-item-title">{{item.ProjectsCount}} Project(s)</div>
+                                            </div>
+                                            <div class="n-portfolio-item">
+                                                <div class="n-portfolio-item-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                                        <path d="M39.2729 55.2725C48.1095 55.2725 55.2729 48.109 55.2729 39.2725C55.2729 30.4359 48.1095 23.2725 39.2729 23.2725C30.4364 23.2725 23.2729 30.4359 23.2729 39.2725C23.2729 48.109 30.4364 55.2725 39.2729 55.2725Z" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M39.2729 33.001V39.2727L43.6366 43.6363" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M43.6362 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M14.5454 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M17.5438 55.273C15.7834 55.273 13.1427 55.273 9.6219 55.273C7.28774 55.273 6.44132 55.0456 5.58798 54.6186C4.73465 54.1916 4.06495 53.565 3.60858 52.7665C3.15221 51.9681 2.90918 51.1761 2.90918 48.9921V15.0084C2.90918 12.8244 3.15221 12.0325 3.60858 11.234C4.06495 10.4356 4.73465 9.80896 5.58798 9.38195C6.44132 8.95494 7.28774 8.72754 9.6219 8.72754H48.5601C50.8943 8.72754 51.7407 8.95494 52.594 9.38195C53.4473 9.80896 54.117 10.4356 54.5734 11.234C55.0298 12.0325 55.2728 15.2634 55.2728 17.4475" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <rect x="11" y="19" width="8" height="8" rx="2" fill="currentColor"/>
+                                                        </svg>
+                                                </div>
+                                                <div class="n-portfolio-item-title">
+                                                    <div class="n-portfolio-item-date">{{item.Created_DT|date:'medium'}}</div>
+
+                                                </div>
+                                            </div>
+                                            <div class="n-portfolio-item">
+                                                <div class="n-portfolio-item-icon">
+                                                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M432.33,129.92a7.93,7.93,0,0,0-5.65-2.34h-38.1A359.67,359.67,0,0,0,392,77.74a8,8,0,0,0-8-8H128a8,8,0,0,0-8,8,360,360,0,0,0,3.43,49.86H85.32a8,8,0,0,0-8,8c0,26.33,9.85,51.85,28.49,73.81,17.38,20.48,41.63,37,70.22,47.86,12.67,14.91,27.08,26.39,42.8,33.54-1.57,47.84-24.13,82.8-31.32,92.77h-6.67a18,18,0,0,0-18,18v22.68a18,18,0,0,0,18,18H331.18a18,18,0,0,0,18-18V401.58a18,18,0,0,0-18-18h-6.57c-7.23-10.4-29.79-46.43-31.42-92.78,15.72-7.15,30.13-18.63,42.8-33.54,28.59-10.88,52.84-27.39,70.22-47.86,18.62-22,28.47-47.48,28.47-73.8v0A7.94,7.94,0,0,0,432.33,129.92ZM93.69,143.6h32.37c6.25,33.08,17.12,63,31.54,87.53C120.19,210.25,96.79,178.6,93.69,143.6Zm239.49,258v22.68a2,2,0,0,1-2,2H180.84a2,2,0,0,1-2-2V401.58a2,2,0,0,1,2-2H331.18A2,2,0,0,1,333.18,401.58Zm-126.4-18a189.48,189.48,0,0,0,27.81-87.21,85.93,85.93,0,0,0,42.86,0c2.51,39.13,18,70.56,28.08,87.22ZM282.2,278.09a71.43,71.43,0,0,1-52.39,0c-25.78-10-49.36-34.92-66.39-70.22-16.68-34.56-26.29-77.64-27.32-122.12H375.92c-1,44.48-10.64,87.56-27.32,122.12C331.57,243.16,308,268.1,282.2,278.09Zm72.22-47c14.43-24.56,25.3-54.46,31.54-87.54h32.36C415.22,178.57,391.83,210.23,354.42,231.12Z"></path></g></svg>
+                                                </div>
+                                                <div class="n-portfolio-item-bar">
+                                                    <div class="progress">
+                                                        <div role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" class="progress-bar green-bar" style="width: 75%;">
+                                                        </div>
+                                                    </div>
+                                                    <div class="progress-count">75%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="n-portfolio-foot">
+                                            <div class="n-portfolio-status">
+                                                <div *ngIf="item.Status=='Delay'">
+                                                    <span class="kt-inbox__label kt-badge Delay kt-badge   kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Delaydays}} maximum days delay
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='InProcess'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge in-process kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status=='InProcess'?'In-Process':item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Completion Under Approval'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge completion-under-approval kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status== "Completion Under Approval" ? "Completion approval":item.status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Under Approval'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge new-project-under kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status==='Under Approval'? "New approval" :item.status=='Forward Under Approval'? "Forward approval" :(item.Status=='InProcess'?'In-process':item.Status)}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Forward Under Approval'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge Forward_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status == "Forward Under Approval" ? "Forward approval" :item.status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Completed'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge Completed_color kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                    {{item.Status}}
+                                                </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Project Hold'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge project-hold kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Project Complete Rejected'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Project Holded'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge.kt-badge-light-bold kt-badge--inline"
+                                                                style="background-color: #eae3fd;">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='New Project'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge new-project kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Enactive Under Approval'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge Enactive_Under_Approval_color  kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge Deadline_Extend_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge Project_Hold_Under_Approval kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='New Todo'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge  kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='New Project Rejected'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge new-pro-rejected kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Version'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge.kt-badge-light-bold kt-badge--inline"
+                                                                style="background-color: #eae3fd;">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='ToDo Achieved'">
+                                                    <span  class="kt-inbox__label kt-badge kt-badge todo-achieved kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='ToDo Completed'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge todo-completed kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="n-portfolio-action">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                      <button class="dropdown-item" type="button"  (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">Delete</button>
+                                                      <button class="dropdown-item" type="button">Edit</button>
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- <div> -->
                             <div class="p-0 flex-grow-1">
                                 <div data-type="inbox" class="kt-inbox__items">
@@ -480,14 +1020,14 @@
 
                                         <div *ngIf="item.Status=='InProcess'">
 
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_warning card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class="kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"  *ngIf="item.Created_By == Current_user_ID"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -498,7 +1038,7 @@
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     </div>
-                                                                    <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                                    <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"  *ngIf="item.Created_By != Current_user_ID"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -511,10 +1051,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName,item.Created_DT)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -555,14 +1095,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Completion Under Approval'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_completeUnderApproval card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class="kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -581,10 +1121,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -608,7 +1148,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -624,14 +1164,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Under Approval'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_underApprovals card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class="kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -650,10 +1190,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -677,7 +1217,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -696,14 +1236,14 @@
 
 
                                         <div *ngIf="item.Status=='Forward Under Approval'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_forwardUnderApproval card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -722,12 +1262,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
 
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
+                                                        <div class="kt-inbox__sender">
 
-                                                            <span _ngcontent-spk-c396=""
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -751,7 +1291,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -767,14 +1307,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Completed'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_success card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -793,10 +1333,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -820,7 +1360,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
 
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
@@ -837,14 +1377,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Project Hold'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_hold card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -863,10 +1403,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -890,7 +1430,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -906,14 +1446,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Project Complete Rejected'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_rejected card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -932,10 +1472,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -959,7 +1499,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -975,14 +1515,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Project Holded'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_projectHold card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1001,10 +1541,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1029,7 +1569,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1045,14 +1585,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='New Project'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_NewProject card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1071,10 +1611,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1098,7 +1638,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1114,14 +1654,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Enactive Under Approval'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_forwardUnderApproval card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1140,10 +1680,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1167,7 +1707,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1183,14 +1723,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_forwardUnderApproval card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1209,10 +1749,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1236,7 +1776,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1252,14 +1792,14 @@
                                         </div>
 
                                         <div *ngIf="item.Status=='Project Hold Under Approval'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_HoldunderApp card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1280,8 +1820,8 @@
                                                     </div>
                                                     <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1305,7 +1845,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1320,14 +1860,14 @@
                                             </div>
                                         </div>
                                         <div *ngIf="item.Status=='New Todo'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_NewToDo card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1348,8 +1888,8 @@
                                                     </div>
                                                     <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1373,7 +1913,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1388,14 +1928,14 @@
                                             </div>
                                         </div>
                                         <div *ngIf="item.Status=='New Project Rejected'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_Danger card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1414,10 +1954,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1441,7 +1981,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1456,14 +1996,14 @@
                                             </div>
                                         </div>
                                         <div *ngIf="item.Status=='Version'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_HoldunderApp card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1482,10 +2022,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1510,7 +2050,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
                                                     <div class="delete-btn">
@@ -1525,14 +2065,14 @@
                                             </div>
                                         </div>
                                         <div *ngIf="item.Status=='ToDo Achieved'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_success card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1551,10 +2091,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1578,7 +2118,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
 
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>
@@ -1594,14 +2134,14 @@
                                             </div>
                                         </div>
                                         <div *ngIf="item.Status=='ToDo Completed'">
-                                            <div _ngcontent-spk-c396=""
+                                            <div
                                                 class="Replied_border_left_true_success card mb-2 brdr-5 shadow-sm">
                                                 <div data-type="inbox"
                                                     class=" kt-inbox__item position-relative py-2 mb-0 border-0">
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__info">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__actions">
-                                                            <div _ngcontent-spk-c396="" _nghost-spk-c401="">
-                                                                <div _ngcontent-spk-c401="" data-toggle="kt-tooltip"
+                                                    <div class="kt-inbox__info">
+                                                        <div class="kt-inbox__actions">
+                                                            <div>
+                                                                <div data-toggle="kt-tooltip"
                                                                     data-skin="dark" data-placement="right"
                                                                     title="Favorite"
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
@@ -1620,10 +2160,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__details"
+                                                    <div class="kt-inbox__details"
                                                         (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
-                                                        <div _ngcontent-spk-c396="" class="kt-inbox__sender">
-                                                            <span _ngcontent-spk-c396=""
+                                                        <div class="kt-inbox__sender">
+                                                            <span
                                                                 class="kt-inbox__subject">{{item.Portfolio_Name}}
                                                             </span>
                                                         </div>
@@ -1647,7 +2187,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div _ngcontent-spk-c396="" class="kt-inbox__datetime">
+                                                    <div class="kt-inbox__datetime">
 
                                                         <small>{{item.Created_DT|date:'medium'}}</small>
                                                     </div>

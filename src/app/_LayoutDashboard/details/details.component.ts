@@ -9999,7 +9999,7 @@ onTransferBtnClicked(){
 
 total_userActns:number|undefined;
 // npm i apexcharts@3.52.0    works only on this version.
-loadActionsGantt(){
+loadActionsGantt(){ 
   const all_status={
     'Completed':'#388E3C',
     'InProcess':'#64B5F6',

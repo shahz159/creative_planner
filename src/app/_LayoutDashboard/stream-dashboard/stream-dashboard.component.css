@@ -1382,6 +1382,32 @@ color: #000 !important;
   background-color: #60708B !important;
   color: white !important;
 }
+
+::ng-deep .owl-nav {
+    position: absolute;
+    margin-top: 0px !important;
+    top: 35%;
+    right: 0;
+    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+::ng-deep .owl-carousel .owl-stage-outer {
+    padding: 4px 4px;
+}
+::ng-deep .owl-nav .owl-next svg ,::ng-deep .owl-nav .owl-prev svg {
+    width: 22px;
+    height: 22px;
+}
+::ng-deep .owl-nav .owl-next,::ng-deep .owl-nav .owl-prev  {
+    margin: 0px !important;
+    background: #dcdbdb !important;
+    width: 30px;
+    height: 30px;
+    line-height: 1 !important;
+}
 .date-badge{
     width: 24px;
     height: 24px;

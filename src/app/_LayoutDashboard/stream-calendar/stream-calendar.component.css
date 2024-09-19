@@ -2524,6 +2524,7 @@ ul.card-task-item-project-ul li:hover::before {
     visibility: hidden;
     -webkit-box-flex: 0;
     flex: none;
+    /* width: 17px; */
 }
 
 .week-slot-body {
