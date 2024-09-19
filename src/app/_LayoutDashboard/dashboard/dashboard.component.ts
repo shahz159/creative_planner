@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
   validStartTimearr:any=[];
   Projectstartdate: string = "";
   projectEnddate: string;
-  Status_project: string; days
+  Status_project: string; 
   AllocatedHours: number;
   St_date: string = "";
   Ed_date: string;
@@ -720,6 +720,7 @@ export class DashboardComponent implements OnInit {
         console.log(this.myFiles, "attach")
         //_lstMultipleFiales
         var d = new Date().valueOf();
+      
         this._lstMultipleFiales = [...this._lstMultipleFiales, {
           UniqueId: d,
           FileName: event.target.files[index].name,
@@ -2711,6 +2712,7 @@ export class DashboardComponent implements OnInit {
 
 
   Task_type(value) {
+ 
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -2782,8 +2784,6 @@ export class DashboardComponent implements OnInit {
             ac.updatePosition();
         });
       })
-
-
     }
 
 
@@ -3895,7 +3895,7 @@ currentTime:any;
         this.meetingRestriction(Schedule_date);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-         console.log(this.Isadmin, "Testing12");
+         console.log(this.EventScheduledjson, "Testing12");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -3918,7 +3918,7 @@ currentTime:any;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
-debugger
+
 
 
         document.getElementById("deleteendit").style.display = "flex";
@@ -3967,6 +3967,7 @@ debugger
 
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+        console.log(this.User_Scheduledjson, "000");
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
         this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 
@@ -4570,7 +4571,7 @@ debugger
 
 
   public handleAddressChange(address: Address) {
-
+debugger
     if (this.checkAddressURL(address.name.toString())) {
       this.Addressurl = address.name;
     }
