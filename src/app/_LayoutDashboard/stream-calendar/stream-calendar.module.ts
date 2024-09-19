@@ -11,6 +11,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { ShareModule } from 'src/app/Shared/share/share.module';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [ StreamCalendarComponent ],
@@ -25,7 +29,12 @@ import { MatCardModule } from '@angular/material/card';
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatCheckboxModule,
+    GooglePlaceModule,
+    ShareModule,
+    MatSelectModule
+
   ],
   exports: [StreamCalendarComponent]
 })

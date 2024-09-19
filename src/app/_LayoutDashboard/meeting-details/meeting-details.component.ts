@@ -560,7 +560,7 @@ export class MeetingDetailsComponent implements OnInit {
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
-
+      console.log(this.Agendas_List,'new:');
       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
@@ -614,14 +614,16 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
 
-
+    
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
+      
 
       this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
       this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
-      console.log(this.CurrentNotesCount,'CurrentNotesCount')
+     
+     
 
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
         this.hasStatusOne = true;
@@ -2357,18 +2359,20 @@ debugger
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
       }
-  
-      this.Notes_Type.trim();
 
+      if(this.Notes_Type){
+        this.Notes_Type.trim();
+ 
+      
+  
       if (this.Notes_Type) {
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
-      }else{
+      }else {
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
       }
+    }
 
-
-
-
+    debugger
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -3548,7 +3552,7 @@ debugger
   AllAttendees_notes: any = []
   Employeeslist: any;
   meetingStarted: boolean = false;
-
+  hasMeetingStatus: boolean = false;
   hasMeetingStarted: boolean = false;
   hasMeetingEnd: boolean = false;
   NotesCount: any;
@@ -3572,18 +3576,45 @@ debugger
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
       ((data: any) => {
 
-
+        
         this.exact_start = (data['Start_time']);
-
         this.agendasList = JSON.parse(data['Agendas']);
+       
 
-        if (this.agendasList.length != this.Agendas_List.length) {
-          this.Agendas_List = this.agendasList;
-          this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
-          this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
+         
+     
+            if(this.Agendas_List&&this.Agendas_List.length>0){                  
+              if (this.agendasList.length != this.Agendas_List.length) {
+                const result=this.Agendas_List.length-this.agendasList.length;
+                this.Agendas_List = [...this.agendasList];
+                this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
+                this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
+                if(this.Isadmin==false){
+                if(result<0){
+                this.notifyService.showInfo('New agenda added', "");
+                }
+                else{
+                this.notifyService.showInfo('agenda removed', "");
+                }
+              }
+              }
+            }
+            if(this.Isadmin==false){
+            this.Agendas_List.forEach((_agenda)=>{
+                const agd=this.agendasList.find((item)=>item.AgendaId==_agenda.AgendaId);
+                if(_agenda.Status!=agd.Status){
+                    _agenda.Status=agd.Status;
 
-          this.notifyService.showInfo('New agenda added', "")
-        }
+                  if(_agenda.Status=='1'){
+                      this.notifyService.showSuccess("Agenda completed", "Success");
+                  }
+                  else if(_agenda.Status=='0'){
+                      this.notifyService.showSuccess("Removed from complete", "Success");
+                  }
+                }                
+            });
+        }  
+  
 
         this.notescount.forEach(item => item.count = 0);  //1. clear previous notes count data.
         this.taskcount.forEach(item => item.count = 0);   //1. clear previous task count data.
@@ -3594,7 +3625,7 @@ debugger
           if (i > -1)
             this.notescount[i].count += 1;
         });    // 2. update new notes count data.
-
+      
 
         this.TaskCount = JSON.parse(data['TaskCount']);
         this.TaskCount.forEach(item => {
@@ -3610,7 +3641,7 @@ debugger
           if (data['Checkdatetimejson'] != '') {
 
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-            // console.log(this.AllAttendees_notes,'this.AllAttendees_notes')
+        
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
