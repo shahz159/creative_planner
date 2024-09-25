@@ -5438,8 +5438,9 @@ debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-        console.log(this.EventScheduledjson, "Testing1");
-        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
+    
+        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
+       
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -5738,7 +5739,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
-    debugger
+   
     this._StartDate = event.value;
     // let sd = event.value.format("YYYY-MM-DD").toString();
     let sd = event.format("YYYY-MM-DD").toString();
@@ -5796,6 +5797,35 @@ getChangeSubtaskDetais(Project_Code) {
         date.setDate(date.getDate() + 1);
       }
     }
+     // valid starttimearr setting start.
+     let _inputdate=event;
+     let _currentdate=moment();
+     if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+     {
+         const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+         const index:number=this.StartTimearr.findIndex((item:any)=>{
+             const t=moment(item,'h:mm A');
+             const result=t>=ct;
+             return result;
+         });
+         this.validStartTimearr=this.StartTimearr.slice(index);
+ 
+     // verify whether starttime and endtime are valid or not. start
+     _currentdate.format('h:mm A');
+ 
+     const inputtime1=moment(this.Startts,'h:mm A');
+     const inputtime2=moment(this.Endtms,'h:mm A');
+     if(inputtime1<ct)
+       this.Startts=this.validStartTimearr[0];
+     if(inputtime2<ct)
+       this.Endtms=this.validStartTimearr[1];
+ 
+    // verify whether starttime and endtime are valid or not. end
+ 
+     }
+     else
+     this.validStartTimearr=[...this.StartTimearr];
+     // valid starttimearr setting end.
 
   }
 
@@ -6330,7 +6360,7 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-    debugger
+  
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -8793,7 +8823,7 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-  if (this.agendaInput && this.agendaInput.trim().length > 0) {
+  if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -8853,6 +8883,8 @@ cancelAgendaEdit(index: number) {
 
 updateAgenda(index: number) {
   const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  
+  if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
   this.allAgendas[index].name = tf.value;
 
   $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
@@ -8862,7 +8894,11 @@ updateAgenda(index: number) {
   $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
   $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 
-
+} else if (tf.value.trim().length == 0){
+  this.notifyService.showInfo("Please enter atleast one word","");
+}else {
+  this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+}
   console.log('all agendas after updating:', this.allAgendas);
 }
 // agenda in event creation end
@@ -9407,7 +9443,7 @@ debugger
     this.Startts &&
     this.Endtms &&
     this.MinLastNameLength
-    && (this.ScheduleType === 'Event' ?  ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
+    && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
   ) {
     this.OnSubmitSchedule1();
     this.notProvided = false;
@@ -9743,7 +9779,7 @@ OnSubmitSchedule1() { debugger
             this.Getdraft_datalistmeeting();
             this.draftid = 0
           }
-          this.notifyService.showSuccess(this._Message, "Success");
+          this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
         }
         else {
           this.notifyService.showError(this._Message, "Failed");

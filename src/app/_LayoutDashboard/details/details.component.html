@@ -10567,9 +10567,9 @@
                                           placeholder="Add title" type="text" [(ngModel)]="Title_Name"
                                           minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                       <div class="d-flex flex-column ">
-                                      <span style="color:red" [hidden]="MinLastNameLength">min length 3</span>
+                                      <span style="color:red" [hidden]="MinLastNameLength">Please enter min length 3.</span>
                                       <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name</span>
-                                      <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters</span>
+                                      <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters.</span>
                                      </div>
                                   </div>
                                   <div *ngIf="create==true" class="d-flex align-items-center">
@@ -10628,15 +10628,15 @@
                                             </div>
                                             <div class="schedule-dt-text" *ngIf="_StartDate&&Startts&&Endtms">
                                                 <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                                <span>This {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} will take place on {{_StartDate|date:'MMMM d,y'}} from {{Startts}} until {{Endtms}}</span>
+                                                <span>This {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} will take place on {{_StartDate|date:'MMMM d, y'}} from {{Startts}} until {{Endtms}}</span>
                                             </div>
                                             <span *ngIf="!_StartDate&&notProvided" style="color:red">please select schedule date.</span>
 
                                         <ng-container *ngIf="notProvided">
-                                            <span *ngIf="!(Startts||Endtms); else strtendrq" style="color:red">please select start time and end time.</span>
+                                            <span *ngIf="!(Startts||Endtms); else strtendrq" style="color:red">Please select start time and end time.</span>
                                             <ng-template #strtendrq>
-                                            <span *ngIf="!Startts" style="color:red">please select start time.</span>
-                                            <span *ngIf="!Endtms" style="color:red" >please select end time.</span>
+                                            <span *ngIf="!Startts" style="color:red">Please select start time.</span>
+                                            <span *ngIf="!Endtms" style="color:red" >Please select end time.</span>
                                             </ng-template>
                                         </ng-container>
 
@@ -10714,11 +10714,14 @@
                                   <div class="task-count"></div>
                               </div>
                               <div class="agenda-input-field">
-                                  <input class="form-control task-input" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                                  <input class="form-control task-input" id="todo-input" name="text"
+                                  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}" 
+                                   placeholder="Add agenda and press 'Enter'" autofocus="true"
                                   [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
                                   />
-                              <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                              <button  *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                               </div>
+                                <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
                           </div>
 
 
@@ -10984,13 +10987,13 @@
             </div>
         </div>
         <div class="se-col-11">
-            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
+            <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
                 <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participant')}}</div>
                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-              <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
+              <!-- <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span> -->
             <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                 <li *ngFor="let empno of ngEmployeeDropdown">
                    <div class="schedule-select-user-list-item">
