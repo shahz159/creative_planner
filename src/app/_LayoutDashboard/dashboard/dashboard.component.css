@@ -4947,3 +4947,15 @@ span.previous-dot{
     right: 48px;
     display: none;
 }
+.live span.kt-meeting-status-icon svg path {
+    stroke: #3788d8 !important;
+}
+.live span.meet-blink {
+    color: #3788d8;
+}
+.join span.kt-meeting-status-icon svg path {
+    stroke: #30c511 !important;
+}
+.join span.meet-blink {
+    color: #30c511;
+}

@@ -353,7 +353,7 @@ export class DashboardComponent implements OnInit {
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Enter text here...',
+    placeholder: 'Enter text here',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
@@ -362,6 +362,7 @@ export class DashboardComponent implements OnInit {
         // 'bold',
         // 'italic',
         // 'underline',
+        
         'strikeThrough',
         'subscript',
         'superscript',
@@ -1067,7 +1068,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.flag_id = this.flagevent;
     this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
-      this.notifyService.showSuccess("Deleted Successfully", "Success");
+      this.notifyService.showSuccess("Deleted successfully", "Success");
       this.closeevearea();
       this.GetScheduledJson();
       this.GetPending_Request();
@@ -1081,7 +1082,7 @@ export class DashboardComponent implements OnInit {
     this._calenderDto.Schedule_ID = id;
     this._calenderDto.flag_id = this.flagevent;
     this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
-      this.notifyService.showSuccess("Deleted Successfully", "Success");
+      this.notifyService.showSuccess("Deleted successfully", "Success");
       this.closeevearea();
       this.GetScheduledJson();
       this.GetPending_Request();
@@ -1796,7 +1797,7 @@ export class DashboardComponent implements OnInit {
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ?this.allAgendas.length > 0: true )
+      && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0: true )
       // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)
     ) {
       this.OnSubmitSchedule();
@@ -1836,7 +1837,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSubmitSchedule() {
-    debugger
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1995,6 +1996,17 @@ export class DashboardComponent implements OnInit {
         }
         element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
+ 
+        if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
+          // Remove occurrences of &nbsp; and &#160; while collapsing spaces
+          this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
+       }else{
+         this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
+       }
+      
+      
+
+        console.log(this.Description_Type,'.Description_Type2');
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -2109,7 +2121,7 @@ export class DashboardComponent implements OnInit {
               this.Getdraft_datalistmeeting();
               this.draftid = 0;
             }
-            this.notifyService.showSuccess(this._Message, "Success");
+            this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
             this.Getdraft_datalistmeeting();
           }
           else {
@@ -2384,7 +2396,7 @@ export class DashboardComponent implements OnInit {
 
 
           element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
-
+       
           var vDescription = "Description";
           element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -4403,12 +4415,10 @@ currentTime:any;
 
         this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-        console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        console.log(this.Scheduledjson,'Calendar Json List')
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
-        console.log(this.Scheduledjson, "Testingssd");
-
         console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
         console.log("Data Bind Time: in milliseconds", this.dataBindTime);
 
@@ -4472,6 +4482,9 @@ currentTime:any;
       const eventElement = info.el;
       eventElement.style.opacity = '0.5'; // Change the background color for past events
     }
+
+    const time_str=info.el.children[0].innerHTML.toUpperCase();
+    info.el.children[0].innerHTML=time_str.replace(/([0-9]+:[0-9]+)(AM|PM)/g, '$1 $2');
     // if(taskComplete == 'fc-green'){
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
@@ -5909,7 +5922,7 @@ debugger
   allAgendas: any = [];
   agendasAdded: number = 0;
   addAgenda() {
-    if (this.agendaInput && this.agendaInput.trim().length > 0) {
+    if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -5927,7 +5940,7 @@ debugger
     if (this.allAgendas.length > 0 && (index < this.allAgendas.length && index > -1)) {
       const agenda_toRemove=this.allAgendas[index].name;
       this.allAgendas.splice(index, 1);
-      this.notifyService.showSuccess(agenda_toRemove,'Agenda removed.');
+      this.notifyService.showSuccess(agenda_toRemove,'Agenda removed');
     }
     console.log("allAgendas:", this.allAgendas);
   }
@@ -5961,8 +5974,10 @@ debugger
 
   updateAgenda(index: number) {
     const tf: any = document.getElementById(`agenda-text-field-${index}`);
+ 
+    if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
     this.allAgendas[index].name = tf.value;
-
+    
     $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
     $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
     $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
@@ -5970,8 +5985,12 @@ debugger
     $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
     $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 
-
-    console.log('all agendas after updating:', this.allAgendas);
+  } else if (tf.value.trim().length == 0){
+    this.notifyService.showInfo("Please enter atleast one word","");
+  }else {
+    this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+  }
+   
   }
   // agenda in event creation end
 
@@ -6252,6 +6271,7 @@ onProjectSearch(inputtext:any){
       document.getElementById("div_endDate_new").style.display = "block";
 
   }
+  
   close_customrecurrencemodal() {
     // document.getElementById('drop-overlay').classList.remove("show");
     // document.getElementById('customrecurrence').classList.remove("show");
@@ -6289,7 +6309,6 @@ onProjectSearch(inputtext:any){
   date_menu_modal_close() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
     document.getElementById("datemenu").style.display = "none";
-
 
   }
 
@@ -7136,6 +7155,18 @@ sortbyCurrent_Time(){
   this.validStartTimearr=[...this.StartTimearr];
 
 }
-editorPlaceholder: string = 'Meeting link';
+editorPlaceholder: string = 'Add meeting link';
+
+
+
+// component.ts
+parseTime(time: string): Date {
+  const [timePart, modifier] = time.split(/(AM|PM)/); // Split into time and AM/PM
+  let [hours, minutes] = timePart.split(':').map(Number);
+  if (modifier === 'PM' && hours !== 12) hours += 12;
+  if (modifier === 'AM' && hours === 12) hours = 0;
+  return new Date(1970, 0, 1, hours, minutes); // Return a date object with a fixed date
+}
+
 
 }

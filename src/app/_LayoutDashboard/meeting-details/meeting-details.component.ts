@@ -622,8 +622,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
       this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
-     
-     
+
+      console.log(this.Agendas_List,'CurrentNotesCount')
 
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
         this.hasStatusOne = true;
@@ -1283,7 +1283,7 @@ export class MeetingDetailsComponent implements OnInit {
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     });
   }
@@ -1518,7 +1518,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.currentEventId = this.selectedValue;
 
-debugger
+
     if (this.agendaInputs != '') {
       this.addAgenda()
     }
@@ -1546,7 +1546,7 @@ debugger
           this.GetDMSEventValue = null
         });
       } else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     }
     else if (this.GetportfolioEventValue != undefined && this.currentEventId != '') {
@@ -1565,7 +1565,7 @@ debugger
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     }
     
@@ -1585,7 +1585,7 @@ debugger
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     }
 
@@ -1670,7 +1670,7 @@ debugger
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     });
   }
@@ -1952,7 +1952,7 @@ debugger
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     });
   }
@@ -2133,12 +2133,12 @@ debugger
         this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
           (data => {
             this.meeting_details();
-            this.notifyService.showSuccess("Agenda added successfully ", '');
+            // this.notifyService.showSuccess("Agenda added successfully ", '');
           })
         this.agendaInput = undefined;
       }
     } else if (this.agendaInput && this.agendaInput?.trim().length > 100) {
-      this.notifyService.showWarning("Sorry, agenda name is too long.", 'Please shorten it.');
+      this.notifyService.showInfo("Sorry, agenda name is too long.", 'Please shorten it.');
     }
   }
 
@@ -2150,7 +2150,7 @@ debugger
     const tf: any = document.getElementById(`agenda-text-field-${index}`);
     const newname = tf.value;
 
-    if (newname?.length < 100) {
+    if (newname.trim()?.length > 0 && newname?.length < 100) {
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
       this._calenderDto.flagid = 2;
@@ -2162,10 +2162,11 @@ debugger
           this.meeting_details();
           this.notifyService.showSuccess("Rename successfully ", '');
         })
+    } else if(newname.trim()?.length == 0){
+      this.notifyService.showInfo("Please enter atleast one word","");
     } else {
-      this.notifyService.showWarning("Maximum 100 characters are allowed", 'Please shorten it.');
+      this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
     }
-
   }
 
   AgendasName: string;
@@ -2209,13 +2210,19 @@ debugger
       var count = this.Agendas_List.length
       if (result === true && count > 1) {
         this.CalenderService.NewDeleteAgendas(this._calenderDto).subscribe((data) => {
-          this.meeting_details()
-          this.notifyService.showSuccess("Deleted successfully ", '');
+          
+          this.meeting_details()  
+   
+          // this.notifyService.showSuccess("Deleted successfully ", '');
           if (this.isFirstAgendaIdMatch) {
             this.currentAgendaView = 0;
 
           } else {
-            this.currentAgendaView = this.currentAgendaView - 1
+       
+            if(this.currentAgendaView){
+              this.currentAgendaView = this.currentAgendaView - 1;
+            }
+           
             this.GetAssigned_SubtaskProjects()
           }
         });
@@ -2224,7 +2231,7 @@ debugger
         this.notifyService.showWarning("At least one Agenda is mandatory in the meeting ", '');
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     });
   }
@@ -2311,7 +2318,7 @@ debugger
   StatusType: boolean = true;
 
   leavemeet(event: any) {
-debugger
+
     this.StatusType = true;
     if (this.StatusType == true) {
       this.leave = true;
@@ -2359,20 +2366,21 @@ debugger
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
       }
-
+   
       if(this.Notes_Type){
         this.Notes_Type.trim();
  
       
-  
+
       if (this.Notes_Type) {
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
-      }else {
-        this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
       }
     }
+    else {
+      this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
+    }
+   
 
-    debugger
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
       this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -2837,7 +2845,7 @@ debugger
         }
         element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
-
+        
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
 
@@ -2951,7 +2959,7 @@ debugger
               // this.Getdraft_datalistmeeting();
               this.draftid = 0
             }
-            this.notifyService.showSuccess(this._Message, "Success");
+            this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
           }
           else {
             this.notifyService.showError(this._Message, "Failed");
@@ -3046,7 +3054,7 @@ debugger
         });
       }
       else {
-        this.notifyService.showError("Action Cancelled ", '');
+        this.notifyService.showError("Action cancelled ", '');
       }
     });
   }
@@ -3589,7 +3597,7 @@ debugger
                 this.Agendas_List = [...this.agendasList];
                 this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
                 this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
-                if(this.Isadmin==false){
+              
                 if(result<0){
                 this.notifyService.showInfo('New agenda added', "");
                 }
@@ -3597,7 +3605,7 @@ debugger
                 this.notifyService.showInfo('agenda removed', "");
                 }
               }
-              }
+             
             }
             if(this.Isadmin==false){
             this.Agendas_List.forEach((_agenda)=>{
@@ -3607,14 +3615,16 @@ debugger
 
                   if(_agenda.Status=='1'){
                       this.notifyService.showSuccess("Agenda completed", "Success");
+                       this.meeting_details();
                   }
                   else if(_agenda.Status=='0'){
                       this.notifyService.showSuccess("Removed from complete", "Success");
+                      this.meeting_details();
                   }
                 }                
             });
         }  
-  
+       
 
         this.notescount.forEach(item => item.count = 0);  //1. clear previous notes count data.
         this.taskcount.forEach(item => item.count = 0);   //1. clear previous task count data.
@@ -6161,7 +6171,7 @@ debugger
   // allAgendas: any = [];
   // agendasAdded: number = 0;
   addAgendas() {
-    if (this.agendaInputs && this.agendaInputs.trim().length > 0) {
+    if (this.agendaInputs.trim().length > 0 && this.agendaInputs?.trim().length < 100) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -6213,6 +6223,7 @@ debugger
 
   updateAgendas(index: number) {
     const tf: any = document.getElementById(`agendas-text-field-${index}`);
+    if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
     this.allAgendas[index].name = tf.value;
 
     $(`#agendas-label-${index}`).removeClass('d-none'); // label is visible.
@@ -6222,7 +6233,11 @@ debugger
     $(`#edit-agendasname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
     $(`#remove-agendas-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 
-
+  } else if (tf.value.trim().length == 0){
+    this.notifyService.showInfo("Please enter atleast one word","");
+  }else {
+    this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+  }
     console.log('all agendas after updating:', this.allAgendas);
   }
   // agenda in event creation end
@@ -7658,6 +7673,13 @@ debugger
   }
 
   // alert(this._PopupConfirmedValue)
+}
+
+
+getFileType(fileName: string): string {
+  // Extract the file extension from the file name
+  const extension = fileName.split('.').pop()?.toLowerCase();
+  return extension ? extension : '';
 }
 
 

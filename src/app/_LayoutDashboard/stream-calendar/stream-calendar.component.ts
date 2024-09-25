@@ -11,15 +11,23 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { CalendarOptions } from '@fullcalendar/angular';
-
-
-
+import { DateAdapter } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
 
 
 declare var $: any;
 
-
-
+export const MY_FORMATS = {
+  parse: {
+    dateInput: "YYYY-MM-DD"
+  },
+  display: {
+    dateInput: "dddd, MMMM D YYYY",
+    monthYearLabel: "MMM YYYY",
+    dateA11yLabel: "YYYY-MM-DD HH:mm:ss",
+    monthYearA11yLabel: "MMMM YYYY"
+  }
+};
 
 
 @Component({
@@ -54,8 +62,8 @@ export class StreamCalendarComponent implements OnInit {
   _labelName: string;
   today: any = new Date().toISOString().substring(0, 10);
   ProjectCode: string; Status: string; ProjectType: string; Owner: string;
-
-
+  event: any;
+  Selecteddaate: any
 
 
   config: AngularEditorConfig = {
@@ -203,27 +211,19 @@ export class StreamCalendarComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
   constructor(
     private notifyService: NotificationService,
     private CalenderService: CalenderService,
     public _LinkService: LinkService, 
-
-
+    public dateAdapter: DateAdapter<Date>,
+    public datepipe: DatePipe
 
 
 
   ) { 
     this._lstMultipleFiales = [];
     this._calenderDto = new CalenderDTO;
-
+    this.Selecteddaate = this.datepipe.transform(new Date(), 'YYYY/MM/DD');
 
 
 
@@ -276,7 +276,6 @@ export class StreamCalendarComponent implements OnInit {
     });
 
 
-
     this.calendarOptions = {
       initialView: 'listWeek',
       firstDay: moment().weekday(),
@@ -304,7 +303,33 @@ export class StreamCalendarComponent implements OnInit {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
-    this._SEndDate = moment().format("YYYY-MM-DD").toString();
+   
+
+     //start
+     this.maxDate = moment().format("YYYY-MM-DD").toString();
+     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
+     //end
+ 
+     // this.GetMemosByEmployeeId();
+     this._StartDate = moment().format("YYYY-MM-DD").toString();
+     // this._EndDate = moment().format("YYYY-MM-DD").toString();
+ 
+     this.AllDatesSDandED = [];
+     var jsonData = {};
+     var columnName = "Date";
+     jsonData[columnName] = moment().format("YYYY-MM-DD").toString();
+     var IsActive = "IsActive";
+     jsonData[IsActive] = 1;
+     var Day = "Day";
+     jsonData[Day] = moment().format('dddd').substring(0, 3);
+     var DayNum1 = "DayNum";
+     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
+     this.AllDatesSDandED.push(jsonData);
+     // this.GetProjectAndsubtashDrpforCalender();
+     // this.calendar.updateTodaysDate();
+     this._SEndDate = moment().format("YYYY-MM-DD").toString();
+     // this.Event_requests();
+ 
   }
   
   private initAutosize() {
@@ -658,8 +683,17 @@ progress: number = 0;
 _Message: string;
 draftdata_meet: any = [];
 draftcount: any;
-
-
+user_Type:any=0;
+fetchDataStartTime: number;
+fetchDataEndTime: number;
+fetchDataTime: number;
+dataBindStartTime: number;
+Scheduledjson: any[] = [];
+dataBindEndTime: number;
+dataBindTime: number;
+userFound : boolean | undefined;
+dayArr1:any=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
+MonthArr1:any=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
 
 
 
@@ -689,7 +723,7 @@ updateCharacterCount(): void {
 
 
 addAgenda() {
-  if (this.agendaInput && this.agendaInput.trim().length > 0) {
+  if (this.agendaInput && this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -745,6 +779,7 @@ cancelAgendaEdit(index: number) {
 
 updateAgenda(index: number) {
   const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
   this.allAgendas[index].name = tf.value;
 
   $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
@@ -754,7 +789,12 @@ updateAgenda(index: number) {
   $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
   $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 
-
+  } else if (tf.value.trim().length == 0){
+    this.notifyService.showInfo("Please enter atleast one word","");
+  }else {
+    this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+  }
+ 
   console.log('all agendas after updating:', this.allAgendas);
 }
 
@@ -820,9 +860,6 @@ Task_type(value) {
   document.getElementById("createEventTaskModalBackdrop").style.display = "block";
   document.getElementById("createEventTaskModalBackdrop").classList.add("show");
 
-
-
-
   // document.getElementById("div_recurrence").style.display = "block";
   document.getElementById("weekly_121_new").style.display = "none";
   document.getElementById("div_endDate_new").style.display = "none";
@@ -848,6 +885,7 @@ Task_type(value) {
   this.currentTime=moment().format('h:mm A');
 
   if (value == 1) {
+    
     this.ScheduleType = "Task";
     this.GetProjectAndsubtashDrpforCalender();
   }
@@ -859,13 +897,13 @@ Task_type(value) {
     this.GetMemosByEmployeeId();
 
 
-    const TEsb = document.getElementById('TaskEvent-Sidebar');
-    TEsb.addEventListener('scroll', () => {
-      this.autocompletes.forEach((ac) => {
-        if (ac.panelOpen)
-          ac.updatePosition();
-      });
-    })
+    // const TEsb = document.getElementById('TaskEvent-Sidebar');
+    // TEsb.addEventListener('scroll', () => {
+    //   this.autocompletes.forEach((ac) => {
+    //     if (ac.panelOpen)
+    //       ac.updatePosition();
+    //   });
+    // })
   }
 
 
@@ -890,7 +928,7 @@ Task_type(value) {
 
 
 projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
-debugger
+
   document.getElementById("projectmodal").style.display = "block";
   document.getElementById("projectmodal").classList.add("show");
   document.getElementById("schedule-event-modal-backdrop").style.display = "block";
@@ -1138,6 +1176,8 @@ clearallfields() {
 
   this.minDate = moment().format("YYYY-MM-DD").toString();
   this.Attachment12_ary = [];
+  this.ProjectListArray=[];
+  this.BlockNameProject1=[];
   this.RemovedAttach = [];
   this._lstMultipleFiales = [];
   this.maxDate = null;
@@ -1360,7 +1400,7 @@ updateTippyItems(){
 
 
 keepChoosedItems(){
-  debugger
+
   switch(this.projectmodaltype)
   {    
     case 'project':{
@@ -1444,7 +1484,7 @@ getObjOf(arr, id, idName) {
 
 
 public handleAddressChange(address: Address) {
-debugger
+
   if (this.checkAddressURL(address.name.toString())) {
     this.Addressurl = address.name;
   }
@@ -1692,12 +1732,11 @@ checkAddressURL(str) {
 
 
 
-  dayArr1:any=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
-  MonthArr1:any=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
+
 
   
 onRecurrenceTypeChange(val:any){
-  debugger
+
 
   this.selectedrecuvalue1 = val.value.toString();
   this._labelName = "Start Date";
@@ -1734,7 +1773,6 @@ onRecurrenceTypeChange(val:any){
 
 
 bindCustomRecurrenceValues(){
-
 
   if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
     this.notProvided1='dayarr1';
@@ -1987,7 +2025,7 @@ bindCustomRecurrenceValues(){
 
 
   OnSubmitSchedule() {
-    debugger
+ 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -2378,15 +2416,7 @@ bindCustomRecurrenceValues(){
 
 
 
-  user_Type:any=0;
-  fetchDataStartTime: number;
-  fetchDataEndTime: number;
-  fetchDataTime: number;
-  dataBindStartTime: number;
-  Scheduledjson: any[] = [];
-  dataBindEndTime: number;
-  dataBindTime: number;
-  userFound : boolean | undefined;
+
 
 
   GetScheduledJson() {
@@ -2552,6 +2582,106 @@ bindCustomRecurrenceValues(){
     this.loading=false;
 
   }
+
+
+  changeScheduleType(val:number){
+    if(val==1)
+    {  // Task
+      this.ScheduleType = "Task";
+      this.GetProjectAndsubtashDrpforCalender();
+      this.change_task();
+    }
+    else if(val==2)
+    {  // Event
+      this.ScheduleType = "Event";
+      this._calenderDto.Emp_No = this.Current_user_ID;
+      this._calenderDto.Project_Code = null;
+      this.GetProjectAndsubtashDrpforCalender();
+      this.GetMemosByEmployeeId();
+      this.change_event();
+    }
+    this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
+ }
+
+
+
+
+
+
+
+
+
+
+
+ Insert_indraft() {
+
+  if (this.draftid != 0) {
+    this._calenderDto.draftid = this.draftid;
+  }
+  else {
+    this._calenderDto.draftid = 0;
+  }
+  this._calenderDto.Task_Name = this.Title_Name;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  if (this.SelectDms == null) {
+    this.SelectDms = [];
+  }
+  this._calenderDto.Dms = this.SelectDms.toString();
+  if (this.Portfolio == null) {
+    this.Portfolio = [];
+  }
+  this._calenderDto.Portfolio = this.Portfolio.toString();
+  this._calenderDto.location = this.Location_Type;
+  this._calenderDto.loc_status = this._onlinelink;
+  this._calenderDto.Note = this.Description_Type;
+  this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+  //  alert( this.ScheduleType);
+  if (this.ngEmployeeDropdown == null) {
+    this.ngEmployeeDropdown = [];
+  }
+  this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
+  if (this.MasterCode == null) {
+    this.MasterCode = [];
+  }
+  this._calenderDto.Project_Code = this.MasterCode.toString();
+
+  const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  this._calenderDto.DraftAgendas=mtgAgendas;
+  this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+    (data => {
+      if (data['message'] == '1') {
+        this.Getdraft_datalistmeeting();
+        this.closeschd();
+        this.notifyService.showSuccess("Draft saved", "Success");
+      }
+      if (data['message'] == '2') {
+        this.Getdraft_datalistmeeting();
+        this.closeschd();
+        this.notifyService.showSuccess("Draft updated", "Success");
+      }
+    });
+}
+
+customrecurrencemodal() {
+  // document.getElementById('drop-overlay').classList.add("show");
+  // document.getElementById('customrecurrence').classList.add("show");
+  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+  document.getElementById("customrecurrence").style.display = "block";
+
+  this.selectedrecuvalue1=this.selectedrecuvalue;
+  this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
+  this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
+  this._EndDate1=moment(this._EndDate);
+
+  if(this.selectedrecuvalue1=='2')
+    document.getElementById("weekly_121_new").style.display = "block";
+  else if(this.selectedrecuvalue1=='3')
+    document.getElementById("Monthly_121_new").style.display = "block";
+
+  if(this.selectedrecuvalue1!='0')
+    document.getElementById("div_endDate_new").style.display = "block";
+
+}
 ///////////////////////////////////////////  Create Event and Create Task sidebar End /////////////////////////////////////////////////////////
 
 
@@ -2560,6 +2690,5 @@ bindCustomRecurrenceValues(){
 
 
 
-  
 
 }

@@ -2048,7 +2048,7 @@
                                     <path fill="none" d="M0 0h36v36H0z"></path>
                                 </svg>
                             </span>
-                            <span>Create Task</span>
+                            <span (click)="Task_type(1)" >Create Task</span>
                         </div>
                     </button>
                 </div>
@@ -2124,7 +2124,7 @@
                                                 <div class="card-task-section-icon">
                                                     <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>
                                                 </div>
-                                                <div class="card-task-section-title">Add a task</div>
+                                                <div class="card-task-section-title"  (click)="clearallfields();GetProjectAndsubtashDrpforCalender()" >Add a task</div>
                                             </div>
                                             <div id="taskAdd" class="collapse card-task-section-collapse">
                                                 <div class="card-task-section-body">
@@ -2166,20 +2166,68 @@
                                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                                                             </div>
                                                             <div class="task-add-item-group">
-                                                                <ng-select class="task-add-item-group-t-select"  placeholder="Select portfolio">
-                                                                    <ng-option></ng-option>
+                                                                <ng-select class="task-add-item-group-t-select"  [(ngModel)]="MasterCode" [ngClass]="{'error-vd': _subname == true}"
+                                                                (change)="Subtask=null; GetSubtasklistfromProject($event);"  placeholder="Select project">
+                                                                <ng-option [value]="car.Project_Code" *ngFor="let car of ProjectListArray">{{car.BlockNameProject}}</ng-option>
                                                                 </ng-select>
+                                                                <div class="txtm-cus mt-1 ml-1" *ngIf="Projectstartdate != ''">
+                                                                    <span class="d-inline-flex align-items-center">
+                                                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                                                            {{Projectstartdate | date:'dd-MM-yyyy'}}
+                                                                    </span>
+                                                                           <span class="m-1 font-weight-bold">-</span>
+                                                                    <span class="d-inline-flex align-items-center">
+                                                                        {{projectEnddate | date:'dd-MM-yyyy'}}.
+                                                                    </span>
+                                                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                                                            class="fas fa-clock mr-2"></i>{{AllocatedHours}}</span>
+                                                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                                                            class="fas fa-star mr-2"></i>{{Status_project}}</span>
+                                                                </div>
+                                                                <span *ngIf="_subname == true" style="color:red">Please select project!</span>
+                                                                <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: #5d76c3;">
+                                                                    Note:Selected project is expired, please extend your project deadline date.
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                            
+                                                     
+
+
+
                                                         <div class="task-add-item">
                                                             <div class="task-add-item-icon">
                                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 2.29289C11.6834 1.90237 12.3166 1.90237 12.7071 2.29289L16.7071 6.29289C17.0976 6.68342 17.0976 7.31658 16.7071 7.70711C16.3166 8.09763 15.6834 8.09763 15.2929 7.70711L13 5.41421V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V5.41421L8.70711 7.70711C8.31658 8.09763 7.68342 8.09763 7.29289 7.70711C6.90237 7.31658 6.90237 6.68342 7.29289 6.29289L11.2929 2.29289ZM5 13C5 11.3431 6.34315 10 8 10H9C9.55228 10 10 10.4477 10 11C10 11.5523 9.55228 12 9 12H8C7.44772 12 7 12.4477 7 13V19C7 19.5523 7.44772 20 8 20H16C16.5523 20 17 19.5523 17 19V13C17 12.4477 16.5523 12 16 12H15C14.4477 12 14 11.5523 14 11C14 10.4477 14.4477 10 15 10H16C17.6569 10 19 11.3431 19 13V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V13Z" fill="currentColor"></path> </g></svg>
                                                             </div>
                                                             <div class="task-add-item-group">
-                                                                <ng-select class="task-add-item-group-t-select"  placeholder="Select action">
-                                                                    <ng-option></ng-option>
+                                                                <ng-select class="task-add-item-group-t-select"  [placeholder]="subtask_loading?'Loading...':'Select action' " [(ngModel)]="Subtask"
+                                                                (change)="getChangeSubtaskDetais($event)">
+                                                                <ng-container *ngIf="subtask_loading==false">
+                                                                    <ng-option *ngFor="let item of  BlockNameProject1" [value]="item.Project_Code">
+                                                                        {{item.Project_Name}}</ng-option>
+                                                                </ng-container>
                                                                 </ng-select>
+                                                                
+                                                                <div class="txtm-cus mt-1 ml-1" *ngIf="St_date !=''">
+                                                                    <span class="d-inline-flex align-items-center">
+                                                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                                                        {{St_date | date:'dd-MM-yyyy'}}
+                                                                    </span>
+                                                                    <span class="m-1 font-weight-bold">-</span>
+                                                                    <span class="d-inline-flex align-items-center">
+                                                                        {{Ed_date | date:'dd-MM-yyyy'}}.
+                                                                    </span>
+                                                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                                                            class="fas fa-clock mr-2"></i>{{Allocated_subtask}}</span>
+                                                                    <span class="d-inline-flex align-items-center ml-2"><i
+                                                                            class="fas fa-star mr-2"></i>{{_status}}</span>
+                                                                </div>
+                                    
+                                                                <div *ngIf="subtask_loading" class="spinner-border actns-ldr" role="status">
+                                                                    <span class="sr-only">Loading...</span>
+                                                                </div>
                                                             </div>
+
                                                         </div>
                                                         <div class="task-add-item">
                                                             <div class="task-add-item-icon">
@@ -2401,8 +2449,8 @@
       <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">
-                <span id="event-title">Create event</span>
-                <span id="task-title" style="display: none">Create task</span>
+                <span id="event-title" >Create event</span>
+                <span id="task-title" style="display: none" >Create task</span>
             </h5>
             <div class="create-event-modal-close"  title="Close" (click)="createEventTaskModal_dismiss()">
                 <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
@@ -2417,7 +2465,7 @@
                     <div class="create-event-item-group">
                         <div class="d-flex align-items-end">
                             <div class="form-group w-100 mb-0">
-                                <input type="text" class="form-control" id=""  [ngClass]="{
+                                <input type="text" class="form-control" id="dsb-evt-titleName"  [ngClass]="{
                                     'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                     ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
                                     }"
@@ -2426,13 +2474,13 @@
                                  
                             </div>
                             <div class="create-event-task-badge-main">
-                                <div class="create-event-task-badge active" id="create-event-badge" (click)="change_event()">Event</div>
-                                <div class="create-event-task-badge" id="create-task-badge" (click)="change_task()">Task</div>
+                                <div class="create-event-task-badge active" id="create-event-badge" (click)="changeScheduleType(2)">Event</div>
+                                <div class="create-event-task-badge" id="create-task-badge" (click)="changeScheduleType(1)">Task</div>
                             </div>
                         </div>
                         <div class="d-flex flex-column ">
                             <span style="color:red" [hidden]="MinLastNameLength">Please enter min length 3.</span>
-                            <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name.</span>
+                            <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim())&&notProvided">Please enter title name.</span>
                             <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters.</span>
                          </div>
                     </div>
@@ -2474,7 +2522,7 @@
                         </div>
                     </div>
                 </div>
-                <nav class="event-nav">
+                <nav class="event-nav d-none">
                     <div class="nav nav-tabs" id="nav-tab" role="eventtablist">
                       <a class="nav-item nav-link active" id="nav-event-details-tab" data-toggle="tab" href="#nav-event-details" role="tab" aria-controls="nav-event-details" aria-selected="true">
                         <span id="nav-event">Event details</span>
@@ -2512,9 +2560,11 @@
                                         </div>
                                         <div class="agenda-input-field">
                                             <input class="form-control task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter'" autofocus="true"
-                                            [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()" />
-                                        <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                                            [(ngModel)]="agendaInput"  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}" 
+                                            (keyup.enter)="addAgenda()" (keyup)="onKeyPress()" />
+                                        <button *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                                         </div>
+                                        <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
                                     </div>
                                     <div class="agenda-list-main">
                                         <div class="agenda-list-item" *ngFor="let agenda of allAgendas; let i=index" >
@@ -2562,8 +2612,8 @@
                                                     <div class="meeting-type-icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="22" viewBox="0 0 36 22" fill="none"><path d="M31.7143 3.79541H4.08222C3.64171 3.79541 3.24124 4.15583 3.24124 4.63639V17.6115C3.24124 18.052 3.60166 18.4524 4.08222 18.4524H31.7143C32.1548 18.4524 32.5553 18.092 32.5553 17.6115V4.59634C32.5553 4.15583 32.1949 3.79541 31.7143 3.79541ZM30.9134 16.8105H4.9232V5.43732H30.8733L30.9134 16.8105Z" fill="#6772FE"></path><path d="M34.5576 7.88013C34.1171 7.88013 33.7166 8.24054 33.7166 8.7211V13.5267C33.7166 13.9672 34.0771 14.3677 34.5576 14.3677C35.0382 14.3677 35.3986 14.0072 35.3986 13.5267V8.7211C35.3986 8.28059 34.9981 7.88013 34.5576 7.88013Z" fill="#6772FE"></path><path d="M11.3707 19.6938H6.5651C6.12459 19.6938 5.72412 20.0543 5.72412 20.5348C5.72412 21.0154 6.08454 21.3758 6.5651 21.3758H11.3707C11.8112 21.3758 12.2117 21.0154 12.2117 20.5348C12.2117 20.0543 11.8112 19.6938 11.3707 19.6938Z" fill="#6772FE"></path><path d="M20.3011 19.6938H15.4955C15.055 19.6938 14.6545 20.0543 14.6545 20.5348C14.6545 21.0154 15.0149 21.3758 15.4955 21.3758H20.3011C20.7416 21.3758 21.142 21.0154 21.142 20.5348C21.142 20.0543 20.7416 19.6938 20.3011 19.6938Z" fill="#6772FE"></path><path d="M29.2715 19.6938H24.4659C24.0254 19.6938 23.6249 20.0543 23.6249 20.5348C23.6249 21.0154 23.9853 21.3758 24.4659 21.3758H29.2715C29.712 21.3758 30.1124 21.0154 30.1124 20.5348C30.1124 20.0543 29.712 19.6938 29.2715 19.6938Z" fill="#6772FE"></path><path d="M6.5651 2.55402H11.3707C11.8112 2.55402 12.2117 2.1936 12.2117 1.71305C12.2117 1.27253 11.8512 0.87207 11.3707 0.87207H6.5651C6.12459 0.87207 5.72412 1.23249 5.72412 1.71305C5.76417 2.1936 6.12459 2.55402 6.5651 2.55402Z" fill="#6772FE"></path><path d="M15.4955 2.55402H20.3011C20.7416 2.55402 21.142 2.1936 21.142 1.71305C21.142 1.27253 20.7816 0.87207 20.3011 0.87207H15.4955C15.055 0.87207 14.6545 1.23249 14.6545 1.71305C14.6946 2.1936 15.055 2.55402 15.4955 2.55402Z" fill="#6772FE"></path><path d="M24.4659 2.55402H29.2715C29.712 2.55402 30.1124 2.1936 30.1124 1.71305C30.1124 1.27253 29.752 0.87207 29.2715 0.87207H24.4659C24.0254 0.87207 23.6249 1.23249 23.6249 1.71305C23.6249 2.1936 24.0254 2.55402 24.4659 2.55402Z" fill="#6772FE"></path><path d="M1.27897 7.88013C0.838454 7.88013 0.437988 8.28059 0.437988 8.7211V13.5267C0.437988 13.9672 0.798407 14.3677 1.27897 14.3677C1.75952 14.3677 2.11994 14.0072 2.11994 13.5267V8.7211C2.11994 8.28059 1.75952 7.88013 1.27897 7.88013Z" fill="#6772FE"></path></svg>
                                                     </div>
-                                                    <div class="meeting-type-input">
-                                                        <input class="form-control"  type="text" ngx-google-places-autocomplete [(ngModel)]="Location_Type" (onAddressChange)="handleAddressChange($event)" (change)="addreschange()"  placeholder="Add Meeting Location" />
+                                                    <div class="meeting-type-input form-group">
+                                                        <input class="form-control curser-pointer"  type="text" ngx-google-places-autocomplete [(ngModel)]="Location_Type" (onAddressChange)="handleAddressChange($event)" (change)="addreschange()"  placeholder="Add Meeting Location" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -2765,7 +2815,7 @@
                             </div> 
                         </div>
                         <div id="create-task-div" style="display: none;">
-                            <div class="create-event-item">
+                            <!-- <div class="create-event-item">
                                 <div class="create-event-item-icon">
                                     <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="currentColor" d="M2,11 L4,11 C4.51283143,11 4.93550653,11.386027 4.9932722,11.8833761 L5,12 L5,14 C5,14.51285 4.61395571,14.9355092 4.11662025,14.9932725 L4,15 L2,15 C1.48716857,15 1.06449347,14.613973 1.0067278,14.1166239 L1,14 L1,12 C1,11.48715 1.38604429,11.0644908 1.88337975,11.0067275 L2,11 L4,11 L2,11 Z M14,12 C14.5523,12 15,12.4477 15,13 C15,13.5523 14.5523,14 14,14 L8,14 C7.44772,14 7,13.5523 7,13 C7,12.4477 7.44772,12 8,12 L14,12 Z M4,12 L2,12 L2,14 L4,14 L4,12 Z M4,6 C4.55228,6 5,6.44772 5,7 L5,9 C5,9.55228 4.55228,10 4,10 L2,10 C1.44772,10 1,9.55228 1,9 L1,7 C1,6.44772 1.44772,6 2,6 L4,6 Z M14,7 C14.5523,7 15,7.44772 15,8 C15,8.51283143 14.613973,8.93550653 14.1166239,8.9932722 L14,9 L8,9 C7.44772,9 7,8.55228 7,8 C7,7.48716857 7.38604429,7.06449347 7.88337975,7.0067278 L8,7 L14,7 Z M4,7 L2,7 L2,9 L4,9 L4,7 Z M4.77466,1.22614 C5.04092364,1.49240364 5.06512942,1.90907223 4.84727736,2.20268222 L4.77466,2.2868 L2.28033,4.78113 C2.13968,4.92179 1.94891,5.0008 1.75,5.0008 C1.590872,5.0008 1.4369536,4.9502336 1.30973856,4.85798912 L1.21967,4.78113 L0.21967,3.78113 C-0.0732233,3.48824 -0.0732233,3.01337 0.21967,2.72047 C0.485936364,2.45420636 0.902600248,2.43000058 1.19621162,2.64785264 L1.28033,2.72047 L1.75,3.19014 L3.714,1.22614 C4.00689,0.933247 4.48176,0.933246 4.77466,1.22614 Z M14,2 C14.5523,2 15,2.44772 15,3 C15,3.51283143 14.613973,3.93550653 14.1166239,3.9932722 L14,4 L8,4 C7.44772,4 7,3.55228 7,3 C7,2.48716857 7.38604429,2.06449347 7.88337975,2.0067278 L8,2 L14,2 Z"></path> </g></svg>
                                 </div>
@@ -2774,7 +2824,7 @@
                                         <ng-option></ng-option>
                                     </ng-select>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="create-event-item">
                                 <div class="create-event-item-icon">
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
@@ -3548,7 +3598,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-event-save"  (click)="onSubmitBtnClicked()">Save</button>
-            <button type="button" class="btn btn-event-draft">Draft</button>
+            <button type="button" class="btn btn-event-draft" (click)="Insert_indraft()">Draft</button>
             <button type="button" class="btn btn-event-close" (click)="createEventTaskModal_dismiss()">Close</button>
           </div>
       </div>
@@ -3599,7 +3649,7 @@
                 </div>
                 <div class="modal-time-item-control">
                     <mat-select name="Select Type" placeholder="Do not repeat"
-                    [(value)]="selectedrecuvalue1" class="form-control"  (selectionChange)="onRecurrenceTypeChange($event)" >
+                    [(value)]="selectedrecuvalue1" class="form-control" (click)="customrecurrencemodal()"  (selectionChange)="onRecurrenceTypeChange($event);" >
 
                     <mat-option value="0">Do not repeat</mat-option>
                     <mat-option value="1">Daily</mat-option>

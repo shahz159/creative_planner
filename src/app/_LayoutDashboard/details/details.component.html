@@ -10664,11 +10664,14 @@
                                   <div class="task-count"></div>
                               </div>
                               <div class="agenda-input-field">
-                                  <input class="form-control task-input" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
+                                  <input class="form-control task-input" id="todo-input" name="text"
+                                  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}" 
+                                   placeholder="Add agenda and press 'Enter'" autofocus="true"
                                   [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
                                   />
-                              <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                              <button  *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                               </div>
+                                <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
                           </div>
 
 
@@ -10934,13 +10937,13 @@
             </div>
         </div>
         <div class="se-col-11">
-            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
+            <div  [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
                 <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participant')}}</div>
                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-              <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
+              <!-- <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span> -->
             <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                 <li *ngFor="let empno of ngEmployeeDropdown">
                    <div class="schedule-select-user-list-item">
