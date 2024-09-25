@@ -4464,7 +4464,6 @@ currentTime:any;
 
   TwinEvent = [];
   customizeEvent = (info) => {
-
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -4472,6 +4471,10 @@ currentTime:any;
       const eventElement = info.el;
       eventElement.style.opacity = '0.5'; // Change the background color for past events
     }
+
+   
+    const time_str=info.el.children[0].innerHTML.toUpperCase();
+    info.el.children[0].innerHTML=time_str.replace(/([0-9]+:[0-9]+)(AM|PM)/g, '$1 $2');
     // if(taskComplete == 'fc-green'){
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
