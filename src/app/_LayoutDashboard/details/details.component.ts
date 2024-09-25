@@ -890,14 +890,14 @@ projecttypes : any
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.errorFetchingProjectInfo=false;
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {    
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       try{
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       }catch(er){
         console.log('project Info fetching failure:',er);
         this.errorFetchingProjectInfo=true;
       }
-      this.Submission = JSON.parse(res[0].submission_json);  
+      this.Submission = JSON.parse(res[0].submission_json);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -974,7 +974,7 @@ projecttypes : any
       // });
 
 
-      console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
+      console.log("projectInfo:", this.projectInfo, "projectActionInfossssssssssssssss:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
 
@@ -3647,11 +3647,12 @@ check_allocation() {
     this.ObjSubTaskDTO.PageSize = 10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
       .subscribe(data1 => {
-
+debugger
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
         // console.log("bhai this is your DAR array:", this.darArray);
         this.totalHours = (data1[0]['Totalhours']);
+        console.log(this.totalHours,"this.totalhourtotalhour")
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
           this.noTimeline = true;
@@ -3739,7 +3740,7 @@ check_allocation() {
 
 
  submitDar(){
-
+debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
@@ -4965,9 +4966,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
     if(bx){
         const btn:any=document.querySelector(bx);
         if(btn&&btn.getAttribute('aria-expanded')=='false'){
-          btn.click();  
-        } 
-    }         
+          btn.click();
+        }
+    }
   }
 
 
@@ -8199,7 +8200,7 @@ cancelAction(index) {
   }).then((response: any) => {
     if (response.value) {
 
-
+      debugger
 
     if([this.projectActionInfo[index].Project_Owner,this.projectInfo.OwnerEmpNo,this.isHierarchy].includes(this.Current_user_ID)){
         // if user is project owner, action owner or is in heirarchy.
@@ -8209,6 +8210,7 @@ cancelAction(index) {
         this.approvalObj.Remarks = this.hold_remarks;
 
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+          debugger
           this.closePrjCancelSb();
           this._Message = (data['message']);
           if (this._Message == '1') {
@@ -8338,7 +8340,7 @@ showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
 
-showSelfAssignedActns(userno){  
+showSelfAssignedActns(userno){
   if(userno){
     this.filteredPrjAction = this.projectActionInfo.filter((item) => {
       return (item.Project_Owner == item.Team_Res) && (item.Team_Res == userno);
@@ -9953,7 +9955,7 @@ onPrjAuditSubmitClicked(){
      const project_code:string=this.projectInfo.Project_Code;
      const empno:string=this.Current_user_ID;
      const auditor:string=this.emp_Auditor;
-     const remarks:string=this.empAuditor_remarks;   
+     const remarks:string=this.empAuditor_remarks;
      this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
           console.log(res);
           if(res&&res.message){
@@ -9979,7 +9981,7 @@ onTransferBtnClicked(){
       const project_code:string=this.projectInfo.Project_Code;
       const empno:string=this.Current_user_ID;
       const remarks:string=this.empAuditor_remarks;
-      const newowner:string=this.emp_Auditor;   
+      const newowner:string=this.emp_Auditor;
       this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
                  if(res&&res.message){
                     this.notifyService.showSuccess(res.message,'Success');
@@ -9999,7 +10001,7 @@ onTransferBtnClicked(){
 
 total_userActns:number|undefined;
 // npm i apexcharts@3.52.0    works only on this version.
-loadActionsGantt(){ 
+loadActionsGantt(){
   const all_status={
     'Completed':'#388E3C',
     'InProcess':'#64B5F6',
@@ -10584,22 +10586,22 @@ getNotificationsAnnouncements():string[]{
 
   if(this.myUnderApprvActions.length>0)
   allnotif=[...allnotif,'myUnderApprvActions'];
-  if(this.myDelayPrjActions.length>0) 
-  allnotif=[...allnotif,'myDelayPrjActions'];   
+  if(this.myDelayPrjActions.length>0)
+  allnotif=[...allnotif,'myDelayPrjActions'];
   if(+this.ProjectPercentage>100)
-  allnotif=[...allnotif,'ProjectPercentage']; 
-  if(([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&this.delayActionsOfEmps.length>0) 
-  allnotif=[...allnotif,'delayActionsOfEmps']; 
-  if(this.MeetingCount>0) 
+  allnotif=[...allnotif,'ProjectPercentage'];
+  if(([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&this.delayActionsOfEmps.length>0)
+  allnotif=[...allnotif,'delayActionsOfEmps'];
+  if(this.MeetingCount>0)
   allnotif=[...allnotif,'MeetingCount'];
   if(this.actionsWith0hrs&&this.actionsWith0hrs.length>0)
   allnotif=[...allnotif,'actionsWith0hrs'];
-  if(['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(this.activity)) 
+  if(['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(this.activity))
   allnotif=[...allnotif,'Rejected'];
   if(this.projectInfo&&this.projectInfo.Status==='Project Hold')
-  allnotif=[...allnotif,'ProjectHold'];  
+  allnotif=[...allnotif,'ProjectHold'];
   if(this.projectInfo&&this.projectInfo.Status=='Not Started')
-  allnotif=[...allnotif,'NotStarted'];  
+  allnotif=[...allnotif,'NotStarted'];
   if((this.totalStdTskApvs&&this.totalStdTskApvs>0)&&(this.Current_user_ID  == this.standardjson[0].approvalEmpID))
   allnotif=[...allnotif,'totalStdTskApvs'];
   if((this.multiapproval_list&&this.multiapproval_list.length>0)&&(this.Current_user_ID  == this.approvalEmpId))
@@ -10607,22 +10609,34 @@ getNotificationsAnnouncements():string[]{
   if(this.projectInfo.Project_Block==='003')
   allnotif=[...allnotif,'stdTaskDelay'];
   if(this.projectInfo.Status=='Completed'&&this.projectInfo.VersionCode)
-  allnotif=[...allnotif,'VersionCode'];  
+  allnotif=[...allnotif,'VersionCode'];
   if(this.selfAssignedActns&&this.selfAssignedActns.length>0)
   allnotif=[...allnotif,'selfAssignedActns'];
-  if(this.totalPActns4Aprvls>0) 
-  allnotif=[...allnotif,'totalPActns4Aprvls'];   
+  if(this.totalPActns4Aprvls>0)
+  allnotif=[...allnotif,'totalPActns4Aprvls'];
 
    return allnotif;
-}  
+}
 
 //get notifications list.    end
 
 
 
+getFormattedHours(tlTotalHours: number): string {
+  if (tlTotalHours == null) return '00:00'; // or handle other cases as needed
+  const hours = Math.floor(tlTotalHours);
+  const minutes = Math.round((tlTotalHours % 1) * 60);
+  return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
 
+getFormattedDuration(totalDuration: number): string {
+  if (totalDuration == null) return '00:00'; // Handle undefined or null
 
+  const hours = Math.floor(totalDuration);
+  const minutes = Math.round((totalDuration % 1) * 60);
 
+  return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
 
 
 

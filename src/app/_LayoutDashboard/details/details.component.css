@@ -3777,7 +3777,7 @@ mat-icon.mat-icon.notranslate.curser-pointer {
   align-items: center;
   justify-content: center;
   padding: 12px;
-  background-color: #646C9A;
+  background-color: #388E3C !important;
 }
 
 .save-mat-selection:hover {
@@ -4423,7 +4423,7 @@ span.Rq_date_V {
 .stdtask-underapproval-notification .notif-img,
 .reqaccess-approval-notification .notif-img {
   align-self: center;
-  min-width: 20px; 
+  min-width: 20px;
   max-width: 20px;
   min-height: 20px;
   max-height: 20px;
@@ -8668,7 +8668,7 @@ span.time-value {
    to{
        transform:scale(1.02);
    }
-  
+
 } */
 
 

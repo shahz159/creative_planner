@@ -1715,7 +1715,7 @@
                                      <div>
                                       <div class="form-group" >
                                         <mat-form-field class="drp-dwn-field w-100"   *ngIf="Employeshare">
-                                          <mat-label>Select employee</mat-label>
+                                          <mat-label>Select employee<span class="text-danger"> *</span></mat-label>
                                            <mat-chip-list #selectedEmp2share>
                                             <mat-chip *ngFor="let emptoshare of shareToEmplys" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare)">
                                               {{getObjOf(Employeshare,emptoshare,'Emp_No')?.DisplayName}}-{{getObjOf(Employeshare,emptoshare,'Emp_No')?.TM_DisplayName}}
@@ -1773,10 +1773,10 @@
 
 
 
-                                  <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                  <p *ngIf="valid&&this.shareToEmplys&&this.shareToEmplys.length ===0" class="text-danger"><b> Please select employee</b></p>
                               </div>
                               <div class="form-group mb-0">
-                                  <label class="mb-3">Preferences</label>
+                                  <label class="mb-3">Preferences<span class="text-danger"> *</span></label>
                                   <div>
                                       <div class="form-check-inline">
                                           <label class="form-check-label">
@@ -1794,7 +1794,7 @@
                                       </div>
                                   </div>
                               </div>
-                              <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
+                              <p *ngIf="valid&&!preferences" class="text-danger"><b>Please select preferece</b></p>
                               &nbsp;     &nbsp;
                               <div class="form-group mb-0">
                                 <div class="form-group mb-0">

@@ -794,6 +794,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     document.getElementById("shareBar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
+    this.valid = false
     //SnackBar Dismiss
   }
   OnCompanySelect(CompNo: string) {
@@ -876,16 +877,20 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
   shararrayseprate:any
   isElementPresent:any
+  valid : boolean = false
   share() {
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
-    if (this.shareToEmplys == undefined) {
-      return this._ErrorMessage_User = "* Please Select User Name";
+    debugger
+    if (this.shareToEmplys == undefined ||  this.shareToEmplys === null || this.shareToEmplys&&this.shareToEmplys.length ===0) {
+      return   this.valid = true
+    }else{
+  this.valid = false
+}
 
-    }
     if (this.preferences == null) {
-      return this._ErrorMessage_Pref = "* Please Select Preferences";
+      return this.valid = true
     }
     if (this.Current_user_ID == this.shareToEmplys[0]) {
       this.notifyService.showInfo("You Can't Share Portfolio by yourSelf", "");
@@ -1687,7 +1692,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("portfoliosideBar").classList.remove("active");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
-
+    document.getElementById("shareBar").classList.remove("kt-action-panel--on");
     // $('.project-list_AC').removeClass('active');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -4433,7 +4438,7 @@ closedarBar() {
   document.getElementById("Timeline_view").classList.remove("kt-timeline-panel--on");
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementById("newdetails").classList.remove("position-fixed");
-
+  document.getElementById("shareBar").classList.remove("kt-action-panel--on");
 
   document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
   document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.

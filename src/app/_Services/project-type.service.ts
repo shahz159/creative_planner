@@ -576,6 +576,11 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetDashboardPortfolios", this.ObjSubTaskDTO);
   }
 
+  NewGetDashboardTimelineStatus(Emp_No: string){
+    this.ObjSubTaskDTO.Emp_No = Emp_No
+    return this.http.post(this.rootUrl + "TestAPI/NewGetDashboardTimelineStatus", this.ObjSubTaskDTO);
+  }
+
 
 
 
