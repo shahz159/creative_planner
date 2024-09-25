@@ -4474,7 +4474,6 @@ currentTime:any;
 
   TwinEvent = [];
   customizeEvent = (info) => {
-
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
