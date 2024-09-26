@@ -1702,7 +1702,7 @@
                                     </path>
                                 </svg>
                                 <span class="notif-msg" style=" color: #00a2eb;" >
-                                    The meeting hasn't started yet, Please start the meeting.</span>
+                                    The meeting hasn't started yet. Please start the meeting.</span>
                                 </div>
                             </container>
                                 <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
@@ -1714,7 +1714,7 @@
                                     </path>
                                 </svg>
                                 <span class="notif-msg" style=" color: #00a2eb;" >
-                                    The meeting has not started yet, Please wait for the admin to start the meeting.</span>
+                                    The meeting has not started yet. Please wait for the admin to start the meeting.</span>
                                 </div>
                                 </container>
                         
@@ -2216,10 +2216,10 @@
 
                                                         <span class="title"> <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a></span>
                                                     </div>
-                                                    <!-- <div class="add-s">
+                                                    <div class="add-s" (click)="addNewDMS()">
                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M13 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5H19C20.1046 5 21 5.89543 21 7V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <path d="M18.5 14V16.5M18.5 19V16.5M18.5 16.5H16M18.5 16.5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                         <span>Add More</span>
-                                                    </div> -->
+                                                    </div>
                                                 </ng-container>
                                                 <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
                                                     <div class="dark-title">No SMail link in the meeting</div>
@@ -2247,6 +2247,10 @@
                                                         </span> -->
 
                                                         <span class="title"> <a href="javascript:void(0)" (click)="OnCardClick(pfl.numberval)">{{pfl.Portfolio_Name}}</a></span>
+                                                    </div>
+                                                    <div class="add-s" (click)="AddPortfolio()" >
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                        <span>Add More</span>
                                                     </div>
                                                 </ng-container>
                                                 <ng-container  *ngIf="portfolio_Scheduledjson&&portfolio_Scheduledjson.length==0">
@@ -2278,6 +2282,10 @@
                                                         (click)="moreDetails(item.stringval)">
                                                         {{item.Project_Name}}
                                                         </a>
+                                                    </div>
+                                                    <div class="add-s" (click)="AddProjects()">
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                        <span>Add More</span>
                                                     </div>
                                                 </ng-container>
                                                 <ng-template #NoProject_code>
@@ -2427,7 +2435,10 @@
                                                        </span>
                                                         <span class="title-muted" style="margin-left: 6px;"> <a target=”_blank” class="title-muted ml-0" href="{{item.url}}"> {{item.File_Name}}</a></span>
                                                     </div>
-
+                                                    <div class="add-s" (click)="Attachment_views()">
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                        <span>Add More</span>
+                                                    </div>
                                                     <ng-template #NoAttachments_ary>
                                                         <span class="dark-title">No attachment link in this meeting</span>
                                                     </ng-template>
@@ -2542,7 +2553,6 @@
                                                         </span> -->
                                                         <span class="user-name">{{item.Created_by}}</span>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
