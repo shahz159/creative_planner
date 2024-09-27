@@ -193,7 +193,7 @@ export class TimelineComponent implements OnInit {
         if(this.sortType==this.sort1){
         this.addStatusIntoDarArr();
         }
-       
+
       });
 
 // by default date
@@ -230,7 +230,7 @@ export class TimelineComponent implements OnInit {
         this.timelineDuration=(data[0]['TotalTime']);
       });
 
-       
+
   }
 
 
@@ -263,7 +263,7 @@ export class TimelineComponent implements OnInit {
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList; 
+          this.darArray=this.timelineList;
           if(this.sortType==this.sort1){
             this.addStatusIntoDarArr();
           }
@@ -960,7 +960,7 @@ submitTL(submDate:string)
          this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
                console.log(res);
 
-          if(res&&res.message){    
+          if(res&&res.message){
                if(res.message=='1'){
                     Swal.fire(
                       'Timeline report submitted successfully.',
@@ -985,10 +985,10 @@ submitTL(submDate:string)
               title: 'Something went wrong!',
               text: 'An issue occurred while processing your request. Please review the timeline before try again.',
             });
-          }       
+          }
 
          });
-    
+
       }
       else {
         Swal.fire(
@@ -996,7 +996,7 @@ submitTL(submDate:string)
           `date : ${submDate}`,
           'error'
         );
-       
+
       }
     })
     .catch(e => console.log(e));
@@ -1019,26 +1019,34 @@ addStatusIntoDarArr(){
             });
 
             if(tm_submitted)
-              tm.DarStatus=tm_submitted.Status; 
+              tm.DarStatus=tm_submitted.Status;
             else{
               debugger
               tm.DarStatus='Not Submitted';
               const crtdate=new Date();
               const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
               tm.submitable=daysDiff<=1;
-            } 
+            }
          });
 
 
         }
-      
+
         console.log('123 darArray:',this.darArray);
         console.log('GetTimelineSubmissionStatus:',this.submission_json);
     }
 });
 }
 
+formatDuration(totalDuration) {
+  // Extract hours and minutes from the input string
+  let hours = totalDuration.substring(0, 2);
+  let minutes = totalDuration.substring(3, 5);
 
+  return `${hours > 0 ? hours : '00'} ${hours === '00' || hours === '01' ? 'Hr' : 'Hrs'} : ${minutes > 0 ? minutes : '00'} ${minutes === '00' || minutes === '01' ? 'Min' : 'Mins'}`;
+
+
+}
 
 
 tmReportArr:any[]=[];

@@ -416,15 +416,15 @@
                                 class="form-control right-flter-b border-0" (keyup.enter)="ServerSide_Search(PortfolioSearch)"/>
                         </div>
                         </div>
-                    
+
                     <div class="kt-portlet__head-label kt-todo__details icons-filter align-items-center">
-                       
+
                         <div class="kt-portlet__head-toolbar">
 
-                           
-                            
 
-                            
+
+
+
                             <!-- Pagenation start -->
                             <label class="mx-1" *ngIf="activeClassAll==true">{{Portfolio_CurrentPage}} of {{NoOfPages}} pages</label>
                             <label class="mx-1" *ngIf="activeClassFav==true">{{Portfolio_FavoritePage}} of {{NoOfPages}} pages</label>
@@ -484,25 +484,25 @@
                             <a (click)="All_Portfolio()" class="kt-todo__icon" data-toggle="kt-tooltip" title="All"
                             [ngClass]="{'active': activeClassAll}">
                             <i class="flaticon2-indent-dots"></i>
-                            
+
                         </a>
                         <a (click)="Owners_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
                             title="Owner" [ngClass]="{'active': activeClassOwners}">
                             <!-- <i class="la la-user"></i> -->
                             <i class="flaticon2-user"></i>
-                            
+
                         </a>
                         <a (click)="Shared_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
                             title="Shared" [ngClass]="{'active': activeClassShare}">
                             <!-- <i class="la la-share-alt"></i> -->
                             <i class="fas fa-share-alt"></i>
-                            
+
                         </a>
                         <a (click)="Favourite_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
                             title="Favourite" [ngClass]="{'active': activeClassFav}">
                             <!-- <i class="la la-star-o"></i> -->
                             <i class="fas fa-star"></i>
-                            
+
                         </a>
 
                         <a [hidden]="Z2A" (click)="_SortPortfoliolist()" class="kt-todo__icon"

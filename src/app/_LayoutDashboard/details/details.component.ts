@@ -890,14 +890,14 @@ projecttypes : any
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.errorFetchingProjectInfo=false;
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {    
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
       try{
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       }catch(er){
         console.log('project Info fetching failure:',er);
         this.errorFetchingProjectInfo=true;
       }
-      this.Submission = JSON.parse(res[0].submission_json);  
+      this.Submission = JSON.parse(res[0].submission_json);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
         this.requestaccessList.forEach(element => {
@@ -975,7 +975,7 @@ projecttypes : any
       // });
 
 
-      console.log("projectInfo:", this.projectInfo, "projectActionInfo:", this.projectActionInfo)
+      console.log("projectInfo:", this.projectInfo, "projectActionInfossssssssssssssss:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
 
@@ -1314,7 +1314,7 @@ debugger
                               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
                               ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
                               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
-                              ['Project Complete','Project Complete Rejected'].includes(_Value)?'Project Complete':
+                              ['Project Complete','Project Complete Rejected','Project Complete transferred'].includes(_Value)?'Project Complete':
                               _Value;
                  }
                  _actvy._type=result.trim();
@@ -3668,11 +3668,12 @@ check_allocation() {
     this.ObjSubTaskDTO.PageSize = 10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
       .subscribe(data1 => {
-
+debugger
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
         // console.log("bhai this is your DAR array:", this.darArray);
         this.totalHours = (data1[0]['Totalhours']);
+        console.log(this.totalHours,"this.totalhourtotalhour")
         this.totalRecords = (data1[0]['TotalRecords']);
         if (this.darList.length == 0) {
           this.noTimeline = true;
@@ -3760,7 +3761,7 @@ check_allocation() {
 
 
  submitDar(){
-
+debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
@@ -4985,9 +4986,9 @@ $('#acts-attachments-tab-btn').removeClass('active');
     if(bx){
         const btn:any=document.querySelector(bx);
         if(btn&&btn.getAttribute('aria-expanded')=='false'){
-          btn.click();  
-        } 
-    }         
+          btn.click();
+        }
+    }
   }
 
 
@@ -5457,8 +5458,9 @@ debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-        console.log(this.EventScheduledjson, "Testing1");
-        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
+    
+        this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
+       
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -5757,7 +5759,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
-    debugger
+   
     this._StartDate = event.value;
     // let sd = event.value.format("YYYY-MM-DD").toString();
     let sd = event.format("YYYY-MM-DD").toString();
@@ -5815,6 +5817,35 @@ getChangeSubtaskDetais(Project_Code) {
         date.setDate(date.getDate() + 1);
       }
     }
+     // valid starttimearr setting start.
+     let _inputdate=event;
+     let _currentdate=moment();
+     if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+     {
+         const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+         const index:number=this.StartTimearr.findIndex((item:any)=>{
+             const t=moment(item,'h:mm A');
+             const result=t>=ct;
+             return result;
+         });
+         this.validStartTimearr=this.StartTimearr.slice(index);
+ 
+     // verify whether starttime and endtime are valid or not. start
+     _currentdate.format('h:mm A');
+ 
+     const inputtime1=moment(this.Startts,'h:mm A');
+     const inputtime2=moment(this.Endtms,'h:mm A');
+     if(inputtime1<ct)
+       this.Startts=this.validStartTimearr[0];
+     if(inputtime2<ct)
+       this.Endtms=this.validStartTimearr[1];
+ 
+    // verify whether starttime and endtime are valid or not. end
+ 
+     }
+     else
+     this.validStartTimearr=[...this.StartTimearr];
+     // valid starttimearr setting end.
 
   }
 
@@ -6349,7 +6380,7 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-    debugger
+  
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -8227,6 +8258,7 @@ cancelAction(index) {
         this.approvalObj.Remarks = this.hold_remarks;
 
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+          debugger
           this.closePrjCancelSb();
           this._Message = (data['message']);
           if (this._Message == '1') {
@@ -8356,7 +8388,7 @@ showActionsWith0AlcHrs(){
 this.filteredPrjAction=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0);
 }
 
-showSelfAssignedActns(userno){  
+showSelfAssignedActns(userno){
   if(userno){
     this.filteredPrjAction = this.projectActionInfo.filter((item) => {
       return (item.Project_Owner == item.Team_Res) && (item.Team_Res == userno);
@@ -8808,7 +8840,7 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-  if (this.agendaInput && this.agendaInput.trim().length > 0) {
+  if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -8868,6 +8900,8 @@ cancelAgendaEdit(index: number) {
 
 updateAgenda(index: number) {
   const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  
+  if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
   this.allAgendas[index].name = tf.value;
 
   $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
@@ -8877,7 +8911,11 @@ updateAgenda(index: number) {
   $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
   $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 
-
+} else if (tf.value.trim().length == 0){
+  this.notifyService.showInfo("Please enter atleast one word","");
+}else {
+  this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+}
   console.log('all agendas after updating:', this.allAgendas);
 }
 // agenda in event creation end
@@ -9422,7 +9460,7 @@ debugger
     this.Startts &&
     this.Endtms &&
     this.MinLastNameLength
-    && (this.ScheduleType === 'Event' ?  ( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
+    && (this.ScheduleType === 'Event' ? this.allAgendas.length > 0 : true)
   ) {
     this.OnSubmitSchedule1();
     this.notProvided = false;
@@ -9758,7 +9796,7 @@ OnSubmitSchedule1() { debugger
             this.Getdraft_datalistmeeting();
             this.draftid = 0
           }
-          this.notifyService.showSuccess(this._Message, "Success");
+          this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
         }
         else {
           this.notifyService.showError(this._Message, "Failed");
@@ -9972,7 +10010,7 @@ onPrjAuditSubmitClicked(){
      const project_code:string=this.projectInfo.Project_Code;
      const empno:string=this.Current_user_ID;
      const auditor:string=this.emp_Auditor;
-     const remarks:string=this.empAuditor_remarks;   
+     const remarks:string=this.empAuditor_remarks;
      this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
           console.log(res);
           this.auditBtnDisabled=false;    // audit processing end
@@ -10000,7 +10038,7 @@ onTransferBtnClicked(){
       const project_code:string=this.projectInfo.Project_Code;
       const empno:string=this.Current_user_ID;
       const remarks:string=this.empAuditor_remarks;
-      const newowner:string=this.emp_Auditor;   
+      const newowner:string=this.emp_Auditor;
       this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
         this.transferBtnDisabled=false;  // processing end.
                  if(res&&res.message){
@@ -10021,7 +10059,7 @@ onTransferBtnClicked(){
 
 total_userActns:number|undefined;
 // npm i apexcharts@3.52.0    works only on this version.
-loadActionsGantt(){ 
+loadActionsGantt(){
   const all_status={
     'Completed':'#388E3C',
     'InProcess':'#64B5F6',
@@ -10607,22 +10645,22 @@ getNotificationsAnnouncements():string[]{
 
   if(this.myUnderApprvActions.length>0)
   allnotif=[...allnotif,'myUnderApprvActions'];
-  if(this.myDelayPrjActions.length>0) 
-  allnotif=[...allnotif,'myDelayPrjActions'];   
+  if(this.myDelayPrjActions.length>0)
+  allnotif=[...allnotif,'myDelayPrjActions'];
   if(+this.ProjectPercentage>100)
-  allnotif=[...allnotif,'ProjectPercentage']; 
-  if(([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&this.delayActionsOfEmps.length>0) 
-  allnotif=[...allnotif,'delayActionsOfEmps']; 
-  if(this.MeetingCount>0) 
+  allnotif=[...allnotif,'ProjectPercentage'];
+  if(([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&this.delayActionsOfEmps.length>0)
+  allnotif=[...allnotif,'delayActionsOfEmps'];
+  if(this.MeetingCount>0)
   allnotif=[...allnotif,'MeetingCount'];
   if(this.actionsWith0hrs&&this.actionsWith0hrs.length>0)
   allnotif=[...allnotif,'actionsWith0hrs'];
-  if(['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(this.activity)) 
+  if(['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(this.activity))
   allnotif=[...allnotif,'Rejected'];
   if(this.projectInfo&&this.projectInfo.Status==='Project Hold')
-  allnotif=[...allnotif,'ProjectHold'];  
+  allnotif=[...allnotif,'ProjectHold'];
   if(this.projectInfo&&this.projectInfo.Status=='Not Started')
-  allnotif=[...allnotif,'NotStarted'];  
+  allnotif=[...allnotif,'NotStarted'];
   if((this.totalStdTskApvs&&this.totalStdTskApvs>0)&&(this.Current_user_ID  == this.standardjson[0].approvalEmpID))
   allnotif=[...allnotif,'totalStdTskApvs'];
   if((this.multiapproval_list&&this.multiapproval_list.length>0)&&(this.Current_user_ID  == this.approvalEmpId))
@@ -10630,22 +10668,34 @@ getNotificationsAnnouncements():string[]{
   if(this.projectInfo.Project_Block==='003')
   allnotif=[...allnotif,'stdTaskDelay'];
   if(this.projectInfo.Status=='Completed'&&this.projectInfo.VersionCode)
-  allnotif=[...allnotif,'VersionCode'];  
+  allnotif=[...allnotif,'VersionCode'];
   if(this.selfAssignedActns&&this.selfAssignedActns.length>0)
   allnotif=[...allnotif,'selfAssignedActns'];
-  if(this.totalPActns4Aprvls>0) 
-  allnotif=[...allnotif,'totalPActns4Aprvls'];   
+  if(this.totalPActns4Aprvls>0)
+  allnotif=[...allnotif,'totalPActns4Aprvls'];
 
    return allnotif;
-}  
+}
 
 //get notifications list.    end
 
 
 
+getFormattedHours(tlTotalHours: number): string {
+  if (tlTotalHours == null) return '00:00'; // or handle other cases as needed
+  const hours = Math.floor(tlTotalHours);
+  const minutes = Math.round((tlTotalHours % 1) * 60);
+  return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
 
+getFormattedDuration(totalDuration: number): string {
+  if (totalDuration == null) return '00:00'; // Handle undefined or null
 
+  const hours = Math.floor(totalDuration);
+  const minutes = Math.round((totalDuration % 1) * 60);
 
+  return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
 
 
 

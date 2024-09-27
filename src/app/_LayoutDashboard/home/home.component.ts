@@ -281,7 +281,7 @@ export class HomeComponent implements OnInit {
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
 
         console.log(this._ListProjStat,"testsssssssssssssssssssssssssssssssssssssss");
-        this.NoOfRecordsPerPage = this._ListProjStat.length;
+        this.NoOfRecordsPerPage = this._ListProjStat&&this._ListProjStat.length;
         // this.AllPortfolioslist = this._ListProjStat;
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
         console.log(this.Companylist_Json,'aaaaaaaaaaaaaaaaaaaaaaaa')
@@ -298,7 +298,8 @@ export class HomeComponent implements OnInit {
         this.NoOfPages = data[0]['NoOfPages'];
         let shrearry: any;
         shrearry = this._ListProjStat;
-        if (this._ListProjStat.length == 0) {
+        if (this._ListProjStat&&this._ListProjStat.length == 0) {
+          this.userFound = true
           this.messageForEmpty = false;
         }
         else {

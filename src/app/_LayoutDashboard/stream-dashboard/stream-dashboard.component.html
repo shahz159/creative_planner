@@ -696,9 +696,9 @@
                                     Portfolios
                                 </div>
                             </div>
-                         
+
                             <div class="portfolio-item-list owl-carousel owl-theme">
-                                <div class="portfolio-item" *ngFor="let item of portfoiloData">
+                                <div class="portfolio-item" *ngFor="let item of portfoiloData" (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
                                     <div class="portfolio-heading">{{item.Portfolio_Name}}</div>
                                     <div class="portfolio-percentage">{{item.AchievementPercentage  | number:'1.0-2' }}%</div>
                                     <div class="portfolio-sub-percentage">{{100 - item.AchievementPercentage  | number:'1.0-2'}}%</div>
@@ -863,18 +863,18 @@
                                     </div> -->
                             </div>
                             <hr>
-                            <div class="position-relative">
+                            <div class="position-relative" *ngFor="let item of darArray">
                                 <div class="card-title mt-3">DAR Status</div>
                             <div>
                                 <div class="dar-title"><span class="dar-dot"></span> Today DAR Achived</div>
-                                <div class="dar-time">05:20</div>
+                                <div class="dar-time">{{item.todayHours }}</div>
                                 <div class="dar-progress">
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                       </div>
                                 </div>
                                 <div class="dar-time-label">
-                                    <span>00:00</span>
+                                    <span>{{item.todayHours | slice:0:5}}</span>
                                     <span>08:00</span>
                                 </div>
                                 <div class="action-tile">
@@ -887,9 +887,9 @@
                                             <div class="action-tile-item-name-v1">Rejected</div>
                                         </div>
                             </div>
-                            <div class="yes-dar">
+                            <div class="yes-dar" (click)="gotoTimeline()" >
                                 <div class="yes-dar-label">Yesterday DAR</div>
-                                <div class="yes-dar-status">Not Submited</div>
+                                <div class="yes-dar-status">{{item.DarStatus}}</div>
                             </div>
                             <!-- <div class="action-tile">
                                 <div class="action-tile-item bgrad-9">

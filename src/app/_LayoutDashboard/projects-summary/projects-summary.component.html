@@ -1174,14 +1174,14 @@
                                                         <div *ngIf="item.Link_Status==1;else not_Linked">
                                                             <a class="curser-pointer ml-2"
                                                                 (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
-                                                                    width="19px"
-                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    width="19px" height="21px"
+                                                                    src="./assets/images/Image (4).jfif"
                                                                     title="Linked"></a>
 
                                                         </div>
                                                         <ng-template #not_Linked>
-                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" class="black-white ml-2"
-                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" height="21px" class="black-white ml-2"
+                                                                    src="./assets/images/Image (4).jfif"
                                                                     title="Not Linked"></a>
                                                         </ng-template>
                                                         </div>
@@ -1570,7 +1570,7 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked memos
+                    <img height="22px" width="22px" src="./assets/images/Image (4).jfif"> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 

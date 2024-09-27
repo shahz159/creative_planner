@@ -687,13 +687,13 @@
                                                           <a class="curser-pointer mr-2"
                                                               (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name)"><img
                                                                   width="19px"
-                                                                  src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                  src="./assets/images/Image (4).jfif"
                                                                   title="Linked"></a>
 
                                                       </span>
                                                       <ng-template #not_Linked>
                                                           <a class="mr-2"><img width="19px" class="black-white"
-                                                                  src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                  src="./assets/images/Image (4).jfif"
                                                                   title="Not linked"></a>
                                                       </ng-template>
 
@@ -1507,7 +1507,7 @@
 
                 <div class="title-sidebar mb-0 text-white">
                     <h5 class="curser-pointer">
-                        <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked
+                        <img width="25px" src="./assets/images/Image (4).jfif"> Linked
                         Memos
                     </h5>
                     <span class="text-small text-white">{{_displayProjName}}</span>
@@ -1624,7 +1624,7 @@
                                      <div>
                                       <div class="form-group" >
                                         <mat-form-field class="drp-dwn-field w-100"   *ngIf="Employeshare">
-                                          <mat-label>Select employee</mat-label>
+                                          <mat-label>Select employee<span class="text-danger"> *</span></mat-label>
                                            <mat-chip-list #selectedEmp2share>
                                             <mat-chip *ngFor="let emptoshare of shareToEmplys" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare)">
                                               {{getObjOf(Employeshare,emptoshare,'Emp_No')?.DisplayName}}-{{getObjOf(Employeshare,emptoshare,'Emp_No')?.TM_DisplayName}}
@@ -1682,10 +1682,10 @@
 
 
 
-                                  <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
+                                  <p *ngIf="valid&&this.shareToEmplys&&this.shareToEmplys.length ===0" class="text-danger"><b> Please select employee</b></p>
                               </div>
                               <div class="form-group mb-0">
-                                  <label class="mb-3">Preferences</label>
+                                  <label class="mb-3">Preferences<span class="text-danger"> *</span></label>
                                   <div>
                                       <div class="form-check-inline">
                                           <label class="form-check-label">
@@ -1703,7 +1703,7 @@
                                       </div>
                                   </div>
                               </div>
-                              <p class="text-danger"><b> {{this._ErrorMessage_Pref}}</b></p>
+                              <p *ngIf="valid&&!preferences" class="text-danger"><b>Please select preferece</b></p>
                               &nbsp;     &nbsp;
                               <div class="form-group mb-0">
                                 <div class="form-group mb-0">
@@ -3578,9 +3578,9 @@
                                     placeholder="Add title" type="text" [(ngModel)]="Title_Name"
                                     minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                 <div class="d-flex flex-column ">
-                                <span style="color:red" [hidden]="MinLastNameLength">min length 3</span>
+                                <span style="color:red" [hidden]="MinLastNameLength">Please enter min length 3.</span>
                                 <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">please enter title name</span>
-                                <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">title should not exceed 100 characters.</span>
+                                <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters.</span>
                                </div>
                             </div>
                             <div *ngIf="create==true" class="d-flex align-items-center">
@@ -3639,15 +3639,15 @@
                                         </div>
                                         <div class="schedule-dt-text" *ngIf="_StartDate&&Startts&&Endtms">
                                             <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                            <span>This {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} will take place on {{_StartDate|date:'MMMM d,y'}} from {{Startts}} until {{Endtms}}</span>
+                                            <span>This {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} will take place on {{_StartDate|date:'MMMM d, y'}} from {{Startts}} until {{Endtms}}</span>
                                         </div>
                                         <span *ngIf="!_StartDate&&notProvided" style="color:red">please select schedule date.</span>
 
                                     <ng-container *ngIf="notProvided">
-                                        <span *ngIf="!(Startts||Endtms); else strtendrq" style="color:red">please select start time and end time.</span>
+                                        <span *ngIf="!(Startts||Endtms); else strtendrq" style="color:red">Please select start time and end time.</span>
                                         <ng-template #strtendrq>
-                                        <span *ngIf="!Startts" style="color:red">please select start time.</span>
-                                        <span *ngIf="!Endtms" style="color:red" >please select end time.</span>
+                                        <span *ngIf="!Startts" style="color:red">Please select start time.</span>
+                                        <span *ngIf="!Endtms" style="color:red" >Please select end time.</span>
                                         </ng-template>
                                     </ng-container>
 
@@ -3884,11 +3884,13 @@
                                 <div class="task-count"></div>
                             </div>
                             <div class="agenda-input-field">
-                                <input class="form-control task-input" id="todo-input" name="text" placeholder="Add Agenda and press 'Enter'." autofocus="true"
-                                [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
+                                <input class="form-control task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter'" autofocus="true"
+                               [(ngModel)]="agendaInput"
+                                [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"    (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
                                 />
-                            <button *ngIf="agendaInput" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                            <button *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                             </div>
+                            <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
                         </div>
 
 
@@ -4021,13 +4023,13 @@
             </div>
         </div>
         <div class="se-col-11">
-            <div [ngClass]="{'error-borderbottom':((!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided)}"   [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
+            <div [ngStyle]="{cursor:subtashDrpLoading?'not-allowed':'pointer'}" class="schedule-select project"  type="button" (click)="subtashDrpLoading?undefined:projectmodal('participant')">
                 <div class="title">{{subtashDrpLoading?'Loading...':(ngEmployeeDropdown&&ngEmployeeDropdown.length>0?'Add more participants':'Add participant')}}</div>
                 <div *ngIf="subtashDrpLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span>
+            <!-- <span style="color:red" *ngIf="(!ngEmployeeDropdown || ngEmployeeDropdown.length==0)&&notProvided"> Please provide atleast one participants.</span> -->
             <ul class="schedule-select-user-list" *ngIf="subtashDrpLoading==false">
                 <li *ngFor="let empno of ngEmployeeDropdown">
                    <div class="schedule-select-user-list-item">
@@ -4167,7 +4169,7 @@
 <div class="se-row" id="core_Dms" style="display:none">
 <div class="se-col-1">
   <div class="label-icon">
-      <img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" >
+      <img width="19px" class="black-white" width="23px" height="25px" src="./assets/images/Image (4).jfif" >
   </div>
 </div>
 <div class="se-col-11">
@@ -4198,7 +4200,7 @@
           <div class="modal-content">
             <div class="modal-header  gap-1">
                <ng-container *ngIf="projectmodaltype">
-                        <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                        <img *ngIf="projectmodaltype==='SMail'" width="21px" class="black-white   mt-1 mb-1" src="./assets/images/Image (4).jfif" height="22"/>
                         <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                             <path
                                 d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">

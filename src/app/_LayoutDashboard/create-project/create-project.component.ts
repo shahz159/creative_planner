@@ -332,7 +332,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   displaymessagemain(value: string): void {
-
+debugger
     // this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
     const messages = {
       'Duration': {
