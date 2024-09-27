@@ -1057,7 +1057,8 @@ button.Kt-Approval-btns {
 }
 
 .kt-action-p-tittle {
-  margin-bottom: 11px;
+  /* margin-bottom: 11px; */
+  margin-bottom:4px;
 }
 
 .Status-done {
@@ -1511,6 +1512,11 @@ label.my-chosse-flv {
 .CompletionUnderApproval {
   background-color: #81C784 !important;
   color: white !important;
+}
+
+.AuditUnderApproval{
+   background-color: #A5D6A7 !important;
+   color: #fff;
 }
 
 .DeadlineExtend {
@@ -1975,7 +1981,7 @@ a.kt-inbox__icon:hover svg path {
 }
 
 .Bt-Submit {
-  padding: 4px 1px;
+  /* padding: 4px 1px; */
   background-color: transparent;
   color: #2786fb;
   font-size: 14px;
@@ -3918,6 +3924,7 @@ a.Kt_cmt_user_name {
   color: #071437;
   border-radius: 0.475rem;
   font-weight: 500;
+
 }
 
 .bg-light-orange {
@@ -4857,6 +4864,7 @@ p.kt-dt-l {
   color: #959595;
 }
 
+
 .project-users .user-initial {
   width: 100%;
   height: 100%;
@@ -4989,7 +4997,6 @@ p.kt-dt-l {
   background-color: #E0E0E0 !important;
   color: black;
 }
-
 .todo-completed {
   background-color: #62B134 !important;
   color: white !important;
@@ -6733,7 +6740,7 @@ div#User_list_View.kt-quick-active--on {
   transition: all .3s ease;
 }
 .Bt-close {
-  padding: 4px 1px;
+  /* padding: 4px 1px; */
   background-color: transparent;
   color: #a7a7a7;
   font-size: 14px;
@@ -8498,7 +8505,7 @@ span.time-value {
 
 /*completion report css end */
 .diff-div {
-  background: #f9f9f9;
+  background: #f9f9f9 !important;
 }
 .kt-detail-link {
   border: 1px solid #9fbbff;
@@ -8758,4 +8765,43 @@ color:#1E88E5 !important ;
 }
 .new_pro_rej{
   color: #ba68c8 !important;
+}
+
+.extra-at-status{
+    width: fit-content;
+    border: 2px solid gray;
+    padding-left: 5px;
+    padding-right: 6px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    position: relative;
+    left: -1px;
+    color: gray;
+    font-weight: 600;
+    text-wrap: nowrap;
+}
+
+
+
+.aprovls-sectn-forms{
+  margin-top: 13px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 20px 1px #ccc;
+}
+
+
+
+.inactive-prjusr .user-details h6{
+   /* color: #b3b3b3 !important; */
+   opacity: 0.3 !important;
+}
+
+.inactive-prjusr .inactv-label{
+  background-color: #ff000026 !important;
+}
+.inactive-prjusr .inactv-label span{
+  background-color: transparent !important;
+  color: #D32F2F !important;
 }

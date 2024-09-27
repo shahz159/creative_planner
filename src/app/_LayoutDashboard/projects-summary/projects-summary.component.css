@@ -3478,3 +3478,13 @@ td:nth-child(4) {
 .vi{
   color:#D32F2F !important ;
 }
+
+
+.AuditUnderApproval{
+  background-color: #A5D6A7 !important;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}

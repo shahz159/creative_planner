@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
   validStartTimearr:any=[];
   Projectstartdate: string = "";
   projectEnddate: string;
-  Status_project: string; days
+  Status_project: string; 
   AllocatedHours: number;
   St_date: string = "";
   Ed_date: string;

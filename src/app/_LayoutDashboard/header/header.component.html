@@ -433,7 +433,8 @@
                     </div>
                 </div>
                 <div class="kt-notification">
-                    <a routerLink="settings/myprofile" routerLinkActive="active" class="kt-notification__item">
+                    <!-- routerLink="settings/myprofile" routerLinkActive="active" -->
+                    <a (click)="navigate('/backend/settings/myprofile')" class="kt-notification__item"  [ngClass]="{'active':sectionActive=='/backend/settings/myprofile'}">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-calendar-3 kt-font-success"></i>
                         </div>
@@ -446,7 +447,8 @@
                             </div>
                         </div>
                     </a>
-                    <a routerLink="settings/privacypolicy" routerLinkActive="active" class="kt-notification__item">
+                    <!-- routerLink="settings/privacypolicy" routerLinkActive="active" -->
+                    <a (click)="navigate('/backend/settings/privacypolicy')"  class="kt-notification__item" [ngClass]="{'active':sectionActive=='/backend/settings/privacypolicy'}">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-crisp-icons kt-font-primary"></i>
                         </div>
@@ -473,7 +475,7 @@
                         </div>
                     </a> -->
                     <div class="kt-notification__custom kt-space-between">
-                        <a  (click)="logout()" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign out</a>
+                        <a  (click)="onLogoutBtnClicked()" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign out</a>
                     </div>
                 </div>
                 <!--end: Navigation -->
@@ -857,7 +859,7 @@
         </div>
         <div class="kt-portlet__foot py-2">
             <div class="text-center">
-                <button class="btn-info btn btn-sm" (click)="viewTimeline()">
+                <button class="btn-info btn btn-sm" (click)="viewTimelineBtnClicked()">
                     View all
                 </button>
             </div>

@@ -1408,3 +1408,14 @@ td:nth-child(4) {
 }
 
 /*new details page loading circle end*/
+
+
+
+.AuditUnderApproval{
+  background-color: #A5D6A7 !important;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}

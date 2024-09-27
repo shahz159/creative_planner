@@ -148,7 +148,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     this.Current_user_ID = localStorage.getItem('EmpNo');
 
     this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
-      (data) => {
+      (data) => {  console.log("asdf::::::",data)
         this.PortfolioList = data as PortfolioDTO;
         console.log(this.PortfolioList,"portfoliosubn;");
       });
@@ -561,6 +561,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
+    console.log('Employee List:',this._ObjCompletedProj);
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {
         this.isDropdownDataLoaded=true;
@@ -1511,6 +1512,7 @@ getProjectTypeList() {
   this._ObjCompletedProj.PageNumber = 1;
   this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
   this._ObjCompletedProj.Mode = 'AssignedTask';
+  console.log('project type list inputs:',this._ObjCompletedProj);
   this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
     (data) => {
       this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);

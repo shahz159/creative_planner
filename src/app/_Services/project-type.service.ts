@@ -212,8 +212,8 @@ export class ProjectTypeService {
     this.ObjUserDetails.Emp_No = EmpNo;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
-    this.ObjUserDetails.SearchText = obj.SearchText;
-    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
+    this.ObjUserDetails.SearchText = obj.SearchText;  
+    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;  
     return this.http.post(this.rootUrl + "Projects/NewGetProjectsForRunwayTask", this.ObjUserDetails);
   }
   GetDeadlineByProjectCode(Project_Code) {
@@ -431,7 +431,7 @@ export class ProjectTypeService {
   ObjSubTaskDTO: SubTaskDTO;
 
   GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
-    this.ObjSubTaskDTO.Project_Code = prjCode;
+    this.ObjSubTaskDTO.Project_Code = prjCode;    console.log("---->",this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees");
     return this.http.post(this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees", this.ObjSubTaskDTO);
   }
 
@@ -595,7 +595,6 @@ export class ProjectTypeService {
     this._ObjCompletedProj.Agenda_Id = objDTO.Agenda_Id;
     this._ObjCompletedProj.Filter = objDTO.Filter;
     this._ObjCompletedProj.Project_SearchText = objDTO.Project_SearchText;
-
     console.log(this._ObjCompletedProj,'_ObjCompletedProj')
     return this.http.post(this.rootUrl + "Notification/NewGetCompletedProjects", this._ObjCompletedProj);
   }
