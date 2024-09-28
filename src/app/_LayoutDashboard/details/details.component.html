@@ -2550,7 +2550,25 @@
                     </ng-container><b>.</b>
             </span>
             </div>
-          
+
+             <div class="notification ownership-transfered-notf">
+                <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
+                  <g><g>
+                      <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
+                      <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
+                      <path d="M383.687,329.941c-2.064-4.936-7.03-8.098-11.771-10.043l-32.05-14.756l-15.396-12.984l-24.692,24.562l10.348,69.186 c0.036,0.238-0.023,0.484-0.167,0.682l-10.92,14.943c-0.174,0.238-0.45,0.379-0.746,0.379c-0.295,0-0.571-0.141-0.745-0.379 l-10.918-14.943c-0.145-0.195-0.204-0.441-0.168-0.682l10.348-69.186l-24.692-24.562l-15.397,12.984l-32.048,14.756 c-4.743,1.945-10.207,6.34-11.772,10.043c0,0-34.834,82.938-15.94,82.938h202.674C418.521,412.877,383.687,329.941,383.687,329.941z"></path>
+                      <path d="M240.498,209.939c0.557,51.213,25.015,81.752,57.792,81.752s57.236-30.539,57.795-81.752 c0.355-35.539-16.57-56.807-57.795-56.807C257.064,153.133,240.135,174.401,240.498,209.939z"></path>
+                      <path d="M201.348,31.93c41.489,0,78.794,23.886,96.431,60.586l-9.229,1.771c-2.341,0.449-4.266,2.112-5.046,4.365 c-0.781,2.252-0.303,4.75,1.258,6.554l27.264,31.512c1.279,1.48,3.129,2.307,5.045,2.307c0.418,0,0.839-0.038,1.258-0.119 c2.342-0.449,4.266-2.114,5.049-4.366l13.662-39.366c0.781-2.253,0.302-4.751-1.259-6.554c-1.56-1.804-3.966-2.639-6.304-2.188 l-11.475,2.203c-19.918-46.272-65.622-76.724-116.655-76.724c-5.529,0-10.011,4.48-10.011,10.01 C191.337,27.449,195.819,31.93,201.348,31.93z" style="stroke-width: 15px;"></path>
+                    </g>
+                  </g> 
+                </svg>
+                <span class="notif-msg">
+                  <span>Project ownership has been transferred to you by 'Aquib Shahbaz'.</span>
+                  <span class="fs-7">Remarks: I have completed testing for this project. Please review, take control, and contact me for further discussion if needed.</span>
+                </span>
+              </div>
+              
+         
               </ng-template>
 
                  </div>
@@ -3028,6 +3046,13 @@
                                                       </ng-container>
 
           
+                                                      <div title="Approve it, to appreciate project team for great work."
+                                                      [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'"
+                                                      (click)="approvalClick('ACCEPT')">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
+                                                      <span class="kt-detail-iconname">Accept</span>
+                                                    </div>
+
                                                       <div title="Reject as to type of rejection, which help user to modify the project accordingly."
                                                           [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
                                                           (click)="approvalClick('REJECT')">
@@ -3380,6 +3405,20 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mt-3 px-3" id="kt_open_scroll">
+
+
+                                                            <div class="col-lg-12 mb-3 p-3" style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <h6 style="text-align:left;margin:0;">Project Ownership changed</h6>
+                                                                    <h6 class="text-muted" style="margin:0;">Date: 20-09-2023</h6>
+                                                                </div>
+                                                                <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Aquib Shahbaz</h6>
+                                                                <div>
+                                                                    <span>I am Aq Shahbaz transferring this project to you for testing and approving. Please check and approve it.</span>
+                                                                </div>
+                                                            </div>
+                                                            
+
                                                             <div class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
                                                                 <div class="kt-info-data-v p-2" data-toggle="tooltip"
@@ -3931,15 +3970,41 @@
                                                                                       <svg *ngSwitchCase="'New Project'" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="  width: 15px; height: 15px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>project-new</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#0287ca" transform="translate(64.000000, 34.346667)"> <path d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g>
                                                                                       </svg>
 
-                                                                                      <ng-container *ngSwitchCase="'Project Complete'">
-                                                                                          <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
-                                                                                                  <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
-                                                                                          </svg>
+                                                                                      <!-- <ng-container *ngSwitchCase="'Project Complete'">
+                                                                     
+                                                                                      </ng-container> -->
 
-                                                                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left:7.2px;top: -3.5px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                                                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
-                                                                                          </svg>
-                                                                                      </ng-container>
+
+
+                                                                                      <ng-container *ngSwitchCase="'Project Complete'">
+                                                                                        <ng-container *ngIf="item.Value=='Project Complete'">
+                                                                                            <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                                                                <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                                                                        </svg>
+
+                                                                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 19px;height: 20px;position: absolute;left:7.2px;top: -3.5px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
+                                                                                        </svg>
+                                                                                       </ng-container>
+                                                    
+                                                                                     <ng-container *ngIf="item.Value&&item.Value.includes('Project Complete transferred to')">
+                                                                                       <svg viewBox="0 -3.5 24 24" id="meteor-icon-kit__regular-forward" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 13px;height: 13px;position: absolute;top: 2px;left: 15px;">
+                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5858 6H10C5.58172 6 2 9.5817 2 14V16.0312C2 16.5835 1.55228 17.0312 1 17.0312C0.447715 17.0312 0 16.5835 0 16.0312V14C0 8.4772 4.47715 4 10 4H15.5858L13.2929 1.70711C12.9024 1.31658 12.9024 0.68342 13.2929 0.29289C13.6834 -0.09763 14.3166 -0.09763 14.7071 0.29289L18.7071 4.29289C19.0976 4.68342 19.0976 5.31658 18.7071 5.70711L14.7071 9.7071C14.3166 10.0976 13.6834 10.0976 13.2929 9.7071C12.9024 9.3166 12.9024 8.6834 13.2929 8.2929L15.5858 6zM21.5858 5L18.2929 1.70711C17.9024 1.31658 17.9024 0.68342 18.2929 0.29289C18.6834 -0.09763 19.3166 -0.09763 19.7071 0.29289L23.7071 4.29289C24.0976 4.68342 24.0976 5.31658 23.7071 5.70711L19.7071 9.7071C19.3166 10.0976 18.6834 10.0976 18.2929 9.7071C17.9024 9.3166 17.9024 8.6834 18.2929 8.2929L21.5858 5z" fill="blue"></path>
+                                                                                        </g>
+                                                                                      </svg>
+                                                                                      <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                                                                        <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                                                                       </svg>
+                                                                                    </ng-container>
+                                                    
+                                                    
+                                                                                    <ng-container *ngIf="item.Value!='Project Complete'&&(!item.Value.includes('Project Complete transferred to'))">
+                                                                                        <svg fill="#ff0000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 14px; height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
+                                                                                        </svg>
+                                                                                    </ng-container>
+                                                    
+                                                                                    </ng-container>
 
                                                                                       <ng-container *ngSwitchCase="'Action Complete'">
                                                                                           <svg style="width:21px !important; height:25px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
@@ -6483,6 +6548,14 @@
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"> </path></g></g>
                                                         </svg>
 
+
+                                                        <svg *ngSwitchCase="'Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-deny" fill="currentColor" stroke="currentColor">
+                                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g> <g id="SVGRepo_iconCarrier"><defs> </defs>
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"> </path></g></g>
+                                                        </svg>
+
+                                                        
+
                                                         <!-- <svg *ngSwitchCase="'Project Complete Rejected'" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 14px; height: 20px;  fill:red;  "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
                                                         </svg> -->
 
@@ -6837,11 +6910,17 @@
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"> </path></g></g>
                                </svg>
 
+
+                               <svg *ngSwitchCase="'Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-deny" fill="currentColor" stroke="currentColor">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g> <g id="SVGRepo_iconCarrier"><defs> </defs>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"> </path></g></g>
+                               </svg>
+
                                 <svg *ngSwitchCase="'New Project'" width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="  width: 24px;height: 24px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Combined-Shape" fill="#0287ca" transform="translate(87, 65.346667) scale(0.9)"> <path d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"> </path> </g> </g> </g>
                                 </svg>
 
                                 <ng-container *ngSwitchCase="'Project Complete'">
-                                    <ng-container *ngIf="data.Value=='Project Complete';else prj_complete_rejected">
+                                    <ng-container *ngIf="data.Value=='Project Complete'">
                                         <svg style="width:23px !important; height:30px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
                                                 <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
                                         </svg>
@@ -6850,10 +6929,24 @@
                                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
                                         </svg>
                                    </ng-container>
-                                   <ng-template #prj_complete_rejected>
-                                        <svg fill="#ff0000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 14px; height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
-                                        </svg>
-                                   </ng-template>
+
+                                 <ng-container *ngIf="data.Value&&data.Value.includes('Project Complete transferred to')">
+                                   <svg viewBox="0 -3.5 24 24" id="meteor-icon-kit__regular-forward" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 13px;height: 13px;position: absolute;top: 2px;left: 15px;">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5858 6H10C5.58172 6 2 9.5817 2 14V16.0312C2 16.5835 1.55228 17.0312 1 17.0312C0.447715 17.0312 0 16.5835 0 16.0312V14C0 8.4772 4.47715 4 10 4H15.5858L13.2929 1.70711C12.9024 1.31658 12.9024 0.68342 13.2929 0.29289C13.6834 -0.09763 14.3166 -0.09763 14.7071 0.29289L18.7071 4.29289C19.0976 4.68342 19.0976 5.31658 18.7071 5.70711L14.7071 9.7071C14.3166 10.0976 13.6834 10.0976 13.2929 9.7071C12.9024 9.3166 12.9024 8.6834 13.2929 8.2929L15.5858 6zM21.5858 5L18.2929 1.70711C17.9024 1.31658 17.9024 0.68342 18.2929 0.29289C18.6834 -0.09763 19.3166 -0.09763 19.7071 0.29289L23.7071 4.29289C24.0976 4.68342 24.0976 5.31658 23.7071 5.70711L19.7071 9.7071C19.3166 10.0976 18.6834 10.0976 18.2929 9.7071C17.9024 9.3166 17.9024 8.6834 18.2929 8.2929L21.5858 5z" fill="blue"></path>
+                                    </g>
+                                  </svg>
+                                  <svg style="width:23px !important; height:30px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
+                                    <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
+                                  </svg>
+                                </ng-container>
+
+
+                                <ng-container *ngIf="data.Value!='Project Complete'&&(!data.Value.includes('Project Complete transferred to'))">
+                                    <svg fill="#ff0000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 14px; height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
+                                    </svg>
+                                </ng-container>
+
                                 </ng-container>
 
                                 <ng-container *ngSwitchCase="'Action Complete'">
