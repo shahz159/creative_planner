@@ -1305,7 +1305,9 @@ debugger
           this.Activity_List.forEach((_actvy)=>{
                  let result='others';
                  if(_actvy.Value){
+                    
                  const _Value=_actvy.Value.trim(); 
+                    
                        result=/New Action- ".*"/.test(_Value)?'New Action':
                               (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
                               /Action Complete- ".*"/.test(_Value)?'Action Complete':
@@ -1314,7 +1316,7 @@ debugger
                               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
                               ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
                               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
-                              ['Project Complete','Project Complete Rejected','Project Complete transferred'].includes(_Value)?'Project Complete':
+                              (['Project Complete','Project Complete Rejected'].includes(_Value)||/Project Complete transferred to ".*"/.test(_Value))?'Project Complete':
                               _Value;
                  }
                  _actvy._type=result.trim();
