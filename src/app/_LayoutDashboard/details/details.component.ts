@@ -146,6 +146,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   requestDeadline: any;
   approvalEmpId: any;
   requestComments: any;
+  newcomments:any;
   new_deadline: any;
   newResponsible: any;
   previouscoments: boolean = false;
@@ -2210,6 +2211,7 @@ multipleback(){
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.newcomments = (this.requestDetails[0]['NewRemarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
@@ -4606,6 +4608,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.action_assignedby = (this.requestDetails[0]['Submitted_By']);
         // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.newcomments = (this.requestDetails[0]['NewRemarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);

@@ -846,8 +846,8 @@ onFileChanged(event: any) {
      // when moving out from the 3rd step.
     
     Swal.fire({
-        title:'Project Not Submitted',
-        text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+        title:'Project not submitted',
+        text:"Click on 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
         showConfirmButton:true,
         confirmButtonText:'Keep as draft',
         showCancelButton:true,
