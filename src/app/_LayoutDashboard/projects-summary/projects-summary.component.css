@@ -3274,7 +3274,7 @@ td:nth-child(4) {
   border-radius: .25rem;
   transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
   display: none;
-  z-index: 1;
+  z-index: 2;
 }
 .attach-tippy-div:hover .st-line{
   display: block;
@@ -3487,4 +3487,84 @@ td:nth-child(4) {
   border-radius: 3px;
   width: max-content;
   display: inline-block;
+}
+.pulsing-div{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+}
+.pulsing-dot {
+  /* z-index: 10; */
+  box-sizing: content-box;
+  display: flex;
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulsing-dot:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #456999;
+  border-radius: 50%;
+  animation: pulse-border 1s ease-out infinite;
+}
+
+.pulsing-dot:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  /* transform: translateX(-50%) translateY(-50%); */
+  transform: translateX(-44%) translateY(-44%);
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #7393bd;
+  border-radius: 50%;
+  transition: all 200ms;
+}
+
+.pulsing-dot.pulsing-dot-stat:after{
+  background: #888888;
+}
+.pulsing-dot.pulsing-dot-stat:before{
+  background: #757171;
+}
+.pulsing-dot-label{
+  display: flex;
+  width: max-content;
+  color: #979797;
+}
+@keyframes pulse-border {
+  0% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+      opacity: 1;
+    }
+    25% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+      opacity: 0.75;
+    }
+      50% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.75);
+      opacity: 0.5;
+    }
+        75% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(2);
+      opacity: 0.25;
+    }
+      100% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(2.5);
+      opacity: 0;
+    }
 }

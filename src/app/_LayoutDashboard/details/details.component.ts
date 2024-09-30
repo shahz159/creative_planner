@@ -179,6 +179,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   taskDelayedby:number|undefined;
   projectAuditor:any;
   loading: boolean = false;
+  actionowner_dropdown:any;
+  actionresponsible_dropdown:any;
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -544,7 +546,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  }],
                  chart: {
                    type: 'bar',
-                   height: 350
+                   height: 350,
                  },
                  plotOptions: {
                    bar: {
@@ -1447,8 +1449,15 @@ debugger
        if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
          this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
        }
+       this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
+        (data) => {
+          console.log(data, "action racis");
+          this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+          this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        });
     }
 
+  
 
 
 
@@ -3569,7 +3578,7 @@ currentStdAprView:number|undefined;
             this.notifyService.showError("Not updated", "Failed");
           }
           else if (data['message'] == '5') {
-            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
           }
           else if (data['message'] == '6') {
             this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
@@ -3608,7 +3617,7 @@ currentStdAprView:number|undefined;
         this.notifyService.showError("Not updated", "Failed");
       }
       else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
       }
       else if (data['message'] == '6') {
         this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");

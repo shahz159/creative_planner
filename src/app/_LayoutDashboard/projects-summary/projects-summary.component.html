@@ -1351,8 +1351,12 @@
                                                                  <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                               </span>
-                                                              <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span>
+                                                              <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> -->
+                                                            <div class="pulsing-div">
+                                                                <span class="pulsing-dot pulsing-dot-stat"></span>
+                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div>
                                                             </div>
 
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">

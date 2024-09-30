@@ -771,7 +771,11 @@
                                                         *ngIf="(requestType&&projectInfo.ApproverName)||isPrjContainAprvls">
                                                         <div class="Paf_info">
                                                             <label>Pending approval</label>
-                                                            <p><span class="Dote_red"></span> {{projectInfo.ApproverName}}</p>
+                                                            <!-- <p><span class="Dote_red"></span> {{projectInfo.ApproverName}}</p> -->
+                                                            <div class="pulsing-div">
+                                                                <span class="pulsing-dot pulsing-dot-pending"></span>
+                                                                <span class="pulsing-dot-label"> {{projectInfo.ApproverName}} </span>
+                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -2081,7 +2085,8 @@
                     (projectInfo.Status=='Completed'&&projectInfo.VersionCode)||
                     (actionsWith0hrs&&actionsWith0hrs.length>0)||
                     (selfAssignedActns&&selfAssignedActns.length>0)||
-                    (totalPActns4Aprvls>0)||(projectInfo.AuditStatus=='Audit Pending')
+                    (totalPActns4Aprvls>0)||
+                    (projectInfo.AuditStatus=='Audit Pending'&& Current_user_ID==approvalEmpId)
                     ">
 
                 <div class="kt-Note-msg  d-flex">
@@ -2171,15 +2176,9 @@
 
               <ng-template #allNotificationsTemplate>
                 <div class="notification ownership-transfered-notf"  *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId">
-                    <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
-                      <g><g>
-                          <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
-                          <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
-                          <path d="M383.687,329.941c-2.064-4.936-7.03-8.098-11.771-10.043l-32.05-14.756l-15.396-12.984l-24.692,24.562l10.348,69.186 c0.036,0.238-0.023,0.484-0.167,0.682l-10.92,14.943c-0.174,0.238-0.45,0.379-0.746,0.379c-0.295,0-0.571-0.141-0.745-0.379 l-10.918-14.943c-0.145-0.195-0.204-0.441-0.168-0.682l10.348-69.186l-24.692-24.562l-15.397,12.984l-32.048,14.756 c-4.743,1.945-10.207,6.34-11.772,10.043c0,0-34.834,82.938-15.94,82.938h202.674C418.521,412.877,383.687,329.941,383.687,329.941z"></path>
-                          <path d="M240.498,209.939c0.557,51.213,25.015,81.752,57.792,81.752s57.236-30.539,57.795-81.752 c0.355-35.539-16.57-56.807-57.795-56.807C257.064,153.133,240.135,174.401,240.498,209.939z"></path>
-                          <path d="M201.348,31.93c41.489,0,78.794,23.886,96.431,60.586l-9.229,1.771c-2.341,0.449-4.266,2.112-5.046,4.365 c-0.781,2.252-0.303,4.75,1.258,6.554l27.264,31.512c1.279,1.48,3.129,2.307,5.045,2.307c0.418,0,0.839-0.038,1.258-0.119 c2.342-0.449,4.266-2.114,5.049-4.366l13.662-39.366c0.781-2.253,0.302-4.751-1.259-6.554c-1.56-1.804-3.966-2.639-6.304-2.188 l-11.475,2.203c-19.918-46.272-65.622-76.724-116.655-76.724c-5.529,0-10.011,4.48-10.011,10.01 C191.337,27.449,195.819,31.93,201.348,31.93z" style="stroke-width: 15px;"></path>
-                        </g>
-                      </g> 
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 20px;height: 20px;transform: scale(1.2);vertical-align: middle;fill: #9c27b0;overflow: hidden;">
+                        <path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"></path><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"></path>
+                        <path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"></path>
                     </svg>
                     <span class="notif-msg">
                       <span>Project has been assigned to you for auditing by {{Submitted_By}}.</span>
@@ -3435,7 +3434,7 @@
                                                                 <div>
                                                                     <span>{{newcomments}}</span>
                                                                 </div>
-                                                            </div>
+                                                            </div> 
                                                             
 
                                                             <div class="col-lg-12 mb-3">
@@ -13024,7 +13023,7 @@
                               <ng-select [(ngModel)]="ActionOwner" placeholder=" Select new owner "
                                    [ngClass]="{'error-vd': !ActionOwner&&formFieldsRequired}"
                                   >
-                                  <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                                  <ng-option [value]="item.Emp_No" *ngFor="let item of actionowner_dropdown">
                                       {{item.RACIS}}
                                   </ng-option>
                               </ng-select>
@@ -13062,7 +13061,7 @@
                               <ng-select [(ngModel)]="ActionResponsible" placeholder="Select new responsible"
                                      [ngClass]="{'error-vd': !ActionResponsible&&formFieldsRequired}"
                                   >
-                                  <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown">
+                                  <ng-option [value]="item.Emp_No" *ngFor="let item of actionresponsible_dropdown">
                                       {{item.RACIS}}
                                   </ng-option>
                               </ng-select>
