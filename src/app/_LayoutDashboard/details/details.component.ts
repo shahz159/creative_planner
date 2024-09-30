@@ -156,6 +156,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   prviousCommentsList: any;
   initials1: any;
   Submitted_By: string;
+  AuditRequestBY:string;
   reject_list: any;
   comments_list: any;
   new_cost: any;
@@ -889,7 +890,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   // projectActionDelay:any;
   // projectDelay:any;
   errorFetchingProjectInfo:boolean=false;
-projecttypes : any
+  projecttypes : any
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.errorFetchingProjectInfo=false;
@@ -924,6 +925,7 @@ projecttypes : any
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
+      
       if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
           let regex=/[0-9]+/;
           const result=regex.exec(this.projectInfo.Status);
@@ -2226,6 +2228,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
         this.initials1 = this.initials1.toUpperCase();
